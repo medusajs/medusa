@@ -25,6 +25,16 @@
           "default": "'Medusa Store'",
           "mappedType": "text"
         },
+        "supported_currency_codes": {
+          "name": "supported_currency_codes",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "array"
+        },
         "default_sales_channel_id": {
           "name": "default_sales_channel_id",
           "type": "text",

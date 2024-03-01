@@ -46,11 +46,15 @@ describe("Store - Admin", () => {
 
   it("should correctly implement the entire lifecycle of a store", async () => {
     const api = useApi() as any
-    const createdStore = await service.create({ name: "Test store" })
+    const createdStore = await service.create({
+      name: "Test store",
+      supported_currency_codes: ["usd"],
+    })
 
     expect(createdStore).toEqual(
       expect.objectContaining({
         id: createdStore.id,
+        supported_currency_codes: ["usd"],
         name: "Test store",
       })
     )
