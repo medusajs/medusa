@@ -16,25 +16,33 @@ export interface IFulfillmentProvider {
    *
    * Validate the given fulfillment data.
    */
-  validateFulfillmentData(optionData: any, data: any, cart: any): Promise<any>
+  validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<any>
   /**
    * @ignore
    *
    * Validate the given option.
    */
-  validateOption(data: any): Promise<boolean>
+  validateOption(data: Record<string, unknown>): Promise<boolean>
   /**
    * @ignore
    *
    * Check if the provider can calculate the fulfillment price.
    */
-  canCalculate(data: any): Promise<any>
+  canCalculate(data: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
    * Calculate the price for the given fulfillment option.
    */
-  calculatePrice(optionData: any, data: any, cart: any): Promise<any>
+  calculatePrice(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<any>
   /**
    * @ignore
    *
@@ -57,35 +65,38 @@ export interface IFulfillmentProvider {
    *
    * Get the documents for the given fulfillment data.
    */
-  getFulfillmentDocuments(data: any): Promise<any>
+  getFulfillmentDocuments(data: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
    * Create an order for the given data.
    */
-  createOrder(fromData: any): Promise<any>
+  createOrder(fromData: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
    * Create a return for the given data.
    */
-  createReturn(fromData: any): Promise<any>
+  createReturn(fromData: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
    * Get the documents for the given return data.
    */
-  retrieveDocuments(fulfillmentData, documentType): Promise<any>
+  retrieveDocuments(
+    fulfillmentData: Record<string, unknown>,
+    documentType: string
+  ): Promise<any>
   /**
    * @ignore
    *
    * Get the documents for the given return data.
    */
-  getReturnDocuments(data: any): Promise<any>
+  getReturnDocuments(data: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
    * Get the documents for the given shipment data.
    */
-  getShipmentDocuments(data: any): Promise<any>
+  getShipmentDocuments(data: Record<string, unknown>): Promise<any>
 }

@@ -21,11 +21,15 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     ]
   }
 
-  async validateFulfillmentData(_, data, context): Promise<any> {
+  async validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<any> {
     return data
   }
 
-  async validateOption(data): Promise<boolean> {
+  async validateOption(data: Record<string, unknown>): Promise<boolean> {
     return true
   }
 

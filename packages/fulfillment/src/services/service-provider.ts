@@ -67,9 +67,14 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     return await provider.getFulfillmentOptions()
   }
 
-  async validateFulfillmentData(optionData: any, data: any, cart: any) {
-    const provider = this.retrieveProviderRegistration(optionData.provider_id)
-    return await provider.validateFulfillmentData(optionData, data, cart)
+  async validateFulfillmentData(
+    providerId: string,
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ) {
+    const provider = this.retrieveProviderRegistration(providerId)
+    return await provider.validateFulfillmentData(optionData, data, context)
   }
 
   async validateOption(data: any) {
