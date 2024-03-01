@@ -13,7 +13,7 @@ type InjectedDependencies = {
   [key: `fp_${string}`]: FulfillmentTypes.IFulfillmentProvider
 }
 
-// TODO reword DTO's
+// TODO rework DTO's
 
 export default class ServiceProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
   ServiceProvider
@@ -32,10 +32,23 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     return `fp_${(providerClass as any).identifier}_${optionName}`
   }
 
+  protected retrieveProviderRegistration(
+    providerId: string
+  ): FulfillmentTypes.IFulfillmentProvider {
+    try {
+      return super.__container__[`fp_${providerId}`]
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Could not find a fulfillment provider with id: ${providerId}`
+      )
+    }
+  }
+
   async listFulfillmentOptions(providerIds: string[]): Promise<any[]> {
     return await promiseAll(
       providerIds.map(async (p) => {
-        const provider = this.retrieveProvider(p)
+        const provider = this.retrieveProviderRegistration(p)
         return {
           provider_id: p,
           options: (await provider.getFulfillmentOptions()) as Record<
@@ -47,35 +60,20 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     )
   }
 
-  /**
-   * @param providerId - the provider id
-   * @return the payment fulfillment provider
-   */
-  retrieveProvider(providerId: string): FulfillmentTypes.IFulfillmentProvider {
-    try {
-      return super.__container__[`fp_${providerId}`]
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Could not find a fulfillment provider with id: ${providerId}`
-      )
-    }
-  }
-
   async getFulfillmentOptions(
     providerId: string
   ): Promise<Record<string, unknown>[]> {
-    const provider = this.retrieveProvider(providerId)
+    const provider = this.retrieveProviderRegistration(providerId)
     return await provider.getFulfillmentOptions()
   }
 
   async validateFulfillmentData(optionData: any, data: any, cart: any) {
-    const provider = this.retrieveProvider(optionData.provider_id)
+    const provider = this.retrieveProviderRegistration(optionData.provider_id)
     return await provider.validateFulfillmentData(optionData, data, cart)
   }
 
   async validateOption(data: any) {
-    const provider = this.retrieveProvider(data.provider_id)
+    const provider = this.retrieveProviderRegistration(data.provider_id)
     return await provider.validateOption(data)
   }
 
@@ -85,12 +83,12 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     order: any,
     fulfillment: any
   ): Promise<any> {
-    const provider = this.retrieveProvider(data.provider_id)
+    const provider = this.retrieveProviderRegistration(data.provider_id)
     return await provider.createFulfillment(data, items, order, fulfillment)
   }
 
   async cancelFulfillment(fulfillment: any): Promise<any> {
-    const provider = this.retrieveProvider(fulfillment.provider_id)
+    const provider = this.retrieveProviderRegistration(fulfillment.provider_id)
     return await provider.cancelFulfillment(fulfillment)
   }
 }
