@@ -4,6 +4,7 @@ import { asFunction, asValue, Lifetime } from "awilix"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
 import { lowerCaseFirst } from "@medusajs/utils"
 import { ServiceProviderService } from "@services"
+import {ContainerRegistrationKeys} from "@medusajs/utils/src";
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {
@@ -54,27 +55,32 @@ async function syncDatabaseProviders({
   providerIdentifiersRegistrationKey,
   providerServiceRegistrationKey,
 }) {
-  const providerIdentifiers: string[] = (
-    container.resolve(providerIdentifiersRegistrationKey) ?? []
-  ).filter(Boolean)
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  try {
+    const providerIdentifiers: string[] = (
+      container.resolve(providerIdentifiersRegistrationKey) ?? []
+    ).filter(Boolean)
 
-  const providerService: ModulesSdkTypes.InternalModuleService<any> =
-    container.resolve(providerServiceRegistrationKey)
+    const providerService: ModulesSdkTypes.InternalModuleService<any> =
+      container.resolve(providerServiceRegistrationKey)
 
-  const providers = await providerService.list({
-    id: providerIdentifiers,
-  })
+    const providers = await providerService.list({
+      id: providerIdentifiers,
+    })
 
-  const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
+    const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
 
-  const providersToCreate: any[] = []
-  for (const identifier of providerIdentifiers) {
-    if (loadedProvidersMap.has(identifier)) {
-      continue
+    const providersToCreate: any[] = []
+    for (const identifier of providerIdentifiers) {
+      if (loadedProvidersMap.has(identifier)) {
+        continue
+      }
+
+      providersToCreate.push({id: identifier})
     }
 
-    providersToCreate.push({ id: identifier })
+    await providerService.create(providersToCreate)
+  } catch (error) {
+    logger.error(`Error syncing providers: ${error.message}`)
   }
-
-  await providerService.create(providersToCreate)
 }
