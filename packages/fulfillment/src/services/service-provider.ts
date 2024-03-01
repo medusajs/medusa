@@ -4,9 +4,12 @@ import {
   FulfillmentTypes,
   IFulfillmentProvider,
 } from "@medusajs/types"
-import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
+import {
+  AbstractFulfillmentProviderService,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import BaseFulfillmentService from "medusa-interfaces"
 import { ServiceProvider } from "@models"
 
 type InjectedDependencies = {
@@ -17,7 +20,6 @@ type InjectedDependencies = {
 export default class ServiceProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
   ServiceProvider
 ) {
-  protected readonly container_: InjectedDependencies
   protected readonly serviceProviderRepository_: DAL.RepositoryService
 
   constructor(container: InjectedDependencies) {
@@ -51,9 +53,9 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
    * @param providerId - the provider id
    * @return the payment fulfillment provider
    */
-  retrieveProvider(providerId: string): typeof BaseFulfillmentService {
+  retrieveProvider(providerId: string): AbstractFulfillmentProviderService {
     try {
-      return this.container_[`fp_${providerId}`]
+      return super.__container__[`fp_${providerId}`]
     } catch (err) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

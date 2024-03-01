@@ -15,7 +15,7 @@ export class AbstractFulfillmentProviderService
     return (this.constructor as any).identifier
   }
 
-  async getFulfillmentOptions() {
+  async getFulfillmentOptions(): Promise<Record<string, unknown>> {
     throw Error("getFulfillmentOptions must be overridden by the child class")
   }
 
