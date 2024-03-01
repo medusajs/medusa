@@ -1,10 +1,13 @@
+import { useMemo } from "react"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Trans, useTranslation } from "react-i18next"
+import { parse, Duration } from "iso8601-duration"
+import * as zod from "zod"
+
 import { Discount } from "@medusajs/medusa"
 import { Button, Input, Text, Switch, DatePicker } from "@medusajs/ui"
 import { useAdminUpdateDiscount } from "medusa-react"
-import { useForm } from "react-hook-form"
-import { Trans, useTranslation } from "react-i18next"
-import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import {
@@ -41,6 +44,14 @@ export const EditDiscountConfigurationForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const duration = useMemo(
+    () =>
+      discount.valid_duration
+        ? parse(discount.valid_duration)
+        : ({ years: 0, months: 0, days: 0, hours: 0, minutes: 0 } as Duration),
+    [discount]
+  )
+
   const form = useForm<zod.infer<typeof EditDiscountSchema>>({
     defaultValues: {
       start_date_enabled: !!discount.starts_at,
@@ -54,11 +65,11 @@ export const EditDiscountConfigurationForm = ({
       end_date_enabled: !!discount.ends_at,
       end_date: discount.ends_at ? new Date(discount.ends_at) : null,
 
-      years: 0,
-      months: 0,
-      days: 0,
-      hours: 0,
-      minutes: 0,
+      years: duration.years,
+      months: duration.months,
+      days: duration.days,
+      hours: duration.hours,
+      minutes: duration.minutes,
     },
     resolver: zodResolver(EditDiscountSchema),
   })
@@ -71,6 +82,9 @@ export const EditDiscountConfigurationForm = ({
         starts_at: data.start_date,
         ends_at: data.end_date_enabled ? data.end_date : null,
         usage_limit: data.enable_usage_limit ? data.usage_limit : null,
+        valid_duration: data.enable_duration
+          ? `P${data.years}Y${data.months}M${data.days}DT${data.hours}H${data.minutes}M`
+          : null,
       },
       {
         onSuccess: () => {
@@ -103,21 +117,19 @@ export const EditDiscountConfigurationForm = ({
               <Form.Field
                 control={form.control}
                 name="start_date_enabled"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <div className="flex items-center justify-between">
-                        <Form.Label tooltip="todo">
-                          {t("discounts.hasStartDate")}
-                        </Form.Label>
-                      </div>
-                      <Form.Hint className="!mt-1">
-                        {t("discounts.startDateHint")}
-                      </Form.Hint>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
+                render={() => (
+                  <Form.Item>
+                    <div className="flex items-center justify-between">
+                      <Form.Label tooltip="todo">
+                        {t("discounts.hasStartDate")}
+                      </Form.Label>
+                    </div>
+                    <Form.Hint className="!mt-1">
+                      {t("discounts.startDateHint")}
+                    </Form.Hint>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )}
               />
               <Form.Field
                 control={form.control}
@@ -300,7 +312,6 @@ export const EditDiscountConfigurationForm = ({
                 <Form.Field
                   control={form.control}
                   name="years"
-                  disabled={!form.watch("enable_duration")}
                   render={({ field }) => {
                     return (
                       <Form.Item className="flex-1">
@@ -310,6 +321,7 @@ export const EditDiscountConfigurationForm = ({
                             {...field}
                             type="number"
                             min={0}
+                            disabled={!form.watch("enable_duration")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -329,7 +341,6 @@ export const EditDiscountConfigurationForm = ({
                 <Form.Field
                   control={form.control}
                   name="months"
-                  disabled={!form.watch("enable_duration")}
                   render={({ field }) => {
                     return (
                       <Form.Item className="flex-1">
@@ -339,6 +350,7 @@ export const EditDiscountConfigurationForm = ({
                             {...field}
                             type="number"
                             min={0}
+                            disabled={!form.watch("enable_duration")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -358,7 +370,6 @@ export const EditDiscountConfigurationForm = ({
                 <Form.Field
                   control={form.control}
                   name="days"
-                  disabled={!form.watch("enable_duration")}
                   render={({ field }) => {
                     return (
                       <Form.Item className="flex-1">
@@ -368,6 +379,7 @@ export const EditDiscountConfigurationForm = ({
                             {...field}
                             type="number"
                             min={0}
+                            disabled={!form.watch("enable_duration")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -388,8 +400,7 @@ export const EditDiscountConfigurationForm = ({
               <div className="flex items-center gap-3">
                 <Form.Field
                   control={form.control}
-                  name="years"
-                  disabled={!form.watch("enable_duration")}
+                  name="hours"
                   render={({ field }) => {
                     return (
                       <Form.Item className="flex-1">
@@ -399,6 +410,7 @@ export const EditDiscountConfigurationForm = ({
                             {...field}
                             type="number"
                             min={0}
+                            disabled={!form.watch("enable_duration")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -417,8 +429,7 @@ export const EditDiscountConfigurationForm = ({
                 />
                 <Form.Field
                   control={form.control}
-                  name="months"
-                  disabled={!form.watch("enable_duration")}
+                  name="minutes"
                   render={({ field }) => {
                     return (
                       <Form.Item className="flex-1">
@@ -428,12 +439,13 @@ export const EditDiscountConfigurationForm = ({
                             {...field}
                             type="number"
                             min={0}
+                            disabled={!form.watch("enable_duration")}
                             onChange={(e) => {
                               const value = e.target.value
-
                               if (value === "") {
                                 field.onChange(null)
                               } else {
+                                console.log(Number(value))
                                 field.onChange(Number(value))
                               }
                             }}
