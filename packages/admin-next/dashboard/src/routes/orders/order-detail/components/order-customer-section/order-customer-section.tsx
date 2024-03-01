@@ -70,9 +70,10 @@ const Header = ({ order }: { order: Order }) => {
 
 const getCustomerName = (order: Order) => {
   const { first_name: sFirstName, last_name: sLastName } =
-    order.shipping_address
-  const { first_name: bFirstName, last_name: bLastName } = order.billing_address
-  const { first_name: cFirstName, last_name: cLastName } = order.customer
+    order.shipping_address || {}
+  const { first_name: bFirstName, last_name: bLastName } =
+    order.billing_address || {}
+  const { first_name: cFirstName, last_name: cLastName } = order.customer || {}
 
   const customerName = [cFirstName, cLastName].filter(Boolean).join(" ")
   const shippingName = [sFirstName, sLastName].filter(Boolean).join(" ")
@@ -118,7 +119,7 @@ const ID = ({ order }: { order: Order }) => {
 const Company = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
   const company =
-    order.shipping_address.company || order.billing_address.company
+    order.shipping_address?.company || order.billing_address?.company
 
   if (!company) {
     return null
@@ -139,7 +140,7 @@ const Company = ({ order }: { order: Order }) => {
 const Contact = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
-  const phone = order.shipping_address.phone || order.billing_address.phone
+  const phone = order.shipping_address?.phone || order.billing_address?.phone
   const email = order.email
 
   return (
@@ -248,7 +249,7 @@ const Address = ({
   address,
   type,
 }: {
-  address: MedusaAddress
+  address: MedusaAddress | null
   type: "shipping" | "billing"
 }) => {
   const { t } = useTranslation()
@@ -260,24 +261,30 @@ const Address = ({
           ? t("addresses.shippingAddress")
           : t("addresses.billingAddress")}
       </Text>
-      <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
-        <Text size="small" leading="compact">
-          {getFormattedAddress({ address }).map((line, i) => {
-            return (
-              <span key={i}>
-                {line}
-                <br />
-              </span>
-            )
-          })}
-        </Text>
-        <div className="flex justify-end">
-          <Copy
-            content={getFormattedAddress({ address }).join("\n")}
-            className="text-ui-fg-muted"
-          />
+      {address ? (
+        <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
+          <Text size="small" leading="compact">
+            {getFormattedAddress({ address }).map((line, i) => {
+              return (
+                <span key={i}>
+                  {line}
+                  <br />
+                </span>
+              )
+            })}
+          </Text>
+          <div className="flex justify-end">
+            <Copy
+              content={getFormattedAddress({ address }).join("\n")}
+              className="text-ui-fg-muted"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <Text size="small" leading="compact">
+          -
+        </Text>
+      )}
     </div>
   )
 }

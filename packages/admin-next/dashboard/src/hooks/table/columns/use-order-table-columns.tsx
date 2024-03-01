@@ -9,6 +9,11 @@ import {
   DateCell,
   DateHeader,
 } from "../../../components/table/table-cells/common/date-cell"
+import { CountryCell } from "../../../components/table/table-cells/order/country-cell"
+import {
+  CustomerCell,
+  CustomerHeader,
+} from "../../../components/table/table-cells/order/customer-cell"
 import {
   DisplayIdCell,
   DisplayIdHeader,
@@ -17,10 +22,6 @@ import {
   FulfillmentStatusCell,
   FulfillmentStatusHeader,
 } from "../../../components/table/table-cells/order/fulfillment-status-cell"
-import {
-  ItemsCell,
-  ItemsHeader,
-} from "../../../components/table/table-cells/order/items-cell"
 import {
   PaymentStatusCell,
   PaymentStatusHeader,
@@ -62,6 +63,14 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           return <DateCell date={date} />
         },
       }),
+      columnHelper.accessor("customer", {
+        header: () => <CustomerHeader />,
+        cell: ({ getValue }) => {
+          const customer = getValue()
+
+          return <CustomerCell customer={customer} />
+        },
+      }),
       columnHelper.accessor("sales_channel", {
         header: () => <SalesChannelHeader />,
         cell: ({ getValue }) => {
@@ -86,14 +95,6 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           return <FulfillmentStatusCell status={status} />
         },
       }),
-      columnHelper.accessor("items", {
-        header: () => <ItemsHeader />,
-        cell: ({ getValue }) => {
-          const items = getValue()
-
-          return <ItemsCell items={items} />
-        },
-      }),
       columnHelper.accessor("total", {
         header: () => <TotalHeader />,
         cell: ({ getValue, row }) => {
@@ -101,6 +102,14 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           const currencyCode = row.original.currency_code
 
           return <TotalCell currencyCode={currencyCode} total={total} />
+        },
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => {
+          const countryCode = row.original.shipping_address?.country_code
+
+          return <CountryCell countryCode={countryCode} />
         },
       }),
     ],

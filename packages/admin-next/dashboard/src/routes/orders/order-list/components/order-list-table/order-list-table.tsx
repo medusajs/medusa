@@ -8,7 +8,7 @@ import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-t
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 const PAGE_SIZE = 20
-const DEFAULT_RELATIONS = "customer,items,sales_channel"
+const DEFAULT_RELATIONS = "customer,items,sales_channel,shipping_address"
 const DEFAULT_FIELDS =
   "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code"
 
