@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import { FulfillmentOptions } from "@medusajs/medusa/dist/types/fulfillment-provider"
 import BaseFulfillmentService from "medusa-interfaces"
 import { ServiceProvider } from "@models"
 
@@ -33,9 +32,7 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     return `fp_${(providerClass as any).identifier}_${optionName}`
   }
 
-  async listFulfillmentOptions(
-    providerIds: string[]
-  ): Promise<FulfillmentOptions[]> {
+  async listFulfillmentOptions(providerIds: string[]): Promise<any[]> {
     return await promiseAll(
       providerIds.map(async (p) => {
         const provider = this.retrieveProvider(p)
