@@ -40,12 +40,11 @@ export const POST = async (
 
   const query = remoteQueryObjectFromString({
     entryPoint: "cart",
+    variables: { id: req.params.id },
     fields: defaultStoreCartFields,
   })
 
-  ;[cart] = await remoteQuery(query, {
-    cart: { id: req.params.id },
-  })
+  ;[cart] = await remoteQuery(query)
 
   res.status(200).json({ cart })
 }
