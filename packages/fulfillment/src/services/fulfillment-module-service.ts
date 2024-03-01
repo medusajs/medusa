@@ -595,7 +595,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.FulfillmentDTO> {
     const { order, ...fulfillmentDataToCreate } = data
 
-    const fulfillment = await this.createFulfillment_(
+    const fulfillment = await this.fulfillmentService_.create(
       fulfillmentDataToCreate,
       sharedContext
     )
@@ -637,14 +637,6 @@ export default class FulfillmentModuleService<
         populate: true,
       }
     )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async createFulfillment_(
-    data: Omit<FulfillmentTypes.CreateFulfillmentDTO, "order">,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TFulfillmentEntity> {
-    return await this.fulfillmentService_.create(data, sharedContext)
   }
 
   update(
