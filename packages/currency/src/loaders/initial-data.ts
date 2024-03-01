@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ModulesSdkTypes, LoaderOptions } from "@medusajs/types"
-import { defaultCurrencies } from "@medusajs/utils"
+import { ModulesSdkTypes, LoaderOptions, Logger } from "@medusajs/types"
+import { ContainerRegistrationKeys, defaultCurrencies } from "@medusajs/utils"
 import { Currency } from "@models"
 
 export default async ({
@@ -10,20 +10,23 @@ export default async ({
   | ModulesSdkTypes.ModuleServiceInitializeOptions
   | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
-  try {
-    const {
-      currencyService_,
-    }: { currencyService_: ModulesSdkTypes.InternalModuleService<Currency> } =
-      container.resolve(ModuleRegistrationName.CURRENCY)
+  // TODO: Add default logger to the container when running tests
+  const logger =
+    container.resolve<Logger>(ContainerRegistrationKeys.LOGGER) ?? console
+  const {
+    currencyService_,
+  }: { currencyService_: ModulesSdkTypes.InternalModuleService<Currency> } =
+    container.resolve(ModuleRegistrationName.CURRENCY)
 
+  try {
     const normalizedCurrencies = Object.values(defaultCurrencies).map((c) => ({
       ...c,
       code: c.code.toLowerCase(),
     }))
     const resp = await currencyService_.upsert(normalizedCurrencies)
-    console.log(`Loaded ${resp.length} currencies`)
+    logger.info(`Loaded ${resp.length} currencies`)
   } catch (error) {
-    console.error(
+    logger.warn(
       `Failed to load currencies, skipping loader. Original error: ${error.message}`
     )
   }

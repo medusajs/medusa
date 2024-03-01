@@ -64,7 +64,6 @@ describe("Store Carts API", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    await regionModuleService.createDefaultCountries()
 
     // Here, so we don't have to create a region for each test
     defaultRegion = await regionModuleService.create({
