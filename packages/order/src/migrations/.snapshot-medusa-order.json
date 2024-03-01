@@ -177,6 +177,527 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "subtitle": {
+          "name": "subtitle",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "variant_id": {
+          "name": "variant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_title": {
+          "name": "product_title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_description": {
+          "name": "product_description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_subtitle": {
+          "name": "product_subtitle",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_type": {
+          "name": "product_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_collection": {
+          "name": "product_collection",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "product_handle": {
+          "name": "product_handle",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "variant_sku": {
+          "name": "variant_sku",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "variant_barcode": {
+          "name": "variant_barcode",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "variant_title": {
+          "name": "variant_title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "variant_option_values": {
+          "name": "variant_option_values",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "requires_shipping": {
+          "name": "requires_shipping",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_discountable": {
+          "name": "is_discountable",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_tax_inclusive": {
+          "name": "is_tax_inclusive",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "compare_at_unit_price": {
+          "name": "compare_at_unit_price",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_compare_at_unit_price": {
+          "name": "raw_compare_at_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "unit_price": {
+          "name": "unit_price",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_unit_price": {
+          "name": "raw_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        }
+      },
+      "name": "order_line_item",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_line_item_variant_id",
+          "columnNames": ["variant_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_variant_id\" ON \"order_line_item\" (variant_id)"
+        },
+        {
+          "keyName": "IDX_order_line_item_product_id",
+          "columnNames": ["product_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_product_id\" ON \"order_line_item\" (product_id)"
+        },
+        {
+          "keyName": "order_line_item_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "promotion_id": {
+          "name": "promotion_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_amount": {
+          "name": "raw_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "order_line_item_adjustment",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_line_item_adjustment_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_adjustment_item_id\" ON \"order_line_item_adjustment\" (item_id)"
+        },
+        {
+          "keyName": "order_line_item_adjustment_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_line_item_adjustment_item_id_foreign": {
+          "constraintName": "order_line_item_adjustment_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_line_item_adjustment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "deleteRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tax_rate_id": {
+          "name": "tax_rate_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rate": {
+          "name": "rate",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "decimal"
+        },
+        "raw_rate": {
+          "name": "raw_rate",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "order_line_item_tax_line",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_order_line_item_tax_line_item_id",
+          "columnNames": ["item_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_tax_line_item_id\" ON \"order_line_item_tax_line\" (item_id)"
+        },
+        {
+          "keyName": "order_line_item_tax_line_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "order_line_item_tax_line_item_id_foreign": {
+          "constraintName": "order_line_item_tax_line_item_id_foreign",
+          "columnNames": ["item_id"],
+          "localTableName": "public.order_line_item_tax_line",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.order_line_item",
+          "deleteRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "region_id": {
           "name": "region_id",
           "type": "text",
@@ -464,6 +985,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -637,12 +1167,28 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id\" ON \"order_change\" (order_id)"
         },
         {
+          "keyName": "IDX_order_change_order_id_version",
+          "columnNames": ["version"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version)"
+        },
+        {
           "keyName": "IDX_order_change_status",
           "columnNames": ["status"],
           "composite": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_status\" ON \"order_change\" (status)"
+        },
+        {
+          "keyName": "IDX_order_change_order_id_version",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_order_id_version\" ON \"order_change\" (order_id, version)"
         },
         {
           "keyName": "order_change_pkey",
@@ -765,12 +1311,12 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_order_change_id\" ON \"order_change_action\" (order_change_id)"
         },
         {
-          "keyName": "IDX_order_change_action_reference_id",
-          "columnNames": ["reference_id"],
+          "keyName": "IDX_order_change_action_reference_reference_id",
+          "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_reference_id\" ON \"order_change_action\" (reference_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_change_action_reference_reference_id\" ON \"order_change_action\" (reference, reference_id)"
         },
         {
           "keyName": "order_change_action_pkey",
@@ -856,6 +1402,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_fulfilled_quantity": {
@@ -874,6 +1421,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_shipped_quantity": {
@@ -892,6 +1440,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_requested_quantity": {
@@ -910,6 +1459,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_received_quantity": {
@@ -928,6 +1478,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_dismissed_quantity": {
@@ -946,6 +1497,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "decimal"
         },
         "raw_written_off_quantity": {
@@ -957,13 +1509,13 @@
           "nullable": false,
           "mappedType": "json"
         },
-        "summary": {
-          "name": "summary",
+        "metadata": {
+          "name": "metadata",
           "type": "jsonb",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "json"
         },
         "created_at": {
@@ -989,312 +1541,35 @@
           "mappedType": "datetime"
         }
       },
-      "name": "order_detail",
+      "name": "order_item",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_detail_order_id_item_id_version",
-          "columnNames": [],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_detail_order_id_item_id_version\" ON \"order_detail\" (order_id, item_id, version)"
-        },
-        {
-          "keyName": "order_detail_pkey",
-          "columnNames": ["id"],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_detail_order_id_foreign": {
-          "constraintName": "order_detail_order_id_foreign",
+          "keyName": "IDX_order_item_order_id",
           "columnNames": ["order_id"],
-          "localTableName": "public.order_detail",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "public.order",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_order_id\" ON \"order_item\" (order_id)"
         },
-        "order_detail_item_id_foreign": {
-          "constraintName": "order_detail_item_id_foreign",
+        {
+          "keyName": "IDX_order_item_version",
+          "columnNames": ["version"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_version\" ON \"order_item\" (version)"
+        },
+        {
+          "keyName": "IDX_order_item_item_id",
           "columnNames": ["item_id"],
-          "localTableName": "public.order_detail",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "public.order_line_item",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "totals_id": {
-          "name": "totals_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "subtitle": {
-          "name": "subtitle",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "thumbnail": {
-          "name": "thumbnail",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_id": {
-          "name": "variant_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_title": {
-          "name": "product_title",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_description": {
-          "name": "product_description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_subtitle": {
-          "name": "product_subtitle",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_type": {
-          "name": "product_type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_collection": {
-          "name": "product_collection",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "product_handle": {
-          "name": "product_handle",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_sku": {
-          "name": "variant_sku",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_barcode": {
-          "name": "variant_barcode",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_title": {
-          "name": "variant_title",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_option_values": {
-          "name": "variant_option_values",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "requires_shipping": {
-          "name": "requires_shipping",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
-        },
-        "is_discountable": {
-          "name": "is_discountable",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
-        },
-        "is_tax_inclusive": {
-          "name": "is_tax_inclusive",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "compare_at_unit_price": {
-          "name": "compare_at_unit_price",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "decimal"
-        },
-        "raw_compare_at_unit_price": {
-          "name": "raw_compare_at_unit_price",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "unit_price": {
-          "name": "unit_price",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_unit_price": {
-          "name": "raw_unit_price",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "order_line_item",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_line_item_variant_id",
-          "columnNames": ["variant_id"],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_variant_id\" ON \"order_line_item\" (variant_id)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_item_item_id\" ON \"order_item\" (item_id)"
         },
         {
-          "keyName": "IDX_order_line_item_product_id",
-          "columnNames": ["product_id"],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_product_id\" ON \"order_line_item\" (product_id)"
-        },
-        {
-          "keyName": "order_line_item_pkey",
+          "keyName": "order_item_pkey",
           "columnNames": ["id"],
           "composite": false,
           "primary": true,
@@ -1302,281 +1577,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "order_line_item_totals_id_foreign": {
-          "constraintName": "order_line_item_totals_id_foreign",
-          "columnNames": ["totals_id"],
-          "localTableName": "public.order_line_item",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "public.order_detail",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "tax_rate_id": {
-          "name": "tax_rate_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "rate": {
-          "name": "rate",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_rate": {
-          "name": "raw_rate",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "item_id": {
-          "name": "item_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        }
-      },
-      "name": "order_line_item_tax_line",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_line_item_tax_line_item_id",
-          "columnNames": ["item_id"],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_tax_line_item_id\" ON \"order_line_item_tax_line\" (item_id)"
-        },
-        {
-          "keyName": "order_line_item_tax_line_pkey",
-          "columnNames": ["id"],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "order_line_item_tax_line_item_id_foreign": {
-          "constraintName": "order_line_item_tax_line_item_id_foreign",
-          "columnNames": ["item_id"],
-          "localTableName": "public.order_line_item_tax_line",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "public.order_line_item",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "promotion_id": {
-          "name": "promotion_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "raw_amount": {
-          "name": "raw_amount",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "item_id": {
-          "name": "item_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        }
-      },
-      "name": "order_line_item_adjustment",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_order_line_item_adjustment_item_id",
-          "columnNames": ["item_id"],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_line_item_adjustment_item_id\" ON \"order_line_item_adjustment\" (item_id)"
-        },
-        {
-          "keyName": "order_line_item_adjustment_pkey",
-          "columnNames": ["id"],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [
-        {
-          "name": "order_line_item_adjustment_check",
-          "expression": "amount >= 0",
-          "definition": "check ((amount >= 0))"
-        }
-      ],
-      "foreignKeys": {
-        "order_line_item_adjustment_item_id_foreign": {
-          "constraintName": "order_line_item_adjustment_item_id_foreign",
-          "columnNames": ["item_id"],
-          "localTableName": "public.order_line_item_adjustment",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "public.order_line_item",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -1597,6 +1598,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "1",
+          "mappedType": "integer"
         },
         "name": {
           "name": "name",
@@ -1714,6 +1725,14 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_shipping_option_id\" ON \"order_shipping_method\" (shipping_option_id)"
         },
         {
+          "keyName": "IDX_order_shipping_method_order_id_version",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_order_id_version\" ON \"order_shipping_method\" (order_id, version)"
+        },
+        {
           "keyName": "order_shipping_method_pkey",
           "columnNames": ["id"],
           "composite": false,
@@ -1721,13 +1740,7 @@
           "unique": true
         }
       ],
-      "checks": [
-        {
-          "name": "order_shipping_method_check",
-          "expression": "amount >= 0",
-          "definition": "check ((amount >= 0))"
-        }
-      ],
+      "checks": [],
       "foreignKeys": {
         "order_shipping_method_order_id_foreign": {
           "constraintName": "order_shipping_method_order_id_foreign",
@@ -1735,8 +1748,7 @@
           "localTableName": "public.order_shipping_method",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+          "deleteRule": "cascade"
         }
       }
     },

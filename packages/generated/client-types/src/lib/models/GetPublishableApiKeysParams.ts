@@ -24,4 +24,71 @@ export interface GetPublishableApiKeysParams {
    * Comma-separated fields that should be included in the returned publishable API keys.
    */
   fields?: string
+  /**
+   * A field to sort-order the retrieved publishable API keys by.
+   */
+  order?: string
+  /**
+   * Filter by a creation date range.
+   */
+  created_at?: {
+    /**
+     * filter by dates less than this date
+     */
+    lt?: string
+    /**
+     * filter by dates greater than this date
+     */
+    gt?: string
+    /**
+     * filter by dates less than or equal to this date
+     */
+    lte?: string
+    /**
+     * filter by dates greater than or equal to this date
+     */
+    gte?: string
+  }
+  /**
+   * Filter by a update date range.
+   */
+  updated_at?: {
+    /**
+     * filter by dates less than this date
+     */
+    lt?: string
+    /**
+     * filter by dates greater than this date
+     */
+    gt?: string
+    /**
+     * filter by dates less than or equal to this date
+     */
+    lte?: string
+    /**
+     * filter by dates greater than or equal to this date
+     */
+    gte?: string
+  }
+  /**
+   * Filter by a revocation date range.
+   */
+  revoked_at?: {
+    /**
+     * filter by dates less than this date
+     */
+    lt?: string
+    /**
+     * filter by dates greater than this date
+     */
+    gt?: string
+    /**
+     * filter by dates less than or equal to this date
+     */
+    lte?: string
+    /**
+     * filter by dates greater than or equal to this date
+     */
+    gte?: string
+  }
 }

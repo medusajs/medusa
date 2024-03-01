@@ -85,21 +85,6 @@ describe("PricingModule Service - Calculate Price", () => {
 
   describe("calculatePrices", () => {
     beforeEach(async () => {
-      const currencyData = [
-        {
-          symbol: "zł",
-          name: "Polish Zloty",
-          symbol_native: "zł",
-          code: "PLN",
-        },
-        {
-          symbol: "€",
-          name: "Euro",
-          symbol_native: "€",
-          code: "EUR",
-        },
-      ]
-
       const moneyAmountsData = [
         {
           id: "money-amount-PLN",
@@ -373,7 +358,6 @@ describe("PricingModule Service - Calculate Price", () => {
       ] as unknown as CreatePriceRuleDTO[]
 
       await seedPriceData(MikroOrmWrapper.forkManager(), {
-        currencyData,
         moneyAmountsData,
         priceSetsData,
         priceSetMoneyAmountsData,

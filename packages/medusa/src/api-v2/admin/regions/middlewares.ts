@@ -15,7 +15,7 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/regions*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],

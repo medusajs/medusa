@@ -37,7 +37,7 @@ export const POST = async (
   const { result, errors } = await updateApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update: req.validatedBody as UpdateApiKeyDTO,
     },
     throwOnError: false,
   })

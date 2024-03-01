@@ -1,21 +1,10 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { Country, Region } from "@medusajs/medusa"
-import {
-  Badge,
-  Button,
-  Container,
-  Drawer,
-  Heading,
-  StatusBadge,
-  Text,
-  Tooltip,
-  usePrompt,
-} from "@medusajs/ui"
-import { useAdminDeleteRegion, useAdminUpdateRegion } from "medusa-react"
-import { useForm } from "react-hook-form"
+import { BuildingTax, PencilSquare, Trash } from "@medusajs/icons"
+import { Region } from "@medusajs/medusa"
+import { Badge, Container, Heading, Text, usePrompt } from "@medusajs/ui"
+import { useAdminDeleteRegion } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import * as zod from "zod"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 type RegionGeneralSectionProps = {
   region: Region
@@ -28,14 +17,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{region.name}</Heading>
-
         <RegionActions region={region} />
-      </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.countries")}
-        </Text>
-        <RegionCountries countries={region.countries} />
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
@@ -52,22 +34,13 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("fields.taxInclusivePricing")}
-        </Text>
-        <StatusBadge
-          color={region.includes_tax ? "green" : "red"}
-          className="w-fit"
-        >
-          {region.includes_tax ? t("general.enabled") : t("general.disabled")}
-        </StatusBadge>
-      </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
           {t("fields.paymentProviders")}
         </Text>
         <Text size="small" leading="compact">
           {region.payment_providers.length > 0
-            ? region.payment_providers.map((p) => p.id).join(", ")
+            ? region.payment_providers
+                .map((p) => formatProvider(p.id))
+                .join(", ")
             : "-"}
         </Text>
       </div>
@@ -77,7 +50,9 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
         </Text>
         <Text size="small" leading="compact">
           {region.fulfillment_providers.length > 0
-            ? region.fulfillment_providers.map((p) => p.id).join(", ")
+            ? region.fulfillment_providers
+                .map((p) => formatProvider(p.id))
+                .join(", ")
             : "-"}
         </Text>
       </div>
@@ -119,6 +94,11 @@ const RegionActions = ({ region }: { region: Region }) => {
               label: t("actions.edit"),
               to: `/settings/regions/${region.id}/edit`,
             },
+            {
+              icon: <BuildingTax />,
+              label: "Tax settings",
+              to: `/settings/taxes/${region.id}`,
+            },
           ],
         },
         {
@@ -132,89 +112,5 @@ const RegionActions = ({ region }: { region: Region }) => {
         },
       ]}
     />
-  )
-}
-
-const RegionCountries = ({ countries }: { countries: Country[] }) => {
-  const { t } = useTranslation()
-
-  const countIsGreaterThanTwo = countries.length > 2
-
-  return (
-    <div className="text-ui-fg-subtle flex items-center gap-x-2">
-      <Text leading="compact" size="small">
-        {countries
-          .slice(0, 2)
-          .map((c) => c.display_name)
-          .join(", ")}
-        {countIsGreaterThanTwo && ", "}
-      </Text>
-      {countIsGreaterThanTwo && (
-        <Tooltip
-          content={
-            <ul>
-              {countries.slice(2).map((c) => (
-                <li key={c.id}>{c.display_name}</li>
-              ))}
-            </ul>
-          }
-        >
-          <Text
-            leading="compact"
-            size="small"
-            weight="plus"
-            className="cursor-default"
-          >
-            {t("general.plusCountMore", {
-              count: countries.length - 2,
-            })}
-          </Text>
-        </Tooltip>
-      )}
-    </div>
-  )
-}
-
-const EditRegionSchema = zod.object({
-  name: zod.string().min(1),
-  includes_tax: zod.boolean(),
-  currency_code: zod.string(),
-  countries: zod.array(zod.string()),
-})
-
-const EditRegionDrawer = ({ region }: { region: Region }) => {
-  const { t } = useTranslation()
-  const { mutateAsync, isLoading } = useAdminUpdateRegion(region.id)
-
-  const form = useForm<zod.infer<typeof EditRegionSchema>>({
-    defaultValues: {
-      name: region.name,
-      currency_code: region.currency_code,
-      includes_tax: region.includes_tax,
-      countries: region.countries.map((c) => c.iso_2),
-    },
-  })
-
-  const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync({
-      name: values.name,
-      currency_code: values.currency_code,
-      includes_tax: values.includes_tax,
-    })
-  })
-
-  return (
-    <Drawer>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Heading>{t("regions.editRegion")}</Heading>
-        </Drawer.Header>
-        <Drawer.Body></Drawer.Body>
-        <Drawer.Footer className="flex items-center justify-end gap-x-2">
-          <Button variant="secondary">{t("actions.cancel")}</Button>
-          <Button>{t("actions.save")}</Button>
-        </Drawer.Footer>
-      </Drawer.Content>
-    </Drawer>
   )
 }

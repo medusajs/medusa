@@ -2,19 +2,19 @@ import {
   BaseFilterable,
   Context,
   FilterQuery,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
+  FilterQuery as InternalFilterQuery,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isObject,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
 } from "../common"
 import { buildQuery } from "./build-query"

@@ -27,16 +27,6 @@ type OrderSummary = {
   future_balance: number
 }
 
-type ItemSummary = {
-  returnable_quantity: number
-  ordered_quantity: number
-  fulfilled_quantity: number
-  return_requested_quantity: number
-  return_received_quantity: number
-  return_dismissed_quantity: number
-  written_off_quantity: number
-}
-
 export interface OrderAdjustmentLineDTO {
   /**
    * The ID of the adjustment line
@@ -427,6 +417,51 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   raw_unit_price: BigNumberRawValue
 
   /**
+   * The associated tax lines.
+   *
+   * @expandable
+   */
+  tax_lines?: OrderLineItemTaxLineDTO[]
+  /**
+   * The associated adjustments.
+   *
+   * @expandable
+   */
+  adjustments?: OrderLineItemAdjustmentDTO[]
+
+  /**
+   * The details of the item
+   */
+  detail: OrderItemDTO
+
+  /**
+   * The date when the order line item was created.
+   */
+  created_at: Date
+
+  /**
+   * The date when the order line item was last updated.
+   */
+  updated_at: Date
+}
+
+export interface OrderItemDTO {
+  /**
+   * The ID of the order detail.
+   */
+  id: string
+
+  /**
+   * The ID of the associated item.
+   */
+  item_id: string
+
+  /**
+   * The Line Item of the order detail.
+   */
+  item: OrderLineItemDTO
+
+  /**
    * The quantity of the order line item.
    */
   quantity: number
@@ -497,9 +532,9 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   raw_written_off_quantity: BigNumberRawValue
 
   /**
-   * The summary of the order line item.
+   * The metadata of the order detail
    */
-  summary?: ItemSummary
+  metadata: Record<string, unknown> | null
 
   /**
    * The date when the order line item was created.
@@ -517,6 +552,10 @@ export interface OrderDTO {
    * The ID of the order.
    */
   id: string
+  /**
+   * The version of the order.
+   */
+  version: number
   /**
    * The ID of the region the order belongs to.
    */
@@ -550,7 +589,7 @@ export interface OrderDTO {
    */
   billing_address?: OrderAddressDTO
   /**
-   * The associated line items.
+   * The associated order details / line items.
    *
    * @expandable
    */
