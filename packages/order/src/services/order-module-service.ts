@@ -18,6 +18,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  OrderChangeStatus,
 } from "@medusajs/utils"
 import {
   Address,
@@ -107,8 +108,8 @@ export default class OrderModuleService<
       }
       ShippingMethodTaxLine: { dto: OrderTypes.OrderShippingMethodTaxLineDTO }
       Transaction: { dto: OrderTypes.OrderTransactionDTO }
-      Change: { dto: OrderTypes.OrderChangeDTO }
-      ChangeAction: { dto: OrderTypes.OrderChangeActionDTO }
+      OrderChange: { dto: OrderTypes.OrderChangeDTO }
+      OrderChangeAction: { dto: OrderTypes.OrderChangeActionDTO }
       OrderItem: { dto: OrderTypes.OrderItemDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
@@ -1550,10 +1551,119 @@ export default class OrderModuleService<
     const change = await this.orderChangeService_.create(input, sharedContext)
 
     return await this.baseRepository_.serialize<OrderTypes.OrderChangeDTO>(
-      change,
+      Array.isArray(data) ? change : change[0],
       {
         populate: true,
       }
     )
+  }
+
+  async cancelOrderChange(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async cancelOrderChange(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async cancelOrderChange(
+    orderChangeId: string | string[],
+    sharedContext?: Context
+  ): Promise<void> {
+    const orderChangeIds = Array.isArray(orderChangeId)
+      ? orderChangeId
+      : [orderChangeId]
+
+    await this.getAndValidateOrderChange_(orderChangeIds, sharedContext)
+
+    const updates = orderChangeIds.map((id) => {
+      return {
+        id,
+        status: OrderChangeStatus.CANCELED,
+      }
+    })
+
+    await this.orderChangeService_.update(updates as any, sharedContext)
+  }
+
+  private async getAndValidateOrderChange_(
+    orderChangeIds: string[],
+    sharedContext?: Context
+  ): Promise<any> {
+    const orderChanges = await this.listOrderChanges(
+      {
+        id: orderChangeIds,
+      },
+      {
+        select: ["id", "order_id", "version", "status"],
+      },
+      sharedContext
+    )
+
+    if (orderChanges.length !== orderChanges.length) {
+      const foundOrders = orderChanges.map((o) => o.id)
+      const missing = orderChangeIds.filter((id) => !foundOrders.includes(id))
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order Change could not be found: ${missing.join(", ")}`
+      )
+    }
+
+    for (const orderChange of orderChanges) {
+      const notAllowed: string[] = []
+      if (
+        !(
+          orderChange.status === OrderChangeStatus.PENDING ||
+          orderChange.status === OrderChangeStatus.REQUESTED
+        )
+      ) {
+        notAllowed.push(orderChange.id)
+      }
+
+      if (notAllowed.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Order Change cannot be modified: ${notAllowed.join(", ")}.`
+        )
+      }
+    }
+
+    return orderChanges
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async addOrderAction(data: any, sharedContext?: Context): Promise<any> {
+    let dataArr = Array.isArray(data) ? data : [data]
+
+    const orderChangeMap = {}
+    const orderChangeIds = dataArr
+      .map((data, idx) => {
+        if (data.order_change_id) {
+          orderChangeMap[data.order_change_id] ??= []
+          orderChangeMap[data.order_change_id].push(dataArr[idx])
+        }
+        return data.order_change_id
+      })
+      .filter(Boolean)
+
+    if (orderChangeIds.length) {
+      const ordChanges = await this.getAndValidateOrderChange_(
+        orderChangeIds,
+        sharedContext
+      )
+      for (const ordChange of ordChanges) {
+        orderChangeMap[ordChange.id].forEach((data) => {
+          if (data) {
+            data.order_id = ordChange.order_id
+            data.version = ordChange.version
+          }
+        })
+      }
+    }
+
+    return await this.orderChangeActionService_.create(dataArr, sharedContext)
   }
 }

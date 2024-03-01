@@ -1,6 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { ChangeActionType } from "../../src/utils"
 
 jest.setTimeout(100000)
 
@@ -131,7 +132,41 @@ moduleIntegrationTestRunner({
           actions: [],
         })
 
-        console.log(orderChange)
+        const actions = await service.addOrderAction([
+          {
+            action: ChangeActionType.ITEM_ADD,
+            order_change_id: orderChange.id,
+            internal_note: "adding an item",
+            reference: "OrderLineItem",
+            reference_id: createdOrder.items[0].id,
+            amount:
+              createdOrder.items[0].unit_price * createdOrder.items[0].quantity,
+            details: {
+              quantity: 1,
+            },
+          },
+          {
+            action: ChangeActionType.ITEM_ADD,
+            order_change_id: orderChange.id,
+            reference: "OrderLineItem",
+            reference_id: createdOrder.items[1].id,
+            amount:
+              createdOrder.items[1].unit_price * createdOrder.items[1].quantity,
+            details: {
+              quantity: 3,
+            },
+          },
+          {
+            action: ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            internal_note: "Item broken",
+            reference: "OrderLineItem",
+            reference_id: createdOrder.items[2].id,
+          },
+        ])
+
+        console.log(actions)
       })
     })
   },
