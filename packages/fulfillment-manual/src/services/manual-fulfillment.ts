@@ -34,7 +34,7 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     return {}
   }
 
-  async cancelFulfillment(): Promise<any> {
+  async cancelFulfillment(fulfillment: Record<string, unknown>): Promise<any> {
     return {}
   }
 }

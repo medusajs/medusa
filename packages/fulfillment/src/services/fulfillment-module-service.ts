@@ -25,7 +25,7 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -37,7 +37,7 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import {isContextValid, validateRules} from "@utils"
+import { isContextValid, validateRules } from "@utils"
 import ServiceProviderService from "./service-provider"
 
 const generateMethodForModels = [
@@ -248,7 +248,7 @@ export default class FulfillmentModuleService<
   }
 
   async retrieveFulfillmentOptions(
-    providerId: string,
+    providerId: string
   ): Promise<Record<string, any>[]> {
     return await this.serviceProviderService_.getFulfillmentOptions(providerId)
   }
@@ -600,33 +600,35 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    const {
-      items,
-      data: fulfillmentData,
-      provider_id,
-      ...fulfillmentRest
-    } = fulfillment
+    if (fulfillment.provider_id) {
+      const {
+        items,
+        data: fulfillmentData,
+        provider_id,
+        ...fulfillmentRest
+      } = fulfillment
 
-    let fulfillmentThirdPartyData!: any
-    try {
-      fulfillmentThirdPartyData =
-        await this.serviceProviderService_.createFulfillment(
-          provider_id,
-          fulfillmentData || {},
-          items.map(i => i),
-          order,
-          fulfillmentRest
+      let fulfillmentThirdPartyData!: any
+      try {
+        fulfillmentThirdPartyData =
+          await this.serviceProviderService_.createFulfillment(
+            provider_id,
+            fulfillmentData || {},
+            items.map((i) => i),
+            order,
+            fulfillmentRest
+          )
+        await this.fulfillmentService_.update(
+          {
+            id: fulfillment.id,
+            data: fulfillmentThirdPartyData ?? {},
+          },
+          sharedContext
         )
-      await this.fulfillmentService_.update({
-        id: fulfillment.id,
-        data: fulfillmentThirdPartyData ?? {},
-      })
-    } catch (error) {
-      await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `An error occurred while creating the fulfillment: ${error.message}`
-      )
+      } catch (error) {
+        await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
+        throw error
+      }
     }
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
@@ -1226,21 +1228,73 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    if (fulfillment.provider_id) {
+    // TODO: should we allow to delete a fulfillment? and in that case wouldn't it be a cancelation like?
+    /*if (fulfillment.provider_id) {
       try {
         await this.serviceProviderService_.cancelFulfillment(
           fulfillment.provider_id,
-          fulfillment.data
+          fulfillment.data ?? {}
         )
       } catch (error) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `An error occurred while canceling the fulfillment: ${error.message}`
-        )
+        throw error
       }
-    }
+    }*/
 
     await this.fulfillmentService_.delete(id, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async cancelFulfillment(
+    id: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentDTO> {
+    const canceledAt = new Date()
+
+    let fulfillment = await this.fulfillmentService_.retrieve(
+      id,
+      {},
+      sharedContext
+    )
+
+    if (fulfillment.shipped_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already shipped`
+      )
+    }
+
+    if (fulfillment.delivered_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already delivered`
+      )
+    }
+
+    // Make this action idempotent
+    if (!fulfillment.canceled_at) {
+      if (fulfillment.provider_id) {
+        try {
+          await this.serviceProviderService_.cancelFulfillment(
+            fulfillment.provider_id,
+            fulfillment.data ?? {}
+          )
+        } catch (error) {
+          throw error
+        }
+      }
+
+      fulfillment = await this.fulfillmentService_.update(
+        {
+          id,
+          canceled_at: canceledAt,
+        },
+        sharedContext
+      )
+    }
+
+    return await this.baseRepository_.serialize(fulfillment, {
+      populate: true,
+    })
   }
 
   protected static validateMissingShippingOptions_(

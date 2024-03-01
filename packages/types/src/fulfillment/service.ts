@@ -624,10 +624,27 @@ export interface IFulfillmentModuleService extends IModuleService {
   /**
    * Retrieve the available fulfillment options for the given data.
    */
-  retrieveFulfillmentOptions(providerId: string): Promise<Record<string, unknown>[]>
+  retrieveFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, unknown>[]>
 
+  /**
+   * Create a new fulfillment including into the third party provider
+   * @param data
+   * @param sharedContext
+   */
   createFulfillment(
     data: CreateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
+
+  /**
+   * Cancel the given fulfillment including into the third party provider
+   * @param id
+   * @param sharedContext
+   */
+  cancelFulfillment(
+    id: string,
     sharedContext?: Context
   ): Promise<FulfillmentDTO>
 }

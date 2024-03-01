@@ -51,7 +51,7 @@ export interface IFulfillmentProvider {
    *
    * Cancel the given fulfillment.
    */
-  cancelFulfillment(fulfillment: any): Promise<any>
+  cancelFulfillment(fulfillment: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *
