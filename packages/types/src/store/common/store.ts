@@ -3,6 +3,7 @@ import { BaseFilterable } from "../../dal"
 export interface StoreDTO {
   id: string
   name: string
+  supported_currency_codes: string[]
   default_sales_channel_id?: string
   default_region_id?: string
   default_location_id?: string
