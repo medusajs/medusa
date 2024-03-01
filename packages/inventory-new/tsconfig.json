@@ -24,7 +24,7 @@
       "@utils": ["./src/utils"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "services.old/connection.ts"],
   "exclude": [
     "dist",
     "./src/**/__tests__",

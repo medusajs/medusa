@@ -6,9 +6,6 @@ import InventoryService from "./services/inventory"
 import { ModuleExports } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import loadConnection from "./loaders/connection"
-import loadContainer from "./loaders/container"
-import migrations from "./migrations"
 
 const migrationScriptOptions = {
   moduleName: Modules.INVENTORY,

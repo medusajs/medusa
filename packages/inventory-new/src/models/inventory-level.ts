@@ -36,7 +36,7 @@ const InventoryLevelLocationIdInventoryItemIdIndex =
   })
 
 @Entity()
-@InventoryLevelLocationIdInventoryItemIdIndex.MikroOrmIndex()
+@InventoryLevelLocationIdInventoryItemIdIndex.MikroORMIndex()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export class InventoryLevel {
   @PrimaryKey({ columnType: "text" })

@@ -15,6 +15,193 @@
 // import { InventoryLevel } from "../models"
 // import { buildQuery } from "../utils/build-query"
 
+import { Context, DAL, SharedContext } from "@medusajs/types"
+import { InventoryLevel } from "../models/inventory-level"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
+import { InventoryLevelRepository } from "@repositories"
+
+type InjectedDependencies = {
+  inventoryLevelRepository: InventoryLevelRepository
+}
+
+export default class InventoryLevelService<
+  TEntity extends InventoryLevel = InventoryLevel
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  InventoryLevel
+)<TEntity> {
+  protected readonly inventoryLevelRepository_: InventoryLevelRepository
+
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.inventoryLevelRepository_ = container.inventoryLevelRepository
+  }
+
+  /**
+   * Adjust the reserved quantity for an inventory item at a specific location.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationId - The ID of the location.
+   * @param quantity - The quantity to adjust from the reserved quantity.
+   * @param context
+   */
+  @InjectTransactionManager("inviteRepository_")
+  async adjustReservedQuantity(
+    inventoryItemId: string,
+    locationId: string,
+    quantity: number,
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    // const manager = context.transactionManager!
+    // await manager
+    //   .createQueryBuilder()
+    //   .update(InventoryLevel)
+    //   .set({ reserved_quantity: () => `reserved_quantity + ${quantity}` })
+    //   .where(
+    //     "inventory_item_id = :inventoryItemId AND location_id = :locationId",
+    //     { inventoryItemId, locationId }
+    //   )
+    //   .execute()
+  }
+
+  /**
+   * Deletes inventory levels by inventory Item ID.
+   * @param inventoryItemId - The ID or IDs of the inventory item to delete inventory levels for.
+   * @param context
+   */
+  @InjectTransactionManager("inviteRepository_")
+  async deleteByInventoryItemId(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    // const ids = Array.isArray(inventoryItemId)
+    //   ? inventoryItemId
+    //   : [inventoryItemId]
+    // const manager = context.transactionManager!
+    // const levelRepository = manager.getRepository(InventoryLevel)
+    // await levelRepository.softDelete({ inventory_item_id: In(ids) })
+    // await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
+    //   inventory_item_id: inventoryItemId,
+    // })
+  }
+
+  /**
+   * Restores inventory levels by inventory Item ID.
+   * @param inventoryItemId - The ID or IDs of the inventory item to restore inventory levels for.
+   * @param context
+   */
+  @InjectTransactionManager("inviteRepository_")
+  async restoreByInventoryItemId(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    // const ids = Array.isArray(inventoryItemId)
+    //   ? inventoryItemId
+    //   : [inventoryItemId]
+    // const manager = context.transactionManager!
+    // const levelRepository = manager.getRepository(InventoryLevel)
+    // await levelRepository.restore({ inventory_item_id: In(ids) })
+    // await this.eventBusService_?.emit?.(InventoryLevelService.Events.RESTORED, {
+    //   inventory_item_id: inventoryItemId,
+    // })
+  }
+
+  @InjectTransactionManager("inviteRepository_")
+  async deleteByLocationId(
+    locationId: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    // const manager = context.transactionManager!
+    // const levelRepository = manager.getRepository(InventoryLevel)
+    // const ids = Array.isArray(locationId) ? locationId : [locationId]
+    // await levelRepository.softDelete({ location_id: In(ids) })
+    // await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
+    //   location_ids: ids,
+    // })
+  }
+
+  async getStockedQuantity(
+    inventoryItemId: string,
+    locationIds: string[] | string,
+    @MedusaContext() context: Context = {}
+  ): Promise<number> {
+    // if (!Array.isArray(locationIds)) {
+    //   locationIds = [locationIds]
+    // }
+
+    // const manager = context.transactionManager ?? this.manager_
+    // const levelRepository = manager.getRepository(InventoryLevel)
+
+    // const result = await levelRepository
+    //   .createQueryBuilder()
+    //   .select("SUM(stocked_quantity)", "quantity")
+    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
+    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
+    //   .getRawOne()
+
+    // return parseFloat(result.quantity)
+    return 0
+  }
+
+  /**
+   * Gets the total available quantity for a specific inventory item at multiple locations.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationIds - The IDs of the locations.
+   * @param context
+   * @return The total available quantity.
+   */
+  async getAvailableQuantity(
+    inventoryItemId: string,
+    locationIds: string[] | string,
+    @MedusaContext() context: Context = {}
+  ): Promise<number> {
+    return 0
+
+    // if (!Array.isArray(locationIds)) {
+    //   locationIds = [locationIds]
+    // }
+
+    // const manager = context.transactionManager ?? this.manager_
+    // const levelRepository = manager.getRepository(InventoryLevel)
+
+    // const result = await levelRepository
+    //   .createQueryBuilder()
+    //   .select("SUM(stocked_quantity - reserved_quantity)", "quantity")
+    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
+    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
+    //   .getRawOne()
+
+    // return parseFloat(result.quantity)
+  }
+
+  async getReservedQuantity(
+    inventoryItemId: string,
+    locationIds: string[] | string,
+    @MedusaContext() context: Context = {}
+  ) {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
+    // const levelRepository = manager.getRepository(InventoryLevel)
+
+    // const result = await levelRepository
+    //   .createQueryBuilder()
+    //   .select("SUM(reserved_quantity)", "quantity")
+    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
+    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
+    //   .getRawOne()
+
+    return await this.inventoryLevelRepository_.getReservedQuantity(
+      inventoryItemId,
+      locationIds,
+      context
+    )
+  }
+}
+
 // type InjectedDependencies = {
 //   eventBusService: IEventBusService
 //   manager: EntityManager

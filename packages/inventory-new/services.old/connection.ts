@@ -1,4 +1,4 @@
-import * as InventoryModels from "../models"
+import * as InventoryModels from "../src/models"
 
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 

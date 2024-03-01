@@ -281,12 +281,16 @@ export type FilterableInventoryItemProps = {
   requires_shipping?: boolean
 }
 
+export interface UpdateInventoryItemInput
+  extends Partial<CreateInventoryItemInput> {
+  id: string
+}
 /**
  * @interface
  *
  * The details of the inventory item to be created.
  */
-export type CreateInventoryItemInput = {
+export interface CreateInventoryItemInput {
   /**
    * The SKU of the inventory item.
    */
@@ -344,8 +348,6 @@ export type CreateInventoryItemInput = {
    */
   requires_shipping?: boolean
 }
-
-export type UpdateInventoryItemInput = Partial<CreateInventoryItemInput>
 
 /**
  * @interface
