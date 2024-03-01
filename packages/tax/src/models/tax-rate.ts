@@ -1,25 +1,28 @@
 import { DAL } from "@medusajs/types"
 import {
+  DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
+  Filter,
   BeforeCreate,
   Cascade,
+  Collection,
   Entity,
   ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import TaxRegion from "./tax-region"
+import TaxRateRule from "./tax-rate-rule"
 
-type OptionalTaxRateProps = DAL.EntityDateColumns
+type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
 
 const TABLE_NAME = "tax_rate"
-
-const taxRegionIdIndexName = "IDX_tax_rate_tax_region_id"
 
 const singleDefaultRegionIndexName = "IDX_single_default_region"
 const singleDefaultRegionIndexStatement = createPsqlIndexStatementHelper({
@@ -27,13 +30,22 @@ const singleDefaultRegionIndexStatement = createPsqlIndexStatementHelper({
   tableName: TABLE_NAME,
   columns: "tax_region_id",
   unique: true,
-  where: "is_default = true",
+  where: "is_default = true AND deleted_at IS NULL",
+})
+
+const taxRegionIdIndexName = "IDX_tax_rate_tax_region_id"
+const taxRegionIdIndexStatement = createPsqlIndexStatementHelper({
+  name: taxRegionIdIndexName,
+  tableName: TABLE_NAME,
+  columns: "tax_region_id",
+  where: "deleted_at IS NULL",
 })
 
 @singleDefaultRegionIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class TaxRate {
-  [OptionalProps]: OptionalTaxRateProps
+  [OptionalProps]?: OptionalTaxRateProps
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -53,15 +65,22 @@ export default class TaxRate {
   @Property({ columnType: "bool", default: false })
   is_combinable = false
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => TaxRegion, {
+    type: "text",
+    fieldName: "tax_region_id",
+    mapToPk: true,
+    onDelete: "cascade",
+  })
+  @taxRegionIdIndexStatement.MikroORMIndex()
   tax_region_id: string
 
-  @ManyToOne(() => TaxRegion, {
-    fieldName: "tax_region_id",
-    index: taxRegionIdIndexName,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
-  })
+  @ManyToOne({ entity: () => TaxRegion, persist: false })
   tax_region: TaxRegion
+
+  @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
+    cascade: ["soft-remove" as Cascade],
+  })
+  rules = new Collection<TaxRateRule>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -83,6 +102,14 @@ export default class TaxRate {
 
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
+
+  @createPsqlIndexStatementHelper({
+    tableName: TABLE_NAME,
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -1,7 +1,9 @@
-import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
-import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
-import { initModules, InitModulesOptions } from "./init-modules"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
+import { initModules, InitModulesOptions } from "./init-modules"
+import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
+import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
+
+import { MockEventBusService } from "."
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -18,13 +20,17 @@ export function moduleIntegrationTestRunner({
   moduleModels,
   joinerConfig = [],
   schema = "public",
+  debug = false,
   testSuite,
+  injectedDependencies = {},
 }: {
   moduleName: string
   moduleModels?: any[]
   joinerConfig?: any[]
   schema?: string
   dbName?: string
+  injectedDependencies?: Record<string, any>
+  debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
@@ -36,6 +42,7 @@ export function moduleIntegrationTestRunner({
   const dbConfig = {
     clientUrl: getDatabaseURL(dbName),
     schema,
+    debug,
   }
 
   // Use a unique connection for all the entire suite
@@ -54,6 +61,7 @@ export function moduleIntegrationTestRunner({
         defaultAdapterOptions: {
           database: dbConfig,
         },
+        database: dbConfig,
       },
     },
   }
@@ -61,6 +69,9 @@ export function moduleIntegrationTestRunner({
   const moduleOptions: InitModulesOptions = {
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
+      eventBusService: new MockEventBusService(),
+      [ContainerRegistrationKeys.LOGGER]: console,
+      ...injectedDependencies,
     },
     modulesConfig: modulesConfig_,
     databaseConfig: dbConfig,

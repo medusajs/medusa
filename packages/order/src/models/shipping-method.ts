@@ -3,45 +3,67 @@ import {
   BigNumber,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Collection,
   Entity,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { BeforeUpdate } from "typeorm"
 import Order from "./order"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
-const shippingOptionIdIndex = createPsqlIndexStatementHelper({
+const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping_method",
   columns: "shipping_option_id",
 })
 
+const OrderIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: "order_id",
+})
+
+const OrderVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: ["order_id", "version"],
+})
+
 @Entity({ tableName: "order_shipping_method" })
-@Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
+@OrderVersionIndex.MikroORMIndex()
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    columnType: "text",
+    fieldName: "order_id",
+    mapToPk: true,
+    cascade: [Cascade.REMOVE],
+  })
+  @OrderIdIndex.MikroORMIndex()
   order_id: string
 
   @ManyToOne({
     entity: () => Order,
     fieldName: "order_id",
-    index: "IDX_order_shipping_method_order_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
+    persist: false,
   })
   order: Order
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @Property({ columnType: "text" })
   name: string
@@ -49,7 +71,7 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description: string | null = null
 
-  @Property({ columnType: "numeric" })
+  @MikroOrmBigNumberProperty()
   amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -62,7 +84,7 @@ export default class ShippingMethod {
     columnType: "text",
     nullable: true,
   })
-  @shippingOptionIdIndex.MikroORMIndex()
+  @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -75,7 +97,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -84,7 +106,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)
@@ -107,28 +129,11 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
+    this.order_id ??= this.order?.id
   }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw as BigNumberRawValue
-  }
-
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
+    this.order_id ??= this.order?.id
   }
 }

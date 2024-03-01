@@ -3,7 +3,6 @@ import {
   Context,
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
-  CreatePaymentDTO,
   CreatePaymentProviderDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
@@ -16,6 +15,7 @@ import {
   PaymentDTO,
   PaymentSessionDTO,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
   RefundDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
@@ -26,6 +26,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  PaymentActions,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -206,23 +207,38 @@ export default class PaymentModuleService<
     data: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    const sessionData = await this.paymentProviderService_.createSession(
-      data.provider_id,
-      data.providerContext
-    )
-
     const created = await this.paymentSessionService_.create(
       {
         provider_id: data.provider_id,
         amount: data.providerContext.amount,
         currency_code: data.providerContext.currency_code,
         payment_collection: paymentCollectionId,
-        data: sessionData,
       },
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(created, { populate: true })
+    try {
+      const sessionData = await this.paymentProviderService_.createSession(
+        data.provider_id,
+        {
+          ...data.providerContext,
+          resource_id: created.id,
+        }
+      )
+
+      await this.paymentSessionService_.update(
+        {
+          id: created.id,
+          data: sessionData,
+        },
+        sharedContext
+      )
+
+      return await this.baseRepository_.serialize(created, { populate: true })
+    } catch (e) {
+      await this.paymentSessionService_.delete([created.id], sharedContext)
+      throw e
+    }
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -288,10 +304,11 @@ export default class PaymentModuleService<
       sharedContext
     )
 
+    // this method needs to be idempotent
     if (session.authorized_at) {
       const payment = await this.paymentService_.retrieve(
         { session_id: session.id },
-        {},
+        { relations: ["payment_collection"] },
         sharedContext
       )
       return await this.baseRepository_.serialize(payment, { populate: true })
@@ -330,7 +347,6 @@ export default class PaymentModuleService<
       {
         amount: session.amount,
         currency_code: session.currency_code,
-        authorized_amount: session.amount,
         payment_session: session.id,
         payment_collection: session.payment_collection!.id,
         provider_id: session.provider_id,
@@ -340,7 +356,11 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.retrievePayment(payment.id, {}, sharedContext)
+    return await this.retrievePayment(
+      payment.id,
+      { relations: ["payment_collection"] },
+      sharedContext
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -374,15 +394,17 @@ export default class PaymentModuleService<
       )
     }
 
+    // this method needs to be idempotent
     if (payment.captured_at) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `The payment: ${payment.id} is already fully captured.`
+      return this.retrievePayment(
+        data.payment_id,
+        { relations: ["captures"] },
+        sharedContext
       )
     }
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount + input.amount > payment.authorized_amount) {
+    // if (payment.captured_amount + input.amount > payment.amount) {
     //   throw new MedusaError(
     //     MedusaError.Types.INVALID_DATA,
     //     `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
@@ -459,7 +481,10 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.paymentService_.update({ id: payment.id, data: paymentData })
+    await this.paymentService_.update(
+      { id: payment.id, data: paymentData },
+      sharedContext
+    )
 
     return await this.retrievePayment(
       payment.id,
@@ -500,25 +525,64 @@ export default class PaymentModuleService<
     return await this.retrievePayment(payment.id, {}, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async processEvent(
+    eventData: ProviderWebhookPayload,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const providerId = `pp_${eventData.provider}`
+
+    const event = await this.paymentProviderService_.getWebhookActionAndData(
+      providerId,
+      eventData.payload
+    )
+
+    if (event.action === PaymentActions.NOT_SUPPORTED) {
+      return
+    }
+
+    switch (event.action) {
+      case PaymentActions.SUCCESSFUL: {
+        const [payment] = await this.listPayments(
+          {
+            session_id: event.data.resource_id,
+          },
+          {},
+          sharedContext
+        )
+
+        await this.capturePayment(
+          { payment_id: payment.id, amount: event.data.amount },
+          sharedContext
+        )
+        break
+      }
+      case PaymentActions.AUTHORIZED:
+        await this.authorizePaymentSession(
+          event.data.resource_id as string,
+          {},
+          sharedContext
+        )
+    }
+  }
+
   async createProvidersOnLoad() {
     const providersToLoad = this.__container__["payment_providers"]
 
     const providers = await this.paymentProviderService_.list({
       // @ts-ignore TODO
-      id: providersToLoad.map((p) => p.getIdentifier()),
+      id: providersToLoad,
     })
 
     const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
 
     const providersToCreate: CreatePaymentProviderDTO[] = []
-    for (const provider of providersToLoad) {
-      if (loadedProvidersMap.has(provider.getIdentifier())) {
+    for (const id of providersToLoad) {
+      if (loadedProvidersMap.has(id)) {
         continue
       }
 
-      providersToCreate.push({
-        id: provider.getIdentifier(),
-      })
+      providersToCreate.push({ id })
     }
 
     await this.paymentProviderService_.create(providersToCreate)

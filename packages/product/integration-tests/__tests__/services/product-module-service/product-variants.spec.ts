@@ -3,7 +3,7 @@ import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductVariant } from "@models"
 import { initModules } from "medusa-test-utils"
-import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { TestDatabase, getInitModuleConfig } from "../../../utils"
 
 describe("ProductModuleService product variants", () => {
   let service: IProductModuleService
@@ -129,7 +129,6 @@ describe("ProductModuleService product variants", () => {
         expect.objectContaining({
           id: "test-1",
           title: "variant 1",
-          product_id: "product-1",
           // TODO: investigate why this is returning more than the expected results
           product: expect.objectContaining({
             id: "product-1",
@@ -162,7 +161,6 @@ describe("ProductModuleService product variants", () => {
         expect.objectContaining({
           id: "test-1",
           title: "variant 1",
-          product_id: "product-1",
           product: expect.objectContaining({
             id: "product-1",
             title: "product 1",

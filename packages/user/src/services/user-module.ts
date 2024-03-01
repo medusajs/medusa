@@ -5,13 +5,16 @@ import {
   ModuleJoinerConfig,
   UserTypes,
   ModulesSdkTypes,
+  IEventBusModuleService,
 } from "@medusajs/types"
 import {
-  InjectManager,
+  EmitEvents,
   InjectTransactionManager,
   MedusaContext,
-  MedusaError,
   ModulesSdkUtils,
+  InjectManager,
+  CommonEvents,
+  UserEvents,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -22,6 +25,7 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   userService: ModulesSdkTypes.InternalModuleService<any>
   inviteService: InviteService<any>
+  eventBusModuleService: IEventBusModuleService
 }
 
 const generateMethodForModels = [Invite]
@@ -69,7 +73,53 @@ export default class UserModuleService<
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
-    return await this.inviteService_.validateInviteToken(token, sharedContext)
+    const invite = await this.inviteService_.validateInviteToken(
+      token,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO>(invite, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async refreshInviteTokens(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO[]> {
+    const invites = await this.refreshInviteTokens_(inviteIds, sharedContext)
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.invite_token_generated,
+        metadata: {
+          service: this.constructor.name,
+          action: "token_generated",
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(
+      invites,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async refreshInviteTokens_(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.inviteService_.refreshInviteTokens(
+      inviteIds,
+      sharedContext
+    )
   }
 
   create(
@@ -81,7 +131,8 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
+  @EmitEvents()
   async create(
     data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -96,6 +147,18 @@ export default class UserModuleService<
       populate: true,
     })
 
+    sharedContext.messageAggregator?.saveRawMessageData(
+      users.map((user) => ({
+        eventName: UserEvents.created,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.CREATED,
+          object: "user",
+        },
+        data: { id: user.id },
+      }))
+    )
+
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
@@ -108,7 +171,8 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
+  @EmitEvents()
   async update(
     data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -123,6 +187,18 @@ export default class UserModuleService<
       populate: true,
     })
 
+    sharedContext.messageAggregator?.saveRawMessageData(
+      updatedUsers.map((user) => ({
+        eventName: UserEvents.updated,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.UPDATED,
+          object: "user",
+        },
+        data: { id: user.id },
+      }))
+    )
+
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
@@ -135,7 +211,8 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
+  @EmitEvents()
   async createInvites(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -149,6 +226,30 @@ export default class UserModuleService<
     >(invites, {
       populate: true,
     })
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.invite_created,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.CREATED,
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.invite_token_generated,
+        metadata: {
+          service: this.constructor.name,
+          action: "token_generated",
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
@@ -166,7 +267,7 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_.create(toCreate)
+    return await this.inviteService_.create(toCreate, sharedContext)
   }
 
   updateInvites(
@@ -178,7 +279,8 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateInvites(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -195,6 +297,18 @@ export default class UserModuleService<
     >(updatedInvites, {
       populate: true,
     })
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      serializedInvites.map((invite) => ({
+        eventName: UserEvents.invite_updated,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.UPDATED,
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }

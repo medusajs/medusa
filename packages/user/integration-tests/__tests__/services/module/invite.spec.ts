@@ -1,7 +1,9 @@
 import { IUserModuleService } from "@medusajs/types/dist/user"
 import { MikroOrmWrapper } from "../../../utils"
+import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { UserEvents } from "@medusajs/utils"
 import { createInvites } from "../../../__fixtures__/invite"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
@@ -44,6 +46,7 @@ describe("UserModuleService - Invite", () => {
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
+    jest.clearAllMocks()
   })
 
   afterEach(async () => {
@@ -171,8 +174,50 @@ describe("UserModuleService - Invite", () => {
 
       expect(error.message).toEqual('Invite with id "does-not-exist" not found')
     })
+
+    it("should emit invite updated events", async () => {
+      await createInvites(testManager, defaultInviteData)
+
+      jest.clearAllMocks()
+
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+      await service.updateInvites([
+        {
+          id: "1",
+          accepted: true,
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.invite_updated,
+        }),
+      ])
+    })
   })
 
+  describe("resendInvite", () => {
+    it("should emit token generated event for invites", async () => {
+      await createInvites(testManager, defaultInviteData)
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+
+      await service.refreshInviteTokens(["1"])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.invite_token_generated,
+        }),
+      ])
+    })
+  })
   describe("createInvitie", () => {
     it("should create an invite successfully", async () => {
       await service.createInvites(defaultInviteData)
@@ -187,6 +232,39 @@ describe("UserModuleService - Invite", () => {
           id: "1",
         })
       )
+    })
+
+    it("should emit invite created events", async () => {
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+      await service.createInvites(defaultInviteData)
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.invite_created,
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "2" },
+          }),
+          eventName: UserEvents.invite_created,
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.invite_token_generated,
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "2" },
+          }),
+          eventName: UserEvents.invite_token_generated,
+        }),
+      ])
     })
   })
 })

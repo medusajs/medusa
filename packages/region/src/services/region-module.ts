@@ -2,49 +2,45 @@ import {
   Context,
   CreateRegionDTO,
   DAL,
+  FilterableRegionProps,
   InternalModuleDeclaration,
   IRegionModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
-  RegionCurrencyDTO,
   RegionDTO,
   UpdateRegionDTO,
+  UpsertRegionDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
+  removeUndefined,
+  getDuplicates,
 } from "@medusajs/utils"
 
-import { Country, Currency, Region } from "@models"
+import { Country, Region } from "@models"
 
-import { DefaultsUtils } from "@medusajs/utils"
-import {
-  CreateCountryDTO,
-  CreateCurrencyDTO,
-  CreateRegionDTO as InternalCreateRegionDTO,
-} from "@types"
+import { UpdateRegionInput } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-
-const COUNTRIES_LIMIT = 1000
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   regionService: ModulesSdkTypes.InternalModuleService<any>
   countryService: ModulesSdkTypes.InternalModuleService<any>
-  currencyService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [Country, Currency]
+const generateMethodForModels = [Country]
 
 export default class RegionModuleService<
     TRegion extends Region = Region,
-    TCountry extends Country = Country,
-    TCurrency extends Currency = Currency
+    TCountry extends Country = Country
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -53,9 +49,6 @@ export default class RegionModuleService<
       Country: {
         dto: RegionCountryDTO
       }
-      Currency: {
-        dto: RegionCurrencyDTO
-      }
     }
   >(Region, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IRegionModuleService
@@ -63,15 +56,9 @@ export default class RegionModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected readonly regionService_: ModulesSdkTypes.InternalModuleService<TRegion>
   protected readonly countryService_: ModulesSdkTypes.InternalModuleService<TCountry>
-  protected readonly currencyService_: ModulesSdkTypes.InternalModuleService<TCurrency>
 
   constructor(
-    {
-      baseRepository,
-      regionService,
-      countryService,
-      currencyService,
-    }: InjectedDependencies,
+    { baseRepository, regionService, countryService }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -79,7 +66,6 @@ export default class RegionModuleService<
     this.baseRepository_ = baseRepository
     this.regionService_ = regionService
     this.countryService_ = countryService
-    this.currencyService_ = currencyService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -113,169 +99,213 @@ export default class RegionModuleService<
     data: CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Region[]> {
-    let currencies = await this.currencyService_.list(
-      { code: data.map((d) => d.currency_code.toLowerCase()) },
-      {},
-      sharedContext
+    let normalizedInput = RegionModuleService.normalizeInput(data)
+
+    const validations = [
+      this.validateCountries(
+        normalizedInput.map((r) => r.countries ?? []).flat(),
+        sharedContext
+      ),
+    ] as const
+
+    // Assign the full country object so the ORM updates the relationship
+    const [dbCountries] = await promiseAll(validations)
+    const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
+    let normalizedDbRegions = normalizedInput.map((region) =>
+      removeUndefined({
+        ...region,
+        countries: region.countries?.map((c) => dbCountriesMap.get(c)),
+      })
     )
 
-    const countriesInDb = await this.countryService_.list(
-      { iso_2: data.map((d) => d.countries).flat() },
-      { select: ["iso_2", "region_id"] },
-      sharedContext
-    )
-
-    const countriesInDbMap = new Map<string, Country>(
-      countriesInDb.map((c) => [c.iso_2, c])
-    )
-
-    const currencyMap = new Map(
-      currencies.map((c) => [c.code.toLowerCase(), c])
-    )
-
-    const toCreate: InternalCreateRegionDTO[] = []
-    const seenCountries = new Set<string>()
-    for (const region of data) {
-      const reg = { ...region } as InternalCreateRegionDTO
-      const countriesToAdd = region.countries || []
-
-      if (countriesToAdd) {
-        const notInDb = countriesToAdd.filter(
-          (c) => !countriesInDbMap.has(c.toLowerCase())
-        )
-
-        if (notInDb.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Countries with codes ${countriesToAdd.join(", ")} does not exist`
-          )
-        }
-
-        const regionCountries = countriesToAdd.map((code) => {
-          const country = countriesInDbMap.get(code.toLowerCase())
-
-          if (country?.region_id || seenCountries.has(code.toLowerCase())) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Country with code ${code} is already assigned to a region`
-            )
-          }
-
-          seenCountries.add(code.toLowerCase())
-
-          return country
-        }) as unknown as TCountry[]
-
-        reg.countries = regionCountries
-      }
-
-      const lowerCasedCurrency = region.currency_code.toLowerCase()
-      if (!currencyMap.has(lowerCasedCurrency)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Currency with code: ${region.currency_code} was not found`
-        )
-      }
-
-      reg.currency_code = lowerCasedCurrency
-
-      toCreate.push(reg as InternalCreateRegionDTO)
-    }
-
-    const result = await this.regionService_.create(toCreate, sharedContext)
-
-    return result
+    // Create the regions and update the country region_id
+    return await this.regionService_.create(normalizedDbRegions, sharedContext)
   }
 
-  async update(
-    data: UpdateRegionDTO[],
+  async upsert(
+    data: UpsertRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async update(
-    data: UpdateRegionDTO,
+  async upsert(
+    data: UpsertRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
   @InjectTransactionManager("baseRepository_")
-  async update(
-    data: UpdateRegionDTO | UpdateRegionDTO[],
+  async upsert(
+    data: UpsertRegionDTO | UpsertRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    const result = await this.regionService_.update(data, sharedContext)
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (region): region is UpdateRegionInput => !!region.id
+    )
+    const forCreate = input.filter(
+      (region): region is CreateRegionDTO => !region.id
+    )
 
-    return await this.baseRepository_.serialize<RegionDTO[]>(
-      Array.isArray(data) ? result : result[0],
-      {
-        populate: true,
-      }
+    const operations: Promise<Region[]>[] = []
+
+    if (forCreate.length) {
+      operations.push(this.create_(forCreate, sharedContext))
+    }
+    if (forUpdate.length) {
+      operations.push(this.update_(forUpdate, sharedContext))
+    }
+
+    const result = (await promiseAll(operations)).flat()
+    return await this.baseRepository_.serialize<RegionDTO[] | RegionDTO>(
+      Array.isArray(data) ? result : result[0]
     )
   }
 
+  async update(
+    id: string,
+    data: UpdateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
+  async update(
+    selector: FilterableRegionProps,
+    data: UpdateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
   @InjectManager("baseRepository_")
-  public async createDefaultCountriesAndCurrencies(
+  async update(
+    idOrSelector: string | FilterableRegionProps,
+    data: UpdateRegionDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await promiseAll([
-      await this.maybeCreateCountries(sharedContext),
-      await this.maybeCreateCurrencies(sharedContext),
-    ])
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  private async maybeCreateCountries(
-    @MedusaContext() sharedContext: Context
-  ): Promise<void> {
-    const [countries, count] = await this.countryService_.listAndCount(
-      {},
-      { select: ["iso_2"], take: COUNTRIES_LIMIT },
-      sharedContext
-    )
-
-    let countsToCreate: CreateCountryDTO[] = []
-    if (count !== DefaultsUtils.defaultCountries.length) {
-      const countriesInDb = new Set(countries.map((c) => c.iso_2))
-
-      const countriesToAdd = DefaultsUtils.defaultCountries.filter(
-        (c) => !countriesInDb.has(c.alpha2.toLowerCase())
+  ): Promise<RegionDTO | RegionDTO[]> {
+    let normalizedInput: UpdateRegionInput[] = []
+    if (isString(idOrSelector)) {
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const regions = await this.regionService_.list(
+        idOrSelector,
+        {},
+        sharedContext
       )
 
-      countsToCreate = countriesToAdd.map((c) => ({
-        iso_2: c.alpha2.toLowerCase(),
-        iso_3: c.alpha3.toLowerCase(),
-        num_code: c.numeric,
-        name: c.name.toUpperCase(),
-        display_name: c.name,
+      normalizedInput = regions.map((region) => ({
+        id: region.id,
+        ...data,
       }))
     }
 
-    if (countsToCreate.length) {
-      await this.countryService_.create(countsToCreate, sharedContext)
-    }
+    const updateResult = await this.update_(normalizedInput, sharedContext)
+
+    const regions = await this.baseRepository_.serialize<
+      RegionDTO[] | RegionDTO
+    >(updateResult)
+
+    return isString(idOrSelector) ? regions[0] : regions
   }
 
   @InjectTransactionManager("baseRepository_")
-  private async maybeCreateCurrencies(
-    @MedusaContext() sharedContext: Context
-  ): Promise<void> {
-    const [currency] = await this.currencyService_.list(
-      {},
-      { select: ["code"], take: 1 },
-      sharedContext
-    )
+  protected async update_(
+    data: UpdateRegionInput[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Region[]> {
+    const normalizedInput = RegionModuleService.normalizeInput(data)
 
-    let currsToCreate: CreateCurrencyDTO[] = []
-    if (!currency) {
-      currsToCreate = Object.entries(DefaultsUtils.defaultCurrencies).map(
-        ([code, currency]) => ({
-          code: code.toLowerCase(),
-          symbol: currency.symbol,
-          symbol_native: currency.symbol_native,
-          name: currency.name,
-        })
+    // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
+    // Somewhat less efficient, but region operations will be very rare, so it is better to go with a simple solution
+    const regionsWithCountryUpdate = normalizedInput
+      .filter((region) => !!region.countries)
+      .map((region) => region.id)
+      .flat()
+
+    if (regionsWithCountryUpdate.length) {
+      await this.countryService_.update(
+        {
+          selector: {
+            region_id: regionsWithCountryUpdate,
+          },
+          data: { region_id: null },
+        },
+        sharedContext
       )
     }
 
-    if (currsToCreate.length) {
-      await this.currencyService_.create(currsToCreate, sharedContext)
+    const validations = [
+      this.validateCountries(
+        normalizedInput.map((d) => d.countries ?? []).flat(),
+        sharedContext
+      ),
+    ] as const
+
+    // Assign the full country object so the ORM updates the relationship
+    const [dbCountries] = await promiseAll(validations)
+    const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
+    let normalizedDbRegions = normalizedInput.map((region) =>
+      removeUndefined({
+        ...region,
+        countries: region.countries?.map((c) => dbCountriesMap.get(c)),
+      })
+    )
+
+    return await this.regionService_.update(normalizedDbRegions, sharedContext)
+  }
+
+  private static normalizeInput<T extends UpdateRegionDTO>(regions: T[]): T[] {
+    return regions.map((region) =>
+      removeUndefined({
+        ...region,
+        currency_code: region.currency_code?.toLowerCase(),
+        name: region.name?.trim(),
+        countries: region.countries?.map((country) => country.toLowerCase()),
+      })
+    )
+  }
+
+  private async validateCountries(
+    countries: string[] | undefined,
+    sharedContext: Context
+  ): Promise<TCountry[]> {
+    if (!countries?.length) {
+      return []
     }
+
+    // The new regions being created have a country conflict
+    const uniqueCountries = Array.from(new Set(countries))
+    if (uniqueCountries.length !== countries.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Countries with codes: "${getDuplicates(countries).join(
+          ", "
+        )}" are already assigned to a region`
+      )
+    }
+
+    const countriesInDb = await this.countryService_.list(
+      { iso_2: uniqueCountries },
+      { select: ["iso_2", "region_id"], take: null },
+      sharedContext
+    )
+    const countryCodesInDb = countriesInDb.map((c) => c.iso_2.toLowerCase())
+
+    // Countries missing in the database
+    if (countriesInDb.length !== uniqueCountries.length) {
+      const missingCountries = arrayDifference(
+        uniqueCountries,
+        countryCodesInDb
+      )
+
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Countries with codes: "${missingCountries.join(", ")}" do not exist`
+      )
+    }
+
+    // Countries that already have a region already assigned to them
+    const countriesWithRegion = countriesInDb.filter((c) => !!c.region_id)
+    if (countriesWithRegion.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Countries with codes: "${countriesWithRegion
+          .map((c) => c.iso_2)
+          .join(", ")}" are already assigned to a region`
+      )
+    }
+
+    return countriesInDb
   }
 }

@@ -26,6 +26,9 @@ export enum Modules {
   WORKFLOW_ENGINE = "workflows",
   REGION = "region",
   ORDER = "order",
+  API_KEY = "apiKey",
+  STORE = "store",
+  CURRENCY = "currency",
 }
 
 export enum ModuleRegistrationName {
@@ -47,6 +50,9 @@ export enum ModuleRegistrationName {
   WORKFLOW_ENGINE = "workflowsModuleService",
   REGION = "regionModuleService",
   ORDER = "orderModuleService",
+  API_KEY = "apiKeyModuleService",
+  STORE = "storeModuleService",
+  CURRENCY = "currencyModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -69,6 +75,9 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
   [Modules.REGION]: "@medusajs/region",
   [Modules.ORDER]: "@medusajs/order",
+  [Modules.API_KEY]: "@medusajs/api-key",
+  [Modules.STORE]: "@medusajs/store",
+  [Modules.CURRENCY]: "@medusajs/currency",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -263,7 +272,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.USER),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["logger"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -303,6 +312,45 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger", "eventBusService"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.API_KEY]: {
+      key: Modules.API_KEY,
+      registrationName: ModuleRegistrationName.API_KEY,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.API_KEY),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.STORE]: {
+      key: Modules.STORE,
+      registrationName: ModuleRegistrationName.STORE,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.STORE),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.CURRENCY]: {
+      key: Modules.CURRENCY,
+      registrationName: ModuleRegistrationName.CURRENCY,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.CURRENCY),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

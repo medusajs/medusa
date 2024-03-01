@@ -1,17 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CustomerGroup } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateCustomerGroup } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as z from "zod"
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditCustomerGroupFormProps = {
   group: CustomerGroup
-  onSuccessfulSubmit: () => void
-  subscribe: (state: boolean) => void
 }
 
 const EditCustomerGroupSchema = z.object({
@@ -20,10 +21,9 @@ const EditCustomerGroupSchema = z.object({
 
 export const EditCustomerGroupForm = ({
   group,
-  onSuccessfulSubmit,
-  subscribe,
 }: EditCustomerGroupFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<z.infer<typeof EditCustomerGroupSchema>>({
     defaultValues: {
@@ -32,31 +32,23 @@ export const EditCustomerGroupForm = ({
     resolver: zodResolver(EditCustomerGroupSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
   const { mutateAsync, isLoading } = useAdminUpdateCustomerGroup(group.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: () => {
-        onSuccessfulSubmit()
+        handleSuccess()
       },
     })
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
+        <RouteDrawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <Form.Field
             control={form.control}
             name="name"
@@ -72,20 +64,20 @@ export const EditCustomerGroupForm = ({
               )
             }}
           />
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

@@ -206,7 +206,7 @@ export interface CartShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
+  amount: number
 
   /**
    * Whether the shipping method price is tax inclusive or not
@@ -400,6 +400,10 @@ export interface CartLineItemDTO extends CartLineItemTotalsDTO {
    * When the line item was updated.
    */
   updated_at?: Date
+  /**
+   * When the line item was deleted.
+   */
+  deleted_at?: Date
 }
 
 export interface CartDTO {

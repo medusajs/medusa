@@ -1,5 +1,4 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { Workflows } = require("@medusajs/core-flows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -43,13 +42,16 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
-    },
-    [Modules.USER]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/user",
       options: {
-        jwt_secret: "test",
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
       },
     },
     [Modules.STOCK_LOCATION]: {
@@ -71,36 +73,6 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/product",
     },
-    [Modules.PRICING]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/pricing",
-    },
-    [Modules.PROMOTION]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/promotion",
-    },
-    [Modules.CUSTOMER]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/customer",
-    },
-    [Modules.SALES_CHANNEL]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/sales-channel",
-    },
-    [Modules.CART]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/cart",
-    },
     [Modules.WORKFLOW_ENGINE]: true,
-    [Modules.REGION]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/region",
-    },
   },
 }

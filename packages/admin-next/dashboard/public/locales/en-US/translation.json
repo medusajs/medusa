@@ -15,6 +15,8 @@
     "next": "Next",
     "prev": "Prev",
     "is": "is",
+    "select": "Select",
+    "selected": "Selected",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -38,7 +40,8 @@
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
-    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "actions": {
     "create": "Create",
@@ -48,14 +51,49 @@
     "cancel": "Cancel",
     "save": "Save",
     "continue": "Continue",
-    "edit": "Edit"
+    "edit": "Edit",
+    "download": "Download",
+    "clearAll": "Clear all"
+  },
+  "errorBoundary": {
+    "badRequestTitle": "Bad request",
+    "badRequestMessage": "The request was invalid.",
+    "notFoundTitle": "Not found",
+    "notFoundMessage": "The page you are looking for does not exist.",
+    "internalServerErrorTitle": "Internal server error",
+    "internalServerErrorMessage": "An error occurred on the server.",
+    "defaultTitle": "An error occurred",
+    "defaultMessage": "An error occurred while rendering this page."
   },
   "products": {
     "domain": "Products",
+    "createProductTitle": "Create Product",
+    "createProductHint": "Create a new product to sell in your store.",
+    "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
+    "attributes": "Attributes",
+    "editProduct": "Edit Product",
+    "editAttributes": "Edit Attributes",
+    "organization": "Organization",
+    "editOrganization": "Edit Organization",
+    "options": "Options",
+    "editOptions": "Edit Options",
+    "media": "Media",
+    "editMedia": "Edit Media",
+    "deleteMedia_one": "You are about to delete {{count}} media item. This action cannot be undone.",
+    "deleteMedia_other": "You are about to delete {{count}} media items. This action cannot be undone.",
+    "deleteMediaAndThumbnail_one": "You are about to delete {{count}} media item including the thumbnail. This action cannot be undone.",
+    "deleteMediaAndThumbnail_other": "You are about to delete {{count}} media items including the thumbnail. This action cannot be undone.",
+    "gallery": "Gallery",
+    "titleHint": "Give your product a short and clear title.<0/>50-60 characters is the recommended length for search engines.",
+    "descriptionHint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines.",
+    "discountableHint": "When unchecked discounts will not be applied to this product.",
+    "handleTooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title.",
     "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
+    "noSalesChannels": "Not available in any sales channels",
     "variantCount_one": "{{count}} variant",
     "variantCount_other": "{{count}} variants",
+    "deleteVariantWarning": "You are about to delete the variant {{title}}. This action cannot be undone.",
     "productStatus": {
       "draft": "Draft",
       "published": "Published",
@@ -153,7 +191,14 @@
     "domain": "Draft Orders"
   },
   "discounts": {
-    "domain": "Discounts"
+    "domain": "Discounts",
+    "deleteWarning": "You are about to delete the discount {{title}}. This action cannot be undone.",
+    "discountStatus": {
+      "scheduled": "Scheduled",
+      "expired": "Expired",
+      "active": "Active",
+      "disabled": "Disabled"
+    }
   },
   "pricing": {
     "domain": "Pricing"
@@ -211,12 +256,47 @@
     "domain": "Regions",
     "createRegion": "Create Region",
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
+    "addCountries": "Add countries",
     "editRegion": "Edit Region",
+    "countriesHint": "Add the countries that should be included in this region.",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
+    "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
+    "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region.",
+    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
-    "returnShippingOptions": "Return Shipping Options"
+    "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
+    "return": "Return",
+    "outbound": "Outbound",
+    "priceType": "Price Type",
+    "flatRate": "Flat Rate",
+    "calculated": "Calculated",
+    "shippingOption": {
+      "createShippingOption": "Create Shipping Option",
+      "createShippingOptionHint": "Create a new shipping option for the region.",
+      "editShippingOption": "Edit Shipping Option",
+      "fulfillmentMethod": "Fulfillment Method",
+      "type": {
+        "outbound": "Outbound",
+        "outboundHint": "Use this if you are creating a shipping option for sending products to the customer.",
+        "return": "Return",
+        "returnHint": "Use this if you are creating a shipping option for the customer to return products to you."
+      },
+      "priceType": {
+        "label": "Price Type",
+        "flatRate": "Flat rate",
+        "calculated": "Calculated"
+      },
+      "availability": {
+        "adminOnly": "Admin only",
+        "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
+      },
+      "requirements": {
+        "label": "Requirements",
+        "hint": "Specify the requirements for the shipping option."
+      }
+    }
   },
   "locations": {
     "domain": "Locations",
@@ -316,9 +396,15 @@
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "value": "Value",
+    "disabled": "Disabled",
+    "dynamic": "Dynamic",
+    "normal": "Normal",
+    "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
+    "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
@@ -353,18 +439,35 @@
     "items": "Items",
     "salesChannel": "Sales Channel",
     "region": "Region",
+    "discount": "Discount",
     "role": "Role",
     "sent": "Sent",
     "salesChannels": "Sales Channels",
     "product": "Product",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
     "giftCard": "Gift Card",
     "tag": "Tag",
     "dateIssued": "Date issued",
     "issuedDate": "Issued date",
-    "expiryDate": "Expiry date"
+    "expiryDate": "Expiry date",
+    "price": "Price",
+    "height": "Height",
+    "width": "Width",
+    "length": "Length",
+    "weight": "Weight",
+    "midCode": "MID Code",
+    "hsCode": "HS Code",
+    "countryOfOrigin": "Country of Origin",
+    "material": "Material",
+    "thumbnail": "Thumbnail",
+    "sku": "SKU",
+    "managedInventory": "Managed inventory",
+    "minSubtotal": "Min. Subtotal",
+    "maxSubtotal": "Max. Subtotal",
+    "shippingProfile": "Shipping Profile"
   }
 }
