@@ -37,9 +37,6 @@ describe("Store - Admin", () => {
 
   beforeEach(async () => {
     await createAdminUser(dbConnection, adminHeaders)
-
-    const existingStores = await service.list({})
-    await service.delete(existingStores.map((s) => s.id))
   })
 
   afterEach(async () => {

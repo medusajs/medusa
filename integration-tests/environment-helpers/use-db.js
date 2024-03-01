@@ -32,6 +32,7 @@ const keepTables = [
   "fulfillment_provider",
   "payment_provider",
   "country",
+  "region_country",
   "currency",
   "migrations",
   "mikro_orm_migrations",

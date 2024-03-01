@@ -40,13 +40,13 @@ describe("API Keys - Admin", () => {
 
   beforeEach(async () => {
     await createAdminUser(dbConnection, adminHeaders)
-
-    // Used for testing cross-module authentication checks
-    await regionService.createDefaultCountries()
   })
 
   afterEach(async () => {
     const db = useDb()
+    // TODO: Once teardown doesn't skip constraint checks and cascades, we can remove this
+    const existingRegions = await regionService.list({})
+    await regionService.delete(existingRegions.map((r) => r.id))
     await db.teardown()
   })
 
