@@ -47,5 +47,5 @@ export interface CreateTaxRateRuleDTO {
   reference_id: string
   tax_rate_id: string
   metadata?: Record<string, unknown>
-  created_by?: string
+  created_by?: string | null
 }

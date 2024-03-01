@@ -135,6 +135,7 @@ export default class TaxModuleService<
             rateRules.map((r) => {
               return {
                 ...r,
+                created_by: rate.created_by,
                 tax_rate_id: rate.id,
               }
             })

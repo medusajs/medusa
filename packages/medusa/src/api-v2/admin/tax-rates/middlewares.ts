@@ -4,6 +4,8 @@ import {
   AdminGetTaxRatesTaxRateParams,
   AdminPostTaxRatesReq,
   AdminPostTaxRatesTaxRateReq,
+  AdminPostTaxRatesTaxRateRulesBatchSetReq,
+  AdminPostTaxRatesTaxRateRulesReq,
 } from "./validators"
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
@@ -35,5 +37,15 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/tax-rates/:id/rules/batch/set",
+    middlewares: [transformBody(AdminPostTaxRatesTaxRateRulesBatchSetReq)],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/tax-rates/:id/rules",
+    middlewares: [transformBody(AdminPostTaxRatesTaxRateRulesReq)],
   },
 ]

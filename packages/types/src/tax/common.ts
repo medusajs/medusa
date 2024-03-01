@@ -97,6 +97,7 @@ export interface FilterableTaxRegionProps
 }
 
 export interface TaxRateRuleDTO {
+  id: string
   reference: string
   reference_id: string
   tax_rate_id: string

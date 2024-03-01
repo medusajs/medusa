@@ -77,3 +77,11 @@ export class AdminPostTaxRatesTaxRateReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 }
+
+export class AdminPostTaxRatesTaxRateRulesReq extends CreateTaxRateRule {}
+
+export class AdminPostTaxRatesTaxRateRulesBatchSetReq {
+  @ValidateNested({ each: true })
+  @Type(() => CreateTaxRateRule)
+  rules: CreateTaxRateRule[]
+}

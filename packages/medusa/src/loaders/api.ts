@@ -47,7 +47,9 @@ export default async ({
         configModule,
       }).load()
     } catch (err) {
-      throw Error("An error occurred while registering Medusa Core API Routes")
+      throw Error(
+        "An error occurred while registering Medusa Core API Routes. See error in logs for more details."
+      )
     }
   } else {
     app.use(bodyParser.json())
