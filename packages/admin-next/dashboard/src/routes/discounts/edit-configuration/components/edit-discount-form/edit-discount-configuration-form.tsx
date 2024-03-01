@@ -66,13 +66,11 @@ export const EditDiscountConfigurationForm = ({
   const { mutateAsync, isLoading } = useAdminUpdateDiscount(discount.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log(data)
     await mutateAsync(
       {
         starts_at: data.start_date,
-        usage_limit: data.enable_usage_limit
-          ? data.usage_limit
-          : discount.usage_limit,
+        ends_at: data.end_date_enabled ? data.end_date : null,
+        usage_limit: data.enable_usage_limit ? data.usage_limit : null,
       },
       {
         onSuccess: () => {
@@ -124,7 +122,6 @@ export const EditDiscountConfigurationForm = ({
               <Form.Field
                 control={form.control}
                 name="start_date"
-                disabled={!form.watch("start_date_enabled")}
                 render={({
                   field: { value, onChange, ref: _ref, ...field },
                 }) => {
@@ -179,20 +176,28 @@ export const EditDiscountConfigurationForm = ({
               <Form.Field
                 control={form.control}
                 name="end_date"
-                disabled={!form.watch("end_date_enabled")}
-                render={({ field: { value, onChange, disabled } }) => {
+                render={({
+                  field: { value, onChange, ref: _ref, ...field },
+                }) => {
                   return (
                     <Form.Item>
                       <div className="flex items-center justify-between">
                         <Form.Control>
                           <DatePicker
                             showTimePicker
-                            placeholder="DD/MM/YYYY HH:MM"
-                            disabled={disabled}
                             value={value ?? undefined}
                             onChange={(v) => {
                               onChange(v ?? null)
                             }}
+                            {...field}
+                            /**
+                             * TODO: FIX bug in the picker when a placeholder is provided it resets selected value to undefined
+                             */
+                            // placeholder="DD/MM/YYYY HH:MM"
+                            /*
+                             * Disable input here. If set on Field it wont properly set the value.
+                             */
+                            disabled={!form.watch("end_date_enabled")}
                           />
                         </Form.Control>
                       </div>
@@ -236,12 +241,25 @@ export const EditDiscountConfigurationForm = ({
               <Form.Field
                 control={form.control}
                 name="usage_limit"
-                disabled={!form.watch("enable_usage_limit")}
                 render={({ field }) => {
                   return (
                     <Form.Item>
                       <Form.Control>
-                        <Input {...field} type="number" min={0} />
+                        <Input
+                          {...field}
+                          type="number"
+                          min={0}
+                          disabled={!form.watch("enable_usage_limit")}
+                          onChange={(e) => {
+                            const value = e.target.value
+
+                            if (value === "") {
+                              field.onChange(null)
+                            } else {
+                              field.onChange(Number(value))
+                            }
+                          }}
+                        />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
@@ -288,7 +306,20 @@ export const EditDiscountConfigurationForm = ({
                       <Form.Item className="flex-1">
                         <Form.Label>{t("fields.years")}</Form.Label>
                         <Form.Control>
-                          <Input {...field} type="number" min={0} />
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              if (value === "") {
+                                field.onChange(null)
+                              } else {
+                                field.onChange(Number(value))
+                              }
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -304,7 +335,20 @@ export const EditDiscountConfigurationForm = ({
                       <Form.Item className="flex-1">
                         <Form.Label>{t("fields.months")}</Form.Label>
                         <Form.Control>
-                          <Input {...field} type="number" min={0} />
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              if (value === "") {
+                                field.onChange(null)
+                              } else {
+                                field.onChange(Number(value))
+                              }
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -320,7 +364,20 @@ export const EditDiscountConfigurationForm = ({
                       <Form.Item className="flex-1">
                         <Form.Label>{t("fields.days")}</Form.Label>
                         <Form.Control>
-                          <Input {...field} type="number" min={0} />
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              if (value === "") {
+                                field.onChange(null)
+                              } else {
+                                field.onChange(Number(value))
+                              }
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -338,7 +395,20 @@ export const EditDiscountConfigurationForm = ({
                       <Form.Item className="flex-1">
                         <Form.Label>{t("fields.hours")}</Form.Label>
                         <Form.Control>
-                          <Input {...field} type="number" min={0} />
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              if (value === "") {
+                                field.onChange(null)
+                              } else {
+                                field.onChange(Number(value))
+                              }
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -354,7 +424,20 @@ export const EditDiscountConfigurationForm = ({
                       <Form.Item className="flex-1">
                         <Form.Label>{t("fields.minutes")}</Form.Label>
                         <Form.Control>
-                          <Input {...field} type="number" min={0} />
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              if (value === "") {
+                                field.onChange(null)
+                              } else {
+                                field.onChange(Number(value))
+                              }
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
