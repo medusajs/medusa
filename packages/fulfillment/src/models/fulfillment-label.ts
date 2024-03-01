@@ -82,10 +82,12 @@ export default class FulfillmentLabel {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "fulla")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fulla")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 }

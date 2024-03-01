@@ -110,10 +110,12 @@ export default class FulfillmentItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "fulit")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fulit")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 }

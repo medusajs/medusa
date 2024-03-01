@@ -102,10 +102,12 @@ export default class Address {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "fuladdr")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fuladdr")
+    this.fulfillment_id ??= this.fulfillment.id
   }
 }
