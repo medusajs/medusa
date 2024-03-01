@@ -22,6 +22,7 @@ import {
   UpdatePaymentSessionDTO,
 } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
@@ -201,7 +202,7 @@ export default class PaymentModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createPaymentSession(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
@@ -231,7 +232,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(paymentSession, {
+    return await this.baseRepository_.serialize(result, {
       populate: true,
     })
   }

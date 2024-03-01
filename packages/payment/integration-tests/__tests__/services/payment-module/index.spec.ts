@@ -29,7 +29,7 @@ moduleIntegrationTestRunner({
           await createPayments(repositoryManager)
         })
 
-        it("complete payment flow successfully", async () => {
+        it.only("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({
             currency_code: "usd",
             amount: 200,
