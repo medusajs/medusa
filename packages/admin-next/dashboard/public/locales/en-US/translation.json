@@ -213,6 +213,7 @@
     "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
     "hasDurationLimit": "Availability duration",
     "durationHint": "Set the duration of the discount",
+    "chooseValidRegions": "Choose valid regions",
     "discountStatus": {
       "scheduled": "Scheduled",
       "expired": "Expired",

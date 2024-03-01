@@ -1,7 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Discount } from "@medusajs/medusa"
-import { CurrencyInput, Button, Input, Text, Textarea } from "@medusajs/ui"
-import { useAdminUpdateDiscount } from "medusa-react"
+import {
+  CurrencyInput,
+  Button,
+  Input,
+  Text,
+  Textarea,
+  Select,
+} from "@medusajs/ui"
+import { useAdminRegions, useAdminUpdateDiscount } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -14,8 +21,9 @@ import {
 import {
   getDbAmount,
   getPresentationalAmount,
-} from "../../../../../lib/money-amount-helpers.ts"
-import { getCurrencySymbol } from "../../../../../lib/currencies.ts"
+} from "../../../../../lib/money-amount-helpers"
+import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { Combobox } from "../../../../../components/common/combobox"
 
 type EditDiscountFormProps = {
   discount: Discount
@@ -25,6 +33,7 @@ const EditDiscountSchema = zod.object({
   code: zod.string().min(1),
   description: zod.string(),
   value: zod.number(),
+  regions: zod.array(zod.string()),
 })
 
 export const EditDiscountDetailsForm = ({
@@ -33,6 +42,8 @@ export const EditDiscountDetailsForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const { regions } = useAdminRegions()
+
   const isFixedDiscount = discount.rule.type === "fixed"
   const isFreeShipping = discount.rule.type === "free_shipping"
 
@@ -40,6 +51,7 @@ export const EditDiscountDetailsForm = ({
     defaultValues: {
       code: discount.code,
       description: discount.rule.description || "",
+      regions: discount.regions.map((r) => r.id),
       value: isFixedDiscount
         ? getPresentationalAmount(
             discount.rule.value,
@@ -56,6 +68,7 @@ export const EditDiscountDetailsForm = ({
     await mutateAsync(
       {
         code: data.code,
+        regions: data.regions,
         rule: {
           id: discount.rule.id,
           description: data.description,
@@ -105,6 +118,49 @@ export const EditDiscountDetailsForm = ({
                 />
               </Text>
             </div>
+
+            <Form.Field
+              control={form.control}
+              name="regions"
+              render={({ field: { onChange, value, ref, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("discounts.chooseValidRegions")}</Form.Label>
+                    <Form.Control>
+                      {isFixedDiscount ? (
+                        <Select
+                          value={value[0]}
+                          onValueChange={(v) => onChange([v])}
+                          {...field}
+                        >
+                          <Select.Trigger ref={ref}>
+                            <Select.Value />
+                          </Select.Trigger>
+                          <Select.Content>
+                            {(regions || []).map((r) => (
+                              <Select.Item key={r.id} value={r.id}>
+                                {r.name}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select>
+                      ) : (
+                        <Combobox
+                          options={(regions || []).map((r) => ({
+                            label: r.name,
+                            value: r.id,
+                          }))}
+                          value={value}
+                          onChange={onChange}
+                          {...field}
+                        />
+                      )}
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
 
             {!isFreeShipping && (
               <Form.Field

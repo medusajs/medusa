@@ -125,18 +125,20 @@ export const EditDiscountConfigurationForm = ({
                 control={form.control}
                 name="start_date"
                 disabled={!form.watch("start_date_enabled")}
-                render={({ field: { value, onChange, disabled } }) => {
+                render={({
+                  field: { value, onChange, ref: _ref, ...field },
+                }) => {
                   return (
                     <Form.Item>
                       <div className="flex items-center justify-between">
                         <Form.Control>
                           <DatePicker
                             showTimePicker
-                            disabled={disabled}
                             value={value ?? undefined}
                             onChange={(v) => {
                               onChange(v ?? null)
                             }}
+                            {...field}
                           />
                         </Form.Control>
                       </div>
