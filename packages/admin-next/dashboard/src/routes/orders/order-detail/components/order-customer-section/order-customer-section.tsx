@@ -184,7 +184,11 @@ const Contact = ({ order }: { order: Order }) => {
   )
 }
 
-const isSameAddress = (a: MedusaAddress, b: MedusaAddress) => {
+const isSameAddress = (a: MedusaAddress | null, b: MedusaAddress | null) => {
+  if (!a || !b) {
+    return false
+  }
+
   return (
     a.first_name === b.first_name &&
     a.last_name === b.last_name &&

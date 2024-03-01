@@ -107,9 +107,9 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          const countryCode = row.original.shipping_address?.country_code
+          const country = row.original.shipping_address?.country
 
-          return <CountryCell countryCode={countryCode} />
+          return <CountryCell country={country} />
         },
       }),
     ],
