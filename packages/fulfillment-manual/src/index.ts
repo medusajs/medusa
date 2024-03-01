@@ -1,6 +1,7 @@
 import { ModuleProviderExports } from "@medusajs/types"
+import { ManualFulfillmentService } from "./services/manual-fulfillment"
 
-const services = []
+const services = [ManualFulfillmentService]
 
 const providerExport: ModuleProviderExports = {
   services,

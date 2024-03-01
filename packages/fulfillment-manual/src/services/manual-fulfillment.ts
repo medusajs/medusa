@@ -42,5 +42,3 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     return {}
   }
 }
-
-export default ManualFulfillmentService
