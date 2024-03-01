@@ -35,6 +35,13 @@ export class AdminGetApiKeysParams extends extendedFindParamsMixin({
   title?: string | string[]
 
   /**
+   * Filter by token
+   */
+  @IsString({ each: true })
+  @IsOptional()
+  token?: string | string[]
+
+  /**
    * Filter by type
    */
   @IsEnum(ApiKeyType, { each: true })

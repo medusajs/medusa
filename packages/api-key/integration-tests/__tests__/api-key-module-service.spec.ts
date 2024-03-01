@@ -284,6 +284,19 @@ moduleIntegrationTestRunner({
           expect(apiKeysInDatabase).toHaveLength(2)
         })
 
+        it("should only return keys with matching token", async function () {
+          const created = await service.create([
+            createPublishableKeyFixture,
+            createPublishableKeyFixture,
+          ])
+
+          const apiKeysInDatabase = await service.list({
+            token: created[0].token,
+          })
+          expect(apiKeysInDatabase).toHaveLength(1)
+          expect(apiKeysInDatabase[0].token).toEqual(created[0].token)
+        })
+
         it("should not return the token and salt for secret keys when listing", async function () {
           await service.create([createSecretKeyFixture])
 
