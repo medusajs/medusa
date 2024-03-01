@@ -25,7 +25,7 @@ export const DiscountDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[1fr,400px]">
+      <div className="grid grid-cols-1 gap-x-4 xl:grid-cols-[1fr,400px]">
         <div className="flex flex-col gap-y-2">
           <DiscountGeneralSection discount={discount} />
           <DiscountConfigurationSection discount={discount} />
