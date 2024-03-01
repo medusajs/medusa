@@ -153,4 +153,10 @@ export interface ITaxModuleService extends IModuleService {
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  restoreTaxRateRules<TReturnableLinkableKeys extends string = string>(
+    taxRateRuleIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
