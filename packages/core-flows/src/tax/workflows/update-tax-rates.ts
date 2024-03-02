@@ -120,13 +120,20 @@ export const updateTaxRatesWorkflow = createWorkflow(
     deleteTaxRateRulesStep(ruleIds)
 
     const rulesWithRateId = transform(
-      { rules: input.update.rules, rateIds },
-      ({ rules, rateIds }) => {
-        return (rules || [])
+      { update: input.update, rateIds },
+      ({ update, rateIds }) => {
+        if (!update.rules) {
+          return []
+        }
+
+        const updatedBy = update.updated_by
+
+        return update.rules
           .map((r) => {
             return rateIds.map((id) => {
               return {
                 ...r,
+                created_by: updatedBy,
                 tax_rate_id: id,
               }
             })
