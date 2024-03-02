@@ -74,7 +74,7 @@ export default class OrderItem {
   item: LineItem
 
   @MikroOrmBigNumberProperty()
-  quantity: BigNumber | number
+  quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue

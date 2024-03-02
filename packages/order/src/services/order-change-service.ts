@@ -41,7 +41,7 @@ export default class OrderChangeService<
   ): Promise<TEntity[]> {
     const allChanges = await super.list(
       { order_id: orderId },
-      {
+      config ?? {
         select: ["order_id", "status", "version"],
         order: {
           order_id: "ASC",
@@ -74,12 +74,7 @@ export default class OrderChangeService<
       }
     }
 
-    const relations = deduplicate([
-      ...(config.relations ?? []),
-      "actions",
-      "order",
-      "order.items",
-    ])
+    const relations = deduplicate([...(config.relations ?? []), "actions"])
     config.relations = relations
 
     const queryConfig = ModulesSdkUtils.buildQuery<TEntity>(

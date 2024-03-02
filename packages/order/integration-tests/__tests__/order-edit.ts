@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
-import { ChangeActionType } from "../../src/utils"
+import { ChangeActionType, calculateOrderChange } from "../../src/utils"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
-  debug: true,
+  debug: 0,
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
     describe("Order Module Service - Order Edits", () => {
@@ -129,31 +129,56 @@ moduleIntegrationTestRunner({
           description: "changing the order",
           internal_note: "client called and wanted to change the order",
           created_by: "CX agent 123",
-          actions: [],
+          actions: [
+            {
+              action: ChangeActionType.ITEM_ADD,
+              internal_note: "adding an item",
+              reference: "order_line_item",
+              reference_id: createdOrder.items[0].id,
+              amount:
+                createdOrder.items[0].unit_price *
+                createdOrder.items[0].quantity,
+              details: {
+                quantity: 1,
+              },
+            },
+            {
+              action: ChangeActionType.ITEM_ADD,
+              reference: "order_line_item",
+              reference_id: createdOrder.items[1].id,
+              amount:
+                createdOrder.items[1].unit_price *
+                createdOrder.items[1].quantity,
+              details: {
+                quantity: 3,
+              },
+            },
+          ],
         })
 
         const actions = await service.addOrderAction([
           {
-            action: ChangeActionType.ITEM_ADD,
-            order_change_id: orderChange.id,
-            internal_note: "adding an item",
-            reference: "OrderLineItem",
-            reference_id: createdOrder.items[0].id,
-            amount:
-              createdOrder.items[0].unit_price * createdOrder.items[0].quantity,
+            action: ChangeActionType.FULFILL_ITEM,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            reference: "fullfilment",
+            reference_id: "fulfill_123",
             details: {
+              reference_id: createdOrder.items[2].id,
               quantity: 1,
             },
           },
+
           {
-            action: ChangeActionType.ITEM_ADD,
-            order_change_id: orderChange.id,
-            reference: "OrderLineItem",
-            reference_id: createdOrder.items[1].id,
-            amount:
-              createdOrder.items[1].unit_price * createdOrder.items[1].quantity,
+            action: ChangeActionType.RETURN_ITEM,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            internal_note: "client has called and wants to return an item",
+            reference: "return",
+            reference_id: "return_123",
             details: {
-              quantity: 3,
+              reference_id: createdOrder.items[2].id,
+              quantity: 1,
             },
           },
           {
@@ -161,12 +186,22 @@ moduleIntegrationTestRunner({
             order_id: createdOrder.id,
             version: createdOrder.version,
             internal_note: "Item broken",
-            reference: "OrderLineItem",
-            reference_id: createdOrder.items[2].id,
+            reference: "return",
+            reference_id: "return_123",
+            details: {
+              reference_id: createdOrder.items[2].id,
+              quantity: 1,
+            },
           },
         ])
 
-        console.log(actions)
+        const calculated = calculateOrderChange({
+          order: createdOrder,
+          actions: [...orderChange.actions, ...actions],
+          transactions: createdOrder.transactions,
+        })
+
+        console.log(calculated.order.items.map((a) => a))
       })
     })
   },

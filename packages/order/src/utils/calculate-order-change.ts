@@ -1,3 +1,4 @@
+import { isDefined } from "@medusajs/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,
@@ -55,8 +56,8 @@ export class OrderChangeProcessing {
       pendingDifference: 0,
       futureTemporarySum: 0,
       differenceSum: 0,
-      currentOrderTotal: order.total as number,
-      originalOrderTotal: order.total as number,
+      currentOrderTotal: order.summary.total,
+      originalOrderTotal: order.summary.total,
       transactionTotal,
     }
   }
@@ -181,7 +182,10 @@ export class OrderChangeProcessing {
     if (typeof type.operation === "function") {
       calculatedAmount = type.operation(params) as number
 
-      action.amount = calculatedAmount ?? 0
+      // the action.amount has priority over the calculated amount
+      if (!isDefined(action.amount)) {
+        action.amount = calculatedAmount ?? 0
+      }
     }
 
     // If an action commits previous ones, replay them with updated values

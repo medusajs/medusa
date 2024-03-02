@@ -12,11 +12,11 @@ import {
   Enum,
   ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { OneToMany } from "typeorm"
 import Order from "./order"
 import OrderChangeAction from "./order-change-action"
 
@@ -64,8 +64,8 @@ export default class OrderChange {
   @VersionIndex.MikroORMIndex()
   version: number
 
-  @OneToMany(() => OrderChangeAction, (action) => action.order_change_id, {
-    cascade: [Cascade.REMOVE],
+  @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
+    cascade: [Cascade.PERSIST],
   })
   actions = new Collection<OrderChangeAction>(this)
 

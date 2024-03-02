@@ -4,11 +4,14 @@ export type VirtualOrder = {
     unit_price: number
     quantity: number
 
-    fulfilled_quantity: number
-    return_requested_quantity: number
-    return_received_quantity: number
-    return_dismissed_quantity: number
-    written_off_quantity: number
+    detail: {
+      quantity: number
+      fulfilled_quantity: number
+      return_requested_quantity: number
+      return_received_quantity: number
+      return_dismissed_quantity: number
+      written_off_quantity: number
+    }
   }[]
 
   shipping_methods: {
@@ -16,7 +19,10 @@ export type VirtualOrder = {
     price: number
   }[]
 
-  total: number
+  summary: {
+    total: number
+  }
+
   shipping_total: number
 }
 

@@ -66,7 +66,9 @@ describe("Order Return - Actions", function () {
         order: originalOrder,
         actions,
       })
-    }).toThrow("Cannot request to return more items than what was fulfilled.")
+    }).toThrow(
+      "Cannot request to return more items than what was fulfilled for item 1."
+    )
 
     expect(() => {
       actions[0].details!.reference_id = undefined
@@ -162,7 +164,9 @@ describe("Order Return - Actions", function () {
           },
         ],
       })
-    }).toThrow("Cannot request to return more items than what was fulfilled.")
+    }).toThrow(
+      "Cannot request to return more items than what was fulfilled for item 3."
+    )
 
     expect(() => {
       calculateOrderChange({
@@ -178,7 +182,7 @@ describe("Order Return - Actions", function () {
         ],
       })
     }).toThrow(
-      "Cannot receive more items than what was requested to be returned."
+      "Cannot receive more items than what was requested to be returned for item 3."
     )
 
     expect(() => {
@@ -202,7 +206,7 @@ describe("Order Return - Actions", function () {
         ],
       })
     }).toThrow(
-      "Cannot receive more items than what was requested to be returned."
+      "Cannot receive more items than what was requested to be returned for item 3."
     )
 
     const receivedChanges = calculateOrderChange({

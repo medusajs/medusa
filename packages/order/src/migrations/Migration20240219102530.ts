@@ -186,9 +186,9 @@ export class Migration20240219102530 extends Migration {
 
       CREATE TABLE IF NOT EXISTS "order_change_action" (
           "id" TEXT NOT NULL,
-          "order_id" TEXT NOT NULL,
+          "order_id" TEXT NULL,
+          "version" INTEGER NULL,
           "order_change_id" TEXT NULL,
-          "version" INTEGER NOT NULL,
           "reference" TEXT NULL,
           "reference_id" TEXT NULL,
           "action" TEXT NOT NULL,
@@ -203,11 +203,6 @@ export class Migration20240219102530 extends Migration {
 
       CREATE INDEX IF NOT EXISTS "IDX_order_change_action_order_change_id" ON "order_change_action" (
           order_change_id
-      );
-
-      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_reference_reference_id" ON "order_change_action" (
-          reference,
-          reference_id
       );
 
       CREATE INDEX IF NOT EXISTS "IDX_order_change_action_order_id" ON "order_change_action" (

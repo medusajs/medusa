@@ -15,7 +15,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { Order } from "@models"
+import Order from "./order"
 import OrderChange from "./order-change"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
@@ -30,13 +30,7 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   columns: "order_id",
 })
 
-const ReferenceIndex = createPsqlIndexStatementHelper({
-  tableName: "order_change_action",
-  columns: ["reference", "reference_id"],
-})
-
 @Entity({ tableName: "order_change_action" })
-@ReferenceIndex.MikroORMIndex()
 export default class OrderChangeAction {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -49,14 +43,19 @@ export default class OrderChangeAction {
     fieldName: "order_id",
     cascade: [Cascade.REMOVE],
     mapToPk: true,
+    nullable: true,
   })
   @OrderIdIndex.MikroORMIndex()
-  order_id: string
+  order_id: string | null = null
 
   @ManyToOne(() => Order, {
     persist: false,
+    nullable: true,
   })
-  order: Order
+  order: Order | null = null
+
+  @Property({ columnType: "integer", nullable: true })
+  version: number | null = null
 
   @ManyToOne({
     entity: () => OrderChange,
@@ -74,9 +73,6 @@ export default class OrderChangeAction {
     nullable: true,
   })
   order_change: OrderChange | null = null
-
-  @Property({ columnType: "integer" })
-  version: number
 
   @Property({
     columnType: "text",
@@ -126,14 +122,14 @@ export default class OrderChangeAction {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
-    this.order_id ??= this.order?.id
+    this.order_id ??= this.order?.id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
-    this.order_id ??= this.order?.id
+    this.order_id ??= this.order?.id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
   }
 }

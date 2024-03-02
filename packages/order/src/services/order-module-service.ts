@@ -220,6 +220,17 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderDTO[] | OrderTypes.OrderDTO> {
     const input = Array.isArray(data) ? data : [data]
 
+    // TODO: calculate order total
+    for (const inp of input) {
+      ;(inp as any).summary = {
+        total:
+          inp.items?.reduce((acc, item) => {
+            const it = item as any
+            return acc + it.unit_price * it.quantity
+          }, 0) ?? 0,
+      }
+    }
+
     const orders = await this.create_(input, sharedContext)
 
     const result = await this.list(
@@ -236,6 +247,7 @@ export default class OrderModuleService<
           "shipping_methods",
           "shipping_methods.tax_lines",
           "shipping_methods.adjustments",
+          "transactions",
         ],
       },
       sharedContext
@@ -1509,11 +1521,26 @@ export default class OrderModuleService<
     await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createOrderChange(
     data: OrderTypes.CreateOrderChangeDTO | OrderTypes.CreateOrderChangeDTO[],
     sharedContext?: Context
-  ): Promise<OrderTypes.OrderChangeDTO> {
+  ): Promise<OrderTypes.OrderChangeDTO | OrderTypes.OrderChangeDTO[]> {
+    const changes = await this.createOrderChange_(data, sharedContext)
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderChangeDTO>(
+      Array.isArray(data) ? changes : changes[0],
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async createOrderChange_(
+    data: OrderTypes.CreateOrderChangeDTO | OrderTypes.CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChange[]> {
     const dataArr = Array.isArray(data) ? data : [data]
 
     const orderIds: string[] = []
@@ -1529,7 +1556,8 @@ export default class OrderModuleService<
       },
       {
         select: ["id", "version"],
-      }
+      },
+      sharedContext
     )
 
     if (orders.length !== orderIds.length) {
@@ -1548,14 +1576,7 @@ export default class OrderModuleService<
       } as any
     })
 
-    const change = await this.orderChangeService_.create(input, sharedContext)
-
-    return await this.baseRepository_.serialize<OrderTypes.OrderChangeDTO>(
-      Array.isArray(data) ? change : change[0],
-      {
-        populate: true,
-      }
-    )
+    return await this.orderChangeService_.create(input, sharedContext)
   }
 
   async cancelOrderChange(

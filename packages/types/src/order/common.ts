@@ -633,6 +633,13 @@ export interface OrderChangeDTO {
    * @expandable
    */
   order: OrderDTO
+
+  /**
+   * The actions of the order change
+   *
+   * @expandable
+   */
+  actions: OrderChangeActionDTO[]
   /**
    * The status of the order change
    */
@@ -695,13 +702,24 @@ export interface OrderChangeActionDTO {
   /**
    * The ID of the associated order change
    */
-  order_change_id: string
+  order_change_id: string | null
   /**
    * The associated order change
    *
    * @expandable
    */
-  order_change: OrderChangeDTO
+  order_change: OrderChangeDTO | null
+
+  /**
+   * The ID of the associated order
+   */
+  order_id: string | null
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO | null
   /**
    * The reference of the order change action
    */
