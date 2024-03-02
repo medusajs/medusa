@@ -1,7 +1,14 @@
-import { TriangleDownMini } from "@medusajs/icons"
+import { Spinner, TriangleDownMini } from "@medusajs/icons"
 import { Container, Heading, IconButton, Text, clx } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { format } from "date-fns"
+import {
+  BLUE_STATES,
+  GRAY_STATES,
+  GREEN_STATES,
+  ORANGE_STATES,
+  RED_STATES,
+} from "../../../constants"
 import {
   TransactionStepState,
   WorkflowExecutionDTO,
@@ -36,24 +43,6 @@ export const ExecutionHistorySection = ({
   )
 }
 
-const BLUE_STATES = [TransactionStepState.INVOKING]
-
-const ORANGE_STATES = [
-  TransactionStepState.COMPENSATING,
-  TransactionStepState.SKIPPED,
-]
-
-const GREEN_STATES = [TransactionStepState.DONE]
-
-const RED_STATES = [
-  TransactionStepState.FAILED,
-  TransactionStepState.REVERTED,
-  TransactionStepState.TIMEOUT,
-  TransactionStepState.DORMANT,
-]
-
-const GRAY_STATES = [TransactionStepState.NOT_STARTED]
-
 const Event = ({
   step,
   isLast,
@@ -62,9 +51,13 @@ const Event = ({
   isLast: boolean
 }) => {
   const identifier = step.id.split(".").pop()
+  const isInvoking = step.invoke.state === TransactionStepState.INVOKING
 
   return (
-    <div className="grid grid-cols-[20px_1fr] items-start gap-x-2 px-2">
+    <div
+      className="grid grid-cols-[20px_1fr] items-start gap-x-2 px-2"
+      data-step-history-id={step.id}
+    >
       <div className="grid h-full grid-rows-[20px_1fr] items-center justify-center gap-y-0.5">
         <div className="flex size-5 items-center justify-center">
           <div className="bg-ui-bg-base shadow-borders-base flex size-2.5 items-center justify-center rounded-full">
@@ -83,12 +76,12 @@ const Event = ({
             />
           </div>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex h-full flex-col items-center">
           <div
             aria-hidden
             role="presentation"
-            className={clx("h-full min-h-[14px] w-px", {
-              "bg-ui-border-base": !isLast,
+            className={clx({
+              "bg-ui-border-base h-full min-h-[14px] w-px": !isLast,
             })}
           />
         </div>
@@ -99,9 +92,15 @@ const Event = ({
             {identifier}
           </Text>
           <div className="flex items-center gap-x-2">
-            <Text size="small" leading="compact" className="text-ui-fg-muted">
-              {format(step.startedAt, "dd MMM yyyy HH:mm:ss")}
-            </Text>
+            {isInvoking ? (
+              <div>
+                <Spinner className="text-ui-fg-interactive animate-spin" />
+              </div>
+            ) : (
+              <Text size="small" leading="compact" className="text-ui-fg-muted">
+                {format(step.startedAt, "dd MMM yyyy HH:mm:ss")}
+              </Text>
+            )}
             <Collapsible.Trigger asChild>
               <IconButton size="2xsmall" variant="transparent">
                 <TriangleDownMini className="text-ui-fg-muted" />
@@ -110,10 +109,25 @@ const Event = ({
           </div>
         </div>
         <Collapsible.Content>
-          <div>
-            <pre className="txt-compact-small">
-              {JSON.stringify(step, null, 2)}
-            </pre>
+          <div className="flex flex-col gap-y-2 pb-4 pt-2">
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <Text size="small" leading="compact">
+                Options
+              </Text>
+              <pre className="txt-compact-small bg-ui-bg-subtle rounded-md border p-2 font-mono">
+                {JSON.stringify(step.definition, null, 2)}
+              </pre>
+            </div>
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <Text size="small" leading="compact">
+                Input
+              </Text>
+            </div>
+            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <Text size="small" leading="compact">
+                Result
+              </Text>
+            </div>
           </div>
         </Collapsible.Content>
       </Collapsible.Root>

@@ -4,6 +4,19 @@ export type WorkflowExecutionStep = {
     state: TransactionStepState
     status: TransactionStepStatus
   }
+  definition: {
+    async?: boolean
+    compensateAsync?: boolean
+    noCompensation?: boolean
+    continueOnPermanentFailure?: boolean
+    maxRetries?: number
+    noWait?: boolean
+    retryInterval?: number
+    retryIntervalAwaiting?: number
+    saveResponse?: boolean
+    timeout?: number
+  }
+  depth: number
   startedAt: number
 }
 

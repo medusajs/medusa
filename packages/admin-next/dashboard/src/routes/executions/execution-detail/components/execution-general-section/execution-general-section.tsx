@@ -35,16 +35,12 @@ export const ExecutionGeneralSection = ({
   )
 }
 
-type Step = {
-  id: string
-}
-
 const ROOT_PREFIX = "_root"
 
 const Progress = ({
   steps,
 }: {
-  steps: Record<string, WorkflowExecutionStep> | null
+  steps?: Record<string, WorkflowExecutionStep> | null
 }) => {
   if (!steps) {
     return (

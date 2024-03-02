@@ -4,6 +4,7 @@ import { useAdminCustomQuery } from "medusa-react"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { WorkflowExecutionDTO } from "../../../types"
+import { adminExecutionKey } from "../../../utils"
 import { useExecutionTableColumns } from "./use-execution-table-columns"
 import { useExecutionTableQuery } from "./use-execution-table-query"
 
@@ -17,10 +18,6 @@ type WorkflowExecutionsRes = {
   limit: number
 }
 
-const getQueryKey = (params?: AdminGetWorkflowExecutionsParams) => {
-  return ["workflow_executions", "list", { params }]
-}
-
 const PAGE_SIZE = 20
 
 export const ExecutionsListTable = () => {
@@ -32,11 +29,7 @@ export const ExecutionsListTable = () => {
     WorkflowExecutionsRes
   >(
     "/workflows-executions",
-    getQueryKey({
-      limit: PAGE_SIZE,
-      fields: "transaction_id,state,execution,context",
-      expand: "execution,context",
-    }),
+    adminExecutionKey.list(searchParams),
     {
       ...searchParams,
     },
