@@ -65,6 +65,10 @@ export class AdminPostTaxRatesTaxRateReq {
   @IsOptional()
   name?: string
 
+  @ValidateNested({ each: true })
+  @Type(() => CreateTaxRateRule)
+  rules: CreateTaxRateRule[]
+
   @IsBoolean()
   @IsOptional()
   is_default?: boolean
@@ -79,9 +83,3 @@ export class AdminPostTaxRatesTaxRateReq {
 }
 
 export class AdminPostTaxRatesTaxRateRulesReq extends CreateTaxRateRule {}
-
-export class AdminPostTaxRatesTaxRateRulesBatchSetReq {
-  @ValidateNested({ each: true })
-  @Type(() => CreateTaxRateRule)
-  rules: CreateTaxRateRule[]
-}

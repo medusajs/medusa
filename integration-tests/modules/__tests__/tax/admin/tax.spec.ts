@@ -466,7 +466,7 @@ describe("Taxes - Admin", () => {
     expect(rules.length).toEqual(2)
 
     await api.post(
-      `/admin/tax-rates/${rateId}/rules/batch/set`,
+      `/admin/tax-rates/${rateId}`,
       {
         rules: [
           { reference: "product", reference_id: "prod_3333" },

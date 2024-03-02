@@ -1,48 +1,45 @@
+import { CreateTaxRateRuleDTO, TaxRateRuleDTO } from "@medusajs/types"
 import {
-  CreateTaxRateRuleDTO,
-  ITaxModuleService,
-  TaxRateRuleDTO,
-} from "@medusajs/types"
-import {
-  StepResponse,
   WorkflowData,
-  createStep,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createTaxRateRulesStep, deleteTaxRateRulesStep } from "../steps"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  createTaxRateRulesStep,
+  deleteTaxRateRulesStep,
+  listTaxRateRuleIdsStep,
+} from "../steps"
 
 type WorkflowInput = {
-  tax_rate_id: string
+  tax_rate_ids: string[]
   rules: Omit<CreateTaxRateRuleDTO, "tax_rate_id">[]
 }
-
-const listRuleIdsStep = createStep(
-  "set-tax-rate-rules-list-rules",
-  async ({ rate_id }: { rate_id: string }, { container }) => {
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
-
-    const rules = await service.listTaxRateRules(
-      { tax_rate_id: rate_id },
-      { select: ["id"] }
-    )
-    return new StepResponse(rules.map((r) => r.id))
-  }
-)
 
 export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
 export const setTaxRateRulesWorkflow = createWorkflow(
   setTaxRateRulesWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<TaxRateRuleDTO[]> => {
-    const ruleIds = listRuleIdsStep({ rate_id: input.tax_rate_id })
+    const ruleIds = listTaxRateRuleIdsStep({
+      selector: { tax_rate_id: input.tax_rate_ids },
+    })
+
     deleteTaxRateRulesStep(ruleIds)
 
-    const rulesWithRateId = transform(input, ({ rules, tax_rate_id }) => {
-      return rules.map((r) => ({ ...r, tax_rate_id }))
-    })
+    const rulesWithRateId = transform(
+      { rules: input.rules, rateIds: input.tax_rate_ids },
+      ({ rules, rateIds }) => {
+        return rules
+          .map((r) => {
+            return rateIds.map((id) => {
+              return {
+                ...r,
+                tax_rate_id: id,
+              }
+            })
+          })
+          .flat()
+      }
+    )
 
     return createTaxRateRulesStep(rulesWithRateId)
   }

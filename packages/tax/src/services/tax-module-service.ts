@@ -22,6 +22,7 @@ import {
 import { TaxProvider, TaxRate, TaxRegion, TaxRateRule } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { TaxRegionDTO } from "@medusajs/types"
+import { EntityManager } from "@mikro-orm/postgresql"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -194,7 +195,83 @@ export default class TaxModuleService<
         ? { id: idOrSelector }
         : idOrSelector
 
+    if (data.rules) {
+      await this.setTaxRateRulesForTaxRates(
+        idOrSelector,
+        data.rules,
+        data.updated_by,
+        sharedContext
+      )
+
+      delete data.rules
+    }
+
     return await this.taxRateService_.update({ selector, data }, sharedContext)
+  }
+
+  private async setTaxRateRulesForTaxRates(
+    idOrSelector: string | string[] | TaxTypes.FilterableTaxRateProps,
+    rules: Omit<TaxTypes.CreateTaxRateRuleDTO, "tax_rate_id">[],
+    createdBy?: string,
+    sharedContext: Context = {}
+  ) {
+    const selector =
+      Array.isArray(idOrSelector) || isString(idOrSelector)
+        ? { id: idOrSelector }
+        : idOrSelector
+
+    await this.taxRateRuleService_.softDelete(
+      { tax_rate: selector },
+      sharedContext
+    )
+
+    // TODO: this is a temporary solution seems like mikro-orm doesn't persist
+    // the soft delete which results in the creation below breaking the unique
+    // constraint
+    await this.taxRateRuleService_.list(
+      { tax_rate: selector },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    if (rules.length === 0) {
+      return
+    }
+
+    const rateIds = await this.getTaxRateIdsFromSelector(idOrSelector)
+    const toCreate = rateIds
+      .map((id) => {
+        return rules.map((r) => {
+          return {
+            ...r,
+            created_by: createdBy,
+            tax_rate_id: id,
+          }
+        })
+      })
+      .flat()
+
+    return await this.createTaxRateRules(toCreate, sharedContext)
+  }
+
+  private async getTaxRateIdsFromSelector(
+    idOrSelector: string | string[] | TaxTypes.FilterableTaxRateProps,
+    sharedContext: Context = {}
+  ) {
+    if (Array.isArray(idOrSelector)) {
+      return idOrSelector
+    }
+
+    if (isString(idOrSelector)) {
+      return [idOrSelector]
+    }
+
+    const rates = await this.taxRateService_.list(
+      idOrSelector,
+      { select: ["id"] },
+      sharedContext
+    )
+    return rates.map((r) => r.id)
   }
 
   async upsert(

@@ -6,6 +6,10 @@ export const deleteTaxRateRulesStepId = "delete-tax-rate-rules"
 export const deleteTaxRateRulesStep = createStep(
   deleteTaxRateRulesStepId,
   async (ids: string[], { container }) => {
+    if (!ids?.length) {
+      return new StepResponse(void 0, [])
+    }
+
     const service = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
@@ -23,6 +27,6 @@ export const deleteTaxRateRulesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.restore(prevIds)
+    await service.restoreTaxRateRules(prevIds)
   }
 )
