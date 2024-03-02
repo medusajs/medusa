@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
 import {
+  createTaxRateRulesStepId,
+  maybeSetTaxRateRulesStepId,
   updateTaxRatesStepId,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
@@ -48,7 +50,7 @@ describe("Taxes - Workflow", () => {
     await db.teardown()
   })
 
-  it("creates rules correctly", async () => {
+  it("compensates rules correctly", async () => {
     const taxRegion = await service.createTaxRegions({
       country_code: "us",
     })
@@ -80,9 +82,9 @@ describe("Taxes - Workflow", () => {
 
     const workflow = updateTaxRatesWorkflow(appContainer)
 
-    workflow.appendAction("throw", updateTaxRatesStepId, {
+    workflow.appendAction("throw", createTaxRateRulesStepId, {
       invoke: async function failStep() {
-        throw new Error(`Failed to create cart`)
+        throw new Error(`Failed to update`)
       },
     })
 
@@ -113,25 +115,29 @@ describe("Taxes - Workflow", () => {
         }),
         expect.objectContaining({
           tax_rate_id: rateOne.id,
+          reference_id: "shipping_11111",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateOne.id,
+          reference_id: "shipping_22222",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateTwo.id,
           reference_id: "product_12354",
         }),
         expect.objectContaining({
           tax_rate_id: rateTwo.id,
-          reference_id: "shipping_12354",
+          reference_id: "product_11111",
         }),
         expect.objectContaining({
           tax_rate_id: rateTwo.id,
-          reference_id: "product_12354",
-        }),
-        expect.objectContaining({
-          tax_rate_id: rateTwo.id,
-          reference_id: "shipping_12354",
+          reference_id: "product_22222",
         }),
       ])
     )
   })
 
-  it("compensates rules correctly", async () => {
+  it("creates rules correctly", async () => {
     const taxRegion = await service.createTaxRegions({
       country_code: "us",
     })

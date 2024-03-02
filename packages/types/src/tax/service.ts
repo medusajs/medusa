@@ -110,11 +110,11 @@ export interface ITaxModuleService extends IModuleService {
   ): Promise<TaxRateRuleDTO[]>
 
   deleteTaxRateRules(
-    taxRateRulePair: { tax_rate_id: string; reference_id: string },
+    taxRateRuleId: string,
     sharedContext?: Context
   ): Promise<void>
   deleteTaxRateRules(
-    taxRateRulePair: { tax_rate_id: string; reference_id: string }[],
+    taxRateRuleIds: string[],
     sharedContext?: Context
   ): Promise<void>
 

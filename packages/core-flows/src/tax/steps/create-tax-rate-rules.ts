@@ -14,7 +14,7 @@ export const createTaxRateRulesStep = createStep(
 
     return new StepResponse(
       created,
-      created.map((rate) => rate.id)
+      created.map((rule) => rule.id)
     )
   },
   async (createdIds, { container }) => {
@@ -26,6 +26,6 @@ export const createTaxRateRulesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.delete(createdIds)
+    await service.deleteTaxRateRules(createdIds)
   }
 )
