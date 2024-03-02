@@ -209,11 +209,6 @@ export default class TaxModuleService<
     return await this.taxRateService_.update({ selector, data }, sharedContext)
   }
 
-  private async flush(context: Context) {
-    const em = (context.manager ?? context.transactionManager) as EntityManager
-    await em.flush()
-  }
-
   private async setTaxRateRulesForTaxRates(
     idOrSelector: string | string[] | TaxTypes.FilterableTaxRateProps,
     rules: Omit<TaxTypes.CreateTaxRateRuleDTO, "tax_rate_id">[],
