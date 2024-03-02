@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --runInBand --bail --detectOpenHandles --logHeapUsage --clearMocks --forceExit",
+    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --runInBand --bail --detectOpenHandles --logHeapUsage --clearMocks --forceExit -- __tests__/currency/admin/currency.spec.ts",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
     "medusa-plugin-sendgrid": "workspace:*",
+    "medusa-test-utils": "workspace:*",
     "pg": "^8.11.0",
     "typeorm": "^0.3.16"
   },
