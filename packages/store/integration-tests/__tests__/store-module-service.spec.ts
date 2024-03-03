@@ -19,6 +19,7 @@ moduleIntegrationTestRunner({
           expect(store).toEqual(
             expect.objectContaining({
               name: "Test store",
+              supported_currency_codes: expect.arrayContaining(["eur", "usd"]),
               default_sales_channel_id: "test-sales-channel",
               default_region_id: "test-region",
               metadata: {
