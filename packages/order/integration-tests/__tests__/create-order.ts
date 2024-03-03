@@ -122,6 +122,9 @@ moduleIntegrationTestRunner({
       const expectation = expect.objectContaining({
         id: expect.stringContaining("order_"),
         version: 1,
+        summary: expect.objectContaining({
+          total: expect.any(Number),
+        }),
         shipping_address: expect.objectContaining({
           id: expect.stringContaining("ordaddr_"),
         }),
@@ -201,6 +204,7 @@ moduleIntegrationTestRunner({
             "id",
             "version",
             "items.id",
+            "summary",
             "items.quantity",
             "items.detail.id",
             "items.detail.version",

@@ -222,12 +222,15 @@ export default class OrderModuleService<
 
     // TODO: calculate order total
     for (const inp of input) {
-      ;(inp as any).summary = {
-        total:
-          inp.items?.reduce((acc, item) => {
-            const it = item as any
-            return acc + it.unit_price * it.quantity
-          }, 0) ?? 0,
+      const ordTotals = inp as any
+      ordTotals.summary = {
+        totals: {
+          total:
+            inp.items?.reduce((acc, item) => {
+              const it = item as any
+              return acc + it.unit_price * it.quantity
+            }, 0) ?? 0,
+        },
       }
     }
 
@@ -241,6 +244,7 @@ export default class OrderModuleService<
         relations: [
           "shipping_address",
           "billing_address",
+          "summary",
           "items",
           "items.tax_lines",
           "items.adjustments",
@@ -827,7 +831,7 @@ export default class OrderModuleService<
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethods_(
     orderId: string,
-    data: OrderTypes.CreateOrderShippingMethodDTO[],
+    data: CreateOrderShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     const order = await this.retrieve(
@@ -840,7 +844,7 @@ export default class OrderModuleService<
       return {
         ...method,
         order_id: order.id,
-        version: order.version ?? 1,
+        version: method.version ?? order.version ?? 1,
       }
     })
 

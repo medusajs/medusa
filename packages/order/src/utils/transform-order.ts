@@ -5,7 +5,7 @@ export function formatOrder(
   order
 ): OrderTypes.OrderDTO | OrderTypes.OrderDTO[] {
   const isArray = Array.isArray(order)
-  const orders = isArray ? order : [order]
+  const orders = [...(isArray ? order : [order])]
 
   orders.map((order) => {
     order.items = order.items?.map((orderItem) => {
@@ -20,6 +20,8 @@ export function formatOrder(
         detail,
       }
     })
+
+    order.summary = order.summary?.[0]?.totals
 
     return order
   })
@@ -42,6 +44,10 @@ export function mapRepositoryToOrderModel(config) {
             obj.populate.push("items.item")
           }
           return "items.item.quantity"
+        }
+        if (rel == "summary" && type === "fields") {
+          obj.populate.push("summary")
+          return "summary.totals"
         } else if (rel.includes("items.detail")) {
           return rel.replace("items.detail", "items")
         } else if (rel == "items") {

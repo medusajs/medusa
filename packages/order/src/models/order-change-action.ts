@@ -105,6 +105,12 @@ export default class OrderChangeAction {
   internal_note: string | null = null
 
   @Property({
+    columnType: "boolean",
+    defaultRaw: "false",
+  })
+  applied: boolean = false
+
+  @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",

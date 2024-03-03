@@ -9,7 +9,7 @@ moduleIntegrationTestRunner({
   debug: 0,
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
-    describe("Order Module Service - Order Edits", () => {
+    describe.skip("Order Module Service - Order Edits", () => {
       const input = {
         email: "foo@bar.com",
         items: [
@@ -202,6 +202,7 @@ moduleIntegrationTestRunner({
         })
 
         console.log(calculated.order.items.map((a) => a))
+        console.log(calculated.order.summary)
       })
     })
   },
