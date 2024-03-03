@@ -214,6 +214,18 @@
     "hasDurationLimit": "Availability duration",
     "durationHint": "Set the duration of the discount",
     "chooseValidRegions": "Choose valid regions",
+    "conditions": {
+      "including": {
+        "products": "Discount applies to <0/> product.",
+        "products_plural": "Discount applies to <0/> products.",
+        "customer_groups": "Discount applies to <0/> customer group.",
+        "customer_groups_plural": "Discount applies to <0/> customer groups."
+      },
+      "excluding": {
+        "products": "Discount applies to <1>all</1> products except <0/>.",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>."
+      }
+    },
     "discountStatus": {
       "scheduled": "Scheduled",
       "expired": "Expired",
@@ -409,6 +421,7 @@
     "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
     "configurations": "Configurations",
+    "conditions": "Conditions",
     "category": "Category",
     "collection": "Collection",
     "discountable": "Discountable",

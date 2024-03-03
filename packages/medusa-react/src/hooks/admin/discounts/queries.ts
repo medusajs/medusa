@@ -190,7 +190,7 @@ export const useAdminDiscount = (
   /**
    * Configurations to apply on the retrieved discount.
    */
-  query?: UseQueryOptionsWrapper<Response<AdminGetDiscountParams>>,
+  query?: AdminGetDiscountParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminDiscountsRes>,
     Error,

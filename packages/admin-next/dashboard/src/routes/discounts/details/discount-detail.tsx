@@ -8,6 +8,7 @@ import { DiscountConfigurationSection } from "./components/discounts-configurati
 import { discountLoader } from "./loader"
 import { RedemptionsSection } from "./components/redemptions-section"
 import { DetailsSection } from "./components/details-section"
+import { DiscountConditionsSection } from "./components/discounts-conditions-section"
 
 export const DiscountDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -29,6 +30,7 @@ export const DiscountDetail = () => {
         <div className="flex flex-col gap-y-2">
           <DiscountGeneralSection discount={discount} />
           <DiscountConfigurationSection discount={discount} />
+          <DiscountConditionsSection discount={discount} />
           <JsonViewSection data={discount} />
         </div>
         <div className="hidden flex-col gap-y-2 lg:flex">

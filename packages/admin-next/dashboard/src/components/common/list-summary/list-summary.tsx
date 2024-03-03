@@ -16,8 +16,8 @@ type ListSummaryProps = {
 export const ListSummary = ({ list, n = 2 }: ListSummaryProps) => {
   const { t } = useTranslation()
   return (
-    <div className="text-ui-fg-subtle flex items-center gap-x-2">
-      <Text leading="compact" size="small" className="truncate">
+    <div className="text-ui-fg-subtle inline-flex gap-x-2">
+      <Text as="span" leading="compact" size="small" className="truncate">
         {list.slice(0, n).join(", ")}
       </Text>
       {list.length > n && (
@@ -31,6 +31,7 @@ export const ListSummary = ({ list, n = 2 }: ListSummaryProps) => {
           }
         >
           <Text
+            as="span"
             size="small"
             weight="plus"
             leading="compact"
