@@ -23,10 +23,18 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PAYMENT,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: {
-    name: ["payment", "payments"],
-    args: {
-      entity: Payment.name,
+  alias: [
+    {
+      name: ["payment", "payments"],
+      args: {
+        entity: Payment.name,
+      },
     },
-  },
+    {
+      name: ["payment_collection", "payment_collections"],
+      args: {
+        entity: PaymentCollection.name,
+      },
+    },
+  ],
 }
