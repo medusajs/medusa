@@ -137,6 +137,14 @@ moduleIntegrationTestRunner({
           expect(result.length).toEqual(1)
           expect(result[0].id).toEqual(fulfillment.id)
         })
+
+        it("should retrieve the fulfillment options", async () => {
+          const fulfillmentOptions = await service.retrieveFulfillmentOptions(
+            providerId
+          )
+
+          expect(fulfillmentOptions).toEqual({})
+        })
       })
 
       describe("mutations", () => {

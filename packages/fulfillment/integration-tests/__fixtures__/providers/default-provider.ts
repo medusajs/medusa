@@ -10,6 +10,10 @@ export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProvi
   async cancelFulfillment(fulfillment): Promise<any> {
     return {}
   }
+
+  async getFulfillmentOptions(): Promise<any> {
+    return {}
+  }
 }
 
 export const services = [FulfillmentProviderServiceFixtures]
