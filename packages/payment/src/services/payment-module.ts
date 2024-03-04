@@ -212,7 +212,7 @@ export default class PaymentModuleService<
     try {
       const providerSessionSession =
         await this.paymentProviderService_.createSession(input.provider_id, {
-          context: input.context,
+          context: input.context ?? {},
           amount: input.amount,
           currency_code: input.currency_code,
         })
