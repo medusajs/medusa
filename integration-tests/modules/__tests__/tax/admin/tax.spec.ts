@@ -373,4 +373,139 @@ describe("Taxes - Admin", () => {
     expect(rates.length).toEqual(1)
     expect(rates[0].deleted_at).not.toBeNull()
   })
+
+  it("can create a tax rate add rules and remove them", async () => {
+    const api = useApi() as any
+    const regionRes = await api.post(
+      `/admin/tax-regions`,
+      {
+        country_code: "us",
+        default_tax_rate: { code: "default", rate: 2, name: "default rate" },
+      },
+      adminHeaders
+    )
+
+    const usRegionId = regionRes.data.tax_region.id
+    const rateRes = await api.post(
+      `/admin/tax-rates`,
+      {
+        tax_region_id: usRegionId,
+        code: "RATE2",
+        name: "another rate",
+        rate: 10,
+        rules: [{ reference: "product", reference_id: "prod_1234" }],
+      },
+      adminHeaders
+    )
+    const rateId = rateRes.data.tax_rate.id
+    let rules = await service.listTaxRateRules({ tax_rate_id: rateId })
+
+    expect(rules).toEqual([
+      {
+        id: expect.any(String),
+        tax_rate_id: rateId,
+        reference: "product",
+        reference_id: "prod_1234",
+        created_by: "admin_user",
+        created_at: expect.any(Date),
+        updated_at: expect.any(Date),
+        deleted_at: null,
+        tax_rate: { id: rateId },
+        metadata: null,
+      },
+    ])
+
+    await api.post(
+      `/admin/tax-rates/${rateId}/rules`,
+      {
+        reference: "product",
+        reference_id: "prod_1111",
+      },
+      adminHeaders
+    )
+
+    await api.post(
+      `/admin/tax-rates/${rateId}/rules`,
+      {
+        reference: "product",
+        reference_id: "prod_2222",
+      },
+      adminHeaders
+    )
+    rules = await service.listTaxRateRules({ tax_rate_id: rateId })
+    expect(rules).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_1234",
+          created_by: "admin_user",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_1111",
+          created_by: "admin_user",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_2222",
+          created_by: "admin_user",
+        }),
+      ])
+    )
+
+    const toDeleteId = rules.find((r) => r.reference_id === "prod_1111")!.id
+    await api.delete(
+      `/admin/tax-rates/${rateId}/rules/${toDeleteId}`,
+      adminHeaders
+    )
+
+    rules = await service.listTaxRateRules({ tax_rate_id: rateId })
+    expect(rules.length).toEqual(2)
+
+    await api.post(
+      `/admin/tax-rates/${rateId}`,
+      {
+        rules: [
+          { reference: "product", reference_id: "prod_3333" },
+          { reference: "product", reference_id: "prod_4444" },
+          { reference: "product", reference_id: "prod_5555" },
+          { reference: "product", reference_id: "prod_6666" },
+        ],
+      },
+      adminHeaders
+    )
+    rules = await service.listTaxRateRules({ tax_rate_id: rateId })
+    expect(rules.length).toEqual(4)
+    expect(rules).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_3333",
+          created_by: "admin_user",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_4444",
+          created_by: "admin_user",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_5555",
+          created_by: "admin_user",
+        }),
+        expect.objectContaining({
+          tax_rate_id: rateId,
+          reference: "product",
+          reference_id: "prod_6666",
+          created_by: "admin_user",
+        }),
+      ])
+    )
+  })
 })
