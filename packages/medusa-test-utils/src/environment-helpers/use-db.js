@@ -12,6 +12,7 @@ const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
+const { DatabaseFactory } = require("./use-template-db")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -54,14 +55,16 @@ const DbTestUtil = {
     this.db_.synchronize(true)
   },
 
-  teardown: async function ({ forceDelete } = {}) {
+  teardown: async function ({ forceDelete, schema } = {}) {
     forceDelete = forceDelete || []
     const manager = this.db_.manager
 
     await manager.query(`SET session_replication_role = 'replica';`)
     const tableNames = await manager.query(`SELECT table_name
                                             FROM information_schema.tables
-                                            WHERE table_schema = 'public';`)
+                                            WHERE table_schema = '${
+                                              schema ?? "public"
+                                            }';`)
 
     for (const { table_name } of tableNames) {
       if (
@@ -78,17 +81,18 @@ const DbTestUtil = {
     await manager.query(`SET session_replication_role = 'origin';`)
   },
 
-  shutdown: async function () {
+  shutdown: async function (dbName) {
     await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
 
-    return await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
+    return await dropDatabase({ databaseName: dbName }, pgGodCredentials)
   },
 }
 
 const instance = DbTestUtil
 
 module.exports = {
+  DbTestUtil,
   initDb: async function ({
     cwd,
     database_extra,
@@ -96,7 +100,8 @@ module.exports = {
     force_modules_migration,
     dbUrl = DB_URL,
     dbName = DB_NAME,
-    dbSchema = 'public'
+    dbSchema = "public",
+    dbTestUtils = instance,
   }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
@@ -111,12 +116,17 @@ module.exports = {
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
-    await dbFactory.createFromTemplate(dbName)
+    const dbFactoryInstance = new DatabaseFactory({
+      masterName: "master-" + dbName,
+      templateName: "template-" + dbName,
+    })
+    await dbFactoryInstance.createTemplateDb_({ cwd })
+    await dbFactoryInstance.createFromTemplate(dbName)
 
     // get migrations with enabled featureflags
     const migrationDir = path.resolve(
       path.join(
-        __dirname,
+        cwd,
         `../../`,
         `node_modules`,
         `@medusajs`,
@@ -150,14 +160,14 @@ module.exports = {
       migrations: enabledMigrations.concat(moduleMigrations),
       extra: database_extra ?? {},
       name: "integration-tests",
-      schema: dbSchema
+      schema: dbSchema,
     })
 
     await dbDataSource.initialize()
 
     await dbDataSource.runMigrations()
 
-    instance.setDb(dbDataSource)
+    dbTestUtils.setDb(dbDataSource)
 
     if (
       force_modules_migration ||
@@ -183,7 +193,7 @@ module.exports = {
         featureFlagRouter: asValue(featureFlagRouter),
       })
 
-      instance.setPgConnection(pgConnection)
+      dbTestUtils.setPgConnection(pgConnection)
 
       await migrateMedusaApp(
         { configModule, container },
@@ -192,8 +202,5 @@ module.exports = {
     }
 
     return dbDataSource
-  },
-  useDb: function () {
-    return instance
   },
 }

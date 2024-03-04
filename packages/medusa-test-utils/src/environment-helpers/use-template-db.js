@@ -20,9 +20,9 @@ const pgGodCredentials = {
 }
 
 class DatabaseFactory {
-  constructor() {
-    this.masterDataSourceName = "master"
-    this.templateDbName = "medusa-integration-template"
+  constructor({ masterName, templateName } = {}) {
+    this.masterDataSourceName = masterName ?? "master"
+    this.templateDbName = templateName ?? "medusa-integration-template"
   }
 
   async createTemplateDb_({ cwd }) {
@@ -100,7 +100,10 @@ class DatabaseFactory {
   async createFromTemplate(dbName) {
     const dataSource = await this.getMasterDataSource()
 
-    await dropDatabase({ databaseName: dbName }, pgGodCredentials)
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
     await dataSource.query(
       `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )
@@ -114,4 +117,7 @@ class DatabaseFactory {
   }
 }
 
-module.exports = new DatabaseFactory()
+module.exports = {
+  default: new DatabaseFactory(),
+  DatabaseFactory,
+}

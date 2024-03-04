@@ -1,9 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICurrencyModuleService } from "@medusajs/types"
-import path from "path"
-import { DataSource } from "typeorm"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import {medusaIntegrationTestRunner}  from 'medusa-test-utils'
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -13,21 +9,17 @@ const adminHeaders = {
 }
 
 medusaIntegrationTestRunner({
-  moduleName: ModuleRegistrationName.CURRENCY,
   env,
-  testSuite: ({
-    dbConnection,
-    apiUtils
-  }) => {
+  testSuite: ({ dbConnection, apiUtils, container }) => {
     describe("Currency - Admin", () => {
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, container)
       })
-    
+
       it("should correctly retrieve and list currencies", async () => {
         const api = apiUtils
         const listResp = await api.get("/admin/currencies", adminHeaders)
-    
+
         expect(listResp.data.currencies).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -38,8 +30,11 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
-    
-        const retrieveResp = await api.get(`/admin/currencies/aud`, adminHeaders)
+
+        const retrieveResp = await api.get(
+          `/admin/currencies/aud`,
+          adminHeaders
+        )
         expect(retrieveResp.data.currency).toEqual(
           listResp.data.currencies.find((c) => c.code === "aud")
         )
