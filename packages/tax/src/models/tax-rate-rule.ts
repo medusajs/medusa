@@ -105,11 +105,11 @@ export default class TaxRateRule {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "txr")
+    this.id = generateEntityId(this.id, "txrule")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "txr")
+    this.id = generateEntityId(this.id, "txrule")
   }
 }

@@ -1,4 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -31,7 +36,7 @@ describe("Store Carts API", () => {
   let customerModule: ICustomerModuleService
   let productModule: IProductModuleService
   let pricingModule: IPricingModuleService
-  let remoteLink
+  let remoteLink: RemoteLink
   let promotionModule: IPromotionModuleService
 
   let defaultRegion
@@ -47,7 +52,7 @@ describe("Store Carts API", () => {
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
     productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
     pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-    remoteLink = appContainer.resolve("remoteLink")
+    remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
     promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
   })
 
@@ -351,6 +356,11 @@ describe("Store Carts API", () => {
         },
       ])
 
+      await remoteLink.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
+
       const api = useApi() as any
 
       // Should remove earlier adjustments from other promocodes
@@ -628,6 +638,11 @@ describe("Store Carts API", () => {
           },
         },
       ])
+
+      await remoteLink.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
 
       const api = useApi() as any
       const response = await api.post(`/store/carts/${cart.id}/line-items`, {
