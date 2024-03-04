@@ -1,0 +1,85 @@
+import { MedusaError, isDefined } from "@medusajs/utils"
+import { EVENT_STATUS } from "@types"
+import { ChangeActionType } from "../action-key"
+import { OrderChangeProcessing } from "../calculate-order-change"
+
+OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
+  isDeduction: true,
+  commitsAction: "return_item",
+  operation({ action, currentOrder, previousEvents }) {
+    const existing = currentOrder.items.find(
+      (item) => item.id === action.details.reference_id
+    )!
+
+    let toReturn = action.details.quantity
+
+    existing.return_received_quantity ??= 0
+    existing.return_received_quantity += toReturn
+    existing.return_requested_quantity -= toReturn
+
+    if (previousEvents) {
+      for (const previousEvent of previousEvents) {
+        previousEvent.original_ = JSON.parse(JSON.stringify(previousEvent))
+
+        let ret = Math.min(toReturn, previousEvent.details.quantity)
+        toReturn -= ret
+
+        previousEvent.details.quantity -= ret
+        if (previousEvent.details.quantity <= 0) {
+          previousEvent.status = EVENT_STATUS.DONE
+        }
+      }
+    }
+
+    return existing.unit_price * action.details.quantity
+  },
+  revert({ action, currentOrder, previousEvents }) {
+    const existing = currentOrder.items.find(
+      (item) => item.id === action.details.reference_id
+    )!
+
+    existing.return_received_quantity -= action.details.quantity
+    existing.return_requested_quantity += action.details.quantity
+
+    if (previousEvents) {
+      for (const previousEvent of previousEvents) {
+        if (!previousEvent.original_) {
+          continue
+        }
+
+        previousEvent.details = JSON.parse(
+          JSON.stringify(previousEvent.original_.details)
+        )
+        delete previousEvent.original_
+
+        previousEvent.status = EVENT_STATUS.PENDING
+      }
+    }
+  },
+  validate({ action, currentOrder }) {
+    const refId = action.details?.reference_id
+    if (!isDefined(refId)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Details reference ID is required."
+      )
+    }
+
+    const existing = currentOrder.items.find((item) => item.id === refId)
+
+    if (!existing) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Reference ID "${refId}" not found.`
+      )
+    }
+
+    const quantityRequested = existing?.return_requested_quantity || 0
+    if (action.details.quantity > quantityRequested) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Cannot receive more items than what was requested to be returned."
+      )
+    }
+  },
+})

@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "region_country" (
 CREATE UNIQUE INDEX IF NOT EXISTS "IDX_region_country_region_id_iso_2_unique" ON "region_country" (region_id, iso_2);
 -- Adjust foreign keys for "region_country"
 ALTER TABLE "region_country" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
-ALTER TABLE "region_country" ADD CONSTRAINT "region_country_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "region" ("id") ON UPDATE CASCADE;
+ALTER TABLE "region_country" ADD CONSTRAINT "region_country_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "region" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
 `)
   }
 }

@@ -21,17 +21,14 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-  DefaultsUtils,
   removeUndefined,
   getDuplicates,
 } from "@medusajs/utils"
 
 import { Country, Region } from "@models"
 
-import { CreateCountryDTO, UpdateRegionInput } from "@types"
+import { UpdateRegionInput } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-
-const COUNTRIES_LIMIT = 1000
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -280,7 +277,7 @@ export default class RegionModuleService<
 
     const countriesInDb = await this.countryService_.list(
       { iso_2: uniqueCountries },
-      { select: ["iso_2", "region_id"] },
+      { select: ["iso_2", "region_id"], take: null },
       sharedContext
     )
     const countryCodesInDb = countriesInDb.map((c) => c.iso_2.toLowerCase())
@@ -310,44 +307,5 @@ export default class RegionModuleService<
     }
 
     return countriesInDb
-  }
-
-  @InjectManager("baseRepository_")
-  public async createDefaultCountries(
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.maybeCreateCountries(sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  private async maybeCreateCountries(
-    @MedusaContext() sharedContext: Context
-  ): Promise<void> {
-    const [countries, count] = await this.countryService_.listAndCount(
-      {},
-      { select: ["iso_2"], take: COUNTRIES_LIMIT },
-      sharedContext
-    )
-
-    let countsToCreate: CreateCountryDTO[] = []
-    if (count !== DefaultsUtils.defaultCountries.length) {
-      const countriesInDb = new Set(countries.map((c) => c.iso_2))
-
-      const countriesToAdd = DefaultsUtils.defaultCountries.filter(
-        (c) => !countriesInDb.has(c.alpha2.toLowerCase())
-      )
-
-      countsToCreate = countriesToAdd.map((c) => ({
-        iso_2: c.alpha2.toLowerCase(),
-        iso_3: c.alpha3.toLowerCase(),
-        num_code: c.numeric,
-        name: c.name.toUpperCase(),
-        display_name: c.name,
-      }))
-    }
-
-    if (countsToCreate.length) {
-      await this.countryService_.create(countsToCreate, sharedContext)
-    }
   }
 }

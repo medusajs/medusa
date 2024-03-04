@@ -18,7 +18,7 @@ export const POST = async (
   const { errors } = await updateTaxRatesWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update: { ...req.validatedBody, updated_by: req.auth.actor_id },
     },
     throwOnError: false,
   })

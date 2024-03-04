@@ -75,6 +75,89 @@ moduleIntegrationTestRunner({
         )
       })
 
+      it("should update tax rates with rules", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const rate = await service.create({
+          tax_region_id: region.id,
+          name: "Shipping Rate",
+          code: "test",
+          rate: 8.23,
+        })
+
+        await service.update(rate.id, {
+          name: "Updated Rate",
+          code: "TEST",
+          rate: 8.25,
+          rules: [
+            { reference: "product", reference_id: "product_id_1" },
+            { reference: "product_type", reference_id: "product_type_id" },
+          ],
+        })
+
+        const rules = await service.listTaxRateRules({ tax_rate_id: rate.id })
+
+        expect(rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_1",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id",
+            }),
+          ])
+        )
+
+        await service.update(rate.id, {
+          rules: [
+            { reference: "product", reference_id: "product_id_1" },
+            { reference: "product", reference_id: "product_id_2" },
+            { reference: "product_type", reference_id: "product_type_id_2" },
+            { reference: "product_type", reference_id: "product_type_id_3" },
+          ],
+        })
+
+        const rulesWithDeletes = await service.listTaxRateRules(
+          { tax_rate_id: rate.id },
+          { withDeleted: true }
+        )
+
+        expect(rulesWithDeletes).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_2",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id_2",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id_3",
+            }),
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_1",
+              deleted_at: expect.any(Date),
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id",
+              deleted_at: expect.any(Date),
+            }),
+          ])
+        )
+      })
+
       it("should create a tax region", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",

@@ -1,7 +1,7 @@
 import { BigNumberRawValue } from "@medusajs/types"
+import { Entity, MikroORM, PrimaryKey } from "@mikro-orm/core"
 import { BigNumber } from "../../../totals/big-number"
 import { MikroOrmBigNumberProperty } from "../big-number-field"
-import { Entity, MikroORM, PrimaryKey } from "@mikro-orm/core"
 
 @Entity()
 class TestAmount {

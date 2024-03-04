@@ -26,6 +26,7 @@ interface PartialUpsertOrderLineItemDTO {
 }
 
 export interface CreateOrderLineItemDTO extends PartialUpsertOrderLineItemDTO {
+  version?: number
   title: string
   quantity: BigNumberInput
   unit_price: BigNumberInput

@@ -36,12 +36,13 @@ describe("Regions - Admin", () => {
 
   beforeEach(async () => {
     await createAdminUser(dbConnection, adminHeaders)
-
-    await service.createDefaultCountries()
   })
 
   afterEach(async () => {
     const db = useDb()
+    // TODO: Once teardown doesn't skip constraint checks and cascades, we can remove this
+    const existingRegions = await service.list({})
+    await service.delete(existingRegions.map((r) => r.id))
     await db.teardown()
   })
 

@@ -4,7 +4,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   id: string
-  config: FindConfig<CartDTO>
+  config?: FindConfig<CartDTO>
 }
 
 export const retrieveCartStepId = "retrieve-cart"

@@ -8,7 +8,6 @@ import {
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Collection,
   Entity,
   ManyToOne,
@@ -31,22 +30,40 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   columns: "order_id",
 })
 
+const OrderVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: ["order_id", "version"],
+})
+
 @Entity({ tableName: "order_shipping_method" })
-@Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
+@OrderVersionIndex.MikroORMIndex()
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    columnType: "text",
+    fieldName: "order_id",
+    mapToPk: true,
+    cascade: [Cascade.REMOVE],
+  })
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
   @ManyToOne({
     entity: () => Order,
     fieldName: "order_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
+    persist: false,
   })
   order: Order
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @Property({ columnType: "text" })
   name: string
@@ -80,7 +97,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -89,7 +106,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)
@@ -112,9 +129,11 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
+    this.order_id ??= this.order?.id
   }
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
+    this.order_id ??= this.order?.id
   }
 }
