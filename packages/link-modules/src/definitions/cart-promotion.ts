@@ -7,7 +7,7 @@ export const CartPromotion: ModuleJoinerConfig = {
   isLink: true,
   databaseConfig: {
     tableName: "cart_promotion",
-    idPrefix: "capromo",
+    idPrefix: "cartpromo",
   },
   alias: [
     {
