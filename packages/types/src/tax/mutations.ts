@@ -23,8 +23,10 @@ export interface UpdateTaxRateDTO {
   rate?: number | null
   code?: string | null
   name?: string
+  rules?: Omit<CreateTaxRateRuleDTO, "tax_rate_id">[]
   is_default?: boolean
-  created_by?: string
+  is_combinable?: boolean
+  updated_by?: string
   metadata?: Record<string, unknown>
 }
 
@@ -47,5 +49,5 @@ export interface CreateTaxRateRuleDTO {
   reference_id: string
   tax_rate_id: string
   metadata?: Record<string, unknown>
-  created_by?: string
+  created_by?: string | null
 }

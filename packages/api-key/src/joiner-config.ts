@@ -22,7 +22,7 @@ export const joinerConfig: ModuleJoinerConfig = {
   linkableKeys: LinkableKeys,
   alias: [
     {
-      name: ["api-key", "api-keys"],
+      name: ["api_key", "api_keys"],
       args: { entity: ApiKey.name },
     },
   ],

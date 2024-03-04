@@ -4,11 +4,11 @@ import { Product } from "@models"
 import { ProductTagService } from "@services"
 
 import { ProductTypes } from "@medusajs/types"
-import { createProductAndTags } from "../../../__fixtures__/product"
-import { TestDatabase } from "../../../utils"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { createProductAndTags } from "../../../__fixtures__/product"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -265,9 +265,9 @@ describe("ProductTag Service", () => {
         id: tagId,
         value: tagValue,
         products: [
-          {
+          expect.objectContaining({
             id: productId,
-          },
+          }),
         ],
       })
     })

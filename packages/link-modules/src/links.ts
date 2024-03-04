@@ -14,6 +14,18 @@ export const LINKS = {
     Modules.PRICING,
     "price_set_id"
   ),
+  CartPaymentCollection: composeLinkName(
+    Modules.CART,
+    "cart_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  CartPromotion: composeLinkName(
+    Modules.CART,
+    "cart_id",
+    Modules.PROMOTION,
+    "promotion_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(
@@ -35,8 +47,8 @@ export const LINKS = {
     "sales_channel_id"
   ),
   PublishableApiKeySalesChannel: composeLinkName(
-    "publishableApiKeyService",
-    "publishable_key_id",
+    Modules.API_KEY,
+    "api_key_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),

@@ -83,3 +83,11 @@ export interface UpdateCartWorkflowInputDTO {
   currency_code?: string
   metadata?: Record<string, unknown> | null
 }
+
+export interface CreatePaymentCollectionForCartWorkflowInputDTO {
+  cart_id: string
+  region_id: string
+  currency_code: string
+  amount: number
+  metadata?: Record<string, unknown>
+}

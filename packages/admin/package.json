@@ -35,7 +35,7 @@
     "@rollup/plugin-replace": "5.0.2",
     "@rollup/plugin-virtual": "^3.0.1",
     "commander": "^10.0.0",
-    "dotenv": "16.3.1",
+    "dotenv": "16.4.5",
     "esbuild": "0.17.18",
     "express": "4.18.2",
     "fs-extra": "11.1.0",
