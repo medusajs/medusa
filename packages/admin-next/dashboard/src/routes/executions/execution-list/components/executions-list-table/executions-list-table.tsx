@@ -1,6 +1,7 @@
 import { AdminGetWorkflowExecutionsParams } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import { useAdminCustomQuery } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { WorkflowExecutionDTO } from "../../../types"
@@ -21,6 +22,8 @@ type WorkflowExecutionsRes = {
 const PAGE_SIZE = 20
 
 export const ExecutionsListTable = () => {
+  const { t } = useTranslation()
+
   const { searchParams, raw } = useExecutionTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -32,6 +35,7 @@ export const ExecutionsListTable = () => {
     adminExecutionKey.list(searchParams),
     {
       ...searchParams,
+      fields: "execution,state",
     },
     {
       keepPreviousData: true,
@@ -56,7 +60,7 @@ export const ExecutionsListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>Executions</Heading>
+        <Heading>{t("executions.domain")}</Heading>
       </div>
       <DataTable
         table={table}

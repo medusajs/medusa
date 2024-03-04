@@ -41,7 +41,8 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
+    "timeline": "Timeline"
   },
   "actions": {
     "create": "Create",
@@ -368,6 +369,21 @@
     "resetPassword": "Reset password",
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
+  },
+  "executions": {
+    "domain": "Executions",
+    "transactionIdLabel": "Transaction ID",
+    "workflowIdLabel": "Workflow ID",
+    "progressLabel": "Progress",
+    "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
+    "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
+    "history": {
+      "sectionTitle": "History",
+      "runningState": "Running...",
+      "awaitingState": "Awaiting",
+      "definitionLabel": "Definition",
+      "outputLabel": "Output"
+    }
   },
   "errors": {
     "serverError": "Server error - Try again later.",

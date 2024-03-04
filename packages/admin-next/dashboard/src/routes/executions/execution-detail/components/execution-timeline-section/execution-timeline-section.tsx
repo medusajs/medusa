@@ -1,10 +1,19 @@
+import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
 import { Container, Heading, Text, clx } from "@medusajs/ui"
 import {
-  BLUE_STATES,
-  GRAY_STATES,
-  GREEN_STATES,
-  ORANGE_STATES,
-  RED_STATES,
+  motion,
+  useAnimationControls,
+  useDragControls,
+  useMotionValue,
+} from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
+import {
+  STEP_ERROR_STATES,
+  STEP_INACTIVE_STATES,
+  STEP_IN_PROGRESS_STATES,
+  STEP_OK_STATES,
 } from "../../../constants"
 import { WorkflowExecutionDTO, WorkflowExecutionStep } from "../../../types"
 
@@ -15,12 +24,14 @@ type ExecutionTimelineSectionProps = {
 export const ExecutionTimelineSection = ({
   execution,
 }: ExecutionTimelineSectionProps) => {
+  const { t } = useTranslation()
+
   return (
     <Container className="overflow-hidden px-0 pb-8 pt-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Timeline</Heading>
+        <Heading level="h2">{t("general.timeline")}</Heading>
       </div>
-      <div className="h-[156px] w-full overflow-hidden border-y">
+      <div className="w-full overflow-hidden border-y">
         <Canvas execution={execution} />
       </div>
     </Container>
@@ -53,26 +64,165 @@ const getNextCluster = (
   return clusters[nextDepth]
 }
 
+type ZoomScale = 0.5 | 0.75 | 1
+
+const defaultState = {
+  x: -860,
+  y: -1020,
+}
+
 const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
-  const clusteers = createNodeClusters(execution.execution?.steps || {})
+  const [zoom, setZoom] = useState<number>(1)
+  const scale = useMotionValue(1)
+  const x = useMotionValue(defaultState.x)
+  const y = useMotionValue(defaultState.y)
+
+  const controls = useAnimationControls()
+
+  useEffect(() => {
+    controls.start({
+      scale: zoom,
+      x: -860,
+      y: -1020,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const dragControls = useDragControls()
+  const dragConstraints = useRef<HTMLDivElement>(null)
+
+  const canZoomIn = zoom < 1.5
+  const canZoomOut = zoom > 0.5
+
+  useEffect(() => {
+    const unsubscribe = scale.on("change", (latest) => {
+      setZoom(latest as ZoomScale)
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [scale])
+
+  const clusters = createNodeClusters(execution.execution?.steps || {})
+
+  function scaleXandY(
+    prevScale: number,
+    newScale: number,
+    x: number,
+    y: number
+  ) {
+    const scaleRatio = newScale / prevScale
+    return {
+      x: x * scaleRatio,
+      y: y * scaleRatio,
+    }
+  }
+
+  const zoomIn = () => {
+    const curr = scale.get()
+
+    if (curr < 1.5) {
+      const newScale = (curr + 0.25) as ZoomScale
+
+      const { x: newX, y: newY } = scaleXandY(zoom, newScale, x.get(), y.get())
+
+      setZoom(newScale)
+      controls.set({ scale: newScale, x: newX, y: newY })
+    }
+  }
+
+  const zoomOut = () => {
+    const curr = scale.get()
+
+    if (curr > 0.5) {
+      const newScale = (curr - 0.25) as ZoomScale
+
+      const { x: newX, y: newY } = scaleXandY(zoom, newScale, x.get(), y.get())
+
+      controls.set({ scale: newScale, x: newX, y: newY })
+    }
+  }
+
+  const resetCanvas = () => {
+    setZoom(1)
+    controls.start({
+      scale: 1,
+      x: -860,
+      y: -1020,
+    })
+  }
 
   return (
-    <div className="bg-ui-bg-subtle flex min-h-[156px] items-center justify-center bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat p-16">
-      <div className="flex items-start">
-        {Object.entries(clusteers).map(([depth, cluster]) => {
-          const next = getNextCluster(clusteers, Number(depth))
+    <div className="h-[400px] w-full">
+      <div ref={dragConstraints} className="relative size-full">
+        <div className="relative size-full overflow-hidden object-contain">
+          <div>
+            <motion.div
+              drag
+              dragConstraints={dragConstraints}
+              dragElastic={0}
+              dragMomentum={false}
+              dragControls={dragControls}
+              initial={false}
+              animate={controls}
+              transition={{ duration: 0.25 }}
+              style={{
+                x,
+                y,
+                scale,
+              }}
+              className="bg-ui-bg-subtle relative size-[500rem] origin-top-left items-start justify-start overflow-hidden bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat"
+            >
+              <main className="size-full">
+                <div className="absolute left-[900px] top-[1100px] flex select-none items-start">
+                  {Object.entries(clusters).map(([depth, cluster]) => {
+                    const next = getNextCluster(clusters, Number(depth))
 
-          return (
-            <div key={depth} className="flex items-start">
-              <div className="flex flex-col justify-center gap-y-2">
-                {cluster.map((step) => (
-                  <Node key={step.id} step={step} />
-                ))}
-              </div>
-              <Line next={next} />
-            </div>
-          )
-        })}
+                    return (
+                      <div key={depth} className="flex items-start">
+                        <div className="flex flex-col justify-center gap-y-2">
+                          {cluster.map((step) => (
+                            <Node key={step.id} step={step} />
+                          ))}
+                        </div>
+                        <Line next={next} />
+                      </div>
+                    )
+                  })}
+                </div>
+              </main>
+            </motion.div>
+          </div>
+        </div>
+        <div className="bg-ui-bg-base shadow-borders-base text-ui-fg-subtle absolute bottom-4 left-6 h-7 overflow-hidden rounded-md">
+          <button
+            onClick={zoomIn}
+            type="button"
+            disabled={!canZoomIn}
+            aria-label="Zoom in"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+          >
+            <PlusMini />
+          </button>
+          <button
+            onClick={zoomOut}
+            type="button"
+            disabled={!canZoomOut}
+            aria-label="Zoom out"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+          >
+            <MinusMini />
+          </button>
+          <button
+            onClick={resetCanvas}
+            type="button"
+            aria-label="Reset canvas"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+          >
+            <ArrowPathMini />
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -182,32 +332,71 @@ const Node = ({ step }: { step: WorkflowExecutionStep }) => {
     return null
   }
 
-  const name = step.id.split(".").pop()
+  const stepId = step.id.split(".").pop()
+
+  /**
+   * We can't rely on the built-in hash scrolling because the collapsible,
+   * so we instead need to manually scroll to the step when the hash changes
+   */
+  const handleScrollTo = () => {
+    if (!stepId) {
+      return
+    }
+
+    const historyItem = document.getElementById(stepId)
+
+    if (!historyItem) {
+      return
+    }
+
+    /**
+     * Scroll to the step if it's the one we're looking for but
+     * we need to wait for the collapsible to open before scrolling
+     */
+    setTimeout(() => {
+      historyItem.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      })
+    }, 100)
+  }
 
   return (
-    <div
-      className="bg-ui-bg-base shadow-borders-base flex min-w-[120px] items-center gap-x-0.5 rounded-md p-0.5"
-      data-step-id={step.id}
-    >
-      <div className="flex size-5 items-center justify-center">
-        <div
-          className={clx(
-            "size-2 rounded-sm shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]",
-            {
-              "bg-ui-tag-green-icon": GREEN_STATES.includes(step.invoke.state),
-              "bg-ui-tag-blue-icon": BLUE_STATES.includes(step.invoke.state),
-              "bg-ui-tag-orange-icon": ORANGE_STATES.includes(
-                step.invoke.state
-              ),
-              "bg-ui-tag-red-icon": RED_STATES.includes(step.invoke.state),
-              "bg-ui-tag-gray-icon": GRAY_STATES.includes(step.invoke.state),
-            }
-          )}
-        />
+    <Link to={`#${stepId}`} onClick={handleScrollTo}>
+      <div
+        className="bg-ui-bg-base shadow-borders-base flex min-w-[120px] items-center gap-x-0.5 rounded-md p-0.5"
+        data-step-id={step.id}
+      >
+        <div className="flex size-5 items-center justify-center">
+          <div
+            className={clx(
+              "size-2 rounded-sm shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]",
+              {
+                "bg-ui-tag-green-icon": STEP_OK_STATES.includes(
+                  step.invoke.state
+                ),
+                "bg-ui-tag-orange-icon": STEP_IN_PROGRESS_STATES.includes(
+                  step.invoke.state
+                ),
+                "bg-ui-tag-red-icon": STEP_ERROR_STATES.includes(
+                  step.invoke.state
+                ),
+                "bg-ui-tag-neutral-icon": STEP_INACTIVE_STATES.includes(
+                  step.invoke.state
+                ),
+              }
+            )}
+          />
+        </div>
+        <Text
+          size="xsmall"
+          leading="compact"
+          weight="plus"
+          className="select-none"
+        >
+          {stepId}
+        </Text>
       </div>
-      <Text size="xsmall" leading="compact" weight="plus">
-        {name}
-      </Text>
-    </div>
+    </Link>
   )
 }

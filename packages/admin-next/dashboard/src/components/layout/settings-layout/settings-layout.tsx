@@ -1,5 +1,6 @@
-import { ArrowUturnLeft } from "@medusajs/icons"
+import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
+import * as Collapsible from "@radix-ui/react-collapsible"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
@@ -48,9 +49,23 @@ const useSettingRoutes = (): NavItemProps[] => {
         label: t("salesChannels.domain"),
         to: "/settings/sales-channels",
       },
+    ],
+    [t]
+  )
+}
+
+const useDeveloperRoutes = (): NavItemProps[] => {
+  const { t } = useTranslation()
+
+  return useMemo(
+    () => [
       {
         label: t("apiKeyManagement.domain"),
         to: "/settings/api-key-management",
+      },
+      {
+        label: t("executions.domain"),
+        to: "/settings/executions",
       },
     ],
     [t]
@@ -59,6 +74,7 @@ const useSettingRoutes = (): NavItemProps[] => {
 
 const SettingsSidebar = () => {
   const routes = useSettingRoutes()
+  const developerRoutes = useDeveloperRoutes()
   const { t } = useTranslation()
 
   const location = useLocation()
@@ -87,12 +103,53 @@ const SettingsSidebar = () => {
       <div className="px-3">
         <div className="border-ui-border-strong h-px w-full border-b border-dashed" />
       </div>
-      <div className="flex flex-1 flex-col gap-y-4 overflow-y-auto py-2">
-        <nav className="flex flex-col gap-y-1">
-          {routes.map((setting) => (
-            <NavItem key={setting.to} {...setting} />
-          ))}
-        </nav>
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        <Collapsible.Root defaultOpen className="py-3">
+          <div className="px-3">
+            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+              <Text size="small" leading="compact">
+                General
+              </Text>
+              <Collapsible.Trigger asChild>
+                <IconButton size="2xsmall" variant="transparent">
+                  <MinusMini className="text-ui-fg-muted" />
+                </IconButton>
+              </Collapsible.Trigger>
+            </div>
+          </div>
+          <Collapsible.Content>
+            <div className="pt-0.5">
+              <nav className="flex flex-col gap-y-1">
+                {routes.map((setting) => (
+                  <NavItem key={setting.to} {...setting} />
+                ))}
+              </nav>
+            </div>
+          </Collapsible.Content>
+        </Collapsible.Root>
+        <Collapsible.Root defaultOpen className="py-3">
+          <div className="px-3">
+            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+              <Text size="small" leading="compact">
+                Developer
+              </Text>
+              <Collapsible.Trigger asChild>
+                <IconButton size="2xsmall" variant="transparent">
+                  <MinusMini className="text-ui-fg-muted" />
+                </IconButton>
+              </Collapsible.Trigger>
+            </div>
+          </div>
+          <Collapsible.Content>
+            <div className="pt-0.5">
+              <nav className="flex flex-col gap-y-1">
+                {developerRoutes.map((setting) => (
+                  <NavItem key={setting.to} {...setting} />
+                ))}
+              </nav>
+            </div>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </div>
     </aside>
   )

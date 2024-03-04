@@ -20,19 +20,35 @@ export type WorkflowExecutionStep = {
   startedAt: number
 }
 
+type WorkflowExecutionContext = {
+  data: {
+    invoke: Record<
+      string,
+      {
+        output: {
+          output: unknown
+          comensateInput: unknown
+        }
+      }
+    >
+  }
+  compensate: Record<string, unknown>
+}
+
+type WorflowExecutionExecution = {
+  steps: Record<string, WorkflowExecutionStep>
+}
+
 /**
  * Re-implements WorkflowExecutionDTO as it is currently only exported from `@medusajs/workflows-sdk`.
+ * Also adds type definitions for fields that have vague types, such as `execution` and `context`.
  */
 export interface WorkflowExecutionDTO {
   id: string
   workflow_id: string
   transaction_id: string
-  execution:
-    | (Record<string, unknown> & {
-        steps: Record<string, WorkflowExecutionStep>
-      })
-    | null
-  context: Record<string, unknown> | null
+  execution: WorflowExecutionExecution | null
+  context: WorkflowExecutionContext | null
   state: any
   created_at: Date
   updated_at: Date

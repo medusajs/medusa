@@ -1,19 +1,26 @@
-import { TransactionStepState } from "./types"
+import { TransactionState, TransactionStepState } from "./types"
 
-export const BLUE_STATES = [TransactionStepState.INVOKING]
-
-export const ORANGE_STATES = [
+export const STEP_IN_PROGRESS_STATES = [
   TransactionStepState.COMPENSATING,
-  TransactionStepState.SKIPPED,
+  TransactionStepState.INVOKING,
 ]
-
-export const GREEN_STATES = [TransactionStepState.DONE]
-
-export const RED_STATES = [
+export const STEP_OK_STATES = [TransactionStepState.DONE]
+export const STEP_ERROR_STATES = [
   TransactionStepState.FAILED,
   TransactionStepState.REVERTED,
   TransactionStepState.TIMEOUT,
   TransactionStepState.DORMANT,
+  TransactionStepState.SKIPPED,
 ]
+export const STEP_INACTIVE_STATES = [TransactionStepState.NOT_STARTED]
 
-export const GRAY_STATES = [TransactionStepState.NOT_STARTED]
+export const TRANSACTION_OK_STATES = [TransactionState.DONE]
+export const TRANSACTION_ERROR_STATES = [
+  TransactionState.FAILED,
+  TransactionState.REVERTED,
+]
+export const TRANSACTION_IN_PROGRESS_STATES = [
+  TransactionState.INVOKING,
+  TransactionState.WAITING_TO_COMPENSATE,
+  TransactionState.COMPENSATING,
+]

@@ -1,4 +1,5 @@
 import { Badge, Container, Heading, Text, clx } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import {
   TransactionStepState,
   WorkflowExecutionDTO,
@@ -12,14 +13,18 @@ type ExecutionGeneralSectionProps = {
 export const ExecutionGeneralSection = ({
   execution,
 }: ExecutionGeneralSectionProps) => {
+  const { t } = useTranslation()
+
+  const cleanId = execution.id.replace("wf_exec_", "")
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{execution.transaction_id}</Heading>
+        <Heading>{cleanId}</Heading>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Workflow ID
+          {t("executions.workflowIdLabel")}
         </Text>
         <Badge size="2xsmall" className="w-fit">
           {execution.workflow_id}
@@ -27,7 +32,15 @@ export const ExecutionGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Progress
+          {t("executions.transactionIdLabel")}
+        </Text>
+        <Badge size="2xsmall" className="w-fit">
+          {execution.transaction_id}
+        </Badge>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("executions.progressLabel")}
         </Text>
         <Progress steps={execution.execution?.steps} />
       </div>
@@ -42,10 +55,15 @@ const Progress = ({
 }: {
   steps?: Record<string, WorkflowExecutionStep> | null
 }) => {
+  const { t } = useTranslation()
+
   if (!steps) {
     return (
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        0 of 0 steps
+        {t("executions.stepsCompletedLabel", {
+          completed: 0,
+          total: 0,
+        })}
       </Text>
     )
   }
@@ -75,7 +93,10 @@ const Progress = ({
         ))}
       </div>
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        {completedSteps.length} of {Object.keys(steps).length - 1} steps
+        {t("executions.stepsCompletedLabel", {
+          completed: completedSteps.length,
+          count: actionableSteps.length,
+        })}
       </Text>
     </div>
   )
