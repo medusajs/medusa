@@ -49,6 +49,10 @@ const env: Record<any, any> = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
+// TODO SEE to use new test runner medusaIntegrationTestRunner({
+//   env,
+//   testSuite: ({ dbConnection, getContainer, api }) => {})
+
 describe.skip("Product import batch job", () => {
   let dbConnection
   let shutdownServer
