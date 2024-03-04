@@ -194,6 +194,7 @@ export class Migration20240219102530 extends Migration {
           "id" TEXT NOT NULL,
           "order_id" TEXT NULL,
           "version" INTEGER NULL,
+          "ordering" BIGSERIAL NOT NULL,
           "order_change_id" TEXT NULL,
           "reference" TEXT NULL,
           "reference_id" TEXT NULL,
@@ -214,6 +215,10 @@ export class Migration20240219102530 extends Migration {
 
       CREATE INDEX IF NOT EXISTS "IDX_order_change_action_order_id" ON "order_change_action" (
           order_id
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_ordering" ON "order_change_action" (
+          ordering
       );
 
       CREATE TABLE IF NOT EXISTS "order_item" (

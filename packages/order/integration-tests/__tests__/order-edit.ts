@@ -1,15 +1,15 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
-import { ChangeActionType, calculateOrderChange } from "../../src/utils"
+import { ChangeActionType } from "../../src/utils"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
-  debug: 0,
+  debug: 1,
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
-    describe.skip("Order Module Service - Order Edits", () => {
+    describe("Order Module Service - Order Edits", () => {
       const input = {
         email: "foo@bar.com",
         items: [
@@ -129,34 +129,35 @@ moduleIntegrationTestRunner({
           description: "changing the order",
           internal_note: "client called and wanted to change the order",
           created_by: "CX agent 123",
-          actions: [
-            {
-              action: ChangeActionType.ITEM_ADD,
-              internal_note: "adding an item",
-              reference: "order_line_item",
-              reference_id: createdOrder.items[0].id,
-              amount:
-                createdOrder.items[0].unit_price *
-                createdOrder.items[0].quantity,
-              details: {
-                quantity: 1,
-              },
-            },
-            {
-              action: ChangeActionType.ITEM_ADD,
-              reference: "order_line_item",
-              reference_id: createdOrder.items[1].id,
-              amount:
-                createdOrder.items[1].unit_price *
-                createdOrder.items[1].quantity,
-              details: {
-                quantity: 3,
-              },
-            },
-          ],
+          actions: [],
         })
 
-        const actions = await service.addOrderAction([
+        await service.addOrderAction([
+          {
+            action: ChangeActionType.ITEM_ADD,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            internal_note: "adding an item",
+            reference: "order_line_item",
+            reference_id: createdOrder.items[0].id,
+            amount:
+              createdOrder.items[0].unit_price * createdOrder.items[0].quantity,
+            details: {
+              quantity: 1,
+            },
+          },
+          {
+            action: ChangeActionType.ITEM_ADD,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            reference: "order_line_item",
+            reference_id: createdOrder.items[1].id,
+            amount:
+              createdOrder.items[1].unit_price * createdOrder.items[1].quantity,
+            details: {
+              quantity: 3,
+            },
+          },
           {
             action: ChangeActionType.FULFILL_ITEM,
             order_id: createdOrder.id,
@@ -168,7 +169,17 @@ moduleIntegrationTestRunner({
               quantity: 1,
             },
           },
-
+          {
+            action: ChangeActionType.SHIP_ITEM,
+            order_id: createdOrder.id,
+            version: createdOrder.version,
+            reference: "fullfilment",
+            reference_id: "shipping_123",
+            details: {
+              reference_id: createdOrder.items[2].id,
+              quantity: 1,
+            },
+          },
           {
             action: ChangeActionType.RETURN_ITEM,
             order_id: createdOrder.id,
@@ -195,6 +206,7 @@ moduleIntegrationTestRunner({
           },
         ])
 
+        /*
         const calculated = calculateOrderChange({
           order: createdOrder,
           actions: [...orderChange.actions, ...actions],
@@ -203,6 +215,10 @@ moduleIntegrationTestRunner({
 
         console.log(calculated.order.items.map((a) => a))
         console.log(calculated.order.summary)
+        console.log(calculated.summary)
+        */
+
+        const order = await service.applyPendingOrderActions(createdOrder.id)
       })
     })
   },

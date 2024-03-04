@@ -2,37 +2,33 @@ import { MedusaError, isDefined } from "@medusajs/utils"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
 
-OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
-  isDeduction: true,
-  awaitRequired: true,
+OrderChangeProcessing.registerActionType(ChangeActionType.SHIP_ITEM, {
   operation({ action, currentOrder }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.detail.return_requested_quantity ??= 0
-    existing.detail.return_requested_quantity += action.details.quantity
+    existing.detail.shipped_quantity ??= 0
 
-    return existing.unit_price * action.details.quantity
+    existing.detail.shipped_quantity += action.details.quantity
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
-      (item) => item.id === action.details.reference_id
+      (item) => item.id === action.reference_id
     )!
 
-    existing.detail.return_requested_quantity -= action.details.quantity
+    existing.detail.shipped_quantity -= action.details.quantity
   },
   validate({ action, currentOrder }) {
-    const refId = action.details?.reference_id
+    const refId = action.details.reference_id
     if (!isDefined(refId)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Details reference ID is required."
+        "Reference ID is required."
       )
     }
 
     const existing = currentOrder.items.find((item) => item.id === refId)
-
     if (!existing) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -43,18 +39,25 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
     if (!action.details.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Quantity to return of item ${refId} is required.`
+        `Quantity to ship of item ${refId} is required.`
       )
     }
 
-    const quantityAvailable =
-      (existing!.detail.shipped_quantity ?? 0) -
-      (existing!.detail.return_requested_quantity ?? 0)
-
-    if (action.details.quantity > quantityAvailable) {
+    if (action.details.quantity < 1) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Cannot request to return more items than what was shipped for item ${refId}.`
+        `Quantity of item ${refId} must be greater than 0.`
+      )
+    }
+
+    const notShipped =
+      (existing.detail.fulfilled_quantity as number) -
+      (existing.detail.shipped_quantity as number)
+
+    if (action.details.quantity > notShipped) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot ship more items than what was fulfilled for item ${refId}.`
       )
     }
   },

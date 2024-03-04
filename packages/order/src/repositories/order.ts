@@ -60,6 +60,10 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     config.options.populateWhere.shipping_methods ??= {}
     config.options.populateWhere.shipping_methods.version = version
 
+    if (!config.options.orderBy) {
+      config.options.orderBy = { id: "ASC" }
+    }
+
     return await manager.find(Order, config.where, config.options)
   }
 
@@ -107,6 +111,10 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
 
     config.options.populateWhere.shipping_methods ??= {}
     config.options.populateWhere.shipping_methods.version = version
+
+    if (!config.options.orderBy) {
+      config.options.orderBy = { id: "ASC" }
+    }
 
     return await manager.findAndCount(Order, config.where, config.options)
   }

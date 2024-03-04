@@ -1,15 +1,16 @@
+import { OrderSummaryDTO } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,
   InternalOrderChangeEvent,
   OrderChangeEvent,
-  OrderSummary,
+  OrderSummaryCalculated,
   OrderTransaction,
   VirtualOrder,
 } from "@types"
 
-type InternalOrderSummary = OrderSummary & {
+type InternalOrderSummary = OrderSummaryCalculated & {
   futureTemporarySum: number
 }
 
@@ -317,7 +318,7 @@ export class OrderChangeProcessing {
     })
   }
 
-  public getSummary(): OrderSummary {
+  public getSummary(): OrderSummaryDTO {
     const summary = this.summary
     const orderSummary = {
       transactionTotal: summary.transactionTotal,
@@ -328,7 +329,35 @@ export class OrderChangeProcessing {
       futureTemporaryDifference: summary.futureTemporaryDifference,
       pendingDifference: summary.pendingDifference,
       differenceSum: summary.differenceSum,
+    } as unknown as OrderSummaryDTO
+
+    /*
+    {
+      total: summary.currentOrderTotal
+      
+      subtotal: number
+      total_tax: number
+
+      ordered_total: summary.originalOrderTotal
+      fulfilled_total: number
+      returned_total: number
+      return_request_total: number
+      write_off_total: number
+      projected_total: number
+
+      net_total: number
+      net_subtotal: number
+      net_total_tax: number
+
+      future_total: number
+      future_subtotal: number
+      future_total_tax: number
+      future_projected_total: number
+
+      balance: summary.pendingDifference
+      future_balance: number
     }
+    */
 
     return orderSummary
   }

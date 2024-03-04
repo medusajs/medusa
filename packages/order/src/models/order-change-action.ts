@@ -30,12 +30,21 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   columns: "order_id",
 })
 
+const ActionOrderingIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "ordering",
+})
+
 @Entity({ tableName: "order_change_action" })
 export default class OrderChangeAction {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ columnType: "integer", autoincrement: true })
+  @ActionOrderingIndex.MikroORMIndex()
+  ordering: number
 
   @ManyToOne({
     entity: () => Order,

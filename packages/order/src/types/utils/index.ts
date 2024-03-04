@@ -6,11 +6,13 @@ export type VirtualOrder = {
 
     detail: {
       quantity: number
+      shipped_quantity: number
       fulfilled_quantity: number
       return_requested_quantity: number
       return_received_quantity: number
       return_dismissed_quantity: number
       written_off_quantity: number
+      metadata?: Record<string, unknown>
     }
   }[]
 
@@ -23,7 +25,7 @@ export type VirtualOrder = {
     total: number
   }
 
-  shipping_total: number
+  metadata?: Record<string, unknown>
 }
 
 export enum EVENT_STATUS {
@@ -32,7 +34,7 @@ export enum EVENT_STATUS {
   DONE = "done",
 }
 
-export interface OrderSummary {
+export interface OrderSummaryCalculated {
   currentOrderTotal: number
   originalOrderTotal: number
   transactionTotal: number
@@ -76,7 +78,7 @@ export type OrderReferences = {
   action: InternalOrderChangeEvent
   previousEvents?: InternalOrderChangeEvent[]
   currentOrder: VirtualOrder
-  summary: OrderSummary
+  summary: OrderSummaryCalculated
   transactions: OrderTransaction[]
   type: ActionTypeDefinition
   actions: InternalOrderChangeEvent[]

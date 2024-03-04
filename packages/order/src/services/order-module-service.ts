@@ -11,6 +11,7 @@ import {
   UpdateOrderItemWithSelectorDTO,
 } from "@medusajs/types"
 import {
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
   isObject,
@@ -29,6 +30,7 @@ import {
   OrderChange,
   OrderChangeAction,
   OrderItem,
+  OrderSummary,
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
@@ -46,6 +48,7 @@ import {
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { calculateOrderChange } from "../utils"
 import { formatOrder } from "../utils/transform-order"
 import OrderChangeService from "./order-change-service"
 import OrderService from "./order-service"
@@ -64,6 +67,7 @@ type InjectedDependencies = {
   orderChangeService: OrderChangeService<any>
   orderChangeActionService: ModulesSdkTypes.InternalModuleService<any>
   orderItemService: ModulesSdkTypes.InternalModuleService<any>
+  orderSummaryService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -78,6 +82,7 @@ const generateMethodForModels = [
   OrderChange,
   OrderChangeAction,
   OrderItem,
+  OrderSummary,
 ]
 
 export default class OrderModuleService<
@@ -92,7 +97,8 @@ export default class OrderModuleService<
     TTransaction extends Transaction = Transaction,
     TOrderChange extends OrderChange = OrderChange,
     TOrderChangeAction extends OrderChangeAction = OrderChangeAction,
-    TOrderItem extends OrderItem = OrderItem
+    TOrderItem extends OrderItem = OrderItem,
+    TOrderSummary extends OrderSummary = OrderSummary
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -111,6 +117,7 @@ export default class OrderModuleService<
       OrderChange: { dto: OrderTypes.OrderChangeDTO }
       OrderChangeAction: { dto: OrderTypes.OrderChangeActionDTO }
       OrderItem: { dto: OrderTypes.OrderItemDTO }
+      OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -128,6 +135,7 @@ export default class OrderModuleService<
   protected orderChangeService_: OrderChangeService<TOrderChange>
   protected orderChangeActionService_: ModulesSdkTypes.InternalModuleService<TOrderChangeAction>
   protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
+  protected orderSummaryService_: ModulesSdkTypes.InternalModuleService<TOrderSummary>
 
   constructor(
     {
@@ -144,6 +152,7 @@ export default class OrderModuleService<
       orderChangeService,
       orderChangeActionService,
       orderItemService,
+      orderSummaryService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -163,6 +172,7 @@ export default class OrderModuleService<
     this.orderChangeService_ = orderChangeService
     this.orderChangeActionService_ = orderChangeActionService
     this.orderItemService_ = orderItemService
+    this.orderSummaryService_ = orderSummaryService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -1602,7 +1612,11 @@ export default class OrderModuleService<
       ? orderChangeId
       : [orderChangeId]
 
-    await this.getAndValidateOrderChange_(orderChangeIds, sharedContext)
+    const changes = await this.getAndValidateOrderChange_(
+      orderChangeIds,
+      true,
+      sharedContext
+    )
 
     const updates = orderChangeIds.map((id) => {
       return {
@@ -1614,17 +1628,105 @@ export default class OrderModuleService<
     await this.orderChangeService_.update(updates as any, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async completelOrderChange(
+    data: any[] | any,
+    sharedContext?: Context
+  ): Promise<void> {
+    const allData = Array.isArray(data) ? data : [data]
+
+    const orderChangeIds = allData.map((d) => d.order_change_id)
+
+    const changes = await this.getAndValidateOrderChange_(
+      orderChangeIds,
+      true,
+      sharedContext
+    )
+
+    const updates = allData.map((id) => {
+      return {
+        ...data,
+        status: OrderChangeStatus.CONFIRMED,
+      }
+    })
+
+    await this.orderChangeService_.update(updates as any, sharedContext)
+
+    await this.applyOrderChanges_(changes, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async applyPendingOrderActions(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<void> {
+    const orderIds = Array.isArray(orderId) ? orderId : [orderId]
+
+    const orders = await this.list(
+      { id: orderIds },
+      {
+        select: ["id", "version"],
+      },
+      sharedContext
+    )
+
+    const changes = await this.orderChangeActionService_.list(
+      {
+        order_id: orders.map((order) => order.id),
+        version: orders[0].version,
+        applied: false,
+      },
+      {
+        select: [
+          "id",
+          "order_id",
+          "ordering",
+          "version",
+          "applied",
+          "reference",
+          "reference_id",
+          "action",
+          "details",
+          "amount",
+          "raw_amount",
+          "internal_note",
+        ],
+        order: {
+          ordering: "ASC",
+        },
+      },
+      sharedContext
+    )
+
+    await this.applyOrderChanges_(changes, sharedContext)
+  }
+
   private async getAndValidateOrderChange_(
     orderChangeIds: string[],
+    includeActions: boolean,
     sharedContext?: Context
   ): Promise<any> {
+    const options = {
+      select: ["id", "order_id", "version", "status"],
+      relations: [] as string[],
+      order: {},
+    }
+
+    if (includeActions) {
+      options.select.push("actions")
+      options.relations.push("actions")
+      options.order = {
+        actions: {
+          ordering: "ASC",
+        },
+      }
+    }
+
     const orderChanges = await this.listOrderChanges(
       {
         id: orderChangeIds,
       },
-      {
-        select: ["id", "order_id", "version", "status"],
-      },
+      options,
       sharedContext
     )
 
@@ -1677,6 +1779,7 @@ export default class OrderModuleService<
     if (orderChangeIds.length) {
       const ordChanges = await this.getAndValidateOrderChange_(
         orderChangeIds,
+        false,
         sharedContext
       )
       for (const ordChange of ordChanges) {
@@ -1690,5 +1793,103 @@ export default class OrderModuleService<
     }
 
     return await this.orderChangeActionService_.create(dataArr, sharedContext)
+  }
+
+  private async applyOrderChanges_(
+    data: any[],
+    sharedContext?: Context
+  ): Promise<void> {
+    type ApplyOrderChangeDTO = {
+      id: string
+      order_id: string
+      version: number
+      actions: OrderChangeAction[]
+      applied: boolean
+    }
+
+    const actionsMap: Record<string, ApplyOrderChangeDTO[]> = {}
+    const ordersIds: string[] = []
+    const usedActions: any[] = []
+
+    for (const action of data as ApplyOrderChangeDTO[]) {
+      if (action.applied) {
+        continue
+      }
+
+      ordersIds.push(action.order_id)
+
+      actionsMap[action.order_id] ??= []
+      actionsMap[action.order_id].push(action)
+
+      usedActions.push({
+        id: action.id,
+        applied: true,
+      })
+    }
+
+    if (!ordersIds.length) {
+      return
+    }
+
+    const orders = await this.list(
+      { id: deduplicate(ordersIds) },
+      {
+        select: ["id", "version", "items.detail", "transactions", "summary"],
+        relations: ["transactions", "items", "items.detail"],
+      },
+      sharedContext
+    )
+
+    const itemsToUpsert: OrderItem[] = []
+    const ordersToUpdate: any[] = []
+
+    for (const order of orders) {
+      const calculated = calculateOrderChange({
+        order: order as any,
+        actions: actionsMap[order.id] as any,
+        transactions: order.transactions,
+      })
+
+      const version = actionsMap[order.id][0].version!
+
+      for (const item of calculated.order.items) {
+        itemsToUpsert.push({
+          item_id: item.id,
+          order_id: order.id,
+          version,
+
+          quantity: item.detail.quantity,
+
+          fulfilled_quantity: item.detail.fulfilled_quantity,
+
+          shipped_quantity: item.detail.shipped_quantity,
+          return_requested_quantity: item.detail.return_requested_quantity,
+          return_received_quantity: item.detail.return_received_quantity,
+          return_dismissed_quantity: item.detail.return_dismissed_quantity,
+          written_off_quantity: item.detail.written_off_quantity,
+          metadata: item.detail.metadata,
+        } as any)
+      }
+
+      if (version > order.version) {
+        //await this.update({ id: order.id, version } as any, undefined, sharedContext)
+      }
+
+      ordersToUpdate.push({
+        selector: {
+          order_id: order.id,
+        },
+        data: {
+          version,
+          totals: calculated.summary,
+        },
+      })
+    }
+
+    await this.orderChangeActionService_.update(usedActions, sharedContext)
+
+    await this.orderItemService_.upsert(itemsToUpsert, sharedContext)
+
+    await this.orderSummaryService_.update(ordersToUpdate, sharedContext)
   }
 }

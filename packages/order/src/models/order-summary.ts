@@ -1,4 +1,5 @@
 import {
+  BigNumber,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -12,7 +13,31 @@ import {
   Property,
 } from "@mikro-orm/core"
 import { Order } from "@models"
-import { OrderSummary as OrderSummaryFields } from "../types/common"
+
+type OrderSummaryTotals = {
+  total: BigNumber
+  subtotal: BigNumber
+  total_tax: BigNumber
+
+  ordered_total: BigNumber
+  fulfilled_total: BigNumber
+  returned_total: BigNumber
+  return_request_total: BigNumber
+  write_off_total: BigNumber
+  projected_total: BigNumber
+
+  net_total: BigNumber
+  net_subtotal: BigNumber
+  net_total_tax: BigNumber
+
+  future_total: BigNumber
+  future_subtotal: BigNumber
+  future_total_tax: BigNumber
+  future_projected_total: BigNumber
+
+  balance: BigNumber
+  future_balance: BigNumber
+}
 
 const OrderIdVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_summary",
@@ -49,7 +74,7 @@ export default class OrderSummary {
   version: number = 1
 
   @Property({ columnType: "jsonb" })
-  totals: OrderSummaryFields | null = {} as OrderSummaryFields
+  totals: OrderSummaryTotals | null = {} as OrderSummaryTotals
 
   @Property({
     onCreate: () => new Date(),
