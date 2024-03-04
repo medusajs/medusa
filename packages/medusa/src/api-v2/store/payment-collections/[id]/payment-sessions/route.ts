@@ -1,6 +1,4 @@
 import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPaymentModuleService } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -24,21 +22,11 @@ export const POST = async (
     }
   }
 
-  const paymentService = req.scope.resolve<IPaymentModuleService>(
-    ModuleRegistrationName.PAYMENT
-  )
-
-  const paymentCollection = await paymentService.retrievePaymentCollection(id, {
-    select: ["id", "amount", "currency_code"],
-  })
-
   const workflowInput = {
     payment_collection_id: id,
     provider_id: provider_id,
     data,
     context,
-    amount: paymentCollection.amount, // Question for the future: How do we handle split payments?
-    currency_code: paymentCollection.currency_code,
   }
 
   const { errors } = await createPaymentSessionsWorkflow(req.scope).run({

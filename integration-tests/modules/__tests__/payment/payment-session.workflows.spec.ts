@@ -59,8 +59,6 @@ describe("Carts workflows", () => {
         input: {
           payment_collection_id: paymentCollection.id,
           provider_id: "pp_system_default",
-          amount: paymentCollection.amount,
-          currency_code: paymentCollection.currency_code,
           context: {},
           data: {},
         },
@@ -117,8 +115,6 @@ describe("Carts workflows", () => {
           input: {
             payment_collection_id: paymentCollection.id,
             provider_id: "pp_system_default",
-            amount: paymentCollection.amount,
-            currency_code: paymentCollection.currency_code,
             context: {},
             data: {},
           },
