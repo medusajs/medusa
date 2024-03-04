@@ -1,11 +1,11 @@
-import { Modules } from "@medusajs/modules-sdk"
+import {Modules} from "@medusajs/modules-sdk"
 import {
   CreateGeoZoneDTO,
   IFulfillmentModuleService,
   UpdateGeoZoneDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {GeoZoneType} from "@medusajs/utils"
+import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -14,8 +14,7 @@ moduleIntegrationTestRunner({
   testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
-        describe("geo zones", () => {
-          it("should list geo zones with a filter", async function () {
+        it("should list geo zones with a filter", async function () {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -62,7 +61,6 @@ moduleIntegrationTestRunner({
               ])
             )
           })
-        })
       })
 
       describe("mutations", () => {

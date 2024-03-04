@@ -6,13 +6,11 @@ import {
 import {
   BeforeCreate,
   Entity,
-  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import Fulfillment from "./fulfillment"
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
@@ -34,18 +32,6 @@ export default class Address {
 
   @PrimaryKey({ columnType: "text" })
   id!: string
-
-  @OneToOne(() => Fulfillment, {
-    columnType: "text",
-    mapToPk: true,
-    fieldName: "fulfillment_id",
-    onDelete: "cascade",
-  })
-  @FulfillmentIdIndex.MikroORMIndex()
-  fulfillment_id: string
-
-  @OneToOne(() => Fulfillment, { persist: false })
-  fulfillment: Fulfillment
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null
@@ -102,12 +88,10 @@ export default class Address {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "fuladdr")
-    this.fulfillment_id ??= this.fulfillment.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fuladdr")
-    this.fulfillment_id ??= this.fulfillment.id
   }
 }

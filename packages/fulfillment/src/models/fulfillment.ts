@@ -116,8 +116,8 @@ export default class Fulfillment {
   @ManyToOne(() => ServiceProvider, { persist: false })
   provider: ServiceProvider
 
-  @OneToOne(() => Address)
-  delivery_address: Address
+  @OneToOne()
+  delivery_address!: Address
 
   @OneToMany(() => FulfillmentItem, (item) => item.fulfillment)
   items = new Collection<FulfillmentItem>(this)

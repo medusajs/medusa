@@ -15,8 +15,7 @@ moduleIntegrationTestRunner({
   testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
-        describe("service zones", () => {
-          it("should list service zones with a filter", async function () {
+        it("should list service zones with a filter", async function () {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -67,7 +66,6 @@ moduleIntegrationTestRunner({
               ])
             )
           })
-        })
       })
 
       describe("mutations", () => {

@@ -1,8 +1,11 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240301121920_InitialSetupMigration extends Migration {
+export class Migration20240304095038_InitialSetupMigration extends Migration {
 
   async up(): Promise<void> {
+    this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
+    this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_address_deleted_at" ON "fulfillment_address" (deleted_at) WHERE deleted_at IS NOT NULL;');
+
     this.addSql('create table if not exists "fulfillment_set" ("id" text not null, "name" text not null, "type" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_set_pkey" primary key ("id"));');
     this.addSql('CREATE UNIQUE INDEX IF NOT EXISTS "IDX_fulfillment_set_name_unique" ON "fulfillment_set" (name) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_set_deleted_at" ON "fulfillment_set" (deleted_at) WHERE deleted_at IS NOT NULL;');
@@ -41,11 +44,6 @@ export class Migration20240301121920_InitialSetupMigration extends Migration {
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_rule_shipping_option_id" ON "shipping_option_rule" (shipping_option_id) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_rule_deleted_at" ON "shipping_option_rule" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
-    this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "fulfillment_id" text not null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
-    this.addSql('alter table if exists "fulfillment_address" add constraint "fulfillment_address_fulfillment_id_unique" unique ("fulfillment_id");');
-    this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_address_fulfillment_id" ON "fulfillment_address" (fulfillment_id) WHERE deleted_at IS NULL;');
-    this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_address_deleted_at" ON "fulfillment_address" (deleted_at) WHERE deleted_at IS NOT NULL;');
-
     this.addSql('create table if not exists "fulfillment" ("id" text not null, "location_id" text not null, "packed_at" timestamptz null, "shipped_at" timestamptz null, "delivered_at" timestamptz null, "canceled_at" timestamptz null, "data" jsonb null, "provider_id" text null, "shipping_option_id" text null, "metadata" jsonb null, "delivery_address_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_pkey" primary key ("id"));');
     this.addSql('alter table if exists "fulfillment" add constraint "fulfillment_delivery_address_id_unique" unique ("delivery_address_id");');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_location_id" ON "fulfillment" (location_id) WHERE deleted_at IS NULL;');
@@ -73,8 +71,6 @@ export class Migration20240301121920_InitialSetupMigration extends Migration {
     this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_shipping_option_type_id_foreign" foreign key ("shipping_option_type_id") references "shipping_option_type" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table if exists "shipping_option_rule" add constraint "shipping_option_rule_shipping_option_id_foreign" foreign key ("shipping_option_id") references "shipping_option" ("id") on update cascade;');
-
-    this.addSql('alter table if exists "fulfillment_address" add constraint "fulfillment_address_fulfillment_id_foreign" foreign key ("fulfillment_id") references "fulfillment" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table if exists "fulfillment" add constraint "fulfillment_provider_id_foreign" foreign key ("provider_id") references "service_provider" ("id") on update cascade on delete set null;');
     this.addSql('alter table if exists "fulfillment" add constraint "fulfillment_shipping_option_id_foreign" foreign key ("shipping_option_id") references "shipping_option" ("id") on update cascade on delete set null;');
