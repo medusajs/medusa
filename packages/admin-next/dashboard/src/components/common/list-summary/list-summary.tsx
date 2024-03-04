@@ -1,6 +1,8 @@
 import { Text, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import cx from "classnames"
+
 type ListSummaryProps = {
   /**
    * Number of initial items to display
@@ -11,12 +13,22 @@ type ListSummaryProps = {
    * List of strings to display as abbreviated list
    */
   list: string[]
+  /**
+   * Is hte summary displayed inline.
+   * Determines whether the center text is truncated if there is no space in the container
+   */
+  inline?: boolean
 }
 
-export const ListSummary = ({ list, n = 2 }: ListSummaryProps) => {
+export const ListSummary = ({ list, inline, n = 2 }: ListSummaryProps) => {
   const { t } = useTranslation()
   return (
-    <div className="text-ui-fg-subtle inline-flex gap-x-2">
+    <div
+      className={cx("text-ui-fg-subtle gap-x-2", {
+        "inline-flex": inline,
+        flex: !inline,
+      })}
+    >
       <Text as="span" leading="compact" size="small" className="truncate">
         {list.slice(0, n).join(", ")}
       </Text>

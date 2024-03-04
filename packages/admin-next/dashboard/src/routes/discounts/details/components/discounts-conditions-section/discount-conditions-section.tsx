@@ -24,6 +24,7 @@ function ConditionType({ condition }: ConditionTypeProps) {
           components={[
             <span className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1">
               <ListSummary
+                inline
                 list={condition[entity].map((p) => p.title || p.name)}
               />
             </span>,
@@ -35,13 +36,13 @@ function ConditionType({ condition }: ConditionTypeProps) {
   )
 }
 
-type DiscountConditionsSection = {
+type DiscountConditionsSectionProps = {
   discount: Discount
 }
 
 export const DiscountConditionsSection = ({
   discount,
-}: DiscountConditionsSection) => {
+}: DiscountConditionsSectionProps) => {
   const { t } = useTranslation()
 
   const conditions = useMemo(
@@ -71,6 +72,11 @@ export const DiscountConditionsSection = ({
         />
       </div>
       <div className="text-ui-fg-subtle flex flex-col gap-2 px-6 pb-4 pt-2">
+        {!conditions.length && (
+          <span className="text-ui-fg-subtle text-small text-center">
+            {t("discounts.noConditions")}
+          </span>
+        )}
         {conditions.map((condition) => (
           <ConditionType key={condition.id} condition={condition} />
         ))}

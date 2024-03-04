@@ -214,6 +214,7 @@
     "hasDurationLimit": "Availability duration",
     "durationHint": "Set the duration of the discount",
     "chooseValidRegions": "Choose valid regions",
+    "noConditions": "No conditions are defined for this discount.",
     "conditions": {
       "including": {
         "products": "Discount applies to <0/> product.",
