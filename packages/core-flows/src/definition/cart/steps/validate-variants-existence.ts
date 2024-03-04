@@ -16,12 +16,8 @@ export const validateVariantsExistStep = createStep(
     )
 
     const variants = await productModuleService.listVariants(
-      {
-        id: data.variantIds,
-      },
-      {
-        select: ["id"],
-      }
+      { id: data.variantIds },
+      { select: ["id"] }
     )
 
     const variantIdToData = new Set(variants.map((v) => v.id))

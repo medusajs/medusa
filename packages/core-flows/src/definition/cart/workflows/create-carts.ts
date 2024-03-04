@@ -14,6 +14,7 @@ import {
   getVariantsStep,
   validateVariantsExistStep,
 } from "../steps"
+import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
@@ -83,26 +84,30 @@ export const createCartWorkflow = createWorkflow(
       }
     )
 
-    const variants = getVariantsStep({
-      filter: { id: variantIds },
-      config: {
-        select: [
-          "id",
-          "title",
-          "sku",
-          "barcode",
-          "product.id",
-          "product.title",
-          "product.description",
-          "product.subtitle",
-          "product.thumbnail",
-          "product.type",
-          "product.collection",
-          "product.handle",
-        ],
-        relations: ["product"],
-      },
-    })
+    const variants = getVariantsStep(
+      transform({ variantIds }, (data) => {
+        return {
+          filter: { id: data.variantIds },
+          config: {
+            select: [
+              "id",
+              "title",
+              "sku",
+              "barcode",
+              "product.id",
+              "product.title",
+              "product.description",
+              "product.subtitle",
+              "product.thumbnail",
+              "product.type",
+              "product.collection",
+              "product.handle",
+            ],
+            relations: ["product"],
+          },
+        }
+      })
+    )
 
     const lineItems = transform({ priceSets, input, variants }, (data) => {
       const items = (data.input.items ?? []).map((item) => {
@@ -127,8 +132,15 @@ export const createCartWorkflow = createWorkflow(
     })
 
     const carts = createCartsStep([cartToCreate])
-
     const cart = transform({ carts }, (data) => data.carts?.[0])
+
+    updateTaxLinesStep(
+      transform({ cart }, (data) => {
+        return {
+          cartOrCartId: data.cart.id,
+        }
+      })
+    )
 
     return cart
   }
