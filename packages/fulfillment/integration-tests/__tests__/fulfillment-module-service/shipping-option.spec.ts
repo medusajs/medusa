@@ -1,24 +1,40 @@
 import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateShippingOptionDTO,
-  IFulfillmentModuleService
+  IFulfillmentModuleService,
 } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { generateCreateShippingOptionsData } from "../../__fixtures__"
+import { resolve } from "path"
+import { ServiceProviderService } from "@services"
+import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 
 jest.setTimeout(100000)
 
-// TODO: Temporary until the providers are sorted out
-const createProvider = async (MikroOrmWrapper, providerId: string) => {
-  const [{ id }] = await MikroOrmWrapper.forkManager().execute(
-    `insert into service_provider (id) values ('${providerId}') returning id`
-  )
-
-  return id
+const moduleOptions = {
+  providers: [
+    {
+      resolve: resolve(
+        process.cwd() +
+          "/integration-tests/__fixtures__/providers/default-provider"
+      ),
+      options: {
+        config: {
+          "test-provider": {},
+        },
+      },
+    },
+  ],
 }
+
+const providerId = ServiceProviderService.getRegistrationIdentifier(
+  FulfillmentProviderServiceFixtures,
+  "test-provider"
+)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
+  moduleOptions,
   testSuite: ({
     MikroOrmWrapper,
     service,
@@ -40,11 +56,6 @@ moduleIntegrationTestRunner({
             name: "test",
             type: "default",
           })
-
-          const providerId = await createProvider(
-            MikroOrmWrapper,
-            "sp_jdafwfleiwuonl"
-          )
 
           const [shippingOption1] = await service.createShippingOptions([
             generateCreateShippingOptionsData({
@@ -101,11 +112,6 @@ moduleIntegrationTestRunner({
             name: "test",
             type: "default",
           })
-
-          const providerId = await createProvider(
-            MikroOrmWrapper,
-            "sp_jdafwfleiwuonl"
-          )
 
           const [shippingOption1, , shippingOption3] =
             await service.createShippingOptions([
@@ -211,11 +217,6 @@ moduleIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             })
 
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
-
             const createData: CreateShippingOptionDTO =
               generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
@@ -268,11 +269,6 @@ moduleIntegrationTestRunner({
               name: "test",
               fulfillment_set_id: fulfillmentSet.id,
             })
-
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
 
             const createData: CreateShippingOptionDTO[] = [
               generateCreateShippingOptionsData({
@@ -339,11 +335,6 @@ moduleIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             })
 
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
-
             const createData: CreateShippingOptionDTO =
               generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
@@ -383,11 +374,6 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
 
             const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
@@ -487,11 +473,6 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
-
             const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
@@ -582,11 +563,6 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
 
             const shippingOptionData = [
               generateCreateShippingOptionsData({
@@ -788,11 +764,6 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
-
             const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
@@ -837,11 +808,6 @@ moduleIntegrationTestRunner({
               name: "test",
               type: "default",
             })
-
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
 
             const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
@@ -962,10 +928,6 @@ moduleIntegrationTestRunner({
               name: "test",
               fulfillment_set_id: fulfillmentSet.id,
             })
-            const providerId = await createProvider(
-              MikroOrmWrapper,
-              "sp_jdafwfleiwuonl"
-            )
 
             const shippingOption = await service.createShippingOptions(
               generateCreateShippingOptionsData({

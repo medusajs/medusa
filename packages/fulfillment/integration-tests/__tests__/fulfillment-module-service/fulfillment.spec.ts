@@ -12,15 +12,6 @@ import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers
 
 jest.setTimeout(100000)
 
-// TODO: Temporary until the providers are sorted out
-const createProvider = async (MikroOrmWrapper, providerId: string) => {
-  const [{ id }] = await MikroOrmWrapper.forkManager().execute(
-    `insert into service_provider (id) values ('${providerId}') returning id`
-  )
-
-  return id
-}
-
 const moduleOptions = {
   providers: [
     {
