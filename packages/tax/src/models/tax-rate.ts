@@ -24,7 +24,7 @@ type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
 
 const TABLE_NAME = "tax_rate"
 
-const singleDefaultRegionIndexName = "IDX_single_default_region"
+export const singleDefaultRegionIndexName = "IDX_single_default_region"
 const singleDefaultRegionIndexStatement = createPsqlIndexStatementHelper({
   name: singleDefaultRegionIndexName,
   tableName: TABLE_NAME,
