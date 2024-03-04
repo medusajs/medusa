@@ -6,6 +6,7 @@ import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
+import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type ConditionTypeProps = {
   condition: DiscountCondition
@@ -72,11 +73,7 @@ export const DiscountConditionsSection = ({
         />
       </div>
       <div className="text-ui-fg-subtle flex flex-col gap-2 px-6 pb-4 pt-2">
-        {!conditions.length && (
-          <span className="text-ui-fg-subtle text-small text-center">
-            {t("discounts.noConditions")}
-          </span>
-        )}
+        {!conditions.length && <NoRecords className="h-[180px]" />}
         {conditions.map((condition) => (
           <ConditionType key={condition.id} condition={condition} />
         ))}

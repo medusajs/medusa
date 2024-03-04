@@ -220,11 +220,20 @@
         "products": "Discount applies to <0/> product.",
         "products_plural": "Discount applies to <0/> products.",
         "customer_groups": "Discount applies to <0/> customer group.",
-        "customer_groups_plural": "Discount applies to <0/> customer groups."
+        "customer_groups_plural": "Discount applies to <0/> customer groups.",
+        "tags": "Discount applies to <0/> tag.",
+        "tags_plural": "Discount applies to <0/> tags.",
+        "collections": "Discount applies to <0/> product collection.",
+        "collections_plural": "Discount applies to <0/> product collections.",
+        "types": "Discount applies to <0/> product type.",
+        "types_plural": "Discount applies to <0/> product types."
       },
       "excluding": {
         "products": "Discount applies to <1>all</1> products except <0/>.",
-        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>."
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
+        "tags": "Discount applies to <1>all</1> product tags except <0/>.",
+        "collections": "Discount applies to <1>all</1> product collections except <0/>.",
+        "types": "Discount applies to <1>all</1> product types except <0/>."
       }
     },
     "discountStatus": {
