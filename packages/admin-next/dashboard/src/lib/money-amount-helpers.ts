@@ -76,7 +76,7 @@ export const getNativeSymbol = (currencyCode: string) => {
 }
 
 /**
- * In some cases we to display the amount with the currency code and symbol,
+ * In some cases we want to display the amount with the currency code and symbol,
  * in the format of "symbol amount currencyCode". This breaks from the
  * user's locale and is only used in cases where we want to display the
  * currency code and symbol explicitly, e.g. for totals.
