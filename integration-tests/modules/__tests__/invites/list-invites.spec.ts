@@ -1,14 +1,7 @@
-import { initDb, useDb } from "../../../environment-helpers/use-db"
-
 import { IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { getContainer } from "../../../environment-helpers/use-container"
-import path from "path"
-import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { useApi } from "../../../environment-helpers/use-api"
-import adminSeeder from "../../../helpers/admin-seeder"
-import { AxiosInstance } from "axios"
 import { createAdminUser } from "../../helpers/create-admin-user"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -17,54 +10,41 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/invites", () => {
-  let dbConnection
-  let appContainer
-  let shutdownServer
-  let userModuleService: IUserModuleService
+medusaIntegrationTestRunner({
+  env,
+  testSuite: ({ dbConnection, getContainer, api }) => {
+    describe("GET /admin/invites", () => {
+      let appContainer
+      let userModuleService: IUserModuleService
 
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
-  })
+      beforeAll(async () => {
+        appContainer = getContainer()
+        userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
+      })
 
-  beforeEach(async () => {
-    await createAdminUser(dbConnection, adminHeaders)
-  })
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+      })
 
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-    await shutdownServer()
-  })
+      it("should list invites", async () => {
+        await userModuleService.createInvites({
+          email: "potential_member@test.com",
+          token: "test",
+          expires_at: new Date(),
+        })
 
-  afterEach(async () => {
-    const db = useDb()
-    await db.teardown()
-  })
+        const response = await api.get(`/admin/invites`, adminHeaders)
 
-  it("should list invites", async () => {
-    await userModuleService.createInvites({
-      email: "potential_member@test.com",
-      token: "test",
-      expires_at: new Date(),
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          invites: [
+            expect.objectContaining({ email: "potential_member@test.com" }),
+          ],
+          count: 1,
+          offset: 0,
+          limit: 50,
+        })
+      })
     })
-
-    const api = useApi()! as AxiosInstance
-
-    const response = await api.get(`/admin/invites`, adminHeaders)
-
-    expect(response.status).toEqual(200)
-    expect(response.data).toEqual({
-      invites: [
-        expect.objectContaining({ email: "potential_member@test.com" }),
-      ],
-      count: 1,
-      offset: 0,
-      limit: 50,
-    })
-  })
+  },
 })
