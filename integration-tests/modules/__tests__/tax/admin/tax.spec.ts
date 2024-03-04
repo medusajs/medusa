@@ -2,7 +2,6 @@ import { ITaxModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import { useApi } from "../../../../environment-helpers/use-api"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
@@ -333,7 +332,6 @@ medusaIntegrationTestRunner({
       })
 
       it("can create a tax region and delete it", async () => {
-        const api = useApi() as any
         const regionRes = await api.post(
           `/admin/tax-regions`,
           {
