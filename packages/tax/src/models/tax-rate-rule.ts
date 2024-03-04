@@ -37,7 +37,8 @@ const referenceIdIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-const uniqueRateReferenceIndexName = "IDX_tax_rate_rule_unique_rate_reference"
+export const uniqueRateReferenceIndexName =
+  "IDX_tax_rate_rule_unique_rate_reference"
 const uniqueRateReferenceIndexStatement = createPsqlIndexStatementHelper({
   name: uniqueRateReferenceIndexName,
   tableName: TABLE_NAME,
