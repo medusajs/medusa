@@ -82,7 +82,12 @@ export const DiscountConditionsSection = ({
         />
       </div>
       <div className="text-ui-fg-subtle flex flex-col gap-2 px-6 pb-4 pt-2">
-        {!conditions.length && <NoRecords className="h-[180px]" />}
+        {!conditions.length && (
+          <NoRecords
+            className="h-[180px]"
+            action={{ label: t("discounts.editConditions"), to: "conditions" }}
+          />
+        )}
         {conditions.map((condition) => (
           <ConditionType key={condition.id} condition={condition} />
         ))}

@@ -215,6 +215,7 @@
     "durationHint": "Set the duration of the discount",
     "chooseValidRegions": "Choose valid regions",
     "noConditions": "No conditions are defined for this discount.",
+    "editConditions": "Edit conditions",
     "conditions": {
       "including": {
         "products_one": "Discount applies to <0/> product.",
