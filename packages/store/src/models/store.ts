@@ -35,6 +35,9 @@ export default class Store {
   @Property({ columnType: "text", default: "Medusa Store" })
   name: string
 
+  @Property({ type: "array", default: "{}" })
+  supported_currency_codes: string[] = []
+
   @Property({ columnType: "text", nullable: true })
   default_sales_channel_id: string | null = null
 
