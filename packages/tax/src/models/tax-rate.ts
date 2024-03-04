@@ -79,6 +79,7 @@ export default class TaxRate {
 
   @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
     cascade: ["soft-remove" as Cascade],
+    persist: false,
   })
   rules = new Collection<TaxRateRule>(this)
 
