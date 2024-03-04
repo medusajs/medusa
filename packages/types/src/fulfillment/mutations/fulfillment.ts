@@ -21,7 +21,6 @@ export interface CreateFulfillmentDTO {
 }
 
 export interface UpdateFulfillmentDTO {
-  id: string
   location_id?: string
   packed_at?: Date | null
   shipped_at?: Date | null

@@ -208,7 +208,9 @@ moduleIntegrationTestRunner({
         })
 
         describe("on cancel", () => {
-          it("should cancel a fulfillment successfully", async () => {
+          let fulfillment
+
+          beforeEach(async () => {
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
               type: "default",
@@ -230,13 +232,15 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const fulfillment = await service.createFulfillment(
+            fulfillment = await service.createFulfillment(
               generateCreateFulfillmentData({
                 provider_id: providerId,
                 shipping_option_id: shippingOption.id,
               })
             )
+          })
 
+          it("should cancel a fulfillment successfully", async () => {
             const result = await service.cancelFulfillment(fulfillment.id)
             // should be idempotent
             const idempotentResult = await service.cancelFulfillment(
@@ -246,6 +250,34 @@ moduleIntegrationTestRunner({
             expect(result.canceled_at).not.toBeNull()
             expect(idempotentResult.canceled_at).not.toBeNull()
             expect(idempotentResult.canceled_at).toEqual(result.canceled_at)
+          })
+
+          it("should fail to cancel a fulfillment that is already shipped", async () => {
+            await service.updateFulfillment(fulfillment.id, {
+              shipped_at: new Date(),
+            })
+
+            const err = await service
+              .cancelFulfillment(fulfillment.id)
+              .catch((e) => e)
+
+            expect(err.message).toEqual(
+              `Fulfillment with id ${fulfillment.id} already shipped`
+            )
+          })
+
+          it("should fail to cancel a fulfillment that is already delivered", async () => {
+            await service.updateFulfillment(fulfillment.id, {
+              delivered_at: new Date(),
+            })
+
+            const err = await service
+              .cancelFulfillment(fulfillment.id)
+              .catch((e) => e)
+
+            expect(err.message).toEqual(
+              `Fulfillment with id ${fulfillment.id} already delivered`
+            )
           })
         })
       })

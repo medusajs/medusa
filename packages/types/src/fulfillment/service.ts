@@ -211,6 +211,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   updateFulfillment(
+    id: string,
     data: UpdateFulfillmentDTO,
     sharedContext?: Context
   ): Promise<FulfillmentDTO>

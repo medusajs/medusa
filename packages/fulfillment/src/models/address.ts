@@ -14,12 +14,6 @@ import {
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
-const FulfillmentIdIndex = createPsqlIndexStatementHelper({
-  tableName: "fulfillment_address",
-  columns: "fulfillment_id",
-  where: "deleted_at IS NULL",
-})
-
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
   columns: "deleted_at",

@@ -1209,20 +1209,22 @@ export default class FulfillmentModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async updateFulfillment(
+    id: string,
     data: FulfillmentTypes.UpdateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.FulfillmentDTO> {
     const fulfillment = await this.fulfillmentService_.update(
-      data,
+      { id, ...data },
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
-      fulfillment,
-      {
-        populate: true,
-      }
-    )
+    const serialized =
+      await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+        fulfillment,
+        {
+          populate: true,
+        }
+      )
 
     return Array.isArray(serialized) ? serialized[0] : serialized
   }
