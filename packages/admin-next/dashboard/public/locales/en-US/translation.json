@@ -522,5 +522,21 @@
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile"
+  },
+  "dateTime" : {
+    "years_one": "Year",
+    "years_other": "Years",
+    "months_one": "Month",
+    "months_other": "Months",
+    "weeks_one": "Week",
+    "weeks_other": "Weeks",
+    "days_one": "Day",
+    "days_other": "Days",
+    "hours_one": "Hour",
+    "hours_other": "Hours",
+    "minutes_one": "Minute",
+    "minutes_other": "Minutes",
+    "seconds_one": "Second",
+    "seconds_other": "Seconds"
   }
 }

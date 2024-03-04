@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PencilSquare } from "@medusajs/icons"
+import { parse } from "iso8601-duration"
+import { useMemo } from "react"
 
 type DiscountConfigurationsSection = {
   discount: Discount
@@ -22,6 +24,26 @@ export const DiscountConfigurationSection = ({
   discount,
 }: DiscountConfigurationsSection) => {
   const { t } = useTranslation()
+
+  const duration = useMemo(() => {
+    if (!discount.valid_duration) {
+      return "-"
+    }
+
+    const parsedDuration = parse(discount.valid_duration)
+
+    return ["years", "months", "weeks", "days", "hours", "minutes"].reduce(
+      (acc, span) => {
+        if (parsedDuration[span]) {
+          acc += `${parsedDuration[span]} ${t(`dateTime.${span}`, {
+            count: parsedDuration[span],
+          })} `
+        }
+        return acc
+      },
+      ""
+    )
+  }, [discount.valid_duration])
 
   return (
     <Container className="divide-y p-0">
@@ -72,7 +94,7 @@ export const DiscountConfigurationSection = ({
           {t("discounts.validDuration")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {discount.valid_duration || "-"}
+          {duration}
         </Text>
       </div>
     </Container>
