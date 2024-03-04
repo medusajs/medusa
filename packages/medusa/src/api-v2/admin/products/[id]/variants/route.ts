@@ -1,7 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "../../../../../types/routing"
 
 import { CreateProductVariantDTO } from "@medusajs/types"
 import { createProductVariantsWorkflow } from "@medusajs/core-flows"

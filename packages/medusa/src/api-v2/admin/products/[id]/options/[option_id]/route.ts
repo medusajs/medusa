@@ -66,7 +66,7 @@ export const DELETE = async (
 
   // TODO: I believe here we cannot even enforce the product ID based on the standard API we provide?
   const { errors } = await deleteProductOptionsWorkflow(req.scope).run({
-    input: { ids: [optionId], product_id: productId },
+    input: { ids: [optionId] /* product_id: productId */ },
     throwOnError: false,
   })
 

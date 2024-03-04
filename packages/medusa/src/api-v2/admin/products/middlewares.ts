@@ -19,7 +19,7 @@ import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
-export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
+export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/products*",
@@ -59,13 +59,6 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id",
-    middlewares: [],
-  },
-
-  // TODO: Part of v1 API. Remove in favor of just updating the metadata through as standard update
-  {
-    method: ["POST"],
-    matcher: "/admin/products/:id/metadata",
     middlewares: [],
   },
 

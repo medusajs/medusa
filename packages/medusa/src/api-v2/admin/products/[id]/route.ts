@@ -3,7 +3,7 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import {
-  deleteProductWorkflow,
+  deleteProductsWorkflow,
   updateProductsWorkflow,
 } from "@medusajs/core-flows"
 
@@ -55,7 +55,7 @@ export const DELETE = async (
 ) => {
   const id = req.params.id
 
-  const { errors } = await deleteProductWorkflow(req.scope).run({
+  const { errors } = await deleteProductsWorkflow(req.scope).run({
     input: { ids: [id] },
     throwOnError: false,
   })
