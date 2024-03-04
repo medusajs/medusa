@@ -7,8 +7,8 @@ interface StepInput {
   provider_id: string
   amount: number
   currency_code: string
-  context: PaymentProviderContext
-  data: Record<string, unknown>
+  context?: PaymentProviderContext
+  data?: Record<string, unknown>
 }
 
 export const createPaymentSessionStepId = "create-payment-session"
@@ -23,9 +23,9 @@ export const createPaymentSessionStep = createStep(
       input.payment_collection_id,
       {
         provider_id: input.provider_id,
-        data: input.data,
         currency_code: input.currency_code,
         amount: input.amount,
+        data: input.data ?? {},
         context: input.context,
       }
     )

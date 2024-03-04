@@ -200,7 +200,7 @@ export interface CreatePaymentSessionDTO {
   /**
    * The payment session's context.
    */
-  context: PaymentProviderContext
+  context?: PaymentProviderContext
 }
 
 /**

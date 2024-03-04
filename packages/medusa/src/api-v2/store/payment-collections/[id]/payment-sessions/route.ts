@@ -1,12 +1,11 @@
-import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../types/routing"
-
 import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../types/routing"
 import { defaultStorePaymentCollectionFields } from "./query-config"
 import { StorePostPaymentCollectionsPaymentSessionReq } from "./validators"
 
@@ -15,7 +14,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { context = {}, provider_id, data = {} } = req.body
+  const { context, provider_id, data } = req.body
 
   // If the customer is logged in, we auto-assign them to the payment collection
   if (req.auth?.actor_id) {
@@ -38,7 +37,7 @@ export const POST = async (
     provider_id: provider_id,
     data,
     context,
-    amount: paymentCollection.amount, // TODO: Should be calculated from something or use payment collection?
+    amount: paymentCollection.amount, // Question for the future: How do we handle split payments?
     currency_code: paymentCollection.currency_code,
   }
 
@@ -47,24 +46,19 @@ export const POST = async (
     throwOnError: false,
   })
 
-  console.log("Errors: ", errors)
-
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = { id }
-
   const query = remoteQueryObjectFromString({
     entryPoint: "payment_collection",
+    variables: { cart: { id } },
     fields: defaultStorePaymentCollectionFields,
   })
 
-  const [result] = await remoteQuery(query, { cart: variables })
-
-  console.log("Result: ", result)
+  const [result] = await remoteQuery(query)
 
   res.status(200).json({ payment_collection: result })
 }

@@ -43,7 +43,7 @@ describe("Carts workflows", () => {
   })
 
   describe("createPaymentSessionWorkflow", () => {
-    it("should create a cart", async () => {
+    it("should create payment sessions", async () => {
       const region = await regionModule.create({
         currency_code: "usd",
         name: "US",
@@ -91,7 +91,7 @@ describe("Carts workflows", () => {
     })
 
     describe("compensation", () => {
-      it("should delete created customer if cart-creation fails", async () => {
+      it("should delete created payment collection if a subsequent step fails", async () => {
         const workflow = createPaymentSessionsWorkflow(appContainer)
 
         workflow.appendAction("throw", createPaymentSessionsWorkflowId, {

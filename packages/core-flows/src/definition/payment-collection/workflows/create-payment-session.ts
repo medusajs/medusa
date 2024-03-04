@@ -7,8 +7,8 @@ interface WorkflowInput {
   provider_id: string
   amount: number
   currency_code: string
-  context: PaymentProviderContext
-  data: Record<string, unknown>
+  data?: Record<string, unknown>
+  context?: PaymentProviderContext
 }
 
 export const createPaymentSessionsWorkflowId = "create-payment-sessions"

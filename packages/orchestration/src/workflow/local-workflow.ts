@@ -3,7 +3,6 @@ import {
   MedusaContext,
   MedusaContextType,
   MedusaModuleType,
-  createContainerLike,
   createMedusaContainer,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -54,8 +53,7 @@ export class LocalWorkflow {
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
       if (!("cradle" in modulesLoaded)) {
-        const containerLike = createContainerLike(modulesLoaded)
-        container = createMedusaContainer(containerLike)
+        container = createMedusaContainer(modulesLoaded)
       } else {
         container = createMedusaContainer({}, modulesLoaded) // copy container
       }
