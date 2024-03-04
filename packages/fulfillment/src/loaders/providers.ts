@@ -4,14 +4,14 @@ import { asFunction, asValue, Lifetime } from "awilix"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
 import { lowerCaseFirst } from "@medusajs/utils"
 import { ServiceProviderService } from "@services"
-import {ContainerRegistrationKeys} from "@medusajs/utils/src";
+import { ContainerRegistrationKeys } from "@medusajs/utils/src"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = ServiceProviderService.getRegistrationName(klass, name)
+    const key = ServiceProviderService.getRegistrationIdentifier(klass, name)
 
     container.register({
-      [key]: asFunction((cradle) => new klass(cradle, config), {
+      ["fp_" + key]: asFunction((cradle) => new klass(cradle, config), {
         lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
       }),
     })
@@ -76,7 +76,7 @@ async function syncDatabaseProviders({
         continue
       }
 
-      providersToCreate.push({id: identifier})
+      providersToCreate.push({ id: identifier })
     }
 
     await providerService.create(providersToCreate)

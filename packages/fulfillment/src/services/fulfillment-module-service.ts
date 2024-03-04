@@ -600,35 +600,33 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    if (fulfillment.provider_id) {
-      const {
-        items,
-        data: fulfillmentData,
-        provider_id,
-        ...fulfillmentRest
-      } = fulfillment
+    const {
+      items,
+      data: fulfillmentData,
+      provider_id,
+      ...fulfillmentRest
+    } = fulfillment
 
-      let fulfillmentThirdPartyData!: any
-      try {
-        fulfillmentThirdPartyData =
-          await this.serviceProviderService_.createFulfillment(
-            provider_id,
-            fulfillmentData || {},
-            items.map((i) => i),
-            order,
-            fulfillmentRest
-          )
-        await this.fulfillmentService_.update(
-          {
-            id: fulfillment.id,
-            data: fulfillmentThirdPartyData ?? {},
-          },
-          sharedContext
+    let fulfillmentThirdPartyData!: any
+    try {
+      fulfillmentThirdPartyData =
+        await this.serviceProviderService_.createFulfillment(
+          provider_id,
+          fulfillmentData || {},
+          items.map((i) => i),
+          order,
+          fulfillmentRest
         )
-      } catch (error) {
-        await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
-        throw error
-      }
+      await this.fulfillmentService_.update(
+        {
+          id: fulfillment.id,
+          data: fulfillmentThirdPartyData ?? {},
+        },
+        sharedContext
+      )
+    } catch (error) {
+      await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
+      throw error
     }
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
@@ -1209,30 +1207,24 @@ export default class FulfillmentModuleService<
       : updatedShippingOptionRules[0]
   }
 
-  @InjectManager("baseRepository_")
-  async deleteFulfillment(
-    id: string,
+  @InjectTransactionManager("baseRepository_")
+  async updateFulfillment(
+    data: FulfillmentTypes.UpdateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    const fulfillment = await this.fulfillmentService_.retrieve(
-      id,
-      {},
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const fulfillment = await this.fulfillmentService_.update(
+      data,
       sharedContext
     )
 
-    // TODO: should we allow to delete a fulfillment? and in that case wouldn't it be a cancelation like?
-    /*if (fulfillment.provider_id) {
-      try {
-        await this.serviceProviderService_.cancelFulfillment(
-          fulfillment.provider_id,
-          fulfillment.data ?? {}
-        )
-      } catch (error) {
-        throw error
+    const serialized = await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment,
+      {
+        populate: true,
       }
-    }*/
+    )
 
-    await this.fulfillmentService_.delete(id, sharedContext)
+    return Array.isArray(serialized) ? serialized[0] : serialized
   }
 
   @InjectManager("baseRepository_")
@@ -1264,15 +1256,13 @@ export default class FulfillmentModuleService<
 
     // Make this action idempotent
     if (!fulfillment.canceled_at) {
-      if (fulfillment.provider_id) {
-        try {
-          await this.serviceProviderService_.cancelFulfillment(
-            fulfillment.provider_id,
-            fulfillment.data ?? {}
-          )
-        } catch (error) {
-          throw error
-        }
+      try {
+        await this.serviceProviderService_.cancelFulfillment(
+          fulfillment.provider_id,
+          fulfillment.data ?? {}
+        )
+      } catch (error) {
+        throw error
       }
 
       fulfillment = await this.fulfillmentService_.update(
@@ -1284,9 +1274,11 @@ export default class FulfillmentModuleService<
       )
     }
 
-    return await this.baseRepository_.serialize(fulfillment, {
+    const result = await this.baseRepository_.serialize(fulfillment, {
       populate: true,
     })
+
+    return Array.isArray(result) ? result[0] : result
   }
 
   protected static validateMissingShippingOptions_(

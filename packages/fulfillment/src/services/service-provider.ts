@@ -25,18 +25,18 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
     this.serviceProviderRepository_ = container.serviceProviderRepository
   }
 
-  static getRegistrationName(
+  static getRegistrationIdentifier(
     providerClass: Constructor<IFulfillmentProvider>,
     optionName?: string
   ) {
-    return `fp_${(providerClass as any).identifier}_${optionName}`
+    return `${(providerClass as any).identifier}_${optionName}`
   }
 
   protected retrieveProviderRegistration(
     providerId: string
   ): FulfillmentTypes.IFulfillmentProvider {
     try {
-      return super.__container__[`fp_${providerId}`]
+      return this.__container__[`fp_${providerId}`]
     } catch (err) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

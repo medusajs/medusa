@@ -93,7 +93,6 @@ export default class Fulfillment {
     columnType: "text",
     fieldName: "provider_id",
     mapToPk: true,
-    nullable: true,
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string

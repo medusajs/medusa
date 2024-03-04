@@ -25,6 +25,7 @@ import {
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
   CreateShippingOptionRuleDTO,
+  UpdateFulfillmentDTO,
   UpdateFulfillmentSetDTO,
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
@@ -203,6 +204,16 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: UpdateShippingOptionRuleDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionRuleDTO>
+
+  /**
+   * Update a fulfillment
+   * @param data
+   * @param sharedContext
+   */
+  updateFulfillment(
+    data: UpdateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
 
   /**
    * Delete a fulfillment set
@@ -608,16 +619,6 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-
-  /**
-   * delete fulfillment
-   * @param fulfillmentId
-   * @param sharedContext
-   */
-  deleteFulfillment(
-    fulfillmentId: string,
-    sharedContext?: Context
-  ): Promise<void>
 
   // TODO define needed soft delete/delete/restore methods
 

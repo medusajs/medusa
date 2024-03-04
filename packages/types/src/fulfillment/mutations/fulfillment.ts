@@ -19,3 +19,13 @@ export interface CreateFulfillmentDTO {
   labels: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
   order: CreateFulfillmentOrderDTO
 }
+
+export interface UpdateFulfillmentDTO {
+  id: string
+  location_id?: string
+  packed_at?: Date | null
+  shipped_at?: Date | null
+  delivered_at?: Date | null
+  data?: Record<string, unknown> | null
+  metadata?: Record<string, unknown> | null
+}
