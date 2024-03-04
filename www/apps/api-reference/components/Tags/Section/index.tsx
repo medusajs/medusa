@@ -66,12 +66,16 @@ const TagSection = ({ tag }: TagSectionProps) => {
   })
 
   useEffect(() => {
+    // console.log("here1", activePath, slugTagName)
     if (activePath && activePath.includes(slugTagName)) {
       const tagName = activePath.split("_")
+      // console.log("here2", tagName)
       if (tagName.length === 1 && tagName[0] === slugTagName) {
         const elm = document.getElementById(tagName[0]) as Element
+        // console.log("here3")
         elm?.scrollIntoView()
       } else if (tagName.length > 1 && tagName[0] === slugTagName) {
+        // console.log("hre4")
         setLoadPaths(true)
       }
     }
