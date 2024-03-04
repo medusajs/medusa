@@ -31,7 +31,7 @@ export const updateCartPromotionsStep = createStep(
     const existingCartPromotionLinks = await remoteQuery({
       cart_promotion: {
         __args: { cart_id: [id] },
-        fields: ["id", "cart_id", "promotion_id"],
+        fields: ["cart_id", "promotion_id"],
       },
     })
 
@@ -53,10 +53,7 @@ export const updateCartPromotionsStep = createStep(
         [Modules.PROMOTION]: { promotion_id: promotion.id },
       }
 
-      if (
-        action === PromotionActions.ADD ||
-        action === PromotionActions.REPLACE
-      ) {
+      if ([PromotionActions.ADD, PromotionActions.REPLACE].includes(action)) {
         linksToCreate.push(linkObject)
       }
 
@@ -78,15 +75,18 @@ export const updateCartPromotionsStep = createStep(
       }
     }
 
-    if (linksToDismiss.length) {
-      for (const link of linksToDismiss) {
-        await remoteLink.dismiss(link)
-      }
-    }
-
-    const createdLinks = linksToCreate.length
-      ? await remoteLink.create(linksToCreate)
+    const linksToDismissPromise = linksToDismiss.length
+      ? remoteLink.dismiss(linksToDismiss)
       : []
+
+    const linksToCreatePromise = linksToCreate.length
+      ? remoteLink.create(linksToCreate)
+      : []
+
+    const [_, createdLinks] = await Promise.all([
+      linksToDismissPromise,
+      linksToCreatePromise,
+    ])
 
     return new StepResponse(null, {
       createdLinkIds: createdLinks.map((link) => link.id),
