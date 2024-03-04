@@ -33,7 +33,6 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
   },
-  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [
     "medusa-plugin",
     "medusa-plugin-fulfillment"
