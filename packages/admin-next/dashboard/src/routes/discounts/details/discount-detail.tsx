@@ -10,6 +10,9 @@ import { RedemptionsSection } from "./components/redemptions-section"
 import { DetailsSection } from "./components/details-section"
 import { DiscountConditionsSection } from "./components/discounts-conditions-section"
 
+import before from "medusa-admin:widgets/discount/details/before"
+import after from "medusa-admin:widgets/discount/details/after"
+
 export const DiscountDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof discountLoader>
@@ -26,11 +29,29 @@ export const DiscountDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="grid grid-cols-1 gap-x-4 xl:grid-cols-[1fr,400px]">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component />
+          </div>
+        )
+      })}
+      <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[1fr,400px]">
         <div className="flex flex-col gap-y-2">
           <DiscountGeneralSection discount={discount} />
           <DiscountConfigurationSection discount={discount} />
           <DiscountConditionsSection discount={discount} />
+          <div className="flex flex-col gap-y-2 lg:hidden">
+            <RedemptionsSection redemptions={discount.usage_count} />
+            <DetailsSection discount={discount} />
+          </div>
+          {after.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
           <JsonViewSection data={discount} />
         </div>
         <div className="hidden flex-col gap-y-2 lg:flex">
