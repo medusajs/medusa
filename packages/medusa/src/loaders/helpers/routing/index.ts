@@ -307,6 +307,7 @@ export class RoutesLoader {
             shouldRequireAdminAuth: false,
             shouldRequireCustomerAuth: false,
             shouldAppendCustomer: false,
+            shouldAppendAuthCors: false,
           }
 
           /**
@@ -341,6 +342,10 @@ export class RoutesLoader {
             if (shouldAddCors) {
               config.shouldAppendStoreCors = true
             }
+          }
+
+          if (route.startsWith("/auth") && shouldAddCors) {
+            config.shouldAppendAuthCors = true
           }
 
           if (shouldRequireAuth && route.startsWith("/store/me")) {
@@ -606,6 +611,21 @@ export class RoutesLoader {
           cors({
             origin: parseCorsOrigins(
               this.configModule.projectConfig.admin_cors || ""
+            ),
+            credentials: true,
+          })
+        )
+      }
+
+      if (descriptor.config.shouldAppendAuthCors) {
+        /**
+         * Apply the auth cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.auth_cors || ""
             ),
             credentials: true,
           })
