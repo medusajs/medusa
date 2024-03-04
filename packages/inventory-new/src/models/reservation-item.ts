@@ -1,11 +1,13 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
   OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
+import { DALUtils } from "@medusajs/utils"
 import { createPsqlIndexStatementHelper } from "@medusajs/utils"
 import { generateEntityId } from "@medusajs/utils"
 
@@ -30,6 +32,7 @@ const ReservationItemLocationIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export class ReservationItem {
   @PrimaryKey({ columnType: "text" })
   id: string

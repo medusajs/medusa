@@ -61,8 +61,13 @@ export class InventoryLevel {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
+  @ManyToOne(() => InventoryItem, {
+    fieldName: "inventory_item_id",
+    type: "text",
+    mapToPk: true,
+    onDelete: "cascade",
+  })
   @InventoryLevelInventoryItemIdIndex.MikroORMIndex()
-  @Property({ type: "text" })
   inventory_item_id: string
 
   @InventoryLevelLocationIdIndex.MikroORMIndex()
@@ -82,7 +87,7 @@ export class InventoryLevel {
   metadata: Record<string, unknown> | null
 
   @ManyToOne(() => InventoryItem, {
-    joinColumn: "inventory_item_id",
+    persist: false,
   })
   inventory_item: InventoryItem
 

@@ -1,4 +1,3 @@
-import {Modules} from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -12,9 +11,11 @@ import {
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
-import {GeoZoneType} from "@medusajs/utils"
-import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
-import {generateCreateShippingOptionsData} from "../__fixtures__"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+
+import { GeoZoneType } from "@medusajs/utils"
+import { Modules } from "@medusajs/modules-sdk"
+import { generateCreateShippingOptionsData } from "../__fixtures__"
 
 jest.setTimeout(100000)
 
@@ -974,11 +975,12 @@ moduleIntegrationTestRunner({
               "sp_jdafwfleiwuonl"
             )
 
-            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: providerId,
-            })
+            const createData: CreateShippingOptionDTO =
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+              })
 
             const createdShippingOption = await service.createShippingOptions(
               createData
@@ -1041,7 +1043,7 @@ moduleIntegrationTestRunner({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-              })
+              }),
             ]
 
             const createdShippingOptions = await service.createShippingOptions(
@@ -1101,18 +1103,19 @@ moduleIntegrationTestRunner({
               "sp_jdafwfleiwuonl"
             )
 
-            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: providerId,
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "invalid" as any,
-                  value: "test-value",
-                },
-              ],
-            })
+            const createData: CreateShippingOptionDTO =
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "invalid" as any,
+                    value: "test-value",
+                  },
+                ],
+              })
 
             const err = await service
               .createShippingOptions(createData)
@@ -2151,7 +2154,7 @@ moduleIntegrationTestRunner({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-              })
+              }),
             ]
 
             const shippingOptions = await service.createShippingOptions(

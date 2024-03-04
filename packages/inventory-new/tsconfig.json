@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["es2020"],
-    "target": "ES2020",
+    "target": "es2020",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -9,13 +9,16 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true, 
+    "skipLibCheck": true,
+    "downlevelIteration": true, // to use ES5 specific tooling
+    "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
@@ -24,11 +27,12 @@
       "@utils": ["./src/utils"]
     }
   },
-  "include": ["src", "services.old/connection.ts"],
+  "include": ["src"],
   "exclude": [
     "dist",
     "./src/**/__tests__",
     "./src/**/__mocks__",
+    "./src/**/__fixtures__",
     "node_modules"
   ]
 }

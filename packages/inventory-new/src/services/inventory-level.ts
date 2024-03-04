@@ -15,13 +15,19 @@
 // import { InventoryLevel } from "../models"
 // import { buildQuery } from "../utils/build-query"
 
-import { Context, DAL, SharedContext } from "@medusajs/types"
-import { InventoryLevel } from "../models/inventory-level"
+import {
+  Context,
+  CreateInventoryLevelInput,
+  DAL,
+  SharedContext,
+} from "@medusajs/types"
 import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+
+import { InventoryLevel } from "../models/inventory-level"
 import { InventoryLevelRepository } from "@repositories"
 
 type InjectedDependencies = {
@@ -33,11 +39,11 @@ export default class InventoryLevelService<
 > extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
   InventoryLevel
 )<TEntity> {
-  protected readonly inventoryLevelRepository_: InventoryLevelRepository
+  protected readonly inventoryLevelRepository: InventoryLevelRepository
 
   constructor(container: InjectedDependencies) {
     super(container)
-    this.inventoryLevelRepository_ = container.inventoryLevelRepository
+    this.inventoryLevelRepository = container.inventoryLevelRepository
   }
 
   /**
@@ -47,12 +53,11 @@ export default class InventoryLevelService<
    * @param quantity - The quantity to adjust from the reserved quantity.
    * @param context
    */
-  @InjectTransactionManager("inviteRepository_")
   async adjustReservedQuantity(
     inventoryItemId: string,
     locationId: string,
     quantity: number,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<void> {
     // const manager = context.transactionManager!
     // await manager
@@ -71,10 +76,9 @@ export default class InventoryLevelService<
    * @param inventoryItemId - The ID or IDs of the inventory item to delete inventory levels for.
    * @param context
    */
-  @InjectTransactionManager("inviteRepository_")
   async deleteByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<void> {
     // const ids = Array.isArray(inventoryItemId)
     //   ? inventoryItemId
@@ -92,10 +96,9 @@ export default class InventoryLevelService<
    * @param inventoryItemId - The ID or IDs of the inventory item to restore inventory levels for.
    * @param context
    */
-  @InjectTransactionManager("inviteRepository_")
   async restoreByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<void> {
     // const ids = Array.isArray(inventoryItemId)
     //   ? inventoryItemId
@@ -108,10 +111,9 @@ export default class InventoryLevelService<
     // })
   }
 
-  @InjectTransactionManager("inviteRepository_")
   async deleteByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<void> {
     // const manager = context.transactionManager!
     // const levelRepository = manager.getRepository(InventoryLevel)
@@ -125,7 +127,7 @@ export default class InventoryLevelService<
   async getStockedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<number> {
     // if (!Array.isArray(locationIds)) {
     //   locationIds = [locationIds]
@@ -155,7 +157,7 @@ export default class InventoryLevelService<
   async getAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<number> {
     return 0
 
@@ -179,7 +181,7 @@ export default class InventoryLevelService<
   async getReservedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ) {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
@@ -194,7 +196,7 @@ export default class InventoryLevelService<
     //   .andWhere("location_id IN (:...locationIds)", { locationIds })
     //   .getRawOne()
 
-    return await this.inventoryLevelRepository_.getReservedQuantity(
+    return await this.inventoryLevelRepository.getReservedQuantity(
       inventoryItemId,
       locationIds,
       context

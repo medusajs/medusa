@@ -6,6 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   InventoryNext,
+  ReservationItemDTO,
 } from "@medusajs/types"
 import { MedusaContext, MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -97,10 +98,20 @@ export default class InventoryModuleService<
 
   @InjectTransactionManager("baseRepository_")
   private async ensureInventoryLevels(
-    data: { location_id: string; inventory_item_id: string; id?: string }[],
+    data: (
+      | { location_id: string; inventory_item_id: string }
+      | { id: string }
+    )[],
     @MedusaContext() context: Context = {}
   ): Promise<InventoryNext.InventoryLevelDTO[]> {
-    const [idData, itemLocationData] = partitionArray(data, ({ id }) => !!id)
+    const [idData, itemLocationData] = partitionArray(
+      data,
+      ({ id }) => !!id
+    ) as [
+      { id: string }[],
+      { location_id: string; inventory_item_id: string }[]
+    ]
+
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
         $or: [
@@ -112,7 +123,10 @@ export default class InventoryModuleService<
       context
     )
 
-    const inventoryLevelMap: Map<
+    const inventoryLevelIdMap: Map<string, InventoryNext.InventoryLevelDTO> =
+      new Map(inventoryLevels.map((level) => [level.id, level]))
+
+    const inventoryLevelItemLocationMap: Map<
       string,
       Map<string, InventoryNext.InventoryLevelDTO>
     > = inventoryLevels.reduce((acc, curr) => {
@@ -122,22 +136,29 @@ export default class InventoryModuleService<
       return acc
     }, new Map())
 
-    const missing = data.filter(
-      (i) => !inventoryLevelMap.get(i.inventory_item_id)?.get(i.location_id)
-    )
+    const missing = data.filter((i) => {
+      if ("id" in i) {
+        return !inventoryLevelIdMap.has(i.id)
+      }
+      return !inventoryLevelItemLocationMap
+        .get(i.inventory_item_id)
+        ?.has(i.location_id)
+    })
 
     if (missing.length) {
       const error = missing
         .map((missing) => {
+          if ("id" in missing) {
+            return `Inventory level with id ${missing.id} does not exist`
+          }
           return `Item ${missing.inventory_item_id} is not stocked at location ${missing.location_id}`
         })
         .join(", ")
+
       throw new MedusaError(MedusaError.Types.NOT_FOUND, error)
     }
 
-    return inventoryLevels.map(
-      (i) => inventoryLevelMap.get(i.inventory_item_id)!.get(i.location_id)!
-    )
+    return inventoryLevels
   }
 
   async createReservationItems(
@@ -178,7 +199,13 @@ export default class InventoryModuleService<
     input: InventoryNext.CreateReservationItemInput[],
     @MedusaContext() context: Context = {}
   ): Promise<TReservationItem[]> {
-    await this.ensureInventoryLevels(input, context)
+    await this.ensureInventoryLevels(
+      input.map(({ location_id, inventory_item_id }) => ({
+        location_id,
+        inventory_item_id,
+      })),
+      context
+    )
 
     return await this.reservationItemService_.create(input, context)
   }
@@ -329,10 +356,50 @@ export default class InventoryModuleService<
     locationId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    return await this.reservationItemService_.deleteByLocationId(
-      locationId,
+    const reservations: InventoryNext.ReservationItemDTO[] =
+      await this.listReservationItems({ location_id: locationId }, {}, context)
+
+    await this.reservationItemService_.deleteByLocationId(locationId, context)
+
+    const inventoryLevels = await this.ensureInventoryLevels(
+      reservations.map((r) => ({
+        inventory_item_id: r.inventory_item_id,
+        location_id: r.location_id,
+      })),
       context
     )
+
+    const inventoryLevelAdjustments: Map<
+      string,
+      Map<string, number>
+    > = reservations.reduce((acc, curr) => {
+      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
+
+      const adjustment = inventoryLevelMap.has(curr.location_id)
+        ? inventoryLevelMap.get(curr.location_id) + curr.quantity
+        : curr.quantity
+
+      inventoryLevelMap.set(curr.location_id, adjustment)
+      acc.set(curr.inventory_item_id, inventoryLevelMap)
+      return acc
+    }, new Map())
+
+    const levelAdjustmentUpdates = inventoryLevels.map((level) => {
+      const adjustment = inventoryLevelAdjustments
+        .get(level.inventory_item_id)
+        ?.get(level.location_id)
+
+      if (!adjustment) {
+        return
+      }
+
+      return {
+        id: level.id,
+        reserved_quantity: level.reserved_quantity - adjustment,
+      }
+    })
+
+    await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
   }
 
   /**
@@ -397,7 +464,13 @@ export default class InventoryModuleService<
     updates: InventoryTypes.BulkUpdateInventoryLevelInput[],
     @MedusaContext() context: Context = {}
   ) {
-    const inventoryLevels = await this.ensureInventoryLevels(updates, context)
+    const inventoryLevels = await this.ensureInventoryLevels(
+      updates.map(({ location_id, inventory_item_id }) => ({
+        location_id,
+        inventory_item_id,
+      })),
+      context
+    )
 
     const levelMap = inventoryLevels.reduce((acc, curr) => {
       const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
@@ -407,7 +480,7 @@ export default class InventoryModuleService<
     }, new Map())
 
     return await this.inventoryLevelService_.update(
-      updates.map(async (update) => {
+      updates.map((update) => {
         const id = levelMap
           .get(update.inventory_item_id)
           .get(update.location_id)
@@ -448,12 +521,13 @@ export default class InventoryModuleService<
 
     const result = await this.updateReservationItems_(update, context)
 
-    return await this.baseRepository_.serialize<InventoryNext.ReservationItemDTO>(
-      result,
-      {
-        populate: true,
-      }
-    )
+    const serialized = await this.baseRepository_.serialize<
+      InventoryNext.ReservationItemDTO | InventoryNext.ReservationItemDTO[]
+    >(result, {
+      populate: true,
+    })
+
+    return Array.isArray(input) ? serialized : serialized[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -475,10 +549,50 @@ export default class InventoryModuleService<
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    return await this.reservationItemService_.deleteByLineItem(
-      lineItemId,
+    const reservations: InventoryNext.ReservationItemDTO[] =
+      await this.listReservationItems({ line_item_id: lineItemId }, {}, context)
+
+    await this.reservationItemService_.deleteByLineItem(lineItemId, context)
+
+    const inventoryLevels = await this.ensureInventoryLevels(
+      reservations.map((r) => ({
+        inventory_item_id: r.inventory_item_id,
+        location_id: r.location_id,
+      })),
       context
     )
+
+    const inventoryLevelAdjustments: Map<
+      string,
+      Map<string, number>
+    > = reservations.reduce((acc, curr) => {
+      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
+
+      const adjustment = inventoryLevelMap.has(curr.location_id)
+        ? inventoryLevelMap.get(curr.location_id) + curr.quantity
+        : curr.quantity
+
+      inventoryLevelMap.set(curr.location_id, adjustment)
+      acc.set(curr.inventory_item_id, inventoryLevelMap)
+      return acc
+    }, new Map())
+
+    const levelAdjustmentUpdates = inventoryLevels.map((level) => {
+      const adjustment = inventoryLevelAdjustments
+        .get(level.inventory_item_id)
+        ?.get(level.location_id)
+
+      if (!adjustment) {
+        return
+      }
+
+      return {
+        id: level.id,
+        reserved_quantity: level.reserved_quantity - adjustment,
+      }
+    })
+
+    await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
   }
 
   /**
@@ -561,19 +675,6 @@ export default class InventoryModuleService<
 
     return inventoryLevel
   }
-
-  // @InjectManager("baseRepository_")
-  // async retrieveInventoryLevel(
-  //   inventoryLevelId: string,
-  //   config?: FindConfig<InventoryNext.InventoryNext.InventoryLevelDTO>,
-  //   @MedusaContext() context: Context = {}
-  // ): Promise<InventoryNext.InventoryLevelDTO> {
-  //   return this.inventoryLevelService_.retrieve(
-  //     inventoryLevelId,
-  //     config,
-  //     context
-  //   )
-  // }
 
   /**
    * Retrieves the available quantity of a given inventory item in a given location.

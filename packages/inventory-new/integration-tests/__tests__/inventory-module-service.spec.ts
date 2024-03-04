@@ -1,12 +1,13 @@
+import { IInventoryServiceNext, InventoryItemDTO } from "@medusajs/types"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
-import { IInventoryServiceNext } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
-  moduleName: Modules.FULFILLMENT,
+  moduleName: Modules.INVENTORY,
+  resolve: "@medusajs/inventory-new",
   testSuite: ({
     MikroOrmWrapper,
     service,
@@ -21,7 +22,446 @@ moduleIntegrationTestRunner({
             expect.objectContaining({ id: expect.any(String), ...data })
           )
         })
+
+        it("should create inventory items from array", async () => {
+          const data = [
+            { sku: "test-sku", origin_country: "test-country" },
+            { sku: "test-sku-1", origin_country: "test-country-1" },
+          ]
+          const inventoryItems = await service.create(data)
+
+          expect(inventoryItems).toEqual([
+            expect.objectContaining({ id: expect.any(String), ...data[0] }),
+            expect.objectContaining({ id: expect.any(String), ...data[1] }),
+          ])
+        })
       })
+
+      describe("createReservationItem", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+        })
+
+        it("should create a reservationItem", async () => {
+          const data = {
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 2,
+          }
+
+          const reservationItem = await service.createReservationItems(data)
+
+          expect(reservationItem).toEqual(
+            expect.objectContaining({ id: expect.any(String), ...data })
+          )
+        })
+
+        it("should create reservationItems from array", async () => {
+          const data = [
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              quantity: 3,
+            },
+          ]
+          const reservationItems = await service.createReservationItems(data)
+
+          expect(reservationItems).toEqual([
+            expect.objectContaining({ id: expect.any(String), ...data[0] }),
+            expect.objectContaining({ id: expect.any(String), ...data[1] }),
+          ])
+        })
+
+        it("should fail to create a reservationItem for a non-existing location", async () => {
+          const data = [
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-3",
+              quantity: 2,
+            },
+          ]
+
+          const err = await service
+            .createReservationItems(data)
+            .catch((error) => error)
+
+          expect(err.message).toEqual(
+            `Item ${inventoryItem.id} is not stocked at location location-3`
+          )
+        })
+      })
+
+      describe("createInventoryLevel", () => {
+        let inventoryItem: InventoryItemDTO
+
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+        })
+
+        it("should create an inventoryLevel", async () => {
+          const data = {
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            stocked_quantity: 2,
+          }
+
+          const inventoryLevel = await service.createInventoryLevels(data)
+
+          expect(inventoryLevel).toEqual(
+            expect.objectContaining({ id: expect.any(String), ...data })
+          )
+        })
+
+        it("should create inventoryLevels from array", async () => {
+          const data = [
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 3,
+            },
+          ]
+          const inventoryLevels = await service.createInventoryLevels(data)
+
+          expect(inventoryLevels).toEqual([
+            expect.objectContaining({ id: expect.any(String), ...data[0] }),
+            expect.objectContaining({ id: expect.any(String), ...data[1] }),
+          ])
+        })
+      })
+
+      describe("update", () => {
+        let inventoryItem: InventoryItemDTO
+
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+        })
+
+        it("should update the inventory item", async () => {
+          const update = {
+            id: inventoryItem.id,
+            sku: "updated-sku",
+          }
+          const updated = await service.update(update)
+
+          expect(updated).toEqual(expect.objectContaining(update))
+        })
+
+        it("should update multiple inventory items", async () => {
+          const item2 = await service.create({
+            sku: "test-sku-1",
+          })
+
+          const updates = [
+            {
+              id: inventoryItem.id,
+              sku: "updated-sku",
+            },
+            {
+              id: item2.id,
+              sku: "updated-sku-2",
+            },
+          ]
+          const updated = await service.update(updates)
+
+          expect(updated).toEqual([
+            expect.objectContaining(updates[0]),
+            expect.objectContaining(updates[1]),
+          ])
+        })
+      })
+
+      describe("updateInventoryLevels", () => {
+        let inventoryLevel
+        let inventoryItem
+
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          const data = {
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            stocked_quantity: 2,
+          }
+
+          inventoryLevel = await service.createInventoryLevels(data)
+        })
+
+        it("should update inventory level", async () => {
+          const updatedLevel = await service.updateInventoryLevels({
+            location_id: "location-1",
+            inventory_item_id: inventoryItem.id,
+            incoming_quantity: 4,
+          })
+
+          expect(updatedLevel.incoming_quantity).toEqual(4)
+        })
+
+        it("should fail to update inventory level for item in location that isn't stocked", async () => {
+          const error = await service
+            .updateInventoryLevels({
+              inventory_item_id: inventoryItem.id,
+              location_id: "does-not-exist",
+              stocked_quantity: 10,
+            })
+            .catch((error) => error)
+
+          expect(error.message).toEqual(
+            `Item ${inventoryItem.id} is not stocked at location does-not-exist`
+          )
+        })
+      })
+
+      describe("updateReservationItems", () => {
+        let reservationItem
+        beforeEach(async () => {
+          const inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+
+          reservationItem = await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 2,
+          })
+        })
+
+        it("should update a reservationItem", async () => {
+          const update = {
+            id: reservationItem.id,
+            quantity: 5,
+          }
+
+          const updated = await service.updateReservationItems(update)
+
+          expect(updated).toEqual(expect.objectContaining(update))
+        })
+      })
+
+      describe("deleteReservationItemsByLineItem", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+              reserved_quantity: 6,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+
+          await service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            },
+          ])
+        })
+
+        it("deleted reseravation items by line item", async () => {
+          const reservationsPreDeleted = await service.listReservationItems({
+            line_item_id: "line-item-id",
+          })
+
+          expect(reservationsPreDeleted).toEqual([
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            }),
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            }),
+          ])
+
+          await service.deleteReservationItemsByLineItem("line-item-id")
+
+          const reservationsPostDeleted = await service.listReservationItems({
+            line_item_id: "line-item-id",
+          })
+
+          expect(reservationsPostDeleted).toEqual([])
+        })
+
+        it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
+          await service.deleteReservationItemsByLineItem("line-item-id")
+
+          const [inventoryLevel] = await service.listInventoryLevels({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+          })
+
+          expect(inventoryLevel).toEqual(
+            expect.objectContaining({ reserved_quantity: 2 })
+          )
+        })
+      })
+
+      describe("deleteReservationItemByLocationId", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+              reserved_quantity: 6,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+
+          await service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            },
+          ])
+        })
+
+        it("deleted reservation items by line item", async () => {
+          const reservationsPreDeleted = await service.listReservationItems({
+            location_id: "location-1",
+          })
+
+          console.log(reservationsPreDeleted)
+          expect(reservationsPreDeleted).toEqual([
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+            }),
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+            }),
+          ])
+
+          await service.deleteReservationItemByLocationId("location-1")
+
+          const reservationsPostDeleted = await service.listReservationItems({
+            location_id: "location-1",
+          })
+
+          expect(reservationsPostDeleted).toEqual([])
+        })
+
+        it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
+          await service.deleteReservationItemByLocationId("location-1")
+
+          const [inventoryLevel] = await service.listInventoryLevels({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+          })
+
+          expect(inventoryLevel).toEqual(
+            expect.objectContaining({ reserved_quantity: 2 })
+          )
+        })
+      })
+
+      describe("deleteInventoryItemLevelByLocationId", () => {})
+      describe("deleteInventoryLevel", () => {})
+      describe("adjustInventory", () => {})
+      describe("retrieveInventoryLevelByItemAndLocation", () => {})
+      describe("retrieveAvailableQuantity", () => {})
+      describe("retrieveStockedQuantity", () => {})
+      describe("retrieveReservedQuantity", () => {})
+      describe("confirmInventory", () => {})
     })
   },
 })

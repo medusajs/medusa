@@ -25,9 +25,10 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { ReservationItem } from "../models/reservation-item"
+import { ReservationItemRepository } from "@repositories"
 
 type InjectedDependencies = {
-  reservationItemRepository: DAL.RepositoryService
+  reservationItemRepository: ReservationItemRepository
 }
 
 export default class ReservationItemService<
@@ -35,44 +36,23 @@ export default class ReservationItemService<
 > extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
   ReservationItem
 )<TEntity> {
-  protected readonly inventoryLevelRepository_: DAL.RepositoryService
+  protected readonly reservationItemRepository_: ReservationItemRepository
 
   constructor(container: InjectedDependencies) {
     super(container)
 
-    this.inventoryLevelRepository_ = container.reservationItemRepository
+    this.reservationItemRepository_ = container.reservationItemRepository
   }
 
-  @InjectTransactionManager("inviteRepository_")
+  @InjectTransactionManager("reservationItemRepository_")
   async deleteByLineItem(
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    // const manager = context.transactionManager!
-    // const itemRepository = manager.getRepository(ReservationItem)
-    // const lineItemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
-    // const reservationItems = await this.list(
-    //   { line_item_id: lineItemIds },
-    //   undefined,
-    //   context
-    // )
-    // const ops: Promise<unknown>[] = [
-    //   itemRepository.softDelete({ line_item_id: In(lineItemIds) }),
-    // ]
-    // for (const reservation of reservationItems) {
-    //   ops.push(
-    //     this.inventoryLevelService_.adjustReservedQuantity(
-    //       reservation.inventory_item_id,
-    //       reservation.location_id,
-    //       reservation.quantity * -1,
-    //       context
-    //     )
-    //   )
-    // }
-    // await promiseAll(ops)
-    // await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
-    //   line_item_id: lineItemId,
-    // })
+    await this.reservationItemRepository_.softDelete(
+      { line_item_id: lineItemId },
+      context
+    )
   }
 
   /**
@@ -80,18 +60,15 @@ export default class ReservationItemService<
    * @param locationId - The ID of the location to delete reservations for.
    * @param context
    */
-  @InjectTransactionManager("inviteRepository_")
+  @InjectTransactionManager("reservationItemRepository_")
   async deleteByLocationId(
     locationId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    // const manager = context.transactionManager!
-    // const itemRepository = manager.getRepository(ReservationItem)
-    // const ids = Array.isArray(locationId) ? locationId : [locationId]
-    // await itemRepository.softDelete({ location_id: In(ids) })
-    // await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
-    //   location_id: locationId,
-    // })
+    await this.reservationItemRepository_.softDelete(
+      { location_id: locationId },
+      context
+    )
   }
 }
 
