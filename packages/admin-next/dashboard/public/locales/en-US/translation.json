@@ -17,9 +17,6 @@
     "is": "is",
     "select": "Select",
     "selected": "Selected",
-    "extensions": "Extensions",
-    "settings": "Settings",
-    "general": "General",
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -43,6 +40,12 @@
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
     "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
     "timeline": "Timeline"
+  },
+  "nav": {
+    "general": "General",
+    "developer": "Developer",
+    "extensions": "Extensions",
+    "settings": "Settings"
   },
   "actions": {
     "create": "Create",

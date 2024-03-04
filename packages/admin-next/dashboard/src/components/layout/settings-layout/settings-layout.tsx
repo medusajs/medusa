@@ -96,7 +96,7 @@ const SettingsSidebar = () => {
             </IconButton>
           </Link>
           <Text leading="compact" weight="plus" size="small">
-            {t("general.settings")}
+            {t("nav.settings")}
           </Text>
         </div>
       </div>
@@ -108,7 +108,7 @@ const SettingsSidebar = () => {
           <div className="px-3">
             <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
               <Text size="small" leading="compact">
-                General
+                {t("nav.general")}
               </Text>
               <Collapsible.Trigger asChild>
                 <IconButton size="2xsmall" variant="transparent">
@@ -131,7 +131,7 @@ const SettingsSidebar = () => {
           <div className="px-3">
             <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
               <Text size="small" leading="compact">
-                Developer
+                {t("nav.developer")}
               </Text>
               <Collapsible.Trigger asChild>
                 <IconButton size="2xsmall" variant="transparent">
