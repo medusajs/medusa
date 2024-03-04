@@ -39,6 +39,8 @@ module.exports = {
     cwd,
     env = {},
     skipExpressListen = false,
+    setContainerCb = setContainer,
+    setPortCb = setPort,
   } = {}) => {
     const { app, port, container, db, pgConnection } = await bootstrapApp({
       cwd,
@@ -46,7 +48,7 @@ module.exports = {
     })
     let expressServer
 
-    setContainer(container)
+    setContainerCb(container)
 
     if (skipExpressListen) {
       return
@@ -72,7 +74,7 @@ module.exports = {
           await shutdown()
           return reject(err)
         }
-        setPort(port)
+        setPortCb(port)
         process.send(port)
         resolve(shutdown)
       })

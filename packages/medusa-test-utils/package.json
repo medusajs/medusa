@@ -24,6 +24,7 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
+    "axios": "^1.6.7",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^3.0.2",

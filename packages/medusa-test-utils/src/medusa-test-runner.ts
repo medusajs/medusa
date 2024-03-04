@@ -2,15 +2,14 @@ import { ContainerLike } from "@medusajs/modules-sdk"
 import { getDatabaseURL } from "./database"
 import { DbTestUtil, initDb } from "./environment-helpers/use-db"
 import { startBootstrapApp } from "./environment-helpers/bootstrap-app"
-import { getContainer } from "./environment-helpers/use-container"
-import { useApi } from "./environment-helpers/use-api"
+import { default as axios } from "axios"
 
 export interface MedusaSuiteOptions<TService = unknown> {
   dbUtils: any
   dbConnection: any
-  container: ContainerLike
+  getContainer: () => ContainerLike
   service: TService
-  apiUtils: any
+  api: any
   dbConfig: {
     dbName: string
     schema: string
@@ -43,6 +42,17 @@ export function medusaIntegrationTestRunner({
     schema,
   }
 
+  // Intercept call to this utils to apply the unique client url for the current suite
+  const originalCreatePgConnection =
+    require("@medusajs/utils/dist/modules-sdk/create-pg-connection").createPgConnection
+  require("@medusajs/utils/dist/modules-sdk/create-pg-connection").createPgConnection =
+    (options: any) => {
+      return originalCreatePgConnection({
+        ...options,
+        clientUrl: dbConfig.clientUrl,
+      })
+    }
+
   const cwd = process.cwd()
 
   let shutdown: () => Promise<void>
@@ -60,7 +70,7 @@ export function medusaIntegrationTestRunner({
         },
       }
     ),
-    apiUtils: new Proxy(
+    api: new Proxy(
       {},
       {
         get: (target, prop) => {
@@ -76,14 +86,7 @@ export function medusaIntegrationTestRunner({
         },
       }
     ),
-    container: new Proxy(
-      {},
-      {
-        get: (target, prop) => {
-          return container[prop]
-        },
-      }
-    ),
+    getContainer: () => container,
   } as MedusaSuiteOptions
 
   const beforeAll_ = async () => {
@@ -96,15 +99,22 @@ export function medusaIntegrationTestRunner({
         dbName: dbConfig.dbName,
         dbTestUtils: dbUtils,
       } as any)
-      shutdown = await startBootstrapApp({ cwd, env })
-      container = getContainer()! as ContainerLike
-      apiUtils = useApi() as any
+      shutdown = await startBootstrapApp({
+        cwd,
+        env,
+        setContainerCb: (container_) => {
+          container = container_
+        },
+        setPortCb: (port) => {
+          apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
+        },
+      })
     } catch (error) {
       console.error("Error setting up database:", error)
     }
   }
 
-  const afterEach_ = async () => {
+  const beforeEach_ = async () => {
     try {
       await dbUtils.teardown({ forceDelete: [], schema })
     } catch (error) {
@@ -114,7 +124,7 @@ export function medusaIntegrationTestRunner({
 
   return describe("", () => {
     beforeAll(beforeAll_)
-    afterEach(afterEach_)
+    beforeEach(beforeEach_)
     afterAll(async () => {
       await dbUtils.shutdown(dbName)
       await shutdown()

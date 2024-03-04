@@ -10,14 +10,16 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, apiUtils, container }) => {
+  testSuite: ({ dbConnection, api, getContainer }) => {
     describe("Currency - Admin", () => {
+      let container
+
       beforeEach(async () => {
+        container = getContainer()
         await createAdminUser(dbConnection, adminHeaders, container)
       })
 
       it("should correctly retrieve and list currencies", async () => {
-        const api = apiUtils
         const listResp = await api.get("/admin/currencies", adminHeaders)
 
         expect(listResp.data.currencies).toEqual(
