@@ -1,4 +1,4 @@
-import { Badge, Container, Heading, Text, clx } from "@medusajs/ui"
+import { Badge, Container, Copy, Heading, Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import {
   TransactionStepState,
@@ -20,7 +20,10 @@ export const ExecutionGeneralSection = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{cleanId}</Heading>
+        <div className="flex items-center gap-x-0.5">
+          <Heading>{cleanId}</Heading>
+          <Copy content={cleanId} className="text-ui-fg-muted" />
+        </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

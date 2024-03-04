@@ -69,30 +69,27 @@ type ZoomScale = 0.5 | 0.75 | 1
 const defaultState = {
   x: -860,
   y: -1020,
+  scale: 1,
 }
+
+const MAX_ZOOM = 1.5
+const MIN_ZOOM = 0.5
+const ZOOM_STEP = 0.25
 
 const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
   const [zoom, setZoom] = useState<number>(1)
-  const scale = useMotionValue(1)
+
+  const scale = useMotionValue(defaultState.scale)
   const x = useMotionValue(defaultState.x)
   const y = useMotionValue(defaultState.y)
 
   const controls = useAnimationControls()
 
-  useEffect(() => {
-    controls.start({
-      scale: zoom,
-      x: -860,
-      y: -1020,
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const dragControls = useDragControls()
   const dragConstraints = useRef<HTMLDivElement>(null)
 
-  const canZoomIn = zoom < 1.5
-  const canZoomOut = zoom > 0.5
+  const canZoomIn = zoom < MAX_ZOOM
+  const canZoomOut = zoom > MIN_ZOOM
 
   useEffect(() => {
     const unsubscribe = scale.on("change", (latest) => {
@@ -119,16 +116,19 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
     }
   }
 
+  const changeZoom = (newScale: number) => {
+    const { x: newX, y: newY } = scaleXandY(zoom, newScale, x.get(), y.get())
+
+    setZoom(newScale)
+    controls.set({ scale: newScale, x: newX, y: newY })
+  }
+
   const zoomIn = () => {
     const curr = scale.get()
 
     if (curr < 1.5) {
-      const newScale = (curr + 0.25) as ZoomScale
-
-      const { x: newX, y: newY } = scaleXandY(zoom, newScale, x.get(), y.get())
-
-      setZoom(newScale)
-      controls.set({ scale: newScale, x: newX, y: newY })
+      const newScale = curr + ZOOM_STEP
+      changeZoom(newScale)
     }
   }
 
@@ -136,21 +136,13 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
     const curr = scale.get()
 
     if (curr > 0.5) {
-      const newScale = (curr - 0.25) as ZoomScale
-
-      const { x: newX, y: newY } = scaleXandY(zoom, newScale, x.get(), y.get())
-
-      controls.set({ scale: newScale, x: newX, y: newY })
+      const newScale = curr - ZOOM_STEP
+      changeZoom(newScale)
     }
   }
 
   const resetCanvas = () => {
-    setZoom(1)
-    controls.start({
-      scale: 1,
-      x: -860,
-      y: -1020,
-    })
+    controls.start(defaultState)
   }
 
   return (
@@ -175,7 +167,7 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
               className="bg-ui-bg-subtle relative size-[500rem] origin-top-left items-start justify-start overflow-hidden bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat"
             >
               <main className="size-full">
-                <div className="absolute left-[900px] top-[1100px] flex select-none items-start">
+                <div className="absolute left-[1100px] top-[1100px] flex select-none items-start">
                   {Object.entries(clusters).map(([depth, cluster]) => {
                     const next = getNextCluster(clusters, Number(depth))
 
@@ -201,7 +193,7 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
             type="button"
             disabled={!canZoomIn}
             aria-label="Zoom in"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
           >
             <PlusMini />
           </button>
@@ -210,7 +202,7 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
             type="button"
             disabled={!canZoomOut}
             aria-label="Zoom out"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
           >
             <MinusMini />
           </button>
@@ -218,7 +210,7 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
             onClick={resetCanvas}
             type="button"
             aria-label="Reset canvas"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed border-r p-1"
+            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed p-1 outline-none"
           >
             <ArrowPathMini />
           </button>
@@ -362,7 +354,11 @@ const Node = ({ step }: { step: WorkflowExecutionStep }) => {
   }
 
   return (
-    <Link to={`#${stepId}`} onClick={handleScrollTo}>
+    <Link
+      to={`#${stepId}`}
+      onClick={handleScrollTo}
+      className="focus-visible:shadow-borders-focus transition-fg rounded-md outline-none"
+    >
       <div
         className="bg-ui-bg-base shadow-borders-base flex min-w-[120px] items-center gap-x-0.5 rounded-md p-0.5"
         data-step-id={step.id}
