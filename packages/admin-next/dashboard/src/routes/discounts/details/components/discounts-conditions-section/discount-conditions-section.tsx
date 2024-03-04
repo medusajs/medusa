@@ -12,6 +12,8 @@ type ConditionTypeProps = {
   condition: DiscountCondition
 }
 
+const N = 2
+
 function ConditionType({ condition }: ConditionTypeProps) {
   const operator = condition.operator === "in" ? "including" : "excluding"
   const entity = condition.type
@@ -20,13 +22,20 @@ function ConditionType({ condition }: ConditionTypeProps) {
     <div className="bg-ui-bg-subtle shadow-borders-base flex flex-row justify-around rounded-md p-2">
       <span className="text-ui-fg-subtle txt-small">
         <Trans
-          count={condition.products.length}
+          count={
+            condition[entity].length > N
+              ? N - condition[entity].length
+              : condition[entity].length
+          }
           i18nKey={`discounts.conditions.${operator}.${entity}`}
           components={[
             <span className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1">
               <ListSummary
                 inline
-                list={condition[entity].map((p) => p.title || p.name)}
+                n={N}
+                list={condition[entity].map(
+                  (p) => p.title || p.name || p.value
+                )}
               />
             </span>,
             <span className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1" />,
