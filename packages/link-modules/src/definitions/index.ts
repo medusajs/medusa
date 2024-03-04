@@ -1,5 +1,6 @@
 export * from "./cart-customer"
 export * from "./cart-payment-collection"
+export * from "./cart-promotion"
 export * from "./cart-region"
 export * from "./cart-sales-channel"
 export * from "./inventory-level-stock-location"
