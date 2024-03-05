@@ -1,6 +1,6 @@
-import { PaymentSessionStatus } from "./common"
-import { CustomerDTO } from "../customer"
 import { AddressDTO } from "../address"
+import { CustomerDTO } from "../customer"
+import { PaymentSessionStatus } from "./common"
 import { ProviderWebhookPayload } from "./mutations"
 
 export type PaymentAddressDTO = Partial<AddressDTO>
@@ -44,30 +44,30 @@ export type PaymentProviderContext = {
    */
   email?: string
   /**
-   * The selected currency code.
-   */
-  currency_code: string
-  /**
-   * The payment's amount.
-   */
-  amount: number
-  /**
    * The ID of the resource the payment is associated with i.e. the ID of the PaymentSession in Medusa
    */
-  resource_id: string
+  resource_id?: string
   /**
    * The customer associated with this payment.
    */
   customer?: PaymentCustomerDTO
   /**
-   * The context.
+   * The extra fields specific to the provider session.
    */
-  context: { payment_description?: string } & Record<string, unknown>
-  /**
-   * If the payment session hasn't been created or initiated yet, it'll be an empty object.
-   * If the payment session exists, it'll be the value of the payment session's `data` field.
-   */
-  payment_session_data: Record<string, unknown>
+  extra?: Record<string, unknown>
+}
+
+export type CreatePaymentProviderSession = {
+  context: PaymentProviderContext
+  amount: number
+  currency_code: string
+}
+
+export type UpdatePaymentProviderSession = {
+  context: PaymentProviderContext
+  data: Record<string, unknown>
+  amount: number
+  currency_code: string
 }
 
 /**
@@ -142,21 +142,21 @@ export interface IPaymentProvider {
   /**
    * Make calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer.
    *
-   * @param {PaymentProviderContext} context - The context of the payment.
+   * @param {CreatePaymentProviderSession} context
    * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse>} Either the payment's data or an error object.
    */
   initiatePayment(
-    context: PaymentProviderContext
+    data: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   /**
    * This method is used to update the payment session.
    *
-   * @param {PaymentProviderContext} context - The context of the payment.
+   * @param {UpdatePaymentProviderSession} context
    * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse | void>} Either the payment's data or an error object.
    */
   updatePayment(
-    context: PaymentProviderContext
+    context: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   /**
