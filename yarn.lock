@@ -7918,7 +7918,7 @@ __metadata:
     "@rollup/plugin-virtual": ^3.0.1
     "@types/express": ^4.17.13
     commander: ^10.0.0
-    dotenv: 16.3.1
+    dotenv: 16.4.5
     esbuild: 0.17.18
     express: 4.18.2
     fs-extra: 11.1.0
@@ -7975,7 +7975,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.3.1
+    dotenv: 16.4.5
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
@@ -8170,6 +8170,7 @@ __metadata:
     postcss: ^8.4.33
     prettier: ^3.1.1
     react: 18.2.0
+    react-country-flag: ^3.1.0
     react-dom: 18.2.0
     react-focus-lock: ^2.11.1
     react-hook-form: 7.49.1
@@ -8234,10 +8235,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
+  dependencies:
+    "@medusajs/utils": ^1.11.3
+    body-parser: ^1.19.0
+    cross-env: ^5.2.1
+    express: ^4.17.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/fulfillment@workspace:packages/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
   dependencies:
+    "@medusajs/fulfillment-manual": "workspace:*"
     "@medusajs/modules-sdk": ^1.12.4
     "@medusajs/types": ^1.11.8
     "@medusajs/utils": ^1.11.1
@@ -8642,6 +8658,7 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
+    "@medusajs/workflows-sdk": "workspace:^"
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8675,7 +8692,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: 16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.41
@@ -8702,7 +8719,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: 16.4.5
     faker: ^6.6.6
     jest: ^29.6.3
     knex: 2.4.2
@@ -8725,14 +8742,14 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/utils": 1.11.6
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: 16.3.1
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -9014,7 +9031,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.3.1
+    dotenv: 16.4.5
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
@@ -9029,7 +9046,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.1.41, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.4, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.6, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@1.11.6, @medusajs/utils@^1.1.41, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.4, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.6, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -9126,7 +9143,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:^, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
@@ -25799,6 +25816,13 @@ __metadata:
   version: 16.3.1
   resolution: "dotenv@npm:16.3.1"
   checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
   languageName: node
   linkType: hard
 
@@ -43561,7 +43585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-country-flag@npm:^3.0.2":
+"react-country-flag@npm:^3.0.2, react-country-flag@npm:^3.1.0":
   version: 3.1.0
   resolution: "react-country-flag@npm:3.1.0"
   peerDependencies:

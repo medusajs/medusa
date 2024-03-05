@@ -14,12 +14,6 @@ import {
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
-const FulfillmentIdIndex = createPsqlIndexStatementHelper({
-  tableName: "fulfillment_address",
-  columns: "fulfillment_id",
-  where: "deleted_at IS NULL",
-})
-
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
   columns: "deleted_at",
@@ -32,10 +26,6 @@ export default class Address {
 
   @PrimaryKey({ columnType: "text" })
   id!: string
-
-  @Property({ columnType: "text", nullable: true })
-  @FulfillmentIdIndex.MikroORMIndex()
-  fulfillment_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null
