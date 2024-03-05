@@ -540,11 +540,11 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/taxes/views/tax-list"),
+                lazy: () => import("../../routes/taxes/tax-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/taxes/views/tax-details"),
+                lazy: () => import("../../routes/taxes/tax-details"),
               },
             ],
           },

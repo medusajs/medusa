@@ -1,7 +1,7 @@
 import { useAdminRegion } from "medusa-react"
 import { useParams } from "react-router-dom"
-import { TaxDetailsSection } from "../../components/tax-details-section"
-import { TaxRatesSection } from "../../components/tax-rates-section"
+import { TaxDetailsSection } from "./components/tax-details-section"
+import { TaxRatesSection } from "./components/tax-rates-section"
 
 export const TaxDetails = () => {
   const { id } = useParams()

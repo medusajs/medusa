@@ -1,5 +1,6 @@
+import { Plus } from "@medusajs/icons"
 import { TaxRate } from "@medusajs/medusa"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -9,7 +10,7 @@ import { useAdminTaxRates } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { DebouncedSearch } from "../../../../components/common/debounced-search"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 export const TaxRatesSection = () => {
   const { id } = useParams()
@@ -34,12 +35,13 @@ export const TaxRatesSection = () => {
 
   return (
     <Container className="divide-y p-0">
-      <div className="flex items-center justify-between px-8 pb-4 pt-6">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">Tax Rates</Heading>
-        <div className="flex items-center gap-x-2">
-          <DebouncedSearch size="small" value={query} onChange={setQuery} />
-          <Button variant="secondary">Add Tax Rate</Button>
-        </div>
+        <ActionMenu
+          groups={[
+            { actions: [{ label: "Create", to: "create", icon: <Plus /> }] },
+          ]}
+        />
       </div>
     </Container>
   )
