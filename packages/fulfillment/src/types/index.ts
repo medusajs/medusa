@@ -4,3 +4,6 @@ export type InitializeModuleInjectableDependencies = {
   logger?: Logger
   eventBusService?: IEventBusModuleService
 }
+
+export const FulfillmentIdentifiersRegistrationName =
+  "fulfillment_providers_identifier"

@@ -1,6 +1,10 @@
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { initModules, InitModulesOptions } from "./init-modules"
-import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
+import {
+  MedusaAppOutput,
+  MedusaModuleConfig,
+  ModulesDefinition
+} from "@medusajs/modules-sdk"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 
 import { MockEventBusService } from "."
@@ -18,6 +22,7 @@ export interface SuiteOptions<TService = unknown> {
 export function moduleIntegrationTestRunner({
   moduleName,
   moduleModels,
+  moduleOptions = {},
   joinerConfig = [],
   schema = "public",
   debug = false,
@@ -26,6 +31,7 @@ export function moduleIntegrationTestRunner({
 }: {
   moduleName: string
   moduleModels?: any[]
+  moduleOptions?: Record<string, any>
   joinerConfig?: any[]
   schema?: string
   dbName?: string
@@ -64,11 +70,12 @@ export function moduleIntegrationTestRunner({
           database: dbConfig,
         },
         database: dbConfig,
+        ...moduleOptions,
       },
     },
   }
 
-  const moduleOptions: InitModulesOptions = {
+  const moduleOptions_: InitModulesOptions = {
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
       eventBusService: new MockEventBusService(),
@@ -108,7 +115,7 @@ export function moduleIntegrationTestRunner({
   const beforeEach_ = async () => {
     try {
       await MikroOrmWrapper.setupDatabase()
-      const output = await initModules(moduleOptions)
+      const output = await initModules(moduleOptions_)
       shutdown = output.shutdown
       medusaApp = output.medusaApp
       moduleService = output.medusaApp.modules[moduleName]

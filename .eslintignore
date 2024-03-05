@@ -31,6 +31,7 @@ packages/*
 !packages/workflow-engine-redis
 !packages/workflow-engine-inmemory
 !packages/fulfillment
+!packages/fulfillment-manual
 
 
 **/models/*
