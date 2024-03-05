@@ -165,6 +165,7 @@ interface TaxLineDTO {
   rate: number | null
   code: string | null
   name: string
+  provider_id: string
 }
 
 export interface ItemTaxLineDTO extends TaxLineDTO {

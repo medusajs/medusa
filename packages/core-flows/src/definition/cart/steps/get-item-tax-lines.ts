@@ -40,7 +40,7 @@ function normalizeTaxModuleContext(
       postal_code: address.postal_code,
     },
     customer,
-    // TODO: where is this info coming from?
+    // TODO: Should probably come in from order module, defaulting to false
     is_return: false,
   }
 }
@@ -51,14 +51,9 @@ function normalizeLineItemsForTax(
 ): TaxableItemDTO[] {
   return items.map((item) => ({
     id: item.id,
-    // TODO: ensure that product_id is always availble
     product_id: item.product_id!,
     product_name: item.variant_title,
-    // TODO: categories need to come from product module
-    product_category_id: undefined,
-    product_categories: [],
     product_sku: item.variant_sku,
-    // TODO: Is this name? if so product type need to come from product module
     product_type: item.product_type,
     product_type_id: item.product_type,
     quantity: item.quantity,

@@ -14,30 +14,20 @@ interface StepInput {
   taxLines: (ItemTaxLineDTO | ShippingTaxLineDTO)[]
 }
 
-function isItem(
-  taxLine: ItemTaxLineDTO | ShippingTaxLineDTO
-): taxLine is ItemTaxLineDTO {
-  return "line_item_id" in taxLine
-}
-
-function isShipping(
-  taxLine: ItemTaxLineDTO | ShippingTaxLineDTO
-): taxLine is ShippingTaxLineDTO {
-  return "shipping_line_id" in taxLine
-}
-
 function getItemTaxLines(
   taxLines: (ItemTaxLineDTO | ShippingTaxLineDTO)[]
 ): ItemTaxLineDTO[] {
-  return taxLines.filter((taxLine) => isItem(taxLine)) as ItemTaxLineDTO[]
+  return taxLines.filter(
+    (taxLine): taxLine is ItemTaxLineDTO => "line_item_id" in taxLine
+  )
 }
 
 function getShippingMethodTaxLines(
   taxLines: (ItemTaxLineDTO | ShippingTaxLineDTO)[]
 ): ShippingTaxLineDTO[] {
-  return taxLines.filter((taxLine) =>
-    isShipping(taxLine)
-  ) as ShippingTaxLineDTO[]
+  return taxLines.filter(
+    (taxLine): taxLine is ShippingTaxLineDTO => "shipping_line_id" in taxLine
+  )
 }
 
 function commonTaxLineAttributes(taxLine: ItemTaxLineDTO | ShippingTaxLineDTO) {
@@ -46,8 +36,7 @@ function commonTaxLineAttributes(taxLine: ItemTaxLineDTO | ShippingTaxLineDTO) {
     tax_rate_id: taxLine.rate_id,
     code: taxLine.code!,
     rate: taxLine.rate!,
-    // TODO: This should probably come from the tax module
-    provider_id: "system",
+    provider_id: taxLine.provider_id,
   }
 }
 
