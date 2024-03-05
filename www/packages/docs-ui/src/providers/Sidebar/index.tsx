@@ -11,6 +11,7 @@ import React, {
 } from "react"
 import { usePathname } from "next/navigation"
 import { getScrolledTop } from "../../utils"
+import { useIsBrowser } from "../../hooks"
 
 export enum SidebarItemSections {
   TOP = "top",
@@ -179,6 +180,7 @@ export const SidebarProvider = ({
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
   const pathname = usePathname()
+  const isBrowser = useIsBrowser()
   const getResolvedScrollableElement = useCallback(() => {
     return scrollableElement || window
   }, [scrollableElement])
@@ -239,14 +241,6 @@ export const SidebarProvider = ({
     }
   }
 
-  // this is mainly triggered by Algolia
-  const handleHashChange = useCallback(() => {
-    const currentPath = location.hash.replace("#", "")
-    if (currentPath !== activePath) {
-      setActivePath(currentPath)
-    }
-  }, [activePath])
-
   useEffect(() => {
     if (shouldHandleHashChange) {
       init()
@@ -270,16 +264,31 @@ export const SidebarProvider = ({
     }
 
     resolvedScrollableElement.addEventListener("scroll", handleScroll)
-    resolvedScrollableElement.addEventListener("hashchange", handleHashChange)
 
     return () => {
       resolvedScrollableElement.removeEventListener("scroll", handleScroll)
-      resolvedScrollableElement.removeEventListener(
-        "hashchange",
-        handleHashChange
-      )
     }
-  }, [handleHashChange, shouldHandleHashChange, getResolvedScrollableElement])
+  }, [shouldHandleHashChange, getResolvedScrollableElement])
+
+  useEffect(() => {
+    if (!shouldHandleHashChange || !isBrowser) {
+      return
+    }
+
+    // this is mainly triggered by Algolia
+    const handleHashChange = () => {
+      const currentPath = location.hash.replace("#", "")
+      if (currentPath !== activePath) {
+        setActivePath(currentPath)
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange)
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange)
+    }
+  }, [shouldHandleHashChange, isBrowser])
 
   useEffect(() => {
     if (isLoading && items.top.length && items.bottom.length) {
