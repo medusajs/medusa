@@ -22,6 +22,8 @@ export class Migration20240225134525 extends Migration {
         ALTER TABLE IF EXISTS "payment_provider" ADD COLUMN IF NOT EXISTS "is_enabled" BOOLEAN NOT NULL DEFAULT TRUE;
 
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "currency_code" TEXT NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "authorized_at" TEXT NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_authorized_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
@@ -31,6 +33,7 @@ export class Migration20240225134525 extends Migration {
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "provider_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_session_id" TEXT NOT NULL;
 
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
@@ -176,7 +179,7 @@ export class Migration20240225134525 extends Migration {
           "captured_at"          TIMESTAMPTZ NULL,
           "canceled_at"          TIMESTAMPTZ NULL,
           "payment_collection_id" TEXT NOT NULL,
-          "session_id"           TEXT NOT NULL,
+          "payment_session_id"   TEXT NOT NULL,
           "metadata"             JSONB NULL,
           CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
         );

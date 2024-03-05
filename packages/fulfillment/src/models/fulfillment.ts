@@ -12,6 +12,7 @@ import {
   Filter,
   ManyToOne,
   OneToMany,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -20,7 +21,7 @@ import {
 import Address from "./address"
 import FulfillmentItem from "./fulfillment-item"
 import FulfillmentLabel from "./fulfillment-label"
-import ServiceProvider from "./service-provider"
+import FulfillmentProvider from "./fulfillment-provider"
 import ShippingOption from "./shipping-option"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -88,28 +89,37 @@ export default class Fulfillment {
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => FulfillmentProvider, {
+    columnType: "text",
+    fieldName: "provider_id",
+    mapToPk: true,
+  })
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ShippingOption, {
+    columnType: "text",
+    fieldName: "shipping_option_id",
+    nullable: true,
+    mapToPk: true,
+  })
   @FulfillmentShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToOne(() => ShippingOption, { nullable: true })
+  @ManyToOne(() => ShippingOption, { persist: false })
   shipping_option: ShippingOption | null
 
-  @ManyToOne(() => ServiceProvider)
-  provider: ServiceProvider
+  @ManyToOne(() => FulfillmentProvider, { persist: false })
+  provider: FulfillmentProvider
 
-  @ManyToOne(() => Address)
-  delivery_address: Address
+  @OneToOne()
+  delivery_address!: Address
 
-  @ManyToOne(() => FulfillmentItem)
-  items: FulfillmentItem
+  @OneToMany(() => FulfillmentItem, (item) => item.fulfillment)
+  items = new Collection<FulfillmentItem>(this)
 
   @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment)
   labels = new Collection<FulfillmentLabel>(this)
@@ -136,10 +146,12 @@ export default class Fulfillment {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ful")
+    this.provider_id ??= this.provider.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ful")
+    this.provider_id ??= this.provider.id
   }
 }
