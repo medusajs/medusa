@@ -24,7 +24,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, medusaContainer)
 
         // await productSeeder(dbConnection)
         // await createDefaultRuleTypes(medusaContainer)

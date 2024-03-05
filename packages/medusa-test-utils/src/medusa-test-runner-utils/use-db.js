@@ -10,7 +10,6 @@ const {
 const { DataSource } = require("typeorm")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
-const { DatabaseFactory } = require("./use-template-db")
 const { logger } = require("@medusajs/medusa-cli/dist/reporter")
 
 module.exports = {
@@ -20,7 +19,6 @@ module.exports = {
     env,
     force_modules_migration,
     dbUrl = DB_URL,
-    dbName = DB_NAME,
     dbSchema = "public",
   }) {
     if (isObject(env)) {
@@ -35,13 +33,6 @@ module.exports = {
     const featureFlagRouter = featureFlagsLoader(configModule)
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
-
-    const dbFactoryInstance = new DatabaseFactory({
-      masterName: "master-" + dbName,
-      templateName: "template-" + dbName,
-    })
-    await dbFactoryInstance.createTemplateDb_({ cwd })
-    await dbFactoryInstance.createFromTemplate(dbName)
 
     // get migrations with enabled featureflags
     const migrationDir = path.resolve(

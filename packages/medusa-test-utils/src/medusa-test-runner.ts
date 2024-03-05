@@ -1,7 +1,7 @@
 import { getDatabaseURL } from "./database"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { dropDatabase } from "pg-god"
+import { createDatabase, dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
 
 const axios = require("axios").default
@@ -37,6 +37,10 @@ const dbTestUtilFactory = (): any => ({
     this.db_?.synchronize(true)
   },
 
+  create: async function (dbName: string) {
+    await createDatabase({ databaseName: dbName }, pgGodCredentials)
+  },
+
   teardown: async function ({
     forceDelete,
     schema,
@@ -70,7 +74,10 @@ const dbTestUtilFactory = (): any => ({
     await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
 
-    return await dropDatabase({ databaseName: dbName }, pgGodCredentials)
+    return await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
   },
 })
 
@@ -176,6 +183,7 @@ export function medusaIntegrationTestRunner({
 
   const beforeAll_ = async () => {
     try {
+      await dbUtils.create(dbName)
       const { dbDataSource, pgConnection } = await initDb({
         cwd,
         env,
@@ -183,7 +191,6 @@ export function medusaIntegrationTestRunner({
         database_extra: {},
         dbUrl: dbConfig.clientUrl,
         dbSchema: dbConfig.schema,
-        dbName: dbConfig.dbName,
       })
       dbUtils.db_ = dbDataSource
       dbUtils.pgConnection_ = pgConnection
@@ -218,8 +225,12 @@ export function medusaIntegrationTestRunner({
     beforeAll(beforeAll_)
     afterEach(afterEach_)
     afterAll(async () => {
-      await dbUtils.shutdown(dbName)
-      await shutdown()
+      try {
+        await dbUtils.shutdown(dbName)
+        await shutdown()
+      } catch (error) {
+        console.error("Error shutting down integration environment:", error)
+      }
     })
 
     testSuite(options!)
