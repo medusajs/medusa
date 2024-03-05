@@ -8234,10 +8234,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
+  dependencies:
+    "@medusajs/utils": ^1.11.3
+    body-parser: ^1.19.0
+    cross-env: ^5.2.1
+    express: ^4.17.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/fulfillment@workspace:packages/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
   dependencies:
+    "@medusajs/fulfillment-manual": "workspace:*"
     "@medusajs/modules-sdk": ^1.12.4
     "@medusajs/types": ^1.11.8
     "@medusajs/utils": ^1.11.1
