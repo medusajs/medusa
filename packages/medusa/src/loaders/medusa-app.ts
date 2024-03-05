@@ -71,6 +71,7 @@ export async function migrateMedusaApp(
           ?.config?.connection?.connectionString ??
         configModule.projectConfig.database_url,
       driverOptions: configModule.projectConfig.database_extra,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
 
@@ -135,6 +136,7 @@ export const loadMedusaApp = async (
     database: {
       clientUrl: configModule.projectConfig.database_url,
       driverOptions: configModule.projectConfig.database_extra,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
 

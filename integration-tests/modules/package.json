@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --detectOpenHandles --logHeapUsage --clearMocks --forceExit",
+    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --maxWorkers=4 --detectOpenHandles --logHeapUsage --forceExit --ci",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {

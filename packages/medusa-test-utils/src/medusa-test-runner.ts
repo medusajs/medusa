@@ -92,19 +92,19 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   force_modules_migration = false,
+  debug = false,
   testSuite,
 }: {
   moduleName?: string
   env?: Record<string, string>
   dbName?: string
   schema?: string
+  debug?: boolean
   force_modules_migration?: boolean
   testSuite: <TService = unknown>(
     options: MedusaSuiteOptions<TService>
   ) => () => void
 }) {
-  process.env.LOG_LEVEL = "error"
-
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
   dbName ??= `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
@@ -113,6 +113,7 @@ export function medusaIntegrationTestRunner({
     dbName,
     clientUrl: getDatabaseURL(dbName),
     schema,
+    debug,
   }
 
   // Intercept call to this utils to apply the unique client url for the current suite
@@ -137,6 +138,7 @@ export function medusaIntegrationTestRunner({
       configModule: {
         ...options.configModule,
         projectConfig: {
+          database_logging: debug, // Will be used for the debug flag of the database options
           ...options.configModule.projectConfig,
           database_url: dbConfig.clientUrl,
         },
