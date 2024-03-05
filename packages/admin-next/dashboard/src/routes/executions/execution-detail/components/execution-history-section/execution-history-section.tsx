@@ -136,38 +136,46 @@ const Event = ({
         </div>
       </div>
       <Collapsible.Root open={open} onOpenChange={setOpen}>
-        <div className="flex items-start justify-between">
-          <Text size="small" leading="compact" weight="plus">
-            {identifier}
-          </Text>
-          <div className="flex items-center gap-x-2">
-            {isInvoking ? (
-              <div className="flex items-center gap-x-1">
+        <Collapsible.Trigger asChild>
+          <div className="group flex cursor-pointer items-start justify-between outline-none">
+            <Text size="small" leading="compact" weight="plus">
+              {identifier}
+            </Text>
+            <div className="flex items-center gap-x-2">
+              {isInvoking ? (
+                <div className="flex items-center gap-x-1">
+                  <Text
+                    size="small"
+                    leading="compact"
+                    className="text-ui-fg-subtle"
+                  >
+                    {t("executions.history.runningState")}
+                  </Text>
+                  <Spinner className="text-ui-fg-interactive animate-spin" />
+                </div>
+              ) : step.startedAt ? (
                 <Text
                   size="small"
                   leading="compact"
-                  className="text-ui-fg-subtle"
+                  className="text-ui-fg-muted"
                 >
-                  {t("executions.history.runningState")}
+                  {format(step.startedAt, "dd MMM yyyy HH:mm:ss")}
                 </Text>
-                <Spinner className="text-ui-fg-interactive animate-spin" />
-              </div>
-            ) : step.startedAt ? (
-              <Text size="small" leading="compact" className="text-ui-fg-muted">
-                {format(step.startedAt, "dd MMM yyyy HH:mm:ss")}
-              </Text>
-            ) : (
-              <Text size="small" leading="compact" className="text-ui-fg-muted">
-                {t("executions.history.awaitingState")}
-              </Text>
-            )}
-            <Collapsible.Trigger asChild>
+              ) : (
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-muted"
+                >
+                  {t("executions.history.awaitingState")}
+                </Text>
+              )}
               <IconButton size="2xsmall" variant="transparent">
-                <TriangleDownMini className="text-ui-fg-muted" />
+                <TriangleDownMini className="text-ui-fg-muted transition-transform group-data-[state=open]:rotate-180" />
               </IconButton>
-            </Collapsible.Trigger>
+            </div>
           </div>
-        </div>
+        </Collapsible.Trigger>
         <Collapsible.Content ref={ref}>
           <div className="flex flex-col gap-y-2 pb-4 pt-2">
             <div className="text-ui-fg-subtle flex flex-col gap-y-2">
