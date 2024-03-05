@@ -8657,6 +8657,7 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
+    "@medusajs/workflows-sdk": "workspace:^"
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -9141,7 +9142,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:^, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:

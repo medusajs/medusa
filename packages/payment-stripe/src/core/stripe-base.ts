@@ -4,21 +4,22 @@ import Stripe from "stripe"
 
 import {
   MedusaContainer,
-  PaymentSessionStatus,
-  PaymentProviderContext,
   PaymentProviderError,
   PaymentProviderSessionResponse,
+  PaymentSessionStatus,
   ProviderWebhookPayload,
+  UpdatePaymentProviderSession,
   WebhookActionResult,
 } from "@medusajs/types"
 import {
-  PaymentActions,
   AbstractPaymentProvider,
-  isPaymentProviderError,
   MedusaError,
+  PaymentActions,
+  isPaymentProviderError,
 } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
+import { CreatePaymentProviderSession } from "@medusajs/types"
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -103,26 +104,20 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   }
 
   async initiatePayment(
-    context: PaymentProviderContext
+    input: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
-    const {
-      email,
-      context: cart_context,
-      currency_code,
-      amount,
-      resource_id,
-      customer,
-    } = context
+    const { email, extra, resource_id, customer } = input.context
+    const { currency_code, amount } = input
 
-    const description = (cart_context.payment_description ??
+    const description = (extra?.payment_description ??
       this.options_?.payment_description) as string
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
       amount: Math.round(amount),
       currency: currency_code,
-      metadata: { resource_id },
+      metadata: { resource_id: resource_id ?? "Medusa Payment" },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -149,9 +144,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       intentRequest.customer = stripeCustomer.id
     }
 
-    let session_data
+    let sessionData
     try {
-      session_data = (await this.stripe_.paymentIntents.create(
+      sessionData = (await this.stripe_.paymentIntents.create(
         intentRequest
       )) as unknown as Record<string, unknown>
     } catch (e) {
@@ -162,7 +157,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
 
     return {
-      data: session_data,
+      data: sessionData,
       // TODO: REVISIT
       // update_requests: customer?.metadata?.stripe_id
       //   ? undefined
@@ -260,13 +255,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   }
 
   async updatePayment(
-    context: PaymentProviderContext
+    input: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    const { amount, customer, payment_session_data } = context
-    const stripeId = customer?.metadata?.stripe_id
+    const { context, data, amount } = input
 
-    if (stripeId !== payment_session_data.customer) {
-      const result = await this.initiatePayment(context)
+    const stripeId = context.customer?.metadata?.stripe_id
+
+    if (stripeId !== data.customer) {
+      const result = await this.initiatePayment(input)
       if (isPaymentProviderError(result)) {
         return this.buildError(
           "An error occurred in updatePayment during the initiate of the new payment for the new customer",
@@ -276,12 +272,12 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
       return result
     } else {
-      if (amount && payment_session_data.amount === Math.round(amount)) {
-        return { data: payment_session_data }
+      if (amount && data.amount === Math.round(amount)) {
+        return { data }
       }
 
       try {
-        const id = payment_session_data.id as string
+        const id = data.id as string
         const sessionData = (await this.stripe_.paymentIntents.update(id, {
           amount: Math.round(amount),
         })) as unknown as PaymentProviderSessionResponse["data"]

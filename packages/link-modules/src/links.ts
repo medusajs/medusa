@@ -20,6 +20,12 @@ export const LINKS = {
     Modules.PAYMENT,
     "payment_collection_id"
   ),
+  RegionPaymentProvider: composeLinkName(
+    Modules.REGION,
+    "region_id",
+    Modules.PAYMENT,
+    "payment_provider_id"
+  ),
   CartPromotion: composeLinkName(
     Modules.CART,
     "cart_id",
