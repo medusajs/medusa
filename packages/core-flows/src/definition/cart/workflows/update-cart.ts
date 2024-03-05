@@ -62,14 +62,7 @@ export const updateCartWorkflow = createWorkflow(
 
     const carts = updateCartsStep([cartInput])
 
-    updateTaxLinesStep(
-      transform({ carts }, (data) => {
-        return {
-          cartOrCartId: data.carts[0].id,
-        }
-      })
-    )
-
+    updateTaxLinesStep({ cart_or_cart_id: carts[0].id })
     refreshCartPromotionsStep({
       id: input.id,
       promo_codes: input.promo_codes,

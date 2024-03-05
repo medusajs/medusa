@@ -134,13 +134,7 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    updateTaxLinesStep(
-      transform({ cart }, (data) => {
-        return {
-          cartOrCartId: data.cart.id,
-        }
-      })
-    )
+    updateTaxLinesStep({ cart_or_cart_id: cart.id })
 
     return cart
   }

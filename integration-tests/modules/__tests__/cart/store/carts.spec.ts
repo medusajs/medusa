@@ -481,7 +481,7 @@ describe("Store Carts API", () => {
       )
     })
 
-    it("should update a cart's region, sales channel customer data and tax lines", async () => {
+    it("should update a cart's region, sales channel customer data and tax lines for items + shipping", async () => {
       await setupTaxStructure(taxModule)
 
       const region = await regionModule.create({
@@ -515,6 +515,11 @@ describe("Store Carts API", () => {
         ],
       })
 
+      await cartModule.addShippingMethods(cart.id, [
+        { amount: 500, name: "express" },
+        { amount: 500, name: "standard" },
+      ])
+
       const api = useApi() as any
 
       let updated = await api.post(`/store/carts/${cart.id}`, {
@@ -542,6 +547,34 @@ describe("Store Carts API", () => {
             country_code: "US",
             province: "NY",
           }),
+          shipping_methods: expect.arrayContaining([
+            expect.objectContaining({
+              shipping_option_id: null,
+              amount: 500,
+              tax_lines: [
+                expect.objectContaining({
+                  description: "NY Default Rate",
+                  code: "NYDEFAULT",
+                  rate: 6,
+                  provider_id: "system",
+                }),
+              ],
+              adjustments: [],
+            }),
+            expect.objectContaining({
+              shipping_option_id: null,
+              amount: 500,
+              tax_lines: [
+                expect.objectContaining({
+                  description: "NY Default Rate",
+                  code: "NYDEFAULT",
+                  rate: 6,
+                  provider_id: "system",
+                }),
+              ],
+              adjustments: [],
+            }),
+          ]),
           items: [
             expect.objectContaining({
               id: "item-1",

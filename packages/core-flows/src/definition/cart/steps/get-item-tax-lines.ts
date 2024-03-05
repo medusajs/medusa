@@ -1,9 +1,13 @@
 import {
   CartLineItemDTO,
+  CartShippingMethodDTO,
   CartWorkflowDTO,
   ITaxModuleService,
+  ItemTaxLineDTO,
+  ShippingTaxLineDTO,
   TaxCalculationContext,
   TaxableItemDTO,
+  TaxableShippingDTO,
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
@@ -11,6 +15,7 @@ import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 interface StepInput {
   cart: CartWorkflowDTO
   items: CartLineItemDTO[]
+  shipping_methods: CartShippingMethodDTO[]
 }
 
 function normalizeTaxModuleContext(
@@ -62,11 +67,23 @@ function normalizeLineItemsForTax(
   }))
 }
 
+function normalizeLineItemsForShipping(
+  cart: CartWorkflowDTO,
+  shippingMethods: CartShippingMethodDTO[]
+): TaxableShippingDTO[] {
+  return shippingMethods.map((shippingMethod) => ({
+    id: shippingMethod.id,
+    shipping_option_id: shippingMethod.shipping_option_id!,
+    unit_price: shippingMethod.amount,
+    currency_code: cart.currency_code,
+  }))
+}
+
 export const getItemTaxLinesStepId = "get-item-tax-lines"
 export const getItemTaxLinesStep = createStep(
   getItemTaxLinesStepId,
   async (data: StepInput, { container }) => {
-    const { cart, items } = data
+    const { cart, items, shipping_methods: shippingMethods } = data
     const taxService = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
@@ -74,14 +91,25 @@ export const getItemTaxLinesStep = createStep(
     const taxContext = normalizeTaxModuleContext(cart)
 
     if (!taxContext) {
-      return new StepResponse([])
+      return new StepResponse({
+        lineItemTaxLines: [],
+        shippingMethodsTaxLines: [],
+      })
     }
 
-    const taxLines = await taxService.getTaxLines(
+    const lineItemTaxLines = (await taxService.getTaxLines(
       normalizeLineItemsForTax(cart, items),
       taxContext
-    )
+    )) as ItemTaxLineDTO[]
 
-    return new StepResponse(taxLines)
+    const shippingMethodsTaxLines = (await taxService.getTaxLines(
+      normalizeLineItemsForShipping(cart, shippingMethods),
+      taxContext
+    )) as ShippingTaxLineDTO[]
+
+    return new StepResponse({
+      lineItemTaxLines,
+      shippingMethodsTaxLines,
+    })
   }
 )

@@ -3,7 +3,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { updateTaxLinesWorkflow } from "../workflows"
 
 interface StepInput {
-  cartOrCartId: CartWorkflowDTO | string
+  cart_or_cart_id: CartWorkflowDTO | string
   items?: CartLineItemDTO[]
 }
 

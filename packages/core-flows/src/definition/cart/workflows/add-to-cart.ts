@@ -91,7 +91,7 @@ export const addToCartWorkflow = createWorkflow(
 
     updateTaxLinesStep(
       transform({ items, input }, (data) => ({
-        cartOrCartId: data.input.cart,
+        cart_or_cart_id: data.input.cart,
         items: data.items,
       }))
     )

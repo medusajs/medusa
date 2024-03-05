@@ -4,7 +4,7 @@ import { isObject, remoteQueryObjectFromString } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  cartOrCartId: string | CartWorkflowDTO
+  cart_or_cart_id: string | CartWorkflowDTO
   fields: string[]
 }
 
@@ -12,7 +12,7 @@ export const retrieveCartWithLinksStepId = "retrieve-cart-with-links"
 export const retrieveCartWithLinksStep = createStep(
   retrieveCartWithLinksStepId,
   async (data: StepInput, { container }) => {
-    const { cartOrCartId, fields } = data
+    const { cart_or_cart_id: cartOrCartId, fields } = data
 
     if (isObject(cartOrCartId)) {
       return new StepResponse(cartOrCartId)

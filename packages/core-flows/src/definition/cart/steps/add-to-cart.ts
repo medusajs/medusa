@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateLineItemForCartDTO, ICartModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 
 interface StepInput {
   items: CreateLineItemForCartDTO[]
@@ -22,7 +22,7 @@ export const addToCartStep = createStep(
     const cartService: ICartModuleService = container.resolve(
       ModuleRegistrationName.CART
     )
-    if (!Array.isArray(createdLineItems)) {
+    if (!createdLineItems?.length) {
       return
     }
 
