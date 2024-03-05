@@ -8,7 +8,6 @@ import {
 } from "@medusajs/core-flows"
 
 import { UpdateProductDTO } from "@medusajs/types"
-import { defaultAdminProductFields } from "../query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -22,7 +21,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables,
-    fields: defaultAdminProductFields,
+    fields: req.retrieveConfig.select as string[],
   })
 
   const [product] = await remoteQuery(queryObject)
