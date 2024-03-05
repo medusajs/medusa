@@ -7,7 +7,7 @@ import {
 } from "@medusajs/types"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 

@@ -3,7 +3,7 @@ import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import adminSeeder from "../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../helpers/create-default-rule-types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(5000000)
 

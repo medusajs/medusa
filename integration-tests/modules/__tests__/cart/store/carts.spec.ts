@@ -16,7 +16,7 @@ import {
 import { PromotionRuleOperator, PromotionType } from "@medusajs/utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 

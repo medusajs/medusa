@@ -8,7 +8,7 @@ import { IPricingModuleService } from "@medusajs/types"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 

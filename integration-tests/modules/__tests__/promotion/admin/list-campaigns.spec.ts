@@ -2,7 +2,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { CampaignBudgetType } from "@medusajs/utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 

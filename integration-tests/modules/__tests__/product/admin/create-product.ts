@@ -3,7 +3,7 @@ import { IPricingModuleService } from "@medusajs/types"
 import { simpleSalesChannelFactory } from "../../../../factories"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import {medusaIntegrationTestRunner} from "medusa-test-utils/dist";
+import {medusaIntegrationTestRunner} from "medusa-test-utils";
 
 jest.setTimeout(50000)
 

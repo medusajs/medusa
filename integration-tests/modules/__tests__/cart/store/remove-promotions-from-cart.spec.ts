@@ -7,7 +7,7 @@ import {
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
