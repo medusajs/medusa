@@ -12,24 +12,24 @@ export const FulfillmentStatusCell = ({
   const { t } = useTranslation()
 
   const [label, color] = {
-    not_fulfilled: [t("orders.fulfillmentStatus.notFulfilled"), "red"],
+    not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],
     partially_fulfilled: [
-      t("orders.fulfillmentStatus.partiallyFulfilled"),
+      t("orders.fulfillment.status.partiallyFulfilled"),
       "orange",
     ],
-    fulfilled: [t("orders.fulfillmentStatus.fulfilled"), "green"],
+    fulfilled: [t("orders.fulfillment.status.fulfilled"), "green"],
     partially_shipped: [
-      t("orders.fulfillmentStatus.partiallyShipped"),
+      t("orders.fulfillment.status.partiallyShipped"),
       "orange",
     ],
-    shipped: [t("orders.fulfillmentStatus.shipped"), "green"],
+    shipped: [t("orders.fulfillment.status.shipped"), "green"],
     partially_returned: [
-      t("orders.fulfillmentStatus.partiallyReturned"),
+      t("orders.fulfillment.status.partiallyReturned"),
       "orange",
     ],
-    returned: [t("orders.fulfillmentStatus.returned"), "green"],
-    canceled: [t("orders.fulfillmentStatus.canceled"), "red"],
-    requires_action: [t("orders.fulfillmentStatus.requresAction"), "orange"],
+    returned: [t("orders.fulfillment.status.returned"), "green"],
+    canceled: [t("orders.fulfillment.status.canceled"), "red"],
+    requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
   }[status] as [string, "red" | "orange" | "green"]
 
   return <StatusCell color={color}>{label}</StatusCell>
