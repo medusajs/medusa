@@ -17,8 +17,7 @@ function formatTime(dateTime?: string) {
   if (!dateTime) {
     return
   }
-  const date = new Date(dateTime)
-  return format(date, "PPPp")
+  return format(new Date(dateTime), "dd MMM, yyyy, HH:mm:ss")
 }
 
 export const DiscountConfigurationSection = ({
