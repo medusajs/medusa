@@ -1,20 +1,3 @@
-// import {
-//   CreateInventoryLevelInput,
-//   FilterableInventoryLevelProps,
-//   FindConfig,
-//   IEventBusService,
-//   SharedContext,
-// } from "@medusajs/types"
-// import {
-//   InjectEntityManager,
-//   MedusaContext,
-//   MedusaError,
-//   isDefined,
-// } from "@medusajs/utils"
-// import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
-// import { InventoryLevel } from "../models"
-// import { buildQuery } from "../utils/build-query"
-
 import {
   Context,
   CreateInventoryLevelInput,
@@ -69,56 +52,6 @@ export default class InventoryLevelService<
     //     { inventoryItemId, locationId }
     //   )
     //   .execute()
-  }
-
-  /**
-   * Deletes inventory levels by inventory Item ID.
-   * @param inventoryItemId - The ID or IDs of the inventory item to delete inventory levels for.
-   * @param context
-   */
-  async deleteByInventoryItemId(
-    inventoryItemId: string | string[],
-    context: Context = {}
-  ): Promise<void> {
-    // const ids = Array.isArray(inventoryItemId)
-    //   ? inventoryItemId
-    //   : [inventoryItemId]
-    // const manager = context.transactionManager!
-    // const levelRepository = manager.getRepository(InventoryLevel)
-    // await levelRepository.softDelete({ inventory_item_id: In(ids) })
-    // await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-    //   inventory_item_id: inventoryItemId,
-    // })
-  }
-
-  /**
-   * Restores inventory levels by inventory Item ID.
-   * @param inventoryItemId - The ID or IDs of the inventory item to restore inventory levels for.
-   * @param context
-   */
-  async restoreByInventoryItemId(
-    inventoryItemId: string | string[],
-    context: Context = {}
-  ): Promise<void> {
-    // const ids = Array.isArray(inventoryItemId)
-    //   ? inventoryItemId
-    //   : [inventoryItemId]
-    // const manager = context.transactionManager!
-    // const levelRepository = manager.getRepository(InventoryLevel)
-    // await levelRepository.restore({ inventory_item_id: In(ids) })
-    // await this.eventBusService_?.emit?.(InventoryLevelService.Events.RESTORED, {
-    //   inventory_item_id: inventoryItemId,
-    // })
-  }
-
-  async deleteByLocationId(
-    locationId: string | string[],
-    context: Context = {}
-  ): Promise<[object[], Record<string, unknown[]>]> {
-    return await this.inventoryLevelRepository.softDelete(
-      { location_id: locationId },
-      context
-    )
   }
 
   async retrieveStockedQuantity(

@@ -654,8 +654,6 @@ moduleIntegrationTestRunner({
         })
 
         it("should calculate current stocked quantity across locations", async () => {
-          const a = await service.listInventoryLevels()
-
           const level = await service.retrieveAvailableQuantity(
             inventoryItem.id,
             ["location-1", "location-2"]
