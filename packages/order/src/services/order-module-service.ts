@@ -20,6 +20,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   OrderChangeStatus,
+  promiseAll,
 } from "@medusajs/utils"
 import {
   Address,
@@ -1612,11 +1613,7 @@ export default class OrderModuleService<
       ? orderChangeId
       : [orderChangeId]
 
-    const changes = await this.getAndValidateOrderChange_(
-      orderChangeIds,
-      true,
-      sharedContext
-    )
+    await this.getAndValidateOrderChange_(orderChangeIds, false, sharedContext)
 
     const updates = orderChangeIds.map((id) => {
       return {
@@ -1629,21 +1626,27 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async completelOrderChange(
+  async completeOrderChange(
     data: any[] | any,
     sharedContext?: Context
   ): Promise<void> {
-    const allData = Array.isArray(data) ? data : [data]
+    let allData
 
-    const orderChangeIds = allData.map((d) => d.order_change_id)
+    if (isString(data)) {
+      allData = [{ id: data }]
+    } else {
+      allData = Array.isArray(data) ? data : [data]
+    }
 
-    const changes = await this.getAndValidateOrderChange_(
+    const orderChangeIds = allData.map((d) => d.id)
+
+    const orderChange = await this.getAndValidateOrderChange_(
       orderChangeIds,
       true,
       sharedContext
     )
 
-    const updates = allData.map((id) => {
+    const updates = allData.map((data) => {
       return {
         ...data,
         status: OrderChangeStatus.CONFIRMED,
@@ -1652,7 +1655,18 @@ export default class OrderModuleService<
 
     await this.orderChangeService_.update(updates as any, sharedContext)
 
-    await this.applyOrderChanges_(changes, sharedContext)
+    const orderChanges = orderChange.map((change) => {
+      change.actions = change.actions.map((action) => {
+        return {
+          ...action,
+          version: change.version,
+          order_id: change.order_id,
+        }
+      })
+      return change.actions
+    })
+
+    await this.applyOrderChanges_(orderChanges.flat(), sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -1730,7 +1744,7 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    if (orderChanges.length !== orderChanges.length) {
+    if (orderChanges.length !== orderChangeIds.length) {
       const foundOrders = orderChanges.map((o) => o.id)
       const missing = orderChangeIds.filter((id) => !foundOrders.includes(id))
       throw new MedusaError(
@@ -1796,7 +1810,7 @@ export default class OrderModuleService<
   }
 
   private async applyOrderChanges_(
-    data: any[],
+    changeActions: any[],
     sharedContext?: Context
   ): Promise<void> {
     type ApplyOrderChangeDTO = {
@@ -1807,11 +1821,11 @@ export default class OrderModuleService<
       applied: boolean
     }
 
-    const actionsMap: Record<string, ApplyOrderChangeDTO[]> = {}
+    const actionsMap: Record<string, any[]> = {}
     const ordersIds: string[] = []
     const usedActions: any[] = []
 
-    for (const action of data as ApplyOrderChangeDTO[]) {
+    for (const action of changeActions as ApplyOrderChangeDTO[]) {
       if (action.applied) {
         continue
       }
@@ -1822,8 +1836,12 @@ export default class OrderModuleService<
       actionsMap[action.order_id].push(action)
 
       usedActions.push({
-        id: action.id,
-        applied: true,
+        selector: {
+          id: action.id,
+        },
+        data: {
+          applied: true,
+        },
       })
     }
 
@@ -1841,12 +1859,13 @@ export default class OrderModuleService<
     )
 
     const itemsToUpsert: OrderItem[] = []
-    const ordersToUpdate: any[] = []
+    const summariesToUpdate: any[] = []
+    const orderToUpdate: any[] = []
 
     for (const order of orders) {
       const calculated = calculateOrderChange({
         order: order as any,
-        actions: actionsMap[order.id] as any,
+        actions: actionsMap[order.id],
         transactions: order.transactions,
       })
 
@@ -1854,14 +1873,12 @@ export default class OrderModuleService<
 
       for (const item of calculated.order.items) {
         itemsToUpsert.push({
+          id: item.detail.id,
           item_id: item.id,
           order_id: order.id,
           version,
-
           quantity: item.detail.quantity,
-
           fulfilled_quantity: item.detail.fulfilled_quantity,
-
           shipped_quantity: item.detail.shipped_quantity,
           return_requested_quantity: item.detail.return_requested_quantity,
           return_received_quantity: item.detail.return_received_quantity,
@@ -1872,10 +1889,17 @@ export default class OrderModuleService<
       }
 
       if (version > order.version) {
-        //await this.update({ id: order.id, version } as any, undefined, sharedContext)
+        orderToUpdate.push({
+          selector: {
+            id: order.id,
+          },
+          data: {
+            version,
+          },
+        })
       }
 
-      ordersToUpdate.push({
+      summariesToUpdate.push({
         selector: {
           order_id: order.id,
         },
@@ -1886,10 +1910,19 @@ export default class OrderModuleService<
       })
     }
 
-    await this.orderChangeActionService_.update(usedActions, sharedContext)
-
-    await this.orderItemService_.upsert(itemsToUpsert, sharedContext)
-
-    await this.orderSummaryService_.update(ordersToUpdate, sharedContext)
+    await promiseAll([
+      orderToUpdate.length
+        ? this.orderService_.update(orderToUpdate, sharedContext)
+        : null,
+      usedActions.length
+        ? this.orderChangeActionService_.update(usedActions, sharedContext)
+        : null,
+      itemsToUpsert.length
+        ? this.orderItemService_.upsert(itemsToUpsert, sharedContext)
+        : null,
+      summariesToUpdate.length
+        ? this.orderSummaryService_.update(summariesToUpdate, sharedContext)
+        : null,
+    ])
   }
 }

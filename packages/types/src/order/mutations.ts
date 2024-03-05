@@ -45,7 +45,8 @@ export interface CreateOrderDTO {
 }
 
 export interface UpdateOrderDTO {
-  id: string
+  id?: string
+  version?: number
   region_id?: string
   customer_id?: string
   sales_channel_id?: string

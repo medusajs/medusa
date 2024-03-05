@@ -5,6 +5,7 @@ export type VirtualOrder = {
     quantity: number
 
     detail: {
+      id?: string
       quantity: number
       shipped_quantity: number
       fulfilled_quantity: number
