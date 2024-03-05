@@ -24,24 +24,36 @@ export const setTaxLinesForItemsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    const existingShippingMethodTaxLines =
+    const getShippingTaxLinesPromise =
       await cartService.listShippingMethodTaxLines({
         shipping_method_id: shipping_tax_lines.map((t) => t.shipping_line_id),
       })
 
-    const existingLineItemTaxLines = await cartService.listLineItemTaxLines({
+    const getItemTaxLinesPromise = await cartService.listLineItemTaxLines({
       item_id: item_tax_lines.map((t) => t.line_item_id),
     })
 
-    await cartService.setLineItemTaxLines(
-      cart.id,
-      normalizeItemTaxLinesForCart(item_tax_lines)
-    )
+    const itemsTaxLinesData = normalizeItemTaxLinesForCart(item_tax_lines)
+    const setItemTaxLinesPromise = itemsTaxLinesData.length
+      ? cartService.setLineItemTaxLines(cart.id, itemsTaxLinesData)
+      : 0
 
-    await cartService.setShippingMethodTaxLines(
-      cart.id,
+    const shippingTaxLinesData =
       normalizeShippingTaxLinesForCart(shipping_tax_lines)
-    )
+    const setShippingTaxLinesPromise = shippingTaxLinesData.length
+      ? await cartService.setShippingMethodTaxLines(
+          cart.id,
+          shippingTaxLinesData
+        )
+      : 0
+
+    const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
+      await Promise.all([
+        getShippingTaxLinesPromise,
+        getItemTaxLinesPromise,
+        setItemTaxLinesPromise,
+        setShippingTaxLinesPromise,
+      ])
 
     return new StepResponse(null, {
       cart,
