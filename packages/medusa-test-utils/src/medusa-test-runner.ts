@@ -4,7 +4,7 @@ import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
 
-const axios = require("axios").default
+const axios = require("axios/index.cjs").default
 
 const keepTables = [
   "store",
