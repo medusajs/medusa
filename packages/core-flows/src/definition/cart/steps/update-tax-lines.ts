@@ -1,10 +1,15 @@
-import { CartLineItemDTO, CartWorkflowDTO } from "@medusajs/types"
+import {
+  CartLineItemDTO,
+  CartShippingMethodDTO,
+  CartWorkflowDTO,
+} from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { updateTaxLinesWorkflow } from "../workflows"
 
 interface StepInput {
   cart_or_cart_id: CartWorkflowDTO | string
   items?: CartLineItemDTO[]
+  shipping_methods?: CartShippingMethodDTO[]
 }
 
 export const updateTaxLinesStepId = "update-tax-lines-step"
