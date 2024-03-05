@@ -12,8 +12,6 @@ medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /admin/invites", () => {
-      let dbConnection
-
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
       })

@@ -7,92 +7,12 @@ const {
   createMedusaContainer,
   MedusaV2Flag,
 } = require("@medusajs/utils")
-const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
-const dbFactory = require("./use-template-db")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 const { DatabaseFactory } = require("./use-template-db")
 
-const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
-const DB_NAME = process.env.DB_TEMP_NAME
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-const keepTables = [
-  "store",
-  "staged_job",
-  "shipping_profile",
-  "fulfillment_provider",
-  "payment_provider",
-  "country",
-  "region_country",
-  "currency",
-  "migrations",
-  "mikro_orm_migrations",
-]
-
-const DbTestUtil = {
-  db_: null,
-  pgConnection_: null,
-
-  setDb: function (dataSource) {
-    this.db_ = dataSource
-  },
-
-  setPgConnection: function (pgConnection) {
-    this.pgConnection_ = pgConnection
-  },
-
-  clear: async function () {
-    this.db_.synchronize(true)
-  },
-
-  teardown: async function ({ forceDelete, schema } = {}) {
-    forceDelete = forceDelete || []
-    const manager = this.db_.manager
-
-    await manager.query(`SET session_replication_role = 'replica';`)
-    const tableNames = await manager.query(`SELECT table_name
-                                            FROM information_schema.tables
-                                            WHERE table_schema = '${
-                                              schema ?? "public"
-                                            }';`)
-
-    for (const { table_name } of tableNames) {
-      if (
-        keepTables.includes(table_name) &&
-        !forceDelete.includes(table_name)
-      ) {
-        continue
-      }
-
-      await manager.query(`DELETE
-                           FROM "${table_name}";`)
-    }
-
-    await manager.query(`SET session_replication_role = 'origin';`)
-  },
-
-  shutdown: async function (dbName) {
-    await this.db_?.destroy()
-    await this.pgConnection_?.context?.destroy()
-
-    return await dropDatabase({ databaseName: dbName }, pgGodCredentials)
-  },
-}
-
-const instance = DbTestUtil
-
 module.exports = {
-  DbTestUtil,
   initDb: async function ({
     cwd,
     database_extra,
@@ -101,7 +21,6 @@ module.exports = {
     dbUrl = DB_URL,
     dbName = DB_NAME,
     dbSchema = "public",
-    dbTestUtils = instance,
   }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
@@ -159,15 +78,13 @@ module.exports = {
       entities: enabledEntities.concat(moduleModels),
       migrations: enabledMigrations.concat(moduleMigrations),
       extra: database_extra ?? {},
-      name: "integration-tests",
+      //name: "integration-tests",
       schema: dbSchema,
     })
 
     await dbDataSource.initialize()
 
     await dbDataSource.runMigrations()
-
-    dbTestUtils.setDb(dbDataSource)
 
     if (
       force_modules_migration ||
@@ -193,14 +110,12 @@ module.exports = {
         featureFlagRouter: asValue(featureFlagRouter),
       })
 
-      dbTestUtils.setPgConnection(pgConnection)
-
       await migrateMedusaApp(
         { configModule, container },
         { registerInContainer: false }
       )
     }
 
-    return dbDataSource
+    return { dbDataSource, pgConnection }
   },
 }

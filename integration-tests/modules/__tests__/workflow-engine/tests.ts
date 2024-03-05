@@ -7,25 +7,29 @@ import {
 import { createAdminUser } from "../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
-export const workflowEngineTestSuite = (env, extraParams = {}) => {
+export const workflowEngineTestSuite = (
+  env,
+  extraParams: { force_modules_migration?: boolean } = {}
+) => {
   const adminHeaders = {
     headers: {
       "x-medusa-access-token": "test_token",
     },
   }
 
-  medusaIntegrationTestRunner({
+  return medusaIntegrationTestRunner({
     env,
+    force_modules_migration: extraParams.force_modules_migration,
     testSuite: ({ dbConnection, getContainer, api }) => {
+      let medusaContainer
+
+      beforeAll(async () => {
+        medusaContainer = getContainer()
+
+        await createAdminUser(dbConnection, adminHeaders, medusaContainer)
+      })
+
       describe("Workflow Engine API", () => {
-        let medusaContainer
-
-        beforeAll(async () => {
-          medusaContainer = getContainer()
-
-          await createAdminUser(dbConnection, adminHeaders, medusaContainer)
-        })
-
         describe("running workflows", () => {
           beforeAll(async () => {
             const step1 = createStep(

@@ -1,6 +1,6 @@
 const path = require("path")
 
-require("dotenv").config({ path: path.join(__dirname, "../.env.test") })
+require("dotenv").config({ path: path.join(process.cwd(), "../.env.test") })
 
 const { getConfigFile } = require("medusa-core-utils")
 const { createDatabase, dropDatabase } = require("pg-god")

@@ -2,8 +2,6 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject } = require("@medusajs/utils")
-const { setContainer } = require("./use-container")
-const { setPort, setExpressServer } = require("./use-api")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()
@@ -34,21 +32,16 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
 }
 
 module.exports = {
-  bootstrapApp,
   startBootstrapApp: async ({
     cwd,
     env = {},
     skipExpressListen = false,
-    setContainerCb = setContainer,
-    setPortCb = setPort,
   } = {}) => {
     const { app, port, container, db, pgConnection } = await bootstrapApp({
       cwd,
       env,
     })
     let expressServer
-
-    setContainerCb(container)
 
     if (skipExpressListen) {
       return
@@ -74,12 +67,13 @@ module.exports = {
           await shutdown()
           return reject(err)
         }
-        setPortCb(port)
         process.send(port)
-        resolve(shutdown)
+        resolve({
+          shutdown,
+          container,
+          port,
+        })
       })
-
-      setExpressServer(expressServer)
     })
   },
 }
