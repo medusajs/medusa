@@ -434,3 +434,16 @@ export interface PaymentProviderDTO {
    */
   is_enabled: string
 }
+
+export interface FilterablePaymentProviderProps
+  extends BaseFilterable<PaymentProviderDTO> {
+  /**
+   * The IDs to filter the payment collection by.
+   */
+  id?: string | string[]
+
+  /**
+   * Filter by enabled status
+   */
+  is_enabled?: boolean
+}

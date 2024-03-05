@@ -1,10 +1,26 @@
-import { IPaymentModuleService, LoaderOptions } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  CreatePaymentProviderDTO,
+  LoaderOptions
+} from "@medusajs/types"
 
 export default async ({ container }: LoaderOptions): Promise<void> => {
-  const paymentModuleService: IPaymentModuleService = container.resolve(
-    ModuleRegistrationName.PAYMENT
-  )
+  const providersToLoad = container.resolve("payment_providers")
+  const paymentProviderService = container.resolve("paymentProviderService")
 
-  await paymentModuleService.createProvidersOnLoad()
+  const providers = await paymentProviderService.list({
+    id: providersToLoad,
+  })
+
+  const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
+
+  const providersToCreate: CreatePaymentProviderDTO[] = []
+  for (const id of providersToLoad) {
+    if (loadedProvidersMap.has(id)) {
+      continue
+    }
+
+    providersToCreate.push({ id })
+  }
+
+  await paymentProviderService.create(providersToCreate)
 }

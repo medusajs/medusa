@@ -3,10 +3,13 @@ import {
   CreatePaymentProviderDTO,
   CreatePaymentProviderSession,
   DAL,
+  FilterablePaymentProviderProps,
+  FindConfig,
   InternalModuleDeclaration,
   IPaymentProvider,
   PaymentProviderAuthorizeResponse,
   PaymentProviderDataInput,
+  PaymentProviderDTO,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
@@ -19,6 +22,7 @@ import {
   InjectTransactionManager,
   isPaymentProviderError,
   MedusaContext,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { PaymentProvider } from "@models"
 import { MedusaError } from "medusa-core-utils"
@@ -52,9 +56,19 @@ export default class PaymentProviderService {
 
   @InjectManager("paymentProviderRepository_")
   async list(
+    filters: FilterablePaymentProviderProps,
+    config: FindConfig<PaymentProviderDTO>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentProvider[]> {
-    return await this.paymentProviderRepository_.find(undefined, sharedContext)
+    const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
+      filters,
+      config
+    )
+
+    return await this.paymentProviderRepository_.find(
+      queryOptions,
+      sharedContext
+    )
   }
 
   retrieveProvider(providerId: string): IPaymentProvider {
