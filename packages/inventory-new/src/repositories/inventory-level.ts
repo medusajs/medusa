@@ -13,16 +13,60 @@ export class InventoryLevelRepository extends mikroOrmBaseRepositoryFactory(
   ): Promise<number> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
 
-    const result = manager
+    const [result] = (await manager
       .getKnex()({ il: "inventory_level" })
-      .sum("il.reserved_quantity")
-      .where((q) => {
-        q.orWhere("il.inventory_item_id", "=", inventoryItemId)
-        q.orWhereIn("il.location_id", locationIds)
+      .sum("reserved_quantity")
+      .whereIn("location_id", locationIds)
+      .andWhere("inventory_item_id", inventoryItemId)) as {
+      sum: string
+    }[]
+
+    return parseInt(result.sum)
+  }
+
+  async getAvailableQuantity(
+    inventoryItemId: string,
+    locationIds: string[],
+    context: Context = {}
+  ): Promise<number> {
+    const knex = super.getActiveManager<SqlEntityManager>(context).getKnex()
+
+    const [result] = (await knex({
+      il: "inventory_level",
+    })
+      .sum({
+        stocked_quantity: "stocked_quantity",
+        reserved_quantity: "reserved_quantity",
       })
+      .whereIn("location_id", locationIds)
+      .andWhere("inventory_item_id", inventoryItemId)) as {
+      reserved_quantity: string
+      stocked_quantity: string
+    }[]
 
-    console.warn(result)
+    return (
+      parseInt(result.stocked_quantity) - parseInt(result.reserved_quantity)
+    )
+  }
 
-    return 0
+  async getStockedQuantity(
+    inventoryItemId: string,
+    locationIds: string[],
+    context: Context = {}
+  ): Promise<number> {
+    const knex = super.getActiveManager<SqlEntityManager>(context).getKnex()
+
+    const [result] = (await knex({
+      il: "inventory_level",
+    })
+      .sum({
+        stocked_quantity: "stocked_quantity",
+      })
+      .whereIn("location_id", locationIds)
+      .andWhere("inventory_item_id", inventoryItemId)) as {
+      stocked_quantity: string
+    }[]
+
+    return parseInt(result.stocked_quantity)
   }
 }

@@ -730,7 +730,7 @@ export interface IInventoryServiceNext extends IModuleService {
   deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
     context?: Context
-  ): Promise<void>
+  ): Promise<[object[], Record<string, unknown[]>]>
 
   /**
    * This method deletes reservation item(s) by the ID(s) of associated location(s).

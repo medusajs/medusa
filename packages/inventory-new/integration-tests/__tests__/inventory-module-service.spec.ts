@@ -419,7 +419,6 @@ moduleIntegrationTestRunner({
             location_id: "location-1",
           })
 
-          console.log(reservationsPreDeleted)
           expect(reservationsPreDeleted).toEqual([
             expect.objectContaining({
               location_id: "location-1",
@@ -454,14 +453,355 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("deleteInventoryItemLevelByLocationId", () => {})
-      describe("deleteInventoryLevel", () => {})
-      describe("adjustInventory", () => {})
-      describe("retrieveInventoryLevelByItemAndLocation", () => {})
-      describe("retrieveAvailableQuantity", () => {})
-      describe("retrieveStockedQuantity", () => {})
-      describe("retrieveReservedQuantity", () => {})
-      describe("confirmInventory", () => {})
+      describe("deleteInventoryItemLevelByLocationId", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+              reserved_quantity: 6,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+        })
+
+        it("should remove inventory levels with given location id", async () => {
+          const reservationsPreDeleted = await service.listInventoryLevels({})
+
+          expect(reservationsPreDeleted).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                stocked_quantity: 2,
+                location_id: "location-1",
+              }),
+              expect.objectContaining({
+                stocked_quantity: 2,
+                location_id: "location-2",
+              }),
+            ])
+          )
+
+          await service.deleteInventoryItemLevelByLocationId("location-1")
+
+          const reservationsPostDeleted = await service.listInventoryLevels({})
+
+          expect(reservationsPostDeleted).toEqual([
+            expect.objectContaining({
+              stocked_quantity: 2,
+              location_id: "location-2",
+            }),
+          ])
+        })
+      })
+
+      describe("deleteInventoryLevel", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+          ])
+        })
+
+        it("should remove inventory levels with given location id", async () => {
+          const reservationsPreDeleted = await service.listInventoryLevels({})
+
+          expect(reservationsPreDeleted).toEqual([
+            expect.objectContaining({
+              stocked_quantity: 2,
+              location_id: "location-1",
+            }),
+          ])
+
+          await service.deleteInventoryLevel(inventoryItem.id, "location-1")
+
+          const reservationsPostDeleted = await service.listInventoryLevels({})
+
+          expect(reservationsPostDeleted).toEqual([])
+        })
+      })
+
+      describe("adjustInventory", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+          ])
+        })
+
+        it("should updated inventory level stocked_quantity by quantity", async () => {
+          const updatedLevel = await service.adjustInventory(
+            inventoryItem.id,
+            "location-1",
+            2
+          )
+          expect(updatedLevel.stocked_quantity).toEqual(4)
+        })
+
+        it("should updated inventory level stocked_quantity by negative quantity", async () => {
+          const updatedLevel = await service.adjustInventory(
+            inventoryItem.id,
+            "location-1",
+            -1
+          )
+          expect(updatedLevel.stocked_quantity).toEqual(1!)
+        })
+      })
+
+      describe("retrieveInventoryLevelByItemAndLocation", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+          const inventoryItem1 = await service.create({
+            sku: "test-sku-1",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 3,
+            },
+            {
+              inventory_item_id: inventoryItem1.id,
+              location_id: "location-1",
+              stocked_quantity: 3,
+            },
+          ])
+        })
+
+        it("should retrieve inventory level with provided location_id and inventory_item", async () => {
+          const level = await service.retrieveInventoryLevelByItemAndLocation(
+            inventoryItem.id,
+            "location-1"
+          )
+          expect(level.stocked_quantity).toEqual(2)
+        })
+      })
+
+      describe("retrieveAvailableQuantity", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+          const inventoryItem1 = await service.create({
+            sku: "test-sku-1",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 4,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 4,
+              reserved_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem1.id,
+              location_id: "location-1",
+              stocked_quantity: 3,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-3",
+              stocked_quantity: 3,
+            },
+          ])
+        })
+
+        it("should calculate current stocked quantity across locations", async () => {
+          const a = await service.listInventoryLevels()
+
+          const level = await service.retrieveAvailableQuantity(
+            inventoryItem.id,
+            ["location-1", "location-2"]
+          )
+          expect(level).toEqual(6)
+        })
+      })
+
+      describe("retrieveStockedQuantity", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+          const inventoryItem1 = await service.create({
+            sku: "test-sku-1",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 4,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 4,
+              reserved_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem1.id,
+              location_id: "location-1",
+              stocked_quantity: 3,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-3",
+              stocked_quantity: 3,
+            },
+          ])
+        })
+
+        it("retrieves stocked location", async () => {
+          const stockedQuantity = await service.retrieveStockedQuantity(
+            inventoryItem.id,
+            ["location-1", "location-2"]
+          )
+
+          expect(stockedQuantity).toEqual(8)
+        })
+      })
+      describe("retrieveReservedQuantity", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+          const inventoryItem1 = await service.create({
+            sku: "test-sku-1",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 4,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 4,
+              reserved_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem1.id,
+              location_id: "location-1",
+              stocked_quantity: 3,
+              reserved_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-3",
+              stocked_quantity: 3,
+              reserved_quantity: 2,
+            },
+          ])
+        })
+
+        it("retrieves reserved quantity", async () => {
+          const reservedQuantity = await service.retrieveReservedQuantity(
+            inventoryItem.id,
+            ["location-1", "location-2"]
+          )
+
+          expect(reservedQuantity).toEqual(2)
+        })
+      })
+
+      describe("confirmInventory", () => {
+        let inventoryItem: InventoryItemDTO
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 4,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 4,
+              reserved_quantity: 2,
+            },
+          ])
+        })
+
+        it("should return true if quantity is less than or equal to available quantity", async () => {
+          const reservedQuantity = await service.confirmInventory(
+            inventoryItem.id,
+            "location-1",
+            2
+          )
+
+          expect(reservedQuantity).toBeTruthy()
+        })
+
+        it("should return true if quantity is more than available quantity", async () => {
+          const reservedQuantity = await service.confirmInventory(
+            inventoryItem.id,
+            "location-1",
+            3
+          )
+
+          expect(reservedQuantity).toBeTruthy()
+        })
+      })
     })
   },
 })
