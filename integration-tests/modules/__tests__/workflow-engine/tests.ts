@@ -21,15 +21,17 @@ export const workflowEngineTestSuite = (
     env,
     force_modules_migration: extraParams.force_modules_migration,
     testSuite: ({ dbConnection, getContainer, api }) => {
-      let medusaContainer
-
-      beforeAll(async () => {
-        medusaContainer = getContainer()
-
-        await createAdminUser(dbConnection, adminHeaders, medusaContainer)
-      })
-
       describe("Workflow Engine API", () => {
+        let medusaContainer
+
+        beforeAll(() => {
+          medusaContainer = getContainer()
+        })
+
+        beforeEach(async () => {
+          await createAdminUser(dbConnection, adminHeaders, medusaContainer)
+        })
+
         describe("running workflows", () => {
           beforeAll(async () => {
             const step1 = createStep(

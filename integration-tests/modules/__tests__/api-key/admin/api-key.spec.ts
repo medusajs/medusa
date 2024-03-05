@@ -14,21 +14,21 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let regionService: IRegionModuleService
-    let container
-
-    beforeAll(async () => {
-      container = getContainer()
-      regionService = container.resolve(
-        ModuleRegistrationName.REGION
-      ) as IRegionModuleService
-    })
-
-    beforeEach(async () => {
-      await createAdminUser(dbConnection, adminHeaders, container)
-    })
-
     describe("API Keys - Admin", () => {
+      let regionService: IRegionModuleService
+      let container
+
+      beforeAll(async () => {
+        container = getContainer()
+        regionService = container.resolve(
+          ModuleRegistrationName.REGION
+        ) as IRegionModuleService
+      })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, container)
+      })
+
       afterEach(async () => {
         // TODO: Once teardown doesn't skip constraint checks and cascades, we can remove this
         const existingRegions = await regionService.list({})

@@ -4,7 +4,7 @@ import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
 
-const axios = require("axios/index.cjs").default
+const axios = require("axios").default
 
 const keepTables = [
   "store",
@@ -204,7 +204,7 @@ export function medusaIntegrationTestRunner({
     }
   }
 
-  const beforeEach_ = async () => {
+  const afterEach_ = async () => {
     try {
       await dbUtils.teardown({ forceDelete: [], schema })
     } catch (error) {
@@ -214,7 +214,7 @@ export function medusaIntegrationTestRunner({
 
   return describe("", () => {
     beforeAll(beforeAll_)
-    beforeEach(beforeEach_)
+    afterEach(afterEach_)
     afterAll(async () => {
       await dbUtils.shutdown(dbName)
       await shutdown()
