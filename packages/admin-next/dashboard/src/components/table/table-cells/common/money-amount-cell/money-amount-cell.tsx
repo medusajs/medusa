@@ -1,5 +1,5 @@
 import { clx } from "@medusajs/ui"
-import { getPresentationalAmount } from "../../../../../lib/money-amount-helpers"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { PlaceholderCell } from "../placeholder-cell"
 
 type MoneyAmountCellProps = {
@@ -17,18 +17,7 @@ export const MoneyAmountCell = ({
     return <PlaceholderCell />
   }
 
-  const formatted = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: currencyCode,
-    currencyDisplay: "narrowSymbol",
-  }).format(0)
-
-  const symbol = formatted.replace(/\d/g, "").replace(/[.,]/g, "").trim()
-
-  const presentationAmount = getPresentationalAmount(amount, currencyCode)
-  const formattedTotal = new Intl.NumberFormat(undefined, {
-    style: "decimal",
-  }).format(presentationAmount)
+  const formatted = getStylizedAmount(amount, currencyCode)
 
   return (
     <div
@@ -37,9 +26,7 @@ export const MoneyAmountCell = ({
         "justify-end text-right": align === "right",
       })}
     >
-      <span className="truncate">
-        {symbol} {formattedTotal} {currencyCode.toUpperCase()}
-      </span>
+      <span className="truncate">{formatted}</span>
     </div>
   )
 }
