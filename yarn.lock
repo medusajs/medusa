@@ -20883,17 +20883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.7":
-  version: 1.6.7
-  resolution: "axios@npm:1.6.7"
-  dependencies:
-    follow-redirects: ^1.15.4
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: 131bf8e62eee48ca4bd84e6101f211961bf6a21a33b95e5dfb3983d5a2fe50d9fffde0b57668d7ce6f65063d3dc10f2212cbcb554f75cfca99da1c73b210358d
-  languageName: node
-  linkType: hard
-
 "axobject-query@npm:^3.1.1":
   version: 3.2.1
   resolution: "axobject-query@npm:3.2.1"
@@ -28700,16 +28689,6 @@ __metadata:
     debug:
       optional: true
   checksum: da5932b70e63944d38eecaa16954bac4347036f08303c913d166eda74809d8797d38386e3a0eb1d2fe37d2aaff2764cce8e9dbd99459d860cf2cdfa237923b5f
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.15.4":
-  version: 1.15.5
-  resolution: "follow-redirects@npm:1.15.5"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 418d71688ceaf109dfd6f85f747a0c75de30afe43a294caa211def77f02ef19865b547dfb73fde82b751e1cc507c06c754120b848fe5a7400b0a669766df7615
   languageName: node
   linkType: hard
 
@@ -38311,7 +38290,6 @@ __metadata:
     "@medusajs/utils": ^1.1.41
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
-    axios: ^1.6.7
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.1
@@ -38320,12 +38298,15 @@ __metadata:
     typescript: ^5.1.6
   peerDependencies:
     "@medusajs/medusa": ">1.19"
+    axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0
     pg-god: ^1.0.12
     typeorm: ^0.2.43
   peerDependenciesMeta:
     "@medusajs/medusa":
+      optional: true
+    axios:
       optional: true
     express:
       optional: true
