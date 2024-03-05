@@ -11,6 +11,7 @@ const { DataSource } = require("typeorm")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 const { DatabaseFactory } = require("./use-template-db")
+const { logger } = require("@medusajs/medusa-cli/dist/reporter")
 
 module.exports = {
   initDb: async function ({
@@ -104,7 +105,7 @@ module.exports = {
 
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
-        [ContainerRegistrationKeys.LOGGER]: asValue(console),
+        [ContainerRegistrationKeys.LOGGER]: asValue(logger),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
         [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
         featureFlagRouter: asValue(featureFlagRouter),

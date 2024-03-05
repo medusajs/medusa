@@ -22,6 +22,9 @@ medusaIntegrationTestRunner({
       regionService = container.resolve(
         ModuleRegistrationName.REGION
       ) as IRegionModuleService
+    })
+
+    beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, container)
     })
 

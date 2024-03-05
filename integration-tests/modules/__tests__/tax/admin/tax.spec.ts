@@ -24,7 +24,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       it("can retrieve a tax rate", async () => {

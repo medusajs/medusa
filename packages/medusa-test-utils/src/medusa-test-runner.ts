@@ -1,9 +1,10 @@
 import { getDatabaseURL } from "./database"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { default as axios } from "axios"
 import { dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
+
+const axios = require("axios").default
 
 const keepTables = [
   "store",
@@ -147,7 +148,6 @@ export function medusaIntegrationTestRunner({
 
   let shutdown: () => Promise<void>
   let dbUtils = dbTestUtilFactory()
-  let dbConnection: any
   let container: ContainerLike
   let apiUtils: any
 
@@ -165,7 +165,7 @@ export function medusaIntegrationTestRunner({
       {},
       {
         get: (target, prop) => {
-          return dbConnection[prop]
+          return dbUtils.db_[prop]
         },
       }
     ),
@@ -183,7 +183,6 @@ export function medusaIntegrationTestRunner({
         dbSchema: dbConfig.schema,
         dbName: dbConfig.dbName,
       })
-      dbConnection = dbDataSource
       dbUtils.db_ = dbDataSource
       dbUtils.pgConnection_ = pgConnection
 
