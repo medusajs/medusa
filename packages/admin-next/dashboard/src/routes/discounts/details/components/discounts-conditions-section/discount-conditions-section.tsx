@@ -29,7 +29,10 @@ function ConditionType({ condition }: ConditionTypeProps) {
           }
           i18nKey={`discounts.conditions.${operator}.${entity}`}
           components={[
-            <span className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1">
+            <span
+              key="discounts-incl"
+              className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1"
+            >
               <ListSummary
                 inline
                 n={N}
@@ -38,7 +41,10 @@ function ConditionType({ condition }: ConditionTypeProps) {
                 )}
               />
             </span>,
-            <span className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1" />,
+            <span
+              key="discounts-excl"
+              className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1"
+            />,
           ]}
         />
       </span>

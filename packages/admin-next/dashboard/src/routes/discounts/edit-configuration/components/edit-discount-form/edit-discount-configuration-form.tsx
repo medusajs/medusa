@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Trans, useTranslation } from "react-i18next"
 import { parse, Duration } from "iso8601-duration"
+import { formatISODuration } from "date-fns"
 import * as zod from "zod"
 
 import { Discount } from "@medusajs/medusa"
@@ -14,6 +15,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { pick } from "../../../../../lib/common"
 
 type EditDiscountFormProps = {
   discount: Discount
@@ -83,7 +85,9 @@ export const EditDiscountConfigurationForm = ({
         ends_at: data.end_date_enabled ? data.end_date : null,
         usage_limit: data.enable_usage_limit ? data.usage_limit : null,
         valid_duration: data.enable_duration
-          ? `P${data.years}Y${data.months}M${data.days}DT${data.hours}H${data.minutes}M`
+          ? formatISODuration(
+              pick(data, ["years", "months", "days", "hours", "minutes"])
+            )
           : null,
       },
       {

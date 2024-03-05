@@ -9,15 +9,15 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   getDiscountStatus,
   PromotionStatus,
-} from "../../../../../lib/discounts.ts"
+} from "../../../../../lib/discounts"
 
-type DiscountGeneralSection = {
+type DiscountGeneralSectionProps = {
   discount: Discount
 }
 
 export const DiscountGeneralSection = ({
   discount,
-}: DiscountGeneralSection) => {
+}: DiscountGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()

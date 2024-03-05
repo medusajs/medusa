@@ -1,7 +1,5 @@
-import { Text, Tooltip } from "@medusajs/ui"
+import { Text, Tooltip, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-
-import cx from "classnames"
 
 type ListSummaryProps = {
   /**
@@ -24,7 +22,7 @@ export const ListSummary = ({ list, inline, n = 2 }: ListSummaryProps) => {
   const { t } = useTranslation()
   return (
     <div
-      className={cx("text-ui-fg-subtle gap-x-2", {
+      className={clx("text-ui-fg-subtle gap-x-2", {
         "inline-flex": inline,
         flex: !inline,
       })}

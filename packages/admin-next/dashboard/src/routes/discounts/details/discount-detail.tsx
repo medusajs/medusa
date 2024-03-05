@@ -5,7 +5,7 @@ import { JsonViewSection } from "../../../components/common/json-view-section"
 import { DiscountGeneralSection } from "./components/discounts-general-section"
 import { DiscountConfigurationSection } from "./components/discounts-configurations-section"
 
-import { discountLoader } from "./loader"
+import { discountLoader, expand } from "./loader"
 import { RedemptionsSection } from "./components/redemptions-section"
 import { DetailsSection } from "./components/details-section"
 import { DiscountConditionsSection } from "./components/discounts-conditions-section"
@@ -19,9 +19,13 @@ export const DiscountDetail = () => {
   >
 
   const { id } = useParams()
-  const { discount, isLoading } = useAdminDiscount(id!, {
-    initialData,
-  })
+  const { discount, isLoading } = useAdminDiscount(
+    id!,
+    { expand },
+    {
+      initialData,
+    }
+  )
 
   if (isLoading || !discount) {
     return <div>Loading...</div>

@@ -348,6 +348,10 @@ const router = createBrowserRouter([
                 lazy: () => import("../../routes/discounts/list"),
               },
               {
+                path: "create",
+                lazy: () => import("../../routes/discounts/create"),
+              },
+              {
                 path: ":id",
                 lazy: () => import("../../routes/discounts/details"),
                 children: [

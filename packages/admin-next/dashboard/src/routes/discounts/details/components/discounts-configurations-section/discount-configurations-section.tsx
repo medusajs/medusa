@@ -1,11 +1,13 @@
+import { parse } from "iso8601-duration"
+import { format, formatDuration } from "date-fns"
+import { PencilSquare } from "@medusajs/icons"
+import { useMemo } from "react"
+
 import { Discount } from "@medusajs/medusa"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { PencilSquare } from "@medusajs/icons"
-import { parse } from "iso8601-duration"
-import { useMemo } from "react"
 
 type DiscountConfigurationsSection = {
   discount: Discount
@@ -16,8 +18,7 @@ function formatTime(dateTime?: string) {
     return
   }
   const date = new Date(dateTime)
-  const a = date.toDateString().split(" ").slice(1).join(" ")
-  return `${a} at ${date.getHours()}:${("0" + date.getMinutes()).slice(-2)}`
+  return format(date, "PPPp")
 }
 
 export const DiscountConfigurationSection = ({
@@ -29,20 +30,7 @@ export const DiscountConfigurationSection = ({
     if (!discount.valid_duration) {
       return "-"
     }
-
-    const parsedDuration = parse(discount.valid_duration)
-
-    return ["years", "months", "weeks", "days", "hours", "minutes"].reduce(
-      (acc, span) => {
-        if (parsedDuration[span]) {
-          acc += `${parsedDuration[span]} ${t(`dateTime.${span}`, {
-            count: parsedDuration[span],
-          })} `
-        }
-        return acc
-      },
-      ""
-    )
+    return formatDuration(parse(discount.valid_duration))
   }, [discount.valid_duration])
 
   return (
