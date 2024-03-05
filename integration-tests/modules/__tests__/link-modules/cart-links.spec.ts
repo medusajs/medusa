@@ -106,6 +106,9 @@ describe("Cart links", () => {
         },
         payment_collection: {
           fields: ["id"],
+          payment_sessions: {
+            fields: ["id"],
+          },
         },
       },
     })
@@ -146,6 +149,7 @@ describe("Cart links", () => {
       },
     })
 
+    console.log(carts)
     expect(carts).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -155,6 +159,7 @@ describe("Cart links", () => {
           region: expect.objectContaining({ id: region.id }),
           payment_collection: expect.objectContaining({
             id: paymentCollection.id,
+            payment_sessions: expect.arrayContaining([]),
           }),
         }),
       ])

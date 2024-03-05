@@ -606,7 +606,7 @@ export class RemoteJoiner {
     const parsedExpands = new Map<string, any>()
     parsedExpands.set(BASE_PATH, initialService)
 
-    let forwardArgumentsOnPath: string[] = []
+    const forwardArgumentsOnPath: string[] = []
     for (const expand of expands || []) {
       const properties = expand.property.split(".")
       let currentServiceConfig = serviceConfig
@@ -616,45 +616,20 @@ export class RemoteJoiner {
         const fieldAlias = currentServiceConfig.fieldAlias ?? {}
 
         if (fieldAlias[prop]) {
-          const alias = fieldAlias[prop] as any
-
-          const path = isString(alias) ? alias : alias.path
-          const fullPath = [...new Set(currentPath.concat(path.split(".")))]
-
-          forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
-            (alias?.forwardArgumentsOnPath || []).map(
-              (forPath) =>
-                BASE_PATH + "." + currentPath.concat(forPath).join(".")
-            )
-          )
-
-          implodeMapping.push({
-            location: currentPath,
+          const [lastServiceConfig, path] = this.parseAlias({
+            expands,
+            expand,
             property: prop,
-            path: fullPath,
-            isList: !!serviceConfig.relationships?.find(
-              (relationship) => relationship.alias === fullPath[0]
-            )?.isList,
+            parsedExpands,
+            currentServiceConfig,
+            currentPath,
+            implodeMapping,
+            forwardArgumentsOnPath,
           })
 
-          const extMapping = expands as unknown[]
+          currentServiceConfig = lastServiceConfig
+          currentPath.push(...path.split("."))
 
-          const middlePath = path.split(".").slice(0, -1)
-          let curMiddlePath = currentPath
-          for (const path of middlePath) {
-            curMiddlePath = curMiddlePath.concat(path)
-            extMapping.push({
-              args: expand.args,
-              property: curMiddlePath.join("."),
-              isAliasMapping: true,
-            })
-          }
-
-          extMapping.push({
-            ...expand,
-            property: fullPath.join("."),
-            isAliasMapping: true,
-          })
           continue
         }
 
@@ -742,6 +717,92 @@ export class RemoteJoiner {
       }
     }
     return parsedExpands
+  }
+
+  private parseAlias({
+    expands,
+    expand,
+    property,
+    parsedExpands,
+    currentServiceConfig,
+    currentPath,
+    implodeMapping,
+    forwardArgumentsOnPath,
+  }) {
+    const serviceConfig = currentServiceConfig
+    const fieldAlias = currentServiceConfig.fieldAlias ?? {}
+    const alias = fieldAlias[property] as any
+
+    const path = isString(alias) ? alias : alias.path
+    const fullPath = [...new Set(currentPath.concat(path.split(".")))]
+
+    forwardArgumentsOnPath.push(
+      ...(alias?.forwardArgumentsOnPath || []).map(
+        (forPath) => BASE_PATH + "." + currentPath.concat(forPath).join(".")
+      )
+    )
+
+    implodeMapping.push({
+      location: currentPath,
+      property,
+      path: fullPath,
+      isList: !!serviceConfig.relationships?.find(
+        (relationship) => relationship.alias === fullPath[0]
+      )?.isList,
+    })
+
+    const extMapping = expands as unknown[]
+
+    const middlePath = path.split(".").slice(0, -1)
+    let curMiddlePath = currentPath
+    for (const path of middlePath) {
+      curMiddlePath = curMiddlePath.concat(path)
+      extMapping.push({
+        args: expand.args,
+        property: curMiddlePath.join("."),
+        isAliasMapping: true,
+      })
+    }
+
+    extMapping.push({
+      ...expand,
+      property: fullPath.join("."),
+      isAliasMapping: true,
+    })
+
+    const partialPath: string[] = []
+    for (const partial of path.split(".")) {
+      const relationship = currentServiceConfig.relationships?.find(
+        (relation) => relation.alias === partial
+      )
+
+      if (relationship) {
+        currentServiceConfig = this.getServiceConfig(relationship.serviceName)!
+
+        if (!currentServiceConfig) {
+          throw new Error(
+            `Target service not found: ${relationship.serviceName}`
+          )
+        }
+      }
+
+      const parentPath = [BASE_PATH, ...partialPath].join(".")
+      const completePath = [
+        BASE_PATH,
+        ...currentPath.concat(partialPath),
+        partial,
+      ].join(".")
+
+      partialPath.push(partial)
+      parsedExpands.set(completePath, {
+        property: partial,
+        serviceConfig: currentServiceConfig,
+        parent: parentPath,
+        parentConfig: parsedExpands.get(parentPath).serviceConfig,
+      })
+    }
+
+    return [currentServiceConfig, path]
   }
 
   private groupExpands(
