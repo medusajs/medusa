@@ -2,7 +2,6 @@ import { Spinner, TriangleDownMini } from "@medusajs/icons"
 import {
   CodeBlock,
   Container,
-  Copy,
   Heading,
   IconButton,
   Text,
@@ -210,23 +209,6 @@ const Event = ({
           </div>
         </Collapsible.Content>
       </Collapsible.Root>
-    </div>
-  )
-}
-
-const CodeblockLocal = ({ data }: { data: unknown }) => {
-  const stringified = JSON.stringify(data, null, 2)
-
-  return (
-    <div className="relative">
-      <Copy
-        content={stringified}
-        variant={"mini"}
-        className="text-ui-fg-muted absolute right-2 top-1 flex h-7 w-7 items-center justify-center"
-      />
-      <pre className="txt-compact-small bg-ui-bg-subtle rounded-md border p-2 font-mono">
-        {stringified}
-      </pre>
     </div>
   )
 }
