@@ -54,36 +54,36 @@ export const useOrderTableFilters = (): Filter[] => {
 
   const paymentStatusFilter: Filter = {
     key: "payment_status",
-    label: t("orders.paymentStatusLabel"),
+    label: t("orders.payment.statusLabel"),
     type: "select",
     multiple: true,
     options: [
       {
-        label: t("orders.paymentStatus.notPaid"),
+        label: t("orders.payment.status.notPaid"),
         value: "not_paid",
       },
       {
-        label: t("orders.paymentStatus.awaiting"),
+        label: t("orders.payment.status.awaiting"),
         value: "awaiting",
       },
       {
-        label: t("orders.paymentStatus.captured"),
+        label: t("orders.payment.status.captured"),
         value: "captured",
       },
       {
-        label: t("orders.paymentStatus.refunded"),
+        label: t("orders.payment.status.refunded"),
         value: "refunded",
       },
       {
-        label: t("orders.paymentStatus.partiallyRefunded"),
+        label: t("orders.payment.status.partiallyRefunded"),
         value: "partially_refunded",
       },
       {
-        label: t("orders.paymentStatus.canceled"),
+        label: t("orders.payment.status.canceled"),
         value: "canceled",
       },
       {
-        label: t("orders.paymentStatus.requresAction"),
+        label: t("orders.payment.status.requresAction"),
         value: "requires_action",
       },
     ],
@@ -91,44 +91,44 @@ export const useOrderTableFilters = (): Filter[] => {
 
   const fulfillmentStatusFilter: Filter = {
     key: "fulfillment_status",
-    label: t("orders.fulfillmentStatusLabel"),
+    label: t("orders.fulfillment.statusLabel"),
     type: "select",
     multiple: true,
     options: [
       {
-        label: t("orders.fulfillmentStatus.notFulfilled"),
+        label: t("orders.fulfillment.status.notFulfilled"),
         value: "not_fulfilled",
       },
       {
-        label: t("orders.fulfillmentStatus.fulfilled"),
+        label: t("orders.fulfillment.status.fulfilled"),
         value: "fulfilled",
       },
       {
-        label: t("orders.fulfillmentStatus.partiallyFulfilled"),
+        label: t("orders.fulfillment.status.partiallyFulfilled"),
         value: "partially_fulfilled",
       },
       {
-        label: t("orders.fulfillmentStatus.returned"),
+        label: t("orders.fulfillment.status.returned"),
         value: "returned",
       },
       {
-        label: t("orders.fulfillmentStatus.partiallyReturned"),
+        label: t("orders.fulfillment.status.partiallyReturned"),
         value: "partially_returned",
       },
       {
-        label: t("orders.fulfillmentStatus.shipped"),
+        label: t("orders.fulfillment.status.shipped"),
         value: "shipped",
       },
       {
-        label: t("orders.fulfillmentStatus.partiallyShipped"),
+        label: t("orders.fulfillment.status.partiallyShipped"),
         value: "partially_shipped",
       },
       {
-        label: t("orders.fulfillmentStatus.canceled"),
+        label: t("orders.fulfillment.status.canceled"),
         value: "canceled",
       },
       {
-        label: t("orders.fulfillmentStatus.requresAction"),
+        label: t("orders.fulfillment.status.requresAction"),
         value: "requires_action",
       },
     ],

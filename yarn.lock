@@ -8170,6 +8170,7 @@ __metadata:
     postcss: ^8.4.33
     prettier: ^3.1.1
     react: 18.2.0
+    react-country-flag: ^3.1.0
     react-dom: 18.2.0
     react-focus-lock: ^2.11.1
     react-hook-form: 7.49.1
@@ -43584,7 +43585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-country-flag@npm:^3.0.2":
+"react-country-flag@npm:^3.0.2, react-country-flag@npm:^3.1.0":
   version: 3.1.0
   resolution: "react-country-flag@npm:3.1.0"
   peerDependencies:
