@@ -19,4 +19,7 @@ module.exports = {
     "^.+\\.[jt]s$": [`../../jest-transformer.js`, { isolatedModules: true }],
   },
   setupFiles: ["../setup-env.js"],
+  setupFilesAfterEnv: ["../setup.js"],
+  globalSetup: "../globalSetup.js",
+  globalTeardown: "../globalTeardown.js",
 }
