@@ -11,6 +11,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
+  OrderChangeDTO,
   OrderDTO,
   OrderItemDTO,
   OrderLineItemAdjustmentDTO,
@@ -21,8 +22,10 @@ import {
   OrderShippingMethodTaxLineDTO,
 } from "./common"
 import {
+  ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
+  CreateOrderChangeDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
@@ -356,4 +359,28 @@ export interface IOrderModuleService extends IModuleService {
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
+
+  // Order Change
+  createOrderChange(
+    data: CreateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+  createOrderChange(
+    data: CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+  createOrderChange(
+    data: CreateOrderChangeDTO | CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO | OrderChangeDTO[]>
+
+  cancelOrderChange(sharedContext?: Context)
+  cancelOrderChange(sharedContext?: Context)
+  cancelOrderChange(sharedContext?: Context)
+
+  confimrOrderChange(data: ConfirmOrderChangeDTO, sharedContext?: Context)
+
+  applyPendingOrderActions(sharedContext?: Context)
+
+  addOrderAction(sharedContext?: Context)
 }

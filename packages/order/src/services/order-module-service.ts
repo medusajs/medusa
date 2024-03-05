@@ -1536,6 +1536,16 @@ export default class OrderModuleService<
     await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
   }
 
+  async createOrderChange(
+    data: OrderTypes.CreateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderChangeDTO>
+
+  async createOrderChange(
+    data: OrderTypes.CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderChangeDTO[]>
+
   @InjectManager("baseRepository_")
   async createOrderChange(
     data: OrderTypes.CreateOrderChangeDTO | OrderTypes.CreateOrderChangeDTO[],
@@ -1596,6 +1606,7 @@ export default class OrderModuleService<
 
   async cancelOrderChange(
     orderChangeId: string,
+    data: OrderTypes.CancelOrderChangeDTO,
     sharedContext?: Context
   ): Promise<void>
 
@@ -1626,7 +1637,7 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async completeOrderChange(
+  async confirmOrderChange(
     data: any[] | any,
     sharedContext?: Context
   ): Promise<void> {

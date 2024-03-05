@@ -395,11 +395,9 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.completeOrderChange(orderChange.id)
+        await service.confirmOrderChange(orderChange.id)
 
-        expect(
-          service.completeOrderChange(orderChange.id)
-        ).rejects.toThrowError(
+        expect(service.confirmOrderChange(orderChange.id)).rejects.toThrowError(
           `Order Change cannot be modified: ${orderChange.id}`
         )
 

@@ -259,6 +259,24 @@ export interface UpdateOrderChangeDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface CancelOrderChangeDTO {
+  id: string
+  canceled_by?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface DeclineOrderChangeDTO {
+  id: string
+  declined_by?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface ConfirmOrderChangeDTO {
+  id: string
+  confirmed_by?: string
+  metadata?: Record<string, unknown>
+}
+
 /** ORDER CHANGE END */
 
 /** ORDER CHANGE ACTION START */
