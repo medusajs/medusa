@@ -16,8 +16,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
-    "@headlessui/tailwindcss": "^0.2.0",
+    "@ariakit/react": "^0.4.1",
     "@hookform/resolvers": "3.3.2",
     "@medusajs/icons": "workspace:^",
     "@medusajs/ui": "workspace:^",
@@ -33,9 +32,11 @@
     "i18next": "23.7.11",
     "i18next-browser-languagedetector": "7.2.0",
     "i18next-http-backend": "2.4.2",
+    "match-sorter": "^6.3.4",
     "medusa-react": "workspace:^",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-focus-lock": "^2.11.1",
     "react-hook-form": "7.49.1",
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",

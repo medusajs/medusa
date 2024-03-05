@@ -2,7 +2,6 @@ import { MikroOrmWrapper } from "../../../utils"
 
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { Modules } from "@medusajs/modules-sdk"
@@ -35,7 +34,6 @@ describe("PriceList Service", () => {
     await MikroOrmWrapper.forkManager()
 
     testManager = await MikroOrmWrapper.forkManager()
-    await createCurrencies(testManager)
     await createPriceSets(testManager)
     await createPriceLists(testManager)
     await service.createRuleTypes([

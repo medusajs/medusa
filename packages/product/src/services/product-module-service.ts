@@ -245,7 +245,9 @@ export default class ProductModuleService<
       )
     ).flat()
 
-    return productVariants as unknown as ProductTypes.ProductVariantDTO[]
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductVariantDTO[]
+    >(productVariants)
   }
 
   @InjectManager("baseRepository_")

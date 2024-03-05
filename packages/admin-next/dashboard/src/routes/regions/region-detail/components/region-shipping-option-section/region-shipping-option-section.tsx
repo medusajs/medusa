@@ -3,7 +3,9 @@ import { Container, Heading } from "@medusajs/ui"
 import { useAdminShippingOptions } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
+import { PlusMini } from "@medusajs/icons"
 import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useShippingOptionColumns } from "./use-shipping-option-table-columns"
@@ -53,8 +55,21 @@ export const RegionShippingOptionSection = ({
 
   return (
     <Container className="divide-y p-0">
-      <div className="px-6 py-4">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("regions.shippingOptions")}</Heading>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  label: t("actions.create"),
+                  icon: <PlusMini />,
+                  to: "shipping-options/create",
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <DataTable
         table={table}
@@ -71,7 +86,7 @@ export const RegionShippingOptionSection = ({
           "updated_at",
         ]}
         isLoading={isLoading}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         pagination
         search
         queryObject={raw}

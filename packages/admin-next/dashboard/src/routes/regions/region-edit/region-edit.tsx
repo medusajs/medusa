@@ -1,49 +1,56 @@
-import { Drawer, Heading } from "@medusajs/ui"
-import { useAdminRegion } from "medusa-react"
-import { useEffect, useState } from "react"
+import { Heading } from "@medusajs/ui"
+import { useAdminRegion, useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { json, useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
+import { RouteDrawer } from "../../../components/route-modal"
 import { EditRegionForm } from "./components/edit-region-form"
 
 export const RegionEdit = () => {
-  const [open, setOpen] = useState(false)
-  const { id } = useParams()
-  const { region, isLoading, isError, error } = useAdminRegion(id!)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    setOpen(true)
-  }, [])
-
-  const onOpenChange = (open: boolean) => {
-    if (!open) {
-      setTimeout(() => {
-        navigate(`/settings/regions/${id}`, { replace: true })
-      }, 200)
-    }
-
-    setOpen(open)
-  }
-
   const { t } = useTranslation()
+  const { id } = useParams()
 
-  if (isError) {
-    throw error
+  const {
+    region,
+    isLoading: isRegionLoading,
+    isError: isRegionError,
+    error: regionError,
+  } = useAdminRegion(id!)
+
+  const {
+    store,
+    isLoading: isStoreLoading,
+    isError: isStoreError,
+    error: storeError,
+  } = useAdminStore()
+
+  const isLoading = isRegionLoading || isStoreLoading
+
+  const currencies = store?.currencies || []
+  const paymentProviders = store?.payment_providers || []
+  const fulfillmentProviders = store?.fulfillment_providers || []
+
+  if (isRegionError) {
+    throw regionError
   }
 
-  if (!region && !isLoading) {
-    throw json("An unknown error has occured", 500)
+  if (isStoreError) {
+    throw storeError
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Heading>{t("regions.editRegion")}</Heading>
-        </Drawer.Header>
-        {region && <EditRegionForm region={region} />}
-      </Drawer.Content>
-    </Drawer>
+    <RouteDrawer>
+      <RouteDrawer.Header>
+        <Heading>{t("regions.editRegion")}</Heading>
+      </RouteDrawer.Header>
+      {!isLoading && region && (
+        <EditRegionForm
+          region={region}
+          currencies={currencies}
+          paymentProviders={paymentProviders}
+          fulfillmentProviders={fulfillmentProviders}
+        />
+      )}
+    </RouteDrawer>
   )
 }
