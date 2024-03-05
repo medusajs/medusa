@@ -5,7 +5,6 @@ import {
 
 import { CreateProductDTO } from "@medusajs/types"
 import { createProductsWorkflow } from "@medusajs/core-flows"
-import { defaultAdminProductFields } from "./query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -22,7 +21,7 @@ export const GET = async (
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: defaultAdminProductFields,
+    fields: req.listConfig.select as string[],
   })
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
