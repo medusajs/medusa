@@ -184,6 +184,85 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "fulfillment_provider",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_fulfillment_provider_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_provider_deleted_at\" ON \"fulfillment_provider\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "fulfillment_provider_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -269,85 +348,6 @@
         },
         {
           "keyName": "fulfillment_set_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "metadata": {
-          "name": "metadata",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "service_provider",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_service_provider_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_provider_deleted_at\" ON \"service_provider\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "service_provider_pkey",
           "columnNames": [
             "id"
           ],
@@ -938,8 +938,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "service_provider_id": {
-          "name": "service_provider_id",
+        "fulfillment_provider_id": {
+          "name": "fulfillment_provider_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1040,14 +1040,14 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_shipping_profile_id\" ON \"shipping_option\" (shipping_profile_id) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_shipping_option_service_provider_id",
+          "keyName": "IDX_shipping_option_fulfillment_provider_id",
           "columnNames": [
-            "service_provider_id"
+            "fulfillment_provider_id"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_service_provider_id\" ON \"shipping_option\" (service_provider_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_fulfillment_provider_id\" ON \"shipping_option\" (fulfillment_provider_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_shipping_option_type_id",
@@ -1106,16 +1106,16 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "shipping_option_service_provider_id_foreign": {
-          "constraintName": "shipping_option_service_provider_id_foreign",
+        "shipping_option_fulfillment_provider_id_foreign": {
+          "constraintName": "shipping_option_fulfillment_provider_id_foreign",
           "columnNames": [
-            "service_provider_id"
+            "fulfillment_provider_id"
           ],
           "localTableName": "public.shipping_option",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.service_provider",
+          "referencedTableName": "public.fulfillment_provider",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -1484,7 +1484,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.service_provider",
+          "referencedTableName": "public.fulfillment_provider",
           "updateRule": "cascade"
         },
         "fulfillment_shipping_option_id_foreign": {

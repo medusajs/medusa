@@ -30,7 +30,6 @@ import {
   Fulfillment,
   FulfillmentSet,
   GeoZone,
-  ServiceProvider,
   ServiceZone,
   ShippingOption,
   ShippingOptionRule,
@@ -38,7 +37,7 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
-import ServiceProviderService from "./service-provider"
+import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -59,7 +58,7 @@ type InjectedDependencies = {
   shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
-  serviceProviderService: ServiceProviderService
+  fulfillmentProviderService: FulfillmentProviderService
   fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
 }
 
@@ -71,7 +70,6 @@ export default class FulfillmentModuleService<
     TShippingOptionEntity extends ShippingOption = ShippingOption,
     TShippingOptionRuleEntity extends ShippingOptionRule = ShippingOptionRule,
     TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType,
-    TServiceProviderEntity extends ServiceProvider = ServiceProvider,
     TFulfillmentEntity extends Fulfillment = Fulfillment
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
@@ -97,7 +95,7 @@ export default class FulfillmentModuleService<
   protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
   protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
   protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
-  protected readonly serviceProviderService_: ServiceProviderService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
 
   constructor(
@@ -110,7 +108,7 @@ export default class FulfillmentModuleService<
       shippingOptionService,
       shippingOptionRuleService,
       shippingOptionTypeService,
-      serviceProviderService,
+      fulfillmentProviderService,
       fulfillmentService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
@@ -125,7 +123,7 @@ export default class FulfillmentModuleService<
     this.shippingOptionService_ = shippingOptionService
     this.shippingOptionRuleService_ = shippingOptionRuleService
     this.shippingOptionTypeService_ = shippingOptionTypeService
-    this.serviceProviderService_ = serviceProviderService
+    this.fulfillmentProviderService_ = fulfillmentProviderService
     this.fulfillmentService_ = fulfillmentService
   }
 
@@ -145,7 +143,7 @@ export default class FulfillmentModuleService<
       "rules",
       "type",
       "shipping_profile",
-      "service_provider",
+      "fulfillment_provider",
       ...(normalizedConfig.relations ?? []),
     ]
     // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
@@ -250,7 +248,9 @@ export default class FulfillmentModuleService<
   async retrieveFulfillmentOptions(
     providerId: string
   ): Promise<Record<string, any>[]> {
-    return await this.serviceProviderService_.getFulfillmentOptions(providerId)
+    return await this.fulfillmentProviderService_.getFulfillmentOptions(
+      providerId
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -610,7 +610,7 @@ export default class FulfillmentModuleService<
     let fulfillmentThirdPartyData!: any
     try {
       fulfillmentThirdPartyData =
-        await this.serviceProviderService_.createFulfillment(
+        await this.fulfillmentProviderService_.createFulfillment(
           provider_id,
           fulfillmentData || {},
           items.map((i) => i),
@@ -1242,24 +1242,12 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    if (fulfillment.shipped_at) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Fulfillment with id ${fulfillment.id} already shipped`
-      )
-    }
-
-    if (fulfillment.delivered_at) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Fulfillment with id ${fulfillment.id} already delivered`
-      )
-    }
+    FulfillmentModuleService.canCancelFulfillmentOrThrow(fulfillment)
 
     // Make this action idempotent
     if (!fulfillment.canceled_at) {
       try {
-        await this.serviceProviderService_.cancelFulfillment(
+        await this.fulfillmentProviderService_.cancelFulfillment(
           fulfillment.provider_id,
           fulfillment.data ?? {}
         )
@@ -1281,6 +1269,24 @@ export default class FulfillmentModuleService<
     })
 
     return Array.isArray(result) ? result[0] : result
+  }
+
+  protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {
+    if (fulfillment.shipped_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already shipped`
+      )
+    }
+
+    if (fulfillment.delivered_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already delivered`
+      )
+    }
+
+    return true
   }
 
   protected static validateMissingShippingOptions_(

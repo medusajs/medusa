@@ -69,15 +69,9 @@ export interface IFulfillmentProvider {
   /**
    * @ignore
    *
-   * Create an order for the given data.
-   */
-  createOrder(fromData: Record<string, unknown>): Promise<any>
-  /**
-   * @ignore
-   *
    * Create a return for the given data.
    */
-  createReturn(fromData: Record<string, unknown>): Promise<any>
+  createReturnFulfillment(fromData: Record<string, unknown>): Promise<any>
   /**
    * @ignore
    *

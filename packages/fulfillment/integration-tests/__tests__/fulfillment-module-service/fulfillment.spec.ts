@@ -7,7 +7,7 @@ import {
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
 import { initModules } from "medusa-test-utils/dist"
-import { ServiceProviderService } from "@services"
+import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 
 jest.setTimeout(100000)
@@ -74,19 +74,20 @@ moduleIntegrationTestRunner({
 
         const { shutdown } = await initModules(moduleOptions)
 
-        const serviceProviders = await MikroOrmWrapper.forkManager().execute(
-          `SELECT * FROM service_provider`
-        )
+        const fulfillmentProviderrs =
+          await MikroOrmWrapper.forkManager().execute(
+            `SELECT * FROM fulfillment_provider`
+          )
 
-        expect(serviceProviders).toHaveLength(
+        expect(fulfillmentProviderrs).toHaveLength(
           Object.keys(providersConfig).length + 1 // +1 for the default provider
         )
 
         for (const [name] of Object.entries(providersConfig)) {
-          const provider = serviceProviders.find((p) => {
+          const provider = fulfillmentProviderrs.find((p) => {
             return (
               p.id ===
-              ServiceProviderService.getRegistrationIdentifier(
+              FulfillmentProviderService.getRegistrationIdentifier(
                 FulfillmentProviderServiceFixtures,
                 name
               )
@@ -117,7 +118,7 @@ moduleIntegrationTestRunner({
 
           const shippingOption = await service.createShippingOptions(
             generateCreateShippingOptionsData({
-              service_provider_id: providerId,
+              fulfillment_provider_id: providerId,
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
             })
@@ -165,7 +166,7 @@ moduleIntegrationTestRunner({
 
             const shippingOption = await service.createShippingOptions(
               generateCreateShippingOptionsData({
-                service_provider_id: providerId,
+                fulfillment_provider_id: providerId,
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
               })
@@ -226,7 +227,7 @@ moduleIntegrationTestRunner({
 
             const shippingOption = await service.createShippingOptions(
               generateCreateShippingOptionsData({
-                service_provider_id: providerId,
+                fulfillment_provider_id: providerId,
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
               })

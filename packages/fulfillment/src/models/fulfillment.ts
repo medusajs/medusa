@@ -21,7 +21,7 @@ import {
 import Address from "./address"
 import FulfillmentItem from "./fulfillment-item"
 import FulfillmentLabel from "./fulfillment-label"
-import ServiceProvider from "./service-provider"
+import FulfillmentProvider from "./fulfillment-provider"
 import ShippingOption from "./shipping-option"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -89,7 +89,7 @@ export default class Fulfillment {
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
 
-  @ManyToOne(() => ServiceProvider, {
+  @ManyToOne(() => FulfillmentProvider, {
     columnType: "text",
     fieldName: "provider_id",
     mapToPk: true,
@@ -112,8 +112,8 @@ export default class Fulfillment {
   @ManyToOne(() => ShippingOption, { persist: false })
   shipping_option: ShippingOption | null
 
-  @ManyToOne(() => ServiceProvider, { persist: false })
-  provider: ServiceProvider
+  @ManyToOne(() => FulfillmentProvider, { persist: false })
+  provider: FulfillmentProvider
 
   @OneToOne()
   delivery_address!: Address

@@ -6,23 +6,24 @@ import {
 } from "@medusajs/types"
 import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import { ServiceProvider } from "@models"
+import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {
-  serviceProviderRepository: DAL.RepositoryService
+  fulfillmentProviderRepository: DAL.RepositoryService
   [key: `fp_${string}`]: FulfillmentTypes.IFulfillmentProvider
 }
 
 // TODO rework DTO's
 
-export default class ServiceProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
-  ServiceProvider
+export default class FulfillmentProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  FulfillmentProvider
 ) {
-  protected readonly serviceProviderRepository_: DAL.RepositoryService
+  protected readonly fulfillmentProviderRepository_: DAL.RepositoryService
 
   constructor(container: InjectedDependencies) {
     super(container)
-    this.serviceProviderRepository_ = container.serviceProviderRepository
+    this.fulfillmentProviderRepository_ =
+      container.fulfillmentProviderRepository
   }
 
   static getRegistrationIdentifier(

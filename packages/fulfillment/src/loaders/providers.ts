@@ -3,12 +3,15 @@ import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
 import { asFunction, asValue, Lifetime } from "awilix"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
 import { lowerCaseFirst } from "@medusajs/utils"
-import { ServiceProviderService } from "@services"
+import { FulfillmentProviderService } from "@services"
 import { ContainerRegistrationKeys } from "@medusajs/utils/src"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = ServiceProviderService.getRegistrationIdentifier(klass, name)
+    const key = FulfillmentProviderService.getRegistrationIdentifier(
+      klass,
+      name
+    )
 
     container.register({
       ["fp_" + key]: asFunction((cradle) => new klass(cradle, config), {
@@ -45,20 +48,18 @@ export default async ({
 
   await syncDatabaseProviders({
     container,
-    providerIdentifiersRegistrationKey: FulfillmentIdentifiersRegistrationName,
-    providerServiceRegistrationKey: lowerCaseFirst(ServiceProviderService.name),
   })
 }
 
-async function syncDatabaseProviders({
-  container,
-  providerIdentifiersRegistrationKey,
-  providerServiceRegistrationKey,
-}) {
+async function syncDatabaseProviders({ container }) {
+  const providerServiceRegistrationKey = lowerCaseFirst(
+    FulfillmentProviderService.name
+  )
+
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   try {
     const providerIdentifiers: string[] = (
-      container.resolve(providerIdentifiersRegistrationKey) ?? []
+      container.resolve(FulfillmentIdentifiersRegistrationName) ?? []
     ).filter(Boolean)
 
     const providerService: ModulesSdkTypes.InternalModuleService<any> =

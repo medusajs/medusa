@@ -47,11 +47,7 @@ export class AbstractFulfillmentProviderService
     return []
   }
 
-  async createOrder(fromData): Promise<any> {
-    throw Error("createReturn must be overridden by the child class")
-  }
-
-  async createReturn(fromData): Promise<any> {
+  async createReturnFulfillment(fromData): Promise<any> {
     throw Error("createReturn must be overridden by the child class")
   }
 
