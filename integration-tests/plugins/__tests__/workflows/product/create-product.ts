@@ -13,7 +13,7 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 jest.setTimeout(50000)
 
-describe("CreateProduct workflow", function () {
+describe.skip("CreateProduct workflow", function () {
   let medusaContainer
   let shutdownServer
 

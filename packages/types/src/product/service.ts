@@ -1333,6 +1333,74 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<void>
 
   /**
+   * This method is used to delete options. Unlike the {@link delete} method, this method won't completely remove the option. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted options can be restored using the {@link restore} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names, such as `option_value_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of a record associated with the option through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteOptions (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.softDeleteOptions(ids)
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  softDeleteOptions<TReturnableLinkableKeys extends string = string>(
+    optionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore options which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of the record associated with the option through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreOptions (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.restoreOptions(ids, {
+   *     returnLinkableKeys: ["option_value_id"]
+   *   })
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  restoreOptions<TReturnableLinkableKeys extends string = string>(
+    optionIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
    * This method is used to retrieve a product variant by its ID.
    *
    * @param {string} productVariantId - The ID of the product variant to retrieve.
@@ -1673,6 +1741,74 @@ export interface IProductModuleService extends IModuleService {
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
   ): Promise<[ProductVariantDTO[], number]>
+
+  /**
+   * This method is used to delete variants. Unlike the {@link delete} method, this method won't completely remove the variant. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted variants can be restored using the {@link restore} method.
+   *
+   * @param {string[]} variantIds - The IDs of the variants to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the variants. You can pass to its `returnLinkableKeys`
+   * property any of the variant's relation attribute names, such as `option_value_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the variant entity's relations, and its value is an array of strings, each being the ID of a record associated with the variant through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProductVariants (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.softDeleteVariants(ids)
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  softDeleteVariants<TReturnableLinkableKeys extends string = string>(
+    variantIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore variants which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} variantIds - The IDs of the variants to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the variants. You can pass to its `returnLinkableKeys`
+   * property any of the variant's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the variant entity's relations, and its value is an array of strings, each being the ID of the record associated with the variant through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreVariants (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.restoreVariants(ids, {
+   *     returnLinkableKeys: ["option_value_id"]
+   *   })
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  restoreVariants<TReturnableLinkableKeys extends string = string>(
+    variantIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a product collection by its ID.

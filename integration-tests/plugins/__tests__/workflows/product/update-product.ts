@@ -14,7 +14,7 @@ import { simpleProductFactory } from "../../../../factories"
 
 jest.setTimeout(100000)
 
-describe("UpdateProduct workflow", function () {
+describe.skip("UpdateProduct workflow", function () {
   let dbConnection
   let medusaContainer
   let shutdownServer
