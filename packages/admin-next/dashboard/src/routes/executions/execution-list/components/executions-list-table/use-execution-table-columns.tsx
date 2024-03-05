@@ -4,14 +4,11 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
 import {
-  TRANSACTION_ERROR_STATES,
-  TRANSACTION_IN_PROGRESS_STATES,
-} from "../../../constants"
-import {
   TransactionStepState,
   WorkflowExecutionDTO,
   WorkflowExecutionStep,
 } from "../../../types"
+import { getTransactionState, getTransactionStateColor } from "../../../utils"
 
 const columnHelper = createColumnHelper<WorkflowExecutionDTO>()
 
@@ -32,19 +29,12 @@ export const useExecutionTableColumns = (): ColumnDef<
         cell: ({ getValue }) => {
           const state = getValue()
 
-          let color: "green" | "red" | "orange" = "green"
-
-          if (TRANSACTION_ERROR_STATES.includes(state)) {
-            color = "red"
-          }
-
-          if (TRANSACTION_IN_PROGRESS_STATES.includes(state)) {
-            color = "orange"
-          }
+          const color = getTransactionStateColor(state)
+          const translatedState = getTransactionState(t, state)
 
           return (
             <StatusCell color={color}>
-              <span className="capitalize">{state}</span>
+              <span className="capitalize">{translatedState}</span>
             </StatusCell>
           )
         },

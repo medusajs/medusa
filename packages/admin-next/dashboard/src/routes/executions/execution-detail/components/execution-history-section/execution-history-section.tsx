@@ -1,5 +1,13 @@
 import { Spinner, TriangleDownMini } from "@medusajs/icons"
-import { Container, Copy, Heading, IconButton, Text, clx } from "@medusajs/ui"
+import {
+  CodeBlock,
+  Container,
+  Copy,
+  Heading,
+  IconButton,
+  Text,
+  clx,
+} from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { format } from "date-fns"
 import { useEffect, useRef, useState } from "react"
@@ -167,14 +175,36 @@ const Event = ({
               <Text size="small" leading="compact">
                 {t("executions.history.definitionLabel")}
               </Text>
-              <Codeblock data={step.definition} />
+              <CodeBlock
+                snippets={[
+                  {
+                    code: JSON.stringify(step.definition, null, 2),
+                    label: t("executions.history.definitionLabel"),
+                    language: "json",
+                    hideLineNumbers: true,
+                  },
+                ]}
+              >
+                <CodeBlock.Body />
+              </CodeBlock>
             </div>
             {stepInvokeContext && (
               <div className="text-ui-fg-subtle flex flex-col gap-y-2">
                 <Text size="small" leading="compact">
                   {t("executions.history.outputLabel")}
                 </Text>
-                <Codeblock data={stepInvokeContext.output} />
+                <CodeBlock
+                  snippets={[
+                    {
+                      code: JSON.stringify(stepInvokeContext.output, null, 2),
+                      label: t("executions.history.outputLabel"),
+                      language: "json",
+                      hideLineNumbers: true,
+                    },
+                  ]}
+                >
+                  <CodeBlock.Body />
+                </CodeBlock>
               </div>
             )}
           </div>
@@ -184,7 +214,7 @@ const Event = ({
   )
 }
 
-const Codeblock = ({ data }: { data: unknown }) => {
+const CodeblockLocal = ({ data }: { data: unknown }) => {
   const stringified = JSON.stringify(data, null, 2)
 
   return (

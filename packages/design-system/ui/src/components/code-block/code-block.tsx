@@ -1,9 +1,13 @@
 "use client"
-import { Highlight, themes } from "prism-react-renderer"
+import { Highlight, Prism, themes } from "prism-react-renderer"
 import * as React from "react"
 
 import { Copy } from "@/components/copy"
 import { clx } from "@/utils/clx"
+;(typeof global !== "undefined" ? global : window).Prism = Prism
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+await import("prismjs/components/prism-json")
 
 export type CodeSnippet = {
   /**
@@ -211,6 +215,12 @@ const Body = ({
               },
               {
                 types: ["number"],
+                style: {
+                  color: "rgb(247,208,25)",
+                },
+              },
+              {
+                types: ["property"],
                 style: {
                   color: "rgb(247,208,25)",
                 },

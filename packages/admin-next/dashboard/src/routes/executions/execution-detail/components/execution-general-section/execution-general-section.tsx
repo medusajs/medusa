@@ -1,10 +1,19 @@
-import { Badge, Container, Copy, Heading, Text, clx } from "@medusajs/ui"
+import {
+  Badge,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Text,
+  clx,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import {
   TransactionStepState,
   WorkflowExecutionDTO,
   WorkflowExecutionStep,
 } from "../../../types"
+import { getTransactionState, getTransactionStateColor } from "../../../utils"
 
 type ExecutionGeneralSectionProps = {
   execution: WorkflowExecutionDTO
@@ -16,6 +25,8 @@ export const ExecutionGeneralSection = ({
   const { t } = useTranslation()
 
   const cleanId = execution.id.replace("wf_exec_", "")
+  const translatedState = getTransactionState(t, execution.state)
+  const stateColor = getTransactionStateColor(execution.state)
 
   return (
     <Container className="divide-y p-0">
@@ -24,6 +35,7 @@ export const ExecutionGeneralSection = ({
           <Heading>{cleanId}</Heading>
           <Copy content={cleanId} className="text-ui-fg-muted" />
         </div>
+        <StatusBadge color={stateColor}>{translatedState}</StatusBadge>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

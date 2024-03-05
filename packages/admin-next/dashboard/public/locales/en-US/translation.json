@@ -386,6 +386,26 @@
       "awaitingState": "Awaiting",
       "definitionLabel": "Definition",
       "outputLabel": "Output"
+    },
+    "state": {
+      "done": "Done",
+      "failed": "Failed",
+      "reverted": "Reverted",
+      "invoking": "Invoking",
+      "compensating": "Compensating",
+      "notStarted": "Not started"
+    },
+    "transaction": {
+      "state": {
+        "waitingToCompensate": "Waiting to compensate"
+      }
+    },
+    "step": {
+      "state": {
+        "skipped": "Skipped",
+        "dormant": "Dormant",
+        "timeout": "Timeout"
+      }
     }
   },
   "errors": {
