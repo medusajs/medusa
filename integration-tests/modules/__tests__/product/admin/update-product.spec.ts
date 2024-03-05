@@ -82,6 +82,163 @@ describe.skip("POST /admin/products/:id", () => {
     await db.teardown()
   })
 
+  it("should do a basic product update", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const payload = {
+      title: "New title",
+      description: "test-product-description",
+    }
+
+    const response = await api
+      .post(`/admin/products/${product.id}`, payload, adminHeaders)
+      .catch((err) => {
+        console.log(err)
+      })
+
+    expect(response?.status).toEqual(200)
+    expect(response?.data.product).toEqual(
+      expect.objectContaining({
+        id: product.id,
+        title: "New title",
+        description: "test-product-description",
+      })
+    )
+  })
+
+  it("should update product and also update a variant and create a variant", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const payload = {
+      title: "New title",
+      description: "test-product-description",
+      variants: [
+        {
+          id: "variant-1",
+          title: "Variant 1 updated",
+        },
+        {
+          title: "Variant 3",
+        },
+      ],
+    }
+
+    const response = await api
+      .post(`/admin/products/${product.id}`, payload, adminHeaders)
+      .catch((err) => {
+        console.log(err)
+      })
+
+    expect(response?.status).toEqual(200)
+    expect(response?.data.product).toEqual(
+      expect.objectContaining({
+        id: product.id,
+        title: "New title",
+        description: "test-product-description",
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: "variant-1",
+            title: "Variant 1 updated",
+          }),
+          expect.objectContaining({
+            title: "Variant 3",
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should update product's sales channels", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const payload = {
+      title: "New title",
+      description: "test-product-description",
+      sales_channels: [{ id: "channel-2" }, { id: "channel-3" }],
+    }
+
+    const response = await api
+      .post(
+        `/admin/products/${product.id}?expand=sales_channels`,
+        payload,
+        adminHeaders
+      )
+      .catch((err) => {
+        console.log(err)
+      })
+
+    expect(response?.status).toEqual(200)
+    expect(response?.data.product).toEqual(
+      expect.objectContaining({
+        id: product.id,
+        sales_channels: [
+          expect.objectContaining({ id: "channel-2" }),
+          expect.objectContaining({ id: "channel-3" }),
+        ],
+      })
+    )
+  })
+
+  it("should update inventory when variants are updated", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const variantInventoryService = appContainer.resolve(
+      "productVariantInventoryService"
+    )
+
+    const payload = {
+      title: "New title",
+      description: "test-product-description",
+      variants: [
+        {
+          id: "variant-1",
+          title: "Variant 1 updated",
+        },
+        {
+          title: "Variant 3",
+        },
+      ],
+    }
+
+    const response = await api
+      .post(`/admin/products/${product.id}`, payload, adminHeaders)
+      .catch((err) => {
+        console.log(err)
+      })
+
+    let inventory = await variantInventoryService.listInventoryItemsByVariant(
+      "variant-2"
+    )
+
+    expect(response?.status).toEqual(200)
+    expect(response?.data.product).toEqual(
+      expect.objectContaining({
+        id: product.id,
+        title: "New title",
+        description: "test-product-description",
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: "variant-1",
+            title: "Variant 1 updated",
+          }),
+          expect.objectContaining({
+            title: "Variant 3",
+          }),
+        ]),
+      })
+    )
+
+    expect(inventory).toEqual([]) // no inventory items for removed variant
+
+    inventory = await variantInventoryService.listInventoryItemsByVariant(
+      response?.data.product.variants.find((v) => v.title === "Variant 3").id
+    )
+
+    expect(inventory).toEqual([
+      expect.objectContaining({ id: expect.any(String) }),
+    ])
+  })
+
   it("should update product variant price sets and prices", async () => {
     const api = useApi() as any
     const data = {

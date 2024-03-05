@@ -21,7 +21,13 @@ const adminReqConfig = {
 }
 
 function getImportFile() {
-  return path.resolve("__tests__", "product", "admin", "product-import.csv")
+  return path.resolve(
+    "__tests__",
+    "product",
+    "admin",
+    "__fixtures__",
+    "product-import.csv"
+  )
 }
 
 function copyTemplateFile() {
@@ -29,6 +35,7 @@ function copyTemplateFile() {
     "__tests__",
     "product",
     "admin",
+    "__fixtures__",
     "product-import-template.csv"
   )
   const destination = getImportFile()
