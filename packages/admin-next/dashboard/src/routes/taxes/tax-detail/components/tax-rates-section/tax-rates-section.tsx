@@ -1,24 +1,25 @@
 import { Plus } from "@medusajs/icons"
 import { Region, TaxRate } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminTaxRates } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type TaxRatesSectionProps = {
   region: Region
 }
 
+const PAGE_SIZE = 20
+
 export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
-  const { tax_rates, isLoading } = useAdminTaxRates(
+  const { tax_rates, count, isLoading, isError, error } = useAdminTaxRates(
     {
       region_id: region.id,
+      limit: PAGE_SIZE,
     },
     {
       keepPreviousData: true,
@@ -27,10 +28,13 @@ export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
 
   const columns = useColumns()
 
-  const table = useReactTable({
+  const { table } = useDataTable({
     data: tax_rates ?? [],
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    count,
+    enablePagination: true,
+    getRowId: (row) => row.id,
+    pageSize: PAGE_SIZE,
   })
 
   return (
@@ -43,6 +47,14 @@ export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
           ]}
         />
       </div>
+      <DataTable
+        table={table}
+        isLoading={isLoading}
+        count={count}
+        columns={columns}
+        pageSize={PAGE_SIZE}
+        queryObject={{}}
+      />
     </Container>
   )
 }
@@ -56,6 +68,18 @@ const useColumns = () => {
     () => [
       columnHelper.accessor("name", {
         header: t("fields.name"),
+        cell: ({ getValue }) => {
+          return <span>{getValue()}</span>
+        },
+      }),
+      columnHelper.accessor("code", {
+        header: "Code",
+        cell: ({ getValue }) => {
+          return <span>{getValue()}</span>
+        },
+      }),
+      columnHelper.accessor("rate", {
+        header: "Rate",
         cell: ({ getValue }) => {
           return <span>{getValue()}</span>
         },

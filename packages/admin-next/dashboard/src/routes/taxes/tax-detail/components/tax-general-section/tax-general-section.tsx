@@ -1,6 +1,6 @@
 import { PencilSquare } from "@medusajs/icons"
 import { Region } from "@medusajs/medusa"
-import { Container, Heading, StatusBadge, Text, Tooltip } from "@medusajs/ui"
+import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
@@ -28,41 +28,6 @@ export const TaxDetailsSection = ({ region }: Props) => {
             },
           ]}
         />
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          Countries
-        </Text>
-        <div className="text-ui-fg-subtle flex items-center gap-x-2">
-          <Text leading="compact" size="small">
-            {region.countries
-              .slice(0, 2)
-              .map((c) => c.display_name)
-              .join(", ")}
-          </Text>
-          {region.countries.length > 2 && (
-            <Tooltip
-              content={
-                <ul>
-                  {region.countries.slice(2).map((c) => (
-                    <li key={c.id}>{c.display_name}</li>
-                  ))}
-                </ul>
-              }
-            >
-              <Text
-                leading="compact"
-                size="small"
-                weight="plus"
-                className="cursor-default"
-              >
-                {t("general.plusCountMore", {
-                  count: region.countries.length - 2,
-                })}
-              </Text>
-            </Tooltip>
-          )}
-        </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">

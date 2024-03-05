@@ -544,7 +544,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/taxes/tax-details"),
+                lazy: () => import("../../routes/taxes/tax-detail"),
               },
             ],
           },
