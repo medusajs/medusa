@@ -3,16 +3,18 @@ import {
   Context,
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
-  CreatePaymentProviderDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  FilterablePaymentProviderProps,
+  FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentProviderDTO,
   PaymentSessionDTO,
   PaymentSessionStatus,
   ProviderWebhookPayload,
@@ -590,25 +592,23 @@ export default class PaymentModuleService<
     }
   }
 
-  async createProvidersOnLoad() {
-    const providersToLoad = this.__container__["payment_providers"]
+  @InjectManager("baseRepository_")
+  async listPaymentProviders(
+    filters: FilterablePaymentProviderProps = {},
+    config: FindConfig<PaymentProviderDTO> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentProviderDTO[]> {
+    const providers = await this.paymentProviderService_.list(
+      filters,
+      config,
+      sharedContext
+    )
 
-    const providers = await this.paymentProviderService_.list({
-      // @ts-ignore TODO
-      id: providersToLoad,
-    })
-
-    const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
-
-    const providersToCreate: CreatePaymentProviderDTO[] = []
-    for (const id of providersToLoad) {
-      if (loadedProvidersMap.has(id)) {
-        continue
+    return await this.baseRepository_.serialize<PaymentProviderDTO[]>(
+      providers,
+      {
+        populate: true,
       }
-
-      providersToCreate.push({ id })
-    }
-
-    await this.paymentProviderService_.create(providersToCreate)
+    )
   }
 }
