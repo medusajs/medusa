@@ -1,4 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -31,7 +36,7 @@ describe("Store Carts API", () => {
   let customerModule: ICustomerModuleService
   let productModule: IProductModuleService
   let pricingModule: IPricingModuleService
-  let remoteLink
+  let remoteLink: RemoteLink
   let promotionModule: IPromotionModuleService
 
   let defaultRegion
@@ -47,7 +52,7 @@ describe("Store Carts API", () => {
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
     productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
     pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-    remoteLink = appContainer.resolve("remoteLink")
+    remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
     promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
   })
 
@@ -59,7 +64,6 @@ describe("Store Carts API", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    await regionModuleService.createDefaultCountries()
 
     // Here, so we don't have to create a region for each test
     defaultRegion = await regionModuleService.create({
@@ -352,6 +356,11 @@ describe("Store Carts API", () => {
         },
       ])
 
+      await remoteLink.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
+
       const api = useApi() as any
 
       // Should remove earlier adjustments from other promocodes
@@ -630,6 +639,11 @@ describe("Store Carts API", () => {
         },
       ])
 
+      await remoteLink.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
+
       const api = useApi() as any
       const response = await api.post(`/store/carts/${cart.id}/line-items`, {
         variant_id: product.variants[0].id,
@@ -666,6 +680,37 @@ describe("Store Carts API", () => {
               ],
             }),
           ]),
+        })
+      )
+    })
+  })
+
+  describe("POST /store/carts/:id/payment-collections", () => {
+    it("should create a payment collection for the cart", async () => {
+      const region = await regionModuleService.create({
+        name: "US",
+        currency_code: "usd",
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        region_id: region.id,
+      })
+
+      const api = useApi() as any
+      const response = await api.post(
+        `/store/carts/${cart.id}/payment-collections`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          payment_collection: expect.objectContaining({
+            id: expect.any(String),
+            amount: 0,
+          }),
         })
       )
     })

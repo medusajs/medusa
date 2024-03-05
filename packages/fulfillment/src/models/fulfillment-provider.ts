@@ -18,18 +18,18 @@ import {
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
-type ServiceProviderOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentProviderOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "service_provider",
+  tableName: "fulfillment_provider",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class ServiceProvider {
-  [OptionalProps]?: ServiceProviderOptionalProps
+export default class FulfillmentProvider {
+  [OptionalProps]?: FulfillmentProviderOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -39,7 +39,7 @@ export default class ServiceProvider {
 
   @OneToMany(
     () => ShippingOption,
-    (shippingOption) => shippingOption.service_provider
+    (shippingOption) => shippingOption.fulfillment_provider
   )
   shipping_options = new Collection<ShippingOption>(this)
 

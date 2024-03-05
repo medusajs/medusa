@@ -54,19 +54,24 @@ export default class PaymentSession {
   })
   authorized_at: Date | null = null
 
+  @ManyToOne(() => PaymentCollection, {
+    persist: false,
+  })
+  payment_collection: PaymentCollection
+
   @ManyToOne({
     entity: () => PaymentCollection,
+    columnType: "text",
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
-    onDelete: "cascade",
+    mapToPk: true,
   })
-  payment_collection!: PaymentCollection
+  payment_collection_id: string
 
   @OneToOne({
     entity: () => Payment,
-    mappedBy: (payment) => payment.payment_session,
-    cascade: ["soft-remove"] as any,
     nullable: true,
+    mappedBy: "payment_session",
   })
   payment?: Payment | null
 

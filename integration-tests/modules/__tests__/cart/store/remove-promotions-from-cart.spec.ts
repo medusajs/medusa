@@ -1,4 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import path from "path"
@@ -18,6 +23,7 @@ describe("Store Carts API: Remove promotions from cart", () => {
   let shutdownServer
   let cartModuleService: ICartModuleService
   let promotionModuleService: IPromotionModuleService
+  let remoteLinkService: RemoteLink
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -25,6 +31,7 @@ describe("Store Carts API: Remove promotions from cart", () => {
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
+    remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
     promotionModuleService = appContainer.resolve(
       ModuleRegistrationName.PROMOTION
     )
@@ -128,6 +135,17 @@ describe("Store Carts API: Remove promotions from cart", () => {
             promotion_id: appliedPromotionToRemove.id,
           },
         ])
+
+      await remoteLinkService.create([
+        {
+          [Modules.CART]: { cart_id: cart.id },
+          [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+        },
+        {
+          [Modules.CART]: { cart_id: cart.id },
+          [Modules.PROMOTION]: { promotion_id: appliedPromotionToRemove.id },
+        },
+      ])
 
       const api = useApi() as any
 
@@ -260,6 +278,17 @@ describe("Store Carts API: Remove promotions from cart", () => {
           shipping_method_id: express.id,
           amount: 100,
           code: appliedPromotionToRemove.code!,
+        },
+      ])
+
+      await remoteLinkService.create([
+        {
+          [Modules.CART]: { cart_id: cart.id },
+          [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+        },
+        {
+          [Modules.CART]: { cart_id: cart.id },
+          [Modules.PROMOTION]: { promotion_id: appliedPromotionToRemove.id },
         },
       ])
 

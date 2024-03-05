@@ -1,4 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import path from "path"
@@ -18,6 +23,7 @@ describe("Store Carts API: Add promotions to cart", () => {
   let shutdownServer
   let cartModuleService: ICartModuleService
   let promotionModuleService: IPromotionModuleService
+  let remoteLinkService: RemoteLink
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -28,6 +34,7 @@ describe("Store Carts API: Add promotions to cart", () => {
     promotionModuleService = appContainer.resolve(
       ModuleRegistrationName.PROMOTION
     )
+    remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
   })
 
   afterAll(async () => {
@@ -118,6 +125,11 @@ describe("Store Carts API: Add promotions to cart", () => {
             promotion_id: appliedPromotion.id,
           },
         ])
+
+      await remoteLinkService.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
 
       const api = useApi() as any
 
@@ -246,6 +258,11 @@ describe("Store Carts API: Add promotions to cart", () => {
           },
         ]
       )
+
+      await remoteLinkService.create({
+        [Modules.CART]: { cart_id: cart.id },
+        [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+      })
 
       const [adjustment] = await cartModuleService.addShippingMethodAdjustments(
         cart.id,

@@ -25,7 +25,8 @@ type OptionalTaxRegionProps = DAL.SoftDeletableEntityDateColumns
 
 const TABLE_NAME = "tax_region"
 
-const countryCodeProvinceIndexName = "IDX_tax_region_unique_country_province"
+export const countryCodeProvinceIndexName =
+  "IDX_tax_region_unique_country_province"
 const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   name: countryCodeProvinceIndexName,
   tableName: TABLE_NAME,
@@ -33,8 +34,10 @@ const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   unique: true,
 })
 
-const taxRegionProviderTopLevelCheckName = "CK_tax_region_provider_top_level"
-const taxRegionCountryTopLevelCheckName = "CK_tax_region_country_top_level"
+export const taxRegionProviderTopLevelCheckName =
+  "CK_tax_region_provider_top_level"
+export const taxRegionCountryTopLevelCheckName =
+  "CK_tax_region_country_top_level"
 
 @Check({
   name: taxRegionProviderTopLevelCheckName,

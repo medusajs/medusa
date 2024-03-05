@@ -4,8 +4,11 @@ import { Context } from "../shared-context"
 import {
   FilterablePaymentCollectionProps,
   FilterablePaymentProps,
+  FilterablePaymentProviderProps,
+  FilterablePaymentSessionProps,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentProviderDTO,
   PaymentSessionDTO,
 } from "./common"
 import {
@@ -310,6 +313,12 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentDTO>
 
+  listPaymentSessions(
+    filters?: FilterablePaymentSessionProps,
+    config?: FindConfig<PaymentSessionDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO[]>
+
   /* ********** PAYMENT ********** */
 
   /**
@@ -387,13 +396,11 @@ export interface IPaymentModuleService extends IModuleService {
    */
   cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
 
-  /**
-   * This method creates providers on load.
-   *
-   * @example
-   * {example-code}
-   */
-  createProvidersOnLoad(): Promise<void>
+  listPaymentProviders(
+    filters?: FilterablePaymentProviderProps,
+    config?: FindConfig<PaymentProviderDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentProviderDTO[]>
 
   /* ********** HOOKS ********** */
 
