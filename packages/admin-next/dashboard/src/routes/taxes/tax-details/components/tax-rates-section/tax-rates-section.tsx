@@ -1,5 +1,5 @@
 import { Plus } from "@medusajs/icons"
-import { TaxRate } from "@medusajs/medusa"
+import { Region, TaxRate } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import {
   createColumnHelper,
@@ -7,21 +7,21 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useAdminTaxRates } from "medusa-react"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useParams } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
-export const TaxRatesSection = () => {
-  const { id } = useParams()
-  const [query, setQuery] = useState("")
+type TaxRatesSectionProps = {
+  region: Region
+}
 
+export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
   const { tax_rates, isLoading } = useAdminTaxRates(
     {
-      region_id: id,
+      region_id: region.id,
     },
     {
-      enabled: !!id,
+      keepPreviousData: true,
     }
   )
 
