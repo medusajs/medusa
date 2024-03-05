@@ -1,8 +1,13 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -15,10 +20,12 @@ medusaIntegrationTestRunner({
       let appContainer
       let cartModuleService: ICartModuleService
       let promotionModuleService: IPromotionModuleService
+      let remoteLinkService: RemoteLink
 
       beforeAll(async () => {
         appContainer = getContainer()
         cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
+        remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
         promotionModuleService = appContainer.resolve(
           ModuleRegistrationName.PROMOTION
         )
@@ -111,6 +118,19 @@ medusaIntegrationTestRunner({
                 promotion_id: appliedPromotionToRemove.id,
               },
             ])
+
+          await remoteLinkService.create([
+            {
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+            },
+            {
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: {
+                promotion_id: appliedPromotionToRemove.id,
+              },
+            },
+          ])
 
           const response = await api.delete(
             `/store/carts/${cart.id}/promotions`,
@@ -242,6 +262,19 @@ medusaIntegrationTestRunner({
               shipping_method_id: express.id,
               amount: 100,
               code: appliedPromotionToRemove.code!,
+            },
+          ])
+
+          await remoteLinkService.create([
+            {
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+            },
+            {
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: {
+                promotion_id: appliedPromotionToRemove.id,
+              },
             },
           ])
 

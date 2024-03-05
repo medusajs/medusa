@@ -1,8 +1,13 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  LinkModuleUtils,
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -12,16 +17,21 @@ medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Store Carts API: Add promotions to cart", () => {
+      let appContainer
       let cartModuleService: ICartModuleService
       let promotionModuleService: IPromotionModuleService
-      let container
+      let remoteLinkService: RemoteLink
 
       beforeAll(async () => {
-        container = getContainer()
-        cartModuleService = container.resolve(ModuleRegistrationName.CART)
-        promotionModuleService = container.resolve(
+        appContainer = getContainer()
+        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
+        promotionModuleService = appContainer.resolve(
           ModuleRegistrationName.PROMOTION
         )
+        remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
+      })
+
+      beforeEach(async () => {
         await adminSeeder(dbConnection)
       })
 
@@ -98,6 +108,11 @@ medusaIntegrationTestRunner({
                 promotion_id: appliedPromotion.id,
               },
             ])
+
+          await remoteLinkService.create({
+            [Modules.CART]: { cart_id: cart.id },
+            [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+          })
 
           const created = await api.post(`/store/carts/${cart.id}/promotions`, {
             promo_codes: [createdPromotion.code],
@@ -222,6 +237,11 @@ medusaIntegrationTestRunner({
                 name: "standard",
               },
             ])
+
+          await remoteLinkService.create({
+            [Modules.CART]: { cart_id: cart.id },
+            [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+          })
 
           const [adjustment] =
             await cartModuleService.addShippingMethodAdjustments(cart.id, [

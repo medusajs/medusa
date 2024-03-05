@@ -1,5 +1,5 @@
 import {
-  PaymentProviderContext,
+  CreatePaymentProviderSession,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
@@ -21,7 +21,7 @@ export class SystemProviderService extends AbstractPaymentProvider {
   }
 
   async initiatePayment(
-    context: PaymentProviderContext
+    context: CreatePaymentProviderSession
   ): Promise<PaymentProviderSessionResponse> {
     return { data: {} }
   }

@@ -1,9 +1,11 @@
 import {
   addToCartWorkflow,
   createCartWorkflow,
+  createPaymentCollectionForCartWorkflow,
   deleteLineItemsStepId,
   deleteLineItemsWorkflow,
   findOrCreateCustomerStepId,
+  linkCartAndPaymentCollectionsStepId,
   updateLineItemInCartWorkflow,
   updateLineItemsStepId,
 } from "@medusajs/core-flows"
@@ -11,13 +13,14 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
 import adminSeeder from "../../../../helpers/admin-seeder"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -25,31 +28,35 @@ const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer }) => {
+  testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Carts workflows", () => {
-      let container
-
+      let appContainer
       let cartModuleService: ICartModuleService
       let regionModuleService: IRegionModuleService
       let scModuleService: ISalesChannelModuleService
       let customerModule: ICustomerModuleService
       let productModule: IProductModuleService
       let pricingModule: IPricingModuleService
-      let remoteLink
+      let paymentModule: IPaymentModuleService
+      let remoteLink, remoteQuery
 
       let defaultRegion
 
       beforeAll(async () => {
-        container = getContainer()
-        cartModuleService = container.resolve(ModuleRegistrationName.CART)
-        regionModuleService = container.resolve(ModuleRegistrationName.REGION)
-        scModuleService = container.resolve(
+        appContainer = getContainer()
+        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
+        regionModuleService = appContainer.resolve(
+          ModuleRegistrationName.REGION
+        )
+        scModuleService = appContainer.resolve(
           ModuleRegistrationName.SALES_CHANNEL
         )
-        customerModule = container.resolve(ModuleRegistrationName.CUSTOMER)
-        productModule = container.resolve(ModuleRegistrationName.PRODUCT)
-        pricingModule = container.resolve(ModuleRegistrationName.PRICING)
-        remoteLink = container.resolve("remoteLink")
+        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
+        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
+        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
+        remoteLink = appContainer.resolve("remoteLink")
+        remoteQuery = appContainer.resolve("remoteQuery")
       })
 
       beforeEach(async () => {
@@ -104,7 +111,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const { result } = await createCartWorkflow(container).run({
+          const { result } = await createCartWorkflow(appContainer).run({
             input: {
               email: "tony@stark.com",
               currency_code: "usd",
@@ -143,7 +150,7 @@ medusaIntegrationTestRunner({
         it("should throw when no regions exist", async () => {
           await regionModuleService.delete(defaultRegion.id)
 
-          const { errors } = await createCartWorkflow(container).run({
+          const { errors } = await createCartWorkflow(appContainer).run({
             input: {
               email: "tony@stark.com",
               currency_code: "usd",
@@ -166,7 +173,7 @@ medusaIntegrationTestRunner({
             is_disabled: true,
           })
 
-          const { errors } = await createCartWorkflow(container).run({
+          const { errors } = await createCartWorkflow(appContainer).run({
             input: {
               sales_channel_id: salesChannel.id,
             },
@@ -187,7 +194,7 @@ medusaIntegrationTestRunner({
         describe("compensation", () => {
           it("should delete created customer if cart-creation fails", async () => {
             expect.assertions(2)
-            const workflow = createCartWorkflow(container)
+            const workflow = createCartWorkflow(appContainer)
 
             workflow.appendAction("throw", findOrCreateCustomerStepId, {
               invoke: async function failStep() {
@@ -220,7 +227,7 @@ medusaIntegrationTestRunner({
 
           it("should not delete existing customer if cart-creation fails", async () => {
             expect.assertions(2)
-            const workflow = createCartWorkflow(container)
+            const workflow = createCartWorkflow(appContainer)
 
             workflow.appendAction("throw", findOrCreateCustomerStepId, {
               invoke: async function failStep() {
@@ -298,7 +305,7 @@ medusaIntegrationTestRunner({
             select: ["id", "region_id", "currency_code"],
           })
 
-          await addToCartWorkflow(container).run({
+          await addToCartWorkflow(appContainer).run({
             input: {
               items: [
                 {
@@ -345,7 +352,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const { errors } = await addToCartWorkflow(container).run({
+          const { errors } = await addToCartWorkflow(appContainer).run({
             input: {
               items: [
                 {
@@ -374,7 +381,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const { errors } = await addToCartWorkflow(container).run({
+          const { errors } = await addToCartWorkflow(appContainer).run({
             input: {
               items: [
                 {
@@ -449,7 +456,7 @@ medusaIntegrationTestRunner({
 
           const item = cart.items?.[0]!
 
-          await updateLineItemInCartWorkflow(container).run({
+          await updateLineItemInCartWorkflow(appContainer).run({
             input: {
               cart,
               item,
@@ -478,7 +485,7 @@ medusaIntegrationTestRunner({
         describe("compensation", () => {
           it("should revert line item update to original state", async () => {
             expect.assertions(2)
-            const workflow = updateLineItemInCartWorkflow(container)
+            const workflow = updateLineItemInCartWorkflow(appContainer)
 
             workflow.appendAction("throw", updateLineItemsStepId, {
               invoke: async function failStep() {
@@ -592,7 +599,7 @@ medusaIntegrationTestRunner({
             cart_id: cart.id,
           })
 
-          await deleteLineItemsWorkflow(container).run({
+          await deleteLineItemsWorkflow(appContainer).run({
             input: {
               ids: items.map((i) => i.id),
             },
@@ -608,7 +615,7 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should restore line item if delete fails", async () => {
-            const workflow = deleteLineItemsWorkflow(container)
+            const workflow = deleteLineItemsWorkflow(appContainer)
 
             workflow.appendAction("throw", deleteLineItemsStepId, {
               invoke: async function failStep() {
@@ -655,6 +662,149 @@ medusaIntegrationTestRunner({
             )
 
             expect(updatedItem).not.toBeUndefined()
+          })
+        })
+      })
+
+      describe("createPaymentCollectionForCart", () => {
+        it("should create a payment collection and link it to cart", async () => {
+          const region = await regionModuleService.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const cart = await cartModuleService.create({
+            currency_code: "usd",
+            region_id: region.id,
+            items: [
+              {
+                quantity: 1,
+                unit_price: 5000,
+                title: "Test item",
+              },
+            ],
+          })
+
+          await createPaymentCollectionForCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              region_id: region.id,
+              currency_code: "usd",
+              amount: 5000,
+            },
+            throwOnError: false,
+          })
+
+          const result = await remoteQuery(
+            {
+              cart: {
+                fields: ["id"],
+                payment_collection: {
+                  fields: ["id", "amount", "currency_code"],
+                },
+              },
+            },
+            {
+              cart: {
+                id: cart.id,
+              },
+            }
+          )
+
+          expect(result).toEqual([
+            expect.objectContaining({
+              id: cart.id,
+              payment_collection: expect.objectContaining({
+                amount: 5000,
+                currency_code: "usd",
+              }),
+            }),
+          ])
+        })
+
+        describe("compensation", () => {
+          it("should dismiss cart <> payment collection link and delete created payment collection", async () => {
+            const workflow =
+              createPaymentCollectionForCartWorkflow(appContainer)
+
+            workflow.appendAction(
+              "throw",
+              linkCartAndPaymentCollectionsStepId,
+              {
+                invoke: async function failStep() {
+                  throw new Error(
+                    `Failed to do something after linking cart and payment collection`
+                  )
+                },
+              }
+            )
+
+            const region = await regionModuleService.create({
+              name: "US",
+              currency_code: "usd",
+            })
+
+            const cart = await cartModuleService.create({
+              currency_code: "usd",
+              region_id: region.id,
+              items: [
+                {
+                  quantity: 1,
+                  unit_price: 5000,
+                  title: "Test item",
+                },
+              ],
+            })
+
+            const { errors } = await workflow.run({
+              input: {
+                cart_id: cart.id,
+                region_id: region.id,
+                currency_code: "usd",
+                amount: 5000,
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: new Error(
+                  `Failed to do something after linking cart and payment collection`
+                ),
+              },
+            ])
+
+            const carts = await remoteQuery(
+              {
+                cart: {
+                  fields: ["id"],
+                  payment_collection: {
+                    fields: ["id", "amount", "currency_code"],
+                  },
+                },
+              },
+              {
+                cart: {
+                  id: cart.id,
+                },
+              }
+            )
+
+            const payCols = await remoteQuery({
+              payment_collection: {
+                fields: ["id"],
+              },
+            })
+
+            expect(carts).toEqual([
+              expect.objectContaining({
+                id: cart.id,
+                payment_collection: undefined,
+              }),
+            ])
+            expect(payCols.length).toEqual(0)
           })
         })
       })
