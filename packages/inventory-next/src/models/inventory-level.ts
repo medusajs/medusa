@@ -94,6 +94,7 @@ export class InventoryLevel {
   @BeforeCreate()
   private beforeCreate(): void {
     this.id = generateEntityId(this.id, "ilev")
+    this.inventory_item_id ??= this.inventory_item?.id
   }
 
   @OnInit()

@@ -32,19 +32,7 @@ type InjectedDependencies = {
   reservationItemService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [
-  { model: InventoryItem, singular: "InventoryItem", plural: "InventoryItems" },
-  {
-    model: InventoryLevel,
-    singular: "InventoryLevel",
-    plural: "InventoryLevels",
-  },
-  {
-    model: ReservationItem,
-    singular: "ReservationItem",
-    plural: "ReservationItems",
-  },
-]
+const generateMethodForModels = [InventoryItem, InventoryLevel, ReservationItem]
 
 export default class InventoryModuleService<
     TInventoryItem extends InventoryItem = InventoryItem,
@@ -57,18 +45,12 @@ export default class InventoryModuleService<
     {
       InventoryItem: {
         dto: InventoryNext.InventoryItemDTO
-        singular: "InventoryItem"
-        plural: "InventoryItems"
       }
       InventoryLevel: {
         dto: InventoryNext.InventoryLevelDTO
-        singular: "InventoryLevel"
-        plural: "InventoryLevels"
       }
       ReservationItem: {
         dto: InventoryNext.ReservationItemDTO
-        singular: "ReservationItem"
-        plural: "ReservationItems"
       }
     }
   >(InventoryItem, generateMethodForModels, entityNameToLinkableKeysMap)
