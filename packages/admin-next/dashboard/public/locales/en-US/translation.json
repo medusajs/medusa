@@ -190,7 +190,7 @@
         "partiallyRefunded": "Partially refunded",
         "refunded": "Refunded",
         "canceled": "Canceled",
-        "requresAction": "Requires action"
+        "requiresAction": "Requires action"
       }
     },
     "reservations": {
@@ -213,7 +213,7 @@
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Canceled",
-        "requresAction": "Requires action"
+        "requiresAction": "Requires action"
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
@@ -232,7 +232,51 @@
   },
   "discounts": {
     "domain": "Discounts",
-    "deleteWarning": "You are about to delete the discount {{title}}. This action cannot be undone.",
+    "startDate": "Start date",
+    "validDuration": "Duration of the discount",
+    "redemptionsLimit": "Redemptions limit",
+    "endDate": "End date",
+    "percentageDiscount": "Percentage discount",
+    "freeShipping": "Free shipping",
+    "fixedDiscount": "Fixed discount",
+    "validRegions": "Valid regions",
+    "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
+    "editDiscountDetails": "Edit discount details",
+    "editDiscountConfiguration": "Edit discount configuration",
+    "hasStartDate": "Discount has a start date",
+    "hasEndDate": "Discount has an expiry date",
+    "startDateHint": "Schedule the discount to activate in the future.",
+    "endDateHint": "Schedule the discount to deactivate in the future.",
+    "codeHint": "Discount code applies from when you hit the publish button and forever if left untouched.",
+    "hasUsageLimit": "Limit the number of redemptions?",
+    "usageLimitHint": "Limit applies across all customers, not per customer.",
+    "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
+    "hasDurationLimit": "Availability duration",
+    "durationHint": "Set the duration of the discount",
+    "chooseValidRegions": "Choose valid regions",
+    "noConditions": "No conditions are defined for this discount.",
+    "editConditions": "Edit conditions",
+    "conditions": {
+      "including": {
+        "products_one": "Discount applies to <0/> product.",
+        "products_other": "Discount applies to <0/> products.",
+        "customer_groups_one": "Discount applies to <0/> customer group.",
+        "customer_groups_other": "Discount applies to <0/> customer groups.",
+        "product_tags_one": "Discount applies to <0/> tag.",
+        "product_tags_other": "Discount applies to <0/> tags.",
+        "product_collections_one": "Discount applies to <0/> product collection.",
+        "product_collections_other": "Discount applies to <0/> product collections.",
+        "product_types_one": "Discount applies to <0/> product type.",
+        "product_types_other": "Discount applies to <0/> product types."
+      },
+      "excluding": {
+        "products": "Discount applies to <1>all</1> products except <0/>.",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
+        "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
+        "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
+        "product_types": "Discount applies to <1>all</1> product types except <0/>."
+      }
+    },
     "discountStatus": {
       "scheduled": "Scheduled",
       "expired": "Expired",
@@ -452,6 +496,7 @@
     "invalidCredentials": "Wrong email or password"
   },
   "fields": {
+    "amount": "Amount",
     "name": "Name",
     "lastName": "Last Name",
     "firstName": "First Name",
@@ -464,13 +509,17 @@
     "newPassword": "New Password",
     "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
+    "configurations": "Configurations",
+    "conditions": "Conditions",
     "category": "Category",
     "collection": "Collection",
     "discountable": "Discountable",
     "handle": "Handle",
     "subtitle": "Subtitle",
+    "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
@@ -478,6 +527,11 @@
     "disabled": "Disabled",
     "dynamic": "Dynamic",
     "normal": "Normal",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
     "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
@@ -553,5 +607,21 @@
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
     "rate": "Rate"
+  },
+  "dateTime": {
+    "years_one": "Year",
+    "years_other": "Years",
+    "months_one": "Month",
+    "months_other": "Months",
+    "weeks_one": "Week",
+    "weeks_other": "Weeks",
+    "days_one": "Day",
+    "days_other": "Days",
+    "hours_one": "Hour",
+    "hours_other": "Hours",
+    "minutes_one": "Minute",
+    "minutes_other": "Minutes",
+    "seconds_one": "Second",
+    "seconds_other": "Seconds"
   }
 }

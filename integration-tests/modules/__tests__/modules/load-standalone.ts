@@ -1,29 +1,28 @@
-import dbFactory from "./../../../environment-helpers/use-template-db"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-describe("Standalone Modules", () => {
-  beforeAll(async () => {
-    const DB_HOST = process.env.DB_HOST
-    const DB_USERNAME = process.env.DB_USERNAME
-    const DB_PASSWORD = process.env.DB_PASSWORD
-    const DB_NAME = process.env.DB_TEMP_NAME
+medusaIntegrationTestRunner({
+  force_modules_migration: true,
+  testSuite: ({ dbConnection }) => {
+    describe("Standalone Modules", () => {
+      beforeAll(async () => {
+        process.env.POSTGRES_URL = dbConnection.manager.connection.options.url
+      })
 
-    process.env.POSTGRES_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
-    await dbFactory.createFromTemplate(DB_NAME)
-  })
+      afterAll(async () => {
+        process.env.POSTGRES_URL = undefined
+      })
 
-  afterAll(async () => {
-    process.env.POSTGRES_URL = undefined
-  })
+      it("Should migrate database and initialize Product module using connection string from environment variable ", async function () {
+        const { initialize, runMigrations } = require("@medusajs/product")
+        await runMigrations()
 
-  it("Should migrate database and initialize Product module using connection string from environment variable ", async function () {
-    const { initialize, runMigrations } = require("@medusajs/product")
-    await runMigrations()
+        const product = await initialize()
+        const productList = await product.list()
 
-    const product = await initialize()
-    const productList = await product.list()
-
-    expect(productList).toEqual(expect.arrayContaining([]))
-  })
+        expect(productList).toEqual(expect.arrayContaining([]))
+      })
+    })
+  },
 })

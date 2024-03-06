@@ -1,13 +1,7 @@
-import { initDb, useDb } from "../../../environment-helpers/use-db"
-
-import { AxiosInstance } from "axios"
 import { IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../helpers/create-admin-user"
-import { getContainer } from "../../../environment-helpers/use-container"
-import path from "path"
-import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { useApi } from "../../../environment-helpers/use-api"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -16,53 +10,40 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/users/:id", () => {
-  let dbConnection
-  let appContainer
-  let shutdownServer
-  let userModuleService: IUserModuleService
+medusaIntegrationTestRunner({
+  env,
+  testSuite: ({ dbConnection, getContainer, api }) => {
+    describe("POST /admin/users/:id", () => {
+      let appContainer
+      let userModuleService: IUserModuleService
 
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
-  })
+      beforeAll(async () => {
+        appContainer = getContainer()
+        userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
+      })
 
-  beforeEach(async () => {
-    await createAdminUser(dbConnection, adminHeaders)
-  })
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+      })
 
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-    await shutdownServer()
-  })
+      it("should update a single user", async () => {
+        const user = await userModuleService.create({
+          email: "member@test.com",
+        })
 
-  afterEach(async () => {
-    const db = useDb()
-    await db.teardown()
-  })
+        const body = {
+          first_name: "John",
+          last_name: "Doe",
+        }
+        const response = await api.post(
+          `/admin/users/${user.id}`,
+          body,
+          adminHeaders
+        )
 
-  it("should update a single user", async () => {
-    const user = await userModuleService.create({
-      email: "member@test.com",
+        expect(response.status).toEqual(200)
+        expect(response.data.user).toEqual(expect.objectContaining(body))
+      })
     })
-
-    const api = useApi()! as AxiosInstance
-
-    const body = {
-      first_name: "John",
-      last_name: "Doe",
-    }
-    const response = await api.post(
-      `/admin/users/${user.id}`,
-      body,
-      adminHeaders
-    )
-
-    expect(response.status).toEqual(200)
-    expect(response.data.user).toEqual(expect.objectContaining(body))
-  })
+  },
 })
