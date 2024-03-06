@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/admin/store POST /admin/store fails to remove default currency from currencies without replacing it 1`] = `
+Object {
+  "message": "You are not allowed to remove default currency from store currencies without replacing it as well",
+  "type": "invalid_data",
+}
+`;
+
 exports[`/admin/store POST /admin/store fails to update default currency if not in store currencies 1`] = `
 Object {
   "message": "Store does not have currency: eur",

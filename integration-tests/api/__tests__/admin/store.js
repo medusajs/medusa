@@ -1,65 +1,94 @@
 const { Store } = require("@medusajs/medusa")
 const path = require("path")
 
-const setupServer = require("../../../environment-helpers/setup-server")
 const { useApi } = require("../../../environment-helpers/use-api")
 const { initDb, useDb } = require("../../../environment-helpers/use-db")
-
-const adminSeeder = require("../../../helpers/admin-seeder")
+const {
+  startBootstrapApp,
+} = require("../../../environment-helpers/bootstrap-app")
+const {
+  createAdminUser,
+  adminHeaders,
+} = require("../../../helpers/create-admin-user")
+const { breaking } = require("../../../helpers/breaking")
+const { getContainer } = require("../../../environment-helpers/use-container")
+const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 
 jest.setTimeout(30000)
 
 describe("/admin/store", () => {
   let dbConnection
-  const cwd = path.resolve(path.join(__dirname, "..", ".."))
+  let shutdownServer
+  let dbStore
 
-  beforeAll(async () => {
+  // Note: The tests rely on the loader running and populating clean data before and after the test, so we have to do this in a beforeEach
+  beforeEach(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
+
+    await createAdminUser(dbConnection, adminHeaders)
+    await breaking(
+      async () => {
+        const manager = dbConnection.manager
+        dbStore = await manager.findOne(Store, {
+          where: { name: "Medusa Store" },
+        })
+        await manager.query(
+          `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${store.id}', 'dkk')`
+        )
+      },
+      async () => {
+        const appContainer = getContainer()
+        const service = appContainer.resolve(ModuleRegistrationName.STORE)
+        dbStore = await service.create({
+          supported_currency_codes: ["usd", "dkk"],
+          default_currency_code: "usd",
+          default_sales_channel_id: "sc_12345",
+        })
+      }
+    )
   })
 
-  afterAll(async () => {
+  afterEach(async () => {
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   describe("Store creation", () => {
-    let medusaProcess
-
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
-      medusaProcess = await setupServer({ cwd })
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown({ forceDelete: ["store"] })
-      await medusaProcess.kill()
-    })
-
     it("has created store with default currency", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/store", {
-        headers: { "x-medusa-access-token": "test_token " },
-      })
+      const store = await breaking(
+        () => api.get("/admin/store", adminHeaders).then((r) => r.data.store),
+        () =>
+          api.get("/admin/stores", adminHeaders).then((r) => r.data.stores[0])
+      )
 
-      expect(response.status).toEqual(200)
-      expect(response.data.store).toEqual(
+      expect(store).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          default_sales_channel_id: expect.any(String),
-          default_sales_channel: expect.objectContaining({
-            id: expect.any(String),
-          }),
           name: "Medusa Store",
-          currencies: expect.arrayContaining([
-            expect.objectContaining({
-              code: "usd",
-            }),
-          ]),
-          modules: expect.any(Array),
-          feature_flags: expect.any(Array),
           default_currency_code: "usd",
+          default_sales_channel_id: expect.any(String),
+          ...breaking(
+            () => ({
+              default_sales_channel: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              currencies: expect.arrayContaining([
+                expect.objectContaining({
+                  code: "usd",
+                }),
+              ]),
+              modules: expect.any(Array),
+              feature_flags: expect.any(Array),
+            }),
+            () => ({
+              supported_currency_codes: ["usd", "dkk"],
+            })
+          ),
           created_at: expect.any(String),
           updated_at: expect.any(String),
         })
@@ -68,39 +97,19 @@ describe("/admin/store", () => {
   })
 
   describe("POST /admin/store", () => {
-    let medusaProcess
-
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
-      medusaProcess = await setupServer({ cwd })
-
-      const manager = dbConnection.manager
-      const store = await manager.findOne(Store, {
-        where: { name: "Medusa Store" },
-      })
-      await manager.query(
-        `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${store.id}', 'dkk')`
-      )
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown({ forceDelete: ["store"] })
-      await medusaProcess.kill()
-    })
-
     it("fails to update default currency if not in store currencies", async () => {
       const api = useApi()
 
       try {
         await api.post(
-          "/admin/store",
+          breaking(
+            () => "/admin/store",
+            () => `/admin/stores/${dbStore.id}`
+          ),
           {
             default_currency_code: "eur",
           },
-          {
-            headers: { "x-medusa-access-token": "test_token " },
-          }
+          adminHeaders
         )
       } catch (e) {
         expect(e.response.data).toMatchSnapshot({
@@ -116,13 +125,17 @@ describe("/admin/store", () => {
 
       try {
         await api.post(
-          "/admin/store",
-          {
-            currencies: ["usd"],
-          },
-          {
-            headers: { "x-medusa-access-token": "test_token " },
-          }
+          breaking(
+            () => "/admin/store",
+            () => `/admin/stores/${dbStore.id}`
+          ),
+          breaking(
+            () => ({
+              currencies: ["usd"],
+            }),
+            () => ({ supported_currency_codes: ["dkk"] })
+          ),
+          adminHeaders
         )
       } catch (e) {
         expect(e.response.data).toMatchSnapshot({
@@ -139,13 +152,14 @@ describe("/admin/store", () => {
 
       const response = await api
         .post(
-          "/admin/store",
+          breaking(
+            () => "/admin/store",
+            () => `/admin/stores/${dbStore.id}`
+          ),
           {
             default_currency_code: "dkk",
           },
-          {
-            headers: { "x-medusa-access-token": "test_token " },
-          }
+          adminHeaders
         )
         .catch((err) => console.log(err))
 
@@ -154,15 +168,6 @@ describe("/admin/store", () => {
         expect.objectContaining({
           id: expect.any(String),
           name: "Medusa Store",
-          default_sales_channel_id: expect.any(String),
-          currencies: expect.arrayContaining([
-            expect.objectContaining({
-              code: "usd",
-            }),
-            expect.objectContaining({
-              code: "dkk",
-            }),
-          ]),
           default_currency_code: "dkk",
           created_at: expect.any(String),
           updated_at: expect.any(String),
@@ -174,14 +179,18 @@ describe("/admin/store", () => {
       const api = useApi()
 
       const response = await api.post(
-        "/admin/store",
+        breaking(
+          () => "/admin/store",
+          () => `/admin/stores/${dbStore.id}`
+        ),
         {
           default_currency_code: "jpy",
-          currencies: ["jpy", "usd"],
+          ...breaking(
+            () => ({ currencies: ["jpy", "usd"] }),
+            () => ({ supported_currency_codes: ["jpy", "usd"] })
+          ),
         },
-        {
-          headers: { "x-medusa-access-token": "test_token " },
-        }
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
@@ -190,14 +199,19 @@ describe("/admin/store", () => {
           id: expect.any(String),
           name: "Medusa Store",
           default_sales_channel_id: expect.any(String),
-          currencies: expect.arrayContaining([
-            expect.objectContaining({
-              code: "jpy",
+          ...breaking(
+            () => ({
+              currencies: expect.arrayContaining([
+                expect.objectContaining({
+                  code: "jpy",
+                }),
+                expect.objectContaining({
+                  code: "usd",
+                }),
+              ]),
             }),
-            expect.objectContaining({
-              code: "usd",
-            }),
-          ]),
+            () => ({ supported_currency_codes: ["jpy", "usd"] })
+          ),
           default_currency_code: "jpy",
           created_at: expect.any(String),
           updated_at: expect.any(String),
@@ -209,13 +223,17 @@ describe("/admin/store", () => {
       const api = useApi()
 
       const response = await api.post(
-        "/admin/store",
-        {
-          currencies: ["jpy", "usd"],
-        },
-        {
-          headers: { "x-medusa-access-token": "test_token " },
-        }
+        breaking(
+          () => "/admin/store",
+          () => `/admin/stores/${dbStore.id}`
+        ),
+        breaking(
+          () => ({
+            currencies: ["jpy", "usd"],
+          }),
+          () => ({ supported_currency_codes: ["jpy", "usd"] })
+        ),
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
@@ -224,14 +242,19 @@ describe("/admin/store", () => {
           id: expect.any(String),
           default_sales_channel_id: expect.any(String),
           name: "Medusa Store",
-          currencies: expect.arrayContaining([
-            expect.objectContaining({
-              code: "jpy",
+          ...breaking(
+            () => ({
+              currencies: expect.arrayContaining([
+                expect.objectContaining({
+                  code: "jpy",
+                }),
+                expect.objectContaining({
+                  code: "usd",
+                }),
+              ]),
             }),
-            expect.objectContaining({
-              code: "usd",
-            }),
-          ]),
+            () => ({ supported_currency_codes: ["jpy", "usd"] })
+          ),
           default_currency_code: "usd",
           created_at: expect.any(String),
           updated_at: expect.any(String),
