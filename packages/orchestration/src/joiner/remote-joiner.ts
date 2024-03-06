@@ -793,13 +793,19 @@ export class RemoteJoiner {
       const midProp = curMiddlePath.join(".")
       const existingExpand = expands.find((exp) => exp.property === midProp)
 
-      extMapping.push({
+      const extraExtends = {
         ...(midProp === fullAliasProp ? expand : {}),
         property: midProp,
-        fields: (existingExpand?.fields ?? []).concat(expand.fields ?? []),
-        args: (existingExpand?.args ?? []).concat(expand.args ?? []),
         isAliasMapping: !existingExpand,
-      })
+      }
+
+      if (forwardArgumentsOnPath.includes(BASE_PATH + "." + midProp)) {
+        extraExtends.args = (existingExpand?.args ?? []).concat(
+          expand?.args ?? []
+        )
+      }
+
+      extMapping.push(extraExtends)
     }
 
     const partialPath: string[] = []

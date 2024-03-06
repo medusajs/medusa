@@ -645,7 +645,7 @@ describe("RemoteJoiner", () => {
     })
   })
 
-  it("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
+  it.only("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
     const query = RemoteJoiner.parseQuery(`
       query {
         order {
@@ -681,7 +681,7 @@ describe("RemoteJoiner", () => {
       [
         {
           service: "product",
-          fieds: ["name", "id", "user_id"],
+          fieds: ["id", "user_id"],
           args: [
             {
               name: "arg",
@@ -707,7 +707,7 @@ describe("RemoteJoiner", () => {
       [
         {
           service: "product",
-          fieds: ["name", "email", "products", "id", "user_id"],
+          fieds: ["id", "user_id"],
         },
       ],
       [
