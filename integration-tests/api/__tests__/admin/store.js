@@ -35,7 +35,7 @@ describe("/admin/store", () => {
           where: { name: "Medusa Store" },
         })
         await manager.query(
-          `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${store.id}', 'dkk')`
+          `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${dbStore.id}', 'dkk')`
         )
       },
       async () => {
