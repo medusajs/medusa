@@ -1,10 +1,5 @@
-import { initDb, useDb } from "../../../environment-helpers/use-db"
-
-import { AxiosInstance } from "axios"
-import path from "path"
-import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { useApi } from "../../../environment-helpers/use-api"
 import { createAdminUser } from "../../helpers/create-admin-user"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
 
@@ -13,39 +8,22 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/users/me", () => {
-  let dbConnection
-  let shutdownServer
+medusaIntegrationTestRunner({
+  env,
+  testSuite: ({ dbConnection, getContainer, api }) => {
+    describe("POST /admin/users/me", () => {
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders)
+      })
 
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-  })
+      it("gets the current user", async () => {
+        const response = await api.get(`/admin/users/me`, adminHeaders)
 
-  beforeEach(async () => {
-    await createAdminUser(dbConnection, adminHeaders)
-  })
-
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-    await shutdownServer()
-  })
-
-  afterEach(async () => {
-    const db = useDb()
-    await db.teardown()
-  })
-
-  it("gets the current user", async () => {
-    const api = useApi()! as AxiosInstance
-
-    const response = await api.get(`/admin/users/me`, adminHeaders)
-
-    expect(response.status).toEqual(200)
-    expect(response.data).toEqual({
-      user: expect.objectContaining({ id: "admin_user" }),
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          user: expect.objectContaining({ id: "admin_user" }),
+        })
+      })
     })
-  })
+  },
 })
