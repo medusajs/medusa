@@ -97,10 +97,12 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           } catch (e) {
-            expect(e.response.data).toMatchSnapshot({
-              type: "invalid_data",
-              message: "Store does not have currency: eur",
-            })
+            expect(e.response.data).toEqual(
+              expect.objectContaining({
+                type: "invalid_data",
+                message: "Store does not have currency: eur",
+              })
+            )
             expect(e.response.status).toBe(400)
           }
         })
@@ -121,11 +123,13 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           } catch (e) {
-            expect(e.response.data).toMatchSnapshot({
-              type: "invalid_data",
-              message:
-                "You are not allowed to remove default currency from store currencies without replacing it as well",
-            })
+            expect(e.response.data).toEqual(
+              expect.objectContaining({
+                type: "invalid_data",
+                message:
+                  "You are not allowed to remove default currency from store currencies without replacing it as well",
+              })
+            )
             expect(e.response.status).toBe(400)
           }
         })
