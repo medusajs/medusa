@@ -645,7 +645,7 @@ describe("RemoteJoiner", () => {
     })
   })
 
-  it.only("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
+  it("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
     const query = RemoteJoiner.parseQuery(`
       query {
         order {
