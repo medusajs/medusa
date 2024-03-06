@@ -52,7 +52,13 @@ export const DataTable = <TData,>({
   const noRecords = !isLoading && count === 0 && noQuery
 
   if (noRecords) {
-    return <NoRecords />
+    return (
+      <NoRecords
+        className={clx({
+          "flex h-full flex-col overflow-hidden": layout === "fill",
+        })}
+      />
+    )
   }
 
   return (

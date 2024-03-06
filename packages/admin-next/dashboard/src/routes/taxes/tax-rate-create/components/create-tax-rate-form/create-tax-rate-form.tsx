@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
 
-import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/common/percentage-input"
 import { SplitView } from "../../../../../components/layout/split-view"
@@ -17,7 +16,8 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { OverrideTable } from "../../../common/components/overrides-drawer/overrides-drawer"
-import { OVERRIDE } from "../../../common/constants"
+import { Override } from "../../../common/constants"
+import { OverrideOption } from "../../../common/types"
 
 const CreateTaxRateSchema = z.object({
   name: z.string().min(1),
@@ -35,14 +35,29 @@ const CreateTaxRateSchema = z.object({
 
     return false
   }, "Tax rate must be a number between 0 and 100"),
-  products: z.array(z.string()),
-  product_types: z.array(z.string()),
-  shipping_options: z.array(z.string()),
+  products: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
+  product_types: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
+  shipping_options: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
 })
 
 export const CreateTaxRateForm = () => {
   const [open, setOpen] = useState(false)
-  const [override, setOverride] = useState<OVERRIDE | null>(null)
+  const [override, setOverride] = useState<Override | null>(null)
 
   const { id } = useParams()
   const { t } = useTranslation()
@@ -60,26 +75,16 @@ export const CreateTaxRateForm = () => {
     resolver: zodResolver(CreateTaxRateSchema),
   })
 
-  const [productRowSelection, setProductRowSelection] =
-    useState<RowSelectionState>({})
-
   const selectedProducts = useWatch({
     control: form.control,
     name: "products",
     defaultValue: [],
   })
-
-  const [productTypeRowSelection, setProductTypeRowSelection] =
-    useState<RowSelectionState>({})
-
   const selectedProductTypes = useWatch({
     control: form.control,
     name: "product_types",
     defaultValue: [],
   })
-
-  const [shippingOptionRowSelection, setShippingOptionRowSelection] =
-    useState<RowSelectionState>({})
 
   const selectedShippingOptions = useWatch({
     control: form.control,
@@ -90,12 +95,22 @@ export const CreateTaxRateForm = () => {
   const { mutateAsync, isLoading } = useAdminCreateTaxRate()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { rate, ...rest } = data
+    const { rate, products, product_types, shipping_options, ...rest } = data
 
     await mutateAsync(
       {
         region_id: id!,
         rate: Number(rate),
+        products:
+          products.length > 0 ? products.map((p) => p.value) : undefined,
+        product_types:
+          product_types.length > 0
+            ? product_types.map((p) => p.value)
+            : undefined,
+        shipping_options:
+          shipping_options.length > 0
+            ? shipping_options.map((p) => p.value)
+            : undefined,
         ...rest,
       },
       {
@@ -106,49 +121,33 @@ export const CreateTaxRateForm = () => {
     )
   })
 
-  const openOverrideDrawer = (override: OVERRIDE) => {
+  const handleOpenDrawer = (override: Override) => {
     setOverride(override)
     setOpen(true)
   }
 
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open)
+  const handleSaveOverrides = (override: Override) => {
+    let field: "products" | "product_types" | "shipping_options"
 
-    if (!open) {
-      let id: RowSelectionState | undefined = undefined
-      let updater: OnChangeFn<RowSelectionState> | undefined = undefined
+    switch (override) {
+      case Override.PRODUCT:
+        field = "products"
+        break
+      case Override.PRODUCT_TYPE:
+        field = "product_types"
+        break
+      case Override.SHIPPING_OPTION:
+        field = "shipping_options"
+        break
+    }
 
-      switch (override) {
-        case OVERRIDE.PRODUCT:
-          id = selectedProducts.reduce((acc, c) => {
-            acc[c] = true
-            return acc
-          }, {} as RowSelectionState)
-          updater = setProductRowSelection
-          break
-        case OVERRIDE.PRODUCT_TYPE:
-          id = selectedProductTypes.reduce((acc, c) => {
-            acc[c] = true
-            return acc
-          }, {} as RowSelectionState)
-          updater = setProductTypeRowSelection
-          break
-        case OVERRIDE.SHIPPING_OPTION:
-          id = selectedShippingOptions.reduce((acc, c) => {
-            acc[c] = true
-            return acc
-          }, {} as RowSelectionState)
-          updater = setShippingOptionRowSelection
-          break
-        default:
-          break
-      }
+    return (options: OverrideOption[]) => {
+      form.setValue(field, options, {
+        shouldDirty: true,
+        shouldTouch: true,
+      })
 
-      if (!id || !updater) {
-        return
-      }
-
-      updater(id)
+      setOpen(false)
     }
   }
 
@@ -171,7 +170,7 @@ export const CreateTaxRateForm = () => {
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex overflow-hidden">
-          <SplitView open={open} onOpenChange={handleOpenChange}>
+          <SplitView open={open} onOpenChange={setOpen}>
             <SplitView.Content>
               <div
                 className={clx(
@@ -252,12 +251,15 @@ export const CreateTaxRateForm = () => {
                     </div>
                     <Collapsible.Content>
                       <div className="flex flex-col gap-y-4 pt-4">
+                        {selectedProducts && (
+                          <pre>{JSON.stringify(selectedProducts, null, 2)}</pre>
+                        )}
                         <div className="flex items-center justify-end">
                           <Button
                             size="small"
                             type="button"
                             variant="secondary"
-                            onClick={() => openOverrideDrawer(OVERRIDE.PRODUCT)}
+                            onClick={() => handleOpenDrawer(Override.PRODUCT)}
                           >
                             {t("taxes.taxRate.addProductOverridesAction")}
                           </Button>
@@ -288,7 +290,7 @@ export const CreateTaxRateForm = () => {
                             type="button"
                             variant="secondary"
                             onClick={() =>
-                              openOverrideDrawer(OVERRIDE.PRODUCT_TYPE)
+                              handleOpenDrawer(Override.PRODUCT_TYPE)
                             }
                           >
                             {t("taxes.taxRate.addProductTypeOverridesAction")}
@@ -320,7 +322,7 @@ export const CreateTaxRateForm = () => {
                             type="button"
                             variant="secondary"
                             onClick={() =>
-                              openOverrideDrawer(OVERRIDE.SHIPPING_OPTION)
+                              handleOpenDrawer(Override.SHIPPING_OPTION)
                             }
                           >
                             {t(
@@ -335,32 +337,22 @@ export const CreateTaxRateForm = () => {
               </div>
             </SplitView.Content>
             <SplitView.Drawer>
-              <div className="flex size-full flex-col overflow-hidden">
-                <OverrideTable
-                  product={{
-                    updater: setProductRowSelection,
-                    state: productRowSelection,
-                  }}
-                  productType={{
-                    updater: setProductTypeRowSelection,
-                    state: productTypeRowSelection,
-                  }}
-                  shippingOption={{
-                    updater: setShippingOptionRowSelection,
-                    state: shippingOptionRowSelection,
-                  }}
-                  regionId={id!}
-                  selected={override}
-                />
-                <div className="flex items-center justify-end gap-x-2 border-t p-4">
-                  <SplitView.Close type="button">
-                    {t("actions.cancel")}
-                  </SplitView.Close>
-                  <Button size="small" type="button">
-                    {t("actions.save")}
-                  </Button>
-                </div>
-              </div>
+              <OverrideTable
+                product={{
+                  selected: selectedProducts,
+                  onSave: handleSaveOverrides(Override.PRODUCT),
+                }}
+                productType={{
+                  selected: selectedProductTypes,
+                  onSave: handleSaveOverrides(Override.PRODUCT_TYPE),
+                }}
+                shippingOption={{
+                  selected: selectedShippingOptions,
+                  onSave: handleSaveOverrides(Override.SHIPPING_OPTION),
+                }}
+                regionId={id!}
+                selected={override}
+              />
             </SplitView.Drawer>
           </SplitView>
         </RouteFocusModal.Body>
