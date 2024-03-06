@@ -1,4 +1,5 @@
-import { omitDeep, pickDeep } from "./omit-deep"
+import { pickDeep } from "@medusajs/utils"
+import { omitDeep } from "./omit-deep"
 
 // TODO: once the legacy totals decoration will be removed.
 // We will be able to only compute the totals if one of the total fields is present
