@@ -3,6 +3,7 @@ import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { createDatabase, dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
 
 const axios = require("axios").default
 
@@ -203,12 +204,14 @@ export function medusaIntegrationTestRunner({
   }
 
   const beforeEach_ = async () => {
+    const container = options.getContainer()
+    const copiedContainer = createMedusaContainer({}, container)
+
     if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
-      const container = options.getContainer()
       const defaultLoader =
         require("@medusajs/medusa/dist/loaders/defaults").default
       await defaultLoader({
-        container,
+        container: copiedContainer,
       })
     }
 
@@ -216,7 +219,7 @@ export function medusaIntegrationTestRunner({
       require("@medusajs/medusa/dist/loaders/medusa-app").loadMedusaApp
     await medusaAppLoader(
       {
-        container,
+        container: copiedContainer,
         configModule: container.resolve("configModule"),
       },
       {

@@ -43,6 +43,9 @@ export class InitialSetup20240226130829 extends Migration {
       this.addSql(
         `alter table "store" drop constraint if exists "FK_61b0f48cccbb5f41c750bac7286";`
       )
+      this.addSql(
+        `alter table "store" drop constraint if exists "FK_55beebaa09e947cccca554af222";`
+      )
 
       // this.addSql(`alter table "store" drop column "default_currency_code";`)
       // this.addSql(`alter table "store" drop column "swap_link_template";`)
