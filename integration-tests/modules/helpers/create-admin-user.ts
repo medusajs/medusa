@@ -4,9 +4,13 @@ import jwt from "jsonwebtoken"
 import { getContainer } from "../../environment-helpers/use-container"
 import adminSeeder from "../../helpers/admin-seeder"
 
-export const createAdminUser = async (dbConnection, adminHeaders) => {
+export const createAdminUser = async (
+  dbConnection,
+  adminHeaders,
+  container?
+) => {
   await adminSeeder(dbConnection)
-  const appContainer = getContainer()!
+  const appContainer = container ?? getContainer()!
 
   const authModule: IAuthModuleService = appContainer.resolve(
     ModuleRegistrationName.AUTH
