@@ -2,14 +2,18 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CaptureDTO,
+  FilterableCaptureProps,
   FilterablePaymentCollectionProps,
   FilterablePaymentProps,
   FilterablePaymentProviderProps,
   FilterablePaymentSessionProps,
+  FilterableRefundProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentProviderDTO,
   PaymentSessionDTO,
+  RefundDTO,
 } from "./common"
 import {
   CreateCaptureDTO,
@@ -401,6 +405,18 @@ export interface IPaymentModuleService extends IModuleService {
     config?: FindConfig<PaymentProviderDTO>,
     sharedContext?: Context
   ): Promise<PaymentProviderDTO[]>
+
+  listCaptures(
+    filters?: FilterableCaptureProps,
+    config?: FindConfig<CaptureDTO>,
+    sharedContext?: Context
+  ): Promise<CaptureDTO[]>
+
+  listRefunds(
+    filters?: FilterableRefundProps,
+    config?: FindConfig<RefundDTO>,
+    sharedContext?: Context
+  ): Promise<RefundDTO[]>
 
   /* ********** HOOKS ********** */
 
