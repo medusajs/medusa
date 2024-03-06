@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       it("compensates rules correctly", async () => {
