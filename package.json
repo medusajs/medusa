@@ -93,7 +93,7 @@
     "global": "^4.4.0",
     "import-from": "^3.0.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@1.22.19",
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
