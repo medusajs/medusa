@@ -301,6 +301,40 @@ moduleIntegrationTestRunner({
 
           expect(updated).toEqual(expect.objectContaining(update))
         })
+
+        it("should adjust reserved_quantity of inventory level after updates increasing reserved quantity", async () => {
+          const update = {
+            id: reservationItem.id,
+            quantity: 5,
+          }
+
+          await service.updateReservationItems(update)
+
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              reservationItem.inventory_item_id,
+              "location-1"
+            )
+
+          expect(inventoryLevel.reserved_quantity).toEqual(update.quantity)
+        })
+
+        it("should adjust reserved_quantity of inventory level after updates decreasing reserved quantity", async () => {
+          const update = {
+            id: reservationItem.id,
+            quantity: 1,
+          }
+
+          await service.updateReservationItems(update)
+
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              reservationItem.inventory_item_id,
+              "location-1"
+            )
+
+          expect(inventoryLevel.reserved_quantity).toEqual(update.quantity)
+        })
       })
 
       describe("deleteReservationItemsByLineItem", () => {
