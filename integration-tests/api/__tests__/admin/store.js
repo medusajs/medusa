@@ -17,6 +17,7 @@ medusaIntegrationTestRunner({
       // Note: The tests rely on the loader running and populating clean data before and after the test, so we have to do this in a beforeEach
       beforeEach(async () => {
         container = getContainer()
+
         await createAdminUser(dbConnection, adminHeaders, container)
         await breaking(
           async () => {
@@ -206,11 +207,9 @@ medusaIntegrationTestRunner({
             breaking(
               () => ({
                 currencies: ["jpy", "usd"],
-                default_currency_code: "usd",
               }),
               () => ({
                 supported_currency_codes: ["jpy", "usd"],
-                default_currency_code: "usd",
               })
             ),
             adminHeaders
