@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/inventory-new",
+  "name": "@medusajs/inventory-next",
   "version": "0.0.1",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",

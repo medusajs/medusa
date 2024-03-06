@@ -7,7 +7,7 @@ jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.INVENTORY,
-  resolve: "@medusajs/inventory-new",
+  resolve: "@medusajs/inventory-next",
   testSuite: ({
     MikroOrmWrapper,
     service,

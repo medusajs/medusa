@@ -8230,9 +8230,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory-new@workspace:packages/inventory-new":
+"@medusajs/inventory-next@workspace:packages/inventory-next":
   version: 0.0.0-use.local
-  resolution: "@medusajs/inventory-new@workspace:packages/inventory-new"
+  resolution: "@medusajs/inventory-next@workspace:packages/inventory-next"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
     "@medusajs/types": ^1.11.12
