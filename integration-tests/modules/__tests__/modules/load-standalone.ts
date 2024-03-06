@@ -3,6 +3,7 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
+  force_modules_migration: true,
   testSuite: ({ dbConnection }) => {
     describe("Standalone Modules", () => {
       beforeAll(async () => {
