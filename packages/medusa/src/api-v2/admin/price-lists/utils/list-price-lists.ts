@@ -1,48 +1,53 @@
 import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { FilterablePriceListProps, MedusaContainer } from "@medusajs/types"
-import { CustomerGroup, MoneyAmount, PriceList } from "../../../../../models"
-import { FindConfig } from "../../../../../types/common"
-import { defaultAdminPriceListRemoteQueryObject } from "../index"
+import { MedusaContainer, PriceListDTO } from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
-export async function listAndCountPriceListPricingModule({
-  filters,
-  listConfig = { skip: 0 },
+enum RuleAttributes {
+  CUSTOMER_GROUP_ID = "customer_group_id",
+  REGION_ID = "region_id",
+}
+
+export async function listPriceLists({
   container,
+  fields,
+  variables,
 }: {
   container: MedusaContainer
-  filters?: FilterablePriceListProps
-  listConfig?: FindConfig<PriceList>
-}): Promise<[PriceList[], number]> {
+  fields: string[]
+  variables: Record<string, any>
+}): Promise<[PriceListDTO[], number]> {
   const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
   const customerModule = container.resolve(ModuleRegistrationName.CUSTOMER)
-
-  const query = {
-    price_list: {
-      __args: { filters, ...listConfig },
-      ...defaultAdminPriceListRemoteQueryObject,
-    },
-  }
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "price_list",
+    fields,
+    variables,
+  })
 
   const {
     rows: priceLists,
     metadata: { count },
-  } = await remoteQuery(query)
+  } = await remoteQuery(queryObject)
 
   if (!count) {
     return [[], 0]
   }
 
   const customerGroupIds: string[] = priceLists
-    .map((priceList) =>
-      priceList.price_list_rules
-        .filter((rule) => rule.rule_type.rule_attribute === "customer_group_id")
-        .map((rule) =>
-          rule.price_list_rule_values.map((rule_value) => rule_value.value)
-        )
+    .map((priceList) => priceList.price_list_rules)
+    .flat(1)
+    .filter(
+      (rule) =>
+        rule.rule_type?.rule_attribute === RuleAttributes.CUSTOMER_GROUP_ID
     )
-    .flat(2)
+    .map((rule) => rule.price_list_rule_values.map((plrv) => plrv.value))
+    .flat(1)
 
-  const customerGroups = await customerModule.list({ id: customerGroupIds }, {})
+  const customerGroups = await customerModule.listCustomerGroups(
+    { id: customerGroupIds },
+    {}
+  )
+
   const customerGroupIdMap = new Map(customerGroups.map((cg) => [cg.id, cg]))
 
   for (const priceList of priceLists) {
@@ -53,14 +58,13 @@ export async function listAndCountPriceListPricingModule({
 
     priceList.prices = priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
       const productVariant = priceSetMoneyAmount.price_set.variant_link.variant
-
       const rules = priceSetMoneyAmount.price_rules.reduce((acc, curr) => {
         acc[curr.rule_type.rule_attribute] = curr.value
         return acc
       }, {})
 
       return {
-        ...(priceSetMoneyAmount.money_amount as MoneyAmount),
+        ...priceSetMoneyAmount.money_amount,
         price_list_id: priceList.id,
         variant_id: productVariant?.id ?? null,
         variant: productVariant ?? null,
@@ -73,19 +77,13 @@ export async function listAndCountPriceListPricingModule({
     delete priceList.title
 
     const customerGroupPriceListRule = priceListRulesData.find(
-      (plr) => plr.rule_type.rule_attribute === "customer_group_id"
+      (plr) => plr.rule_type.rule_attribute === RuleAttributes.CUSTOMER_GROUP_ID
     )
 
     priceList.customer_groups =
       customerGroupPriceListRule?.price_list_rule_values
-        .map((customerGroupRule) =>
-          customerGroupIdMap.get(customerGroupRule.value)
-        )
-        .filter(
-          (
-            customerGroup: CustomerGroup | undefined
-          ): customerGroup is CustomerGroup => !!customerGroup
-        ) || []
+        .map((cgr) => customerGroupIdMap.get(cgr.value))
+        .filter(Boolean) || []
   }
 
   return [priceLists, count]
