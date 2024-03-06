@@ -23,6 +23,7 @@ import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
 import { partitionArray } from "@medusajs/utils"
 import { InventoryEvents } from "@medusajs/utils"
+import { CommonEvents } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -195,7 +196,7 @@ export default class InventoryModuleService<
         eventName: InventoryEvents.reservation_item_created,
         metadata: {
           service: this.constructor.name,
-          action: "created",
+          action: CommonEvents.CREATED,
           object: "reservation-item",
         },
         data: { id: reservationItem.id },
@@ -263,7 +264,7 @@ export default class InventoryModuleService<
         eventName: InventoryEvents.created,
         metadata: {
           service: this.constructor.name,
-          action: "created",
+          action: CommonEvents.CREATED,
           object: "inventory-item",
         },
         data: { id: inventoryItem.id },
@@ -315,7 +316,7 @@ export default class InventoryModuleService<
         eventName: InventoryEvents.inventory_level_created,
         metadata: {
           service: this.constructor.name,
-          action: "created",
+          action: CommonEvents.CREATED,
           object: "inventory-level",
         },
         data: { id: inventoryLevel.id },
@@ -370,14 +371,14 @@ export default class InventoryModuleService<
     const result = await this.updateInventoryItems_(updates, context)
 
     context.messageAggregator?.saveRawMessageData(
-      result.map((inventoryLevel) => ({
+      result.map((inventoryItem) => ({
         eventName: InventoryEvents.updated,
         metadata: {
           service: this.constructor.name,
-          action: "updated",
+          action: CommonEvents.UPDATED,
           object: "inventory-item",
         },
-        data: { id: inventoryLevel.id },
+        data: { id: inventoryItem.id },
       }))
     )
 
@@ -414,7 +415,7 @@ export default class InventoryModuleService<
         eventName: InventoryEvents.inventory_level_deleted,
         metadata: {
           service: this.constructor.name,
-          action: "deleted",
+          action: CommonEvents.DELETED,
           object: "inventory-level",
         },
         data: { id: inventoryLevel.id },
@@ -422,35 +423,6 @@ export default class InventoryModuleService<
     )
 
     return result
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  @EmitEvents()
-  async deleteReservationItemByLocationId(
-    locationId: string | string[],
-    @MedusaContext() context: Context = {}
-  ): Promise<void> {
-    const reservations: InventoryNext.ReservationItemDTO[] =
-      await this.listReservationItems({ location_id: locationId }, {}, context)
-
-    await this.reservationItemService_.deleteByLocationId(locationId, context)
-
-    context.messageAggregator?.saveRawMessageData(
-      reservations.map((inventoryLevel) => ({
-        eventName: InventoryEvents.reservation_item_deleted,
-        metadata: {
-          service: this.constructor.name,
-          action: "deleted",
-          object: "reservation-item",
-        },
-        data: { id: inventoryLevel.id },
-      }))
-    )
-
-    await this.adjustInventoryLevelsForReservationsDeletion(
-      reservations,
-      context
-    )
   }
 
   /**
@@ -471,17 +443,15 @@ export default class InventoryModuleService<
       context
     )
 
-    context.messageAggregator?.saveRawMessageData([
-      {
-        eventName: InventoryEvents.inventory_level_deleted,
-        metadata: {
-          service: this.constructor.name,
-          action: "deleted",
-          object: "inventory-level",
-        },
-        data: { id: inventoryLevel.id },
+    context.messageAggregator?.saveRawMessageData({
+      eventName: InventoryEvents.inventory_level_deleted,
+      metadata: {
+        service: this.constructor.name,
+        action: CommonEvents.DELETED,
+        object: "inventory-level",
       },
-    ])
+      data: { id: inventoryLevel.id },
+    })
 
     if (!inventoryLevel) {
       return
@@ -518,7 +488,7 @@ export default class InventoryModuleService<
         eventName: InventoryEvents.inventory_level_updated,
         metadata: {
           service: this.constructor.name,
-          action: "updated",
+          action: CommonEvents.UPDATED,
           object: "inventory-level",
         },
         data: { id: inventoryLevel.id },
@@ -599,14 +569,14 @@ export default class InventoryModuleService<
     const result = await this.updateReservationItems_(update, context)
 
     context.messageAggregator?.saveRawMessageData(
-      result.map((inventoryLevel) => ({
+      result.map((reservationItem) => ({
         eventName: InventoryEvents.inventory_level_updated,
         metadata: {
           service: this.constructor.name,
-          action: "updated",
+          action: CommonEvents.UPDATED,
           object: "reservation-item",
         },
-        data: { id: inventoryLevel.id },
+        data: { id: reservationItem.id },
       }))
     )
 
@@ -625,6 +595,35 @@ export default class InventoryModuleService<
     @MedusaContext() context: Context = {}
   ): Promise<TReservationItem[]> {
     return await this.reservationItemService_.update(input, context)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
+  async deleteReservationItemByLocationId(
+    locationId: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    const reservations: InventoryNext.ReservationItemDTO[] =
+      await this.listReservationItems({ location_id: locationId }, {}, context)
+
+    await this.reservationItemService_.deleteByLocationId(locationId, context)
+
+    context.messageAggregator?.saveRawMessageData(
+      reservations.map((reservationItem) => ({
+        eventName: InventoryEvents.reservation_item_deleted,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.DELETED,
+          object: "reservation-item",
+        },
+        data: { id: reservationItem.id },
+      }))
+    )
+
+    await this.adjustInventoryLevelsForReservationsDeletion(
+      reservations,
+      context
+    )
   }
 
   /**
@@ -650,14 +649,14 @@ export default class InventoryModuleService<
     )
 
     context.messageAggregator?.saveRawMessageData(
-      reservations.map((inventoryLevel) => ({
+      reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_deleted,
         metadata: {
           service: this.constructor.name,
-          action: "deleted",
+          action: CommonEvents.DELETED,
           object: "reservation-item",
         },
-        data: { id: inventoryLevel.id },
+        data: { id: reservationItem.id },
       }))
     )
   }
@@ -690,8 +689,8 @@ export default class InventoryModuleService<
       eventName: InventoryEvents.inventory_level_updated,
       metadata: {
         service: this.constructor.name,
-        action: "updated",
-        object: "reservation-item",
+        action: CommonEvents.UPDATED,
+        object: "inventory-level",
       },
       data: { id: result.id },
     })
