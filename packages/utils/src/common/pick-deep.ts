@@ -10,13 +10,14 @@ export function pickDeep<T extends object = object>(
   }
 
   return Object.entries(input).reduce((nextInput, [key, value]) => {
-    const fieldMatches = fields.includes(withPrefix(key, prefix))
+    const fieldKey = withPrefix(key, prefix)
+    const fieldMatches = fields.includes(fieldKey)
+    const partialKeyMatch =
+      fields.filter((field) => field.toString().startsWith(`${fieldKey}.`))
+        .length > 0
+
     const valueIsObject = isObject(value)
     const valueIsArray = Array.isArray(value)
-    const valueIsNotObjectOrArray = !(
-      valueIsArray ||
-      (valueIsObject && Object.keys(value).length)
-    )
 
     if (fieldMatches && (valueIsObject || valueIsArray)) {
       nextInput[key] = value
@@ -24,7 +25,7 @@ export function pickDeep<T extends object = object>(
       return nextInput
     }
 
-    if (!fieldMatches && valueIsNotObjectOrArray) {
+    if (!fieldMatches && !partialKeyMatch) {
       return nextInput
     }
 
@@ -38,11 +39,16 @@ export function pickDeep<T extends object = object>(
 
       return nextInput
     } else if (valueIsObject) {
-      nextInput[key] = pickDeep(value, fields, withPrefix(key, prefix))
+      if (Object.keys(value).length) {
+        nextInput[key] = pickDeep(value, fields, withPrefix(key, prefix))
+      }
+
       return nextInput
     }
 
-    nextInput[key] = value
+    if (fieldMatches) {
+      nextInput[key] = value
+    }
 
     return nextInput
   }, {} as T)
