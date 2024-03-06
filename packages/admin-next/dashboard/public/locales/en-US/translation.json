@@ -69,6 +69,11 @@
     "defaultTitle": "An error occurred",
     "defaultMessage": "An error occurred while rendering this page."
   },
+  "addresses": {
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "sameAsShipping": "Same as shipping address"
+  },
   "products": {
     "domain": "Products",
     "createProductTitle": "Create Product",
@@ -168,27 +173,62 @@
   },
   "orders": {
     "domain": "Orders",
-    "paymentStatusLabel": "Payment Status",
-    "paymentStatus": {
-      "notPaid": "Not Paid",
-      "awaiting": "Awaiting",
-      "captured": "Captured",
-      "partiallyRefunded": "Partially Refunded",
-      "refunded": "Refunded",
-      "canceled": "Canceled",
-      "requresAction": "Requires Action"
+    "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
+    "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
+    "summary": {
+      "allocateItems": "Allocate items",
+      "editItems": "Edit items"
     },
-    "fulfillmentStatusLabel": "Fulfillment Status",
-    "fulfillmentStatus": {
-      "notFulfilled": "Not Fulfilled",
-      "partiallyFulfilled": "Partially Fulfilled",
-      "fulfilled": "Fulfilled",
-      "partiallyShipped": "Partially Shipped",
-      "shipped": "Shipped",
-      "partiallyReturned": "Partially Returned",
-      "returned": "Returned",
-      "canceled": "Canceled",
-      "requresAction": "Requires Action"
+    "payment": {
+      "title": "Payments",
+      "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
+      "totalPaidByCustomer": "Total paid by customer",
+      "capture": "Capture",
+      "refund": "Refund",
+      "statusLabel": "Payment status",
+      "statusTitle": "Payment Status",
+      "status": {
+        "notPaid": "Not paid",
+        "awaiting": "Awaiting",
+        "captured": "Captured",
+        "partiallyRefunded": "Partially refunded",
+        "refunded": "Refunded",
+        "canceled": "Canceled",
+        "requresAction": "Requires action"
+      }
+    },
+    "reservations": {
+      "allocatedLabel": "Allocated",
+      "notAllocatedLabel": "Not allocated"
+    },
+    "fulfillment": {
+      "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
+      "unfulfilledItems": "Unfulfilled Items",
+      "statusLabel": "Fulfillment status",
+      "statusTitle": "Fulfillment Status",
+      "awaitingFullfillmentBadge": "Awaiting fulfillment",
+      "number": "Fulfillment #{{number}}",
+      "status": {
+        "notFulfilled": "Not fulfilled",
+        "partiallyFulfilled": "Partially fulfilled",
+        "fulfilled": "Fulfilled",
+        "partiallyShipped": "Partially shipped",
+        "shipped": "Shipped",
+        "partiallyReturned": "Partially returned",
+        "returned": "Returned",
+        "canceled": "Canceled",
+        "requresAction": "Requires action"
+      },
+      "trackingLabel": "Tracking",
+      "shippingFromLabel": "Shipping from",
+      "itemsLabel": "Items"
+    },
+    "customer": {
+      "contactLabel": "Contact",
+      "editEmail": "Edit email",
+      "transferOwnership": "Transfer ownership",
+      "editBillingAddress": "Edit billing address",
+      "editShippingAddress": "Edit shipping address"
     }
   },
   "draftOrders": {
@@ -468,6 +508,9 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
     "created": "Created",
     "key": "Key",
     "customer": "Customer",
@@ -505,8 +548,10 @@
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
+    "id": "ID",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
-    "shippingProfile": "Shipping Profile"
+    "shippingProfile": "Shipping Profile",
+    "summary": "Summary"
   }
 }

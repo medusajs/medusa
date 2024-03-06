@@ -3,16 +3,18 @@ import {
   Context,
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
-  CreatePaymentProviderDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  FilterablePaymentProviderProps,
+  FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentProviderDTO,
   PaymentSessionDTO,
   PaymentSessionStatus,
   ProviderWebhookPayload,
@@ -22,6 +24,7 @@ import {
   UpdatePaymentSessionDTO,
 } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
@@ -35,7 +38,6 @@ import {
   PaymentSession,
   Refund,
 } from "@models"
-
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
 
@@ -49,7 +51,7 @@ type InjectedDependencies = {
   paymentProviderService: PaymentProviderService
 }
 
-const generateMethodForModels = [PaymentCollection, Payment]
+const generateMethodForModels = [PaymentCollection, Payment, PaymentSession]
 
 export default class PaymentModuleService<
     TPaymentCollection extends PaymentCollection = PaymentCollection,
@@ -201,44 +203,67 @@ export default class PaymentModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createPaymentSession(
+    paymentCollectionId: string,
+    input: CreatePaymentSessionDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSessionDTO> {
+    let paymentSession: PaymentSession
+
+    try {
+      const providerSessionSession =
+        await this.paymentProviderService_.createSession(input.provider_id, {
+          context: input.context ?? {},
+          amount: input.amount,
+          currency_code: input.currency_code,
+        })
+
+      input.data = {
+        ...input.data,
+        ...providerSessionSession,
+      }
+
+      paymentSession = await this.createPaymentSession_(
+        paymentCollectionId,
+        input,
+        sharedContext
+      )
+    } catch (error) {
+      // In case the session is created at the provider, but fails to be created in Medusa,
+      // we catch the error and delete the session at the provider and rethrow.
+      await this.paymentProviderService_.deleteSession({
+        provider_id: input.provider_id,
+        data: input.data,
+      })
+
+      throw error
+    }
+
+    return await this.baseRepository_.serialize(paymentSession, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createPaymentSession_(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentSessionDTO> {
-    const created = await this.paymentSessionService_.create(
+  ): Promise<PaymentSession> {
+    const paymentSession = await this.paymentSessionService_.create(
       {
+        payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
-        amount: data.providerContext.amount,
-        currency_code: data.providerContext.currency_code,
-        payment_collection: paymentCollectionId,
+        amount: data.amount,
+        currency_code: data.currency_code,
+        context: data.context,
+        data: data.data,
       },
       sharedContext
     )
 
-    try {
-      const sessionData = await this.paymentProviderService_.createSession(
-        data.provider_id,
-        {
-          ...data.providerContext,
-          resource_id: created.id,
-        }
-      )
-
-      await this.paymentSessionService_.update(
-        {
-          id: created.id,
-          data: sessionData,
-        },
-        sharedContext
-      )
-
-      return await this.baseRepository_.serialize(created, { populate: true })
-    } catch (e) {
-      await this.paymentSessionService_.delete([created.id], sharedContext)
-      throw e
-    }
+    return paymentSession
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -252,17 +277,12 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    const sessionData = await this.paymentProviderService_.updateSession(
-      session.provider_id,
-      data.providerContext
-    )
-
     const updated = await this.paymentSessionService_.update(
       {
         id: session.id,
-        amount: data.providerContext.amount,
-        currency_code: data.providerContext.currency_code,
-        data: sessionData,
+        amount: data.amount,
+        currency_code: data.currency_code,
+        data: data.data,
       },
       sharedContext
     )
@@ -298,8 +318,14 @@ export default class PaymentModuleService<
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
-        select: ["id", "data", "provider_id", "amount", "currency_code"],
-        relations: ["payment_collection"],
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "amount",
+          "currency_code",
+          "payment_collection_id",
+        ],
       },
       sharedContext
     )
@@ -348,7 +374,7 @@ export default class PaymentModuleService<
         amount: session.amount,
         currency_code: session.currency_code,
         payment_session: session.id,
-        payment_collection: session.payment_collection!.id,
+        payment_collection_id: session.payment_collection_id,
         provider_id: session.provider_id,
         // customer_id: context.customer.id,
         data,
@@ -566,25 +592,23 @@ export default class PaymentModuleService<
     }
   }
 
-  async createProvidersOnLoad() {
-    const providersToLoad = this.__container__["payment_providers"]
+  @InjectManager("baseRepository_")
+  async listPaymentProviders(
+    filters: FilterablePaymentProviderProps = {},
+    config: FindConfig<PaymentProviderDTO> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentProviderDTO[]> {
+    const providers = await this.paymentProviderService_.list(
+      filters,
+      config,
+      sharedContext
+    )
 
-    const providers = await this.paymentProviderService_.list({
-      // @ts-ignore TODO
-      id: providersToLoad,
-    })
-
-    const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
-
-    const providersToCreate: CreatePaymentProviderDTO[] = []
-    for (const id of providersToLoad) {
-      if (loadedProvidersMap.has(id)) {
-        continue
+    return await this.baseRepository_.serialize<PaymentProviderDTO[]>(
+      providers,
+      {
+        populate: true,
       }
-
-      providersToCreate.push({ id })
-    }
-
-    await this.paymentProviderService_.create(providersToCreate)
+    )
   }
 }

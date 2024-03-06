@@ -66,8 +66,12 @@ export async function migrateMedusaApp(
 
   const sharedResourcesConfig = {
     database: {
-      clientUrl: configModule.projectConfig.database_url,
+      clientUrl:
+        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
+          ?.config?.connection?.connectionString ??
+        configModule.projectConfig.database_url,
       driverOptions: configModule.projectConfig.database_extra,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
 
@@ -85,7 +89,7 @@ export async function migrateMedusaApp(
       ).options ??= {
         database: {
           type: "postgres",
-          url: configModule.projectConfig.database_url,
+          url: sharedResourcesConfig.database.clientUrl,
           extra: configModule.projectConfig.database_extra,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
@@ -132,6 +136,7 @@ export const loadMedusaApp = async (
     database: {
       clientUrl: configModule.projectConfig.database_url,
       driverOptions: configModule.projectConfig.database_extra,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
 

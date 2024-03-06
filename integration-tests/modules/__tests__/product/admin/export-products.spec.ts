@@ -24,6 +24,10 @@ const env: Record<any, any> = {
 
 jest.setTimeout(180000)
 
+// TODO SEE to use new test runner medusaIntegrationTestRunner({
+//   env,
+//   testSuite: ({ dbConnection, getContainer, api }) => {})
+
 describe.skip("Batch job of product-export type", () => {
   let medusaProcess
   let dbConnection
