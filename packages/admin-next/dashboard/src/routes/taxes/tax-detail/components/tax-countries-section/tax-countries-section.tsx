@@ -61,7 +61,7 @@ export const TaxCountriesSection = ({ region }: TaxCountriesSectionProps) => {
       </div>
       <div>
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
-          Tax rates applies to the above countries.
+          {t("taxes.countries.taxCountriesHint")}
         </Text>
       </div>
     </Container>

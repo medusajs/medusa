@@ -544,24 +544,37 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/taxes/tax-list"),
               },
               {
                 path: ":id",
                 lazy: () => import("../../routes/taxes/tax-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
                 children: [
                   {
                     path: "edit",
                     lazy: () => import("../../routes/taxes/tax-edit"),
                   },
                   {
-                    path: "tax-rate/create",
+                    path: "tax-rates/create",
                     lazy: () => import("../../routes/taxes/tax-rate-create"),
                   },
                   {
-                    path: "tax-rate/:rate_id/edit",
+                    path: "tax-rates/default/edit",
+                    lazy: () =>
+                      import("../../routes/taxes/tax-rate-default-edit"),
+                  },
+                  {
+                    path: "tax-rates/:rate_id/edit",
                     lazy: () => import("../../routes/taxes/tax-rate-edit"),
+                  },
+                  {
+                    path: "tax-rates/:rate_id/edit-overrides",
+                    lazy: () =>
+                      import("../../routes/taxes/tax-rate-edit-overrides"),
                   },
                 ],
               },

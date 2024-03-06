@@ -31,20 +31,20 @@ export const TaxDetailsSection = ({ region }: Props) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">
-          Tax provider
+          {t("taxes.settings.taxProviderLabel")}
         </Text>
         <Text size="small" leading="compact">
           {region.tax_provider_id
             ? region.tax_provider_id
-            : "System Tax Provider"}
+            : t("taxes.settings.systemTaxProviderLabel")}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">
-          Automatically calculate taxes
+          {t("taxes.settings.calculateTaxesAutomaticallyLabel")}
         </Text>
         <StatusBadge
-          color={region.automatic_taxes ? "green" : "green"}
+          color={region.automatic_taxes ? "green" : "grey"}
           className="w-fit"
         >
           {region.automatic_taxes
@@ -54,7 +54,7 @@ export const TaxDetailsSection = ({ region }: Props) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">
-          Taxes on gift cards
+          {t("taxes.settings.applyTaxesOnGiftCardsLabel")}
         </Text>
         <StatusBadge
           color={region.gift_cards_taxable ? "green" : "grey"}
@@ -67,7 +67,7 @@ export const TaxDetailsSection = ({ region }: Props) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">
-          Tax inclusive prices
+          {t("fields.taxInclusivePricing")}
         </Text>
         <StatusBadge
           color={region.gift_cards_taxable ? "green" : "grey"}

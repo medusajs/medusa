@@ -1,5 +1,5 @@
 import { AdminGetShippingOptionsParams } from "@medusajs/medusa"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useQueryParams } from "../../use-query-params"
 
 type UseShippingOptionTableQueryProps = {
   regionId: string

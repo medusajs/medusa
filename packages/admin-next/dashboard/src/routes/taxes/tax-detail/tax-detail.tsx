@@ -1,15 +1,21 @@
 import { useAdminRegion } from "medusa-react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { TaxCountriesSection } from "./components/tax-countries-section"
-import { TaxDefaultRateSection } from "./components/tax-default-rate-section"
+import { TaxDefaultTaxRateSection } from "./components/tax-default-tax-rate-section"
 import { TaxDetailsSection } from "./components/tax-general-section"
 import { TaxRatesSection } from "./components/tax-rates-section"
+import { taxRegionLoader } from "./loader"
 
 export const TaxDetail = () => {
   const { id } = useParams()
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof taxRegionLoader>
+  >
 
-  const { region, isLoading, isError, error } = useAdminRegion(id!)
+  const { region, isLoading, isError, error } = useAdminRegion(id!, {
+    initialData,
+  })
 
   if (isLoading || !region) {
     return <div>Loading...</div>
@@ -26,13 +32,13 @@ export const TaxDetail = () => {
           <TaxDetailsSection region={region} />
           <TaxRatesSection region={region} />
           <div className="flex flex-col gap-y-2 xl:hidden">
-            <TaxDefaultRateSection region={region} />
+            <TaxDefaultTaxRateSection region={region} />
             <TaxCountriesSection region={region} />
           </div>
           <JsonViewSection data={region} />
         </div>
         <div className="hidden flex-col gap-y-2 xl:flex">
-          <TaxDefaultRateSection region={region} />
+          <TaxDefaultTaxRateSection region={region} />
           <TaxCountriesSection region={region} />
         </div>
       </div>

@@ -1,1 +1,1 @@
-export * from "./edit-tax-rate-form"
+export * from "./edit-tax-form"

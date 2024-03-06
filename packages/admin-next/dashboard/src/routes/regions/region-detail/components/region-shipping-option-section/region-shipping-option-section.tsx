@@ -1,16 +1,21 @@
 import { Region } from "@medusajs/medusa"
-import { Container, Heading } from "@medusajs/ui"
-import { useAdminShippingOptions } from "medusa-react"
+import { Container, Heading, usePrompt } from "@medusajs/ui"
+import {
+  useAdminDeleteShippingOption,
+  useAdminShippingOptions,
+} from "medusa-react"
 import { useTranslation } from "react-i18next"
 
-import { PlusMini } from "@medusajs/icons"
+import { PencilSquare, PlusMini, Trash } from "@medusajs/icons"
 import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
+import { createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useShippingOptionTableColumns } from "../../../../../hooks/table/columns/use-shipping-option-table-columns"
+import { useShippingOptionTableFilters } from "../../../../../hooks/table/filters/use-shipping-option-table-filters"
+import { useShippingOptionTableQuery } from "../../../../../hooks/table/query/use-shipping-option-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useShippingOptionColumns } from "./use-shipping-option-table-columns"
-import { useShippingOptionTableFilters } from "./use-shipping-option-table-filters"
-import { useShippingOptionTableQuery } from "./use-shipping-option-table-query"
 
 type RegionShippingOptionSectionProps = {
   region: Region
@@ -36,7 +41,7 @@ export const RegionShippingOptionSection = ({
     )
 
   const filters = useShippingOptionTableFilters()
-  const columns = useShippingOptionColumns()
+  const columns = useColumns()
 
   const { table } = useDataTable({
     data: (shipping_options ?? []) as unknown as PricedShippingOption[],
@@ -92,5 +97,77 @@ export const RegionShippingOptionSection = ({
         queryObject={raw}
       />
     </Container>
+  )
+}
+
+const ShippingOptionActions = ({
+  shippingOption,
+}: {
+  shippingOption: PricedShippingOption
+}) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminDeleteShippingOption(shippingOption.id!)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("regions.deleteShippingOptionWarning", {
+        name: shippingOption.name,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync()
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("actions.edit"),
+              to: `shipping-options/${shippingOption.id}/edit`,
+              icon: <PencilSquare />,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              label: t("actions.delete"),
+              onClick: handleDelete,
+              icon: <Trash />,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const columnHelper = createColumnHelper<PricedShippingOption>()
+
+const useColumns = () => {
+  const base = useShippingOptionTableColumns()
+
+  return useMemo(
+    () => [
+      ...base,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => {
+          return <ShippingOptionActions shippingOption={row.original} />
+        },
+      }),
+    ],
+    [base]
   )
 }
