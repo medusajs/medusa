@@ -21,7 +21,7 @@ import {
   MedusaV2Flag,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from ".."
+import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 import { joinerConfig } from "../joiner-config"
 
 export function mergeDefaultModules(

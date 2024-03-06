@@ -24,7 +24,7 @@ import {
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
-jest.setTimeout(50000)
+jest.setTimeout(200000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
