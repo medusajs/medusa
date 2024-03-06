@@ -113,26 +113,18 @@ export function moduleIntegrationTestRunner({
   } as SuiteOptions
 
   const beforeEach_ = async () => {
-    try {
-      await MikroOrmWrapper.setupDatabase()
-      const output = await initModules(moduleOptions_)
-      shutdown = output.shutdown
-      medusaApp = output.medusaApp
-      moduleService = output.medusaApp.modules[moduleName]
-    } catch (error) {
-      console.error("Error setting up database:", error)
-    }
+    await MikroOrmWrapper.setupDatabase()
+    const output = await initModules(moduleOptions_)
+    shutdown = output.shutdown
+    medusaApp = output.medusaApp
+    moduleService = output.medusaApp.modules[moduleName]
   }
 
   const afterEach_ = async () => {
-    try {
-      await MikroOrmWrapper.clearDatabase()
-      await shutdown()
-      moduleService = {}
-      medusaApp = {} as MedusaAppOutput
-    } catch (error) {
-      console.error("Error tearing down database:", error)
-    }
+    await MikroOrmWrapper.clearDatabase()
+    await shutdown()
+    moduleService = {}
+    medusaApp = {} as MedusaAppOutput
   }
 
   return describe("", () => {

@@ -1,8 +1,8 @@
-import { getDatabaseURL } from "./database"
-import { initDb } from "./medusa-test-runner-utils/use-db"
-import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { createDatabase, dropDatabase } from "pg-god"
-import { ContainerLike } from "@medusajs/types"
+import {getDatabaseURL} from "./database"
+import {initDb} from "./medusa-test-runner-utils/use-db"
+import {startBootstrapApp} from "./medusa-test-runner-utils/bootstrap-app"
+import {createDatabase, dropDatabase} from "pg-god"
+import {ContainerLike} from "@medusajs/types"
 
 const axios = require("axios").default
 
@@ -182,35 +182,31 @@ export function medusaIntegrationTestRunner({
   } as MedusaSuiteOptions
 
   const beforeAll_ = async () => {
-    try {
-      await dbUtils.create(dbName)
-      const { dbDataSource, pgConnection } = await initDb({
-        cwd,
-        env,
-        force_modules_migration,
-        database_extra: {},
-        dbUrl: dbConfig.clientUrl,
-        dbSchema: dbConfig.schema,
-      })
-      dbUtils.db_ = dbDataSource
-      dbUtils.pgConnection_ = pgConnection
+    await dbUtils.create(dbName)
+    const { dbDataSource, pgConnection } = await initDb({
+      cwd,
+      env,
+      force_modules_migration,
+      database_extra: {},
+      dbUrl: dbConfig.clientUrl,
+      dbSchema: dbConfig.schema,
+    })
+    dbUtils.db_ = dbDataSource
+    dbUtils.pgConnection_ = pgConnection
 
-      const {
-        shutdown: shutdown_,
-        container: container_,
-        port,
-      } = await startBootstrapApp({
-        cwd,
-        env,
-      })
+    const {
+      shutdown: shutdown_,
+      container: container_,
+      port,
+    } = await startBootstrapApp({
+      cwd,
+      env,
+    })
 
-      apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
+    apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
 
-      container = container_
-      shutdown = shutdown_
-    } catch (error) {
-      console.error("Error setting up integration environment:", error)
-    }
+    container = container_
+    shutdown = shutdown_
   }
 
   const afterEach_ = async () => {
@@ -225,12 +221,8 @@ export function medusaIntegrationTestRunner({
     beforeAll(beforeAll_)
     afterEach(afterEach_)
     afterAll(async () => {
-      try {
-        await dbUtils.shutdown(dbName)
-        await shutdown()
-      } catch (error) {
-        console.error("Error shutting down integration environment:", error)
-      }
+      await dbUtils.shutdown(dbName)
+      await shutdown()
     })
 
     testSuite(options!)
