@@ -1,8 +1,8 @@
-import {getDatabaseURL} from "./database"
-import {initDb} from "./medusa-test-runner-utils/use-db"
-import {startBootstrapApp} from "./medusa-test-runner-utils/bootstrap-app"
-import {createDatabase, dropDatabase} from "pg-god"
-import {ContainerLike} from "@medusajs/types"
+import { getDatabaseURL } from "./database"
+import { initDb } from "./medusa-test-runner-utils/use-db"
+import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { createDatabase, dropDatabase } from "pg-god"
+import { ContainerLike } from "@medusajs/types"
 
 const axios = require("axios").default
 
