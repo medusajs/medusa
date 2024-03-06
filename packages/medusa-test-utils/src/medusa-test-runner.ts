@@ -7,8 +7,8 @@ import { ContainerLike } from "@medusajs/types"
 const axios = require("axios").default
 
 const keepTables = [
-  "store",
-  "staged_job",
+  /*"store",*/
+  /*  "staged_job",
   "shipping_profile",
   "fulfillment_provider",
   "payment_provider",
@@ -16,7 +16,7 @@ const keepTables = [
   "region_country",
   "currency",
   "migrations",
-  "mikro_orm_migrations",
+  "mikro_orm_migrations",*/
 ]
 
 const DB_HOST = process.env.DB_HOST
@@ -45,26 +45,19 @@ const dbTestUtilFactory = (): any => ({
     forceDelete,
     schema,
   }: { forceDelete?: string[]; schema?: string } = {}) {
-    forceDelete = forceDelete || []
+    forceDelete ??= []
     const manager = this.db_.manager
+
+    schema ??= "public"
 
     await manager.query(`SET session_replication_role = 'replica';`)
     const tableNames = await manager.query(`SELECT table_name
                                             FROM information_schema.tables
-                                            WHERE table_schema = '${
-                                              schema ?? "public"
-                                            }';`)
+                                            WHERE table_schema = '${schema}';`)
 
     for (const { table_name } of tableNames) {
-      if (
-        keepTables.includes(table_name) &&
-        !forceDelete.includes(table_name)
-      ) {
-        continue
-      }
-
       await manager.query(`DELETE
-                           FROM "${table_name}";`)
+                           FROM ${schema}."${table_name}";`)
     }
 
     await manager.query(`SET session_replication_role = 'origin';`)
@@ -209,9 +202,32 @@ export function medusaIntegrationTestRunner({
     shutdown = shutdown_
   }
 
+  const beforeEach_ = async () => {
+    if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
+      const container = options.getContainer()
+      const defaultLoader =
+        require("@medusajs/medusa/dist/loaders/defaults").default
+      await defaultLoader({
+        container,
+      })
+    }
+
+    const medusaAppLoader =
+      require("@medusajs/medusa/dist/loaders/medusa-app").loadMedusaApp
+    await medusaAppLoader(
+      {
+        container,
+        configModule: container.resolve("configModule"),
+      },
+      {
+        registerInContainer: false,
+      }
+    )
+  }
+
   const afterEach_ = async () => {
     try {
-      await dbUtils.teardown({ forceDelete: [], schema })
+      await dbUtils.teardown({ schema })
     } catch (error) {
       console.error("Error tearing down database:", error)
     }
@@ -219,6 +235,7 @@ export function medusaIntegrationTestRunner({
 
   return describe("", () => {
     beforeAll(beforeAll_)
+    beforeEach(beforeEach_)
     afterEach(afterEach_)
     afterAll(async () => {
       await dbUtils.shutdown(dbName)
