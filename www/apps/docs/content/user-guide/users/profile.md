@@ -52,12 +52,6 @@ To change the language:
 2. For the Language field, select the language you want from the dropdown.
 3. The language will be saved and changed.
 
-:::tip
-
-Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../../contribution/admin-translations.md).
-
-:::
-
 ---
 
 ## Edit Analytics Preferences
