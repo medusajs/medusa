@@ -277,8 +277,7 @@ moduleIntegrationTestRunner({
 
         describe("update", () => {
           it("should update a Payment Collection", async () => {
-            await service.updatePaymentCollections({
-              id: "pay-col-id-2",
+            await service.updatePaymentCollections("pay-col-id-2", {
               currency_code: "eur",
               region_id: "reg-2",
             })
