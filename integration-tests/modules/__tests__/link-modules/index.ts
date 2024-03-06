@@ -5,9 +5,7 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 jest.setTimeout(5000000)
 
 medusaIntegrationTestRunner({
-  env: {
-    MEDUSA_FF_MEDUSA_V2: "true",
-  },
+  force_modules_migration: true,
   testSuite: ({ dbConnection, getContainer }) => {
     let DB_URL
     let container
