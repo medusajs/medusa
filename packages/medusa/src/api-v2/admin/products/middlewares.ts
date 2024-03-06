@@ -68,7 +68,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsVariantsParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.listVariantConfig
       ),
     ],
   },
@@ -79,7 +79,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsProductVariantsVariantParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.retrieveVariantConfig
       ),
     ],
   },
@@ -106,7 +106,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsOptionsParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.listOptionConfig
       ),
     ],
   },
@@ -117,7 +117,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsProductOptionsOptionParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.retrieveOptionConfig
       ),
     ],
   },
