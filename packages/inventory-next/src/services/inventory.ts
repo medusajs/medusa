@@ -85,13 +85,12 @@ export default class InventoryModuleService<
     return joinerConfig
   }
 
-  @InjectTransactionManager("baseRepository_")
   private async ensureInventoryLevels(
     data: (
       | { location_id: string; inventory_item_id: string }
       | { id: string }
     )[],
-    @MedusaContext() context: Context = {}
+    context: Context
   ): Promise<InventoryNext.InventoryLevelDTO[]> {
     const [idData, itemLocationData] = partitionArray(
       data,
