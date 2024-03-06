@@ -8,7 +8,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 
-import { isDefined, isString } from "@medusajs/utils"
+import { deduplicate, isDefined, isString } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
@@ -603,99 +603,79 @@ export class RemoteJoiner {
     expands: RemoteJoinerQuery["expands"],
     implodeMapping: InternalImplodeMapping[]
   ): Map<string, RemoteExpandProperty> {
+    const aliasRealPathMap = new Map<string, string[]>()
     const parsedExpands = new Map<string, any>()
     parsedExpands.set(BASE_PATH, initialService)
 
-    let forwardArgumentsOnPath: string[] = []
+    const forwardArgumentsOnPath: string[] = []
+
     for (const expand of expands || []) {
       const properties = expand.property.split(".")
-      let currentServiceConfig = serviceConfig
       const currentPath: string[] = []
+      const currentAliasPath: string[] = []
+      let currentServiceConfig = serviceConfig
 
       for (const prop of properties) {
         const fieldAlias = currentServiceConfig.fieldAlias ?? {}
 
         if (fieldAlias[prop]) {
-          const alias = fieldAlias[prop] as any
+          const aliasPath = [BASE_PATH, ...currentPath, prop].join(".")
 
-          const path = isString(alias) ? alias : alias.path
-          const fullPath = [...new Set(currentPath.concat(path.split(".")))]
-
-          forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
-            (alias?.forwardArgumentsOnPath || []).map(
-              (forPath) =>
-                BASE_PATH + "." + currentPath.concat(forPath).join(".")
-            )
-          )
-
-          implodeMapping.push({
-            location: currentPath,
+          const lastServiceConfig = this.parseAlias({
+            aliasPath,
+            aliasRealPathMap,
+            expands,
+            expand,
             property: prop,
-            path: fullPath,
-            isList: !!serviceConfig.relationships?.find(
-              (relationship) => relationship.alias === fullPath[0]
-            )?.isList,
+            parsedExpands,
+            currentServiceConfig,
+            currentPath,
+            implodeMapping,
+            forwardArgumentsOnPath,
           })
 
-          const extMapping = expands as unknown[]
+          currentAliasPath.push(prop)
 
-          const middlePath = path.split(".").slice(0, -1)
-          let curMiddlePath = currentPath
-          for (const path of middlePath) {
-            curMiddlePath = curMiddlePath.concat(path)
-            extMapping.push({
-              args: expand.args,
-              property: curMiddlePath.join("."),
-              isAliasMapping: true,
-            })
-          }
+          currentServiceConfig = lastServiceConfig
 
-          extMapping.push({
-            ...expand,
-            property: fullPath.join("."),
-            isAliasMapping: true,
-          })
           continue
         }
 
         const fullPath = [BASE_PATH, ...currentPath, prop].join(".")
+        const fullAliasPath = [BASE_PATH, ...currentAliasPath, prop].join(".")
+
         const relationship = currentServiceConfig.relationships?.find(
           (relation) => relation.alias === prop
         )
 
-        let fields: string[] | undefined =
-          fullPath === BASE_PATH + "." + expand.property
-            ? expand.fields ?? []
-            : undefined
+        const isCurrentProp =
+          fullPath === BASE_PATH + "." + expand.property ||
+          fullAliasPath == BASE_PATH + "." + expand.property
 
-        const args =
-          fullPath === BASE_PATH + "." + expand.property
-            ? expand.args
-            : undefined
+        let fields: string[] = isCurrentProp ? expand.fields ?? [] : []
+        const args = isCurrentProp ? expand.args : []
 
         if (relationship) {
           const parentExpand =
             parsedExpands.get([BASE_PATH, ...currentPath].join(".")) || query
 
           if (parentExpand) {
-            const relField = relationship.inverse
+            const parRelField = relationship.inverse
               ? relationship.primaryKey
               : relationship.foreignKey.split(".").pop()!
 
             parentExpand.fields ??= []
 
             parentExpand.fields = parentExpand.fields
-              .concat(relField.split(","))
+              .concat(parRelField.split(","))
               .filter((field) => field !== relationship.alias)
 
-            parentExpand.fields = [...new Set(parentExpand.fields)]
+            parentExpand.fields = deduplicate(parentExpand.fields)
 
-            if (fields) {
-              const relField = relationship.inverse
-                ? relationship.foreignKey.split(".").pop()!
-                : relationship.primaryKey
-              fields = fields.concat(relField.split(","))
-            }
+            const relField = relationship.inverse
+              ? relationship.foreignKey.split(".").pop()!
+              : relationship.primaryKey
+            fields = fields.concat(relField.split(","))
           }
 
           currentServiceConfig = this.getServiceConfig(
@@ -711,7 +691,14 @@ export class RemoteJoiner {
 
         const isAliasMapping = (expand as any).isAliasMapping
         if (!parsedExpands.has(fullPath)) {
-          const parentPath = [BASE_PATH, ...currentPath].join(".")
+          let parentPath = [BASE_PATH, ...currentPath].join(".")
+
+          if (aliasRealPathMap.has(parentPath)) {
+            parentPath = aliasRealPathMap
+              .get(parentPath)!
+              .slice(0, -1)
+              .join(".")
+          }
 
           parsedExpands.set(fullPath, {
             property: prop,
@@ -732,16 +719,131 @@ export class RemoteJoiner {
           if (forwardArgumentsOnPath.includes(fullPath) && args) {
             exp.args = (exp.args || []).concat(args)
           }
+          exp.isAliasMapping ??= isAliasMapping
 
           if (fields) {
-            exp.fields = (exp.fields || []).concat(fields)
+            exp.fields = deduplicate((exp.fields ?? []).concat(fields))
           }
         }
 
         currentPath.push(prop)
+        currentAliasPath.push(prop)
       }
     }
+
     return parsedExpands
+  }
+
+  private parseAlias({
+    aliasPath,
+    aliasRealPathMap,
+    expands,
+    expand,
+    property,
+    parsedExpands,
+    currentServiceConfig,
+    currentPath,
+    implodeMapping,
+    forwardArgumentsOnPath,
+  }) {
+    const serviceConfig = currentServiceConfig
+    const fieldAlias = currentServiceConfig.fieldAlias ?? {}
+    const alias = fieldAlias[property] as any
+
+    const path = isString(alias) ? alias : alias.path
+    const fullPath = [...currentPath.concat(path.split("."))]
+
+    if (aliasRealPathMap.has(aliasPath)) {
+      currentPath.push(...path.split("."))
+
+      const fullPath = [BASE_PATH, ...currentPath].join(".")
+      return parsedExpands.get(fullPath).serviceConfig
+    }
+
+    // remove alias from fields
+    const parentPath = [BASE_PATH, ...currentPath].join(".")
+    const parentExpands = parsedExpands.get(parentPath)
+    parentExpands.fields = parentExpands.fields.filter(
+      (field) => field !== property
+    )
+
+    forwardArgumentsOnPath.push(
+      ...(alias?.forwardArgumentsOnPath || []).map(
+        (forPath) => BASE_PATH + "." + currentPath.concat(forPath).join(".")
+      )
+    )
+
+    implodeMapping.push({
+      location: [...currentPath],
+      property,
+      path: fullPath,
+      isList: !!serviceConfig.relationships?.find(
+        (relationship) => relationship.alias === fullPath[0]
+      )?.isList,
+    })
+
+    const extMapping = expands as unknown[]
+
+    const fullAliasProp = fullPath.join(".")
+    const middlePath = path.split(".")
+    let curMiddlePath = currentPath
+    for (const path of middlePath) {
+      curMiddlePath = curMiddlePath.concat(path)
+
+      const midProp = curMiddlePath.join(".")
+      const existingExpand = expands.find((exp) => exp.property === midProp)
+
+      const extraExtends = {
+        ...(midProp === fullAliasProp ? expand : {}),
+        property: midProp,
+        isAliasMapping: !existingExpand,
+      }
+
+      if (forwardArgumentsOnPath.includes(BASE_PATH + "." + midProp)) {
+        extraExtends.args = (existingExpand?.args ?? []).concat(
+          expand?.args ?? []
+        )
+      }
+
+      extMapping.push(extraExtends)
+    }
+
+    const partialPath: string[] = []
+    for (const partial of path.split(".")) {
+      const relationship = currentServiceConfig.relationships?.find(
+        (relation) => relation.alias === partial
+      )
+
+      if (relationship) {
+        currentServiceConfig = this.getServiceConfig(relationship.serviceName)!
+
+        if (!currentServiceConfig) {
+          throw new Error(
+            `Target service not found: ${relationship.serviceName}`
+          )
+        }
+      }
+
+      const completePath = [
+        BASE_PATH,
+        ...currentPath.concat(partialPath),
+        partial,
+      ]
+      const parentPath = completePath.slice(0, -1).join(".")
+
+      partialPath.push(partial)
+      parsedExpands.set(completePath.join("."), {
+        property: partial,
+        serviceConfig: currentServiceConfig,
+        parent: parentPath,
+        parentConfig: parsedExpands.get(parentPath).serviceConfig,
+      })
+    }
+
+    currentPath.push(...path.split("."))
+    aliasRealPathMap.set(aliasPath, [BASE_PATH, ...currentPath])
+
+    return currentServiceConfig
   }
 
   private groupExpands(

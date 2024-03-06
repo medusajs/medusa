@@ -94,6 +94,9 @@ medusaIntegrationTestRunner({
             },
             payment_collection: {
               fields: ["id"],
+              payment_sessions: {
+                fields: ["id"],
+              },
             },
           },
         })
@@ -143,6 +146,7 @@ medusaIntegrationTestRunner({
               region: expect.objectContaining({ id: region.id }),
               payment_collection: expect.objectContaining({
                 id: paymentCollection.id,
+                payment_sessions: expect.arrayContaining([]),
               }),
             }),
           ])
