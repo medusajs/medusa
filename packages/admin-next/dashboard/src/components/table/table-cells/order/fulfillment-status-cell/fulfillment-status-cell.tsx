@@ -29,7 +29,7 @@ export const FulfillmentStatusCell = ({
     ],
     returned: [t("orders.fulfillment.status.returned"), "green"],
     canceled: [t("orders.fulfillment.status.canceled"), "red"],
-    requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
+    requires_action: [t("orders.fulfillment.status.requiresAction"), "orange"],
   }[status] as [string, "red" | "orange" | "green"]
 
   return <StatusCell color={color}>{label}</StatusCell>
