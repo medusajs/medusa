@@ -20,7 +20,6 @@ import { DAL } from "@medusajs/types"
 import { InjectTransactionManager } from "@medusajs/utils"
 import { InjectManager } from "@medusajs/utils"
 import InventoryLevelService from "./inventory-level"
-import ReservationItemService from "./reservation-item"
 import { partitionArray } from "@medusajs/utils"
 import { InventoryEvents } from "@medusajs/utils"
 import { CommonEvents } from "@medusajs/utils"
@@ -30,7 +29,7 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   inventoryItemService: ModulesSdkTypes.InternalModuleService<any>
   inventoryLevelService: InventoryLevelService<any>
-  reservationItemService: ReservationItemService<any>
+  reservationItemService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -78,7 +77,7 @@ export default class InventoryModuleService<
   protected baseRepository_: DAL.RepositoryService
 
   protected readonly inventoryItemService_: ModulesSdkTypes.InternalModuleService<TInventoryItem>
-  protected readonly reservationItemService_: ReservationItemService<TReservationItem>
+  protected readonly reservationItemService_: ModulesSdkTypes.InternalModuleService<TReservationItem>
   protected readonly inventoryLevelService_: InventoryLevelService<TInventoryLevel>
 
   constructor(
@@ -725,7 +724,10 @@ export default class InventoryModuleService<
     const reservations: InventoryNext.ReservationItemDTO[] =
       await this.listReservationItems({ location_id: locationId }, {}, context)
 
-    await this.reservationItemService_.deleteByLocationId(locationId, context)
+    await this.reservationItemService_.softDelete(
+      { location_id: locationId },
+      context
+    )
 
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
@@ -760,7 +762,10 @@ export default class InventoryModuleService<
     const reservations: InventoryNext.ReservationItemDTO[] =
       await this.listReservationItems({ line_item_id: lineItemId }, {}, context)
 
-    await this.reservationItemService_.deleteByLineItem(lineItemId, context)
+    await this.reservationItemService_.softDelete(
+      { line_item_id: lineItemId },
+      context
+    )
 
     await this.adjustInventoryLevelsForReservationsDeletion(
       reservations,
