@@ -1,5 +1,4 @@
-import { pick } from "lodash"
-import { omitDeep } from "./omit-deep"
+import { omitDeep, pickDeep } from "./omit-deep"
 
 // TODO: once the legacy totals decoration will be removed.
 // We will be able to only compute the totals if one of the total fields is present
@@ -52,9 +51,9 @@ function cleanResponseData<T extends unknown | unknown[]>(
 
   fields = [...fieldsSet]
 
-  arrayData = arrayData.map((record) =>
-    pick(omitDeep(record, EXCLUDED_FIELDS), fields)
-  )
+  arrayData = arrayData.map((record) => {
+    return pickDeep(omitDeep(record, EXCLUDED_FIELDS), fields)
+  })
 
   return (isDataArray ? arrayData : arrayData[0]) as T extends []
     ? Partial<T>[]
