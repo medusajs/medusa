@@ -409,10 +409,11 @@ moduleIntegrationTestRunner({
         it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
           await service.deleteReservationItemsByLineItem("line-item-id")
 
-          const [inventoryLevel] = await service.listInventoryLevels({
-            inventory_item_id: inventoryItem.id,
-            location_id: "location-1",
-          })
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
 
           expect(inventoryLevel).toEqual(
             expect.objectContaining({ reserved_quantity: 2 })
@@ -536,9 +537,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove inventory levels with given location id", async () => {
-          const reservationsPreDeleted = await service.listInventoryLevels({})
+          const inventoryLevelsPreDeletion = await service.listInventoryLevels(
+            {}
+          )
 
-          expect(reservationsPreDeleted).toEqual(
+          expect(inventoryLevelsPreDeletion).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 stocked_quantity: 2,
@@ -553,9 +556,11 @@ moduleIntegrationTestRunner({
 
           await service.deleteInventoryItemLevelByLocationId("location-1")
 
-          const reservationsPostDeleted = await service.listInventoryLevels({})
+          const inventoryLevelsPostDeletion = await service.listInventoryLevels(
+            {}
+          )
 
-          expect(reservationsPostDeleted).toEqual([
+          expect(inventoryLevelsPostDeletion).toEqual([
             expect.objectContaining({
               stocked_quantity: 2,
               location_id: "location-2",
@@ -582,9 +587,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove inventory levels with given location id", async () => {
-          const reservationsPreDeleted = await service.listInventoryLevels({})
+          const inventoryLevelsPreDeletion = await service.listInventoryLevels(
+            {}
+          )
 
-          expect(reservationsPreDeleted).toEqual([
+          expect(inventoryLevelsPreDeletion).toEqual([
             expect.objectContaining({
               stocked_quantity: 2,
               location_id: "location-1",
@@ -593,9 +600,11 @@ moduleIntegrationTestRunner({
 
           await service.deleteInventoryLevel(inventoryItem.id, "location-1")
 
-          const reservationsPostDeleted = await service.listInventoryLevels({})
+          const inventoryLevelsPostDeletion = await service.listInventoryLevels(
+            {}
+          )
 
-          expect(reservationsPostDeleted).toEqual([])
+          expect(inventoryLevelsPostDeletion).toEqual([])
         })
       })
 
