@@ -123,7 +123,7 @@ jobs:
       - name: Run integration tests
         run: yarn test:integration:packages
         env:
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+          DB_PASSWORD: postgres
           DB_USERNAME: postgres
 
   integration-tests-api:
@@ -184,7 +184,7 @@ jobs:
       - name: Run integration tests
         run: yarn test:integration:api
         env:
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+          DB_PASSWORD: postgres
           DB_USERNAME: postgres
 
   integration-tests-plugins:
@@ -237,7 +237,7 @@ jobs:
         run: yarn test:integration:plugins
         env:
           DB_USERNAME: postgres
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+          DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-modules:
@@ -290,7 +290,7 @@ jobs:
         run: yarn test:integration:modules
         env:
           DB_USERNAME: postgres
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+          DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-repositories:
@@ -340,4 +340,4 @@ jobs:
         run: yarn test:integration:repositories
         env:
           DB_USERNAME: postgres
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+          DB_PASSWORD: postgres
