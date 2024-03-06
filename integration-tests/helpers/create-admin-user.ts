@@ -8,9 +8,13 @@ export const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-export const createAdminUser = async (dbConnection, adminHeaders) => {
+export const createAdminUser = async (
+  dbConnection,
+  adminHeaders,
+  container?
+) => {
   await adminSeeder(dbConnection)
-  const appContainer = getContainer()!
+  const appContainer = container ?? getContainer()!
 
   const authModule: IAuthModuleService = appContainer.resolve(
     ModuleRegistrationName.AUTH
