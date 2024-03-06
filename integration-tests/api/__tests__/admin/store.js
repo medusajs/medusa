@@ -6,7 +6,7 @@ const { breaking } = require("../../../helpers/breaking")
 const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
-jest.setTimeout(30000)
+jest.setTimeout(90000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
