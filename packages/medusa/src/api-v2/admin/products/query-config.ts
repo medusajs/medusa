@@ -1,4 +1,4 @@
-export const defaultAdminProductRelations = [
+export const allowedAdminProductRelations = [
   "variants",
   // TODO: Add in next iteration
   // "variants.prices",
@@ -15,7 +15,7 @@ export const defaultAdminProductRelations = [
   // "type",
   // "collection",
 ]
-export const allowedAdminProductRelations = [...defaultAdminProductRelations]
+export const defaultAdminProductRelations = []
 export const defaultAdminProductFields = [
   "id",
   "title",
@@ -52,6 +52,7 @@ export const retrieveTransformQueryConfig = {
 }
 
 export const listTransformQueryConfig = {
+  ...retrieveTransformQueryConfig,
   defaultLimit: 50,
   isList: true,
 }
@@ -82,4 +83,30 @@ export const defaultAdminProductsVariantFields = [
   "barcode",
 ]
 
+export const retrieveVariantConfig = {
+  defaultFields: defaultAdminProductsVariantFields,
+  defaultRelations: [],
+  allowedRelations: [],
+  isList: false,
+}
+
+export const listVariantConfig = {
+  ...retrieveVariantConfig,
+  defaultLimit: 50,
+  isList: true,
+}
+
 export const defaultAdminProductsOptionFields = ["id", "title"]
+
+export const retrieveOptionConfig = {
+  defaultFields: defaultAdminProductsOptionFields,
+  defaultRelations: [],
+  allowedRelations: [],
+  isList: false,
+}
+
+export const listOptionConfig = {
+  ...retrieveVariantConfig,
+  defaultLimit: 50,
+  isList: true,
+}

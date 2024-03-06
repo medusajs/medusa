@@ -15,9 +15,11 @@ module.exports = {
     `.cache`,
   ],
   transformIgnorePatterns: [`/dist`],
-  transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
+  transform: {
+    "^.+\\.[jt]s$": `../../jest-transformer.js`,
+  },
   setupFiles: ["../setup-env.js"],
-  setupFilesAfterEnv: ["../setup.js"],
+  /*setupFilesAfterEnv: ["../setup.js"],
   globalSetup: "../globalSetup.js",
-  globalTeardown: "../globalTeardown.js",
+  globalTeardown: "../globalTeardown.js",*/
 }
