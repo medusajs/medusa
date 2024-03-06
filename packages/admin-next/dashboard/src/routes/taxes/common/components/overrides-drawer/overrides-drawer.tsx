@@ -1,4 +1,4 @@
-import { Product, ProductType, ShippingOption } from "@medusajs/medusa"
+import { Product } from "@medusajs/medusa"
 import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
 import { Button } from "@medusajs/ui"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
@@ -9,6 +9,7 @@ import {
 } from "medusa-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+
 import { SplitView } from "../../../../../components/layout/split-view"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
@@ -63,7 +64,7 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     initRowState(selected)
   )
-  const [intermediate, setIntermediate] = useState<Product[]>([])
+  const [intermediate, setIntermediate] = useState<OverrideOption[]>(selected)
 
   const { searchParams, raw } = useProductTableQuery({
     pageSize: PAGE_SIZE,
@@ -79,13 +80,8 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
   )
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
-    let newState: RowSelectionState
-
-    if (typeof fn === "function") {
-      newState = fn(rowSelection)
-    } else {
-      newState = fn
-    }
+    const newState: RowSelectionState =
+      typeof fn === "function" ? fn(rowSelection) : fn
 
     const diff = Object.keys(newState).filter(
       (k) => newState[k] !== rowSelection[k]
@@ -98,10 +94,17 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
     const addedProducts = (products?.filter((p) => diff.includes(p.id!)) ??
       []) as Product[]
 
-    if (addedProducts) {
-      setIntermediate((prev) => {
-        const update = Array.from(new Set([...prev, ...addedProducts]))
+    if (addedProducts.length > 0) {
+      const newOverrides = addedProducts.map((p) => ({
+        label: p.title,
+        value: p.id!,
+      }))
 
+      setIntermediate((prev) => {
+        const filteredPrev = prev.filter((p) =>
+          Object.keys(newState).includes(p.value)
+        )
+        const update = Array.from(new Set([...filteredPrev, ...newOverrides]))
         return update
       })
     }
@@ -110,12 +113,7 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
   }
 
   const handleSave = () => {
-    const options = intermediate.map((p) => ({
-      value: p.id!,
-      label: p.title,
-    }))
-
-    onSave(options)
+    onSave(intermediate)
   }
 
   const columns = useProductOverrideTableColumns()
@@ -131,7 +129,7 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
     enableRowSelection: true,
     rowSelection: {
       state: rowSelection,
-      updater: updater as OnChangeFn<RowSelectionState>,
+      updater,
     },
     prefix: PRODUCT_PREFIX,
   })
@@ -161,11 +159,11 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
   )
 }
 
-const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
+const ProductTypeOverrideTable = ({ onSave, selected = [] }: OverrideProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     initRowState(selected)
   )
-  const [intermediate, setIntermediate] = useState<ProductType[]>([])
+  const [intermediate, setIntermediate] = useState<OverrideOption[]>(selected)
 
   const { searchParams, raw } = useProductTypeOverrideTableQuery({
     pageSize: PAGE_SIZE,
@@ -181,7 +179,10 @@ const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
       }
     )
 
-  const updater = (newState: RowSelectionState) => {
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const newState: RowSelectionState =
+      typeof fn === "function" ? fn(rowSelection) : fn
+
     const diff = Object.keys(newState).filter(
       (k) => newState[k] !== rowSelection[k]
     )
@@ -193,10 +194,17 @@ const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
     const addedProductTypes =
       product_types?.filter((p) => diff.includes(p.id!)) ?? []
 
-    if (addedProductTypes) {
-      setIntermediate((prev) => {
-        const update = Array.from(new Set([...prev, ...addedProductTypes]))
+    if (addedProductTypes.length > 0) {
+      const newOverrides = addedProductTypes.map((p) => ({
+        label: p.value,
+        value: p.id!,
+      }))
 
+      setIntermediate((prev) => {
+        const filteredPrev = prev.filter((p) =>
+          Object.keys(newState).includes(p.value)
+        )
+        const update = Array.from(new Set([...filteredPrev, ...newOverrides]))
         return update
       })
     }
@@ -205,12 +213,7 @@ const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
   }
 
   const handleSave = () => {
-    const options = intermediate.map((p) => ({
-      value: p.id!,
-      label: p.value,
-    }))
-
-    onSave(options)
+    onSave(intermediate)
   }
 
   const columns = useProductTypeOverrideTableColumns()
@@ -226,7 +229,7 @@ const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
     enableRowSelection: true,
     rowSelection: {
       state: rowSelection,
-      updater: updater as OnChangeFn<RowSelectionState>,
+      updater,
     },
     prefix: PRODUCT_TYPE_PREFIX,
   })
@@ -258,13 +261,13 @@ const ProductTypeOverrideTable = ({ onSave, selected }: OverrideProps) => {
 
 const ShippingOptionOverrideTable = ({
   onSave,
-  selected,
+  selected = [],
   regionId,
 }: OverrideProps & { regionId: string }) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     initRowState(selected)
   )
-  const [intermediate, setIntermediate] = useState<ShippingOption[]>([])
+  const [intermediate, setIntermediate] = useState<OverrideOption[]>(selected)
 
   const { searchParams, raw } = useShippingOptionTableQuery({
     regionId,
@@ -281,7 +284,10 @@ const ShippingOptionOverrideTable = ({
       }
     )
 
-  const updater = (newState: RowSelectionState) => {
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const newState: RowSelectionState =
+      typeof fn === "function" ? fn(rowSelection) : fn
+
     const diff = Object.keys(newState).filter(
       (k) => newState[k] !== rowSelection[k]
     )
@@ -293,10 +299,17 @@ const ShippingOptionOverrideTable = ({
     const addedShippingOptions =
       shipping_options?.filter((p) => diff.includes(p.id!)) ?? []
 
-    if (addedShippingOptions) {
-      setIntermediate((prev) => {
-        const update = Array.from(new Set([...prev, ...addedShippingOptions]))
+    if (addedShippingOptions.length > 0) {
+      const newOverrides = addedShippingOptions.map((p) => ({
+        label: p.name,
+        value: p.id!,
+      }))
 
+      setIntermediate((prev) => {
+        const filteredPrev = prev.filter((p) =>
+          Object.keys(newState).includes(p.value)
+        )
+        const update = Array.from(new Set([...filteredPrev, ...newOverrides]))
         return update
       })
     }
@@ -305,12 +318,7 @@ const ShippingOptionOverrideTable = ({
   }
 
   const handleSave = () => {
-    const options = intermediate.map((p) => ({
-      value: p.id!,
-      label: p.name,
-    }))
-
-    onSave(options)
+    onSave(intermediate)
   }
 
   const columns = useShippingOptionOverrideTableColumns()
@@ -326,7 +334,7 @@ const ShippingOptionOverrideTable = ({
     enableRowSelection: true,
     rowSelection: {
       state: rowSelection,
-      updater: updater as OnChangeFn<RowSelectionState>,
+      updater,
     },
     prefix: SHIPPING_OPTION_PREFIX,
   })
