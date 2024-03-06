@@ -1,3 +1,10 @@
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -5,20 +12,17 @@ import {
   Entity,
   Filter,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-import Refund from "./refund"
 import Capture from "./capture"
-import PaymentSession from "./payment-session"
 import PaymentCollection from "./payment-collection"
+import PaymentSession from "./payment-session"
+import Refund from "./refund"
 
 type OptionalPaymentProps = DAL.EntityDateColumns
 
@@ -30,11 +34,11 @@ export default class Payment {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -56,6 +60,9 @@ export default class Payment {
 
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -102,18 +109,26 @@ export default class Payment {
   captures = new Collection<Capture>(this)
 
   @ManyToOne({
+    entity: () => PaymentCollection,
+    persist: false,
+  })
+  payment_collection: PaymentCollection
+
+  @ManyToOne({
+    entity: () => PaymentCollection,
+    columnType: "text",
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
-    onDelete: "cascade",
+    mapToPk: true,
   })
-  payment_collection!: PaymentCollection
+  payment_collection_id: string
 
   @OneToOne({
     owner: true,
-    fieldName: "session_id",
+    fieldName: "payment_session_id",
     index: "IDX_payment_payment_session_id",
   })
-  payment_session!: PaymentSession
+  payment_session: PaymentSession
 
   /** COMPUTED PROPERTIES START **/
 

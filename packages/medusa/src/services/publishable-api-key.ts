@@ -1,6 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 
+import { selectorConstraintsToString } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import { PublishableApiKey, SalesChannel } from "../models"
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
@@ -12,7 +13,6 @@ import {
 } from "../types/publishable-api-key"
 import { buildQuery, isString } from "../utils"
 import EventBusService from "./event-bus"
-import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager

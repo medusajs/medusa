@@ -22,17 +22,13 @@ export async function run({
 
   logger.info(`Loading seed data from ${path}...`)
 
-  const {
-    currenciesData,
-    moneyAmountsData,
-    priceSetsData,
-    priceSetMoneyAmountsData,
-  } = await import(resolve(process.cwd(), path)).catch((e) => {
-    logger?.error(
-      `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData, currenciesData, moneyAmountsData and priceSetMoneyAmountsData.${EOL}${e}`
-    )
-    throw e
-  })
+  const { moneyAmountsData, priceSetsData, priceSetMoneyAmountsData } =
+    await import(resolve(process.cwd(), path)).catch((e) => {
+      logger?.error(
+        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData, moneyAmountsData and priceSetMoneyAmountsData.${EOL}${e}`
+      )
+      throw e
+    })
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig("pricing", options)!
   const entities = Object.values(PricingModels) as unknown as EntitySchema[]
@@ -47,9 +43,8 @@ export async function run({
   const manager = orm.em.fork()
 
   try {
-    logger.info("Inserting price_sets, currencies & money_amounts")
+    logger.info("Inserting price_sets & money_amounts")
 
-    await createCurrencies(manager as any, currenciesData)
     await createMoneyAmounts(manager as any, moneyAmountsData)
     await createPriceSets(manager as any, priceSetsData)
     await createPriceSetMoneyAmounts(manager as any, priceSetMoneyAmountsData)
@@ -60,19 +55,6 @@ export async function run({
   }
 
   await orm.close(true)
-}
-
-async function createCurrencies(
-  manager: SqlEntityManager<PostgreSqlDriver>,
-  data: RequiredEntityData<PricingModels.Currency>[]
-) {
-  const currencies = data.map((currencyData) => {
-    return manager.create(PricingModels.Currency, currencyData)
-  })
-
-  await manager.persistAndFlush(currencies)
-
-  return currencies
 }
 
 async function createMoneyAmounts(

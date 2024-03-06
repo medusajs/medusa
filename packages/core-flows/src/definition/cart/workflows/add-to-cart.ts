@@ -13,12 +13,12 @@ import {
   getVariantsStep,
   validateVariantsExistStep,
 } from "../steps"
+import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 // TODO: The AddToCartWorkflow are missing the following steps:
 // - Confirm inventory exists (inventory module)
 // - Refresh/delete shipping methods (fulfillment module)
-// - Create line item adjustments (promotion module)
 // - Update payment sessions (payment module)
 
 export const addToCartWorkflowId = "add-to-cart"
@@ -69,6 +69,8 @@ export const addToCartWorkflow = createWorkflow(
     )
 
     const items = addToCartStep({ items: lineItems })
+
+    refreshCartPromotionsStep({ id: input.cart.id })
 
     return items
   }

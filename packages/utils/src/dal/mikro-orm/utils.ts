@@ -148,11 +148,30 @@ export const mikroOrmSerializer = async <TOutput extends object>(
   options?: any
 ): Promise<TOutput> => {
   options ??= {}
+
+  const data_ = Array.isArray(data) ? data : [data]
+
+  const forSerialization: unknown[] = []
+  const notForSerialization: unknown[] = []
+
+  data_.forEach((object) => {
+    if (object.__meta) {
+      return forSerialization.push(object)
+    }
+
+    return notForSerialization.push(object)
+  })
+
   const { serialize } = await import("@mikro-orm/core")
-  const result = serialize(data, {
+  let result: any = serialize(forSerialization, {
     forceObject: true,
     populate: true,
     ...options,
-  })
-  return result as unknown as Promise<TOutput>
+  }) as TOutput[]
+
+  if (notForSerialization.length) {
+    result = result.concat(notForSerialization)
+  }
+
+  return Array.isArray(data) ? result : result[0]
 }

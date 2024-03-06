@@ -50,7 +50,9 @@ export default class Country {
 
   @ManyToOne({
     entity: () => Region,
+    fieldName: "region_id",
     nullable: true,
+    onDelete: "set null",
   })
   region?: Region | null
 

@@ -24,7 +24,7 @@ type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
 
 const TABLE_NAME = "tax_rate"
 
-const singleDefaultRegionIndexName = "IDX_single_default_region"
+export const singleDefaultRegionIndexName = "IDX_single_default_region"
 const singleDefaultRegionIndexStatement = createPsqlIndexStatementHelper({
   name: singleDefaultRegionIndexName,
   tableName: TABLE_NAME,
@@ -79,6 +79,7 @@ export default class TaxRate {
 
   @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
     cascade: ["soft-remove" as Cascade],
+    persist: false,
   })
   rules = new Collection<TaxRateRule>(this)
 

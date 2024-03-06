@@ -3,6 +3,7 @@ import type {
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminGiftCardsRes,
+  AdminOrdersRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -87,12 +88,16 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/orders/details"),
+                lazy: () => import("../../routes/orders/order-detail"),
+                handle: {
+                  crumb: (data: AdminOrdersRes) =>
+                    `Order #${data.order.display_id}`,
+                },
               },
             ],
           },
@@ -476,6 +481,25 @@ const router = createBrowserRouter([
                   {
                     path: "edit",
                     lazy: () => import("../../routes/regions/region-edit"),
+                  },
+                  {
+                    path: "countries/add",
+                    lazy: () =>
+                      import("../../routes/regions/region-add-countries"),
+                  },
+                  {
+                    path: "shipping-options/:so_id/edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/regions/region-edit-shipping-option"
+                      ),
+                  },
+                  {
+                    path: "shipping-options/create",
+                    lazy: () =>
+                      import(
+                        "../../routes/regions/region-create-shipping-option"
+                      ),
                   },
                 ],
               },

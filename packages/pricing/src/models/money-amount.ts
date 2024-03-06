@@ -14,7 +14,6 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import Currency from "./currency"
 import { PriceSetMoneyAmount } from "./index"
 import PriceSet from "./price-set"
 
@@ -46,13 +45,6 @@ class MoneyAmount {
     cascade: ["soft-remove"] as any,
   })
   price_set_money_amount: PriceSetMoneyAmount
-
-  @ManyToOne(() => Currency, {
-    nullable: true,
-    index: "IDX_money_amount_currency_code",
-    fieldName: "currency_code",
-  })
-  currency: Currency
 
   @Property({
     columnType: "numeric",

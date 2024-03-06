@@ -337,7 +337,7 @@ async function MedusaApp_({
       )
     }
 
-    const linkModuleOpt = { ...linkModuleOptions }
+    const linkModuleOpt = { ...(linkModuleOptions ?? {}) }
     linkModuleOpt.database ??= {
       ...(sharedResourcesConfig?.database ?? {}),
     }

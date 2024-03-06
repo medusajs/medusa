@@ -6,6 +6,7 @@ import { useAdminDeleteRegion, useAdminRegions } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-region-table-columns"
@@ -32,7 +33,7 @@ export const RegionListTable = () => {
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: regions ?? [],
+    data: (regions ?? []) as Region[],
     columns,
     count,
     enablePagination: true,
@@ -58,7 +59,7 @@ export const RegionListTable = () => {
         table={table}
         columns={columns}
         count={count}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         isLoading={isLoading}
         filters={filters}
         orderBy={["name", "created_at", "updated_at"]}

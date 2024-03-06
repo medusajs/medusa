@@ -1,3 +1,10 @@
+import { BigNumberRawValue } from "@medusajs/types"
+import {
+  BigNumber,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,16 +16,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import {
-  BigNumber,
-  generateEntityId,
-  MikroOrmBigNumberProperty,
-  PaymentSessionStatus,
-} from "@medusajs/utils"
-import { BigNumberRawValue } from "@medusajs/types"
-
-import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
+import PaymentCollection from "./payment-collection"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
@@ -55,20 +54,48 @@ export default class PaymentSession {
   })
   authorized_at: Date | null = null
 
+  @ManyToOne(() => PaymentCollection, {
+    persist: false,
+  })
+  payment_collection: PaymentCollection
+
   @ManyToOne({
+    entity: () => PaymentCollection,
+    columnType: "text",
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
-    onDelete: "cascade",
+    mapToPk: true,
   })
-  payment_collection!: PaymentCollection
+  payment_collection_id: string
 
   @OneToOne({
     entity: () => Payment,
-    mappedBy: (payment) => payment.payment_session,
-    cascade: ["soft-remove"] as any,
     nullable: true,
+    mappedBy: "payment_session",
   })
   payment?: Payment | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_payment_session_deleted_at",
+  })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

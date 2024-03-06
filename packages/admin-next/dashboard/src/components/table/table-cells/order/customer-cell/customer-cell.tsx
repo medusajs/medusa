@@ -11,9 +11,7 @@ export const CustomerCell = ({ customer }: { customer: Customer | null }) => {
 
   return (
     <div className="flex h-full w-full items-center">
-      <div>
-        <span className="truncate">{name || email}</span>
-      </div>
+      <span className="truncate">{name || email}</span>
     </div>
   )
 }
