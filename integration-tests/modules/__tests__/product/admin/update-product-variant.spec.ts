@@ -1,17 +1,16 @@
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import {
-  simpleProductFactory,
-  simpleRegionFactory,
-} from "../../../../factories"
+import {initDb, useDb} from "../../../../environment-helpers/use-db"
+import {simpleProductFactory, simpleRegionFactory,} from "../../../../factories"
 
-import { AxiosInstance } from "axios"
+import {AxiosInstance} from "axios"
 import adminSeeder from "../../../../helpers/admin-seeder"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import {
+  createDefaultRuleTypes
+} from "../../../helpers/create-default-rule-types"
+import {createVariantPriceSet} from "../../../helpers/create-variant-price-set"
+import {getContainer} from "../../../../environment-helpers/use-container"
 import path from "path"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { useApi } from "../../../../environment-helpers/use-api"
+import {startBootstrapApp} from "../../../../environment-helpers/bootstrap-app"
+import {useApi} from "../../../../environment-helpers/use-api"
 
 jest.setTimeout(50000)
 
@@ -24,6 +23,10 @@ const adminHeaders = {
 const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
+
+// TODO SEE to use new test runner medusaIntegrationTestRunner({
+//   env,
+//   testSuite: ({ dbConnection, getContainer, api }) => {})
 
 describe.skip("POST /admin/products/:id/variants/:id", () => {
   let dbConnection

@@ -39,6 +39,8 @@ export function moduleIntegrationTestRunner({
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
+  process.env.LOG_LEVEL = "error"
+
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
   // migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
 

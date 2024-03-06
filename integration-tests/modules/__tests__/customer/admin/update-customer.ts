@@ -1,13 +1,7 @@
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-
 import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import path from "path"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { useApi } from "../../../../environment-helpers/use-api"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -16,59 +10,47 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/customers/:id", () => {
-  let dbConnection
-  let appContainer
-  let shutdownServer
-  let customerModuleService: ICustomerModuleService
+medusaIntegrationTestRunner({
+  env,
+  testSuite: ({ dbConnection, getContainer, api }) => {
+    describe("POST /admin/customers/:id", () => {
+      let appContainer
+      let customerModuleService: ICustomerModuleService
 
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    customerModuleService = appContainer.resolve(
-      ModuleRegistrationName.CUSTOMER
-    )
-  })
-
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-    await shutdownServer()
-  })
-
-  beforeEach(async () => {
-    await createAdminUser(dbConnection, adminHeaders)
-  })
-
-  afterEach(async () => {
-    const db = useDb()
-    await db.teardown()
-  })
-
-  it("should update a customer", async () => {
-    const customer = await customerModuleService.create({
-      first_name: "John",
-      last_name: "Doe",
-    })
-
-    const api = useApi() as any
-    const response = await api.post(
-      `/admin/customers/${customer.id}`,
-      {
-        first_name: "Jane",
-      },
-      adminHeaders
-    )
-
-    expect(response.status).toEqual(200)
-    expect(response.data.customer).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        first_name: "Jane",
-        last_name: "Doe",
+      beforeAll(async () => {
+        appContainer = getContainer()
+        customerModuleService = appContainer.resolve(
+          ModuleRegistrationName.CUSTOMER
+        )
       })
-    )
-  })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+      })
+
+      it("should update a customer", async () => {
+        const customer = await customerModuleService.create({
+          first_name: "John",
+          last_name: "Doe",
+        })
+
+        const response = await api.post(
+          `/admin/customers/${customer.id}`,
+          {
+            first_name: "Jane",
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.customer).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            first_name: "Jane",
+            last_name: "Doe",
+          })
+        )
+      })
+    })
+  },
 })

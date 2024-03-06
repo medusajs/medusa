@@ -285,11 +285,14 @@ export class MedusaModule {
       moduleDefinition
     )
 
+    const logger_ =
+      container.resolve("logger", { allowUnregistered: true }) ?? logger
+
     try {
       await moduleLoader({
         container,
         moduleResolutions,
-        logger,
+        logger: logger_,
         migrationOnly,
       })
     } catch (err) {
@@ -314,7 +317,7 @@ export class MedusaModule {
         ].__joinerConfig()
 
         if (!joinerConfig.primaryKeys) {
-          logger.warn(
+          logger_.warn(
             `Primary keys are not defined by the module ${keyName}. Setting default primary key to 'id'${EOL}`
           )
 
@@ -407,11 +410,14 @@ export class MedusaModule {
       moduleExports
     )
 
+    const logger_ =
+      container.resolve("logger", { allowUnregistered: true }) ?? logger
+
     try {
       await moduleLoader({
         container,
         moduleResolutions,
-        logger,
+        logger: logger_,
       })
     } catch (err) {
       errorLoading(err)
