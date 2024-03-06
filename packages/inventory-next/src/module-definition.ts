@@ -28,7 +28,7 @@ const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
 })
 
 const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
-  moduleName: Modules.FULFILLMENT,
+  moduleName: Modules.INVENTORY,
   moduleModels: Object.values(InventoryModels),
   migrationsPath: __dirname + "/migrations",
 })
