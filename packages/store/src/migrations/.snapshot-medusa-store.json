@@ -35,6 +35,15 @@
           "default": "'{}'",
           "mappedType": "array"
         },
+        "default_currency_code": {
+          "name": "default_currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "default_sales_channel_id": {
           "name": "default_sales_channel_id",
           "type": "text",
