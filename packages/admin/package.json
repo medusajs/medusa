@@ -19,8 +19,7 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "jest --passWithNoTests",
-    "postinstall": "yarn build node_modules/@medusajs/admin-ui"
+    "test": "jest --passWithNoTests"
   },
   "repository": {
     "type": "git",
@@ -44,8 +43,7 @@
     "medusa-core-utils": "1.2.1",
     "rollup": "3.20.7",
     "rollup-plugin-esbuild": "5.0.0",
-    "ts-dedent": "^2.2.0",
-    "postinstall-postinstall": "^2.1.0"
+    "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.14.0"
