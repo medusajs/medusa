@@ -26,12 +26,6 @@ medusaIntegrationTestRunner({
         await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
-      afterEach(async () => {
-        // TODO: Once teardown doesn't skip constraint checks and cascades, we can remove this
-        const existingRegions = await service.list({})
-        await service.delete(existingRegions.map((r) => r.id))
-      })
-
       it("should create, update, and delete a region", async () => {
         const created = await api.post(
           `/admin/regions`,

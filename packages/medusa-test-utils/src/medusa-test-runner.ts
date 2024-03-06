@@ -215,17 +215,12 @@ export function medusaIntegrationTestRunner({
       })
     }
 
-    const medusaAppLoader =
-      require("@medusajs/medusa/dist/loaders/medusa-app").loadMedusaApp
-    await medusaAppLoader(
-      {
-        container: copiedContainer,
-        configModule: container.resolve("configModule"),
-      },
-      {
-        registerInContainer: false,
-      }
-    )
+    const medusaAppLoaderRunner =
+      require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
+    await medusaAppLoaderRunner({
+      container: copiedContainer,
+      configModule: container.resolve("configModule"),
+    })
   }
 
   const afterEach_ = async () => {
