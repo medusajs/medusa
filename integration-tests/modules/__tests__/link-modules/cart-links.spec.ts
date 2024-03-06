@@ -149,7 +149,6 @@ describe("Cart links", () => {
       },
     })
 
-    console.log(carts)
     expect(carts).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

@@ -656,7 +656,13 @@ describe("RemoteJoiner", () => {
           products {
             variant {
               user_shortcut(arg: 123) {
+                name
                 email
+                products {
+                  product {
+                    handler
+                  }
+                }
               }
             }
           }
@@ -669,19 +675,13 @@ describe("RemoteJoiner", () => {
       [
         {
           service: "order",
-          fieds: ["id", "product_user_alias", "products"],
-        },
-      ],
-      [
-        {
-          service: "variantService",
-          fieds: ["user_shortcut", "id", "product_id"],
+          fieds: ["id", "products"],
         },
       ],
       [
         {
           service: "product",
-          fieds: ["id", "user_id"],
+          fieds: ["name", "id", "user_id"],
           args: [
             {
               name: "arg",
@@ -700,14 +700,26 @@ describe("RemoteJoiner", () => {
       ],
       [
         {
+          service: "variantService",
+          fieds: ["id", "product_id"],
+        },
+      ],
+      [
+        {
           service: "product",
-          fieds: ["id", "user_id"],
+          fieds: ["name", "email", "products", "id", "user_id"],
         },
       ],
       [
         {
           service: "user",
-          fieds: ["email", "id"],
+          fieds: ["name", "email", "products", "id"],
+        },
+      ],
+      [
+        {
+          service: "product",
+          fieds: ["handler", "id"],
         },
       ],
     ])
@@ -736,6 +748,22 @@ describe("RemoteJoiner", () => {
         user_shortcut: {
           email: "janedoe@example.com",
           id: 2,
+          name: "Jane Doe",
+          products: [
+            {
+              product_id: [101, 102],
+              product: [
+                {
+                  handler: "product-1-handler",
+                  id: 101,
+                },
+                {
+                  handler: "product-2-handler",
+                  id: 102,
+                },
+              ],
+            },
+          ],
         },
       },
     })
