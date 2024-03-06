@@ -1,4 +1,4 @@
-import { createAdminUser } from "../../helpers/create-admin-user"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)

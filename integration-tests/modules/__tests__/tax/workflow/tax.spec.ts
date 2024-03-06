@@ -1,7 +1,7 @@
 import { ITaxModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import {
   createTaxRateRulesStepId,
   updateTaxRatesWorkflow,
