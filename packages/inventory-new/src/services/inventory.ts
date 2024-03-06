@@ -24,6 +24,7 @@ import ReservationItemService from "./reservation-item"
 import { partitionArray } from "@medusajs/utils"
 import { InventoryEvents } from "@medusajs/utils"
 import { CommonEvents } from "@medusajs/utils"
+import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -219,15 +220,46 @@ export default class InventoryModuleService<
     input: InventoryNext.CreateReservationItemInput[],
     @MedusaContext() context: Context = {}
   ): Promise<TReservationItem[]> {
-    await this.ensureInventoryLevels(
+    const inventoryLevels = await this.ensureInventoryLevels(
       input.map(({ location_id, inventory_item_id }) => ({
         location_id,
         inventory_item_id,
       })),
       context
     )
+    const created = await this.reservationItemService_.create(input, context)
 
-    return await this.reservationItemService_.create(input, context)
+    const adjustments: Map<string, Map<string, number>> = input.reduce(
+      (acc, curr) => {
+        const locationMap = acc.get(curr.inventory_item_id) ?? new Map()
+
+        const adjustment = locationMap.get(curr.location_id) ?? 0
+        locationMap.set(curr.location_id, adjustment + curr.quantity)
+
+        acc.set(curr.inventory_item_id, locationMap)
+        return acc
+      },
+      new Map()
+    )
+
+    const levelAdjustmentUpdates = inventoryLevels.map((level) => {
+      const adjustment = adjustments
+        .get(level.inventory_item_id)
+        ?.get(level.location_id)
+
+      if (!adjustment) {
+        return
+      }
+
+      return {
+        id: level.id,
+        reserved_quantity: level.reserved_quantity + adjustment,
+      }
+    })
+
+    await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
+
+    return created
   }
 
   /**
@@ -594,7 +626,94 @@ export default class InventoryModuleService<
     input: (InventoryNext.UpdateReservationItemInput & { id: string })[],
     @MedusaContext() context: Context = {}
   ): Promise<TReservationItem[]> {
-    return await this.reservationItemService_.update(input, context)
+    const reservationItems = await this.listReservationItems(
+      { id: input.map((u) => u.id) },
+      {},
+      context
+    )
+
+    const reservationMap: Map<string, ReservationItemDTO> = new Map(
+      reservationItems.map((r) => [r.id, r])
+    )
+
+    const adjustments: Map<string, Map<string, number>> = input.reduce(
+      (acc, update) => {
+        const reservation = reservationMap.get(update.id)
+        if (!reservation) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Reservation item with id ${update.id} not found`
+          )
+        }
+
+        const locationMap = acc.get(reservation.inventory_item_id) ?? new Map()
+
+        if (
+          isDefined(update.location_id) &&
+          update.location_id !== reservation.location_id
+        ) {
+          const reservationLocationAdjustment =
+            locationMap.get(reservation.location_id) ?? 0
+
+          locationMap.set(
+            reservation.location_id,
+            reservationLocationAdjustment - reservation.quantity
+          )
+
+          const updateLocationAdjustment =
+            locationMap.get(update.location_id) ?? 0
+
+          locationMap.set(
+            update.location_id,
+            updateLocationAdjustment + (update.quantity || reservation.quantity)
+          )
+        } else if (
+          isDefined(update.quantity) &&
+          update.quantity !== reservation.quantity
+        ) {
+          const locationAdjustment =
+            locationMap.get(reservation.location_id) ?? 0
+
+          locationMap.set(
+            reservation.location_id,
+            locationAdjustment + (update.quantity! - reservation.quantity)
+          )
+        }
+
+        acc.set(reservation.inventory_item_id, locationMap)
+        return acc
+      },
+      new Map()
+    )
+
+    const result = await this.reservationItemService_.update(input, context)
+
+    const inventoryLevels = await this.ensureInventoryLevels(
+      reservationItems.map((r) => ({
+        inventory_item_id: r.inventory_item_id,
+        location_id: r.location_id,
+      })),
+      context
+    )
+
+    const levelAdjustmentUpdates = inventoryLevels.map((level) => {
+      const adjustment = adjustments
+        .get(level.inventory_item_id)
+        ?.get(level.location_id)
+
+      if (!adjustment) {
+        return
+      }
+
+      return {
+        id: level.id,
+        reserved_quantity: level.reserved_quantity + adjustment,
+      }
+    })
+
+    await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
+
+    return result
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -901,8 +1020,8 @@ export default class InventoryModuleService<
       const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
 
       const adjustment = inventoryLevelMap.has(curr.location_id)
-        ? inventoryLevelMap.get(curr.location_id) + curr.quantity
-        : curr.quantity
+        ? inventoryLevelMap.get(curr.location_id) - curr.quantity
+        : -curr.quantity
 
       inventoryLevelMap.set(curr.location_id, adjustment)
       acc.set(curr.inventory_item_id, inventoryLevelMap)
@@ -920,7 +1039,7 @@ export default class InventoryModuleService<
 
       return {
         id: level.id,
-        reserved_quantity: level.reserved_quantity - adjustment,
+        reserved_quantity: level.reserved_quantity + adjustment,
       }
     })
 

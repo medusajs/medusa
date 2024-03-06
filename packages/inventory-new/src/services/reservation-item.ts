@@ -1,4 +1,4 @@
-import { Context, DAL } from "@medusajs/types"
+import { Context, DAL, InventoryNext } from "@medusajs/types"
 import {
   InjectTransactionManager,
   MedusaContext,
@@ -6,6 +6,7 @@ import {
 } from "@medusajs/utils"
 import { ReservationItem } from "../models/reservation-item"
 import { ReservationItemRepository } from "@repositories"
+import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   reservationItemRepository: ReservationItemRepository
