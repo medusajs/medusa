@@ -72,20 +72,14 @@ export async function listAndCountPriceListPricingModule({
     priceList.name = priceList.title
     delete priceList.title
 
-    const customerGroupPriceListRule = priceListRulesData.find(
+    const customerGroupRule = priceListRulesData.find(
       (plr) => plr.rule_type.rule_attribute === "customer_group_id"
     )
 
     priceList.customer_groups =
-      customerGroupPriceListRule?.price_list_rule_values
-        .map((customerGroupRule) =>
-          customerGroupIdMap.get(customerGroupRule.value)
-        )
-        .filter(
-          (
-            customerGroup: CustomerGroup | undefined
-          ): customerGroup is CustomerGroup => !!customerGroup
-        ) || []
+      customerGroupRule?.price_list_rule_values
+        .map((cgr) => customerGroupIdMap.get(cgr.value))
+        .filter((cg): cg is CustomerGroup => !!cg) || []
   }
 
   return [priceLists, count]
