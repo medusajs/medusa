@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsOptional, ValidateNested } from "class-validator"
+import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import {
   DateComparisonOperator,
   FindParams,
@@ -43,4 +43,16 @@ export class AdminGetPaymentsParams extends extendedFindParamsMixin({
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
+}
+
+export class AdminPostPaymentsCapturesReq {
+  @IsInt()
+  @IsOptional()
+  amount?: number
+}
+
+export class AdminPostPaymentsRefundsReq {
+  @IsInt()
+  @IsOptional()
+  amount?: number
 }
