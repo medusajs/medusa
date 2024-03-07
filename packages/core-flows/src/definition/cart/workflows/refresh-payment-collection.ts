@@ -3,11 +3,11 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   deletePaymentSessionStep,
-  retrievePaymentCollectionStep,
   updatePaymentCollectionStep,
 } from "../../payment-collection"
 
@@ -40,6 +40,10 @@ export const refreshPaymentCollectionForCartWorkflowId =
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
   (input: WorkflowData<WorklowInput>): WorkflowData<void> => {
+    const test = transform({ input }, (data) => {
+      console.log("Workflow >>>: ", data.input)
+    })
+
     const carts = useRemoteQueryStep({
       entry_point: "cart",
       fields: [
@@ -47,23 +51,13 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         "total",
         "currency_code",
         "payment_collection.id",
-        // TODO: Add back when remoteJoiner aliasing bug is fixed
-        // "payment_collection.payment_sessions.id",
+        "payment_collection.payment_sessions.id",
       ],
-      variables: { id: input.cart_id },
-    })
-
-    // TODO: Add back when remoteJoiner aliasing bug is fixed
-    const paymentCollection = retrievePaymentCollectionStep({
-      id: carts[0].payment_collection.id,
-      config: {
-        relations: ["payment_sessions"],
-      },
+      variables: { id: input.cart_id, test },
     })
 
     deletePaymentSessionStep({
-      // TODO: Update when remoteJoiner aliasing bug is fixed
-      payment_session_id: paymentCollection.payment_sessions?.[0].id,
+      payment_session_id: carts[0].payment_collection.payment_sessions?.[0].id,
     })
 
     // TODO: Temporary fixed cart total, so we can test the workflow.

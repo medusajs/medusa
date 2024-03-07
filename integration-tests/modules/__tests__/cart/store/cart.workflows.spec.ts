@@ -806,7 +806,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("refreshPaymentCollectionForCart", () => {
+      describe.only("refreshPaymentCollectionForCart", () => {
         it("should refresh a payment collection for a cart", async () => {
           const cart = await cartModuleService.create({
             currency_code: "dkk",
@@ -874,10 +874,15 @@ medusaIntegrationTestRunner({
         })
 
         describe("compensation", () => {
-          it.only("should revert payment collection amount and create a new payment session", async () => {
+          it("should revert payment collection amount and create a new payment session", async () => {
+            const region = await regionModuleService.create({
+              name: "US",
+              currency_code: "usd",
+            })
+
             const testCart = await cartModuleService.create({
               currency_code: "usd",
-              region_id: defaultRegion.id,
+              region_id: region.id,
               items: [
                 {
                   quantity: 1,

@@ -47,6 +47,8 @@ export const updatePaymentCollectionStep = createStep(
       ModuleRegistrationName.PAYMENT
     )
 
+    console.log("PREV DATA: ", prevData)
+
     await paymentModuleService.upsertPaymentCollections(
       prevData.map((pc) => ({
         id: pc.id,
