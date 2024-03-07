@@ -31766,15 +31766,30 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/api-key": "workspace:^"
+    "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/inventory": "workspace:^"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/pricing": "workspace:^"
+    "@medusajs/product": "workspace:^"
+    "@medusajs/promotion": "workspace:^"
+    "@medusajs/region": "workspace:^"
+    "@medusajs/store": "workspace:^"
+    "@medusajs/tax": "workspace:^"
+    "@medusajs/user": "workspace:^"
+    "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
+    medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
+    medusa-plugin-sendgrid: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown

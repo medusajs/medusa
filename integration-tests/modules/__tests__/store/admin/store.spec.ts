@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IStoreModuleService } from "@medusajs/types"
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
