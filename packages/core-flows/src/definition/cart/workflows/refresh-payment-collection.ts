@@ -3,7 +3,6 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
-  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
@@ -40,10 +39,6 @@ export const refreshPaymentCollectionForCartWorkflowId =
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
   (input: WorkflowData<WorklowInput>): WorkflowData<void> => {
-    const test = transform({ input }, (data) => {
-      console.log("Workflow >>>: ", data.input)
-    })
-
     const carts = useRemoteQueryStep({
       entry_point: "cart",
       fields: [
@@ -53,7 +48,7 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         "payment_collection.id",
         "payment_collection.payment_sessions.id",
       ],
-      variables: { id: input.cart_id, test },
+      variables: { id: input.cart_id },
     })
 
     deletePaymentSessionStep({

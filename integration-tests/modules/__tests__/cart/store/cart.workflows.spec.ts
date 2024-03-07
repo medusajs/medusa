@@ -806,7 +806,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("refreshPaymentCollectionForCart", () => {
+      describe("refreshPaymentCollectionForCart", () => {
         it("should refresh a payment collection for a cart", async () => {
           const cart = await cartModuleService.create({
             currency_code: "dkk",

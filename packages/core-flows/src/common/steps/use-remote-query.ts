@@ -21,9 +21,6 @@ export const useRemoteQueryStep = createStep(
 
     const result = await query(queryObject)
 
-    console.log("Remote query object: ", queryObject)
-    console.log("Remote query result: ", result)
-
     return new StepResponse(result)
   }
 )

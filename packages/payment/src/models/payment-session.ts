@@ -44,7 +44,7 @@ export default class PaymentSession {
   data: Record<string, unknown> = {}
 
   @Property({ columnType: "jsonb", nullable: true })
-  context?: Record<string, unknown> | null
+  context: Record<string, unknown> | null
 
   @Enum({
     items: () => PaymentSessionStatus,

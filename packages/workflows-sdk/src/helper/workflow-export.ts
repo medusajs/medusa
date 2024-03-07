@@ -183,7 +183,6 @@ function createContextualWorkflowRunner<
       throw new Error(errorMessage)
     }
 
-    console.log(resultFrom, transaction.getContext())
     let result
     if (options?.wrappedInput) {
       result = await resolveValue(resultFrom, transaction.getContext())
