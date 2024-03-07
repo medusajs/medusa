@@ -24,7 +24,9 @@ medusaIntegrationTestRunner({
     describe("Admin: Price Lists API", () => {
       let appContainer
       let product
+      let product2
       let variant
+      let variant2
       let region
       let customerGroup
       let pricingModule: IPricingModuleService
@@ -249,6 +251,144 @@ medusaIntegrationTestRunner({
             type: "not_found",
             message: "Price list with id: does-not-exist was not found",
           })
+        })
+      })
+
+      describe("GET /admin/price-lists/:id/products", () => {
+        beforeEach(async () => {
+          ;[product2] = await productModule.create([
+            { title: "test product 2 uniquely" },
+          ])
+
+          await pricingModule.createRuleTypes([
+            { name: "Customer Group ID", rule_attribute: "customer_group_id" },
+            { name: "Region ID", rule_attribute: "region_id" },
+          ])
+
+          const [productOption2] = await productModule.createOptions([
+            { title: "Test option 1", product_id: product2.id },
+          ])
+
+          ;[variant2] = await productModule.createVariants([
+            {
+              product_id: product2.id,
+              title: "test product variant 2",
+              options: [{ value: "test 2", option_id: productOption2.id }],
+            },
+          ])
+        })
+
+        it("should list all products in a price list", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+            rules: [],
+          })
+
+          const priceSet2 = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant2.id,
+            prices: [{ amount: 4000, currency_code: "usd" }],
+            rules: [],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              ends_at: new Date(),
+              starts_at: new Date(),
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                },
+                {
+                  amount: 6000,
+                  currency_code: "usd",
+                  price_set_id: priceSet2.id,
+                },
+              ],
+            },
+          ])
+
+          let response = await api.get(
+            `/admin/price-lists/${priceList.id}/products`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(2)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: product.id,
+                title: product.title,
+              }),
+              expect.objectContaining({
+                id: product2.id,
+                title: product2.title,
+              }),
+            ])
+          )
+        })
+
+        it("should list all products constrained by search query in a price list", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant2.id,
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+            rules: [],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              ends_at: new Date(),
+              starts_at: new Date(),
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                },
+              ],
+            },
+          ])
+
+          let response = await api.get(
+            `/admin/price-lists/${priceList.id}/products?q=shouldnotreturnanything`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(0)
+          expect(response.data.products).toEqual([])
+
+          response = await api.get(
+            `/admin/price-lists/${priceList.id}/products?q=uniquely`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.products).toEqual([
+            expect.objectContaining({
+              id: product2.id,
+            }),
+          ])
         })
       })
     })

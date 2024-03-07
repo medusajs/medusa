@@ -1,8 +1,9 @@
 import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaContainer, PriceListDTO } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { PriceListRelations, priceListRemoteQueryFields } from "../query-config"
+import { AdminPriceListEndpointDTO } from "../types"
 
 enum RuleAttributes {
   CUSTOMER_GROUP_ID = "customer_group_id",
@@ -17,7 +18,7 @@ export async function listPriceLists({
   container: MedusaContainer
   fields: string[]
   variables: Record<string, any>
-}): Promise<[PriceListDTO[], number]> {
+}): Promise<[AdminPriceListEndpointDTO[], number]> {
   const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
   const customerModule = container.resolve(ModuleRegistrationName.CUSTOMER)
 
@@ -115,9 +116,11 @@ export async function listPriceLists({
     }
   }
 
-  const sanitizedPriceLists = priceLists.map((priceList) => {
-    return cleanResponseData(priceList, fields)
-  })
+  const sanitizedPriceLists: AdminPriceListEndpointDTO[] = priceLists.map(
+    (priceList) => {
+      return cleanResponseData(priceList, fields)
+    }
+  )
 
   return [sanitizedPriceLists, count]
 }

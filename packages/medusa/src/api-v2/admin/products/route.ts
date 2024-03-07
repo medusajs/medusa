@@ -1,17 +1,17 @@
+import { createProductsWorkflow } from "@medusajs/core-flows"
+import { LinkModuleUtils } from "@medusajs/modules-sdk"
+import { CreateProductDTO } from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 
-import { CreateProductDTO } from "@medusajs/types"
-import { createProductsWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(LinkModuleUtils.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
