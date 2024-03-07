@@ -57,7 +57,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("/admin/products", () => {
-      describe("GET /admin/products", () => {
+      describe.only("GET /admin/products", () => {
         beforeEach(async () => {
           await productSeeder(dbConnection)
           await simpleSalesChannelFactory(dbConnection, {
