@@ -182,6 +182,26 @@ export interface FilterablePaymentSessionProps
   deleted_at?: OperatorMap<string>
 }
 
+export interface FilterableCaptureProps extends BaseFilterable<CaptureDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  payment_id?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+}
+
+export interface FilterableRefundProps extends BaseFilterable<RefundDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  payment_id?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+}
+
 /* ********** PAYMENT ********** */
 export interface PaymentDTO {
   /**
