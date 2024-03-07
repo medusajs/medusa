@@ -176,7 +176,6 @@ async function MedusaApp_({
   migrationOnly = false,
   loaderOnly = false,
 }: MedusaAppOptions<RemoteFetchDataCallback> & {
-  loaderOnly?: boolean
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)

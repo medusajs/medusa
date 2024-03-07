@@ -68,4 +68,9 @@ export type MedusaAppOptions<TRemoteFetch> = {
   remoteFetchData?: TRemoteFetch
   injectedDependencies?: any
   onApplicationStartCb?: () => void
+
+  /**
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   */
+  loaderOnly?: boolean
 }
