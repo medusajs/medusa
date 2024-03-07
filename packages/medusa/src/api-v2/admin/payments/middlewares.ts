@@ -35,10 +35,9 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/payments/:id/capture",
     middlewares: [],
   },
-  // TODO: Add in follow-up PR
-  // {
-  //   method: ["POST"],
-  //   matcher: "/admin/payments/:id/refund",
-  //   middlewares: [],
-  // },
+  {
+    method: ["POST"],
+    matcher: "/admin/payments/:id/refund",
+    middlewares: [],
+  },
 ]

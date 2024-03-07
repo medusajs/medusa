@@ -1,4 +1,7 @@
-import { capturePaymentWorkflow } from "@medusajs/core-flows"
+import {
+  capturePaymentWorkflow,
+  refundPaymentWorkflow,
+} from "@medusajs/core-flows"
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
@@ -120,7 +123,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should capture a payment with custom amount", async () => {
+      it("should partially capture a payment", async () => {
         const paymentCollection = await paymentService.createPaymentCollections(
           {
             region_id: "test-region",
@@ -169,6 +172,109 @@ medusaIntegrationTestRunner({
         })
 
         expect(capture).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            payment: expect.objectContaining({ id: payment.id }),
+            amount: 500,
+          })
+        )
+      })
+
+      it("should refund a payment", async () => {
+        const paymentCollection = await paymentService.createPaymentCollections(
+          {
+            region_id: "test-region",
+            amount: 1000,
+            currency_code: "usd",
+          }
+        )
+
+        const paymentSession = await paymentService.createPaymentSession(
+          paymentCollection.id,
+          {
+            provider_id: "pp_system_default",
+            amount: 1000,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+
+        const payment = await paymentService.authorizePaymentSession(
+          paymentSession.id,
+          {}
+        )
+
+        await capturePaymentWorkflow(appContainer).run({
+          input: {
+            payment_id: payment.id,
+          },
+          throwOnError: false,
+        })
+
+        await refundPaymentWorkflow(appContainer).run({
+          input: {
+            payment_id: payment.id,
+          },
+          throwOnError: false,
+        })
+
+        const [refund] = await paymentService.listRefunds({
+          payment_id: payment.id,
+        })
+
+        expect(refund).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            payment: expect.objectContaining({ id: payment.id }),
+            amount: 1000,
+          })
+        )
+      })
+
+      it("should partially refund a payment", async () => {
+        const paymentCollection = await paymentService.createPaymentCollections(
+          {
+            region_id: "test-region",
+            amount: 1000,
+            currency_code: "usd",
+          }
+        )
+
+        const paymentSession = await paymentService.createPaymentSession(
+          paymentCollection.id,
+          {
+            provider_id: "pp_system_default",
+            amount: 1000,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+
+        const payment = await paymentService.authorizePaymentSession(
+          paymentSession.id,
+          {}
+        )
+
+        await capturePaymentWorkflow(appContainer).run({
+          input: {
+            payment_id: payment.id,
+          },
+          throwOnError: false,
+        })
+
+        await refundPaymentWorkflow(appContainer).run({
+          input: {
+            payment_id: payment.id,
+            amount: 500,
+          },
+          throwOnError: false,
+        })
+
+        const [refund] = await paymentService.listRefunds({
+          payment_id: payment.id,
+        })
+
+        expect(refund).toEqual(
           expect.objectContaining({
             id: expect.any(String),
             payment: expect.objectContaining({ id: payment.id }),
