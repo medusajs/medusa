@@ -333,17 +333,11 @@ describe("WebshipperFulfillmentService", () => {
       )
 
       medusaItem.variant = {
-        weight: 1234
+        weight: 1234,
+        product: {}
       }
 
-      medusaItem.variant.product = {}
-
-      let item
-      try {
-        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
-      } catch (error) {
-        console.log(error)
-      }
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
 
       expect(item).toEqual({
         ext_ref: "item_id",
@@ -364,17 +358,13 @@ describe("WebshipperFulfillmentService", () => {
         {}
       )
 
-      medusaItem.variant = {}
-      medusaItem.variant.product = {
-        weight: 4321,
+      medusaItem.variant = {
+        product: {
+          weight: 4321,
+        }
       }
 
-      let item
-      try {
-        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
-      } catch (error) {
-        console.log(error)
-      }
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
 
       expect(item).toEqual({
         ext_ref: "item_id",
@@ -396,18 +386,13 @@ describe("WebshipperFulfillmentService", () => {
       )
 
       medusaItem.variant = {
-        weight: 1
-      }
-      medusaItem.variant.product = {
-        weight: 2,
+        weight: 1,
+        product: {
+          weight: 2,
+        }
       }
 
-      let item
-      try {
-        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
-      } catch (error) {
-        console.log(error)
-      }
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
 
       expect(item).toEqual({
         ext_ref: "item_id",
