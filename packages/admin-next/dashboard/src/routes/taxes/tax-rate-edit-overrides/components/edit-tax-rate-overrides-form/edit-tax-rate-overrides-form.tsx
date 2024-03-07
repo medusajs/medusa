@@ -247,7 +247,7 @@ export const EditTaxRateOverridesForm = ({
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
               <div

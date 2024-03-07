@@ -256,7 +256,7 @@ export const CreateTaxRateForm = () => {
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex overflow-hidden">
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
               <div
