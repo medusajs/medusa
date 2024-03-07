@@ -17,6 +17,15 @@ describe("operator-map-re-mapper", () => {
       prop6: {
         lt: 1,
       },
+      prop7: {
+        contains: "test",
+      },
+      prop8: {
+        starts_with: "test",
+      },
+      prop9: {
+        ends_with: "test",
+      },
     }
 
     const output = operatorMapReMapper(where)
@@ -35,6 +44,15 @@ describe("operator-map-re-mapper", () => {
       },
       prop6: {
         $lt: 1,
+      },
+      prop7: {
+        $like: "%test%",
+      },
+      prop8: {
+        $like: "test%",
+      },
+      prop9: {
+        $like: "%test",
       },
     })
   })

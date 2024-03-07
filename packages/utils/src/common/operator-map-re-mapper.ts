@@ -1,4 +1,14 @@
-const operatorMap = {
+import { isObject } from "./is-object"
+
+type Operator = string
+type ComplexOperator = {
+  mapTo: string
+  value: (value: string) => string
+}
+
+type OperatorMap = { [Key: string]: Operator | ComplexOperator }
+
+const operatorMap: OperatorMap = {
   eq: "$eq",
   ne: "$ne",
   lt: "$lt",
@@ -6,9 +16,25 @@ const operatorMap = {
   gt: "$gt",
   gte: "$gte",
   in: "$in",
+  contains: {
+    mapTo: "$like",
+    value: (value: string) => `%${value}%`,
+  },
+  starts_with: {
+    mapTo: "$like",
+    value: (value: string) => `${value}%`,
+  },
+  ends_with: {
+    mapTo: "$like",
+    value: (value: string) => `%${value}`,
+  },
 }
 
-import { isObject } from "./is-object"
+function isComplexOperator(
+  operator: Operator | ComplexOperator
+): operator is ComplexOperator {
+  return isObject(operator)
+}
 
 function isPrimitive(value: any) {
   return (
@@ -48,6 +74,11 @@ export function operatorMapReMapper(
 
   for (const key of Object.keys(input)) {
     const remappedKey = operatorMap[key] ?? key
+    if (isComplexOperator(remappedKey)) {
+      output[remappedKey.mapTo] = remappedKey.value(input[key])
+      continue
+    }
+
     if (Array.isArray(input[key])) {
       output[remappedKey] = (input[key] as Array<any>).map((i) =>
         operatorMapReMapper(i, false)
