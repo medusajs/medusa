@@ -5,7 +5,7 @@ import { Country, Region } from "@models"
 
 export const LinkableKeys = {
   region_id: Region.name,
-  country_id: Region.name,
+  country_iso: Country.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
