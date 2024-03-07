@@ -36,6 +36,7 @@ export const DataTable = <TData,>({
   if (isLoading) {
     return (
       <DataTableSkeleton
+        layout={layout}
         columns={columns}
         rowCount={pageSize}
         searchable={search}
