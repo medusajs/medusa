@@ -300,12 +300,19 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
               <Form.Field
                 control={form.control}
                 name="start_date_enabled"
-                render={() => (
+                render={({ field: { value, onChange, ...field } }) => (
                   <Form.Item>
                     <div className="flex items-center justify-between">
                       <Form.Label tooltip="todo">
                         {t("discounts.hasStartDate")}
                       </Form.Label>
+                      <Form.Control>
+                        <Switch
+                          {...field}
+                          checked={!!value}
+                          onCheckedChange={onChange}
+                        />
+                      </Form.Control>
                     </div>
                     <Form.Hint className="!mt-1">
                       {t("discounts.startDateHint")}
@@ -331,6 +338,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                               onChange(v ?? null)
                             }}
                             {...field}
+                            disabled={!form.watch("start_date_enabled")}
                           />
                         </Form.Control>
                       </div>

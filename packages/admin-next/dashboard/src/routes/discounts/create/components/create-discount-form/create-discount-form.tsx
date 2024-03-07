@@ -13,7 +13,7 @@ import {
 } from "../../../../../components/route-modal"
 import { CreateDiscountDetails } from "./create-discount-details"
 import { DiscountRuleType } from "./types"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 
 /**
  * There is some duplication here but we cannot achieve
@@ -24,11 +24,12 @@ const CreateDiscountSchema = zod.discriminatedUnion("type", [
     code: zod.string(),
     regions: zod.array(zod.string()).min(1),
     is_dynamic: zod.boolean(),
-    start_date: zod.date(),
+    start_date: zod.date().optional(),
     end_date: zod.date().optional(),
     usage_limit: zod.number().optional(),
     description: zod.string().optional(),
 
+    start_date_enabled: zod.boolean().optional(),
     end_date_enabled: zod.boolean().optional(),
     usage_limit_enabled: zod.boolean().optional(),
     valid_duration_enabled: zod.boolean().optional(),
@@ -45,11 +46,12 @@ const CreateDiscountSchema = zod.discriminatedUnion("type", [
     code: zod.string(),
     regions: zod.array(zod.string()).min(1),
     is_dynamic: zod.boolean(),
-    start_date: zod.date(),
+    start_date: zod.date().optional(),
     end_date: zod.date().optional(),
     usage_limit: zod.number().optional(),
     description: zod.string().optional(),
 
+    start_date_enabled: zod.boolean().optional(),
     end_date_enabled: zod.boolean().optional(),
     usage_limit_enabled: zod.boolean().optional(),
     valid_duration_enabled: zod.boolean().optional(),
@@ -79,11 +81,12 @@ const CreateDiscountSchema = zod.discriminatedUnion("type", [
     code: zod.string(),
     regions: zod.array(zod.string()).min(1),
     is_dynamic: zod.boolean(),
-    start_date: zod.date(),
+    start_date: zod.date().optional(),
     end_date: zod.date().optional(),
     usage_limit: zod.number().optional(),
     description: zod.string().optional(),
 
+    start_date_enabled: zod.boolean().optional(),
     end_date_enabled: zod.boolean().optional(),
     usage_limit_enabled: zod.boolean().optional(),
     valid_duration_enabled: zod.boolean().optional(),
@@ -140,7 +143,7 @@ export const CreateDiscountForm = () => {
         code: values.code,
         regions: values.regions,
         is_dynamic: values.is_dynamic,
-        starts_at: values.start_date,
+        starts_at: values.start_date_enabled ? values.start_date : undefined,
         ends_at: values.end_date_enabled ? values.end_date : undefined,
         is_disabled: false,
         usage_limit: values.usage_limit_enabled
