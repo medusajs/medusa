@@ -11,6 +11,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   isString,
   promiseAll,
@@ -83,6 +84,8 @@ export default class StoreModuleService<TEntity extends Store = Store>
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Store[]> {
     let normalizedInput = StoreModuleService.normalizeInput(data)
+    StoreModuleService.validateCreateRequest(normalizedInput)
+
     return await this.storeService_.create(normalizedInput, sharedContext)
   }
 
@@ -169,6 +172,7 @@ export default class StoreModuleService<TEntity extends Store = Store>
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Store[]> {
     const normalizedInput = StoreModuleService.normalizeInput(data)
+    await this.validateUpdateRequest(normalizedInput)
     return await this.storeService_.update(normalizedInput, sharedContext)
   }
 
@@ -181,5 +185,81 @@ export default class StoreModuleService<TEntity extends Store = Store>
         name: store.name?.trim(),
       })
     )
+  }
+
+  private static validateCreateRequest(stores: StoreTypes.CreateStoreDTO[]) {
+    for (const store of stores) {
+      // If we are setting the default currency code on creating, make sure it is supported
+      if (store.default_currency_code) {
+        if (
+          !store.supported_currency_codes?.includes(
+            store.default_currency_code ?? ""
+          )
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Store does not have currency: ${store.default_currency_code}`
+          )
+        }
+      }
+    }
+  }
+
+  private async validateUpdateRequest(stores: UpdateStoreInput[]) {
+    const dbStores = await this.storeService_.list(
+      { id: stores.map((s) => s.id) },
+      { take: null }
+    )
+
+    const dbStoresMap = new Map<string, Store>(
+      dbStores.map((dbStore) => [dbStore.id, dbStore])
+    )
+
+    for (const store of stores) {
+      const dbStore = dbStoresMap.get(store.id)
+
+      // If it is updating both the supported currency codes and the default one, look in that list
+      if (store.supported_currency_codes && store.default_currency_code) {
+        if (
+          !store.supported_currency_codes.includes(
+            store.default_currency_code ?? ""
+          )
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Store does not have currency: ${store.default_currency_code}`
+          )
+        }
+        return
+      }
+
+      // If it is updating only the default currency code, look in the db store
+      if (store.default_currency_code) {
+        if (
+          !dbStore?.supported_currency_codes?.includes(
+            store.default_currency_code
+          )
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Store does not have currency: ${store.default_currency_code}`
+          )
+        }
+      }
+
+      // If it is updating only the supported currency codes, make sure one of them is not set as a default one
+      if (store.supported_currency_codes) {
+        if (
+          !store.supported_currency_codes.includes(
+            dbStore?.default_currency_code ?? ""
+          )
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "You are not allowed to remove default currency from store currencies without replacing it as well"
+          )
+        }
+      }
+    }
   }
 }
