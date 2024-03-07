@@ -6,7 +6,7 @@ export class Migration20240225134525 extends Migration {
     const paymentCollectionExists = await this.execute(
       `SELECT * FROM information_schema.tables where table_name = 'payment_collection' and table_schema = 'public';`
     )
-    
+
     if (paymentCollectionExists.length) {
       this.addSql(`
         ${generatePostgresAlterColummnIfExistStatement(
@@ -40,6 +40,12 @@ export class Migration20240225134525 extends Migration {
 
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "created_by" TEXT NULL;
+        ${generatePostgresAlterColummnIfExistStatement(
+          "refund",
+          ["reason"],
+          "DROP NOT NULL"
+        )}
 
         CREATE TABLE IF NOT EXISTS "capture" (
           "id"          TEXT NOT NULL,

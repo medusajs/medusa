@@ -641,23 +641,23 @@ moduleIntegrationTestRunner({
             )
           })
 
-          // it("should throw if refund is greater than captured amount", async () => {
-          //   await service.capturePayment({
-          //     amount: 50,
-          //     payment_id: "pay-id-1",
-          //   })
-          //
-          //   const error = await service
-          //     .refundPayment({
-          //       amount: 100,
-          //       payment_id: "pay-id-1",
-          //     })
-          //     .catch((e) => e)
-          //
-          //   expect(error.message).toEqual(
-          //     "Refund amount for payment: pay-id-1 cannot be greater than the amount captured on the payment."
-          //   )
-          // })
+          it("should throw if refund is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
         })
 
         describe("cancel", () => {
