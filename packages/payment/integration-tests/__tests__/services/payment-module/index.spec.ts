@@ -444,7 +444,6 @@ moduleIntegrationTestRunner({
                 data: {},
                 cart_id: null,
                 order_id: null,
-                order_edit_id: null,
                 customer_id: null,
                 deleted_at: null,
                 captured_at: null,
@@ -498,7 +497,7 @@ moduleIntegrationTestRunner({
         })
 
         describe("capture", () => {
-          it("should capture a payment successfully", async () => {
+          it("should capture a payment successfully and update captured_at", async () => {
             const capturedPayment = await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
@@ -515,61 +514,104 @@ moduleIntegrationTestRunner({
                     amount: 100,
                   }),
                 ],
-
-                // TODO: uncomment when totals calculations are implemented
-                // captured_amount: 100,
-                // captured_at: expect.any(Date),
+                captured_at: expect.any(Date),
               })
             )
           })
 
-          // TODO: uncomment when totals are implemented
+          it("should split a payment in two captures a payment successfully", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
 
-          //   it("should fail to capture amount greater than authorized", async () => {
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 200,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "Total captured amount for payment: pay-id-1 exceeds authorised amount."
-          //     )
-          //   })
-          //
-          //   it("should fail to capture already captured payment", async () => {
-          //     await service.capturePayment({
-          //       amount: 100,
-          //       payment_id: "pay-id-1",
-          //     })
-          //
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 100,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "The payment: pay-id-1 is already fully captured."
-          //     )
-          //   })
-          //
-          //   it("should fail to capture a canceled payment", async () => {
-          //     await service.cancelPayment("pay-id-1")
-          //
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 100,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "The payment: pay-id-1 has been canceled."
-          //     )
-          //   })
+            const capturedPayment = await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+
+                captures: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should fail to capture amount greater than authorized", async () => {
+            const error = await service
+              .capturePayment({
+                amount: 200,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture amount greater than what is already captured", async () => {
+            await service.capturePayment({
+              amount: 99,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 2,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture already captured payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture a canceled payment", async () => {
+            await service.cancelPayment("pay-id-1")
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "The payment: pay-id-1 has been canceled."
+            )
+          })
         })
 
         describe("refund", () => {
