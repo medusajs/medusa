@@ -6,6 +6,7 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  FilterablePaymentCollectionProps,
   FilterablePaymentProviderProps,
   FindConfig,
   InternalModuleDeclaration,
@@ -13,6 +14,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PaymentCollectionDTO,
+  PaymentCollectionUpdatableFields,
   PaymentDTO,
   PaymentProviderDTO,
   PaymentSessionDTO,
@@ -22,14 +24,17 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
+  UpsertPaymentCollectionDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   PaymentActions,
+  promiseAll,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -127,15 +132,14 @@ export default class PaymentModuleService<
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createPaymentCollections(
     data: CreatePaymentCollectionDTO | CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const collections = await this.paymentCollectionService_.create(
+    const collections = await this.createPaymentCollections_(
       input,
       sharedContext
     )
@@ -148,23 +152,54 @@ export default class PaymentModuleService<
     )
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async createPaymentCollections_(
+    data: CreatePaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollection[]> {
+    return this.paymentCollectionService_.create(data, sharedContext)
+  }
+
   updatePaymentCollections(
-    data: UpdatePaymentCollectionDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO[]>
-  updatePaymentCollections(
-    data: UpdatePaymentCollectionDTO,
+    paymentCollectionId: string,
+    data: PaymentCollectionUpdatableFields,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
-
-  @InjectTransactionManager("baseRepository_")
-  async updatePaymentCollections(
-    data: UpdatePaymentCollectionDTO | UpdatePaymentCollectionDTO[],
+  updatePaymentCollections(
+    selector: FilterablePaymentCollectionProps,
+    data: PaymentCollectionUpdatableFields,
     sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+  @InjectManager("baseRepository_")
+  async updatePaymentCollections(
+    idOrSelector: string | FilterablePaymentCollectionProps,
+    data: PaymentCollectionUpdatableFields,
+    @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-    const result = await this.paymentCollectionService_.update(
-      input,
+    let updateData: UpdatePaymentCollectionDTO[] = []
+
+    if (isString(idOrSelector)) {
+      updateData = [
+        {
+          id: idOrSelector,
+          ...data,
+        },
+      ]
+    } else {
+      const collections = await this.paymentCollectionService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      updateData = collections.map((c) => ({
+        id: c.id,
+        ...data,
+      }))
+    }
+
+    const result = await this.updatePaymentCollections_(
+      updateData,
       sharedContext
     )
 
@@ -174,6 +209,52 @@ export default class PaymentModuleService<
         populate: true,
       }
     )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updatePaymentCollections_(
+    data: UpdatePaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollection[]> {
+    return await this.paymentCollectionService_.update(data, sharedContext)
+  }
+
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO,
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO | UpsertPaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (collection): collection is UpdatePaymentCollectionDTO => !!collection.id
+    )
+    const forCreate = input.filter(
+      (collection): collection is CreatePaymentCollectionDTO => !collection.id
+    )
+
+    const operations: Promise<PaymentCollection[]>[] = []
+
+    if (forCreate.length) {
+      operations.push(this.createPaymentCollections_(forCreate, sharedContext))
+    }
+    if (forUpdate.length) {
+      operations.push(this.updatePaymentCollections_(forUpdate, sharedContext))
+    }
+
+    const result = (await promiseAll(operations)).flat()
+
+    return await this.baseRepository_.serialize<
+      PaymentCollectionDTO[] | PaymentCollectionDTO
+    >(Array.isArray(data) ? result : result[0])
   }
 
   completePaymentCollections(

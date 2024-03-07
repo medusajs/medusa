@@ -28,6 +28,7 @@ export class Migration20240225134525 extends Migration {
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_authorized_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "context" JSONB NULL;
 
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
@@ -161,6 +162,7 @@ export class Migration20240225134525 extends Migration {
           "raw_amount"           JSONB NOT NULL,
           "provider_id"          TEXT NOT NULL,
           "data"                 JSONB NOT NULL,
+          "context"              JSONB NULL,
           "status"               TEXT CHECK ("status" IN ('authorized', 'pending', 'requires_more', 'error', 'canceled')) NOT NULL DEFAULT 'pending',
           "authorized_at"        TIMESTAMPTZ NULL,
           "payment_collection_id" TEXT NOT NULL,

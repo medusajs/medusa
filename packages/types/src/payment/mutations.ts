@@ -1,4 +1,3 @@
-import { PaymentCollectionStatus } from "./common"
 import { PaymentProviderContext } from "./provider"
 
 /**
@@ -35,21 +34,24 @@ export interface UpdatePaymentCollectionDTO
    * The ID of the payment collection.
    */
   id: string
+}
 
-  /**
-   * The authorized amount of the payment collection.
-   */
-  authorized_amount?: number
+export interface UpsertPaymentCollectionDTO {
+  id?: string
+  region_id?: string
+  currency_code?: string
+  amount?: number
+  metadata?: Record<string, unknown>
+}
 
-  /**
-   * The refunded amount of the payment collection.
-   */
-  refunded_amount?: number
-
-  /**
-   * The status of the payment collection.
-   */
-  status?: PaymentCollectionStatus
+/**
+ * The attributes to update in the payment collection.
+ */
+export interface PaymentCollectionUpdatableFields {
+  region_id?: string
+  currency_code?: string
+  amount?: number
+  metadata?: Record<string, unknown>
 }
 
 /**
