@@ -1,9 +1,12 @@
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString
+} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { defaultAdminStoreFields } from "./query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "store",

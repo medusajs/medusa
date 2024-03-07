@@ -144,7 +144,7 @@ export interface CreateCaptureDTO {
   /**
    * The amount of the capture.
    */
-  amount: number
+  amount?: number
 
   /**
    * The associated payment's ID.
@@ -164,7 +164,7 @@ export interface CreateRefundDTO {
   /**
    * The amount of the refund.
    */
-  amount: number
+  amount?: number
 
   /**
    * The associated payment's ID.

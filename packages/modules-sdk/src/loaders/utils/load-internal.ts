@@ -17,7 +17,8 @@ export async function loadInternalModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
   logger: Logger,
-  migrationOnly?: boolean
+  migrationOnly?: boolean,
+  loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
@@ -119,6 +120,10 @@ export async function loadInternalModule(
         `Loaders for module ${resolution.definition.label} failed: ${err.message}`
       ),
     }
+  }
+
+  if (loaderOnly) {
+    return
   }
 
   const moduleService = loadedModule.service

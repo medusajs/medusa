@@ -1,6 +1,6 @@
 import { MedusaContainer } from "@medusajs/types"
-import { PriceList } from "../../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import { PriceList } from "../../../../../models"
 import { listAndCountPriceListPricingModule } from "./list-and-count-price-lists"
 
 export async function getPriceListPricingModule(
@@ -12,9 +12,7 @@ export async function getPriceListPricingModule(
   }
 ): Promise<PriceList> {
   const [priceLists, count] = await listAndCountPriceListPricingModule({
-    filters: {
-      id: [id],
-    },
+    filters: { id: [id] },
     container,
   })
 
