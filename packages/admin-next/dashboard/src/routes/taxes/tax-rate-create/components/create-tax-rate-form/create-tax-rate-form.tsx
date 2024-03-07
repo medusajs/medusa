@@ -5,7 +5,7 @@ import { useAdminCreateTaxRate } from "medusa-react"
 import { useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
@@ -15,9 +15,10 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { OverrideGrid } from "../../../common/components/override-grid"
 import { OverrideTable } from "../../../common/components/overrides-drawer/overrides-drawer"
 import { Override } from "../../../common/constants"
-import { OverrideOption } from "../../../common/types"
+import { OverrideOption, OverrideState } from "../../../common/types"
 
 const CreateTaxRateSchema = z.object({
   name: z.string().min(1),
@@ -57,7 +58,15 @@ const CreateTaxRateSchema = z.object({
 
 export const CreateTaxRateForm = () => {
   const [open, setOpen] = useState(false)
+
   const [override, setOverride] = useState<Override | null>(null)
+  const [state, setState] = useState<OverrideState>({
+    [Override.PRODUCT]: false,
+    [Override.PRODUCT_TYPE]: false,
+    [Override.SHIPPING_OPTION]: false,
+  })
+
+  const [, setSearchParams] = useSearchParams()
 
   const { id } = useParams()
   const { t } = useTranslation()
@@ -97,20 +106,25 @@ export const CreateTaxRateForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     const { rate, products, product_types, shipping_options, ...rest } = data
 
+    const productsPaylaod = state[Override.PRODUCT]
+      ? products.map((p) => p.value)
+      : undefined
+
+    const productTypesPayload = state[Override.PRODUCT_TYPE]
+      ? product_types.map((p) => p.value)
+      : undefined
+
+    const shippingOptionsPayload = state[Override.SHIPPING_OPTION]
+      ? shipping_options.map((p) => p.value)
+      : undefined
+
     await mutateAsync(
       {
         region_id: id!,
         rate: Number(rate),
-        products:
-          products.length > 0 ? products.map((p) => p.value) : undefined,
-        product_types:
-          product_types.length > 0
-            ? product_types.map((p) => p.value)
-            : undefined,
-        shipping_options:
-          shipping_options.length > 0
-            ? shipping_options.map((p) => p.value)
-            : undefined,
+        products: productsPaylaod,
+        product_types: productTypesPayload,
+        shipping_options: shippingOptionsPayload,
         ...rest,
       },
       {
@@ -151,6 +165,79 @@ export const CreateTaxRateForm = () => {
     }
   }
 
+  const handleRemoveOverride = (override: Override) => {
+    let field: "products" | "product_types" | "shipping_options"
+
+    switch (override) {
+      case Override.PRODUCT:
+        field = "products"
+        break
+      case Override.PRODUCT_TYPE:
+        field = "product_types"
+        break
+      case Override.SHIPPING_OPTION:
+        field = "shipping_options"
+        break
+    }
+
+    return (value: string) => {
+      const current = form.getValues(field)
+
+      const newValue = current.filter((c: OverrideOption) => c.value !== value)
+
+      form.setValue(field, newValue, {
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+    }
+  }
+
+  const handleClearOverrides = (override: Override) => {
+    let field: "products" | "product_types" | "shipping_options"
+
+    switch (override) {
+      case Override.PRODUCT:
+        field = "products"
+        break
+      case Override.PRODUCT_TYPE:
+        field = "product_types"
+        break
+      case Override.SHIPPING_OPTION:
+        field = "shipping_options"
+        break
+    }
+
+    return () => {
+      form.setValue(field, [], {
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+    }
+  }
+
+  const handleStateChange = (override: Override) => {
+    return (enabled: boolean) => {
+      setState((prev) => ({
+        ...prev,
+        [override]: enabled,
+      }))
+    }
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setOverride(null)
+      setSearchParams(
+        {},
+        {
+          replace: true,
+        }
+      )
+    }
+
+    setOpen(open)
+  }
+
   return (
     <RouteFocusModal.Form form={form}>
       <form
@@ -170,7 +257,7 @@ export const CreateTaxRateForm = () => {
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex overflow-hidden">
-          <SplitView open={open} onOpenChange={setOpen}>
+          <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
               <div
                 className={clx(
@@ -235,7 +322,10 @@ export const CreateTaxRateForm = () => {
                     </div>
                   </div>
                   <div className="bg-ui-border-base h-px w-full" />
-                  <Collapsible.Root>
+                  <Collapsible.Root
+                    open={state[Override.PRODUCT]}
+                    onOpenChange={handleStateChange(Override.PRODUCT)}
+                  >
                     <div className="grid grid-cols-[1fr_32px] items-start gap-x-4">
                       <div className="flex flex-col">
                         <Text size="small" weight="plus" leading="compact">
@@ -246,14 +336,16 @@ export const CreateTaxRateForm = () => {
                         </Text>
                       </div>
                       <Collapsible.Trigger asChild>
-                        <Switch />
+                        <Switch className="data-[state=open]:bg-ui-bg-interactive" />
                       </Collapsible.Trigger>
                     </div>
                     <Collapsible.Content>
                       <div className="flex flex-col gap-y-4 pt-4">
-                        {selectedProducts && (
-                          <pre>{JSON.stringify(selectedProducts, null, 2)}</pre>
-                        )}
+                        <OverrideGrid
+                          overrides={selectedProducts}
+                          onClear={handleClearOverrides(Override.PRODUCT)}
+                          onRemove={handleRemoveOverride(Override.PRODUCT)}
+                        />
                         <div className="flex items-center justify-end">
                           <Button
                             size="small"
@@ -268,7 +360,10 @@ export const CreateTaxRateForm = () => {
                     </Collapsible.Content>
                   </Collapsible.Root>
                   <div className="bg-ui-border-base h-px w-full" />
-                  <Collapsible.Root>
+                  <Collapsible.Root
+                    open={state[Override.PRODUCT_TYPE]}
+                    onOpenChange={handleStateChange(Override.PRODUCT_TYPE)}
+                  >
                     <div className="grid grid-cols-[1fr_32px] items-start gap-x-4">
                       <div className="flex flex-col">
                         <Text size="small" weight="plus" leading="compact">
@@ -279,11 +374,16 @@ export const CreateTaxRateForm = () => {
                         </Text>
                       </div>
                       <Collapsible.Trigger asChild>
-                        <Switch />
+                        <Switch className="data-[state=open]:bg-ui-bg-interactive" />
                       </Collapsible.Trigger>
                     </div>
                     <Collapsible.Content>
                       <div className="flex flex-col gap-y-4 pt-4">
+                        <OverrideGrid
+                          overrides={selectedProductTypes}
+                          onClear={handleClearOverrides(Override.PRODUCT_TYPE)}
+                          onRemove={handleRemoveOverride(Override.PRODUCT_TYPE)}
+                        />
                         <div className="flex items-center justify-end">
                           <Button
                             size="small"
@@ -300,7 +400,10 @@ export const CreateTaxRateForm = () => {
                     </Collapsible.Content>
                   </Collapsible.Root>
                   <div className="bg-ui-border-base h-px w-full" />
-                  <Collapsible.Root>
+                  <Collapsible.Root
+                    open={state[Override.SHIPPING_OPTION]}
+                    onOpenChange={handleStateChange(Override.SHIPPING_OPTION)}
+                  >
                     <div className="grid grid-cols-[1fr_32px] items-start gap-x-4">
                       <div className="flex flex-col">
                         <Text size="small" weight="plus" leading="compact">
@@ -311,11 +414,20 @@ export const CreateTaxRateForm = () => {
                         </Text>
                       </div>
                       <Collapsible.Trigger asChild>
-                        <Switch />
+                        <Switch className="data-[state=open]:bg-ui-bg-interactive" />
                       </Collapsible.Trigger>
                     </div>
                     <Collapsible.Content>
                       <div className="flex flex-col gap-y-4 pt-4">
+                        <OverrideGrid
+                          overrides={selectedShippingOptions}
+                          onClear={handleClearOverrides(
+                            Override.SHIPPING_OPTION
+                          )}
+                          onRemove={handleRemoveOverride(
+                            Override.SHIPPING_OPTION
+                          )}
+                        />
                         <div className="flex items-center justify-end">
                           <Button
                             size="small"

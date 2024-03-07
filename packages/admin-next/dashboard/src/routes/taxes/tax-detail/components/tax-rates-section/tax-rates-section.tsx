@@ -23,6 +23,18 @@ export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
   const { tax_rates, count, isLoading, isError, error } = useAdminTaxRates(
     {
       region_id: region.id,
+      expand: ["products", "product_types", "shipping_options"],
+      fields: [
+        "id",
+        "name",
+        "code",
+        "rate",
+        "created_at",
+        "updated_at",
+        "products.id",
+        "product_types.id",
+        "shipping_options.id",
+      ],
       ...searchParams,
     },
     {
@@ -41,6 +53,10 @@ export const TaxRatesSection = ({ region }: TaxRatesSectionProps) => {
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
   })
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <Container className="divide-y p-0">

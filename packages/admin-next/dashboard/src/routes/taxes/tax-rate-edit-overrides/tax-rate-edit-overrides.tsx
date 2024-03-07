@@ -6,7 +6,9 @@ import { EditTaxRateOverridesForm } from "./components/edit-tax-rate-overrides-f
 export const TaxRateEditOverrides = () => {
   const { rate_id } = useParams()
 
-  const { tax_rate, isLoading, isError, error } = useAdminTaxRate(rate_id!)
+  const { tax_rate, isLoading, isError, error } = useAdminTaxRate(rate_id!, {
+    expand: ["products", "shipping_options", "product_types"],
+  })
 
   const ready = !isLoading && tax_rate
 

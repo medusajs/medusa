@@ -417,7 +417,10 @@
       "addProductTypeOverridesAction": "Add product type overrides",
       "shippingOptionOverridesLabel": "Shipping option overrides",
       "shippingOptionOverridesHint": "Specify the shipping option overrides for the tax rate.",
-      "addShippingOptionOverridesAction": "Add shipping option overrides"
+      "addShippingOptionOverridesAction": "Add shipping option overrides",
+      "productOverridesHeader": "Products",
+      "productTypeOverridesHeader": "Product Types",
+      "shippingOptionOverridesHeader": "Shipping Options"
     }
   },
   "locations": {
