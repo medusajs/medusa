@@ -22,6 +22,7 @@ import {
   OrderShippingMethodTaxLineDTO,
 } from "./common"
 import {
+  CancelOrderChangeDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
@@ -33,6 +34,7 @@ import {
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  DeclineOrderChangeDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
   UpdateOrderItemDTO,
@@ -374,13 +376,40 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderChangeDTO | OrderChangeDTO[]>
 
-  cancelOrderChange(sharedContext?: Context)
-  cancelOrderChange(sharedContext?: Context)
-  cancelOrderChange(sharedContext?: Context)
+  cancelOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  cancelOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  cancelOrderChange(
+    data: CancelOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  cancelOrderChange(
+    data: CancelOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
 
-  confimrOrderChange(data: ConfirmOrderChangeDTO, sharedContext?: Context)
+  confirmOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  confirmOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    data: ConfirmOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  confirmOrderChange(
+    data: ConfirmOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
 
-  applyPendingOrderActions(sharedContext?: Context)
+  declineOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  declineOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    data: DeclineOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  declineOrderChange(
+    data: DeclineOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
 
-  addOrderAction(sharedContext?: Context)
+  applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
+
+  addOrderAction(data: any, sharedContext?: Context)
 }

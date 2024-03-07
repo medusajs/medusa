@@ -324,7 +324,7 @@ moduleIntegrationTestRunner({
         ])
       })
 
-      it("should create an order change, add actions to it and complete the change.", async function () {
+      it("should create an order change, add actions to it and confirm the changes.", async function () {
         const createdOrder = await service.create(input)
 
         const orderChange = await service.createOrderChange({
@@ -395,7 +395,9 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.confirmOrderChange(orderChange.id)
+        await service.confirmOrderChange(orderChange.id, {
+          confirmed_by: "cx_agent_123",
+        })
 
         expect(service.confirmOrderChange(orderChange.id)).rejects.toThrowError(
           `Order Change cannot be modified: ${orderChange.id}`
@@ -458,6 +460,97 @@ moduleIntegrationTestRunner({
             }),
           }),
         ])
+      })
+
+      it("should create order changes, cancel and reject them.", async function () {
+        const createdOrder = await service.create(input)
+
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          internal_note: "changing the order to version 2",
+          created_by: "user_123",
+        })
+
+        const orderChange2 = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order again",
+          internal_note: "trying again...",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.ITEM_ADD,
+              reference: "order_line_item",
+              reference_id: createdOrder.items[0].id,
+              amount:
+                createdOrder.items[0].unit_price *
+                createdOrder.items[0].quantity,
+              details: {
+                quantity: 1,
+              },
+            },
+          ],
+        })
+
+        await service.cancelOrderChange({
+          id: orderChange.id,
+          canceled_by: "cx_agent_123",
+        })
+
+        expect(service.cancelOrderChange(orderChange.id)).rejects.toThrowError(
+          "Order Change cannot be modified"
+        )
+
+        await service.declineOrderChange({
+          id: orderChange2.id,
+          declined_by: "user_123",
+          declined_reason: "changed my mind",
+        })
+
+        expect(
+          service.declineOrderChange(orderChange2.id)
+        ).rejects.toThrowError("Order Change cannot be modified")
+
+        const [change1, change2] = await service.listOrderChanges(
+          {
+            id: [orderChange.id, orderChange2.id],
+          },
+          {
+            select: [
+              "id",
+              "status",
+              "canceled_by",
+              "canceled_at",
+              "declined_by",
+              "declined_at",
+              "declined_reason",
+            ],
+          }
+        )
+
+        expect(change1).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            status: "canceled",
+            declined_by: null,
+            declined_reason: null,
+            declined_at: null,
+            canceled_by: "cx_agent_123",
+            canceled_at: expect.any(Date),
+          })
+        )
+
+        expect(change2).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            status: "declined",
+            declined_by: "user_123",
+            declined_reason: "changed my mind",
+            declined_at: expect.any(Date),
+            canceled_by: null,
+            canceled_at: null,
+          })
+        )
       })
     })
   },

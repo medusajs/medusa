@@ -1605,30 +1605,48 @@ export default class OrderModuleService<
   }
 
   async cancelOrderChange(
-    orderChangeId: string,
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async cancelOrderChange(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  async cancelOrderChange(
     data: OrderTypes.CancelOrderChangeDTO,
     sharedContext?: Context
   ): Promise<void>
 
   async cancelOrderChange(
-    orderChangeId: string[],
+    data: OrderTypes.CancelOrderChangeDTO[],
     sharedContext?: Context
   ): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async cancelOrderChange(
-    orderChangeId: string | string[],
+    orderChangeIdOrData:
+      | string
+      | string[]
+      | OrderTypes.CancelOrderChangeDTO
+      | OrderTypes.CancelOrderChangeDTO[],
     sharedContext?: Context
   ): Promise<void> {
-    const orderChangeIds = Array.isArray(orderChangeId)
-      ? orderChangeId
-      : [orderChangeId]
+    const data = Array.isArray(orderChangeIdOrData)
+      ? orderChangeIdOrData
+      : [orderChangeIdOrData]
+
+    const orderChangeIds = isString(data[0])
+      ? data
+      : (data as any).map((dt) => dt.id)
 
     await this.getAndValidateOrderChange_(orderChangeIds, false, sharedContext)
 
-    const updates = orderChangeIds.map((id) => {
+    const updates = data.map((dt) => {
       return {
-        id,
+        ...(isString(dt) ? { id: dt } : dt),
+        canceled_at: new Date(),
         status: OrderChangeStatus.CANCELED,
       }
     })
@@ -1636,20 +1654,42 @@ export default class OrderModuleService<
     await this.orderChangeService_.update(updates as any, sharedContext)
   }
 
+  async confirmOrderChange(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async confirmOrderChange(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  async confirmOrderChange(
+    data: OrderTypes.ConfirmOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async confirmOrderChange(
+    data: OrderTypes.ConfirmOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
   @InjectTransactionManager("baseRepository_")
   async confirmOrderChange(
-    data: any[] | any,
+    orderChangeIdOrData:
+      | string
+      | string[]
+      | OrderTypes.ConfirmOrderChangeDTO
+      | OrderTypes.ConfirmOrderChangeDTO[],
     sharedContext?: Context
   ): Promise<void> {
-    let allData
+    const data = Array.isArray(orderChangeIdOrData)
+      ? orderChangeIdOrData
+      : [orderChangeIdOrData]
 
-    if (isString(data)) {
-      allData = [{ id: data }]
-    } else {
-      allData = Array.isArray(data) ? data : [data]
-    }
-
-    const orderChangeIds = allData.map((d) => d.id)
+    const orderChangeIds = isString(data[0])
+      ? data
+      : (data as any).map((dt) => dt.id)
 
     const orderChange = await this.getAndValidateOrderChange_(
       orderChangeIds,
@@ -1657,9 +1697,10 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    const updates = allData.map((data) => {
+    const updates = data.map((dt) => {
       return {
-        ...data,
+        ...(isString(dt) ? { id: dt } : dt),
+        confirmed_at: new Date(),
         status: OrderChangeStatus.CONFIRMED,
       }
     })
@@ -1678,6 +1719,56 @@ export default class OrderModuleService<
     })
 
     await this.applyOrderChanges_(orderChanges.flat(), sharedContext)
+  }
+
+  async declineOrderChange(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async declineOrderChange(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  async declineOrderChange(
+    data: OrderTypes.DeclineOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async declineOrderChange(
+    data: OrderTypes.DeclineOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async declineOrderChange(
+    orderChangeIdOrData:
+      | string
+      | string[]
+      | OrderTypes.DeclineOrderChangeDTO
+      | OrderTypes.DeclineOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void> {
+    const data = Array.isArray(orderChangeIdOrData)
+      ? orderChangeIdOrData
+      : [orderChangeIdOrData]
+
+    const orderChangeIds = isString(data[0])
+      ? data
+      : (data as any).map((dt) => dt.id)
+
+    await this.getAndValidateOrderChange_(orderChangeIds, false, sharedContext)
+
+    const updates = data.map((dt) => {
+      return {
+        ...(isString(dt) ? { id: dt } : dt),
+        declined_at: new Date(),
+        status: OrderChangeStatus.DECLINED,
+      }
+    })
+
+    await this.orderChangeService_.update(updates as any, sharedContext)
   }
 
   @InjectManager("baseRepository_")
