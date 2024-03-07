@@ -323,5 +323,101 @@ describe("WebshipperFulfillmentService", () => {
         tarif_number: "test",
       })
     })
+
+    it("builds a webshipper item with weight from product variant", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {
+        weight: 1234
+      }
+
+      medusaItem.variant.product = {}
+
+      let item
+      try {
+        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+      } catch (error) {
+        console.log(error)
+      }
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 1234,
+        weight_unit: "g"
+      })
+    })
+
+    it("builds a webshipper item with weight from product", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {}
+      medusaItem.variant.product = {
+        weight: 4321,
+      }
+
+      let item
+      try {
+        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+      } catch (error) {
+        console.log(error)
+      }
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 4321,
+        weight_unit: "g"
+      })
+    })
+
+    it("builds a webshipper item with weight where product variant overrides product", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {
+        weight: 1
+      }
+      medusaItem.variant.product = {
+        weight: 2,
+      }
+
+      let item
+      try {
+        item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+      } catch (error) {
+        console.log(error)
+      }
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 1,
+        weight_unit: "g"
+      })
+    })
   })
 })
