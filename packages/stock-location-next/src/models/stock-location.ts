@@ -47,7 +47,7 @@ export class StockLocation {
   name: string
 
   @ManyToOne(() => StockLocationAddress, {
-    fieldName: "inventory_item_id",
+    fieldName: "address_id",
     type: "text",
     mapToPk: true,
     nullable: true,

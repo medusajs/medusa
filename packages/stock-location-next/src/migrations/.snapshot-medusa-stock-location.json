@@ -207,15 +207,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "inventory_item_id": {
-          "name": "inventory_item_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "address_id": {
           "name": "address_id",
           "type": "text",
@@ -260,19 +251,6 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "stock_location_inventory_item_id_foreign": {
-          "constraintName": "stock_location_inventory_item_id_foreign",
-          "columnNames": [
-            "inventory_item_id"
-          ],
-          "localTableName": "public.stock_location",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.stock_location_address",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
         "stock_location_address_id_foreign": {
           "constraintName": "stock_location_address_id_foreign",
           "columnNames": [
