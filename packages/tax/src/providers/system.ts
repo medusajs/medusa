@@ -20,6 +20,7 @@ export default class SystemTaxService implements ITaxProvider {
           name: r.name,
           code: r.code,
           line_item_id: l.line_item.id,
+          provider_id: this.getIdentifier(),
         }))
       })
 
@@ -31,6 +32,7 @@ export default class SystemTaxService implements ITaxProvider {
           name: r.name,
           code: r.code,
           shipping_line_id: l.shipping_line.id,
+          provider_id: this.getIdentifier(),
         }))
       })
     )
