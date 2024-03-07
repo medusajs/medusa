@@ -56,6 +56,9 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         foreignKey: "id",
         alias: "variant_link",
       },
+      fieldAlias: {
+        variant: "variant_link.variant",
+      },
     },
   ],
 }
