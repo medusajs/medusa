@@ -52,6 +52,9 @@ function isPrimitive(value: any) {
  * - gt
  * - gte
  * - in
+ * - contains
+ * - starts_with
+ * - ends_with
  *
  * @param input
  * @param entryPoint
