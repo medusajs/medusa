@@ -149,7 +149,7 @@ const ProductOverrideTable = ({ selected = [], onSave }: OverrideProps) => {
         pagination
         search
         filters={filters}
-        isLoading={true}
+        isLoading={isLoading}
         layout="fill"
         orderBy={["title", "created_at", "updated_at"]}
         prefix={PRODUCT_PREFIX}
