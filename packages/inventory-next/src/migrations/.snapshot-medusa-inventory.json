@@ -432,15 +432,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "inventory_item_id": {
-          "name": "inventory_item_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "location_id": {
           "name": "location_id",
           "type": "text",
@@ -494,6 +485,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "inventory_item_id": {
+          "name": "inventory_item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "reservation_item",
@@ -520,16 +520,6 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_line_item_id\" ON \"reservation_item\" (line_item_id)"
         },
         {
-          "keyName": "IDX_reservation_item_inventory_item_id",
-          "columnNames": [
-            "inventory_item_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_inventory_item_id\" ON \"reservation_item\" (inventory_item_id)"
-        },
-        {
           "keyName": "IDX_reservation_item_location_id",
           "columnNames": [
             "location_id"
@@ -538,6 +528,16 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_location_id\" ON \"reservation_item\" (location_id)"
+        },
+        {
+          "keyName": "IDX_reservation_item_inventory_item_id",
+          "columnNames": [
+            "inventory_item_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_inventory_item_id\" ON \"reservation_item\" (inventory_item_id)"
         },
         {
           "keyName": "reservation_item_pkey",
@@ -550,7 +550,21 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "reservation_item_inventory_item_id_foreign": {
+          "constraintName": "reservation_item_inventory_item_id_foreign",
+          "columnNames": [
+            "inventory_item_id"
+          ],
+          "localTableName": "public.reservation_item",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.inventory_item",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }

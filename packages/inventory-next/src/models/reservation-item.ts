@@ -2,12 +2,14 @@ import {
   BeforeCreate,
   Entity,
   Filter,
+  ManyToOne,
   OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import { DALUtils } from "@medusajs/utils"
+import { InventoryItem } from "./inventory-item"
 import { createPsqlIndexStatementHelper } from "@medusajs/utils"
 import { generateEntityId } from "@medusajs/utils"
 
@@ -60,10 +62,6 @@ export class ReservationItem {
   @Property({ type: "text", nullable: true })
   line_item_id: string | null = null
 
-  @ReservationItemInventoryItemIdIndex.MikroORMIndex()
-  @Property({ type: "text" })
-  inventory_item_id: string
-
   @ReservationItemLocationIdIndex.MikroORMIndex()
   @Property({ type: "text" })
   location_id: string
@@ -82,6 +80,20 @@ export class ReservationItem {
 
   @Property({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
+
+  @ReservationItemInventoryItemIdIndex.MikroORMIndex()
+  @ManyToOne(() => InventoryItem, {
+    fieldName: "inventory_item_id",
+    type: "text",
+    mapToPk: true,
+    onDelete: "cascade",
+  })
+  inventory_item_id: string
+
+  @ManyToOne(() => InventoryItem, {
+    persist: false,
+  })
+  inventory_item: InventoryItem
 
   @BeforeCreate()
   private beforeCreate(): void {
