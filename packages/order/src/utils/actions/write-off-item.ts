@@ -36,7 +36,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       )
     }
 
-    if (!action.details.quantity) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity to write-off item ${refId} is required.`
@@ -44,7 +44,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
     }
 
     const quantityAvailable = existing!.quantity ?? 0
-    if (action.details.quantity > quantityAvailable) {
+    if (action.details?.quantity > quantityAvailable) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Cannot claim more items than what was ordered."

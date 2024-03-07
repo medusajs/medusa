@@ -76,15 +76,15 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
       )
     }
 
-    if (!action.details.quantity) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity to receive return of item ${refId} is required.`
       )
     }
 
-    const quantityRequested = existing?.detail.return_requested_quantity || 0
-    if (action.details.quantity > quantityRequested) {
+    const quantityRequested = existing?.detail?.return_requested_quantity || 0
+    if (action.details?.quantity > quantityRequested) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cannot receive more items than what was requested to be returned for item ${refId}.`

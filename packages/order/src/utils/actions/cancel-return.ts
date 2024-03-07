@@ -30,7 +30,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       )
     }
 
-    if (!isDefined(action.amount) && !isDefined(action.details.unit_price)) {
+    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Unit price of item ${action.reference_id} is required if no action.amount is provided.`
@@ -46,14 +46,14 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       )
     }
 
-    if (!action.details.quantity) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity to cancel return of item ${refId} is required.`
       )
     }
 
-    if (action.details.quantity > existing.detail.return_requested_quantity) {
+    if (action.details?.quantity > existing.detail?.return_requested_quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cannot cancel more items than what was requested to return for item ${refId}.`

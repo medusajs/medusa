@@ -56,21 +56,21 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       )
     }
 
-    if (!isDefined(action.amount) && !isDefined(action.details.unit_price)) {
+    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Unit price of item ${refId} is required if no action.amount is provided.`
       )
     }
 
-    if (!action.details.quantity) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity of item ${refId} is required.`
       )
     }
 
-    if (action.details.quantity < 1) {
+    if (action.details?.quantity < 1) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity of item ${refId} must be greater than 0.`
@@ -79,9 +79,9 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
 
     const notFulfilled =
       (existing.quantity as number) -
-      (existing.detail.fulfilled_quantity as number)
+      (existing.detail?.fulfilled_quantity as number)
 
-    if (action.details.quantity > notFulfilled) {
+    if (action.details?.quantity > notFulfilled) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cannot remove fulfilled item: Item ${refId}.`

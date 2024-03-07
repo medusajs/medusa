@@ -57,8 +57,8 @@ export class OrderChangeProcessing {
       pendingDifference: 0,
       futureTemporarySum: 0,
       differenceSum: 0,
-      currentOrderTotal: order.summary.total,
-      originalOrderTotal: order.summary.total,
+      currentOrderTotal: order?.summary?.total ?? 0,
+      originalOrderTotal: order?.summary?.total ?? 0,
       transactionTotal,
     }
   }
