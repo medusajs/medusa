@@ -18,6 +18,10 @@ export const supportedLanguages = [
     name: "Français",
   },
   {
+    locale: "nl",
+    name: "Nederlands",
+  },
+  {
     locale: "hr",
     name: "Hrvatski",
   },
