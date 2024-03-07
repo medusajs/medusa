@@ -119,9 +119,16 @@ export class RemoteJoiner {
 
   constructor(
     private serviceConfigs: ModuleJoinerConfig[],
-    private remoteFetchData: RemoteFetchDataCallback
+    private remoteFetchData: RemoteFetchDataCallback,
+    private options: {
+      autoCreateServiceNameAlias?: boolean
+    } = {}
   ) {
-    this.serviceConfigs = this.buildReferences(serviceConfigs)
+    this.options.autoCreateServiceNameAlias ??= true
+
+    this.serviceConfigs = this.buildReferences(
+      JSON.parse(JSON.stringify(serviceConfigs))
+    )
   }
 
   public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
@@ -133,6 +140,7 @@ export class RemoteJoiner {
       string,
       { fieldAlias; relationships: JoinerRelationship[] }
     > = new Map()
+
     for (const service of serviceConfigs) {
       if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
@@ -152,7 +160,9 @@ export class RemoteJoiner {
           service.alias = [service.alias]
         }
 
-        service.alias.push({ name: service.serviceName! })
+        if (this.options.autoCreateServiceNameAlias) {
+          service.alias.push({ name: service.serviceName! })
+        }
 
         // handle alias.name as array
         for (let idx = 0; idx < service.alias.length; idx++) {
@@ -197,7 +207,11 @@ export class RemoteJoiner {
             serviceName: service.serviceName!,
             args,
           })
-          this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+          this.cacheServiceConfig(
+            serviceConfigs,
+            undefined,
+            alias.name as string
+          )
         }
 
         this.cacheServiceConfig(serviceConfigs, service.serviceName)
@@ -276,7 +290,7 @@ export class RemoteJoiner {
   private cacheServiceConfig(
     serviceConfigs,
     serviceName?: string,
-    serviceAlias?: string | string[]
+    serviceAlias?: string
   ): void {
     if (serviceAlias) {
       const name = `alias_${serviceAlias}`
