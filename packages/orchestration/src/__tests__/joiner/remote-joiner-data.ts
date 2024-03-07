@@ -783,8 +783,6 @@ describe("RemoteJoiner", () => {
 
     const data = await newJoiner.query(query)
 
-    console.log(data)
-
     expect(data).toEqual(
       expect.arrayContaining([
         {
