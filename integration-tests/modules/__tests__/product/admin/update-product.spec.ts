@@ -23,6 +23,10 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
+// TODO SEE to use new test runner medusaIntegrationTestRunner({
+//   env,
+//   testSuite: ({ dbConnection, getContainer, api }) => {})
+
 describe.skip("POST /admin/products/:id", () => {
   let dbConnection
   let appContainer

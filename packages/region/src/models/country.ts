@@ -1,18 +1,6 @@
-import {
-  BeforeCreate,
-  Entity,
-  Unique,
-  ManyToOne,
-  OnInit,
-  PrimaryKey,
-  Property,
-  Index,
-} from "@mikro-orm/core"
+import { Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core"
 
-import {
-  createPsqlIndexStatementHelper,
-  generateEntityId,
-} from "@medusajs/utils"
+import { createPsqlIndexStatementHelper } from "@medusajs/utils"
 import Region from "./region"
 
 // We don't need a partial index on deleted_at here since we don't support soft deletes on countries
@@ -28,8 +16,6 @@ RegionIdIsoIndexStatement.MikroORMIndex()
 @Entity({ tableName: "region_country" })
 export default class Country {
   @PrimaryKey({ columnType: "text" })
-  id: string
-
   @Property({ columnType: "text" })
   iso_2: string
 
@@ -55,14 +41,4 @@ export default class Country {
     onDelete: "set null",
   })
   region?: Region | null
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "reg_ctry")
-  }
-
-  @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "reg_ctry")
-  }
 }

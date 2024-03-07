@@ -83,7 +83,7 @@ export const useOrderTableFilters = (): Filter[] => {
         value: "canceled",
       },
       {
-        label: t("orders.payment.status.requresAction"),
+        label: t("orders.payment.status.requiresAction"),
         value: "requires_action",
       },
     ],
@@ -128,7 +128,7 @@ export const useOrderTableFilters = (): Filter[] => {
         value: "canceled",
       },
       {
-        label: t("orders.fulfillment.status.requresAction"),
+        label: t("orders.fulfillment.status.requiresAction"),
         value: "requires_action",
       },
     ],

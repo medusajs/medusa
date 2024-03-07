@@ -30,6 +30,14 @@ moduleIntegrationTestRunner({
         })
       })
 
+      it("should fail to get created if default currency code is not in list of supported currency codes", async function () {
+        const err = await service
+          .create({ ...createStoreFixture, default_currency_code: "jpy" })
+          .catch((err) => err.message)
+
+        expect(err).toEqual("Store does not have currency: jpy")
+      })
+
       describe("upserting a store", () => {
         it("should get created if it does not exist", async function () {
           const store = await service.upsert(createStoreFixture)
@@ -66,6 +74,45 @@ moduleIntegrationTestRunner({
             title: "Updated store",
           })
           expect(updatedStore.title).toEqual("Updated store")
+        })
+
+        it("should fail updating default currency code to an unsupported one", async function () {
+          const createdStore = await service.create(createStoreFixture)
+          const updateErr = await service
+            .update(createdStore.id, {
+              default_currency_code: "jpy",
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual("Store does not have currency: jpy")
+        })
+
+        it("should fail updating default currency code to an unsupported one if the supported currencies are also updated", async function () {
+          const createdStore = await service.create(createStoreFixture)
+          const updateErr = await service
+            .update(createdStore.id, {
+              supported_currency_codes: ["mkd"],
+              default_currency_code: "jpy",
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual("Store does not have currency: jpy")
+        })
+
+        it("should fail updating supported currencies if one of them is used as a default one", async function () {
+          const createdStore = await service.create({
+            ...createStoreFixture,
+            default_currency_code: "eur",
+          })
+          const updateErr = await service
+            .update(createdStore.id, {
+              supported_currency_codes: ["jpy"],
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual(
+            "You are not allowed to remove default currency from store currencies without replacing it as well"
+          )
         })
       })
 
