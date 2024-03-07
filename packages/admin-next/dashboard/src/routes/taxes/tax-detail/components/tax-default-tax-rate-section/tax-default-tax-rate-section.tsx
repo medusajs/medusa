@@ -48,7 +48,7 @@ export const TaxDefaultTaxRateSection = ({
           {t("fields.code")}
         </Text>
         <Text size="small" leading="compact">
-          {defaultTaxCode ?? "-"}
+          {defaultTaxCode || "-"}
         </Text>
       </div>
     </Container>
