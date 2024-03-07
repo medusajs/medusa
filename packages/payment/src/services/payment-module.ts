@@ -450,9 +450,9 @@ export default class PaymentModuleService<
       )
     }
 
-    const capturedAmount = payment.captures.reduce((acc, next) => {
-      const bn = new BigNumber(next.raw_amount.value)
-      return acc.plus(bn)
+    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+      const amountAsBigNumber = new BigNumber(next.raw_amount.value)
+      return captureAmount.plus(amountAsBigNumber)
     }, BigNumber(0))
 
     const authorizedAmount = BigNumber(payment.raw_amount.value)
@@ -518,9 +518,9 @@ export default class PaymentModuleService<
       data.amount = payment.amount as number
     }
 
-    const capturedAmount = payment.captures.reduce((acc, next) => {
-      const bn = new BigNumber(next.raw_amount.value)
-      return acc.plus(bn)
+    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+      const amountAsBigNumber = new BigNumber(next.raw_amount.value)
+      return captureAmount.plus(amountAsBigNumber)
     }, BigNumber(0))
     const refundAmount = BigNumber(data.amount)
 
