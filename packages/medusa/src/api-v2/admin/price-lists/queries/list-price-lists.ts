@@ -48,12 +48,9 @@ export async function listPriceLists({
     variables,
   })
 
-  const {
-    rows: priceLists,
-    metadata: { count },
-  } = await remoteQuery(queryObject)
+  const { rows: priceLists, metadata } = await remoteQuery(queryObject)
 
-  if (!count) {
+  if (!metadata.count) {
     return [[], 0]
   }
 
@@ -122,5 +119,5 @@ export async function listPriceLists({
     }
   )
 
-  return [sanitizedPriceLists, count]
+  return [sanitizedPriceLists, metadata.count]
 }

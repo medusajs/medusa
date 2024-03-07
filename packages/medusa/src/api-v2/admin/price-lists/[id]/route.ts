@@ -3,7 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { listPriceLists } from "../utils"
+import { listPriceLists } from "../queries"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

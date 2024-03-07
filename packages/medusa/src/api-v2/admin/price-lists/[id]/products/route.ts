@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { GET as AdminGetProductsRoute } from "../../../products/route"
-import { listPriceLists } from "../../utils"
+import { listPriceLists } from "../../queries"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
