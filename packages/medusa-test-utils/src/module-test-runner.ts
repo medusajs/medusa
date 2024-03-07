@@ -1,10 +1,6 @@
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { InitModulesOptions, initModules } from "./init-modules"
-import {
-  MedusaAppOutput,
-  MedusaModuleConfig,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
+import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
 import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
 
 import { MockEventBusService } from "."
