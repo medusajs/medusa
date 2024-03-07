@@ -617,19 +617,23 @@ export default class ProductModuleService<
       ProductTypes.ProductDTO[] | ProductTypes.ProductDTO
     >(Array.isArray(data) ? result : result[0])
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      created.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_CREATED,
-        data: { id },
-      }))
-    )
+    if (created.length) {
+      await this.eventBusModuleService_?.emit<ProductEventData>(
+        created.map(({ id }) => ({
+          eventName: ProductEvents.PRODUCT_CREATED,
+          data: { id },
+        }))
+      )
+    }
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      updated.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_UPDATED,
-        data: { id },
-      }))
-    )
+    if (updated.length) {
+      await this.eventBusModuleService_?.emit<ProductEventData>(
+        updated.map(({ id }) => ({
+          eventName: ProductEvents.PRODUCT_UPDATED,
+          data: { id },
+        }))
+      )
+    }
 
     return allProducts
   }

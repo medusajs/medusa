@@ -1,9 +1,5 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
-import {
-  IProductModuleService,
-  ProductTypes,
-  UpdateProductDTO,
-} from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import {
   Product,
@@ -20,6 +16,7 @@ import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
 import { DB_URL, TestDatabase, getInitModuleConfig } from "../../../utils"
+import { UpdateProductInput } from "../../../../src/types/services/product"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -189,7 +186,7 @@ describe("ProductModuleService products", function () {
           "tags",
           "type",
         ],
-      })) as unknown as UpdateProductDTO
+      })) as unknown as UpdateProductInput
 
       productBefore.title = "updated title"
       productBefore.variants = [...productBefore.variants!, ...data.variants]
@@ -199,7 +196,7 @@ describe("ProductModuleService products", function () {
       productBefore.thumbnail = data.thumbnail
       productBefore.tags = data.tags
 
-      const updatedProducts = await module.update([productBefore])
+      const updatedProducts = await module.upsert([productBefore])
       expect(updatedProducts).toHaveLength(1)
 
       const product = await module.retrieve(productBefore.id, {
@@ -295,7 +292,7 @@ describe("ProductModuleService products", function () {
         title: "updated title",
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
       expect(eventBusSpy).toHaveBeenCalledWith([
@@ -318,7 +315,7 @@ describe("ProductModuleService products", function () {
         type_id: productTypeOne.id,
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       const product = await module.retrieve(updateData.id, {
         relations: ["categories", "collection", "type"],
@@ -351,7 +348,7 @@ describe("ProductModuleService products", function () {
         },
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       let product = await module.retrieve(updateData.id, {
         relations: ["type"],
@@ -374,7 +371,7 @@ describe("ProductModuleService products", function () {
         },
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       product = await module.retrieve(updateData.id, {
         relations: ["type"],
@@ -408,7 +405,7 @@ describe("ProductModuleService products", function () {
         tags: [newTagData],
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       const product = await module.retrieve(updateData.id, {
         relations: ["categories", "collection", "tags", "type"],
@@ -447,7 +444,7 @@ describe("ProductModuleService products", function () {
         tags: [],
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       const product = await module.retrieve(updateData.id, {
         relations: ["categories", "collection", "tags"],
@@ -472,7 +469,7 @@ describe("ProductModuleService products", function () {
       }
 
       try {
-        await module.update([updateData])
+        await module.upsert([updateData])
       } catch (e) {
         error = e.message
       }
@@ -495,7 +492,7 @@ describe("ProductModuleService products", function () {
         ],
       }
 
-      await module.update([updateData])
+      await module.upsert([updateData])
 
       const product = await module.retrieve(updateData.id, {
         relations: ["variants"],
@@ -537,7 +534,7 @@ describe("ProductModuleService products", function () {
       }
 
       try {
-        await module.update([updateData])
+        await module.upsert([updateData])
       } catch (e) {
         error = e
       }
