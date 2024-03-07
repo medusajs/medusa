@@ -6,7 +6,11 @@ export const capturePaymentWorkflowId = "capture-payment-workflow"
 export const capturePaymentWorkflow = createWorkflow(
   capturePaymentWorkflowId,
   (
-    input: WorkflowData<{ payment_id: string; captured_by?: string }>
+    input: WorkflowData<{
+      payment_id: string
+      captured_by?: string
+      amount?: number
+    }>
   ): WorkflowData<PaymentDTO> => {
     const payment = capturePaymentStep(input)
     return payment

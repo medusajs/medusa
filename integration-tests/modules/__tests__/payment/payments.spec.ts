@@ -119,6 +119,63 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("should capture a payment with custom amount", async () => {
+        const paymentCollection = await paymentService.createPaymentCollections(
+          {
+            region_id: "test-region",
+            amount: 1000,
+            currency_code: "usd",
+          }
+        )
+
+        const paymentSession = await paymentService.createPaymentSession(
+          paymentCollection.id,
+          {
+            provider_id: "pp_system_default",
+            amount: 1000,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+
+        const payment = await paymentService.authorizePaymentSession(
+          paymentSession.id,
+          {}
+        )
+
+        await capturePaymentWorkflow(appContainer).run({
+          input: {
+            payment_id: payment.id,
+            amount: 500,
+          },
+          throwOnError: false,
+        })
+
+        const [paymentResult] = await paymentService.listPayments({
+          id: payment.id,
+        })
+
+        expect(paymentResult).toEqual(
+          expect.objectContaining({
+            id: payment.id,
+            amount: 1000,
+            payment_collection_id: paymentCollection.id,
+          })
+        )
+
+        const [capture] = await paymentService.listCaptures({
+          payment_id: payment.id,
+        })
+
+        expect(capture).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            payment: expect.objectContaining({ id: payment.id }),
+            amount: 500,
+          })
+        )
+      })
     })
   },
 })

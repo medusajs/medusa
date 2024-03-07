@@ -5,6 +5,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 type StepInput = {
   payment_id: string
   captured_by?: string
+  amount?: number
 }
 
 export const capturePaymentStepId = "capture-payment-step"
