@@ -3,7 +3,6 @@ import {
   Context,
   CreateStockLocationInput,
   IEventBusService,
-  MODULE_RESOURCE_TYPE,
   ModuleJoinerConfig,
   StockLocationAddressInput,
   StockLocationTypes,
@@ -12,14 +11,10 @@ import {
   DAL,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
-  MedusaError,
   ModulesSdkUtils,
-  setMetadata,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
@@ -48,12 +43,6 @@ export default class StockLocationModuleService<
     StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
   }
 >(StockLocation, generateMethodForModels, entityNameToLinkableKeysMap) {
-  // static Events = {
-  //   CREATED: "stock-location.created",
-  //   UPDATED: "stock-location.updated",
-  //   DELETED: "stock-location.deleted",
-  // }
-
   protected readonly eventBusService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
   protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
@@ -80,96 +69,6 @@ export default class StockLocationModuleService<
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
-
-  // /**
-  //  * Lists all stock locations that match the given selector.
-  //  * @param selector - Properties to filter by.
-  //  * @param config - Additional configuration for the query.
-  //  * @param context
-  //  * @return A list of stock locations.
-  //  */
-  // async list(
-  //   selector: FilterableStockLocationProps = {},
-  //   config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-  //   @MedusaContext() context: Context = {}
-  // ): Promise<StockLocation[]> {
-  //   const [locations] = await this.listAndCount(selector, config, context)
-  //   return locations
-  // }
-
-  // /**
-  //  * Lists all stock locations that match the given selector and returns the count of matching stock locations.
-  //  * @param selector - Properties to filter by.
-  //  * @param config - Additional configuration for the query.
-  //  * @param context
-  //  * @return A list of stock locations and the count of matching stock locations.
-  //  */
-  // async listAndCount(
-  //   selector: FilterableStockLocationProps = {},
-  //   config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-  //   @MedusaContext() context: Context = {}
-  // ): Promise<[StockLocation[], number]> {
-  //   const manager = context.transactionManager ?? this.manager_
-  //   const locationRepo = manager.getRepository(StockLocation)
-  //   // let q
-  //   // if (selector.q) {
-  //   //   q = selector.q
-  //   //   delete selector.q
-  //   // }
-
-  //   // // const query = buildQuery(selector, config)
-
-  //   // if (q) {
-  //   //   const where = query.where as FindOptionsWhere<StockLocation>
-
-  //   //   delete where.name
-
-  //   //   query.where = [
-  //   //     {
-  //   //       ...where,
-  //   //       name: ILike(`%${q}%`),
-  //   //     },
-  //   //   ]
-  //   // }
-
-  //   return await locationRepo.findAndCount({})
-  // }
-
-  // /**
-  //  * Retrieves a Stock Location by its ID.
-  //  * @param stockLocationId - The ID of the stock location.
-  //  * @param config - Additional configuration for the query.
-  //  * @param context
-  //  * @return The stock location.
-  //  * @throws If the stock location ID is not definedor the stock location with the given ID was not found.
-  //  */
-  // async retrieve(
-  //   stockLocationId: string,
-  //   config: FindConfig<StockLocation> = {},
-  //   @MedusaContext() context: SharedContext = {}
-  // ): Promise<StockLocation> {
-  //   if (!isDefined(stockLocationId)) {
-  //     throw new MedusaError(
-  //       MedusaError.Types.NOT_FOUND,
-  //       `"stockLocationId" must be defined`
-  //     )
-  //   }
-
-  //   const manager = context.transactionManager ?? this.manager_
-  //   const locationRepo = manager.getRepository(StockLocation)
-
-  //   // const query = buildQuery({ id: stockLocationId }, config)
-  //   const [loc] = await locationRepo.find({ where: { id: stockLocationId } })
-
-  //   if (!loc) {
-  //     throw new MedusaError(
-  //       MedusaError.Types.NOT_FOUND,
-  //       `StockLocation with id ${stockLocationId} was not found`
-  //     )
-  //   }
-
-  //   return loc
-  // }
 
   create(
     data: CreateStockLocationInput,
