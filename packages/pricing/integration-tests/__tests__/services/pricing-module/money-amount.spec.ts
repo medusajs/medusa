@@ -98,9 +98,7 @@ describe("PricingModule Service - MoneyAmount", () => {
           id: "money-amount-USD",
           amount: null,
           min_quantity: "1",
-          currency: {
-            code: "USD",
-          },
+          currency_code: "USD",
         },
       ])
     })
