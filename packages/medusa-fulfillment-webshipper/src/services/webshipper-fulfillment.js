@@ -699,9 +699,9 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
       webShipperItem.tarif_number = tarifNumber
     }
 
-    const weight = item?.variant?.weight || item?.variant?.product?.weight
+    const weight = item?.variant?.weight ?? item?.variant?.product?.weight
 
-    if (weight) {
+    if (weight !== undefined) {
       webShipperItem.weight = weight
       webShipperItem.weight_unit = "g"
     }
