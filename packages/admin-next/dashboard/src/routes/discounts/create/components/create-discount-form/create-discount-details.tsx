@@ -250,12 +250,16 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
             <Form.Field
               control={form.control}
               name="is_dynamic"
-              render={({ field }) => {
+              render={({ field: { value, onChange, ...field } }) => {
                 return (
                   <Form.Item>
                     <div className="flex gap-2">
                       <Form.Control>
-                        <Checkbox {...field} />
+                        <Checkbox
+                          checked={value}
+                          onCheckedChange={(s) => onChange(s === true)}
+                          {...field}
+                        />
                       </Form.Control>
                       <Form.Label tooltip={t("discounts.templateHint")}>
                         {t("discounts.isTemplateDiscount")}
