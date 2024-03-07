@@ -1,4 +1,4 @@
-import { OrchestrationUtils, promiseAll } from "@medusajs/utils"
+import { OrchestrationUtils, deepCopy, promiseAll } from "@medusajs/utils"
 
 async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
