@@ -135,6 +135,8 @@ export const CreateDiscountForm = () => {
       return getDbAmount(amount, region!.currency_code)
     }
 
+    console.log(values)
+
     await mutateAsync(
       {
         code: values.code,

@@ -402,7 +402,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
             <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
-                name="enable_usage_limit"
+                name="usage_limit_enabled"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -438,7 +438,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_usage_limit")}
+                            disabled={!form.watch("usage_limit_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -460,7 +460,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
             <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
-                name="enable_duration"
+                name="valid_duration_enabled"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -496,7 +496,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_duration")}
+                            disabled={!form.watch("valid_duration_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -525,7 +525,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_duration")}
+                            disabled={!form.watch("valid_duration_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -554,7 +554,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_duration")}
+                            disabled={!form.watch("valid_duration_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -583,7 +583,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_duration")}
+                            disabled={!form.watch("valid_duration_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
 
@@ -612,7 +612,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                             {...field}
                             type="number"
                             min={0}
-                            disabled={!form.watch("enable_duration")}
+                            disabled={!form.watch("valid_duration_enabled")}
                             onChange={(e) => {
                               const value = e.target.value
                               if (value === "") {
