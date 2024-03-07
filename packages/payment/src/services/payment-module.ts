@@ -38,6 +38,7 @@ import {
   PaymentSession,
   Refund,
 } from "@models"
+import BigNumber from "bignumber.js"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
 
@@ -51,7 +52,13 @@ type InjectedDependencies = {
   paymentProviderService: PaymentProviderService
 }
 
-const generateMethodForModels = [PaymentCollection, Payment, PaymentSession]
+const generateMethodForModels = [
+  PaymentCollection,
+  Payment,
+  PaymentSession,
+  Capture,
+  Refund,
+]
 
 export default class PaymentModuleService<
     TPaymentCollection extends PaymentCollection = PaymentCollection,
@@ -409,9 +416,24 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
-      { select: ["id", "data", "provider_id"] },
+      {
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "amount",
+          "raw_amount",
+          "canceled_at",
+        ],
+        relations: ["captures.raw_amount"],
+      },
       sharedContext
     )
+
+    // If no custom amount is passed, we assume the full amount needs to be captured
+    if (!data.amount) {
+      data.amount = payment.amount as number
+    }
 
     if (payment.canceled_at) {
       throw new MedusaError(
@@ -420,22 +442,29 @@ export default class PaymentModuleService<
       )
     }
 
-    // this method needs to be idempotent
     if (payment.captured_at) {
-      return this.retrievePayment(
+      return await this.retrievePayment(
         data.payment_id,
         { relations: ["captures"] },
         sharedContext
       )
     }
 
-    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount + input.amount > payment.amount) {
-    //   throw new MedusaError(
-    //     MedusaError.Types.INVALID_DATA,
-    //     `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
-    //   )
-    // }
+    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+      const amountAsBigNumber = new BigNumber(next.raw_amount.value)
+      return captureAmount.plus(amountAsBigNumber)
+    }, BigNumber(0))
+
+    const authorizedAmount = BigNumber(payment.raw_amount.value)
+    const newCaptureAmount = BigNumber(data.amount)
+    const remainingToCapture = authorizedAmount.minus(capturedAmount)
+
+    if (newCaptureAmount.gt(remainingToCapture)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `You cannot capture more than the authorized amount substracted by what is already captured.`
+      )
+    }
 
     const paymentData = await this.paymentProviderService_.capturePayment({
       data: payment.data!,
@@ -456,13 +485,13 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount + data.amount === payment.amount) {
-    //   await this.paymentService_.update(
-    //     { id: payment.id, captured_at: new Date() },
-    //     sharedContext
-    //   )
-    // }
+    // When the entire authorized amount has been captured, we mark it fully capture by setting the captured_at field
+    if (capturedAmount.plus(newCaptureAmount).eq(authorizedAmount)) {
+      await this.paymentService_.update(
+        { id: payment.id, captured_at: new Date() },
+        sharedContext
+      )
+    }
 
     return await this.retrievePayment(
       payment.id,
@@ -478,24 +507,36 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
-      { select: ["id", "data", "provider_id"] },
+      {
+        select: ["id", "data", "provider_id", "amount", "raw_amount"],
+        relations: ["captures.raw_amount"],
+      },
       sharedContext
     )
 
-    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount < input.amount) {
-    //   throw new MedusaError(
-    //     MedusaError.Types.INVALID_DATA,
-    //     `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
-    //   )
-    // }
+    if (!data.amount) {
+      data.amount = payment.amount as number
+    }
+
+    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+      const amountAsBigNumber = new BigNumber(next.raw_amount.value)
+      return captureAmount.plus(amountAsBigNumber)
+    }, BigNumber(0))
+    const refundAmount = BigNumber(data.amount)
+
+    if (capturedAmount.lt(refundAmount)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `You cannot refund more than what is captured on the payment.`
+      )
+    }
 
     const paymentData = await this.paymentProviderService_.refundPayment(
       {
         data: payment.data!,
         provider_id: payment.provider_id,
       },
-      data.amount
+      data.amount as number
     )
 
     await this.refundService_.create(

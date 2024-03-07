@@ -83,7 +83,7 @@ export const ProductOrganizationSection = ({
           {t("fields.categories")}
         </Text>
         <div className="flex flex-wrap items-center gap-1">
-          {product.categories.length > 0
+          {product.categories?.length > 0
             ? product.categories.map((pcat) => (
                 <Badge
                   key={pcat.id}

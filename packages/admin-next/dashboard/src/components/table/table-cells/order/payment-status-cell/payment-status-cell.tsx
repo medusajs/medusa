@@ -19,7 +19,7 @@ export const PaymentStatusCell = ({ status }: PaymentStatusCellProps) => {
       "orange",
     ],
     canceled: [t("orders.payment.status.canceled"), "red"],
-    requires_action: [t("orders.payment.status.requresAction"), "orange"],
+    requires_action: [t("orders.payment.status.requiresAction"), "orange"],
   }[status] as [string, "red" | "orange" | "green"]
 
   return <StatusCell color={color}>{label}</StatusCell>

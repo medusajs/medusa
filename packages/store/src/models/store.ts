@@ -39,6 +39,9 @@ export default class Store {
   supported_currency_codes: string[] = []
 
   @Property({ columnType: "text", nullable: true })
+  default_currency_code: string | null = null
+
+  @Property({ columnType: "text", nullable: true })
   default_sales_channel_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
