@@ -507,17 +507,29 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
-      { select: ["id", "data", "provider_id"] },
+      {
+        select: ["id", "data", "provider_id", "amount", "raw_amount"],
+        relations: ["captures.raw_amount"],
+      },
       sharedContext
     )
 
-    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount < input.amount) {
-    //   throw new MedusaError(
-    //     MedusaError.Types.INVALID_DATA,
-    //     `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
-    //   )
-    // }
+    if (!data.amount) {
+      data.amount = payment.amount as number
+    }
+
+    const capturedAmount = payment.captures.reduce((acc, next) => {
+      const bn = new BigNumber(next.raw_amount.value)
+      return acc.plus(bn)
+    }, BigNumber(0))
+    const refundAmount = BigNumber(data.amount)
+
+    if (capturedAmount.lt(refundAmount)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `You cannot refund more than what is captured on the payment.`
+      )
+    }
 
     const paymentData = await this.paymentProviderService_.refundPayment(
       {
