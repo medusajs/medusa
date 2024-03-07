@@ -3,10 +3,11 @@ import { z } from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Region, TaxProvider } from "@medusajs/medusa"
-import { Button, Select, Switch } from "@medusajs/ui"
+import { Button, Input, Select, Switch } from "@medusajs/ui"
 import { useAdminUpdateRegion } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
 import {
   RouteDrawer,
   useRouteModal,
@@ -19,6 +20,20 @@ type EditTaxRateFormProps = {
 }
 
 const EditTaxSettingsSchema = z.object({
+  tax_code: z.string().optional(),
+  tax_rate: z.union([z.string(), z.number()]).refine((value) => {
+    if (value === "") {
+      return false
+    }
+
+    const num = Number(value)
+
+    if (num >= 0 && num <= 100) {
+      return true
+    }
+
+    return false
+  }, "Default tax rate must be a number between 0 and 100"),
   includes_tax: z.boolean(),
   automatic_taxes: z.boolean(),
   gift_cards_taxable: z.boolean(),
@@ -36,6 +51,8 @@ export const EditTaxSettingsForm = ({
 
   const form = useForm<z.infer<typeof EditTaxSettingsSchema>>({
     defaultValues: {
+      tax_code: region.tax_code || "",
+      tax_rate: region.tax_rate,
       includes_tax: region.includes_tax,
       automatic_taxes: region.automatic_taxes,
       gift_cards_taxable: region.gift_cards_taxable,
@@ -47,12 +64,13 @@ export const EditTaxSettingsForm = ({
   const { mutateAsync, isLoading } = useAdminUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { tax_provider_id, ...rest } = data
+    const { tax_provider_id, tax_rate, ...rest } = data
 
     await mutateAsync(
       {
         tax_provider_id:
           tax_provider_id === SYSTEM_PROVIDER_ID ? null : tax_provider_id,
+        tax_rate: Number(tax_rate),
         ...rest,
       },
       {
@@ -68,37 +86,73 @@ export const EditTaxSettingsForm = ({
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-8">
-            <Form.Field
-              control={form.control}
-              name="tax_provider_id"
-              render={({ field: { onChange, ref, ...field } }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>
-                      {t("taxes.settings.taxProviderLabel")}
-                    </Form.Label>
-                    <Form.Control>
-                      <Select {...field} onValueChange={onChange}>
-                        <Select.Trigger ref={ref}>
-                          <Select.Value />
-                        </Select.Trigger>
-                        <Select.Content>
-                          <Select.Item value={SYSTEM_PROVIDER_ID}>
-                            {t("taxes.settings.systemTaxProviderLabel")}
-                          </Select.Item>
-                          {taxProviders.map((tp) => (
-                            <Select.Item key={tp.id} value={tp.id}>
-                              {formatProvider(tp.id)}
+            <div className="flex flex-col gap-y-4">
+              <Form.Field
+                control={form.control}
+                name="tax_provider_id"
+                render={({ field: { onChange, ref, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>
+                        {t("taxes.settings.taxProviderLabel")}
+                      </Form.Label>
+                      <Form.Control>
+                        <Select {...field} onValueChange={onChange}>
+                          <Select.Trigger ref={ref}>
+                            <Select.Value />
+                          </Select.Trigger>
+                          <Select.Content>
+                            <Select.Item value={SYSTEM_PROVIDER_ID}>
+                              {t("taxes.settings.systemTaxProviderLabel")}
                             </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
+                            {taxProviders.map((tp) => (
+                              <Select.Item key={tp.id} value={tp.id}>
+                                {formatProvider(tp.id)}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select>
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="tax_rate"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>
+                        {t("taxes.settings.defaultTaxRateLabel")}
+                      </Form.Label>
+                      <Form.Control>
+                        <PercentageInput {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="tax_code"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>
+                        {t("taxes.settings.defaultTaxCodeLabel")}
+                      </Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+            </div>
             <Form.Field
               control={form.control}
               name="automatic_taxes"

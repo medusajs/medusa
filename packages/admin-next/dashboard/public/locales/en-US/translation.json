@@ -394,7 +394,9 @@
       "calculateTaxesAutomaticallyLabel": "Calculate taxes automatically",
       "calculateTaxesAutomaticallyHint": "When enabled, tax rates will be calculated automatically and applied to carts. When disabled, taxes must be manually computed at checkout. Manual taxes are recommended for usage with third-party tax providers.",
       "applyTaxesOnGiftCardsLabel": "Apply taxes on gift cards",
-      "applyTaxesOnGiftCardsHint": "When enabled, taxes will be applied to gift cards at checkout. In some countries, tax regulations require the application of taxes to gift cards upon purchase."
+      "applyTaxesOnGiftCardsHint": "When enabled, taxes will be applied to gift cards at checkout. In some countries, tax regulations require the application of taxes to gift cards upon purchase.",
+      "defaultTaxRateLabel": "Default tax rate",
+      "defaultTaxCodeLabel": "Default tax code"
     },
     "defaultRate": {
       "sectionTitle": "Default Tax Rate"

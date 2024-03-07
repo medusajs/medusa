@@ -1,8 +1,9 @@
 import { PencilSquare } from "@medusajs/icons"
 import { Region } from "@medusajs/medusa"
-import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
+import { Badge, Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { formatPercentage } from "../../../../../lib/percentage-helpers"
 
 type Props = {
   region: Region
@@ -77,6 +78,17 @@ export const TaxDetailsSection = ({ region }: Props) => {
             ? t("general.enabled")
             : t("general.disabled")}
         </StatusBadge>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" weight="plus" leading="compact">
+          {t("taxes.settings.defaultTaxRateLabel")}
+        </Text>
+        <div className="flex items-center gap-x-2">
+          <Text size="small" leading="compact">
+            {formatPercentage(region.tax_rate)}
+          </Text>
+          {region.tax_code && <Badge size="2xsmall">{region.tax_code}</Badge>}
+        </div>
       </div>
     </Container>
   )

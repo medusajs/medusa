@@ -578,11 +578,6 @@ const router = createBrowserRouter([
                     lazy: () => import("../../routes/taxes/tax-rate-create"),
                   },
                   {
-                    path: "tax-rates/default/edit",
-                    lazy: () =>
-                      import("../../routes/taxes/tax-rate-default-edit"),
-                  },
-                  {
                     path: "tax-rates/:rate_id/edit",
                     lazy: () => import("../../routes/taxes/tax-rate-edit"),
                   },

@@ -2,7 +2,6 @@ import { useAdminRegion } from "medusa-react"
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { TaxCountriesSection } from "./components/tax-countries-section"
-import { TaxDefaultTaxRateSection } from "./components/tax-default-tax-rate-section"
 import { TaxDetailsSection } from "./components/tax-general-section"
 import { TaxRatesSection } from "./components/tax-rates-section"
 import { taxRegionLoader } from "./loader"
@@ -32,13 +31,11 @@ export const TaxDetail = () => {
           <TaxDetailsSection region={region} />
           <TaxRatesSection region={region} />
           <div className="flex flex-col gap-y-2 xl:hidden">
-            <TaxDefaultTaxRateSection region={region} />
             <TaxCountriesSection region={region} />
           </div>
           <JsonViewSection data={region} />
         </div>
         <div className="hidden flex-col gap-y-2 xl:flex">
-          <TaxDefaultTaxRateSection region={region} />
           <TaxCountriesSection region={region} />
         </div>
       </div>
