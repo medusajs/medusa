@@ -3,6 +3,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { TaxRateActions } from "./tax-rate-actions"
 
 const columnHelper = createColumnHelper<TaxRate>()
@@ -35,9 +36,11 @@ export const useTaxRateTableColumns = () => {
       columnHelper.accessor("rate", {
         header: t("fields.rate"),
         cell: ({ getValue }) => {
+          const rate = getValue()
+
           return (
             <div className="flex items-center overflow-hidden">
-              <span className="truncate">{getValue()}</span>
+              <span className="truncate">{formatPercentage(rate)}</span>
             </div>
           )
         },
