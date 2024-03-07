@@ -1,7 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { Payment, PaymentCollection, PaymentProvider } from "@models"
+import {
+  Payment,
+  PaymentCollection,
+  PaymentProvider,
+  PaymentSession,
+} from "@models"
 
 export const LinkableKeys = {
   payment_id: Payment.name,
@@ -35,6 +40,13 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["payment_collection", "payment_collections"],
       args: {
         entity: PaymentCollection.name,
+      },
+    },
+    {
+      name: ["payment_session", "payment_sessions"],
+      args: {
+        entity: PaymentSession.name,
+        methodSuffix: "PaymentSessions",
       },
     },
     {

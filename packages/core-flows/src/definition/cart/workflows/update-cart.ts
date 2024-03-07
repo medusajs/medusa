@@ -14,6 +14,7 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
 export const updateCartWorkflow = createWorkflow(
@@ -67,6 +68,10 @@ export const updateCartWorkflow = createWorkflow(
       id: input.id,
       promo_codes: input.promo_codes,
       action: PromotionActions.REPLACE,
+    })
+
+    refreshPaymentCollectionForCartStep({
+      cart_id: input.id,
     })
   }
 )
