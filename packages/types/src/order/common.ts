@@ -2,7 +2,7 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberRawValue } from "../totals"
 
-type OrderSummary = {
+export type OrderSummaryDTO = {
   total: number
   subtotal: number
   total_tax: number
@@ -600,10 +600,17 @@ export interface OrderDTO {
    * @expandable
    */
   shipping_methods?: OrderShippingMethodDTO[]
+
+  /**
+   * The tramsactions associated with the order
+   *
+   * @expandable
+   */
+  transactions?: OrderTransactionDTO[]
   /**
    * The summary of the order totals.
    */
-  summary?: OrderSummary
+  summary?: OrderSummaryDTO
   /**
    * Holds custom data in key-value pairs.
    */
@@ -633,6 +640,13 @@ export interface OrderChangeDTO {
    * @expandable
    */
   order: OrderDTO
+
+  /**
+   * The actions of the order change
+   *
+   * @expandable
+   */
+  actions: OrderChangeActionDTO[]
   /**
    * The status of the order change
    */
@@ -695,13 +709,24 @@ export interface OrderChangeActionDTO {
   /**
    * The ID of the associated order change
    */
-  order_change_id: string
+  order_change_id: string | null
   /**
    * The associated order change
    *
    * @expandable
    */
-  order_change: OrderChangeDTO
+  order_change: OrderChangeDTO | null
+
+  /**
+   * The ID of the associated order
+   */
+  order_id: string | null
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO | null
   /**
    * The reference of the order change action
    */

@@ -107,6 +107,14 @@ moduleIntegrationTestRunner({
             ],
           },
         ],
+        transactions: [
+          {
+            amount: 58,
+            currency_code: "USD",
+            reference: "payment",
+            reference_id: "pay_123",
+          },
+        ],
         currency_code: "usd",
         customer_id: "joe",
       } as CreateOrderDTO
@@ -114,6 +122,9 @@ moduleIntegrationTestRunner({
       const expectation = expect.objectContaining({
         id: expect.stringContaining("order_"),
         version: 1,
+        summary: expect.objectContaining({
+          total: expect.any(Number),
+        }),
         shipping_address: expect.objectContaining({
           id: expect.stringContaining("ordaddr_"),
         }),
@@ -193,6 +204,7 @@ moduleIntegrationTestRunner({
             "id",
             "version",
             "items.id",
+            "summary",
             "items.quantity",
             "items.detail.id",
             "items.detail.version",
@@ -223,20 +235,93 @@ moduleIntegrationTestRunner({
         expect(getOrder).toEqual(expectation)
       })
 
-      it.skip("should transform where clause to match the db schema and return the order", async function () {
+      it("should return order transactions", async function () {
         const createdOrder = await service.create(input)
         const getOrder = await service.retrieve(createdOrder.id, {
           select: [
             "id",
-            "version",
-            "items.id",
-            "items.detail.version",
-            "items.quantity",
+            "transactions.amount",
+            "transactions.reference",
+            "transactions.reference_id",
           ],
-          relations: ["items"],
+          relations: ["transactions"],
         })
 
-        expect(getOrder).toEqual(expectation)
+        expect(getOrder).toEqual(
+          expect.objectContaining({
+            id: createdOrder.id,
+            transactions: [
+              expect.objectContaining({
+                amount: 58,
+                reference: "payment",
+                reference_id: "pay_123",
+              }),
+            ],
+          })
+        )
+      })
+
+      it("should transform where clause to match the db schema and return the order", async function () {
+        await service.create(input)
+        const orders = await service.list(
+          {
+            items: {
+              quantity: 2,
+            },
+          },
+          {
+            select: ["id"],
+            relations: ["items"],
+            take: null,
+          }
+        )
+        expect(orders.length).toEqual(1)
+
+        const orders2 = await service.list(
+          {
+            items: {
+              quantity: 5,
+            },
+          },
+          {
+            select: ["items.quantity"],
+            relations: ["items"],
+            take: null,
+          }
+        )
+        expect(orders2.length).toEqual(0)
+
+        const orders3 = await service.list(
+          {
+            items: {
+              detail: {
+                shipped_quantity: 0,
+              },
+            },
+          },
+          {
+            select: ["id"],
+            relations: ["items.detail"],
+            take: null,
+          }
+        )
+        expect(orders3.length).toEqual(1)
+
+        const orders4 = await service.list(
+          {
+            items: {
+              detail: {
+                shipped_quantity: 1,
+              },
+            },
+          },
+          {
+            select: ["id"],
+            relations: ["items.detail"],
+            take: null,
+          }
+        )
+        expect(orders4.length).toEqual(0)
       })
     })
   },
