@@ -1,9 +1,10 @@
-import { RedisOptions } from "ioredis"
-import { LoggerOptions } from "typeorm"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
 } from "../modules-sdk/common"
+
+import { LoggerOptions } from "typeorm"
+import { RedisOptions } from "ioredis"
 
 /**
  * @interface
@@ -174,6 +175,7 @@ export type ProjectConfigOptions = {
    * ```
    */
   admin_cors?: string
+  auth_cors?: string
   /**
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
    *
@@ -246,7 +248,7 @@ export type ProjectConfigOptions = {
    * - `[user]`: (required) your PostgreSQL username. If not specified, the system's username is used by default. The database user that you use must have create privileges. If you're using the `postgres` superuser, then it should have these privileges by default. Otherwise, make sure to grant your user create privileges. You can learn how to do that in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/ddl-priv.html).
    * - `[:password]`: an optional password for the user. When provided, make sure to put `:` before the password.
    * - `[host]`: (required) your PostgreSQL host. When run locally, it should be `localhost`.
-   * - `[:post]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port.
+   * - `[:port]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port.
    * - `[dbname]`: (required) the name of the database.
    *
    * You can learn more about the connection URL format in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).

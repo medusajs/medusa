@@ -3,7 +3,6 @@ import { PriceSetMoneyAmount } from "@models"
 import { CreatePriceRuleDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceRuleService } from "@services"
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
@@ -34,7 +33,6 @@ describe("PriceRule Service", () => {
 
     service = container.resolve("priceRuleService")
 
-    await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
     await createPriceSets(testManager)
     await createRuleTypes(testManager)

@@ -14,24 +14,38 @@ export class Migration20240225134525 extends Migration {
           ["type", "created_by"],
           "DROP NOT NULL"
         )}
-          
+        
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "completed_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE "payment_collection" DROP CONSTRAINT "FK_payment_collection_region_id";
         
         ALTER TABLE IF EXISTS "payment_provider" ADD COLUMN IF NOT EXISTS "is_enabled" BOOLEAN NOT NULL DEFAULT TRUE;
 
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "currency_code" TEXT NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "authorized_at" TEXT NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_authorized_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "context" JSONB NULL;
 
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "provider_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
-
-        ALTER TABLE IF EXISTS "capture" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_session_id" TEXT NOT NULL;
+        ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "customer_id" TEXT NULL;
 
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+        ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "created_by" TEXT NULL;
+        ${generatePostgresAlterColummnIfExistStatement(
+          "refund",
+          ["reason"],
+          "DROP NOT NULL"
+        )}
 
         CREATE TABLE IF NOT EXISTS "capture" (
           "id"          TEXT NOT NULL,
@@ -39,7 +53,10 @@ export class Migration20240225134525 extends Migration {
           "raw_amount"  JSONB NOT NULL,
           "payment_id"  TEXT NOT NULL,
           "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"  TIMESTAMPTZ NULL,
           "created_by"  TEXT NULL,
+          "metadata"    JSONB NULL,
           CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
         );
 
@@ -93,6 +110,7 @@ export class Migration20240225134525 extends Migration {
         CREATE INDEX IF NOT EXISTS "IDX_capture_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
 
         CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id") WHERE "deleted_at" IS NULL;
+
       `)
     } else {
       this.addSql(`
@@ -144,6 +162,7 @@ export class Migration20240225134525 extends Migration {
           "raw_amount"           JSONB NOT NULL,
           "provider_id"          TEXT NOT NULL,
           "data"                 JSONB NOT NULL,
+          "context"              JSONB NULL,
           "status"               TEXT CHECK ("status" IN ('authorized', 'pending', 'requires_more', 'error', 'canceled')) NOT NULL DEFAULT 'pending',
           "authorized_at"        TIMESTAMPTZ NULL,
           "payment_collection_id" TEXT NOT NULL,
@@ -162,7 +181,6 @@ export class Migration20240225134525 extends Migration {
           "provider_id"          TEXT NOT NULL,
           "cart_id"              TEXT NULL,
           "order_id"             TEXT NULL,
-          "order_edit_id"        TEXT NULL,
           "customer_id"          TEXT NULL,
           "data"                 JSONB NULL,
           "created_at"           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -171,7 +189,7 @@ export class Migration20240225134525 extends Migration {
           "captured_at"          TIMESTAMPTZ NULL,
           "canceled_at"          TIMESTAMPTZ NULL,
           "payment_collection_id" TEXT NOT NULL,
-          "session_id"           TEXT NOT NULL,
+          "payment_session_id"   TEXT NOT NULL,
           "metadata"             JSONB NULL,
           CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
         );

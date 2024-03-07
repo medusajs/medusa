@@ -14,18 +14,21 @@ export const moduleLoader = async ({
   moduleResolutions,
   logger,
   migrationOnly,
+  loaderOnly,
 }: {
   container: MedusaContainer
   moduleResolutions: Record<string, ModuleResolution>
   logger: Logger
   migrationOnly?: boolean
+  loaderOnly?: boolean
 }): Promise<void> => {
   for (const resolution of Object.values(moduleResolutions ?? {})) {
     const registrationResult = await loadModule(
       container,
       resolution,
       logger!,
-      migrationOnly
+      migrationOnly,
+      loaderOnly
     )
 
     if (registrationResult?.error) {
@@ -48,7 +51,8 @@ async function loadModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
   logger: Logger,
-  migrationOnly?: boolean
+  migrationOnly?: boolean,
+  loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const modDefinition = resolution.definition
   const registrationName = modDefinition.registrationName
@@ -78,5 +82,11 @@ async function loadModule(
     return
   }
 
-  return await loadInternalModule(container, resolution, logger, migrationOnly)
+  return await loadInternalModule(
+    container,
+    resolution,
+    logger,
+    migrationOnly,
+    loaderOnly
+  )
 }

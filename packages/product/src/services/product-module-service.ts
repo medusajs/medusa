@@ -245,7 +245,9 @@ export default class ProductModuleService<
       )
     ).flat()
 
-    return productVariants as unknown as ProductTypes.ProductVariantDTO[]
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductVariantDTO[]
+    >(productVariants)
   }
 
   @InjectManager("baseRepository_")
@@ -549,9 +551,10 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
+
     const createdProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
-    >(products)
+    >(products, { populate: true })
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
@@ -688,6 +691,14 @@ export default class ProductModuleService<
           sharedContext
         )
       })
+    )
+
+    // TODO: An ugly hack to populate the options in the entity map. The options and variants are created independently of the product create request,
+    // so they are not populated in the response. Refactor the create method so this is no longer necessary
+    await this.productOptionService_.list(
+      { id: productOptions.map((po) => po.id) },
+      { take: null },
+      sharedContext
     )
 
     return products

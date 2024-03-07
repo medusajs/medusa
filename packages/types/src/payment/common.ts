@@ -114,7 +114,7 @@ export interface PaymentCollectionDTO {
   /**
    * Holds custom data in key-value pairs
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: Record<string, unknown>
 
   /**
    * The status of the payment collection
@@ -167,6 +167,39 @@ export interface FilterablePaymentCollectionProps
    * Filter payment collections by updated date.
    */
   updated_at?: OperatorMap<string>
+}
+
+export interface FilterablePaymentSessionProps
+  extends BaseFilterable<PaymentSessionDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  provider_id?: string | string[]
+  payment_collection_id?: string | string[]
+  region_id?: string | string[] | OperatorMap<string>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+}
+
+export interface FilterableCaptureProps extends BaseFilterable<CaptureDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  payment_id?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+}
+
+export interface FilterableRefundProps extends BaseFilterable<RefundDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  payment_id?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
 }
 
 /* ********** PAYMENT ********** */
@@ -385,6 +418,11 @@ export interface PaymentSessionDTO {
   data: Record<string, unknown>
 
   /**
+   * Payment session context
+   */
+  context?: Record<string, unknown>
+
+  /**
    * The status of the payment session
    */
   status: PaymentSessionStatus
@@ -420,4 +458,17 @@ export interface PaymentProviderDTO {
    * Whether the payment provider is enabled.
    */
   is_enabled: string
+}
+
+export interface FilterablePaymentProviderProps
+  extends BaseFilterable<PaymentProviderDTO> {
+  /**
+   * The IDs to filter the payment collection by.
+   */
+  id?: string | string[]
+
+  /**
+   * Filter by enabled status
+   */
+  is_enabled?: boolean
 }

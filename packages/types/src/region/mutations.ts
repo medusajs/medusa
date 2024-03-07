@@ -1,5 +1,3 @@
-import { RegionCurrencyDTO } from "./common"
-
 /**
  * The region to be created.
  */

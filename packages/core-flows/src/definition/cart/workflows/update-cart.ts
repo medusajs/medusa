@@ -7,35 +7,19 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import {
-  createLineItemAdjustmentsStep,
-  createShippingMethodAdjustmentsStep,
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
   findSalesChannelStep,
-  getActionsToComputeFromPromotionsStep,
-  prepareAdjustmentsFromPromotionActionsStep,
-  removeLineItemAdjustmentsStep,
-  removeShippingMethodAdjustmentsStep,
   retrieveCartStep,
   updateCartsStep,
 } from "../steps"
+import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
 export const updateCartWorkflow = createWorkflow(
   updateCartWorkflowId,
   (input: WorkflowData<UpdateCartWorkflowInputDTO>): WorkflowData<CartDTO> => {
-    const retrieveCartInput = {
-      id: input.id,
-      config: {
-        relations: [
-          "items",
-          "items.adjustments",
-          "shipping_methods",
-          "shipping_methods.adjustments",
-        ],
-      },
-    }
-
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
@@ -79,34 +63,28 @@ export const updateCartWorkflow = createWorkflow(
 
     updateCartsStep([cartInput])
 
-    const cart = retrieveCartStep(retrieveCartInput)
-    const actions = getActionsToComputeFromPromotionsStep({
-      cart,
-      promoCodes: input.promo_codes,
+    refreshCartPromotionsStep({
+      id: input.id,
+      promo_codes: input.promo_codes,
       action: PromotionActions.REPLACE,
     })
 
-    const {
-      lineItemAdjustmentsToCreate,
-      lineItemAdjustmentIdsToRemove,
-      shippingMethodAdjustmentsToCreate,
-      shippingMethodAdjustmentIdsToRemove,
-    } = prepareAdjustmentsFromPromotionActionsStep({ actions })
-
-    parallelize(
-      removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove }),
-      removeShippingMethodAdjustmentsStep({
-        shippingMethodAdjustmentIdsToRemove,
-      })
-    )
-
-    parallelize(
-      createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
-      createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
-    )
-
-    return retrieveCartStep(retrieveCartInput).config({
-      name: "retrieve-cart-result-step",
+    refreshPaymentCollectionForCartStep({
+      cart_id: input.id,
     })
+
+    const retrieveCartInput = {
+      id: input.id,
+      config: {
+        relations: [
+          "items",
+          "items.adjustments",
+          "shipping_methods",
+          "shipping_methods.adjustments",
+        ],
+      },
+    }
+
+    return retrieveCartStep(retrieveCartInput)
   }
 )

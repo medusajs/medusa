@@ -12,6 +12,6 @@ export * from "./prepare-adjustments-from-promotion-actions"
 export * from "./remove-line-item-adjustments"
 export * from "./remove-shipping-method-adjustments"
 export * from "./retrieve-cart"
+export * from "./update-cart-promotions"
 export * from "./update-carts"
 export * from "./validate-variants-existence"
-

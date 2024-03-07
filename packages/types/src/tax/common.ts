@@ -23,6 +23,18 @@ export interface TaxRateDTO {
    */
   metadata: Record<string, unknown> | null
   /**
+   * The id of the Tax Region the rate is associated with.
+   */
+  tax_region_id: string
+  /**
+   * Flag to indicate if the Tax Rate should be combined with parent rates.
+   */
+  is_combinable: boolean
+  /**
+   * Flag to indicate if the Tax Rate is the default rate for the region.
+   */
+  is_default: boolean
+  /**
    * When the Tax Rate was created.
    */
   created_at: string | Date
@@ -31,15 +43,24 @@ export interface TaxRateDTO {
    */
   updated_at: string | Date
   /**
+   * When the Tax Rate was deleted.
+   */
+  deleted_at: Date | null
+  /**
    * The ID of the user that created the Tax Rate.
    */
   created_by: string | null
 }
 
+export interface TaxProviderDTO {
+  id: string
+  is_enabled: boolean
+}
+
 export interface FilterableTaxRateProps
   extends BaseFilterable<FilterableTaxRateProps> {
   id?: string | string[]
-
+  tax_region_id?: string | string[]
   rate?: number | number[] | OperatorMap<number>
   code?: string | string[] | OperatorMap<string>
   name?: string | string[] | OperatorMap<string>
@@ -57,6 +78,7 @@ export interface TaxRegionDTO {
   created_at: string | Date
   updated_at: string | Date
   created_by: string | null
+  deleted_at: string | Date | null
 }
 
 export interface FilterableTaxRegionProps
@@ -75,6 +97,7 @@ export interface FilterableTaxRegionProps
 }
 
 export interface TaxRateRuleDTO {
+  id: string
   reference: string
   reference_id: string
   tax_rate_id: string

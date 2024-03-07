@@ -20,7 +20,7 @@ export const GET = async (
   const variables = { id: req.params.id }
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "api-key",
+    entryPoint: "api_key",
     variables,
     fields: defaultAdminApiKeyFields,
   })
@@ -66,7 +66,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id,
-    object: "api-key",
+    object: "api_key",
     deleted: true,
   })
 }

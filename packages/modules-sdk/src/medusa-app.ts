@@ -37,7 +37,12 @@ import * as Servers from "./utils/servers"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
-async function loadModules(modulesConfig, sharedContainer, migrationOnly) {
+export async function loadModules(
+  modulesConfig,
+  sharedContainer,
+  migrationOnly = false,
+  loaderOnly = false
+) {
   const allModules = {}
 
   await Promise.all(
@@ -77,7 +82,12 @@ async function loadModules(modulesConfig, sharedContainer, migrationOnly) {
         moduleDefinition: definition as ModuleDefinition,
         moduleExports,
         migrationOnly,
+        loaderOnly,
       })) as LoadedModule
+
+      if (loaderOnly) {
+        return
+      }
 
       const service = loaded[moduleName]
       sharedContainer.register({
@@ -164,7 +174,9 @@ async function MedusaApp_({
   injectedDependencies = {},
   onApplicationStartCb,
   migrationOnly = false,
+  loaderOnly = false,
 }: MedusaAppOptions<RemoteFetchDataCallback> & {
+  loaderOnly?: boolean
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
@@ -220,7 +232,25 @@ async function MedusaApp_({
     })
   }
 
-  const allModules = await loadModules(modules, sharedContainer_, migrationOnly)
+  const allModules = await loadModules(
+    modules,
+    sharedContainer_,
+    migrationOnly,
+    loaderOnly
+  )
+
+  if (loaderOnly) {
+    return {
+      modules: allModules,
+      link: undefined,
+      query: async () => {
+        throw new Error("Querying not allowed in loaderOnly mode")
+      },
+      runMigrations: async () => {
+        throw new Error("Migrations not allowed in loaderOnly mode")
+      },
+    }
+  }
 
   // Share Event bus with link modules
   injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
@@ -272,7 +302,7 @@ async function MedusaApp_({
       )
     }
 
-    const linkModuleOpt = { ...linkModuleOptions }
+    const linkModuleOpt = { ...(linkModuleOptions ?? {}) }
     linkModuleOpt.database ??= {
       ...(sharedResourcesConfig?.database ?? {}),
     }

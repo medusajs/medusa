@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es5",
+      "es6",
+      "es2019"
+    ],
+    "target": "es5",
+    "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true, // to use ES5 specific tooling
+    "inlineSourceMap": true /* Emit a single file with source maps instead of having a separate file. */
+  },
+  "include": ["src"],
+  "exclude": [
+    "dist",
+    "build",
+    "src/**/__tests__",
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
+    "node_modules",
+    ".eslintrc.js"
+  ]
+}

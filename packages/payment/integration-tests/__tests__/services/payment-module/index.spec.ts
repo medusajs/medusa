@@ -21,17 +21,9 @@ moduleIntegrationTestRunner({
   }: SuiteOptions<IPaymentModuleService>) => {
     describe("Payment Module Service", () => {
       describe("Payment Flow", () => {
-        beforeEach(async () => {
-          const repositoryManager = MikroOrmWrapper.forkManager()
-
-          await createPaymentCollections(repositoryManager)
-          await createPaymentSessions(repositoryManager)
-          await createPayments(repositoryManager)
-        })
-
         it("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({
-            currency_code: "USD",
+            currency_code: "usd",
             amount: 200,
             region_id: "reg_123",
           })
@@ -40,11 +32,11 @@ moduleIntegrationTestRunner({
             paymentCollection.id,
             {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "USD",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -72,7 +64,7 @@ moduleIntegrationTestRunner({
           expect(paymentCollection).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              currency_code: "USD",
+              currency_code: "usd",
               amount: 200,
               // TODO
               // authorized_amount: 200,
@@ -83,7 +75,7 @@ moduleIntegrationTestRunner({
               payment_sessions: [
                 expect.objectContaining({
                   id: expect.any(String),
-                  currency_code: "USD",
+                  currency_code: "usd",
                   amount: 200,
                   provider_id: "pp_system_default",
                   status: "authorized",
@@ -94,7 +86,7 @@ moduleIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   amount: 200,
-                  currency_code: "USD",
+                  currency_code: "usd",
                   provider_id: "pp_system_default",
                   captures: [
                     expect.objectContaining({
@@ -285,8 +277,7 @@ moduleIntegrationTestRunner({
 
         describe("update", () => {
           it("should update a Payment Collection", async () => {
-            await service.updatePaymentCollections({
-              id: "pay-col-id-2",
+            await service.updatePaymentCollections("pay-col-id-2", {
               currency_code: "eur",
               region_id: "reg-2",
             })
@@ -336,11 +327,11 @@ moduleIntegrationTestRunner({
           it("should create a payment session successfully", async () => {
             await service.createPaymentSession("pay-col-id-1", {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -377,11 +368,11 @@ moduleIntegrationTestRunner({
           it("should update a payment session successfully", async () => {
             let session = await service.createPaymentSession("pay-col-id-1", {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -391,15 +382,15 @@ moduleIntegrationTestRunner({
 
             session = await service.updatePaymentSession({
               id: session.id,
-              providerContext: {
-                amount: 200,
-                currency_code: "eur",
+              amount: 200,
+              currency_code: "eur",
+              data: {},
+              context: {
                 resource_id: "res_id",
-                context: {},
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "new@test.tsst",
-                payment_session_data: {},
               },
             })
 
@@ -424,11 +415,11 @@ moduleIntegrationTestRunner({
 
             const session = await service.createPaymentSession(collection.id, {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 100,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 resource_id: "test",
                 email: "test@test.com",
                 billing_address: {},
@@ -447,21 +438,17 @@ moduleIntegrationTestRunner({
                 amount: 100,
                 currency_code: "usd",
                 provider_id: "pp_system_default",
-
                 refunds: [],
                 captures: [],
                 data: {},
                 cart_id: null,
                 order_id: null,
-                order_edit_id: null,
                 customer_id: null,
                 deleted_at: null,
                 captured_at: null,
                 canceled_at: null,
-                payment_collection: expect.objectContaining({
-                  id: expect.any(String),
-                }),
-                payment_session: {
+                payment_collection_id: expect.any(String),
+                payment_session: expect.objectContaining({
                   id: expect.any(String),
                   updated_at: expect.any(Date),
                   created_at: expect.any(Date),
@@ -475,22 +462,8 @@ moduleIntegrationTestRunner({
                   payment_collection: expect.objectContaining({
                     id: expect.any(String),
                   }),
-                  payment: expect.objectContaining({
-                    cart_id: null,
-                    order_id: null,
-                    order_edit_id: null,
-                    customer_id: null,
-                    data: {},
-                    deleted_at: null,
-                    captured_at: null,
-                    canceled_at: null,
-                    refunds: [],
-                    captures: [],
-                    amount: 100,
-                    currency_code: "usd",
-                    provider_id: "pp_system_default",
-                  }),
-                },
+                  payment_collection_id: expect.any(String),
+                }),
               })
             )
           })
@@ -523,7 +496,7 @@ moduleIntegrationTestRunner({
         })
 
         describe("capture", () => {
-          it("should capture a payment successfully", async () => {
+          it("should capture a payment successfully and update captured_at", async () => {
             const capturedPayment = await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
@@ -540,61 +513,104 @@ moduleIntegrationTestRunner({
                     amount: 100,
                   }),
                 ],
-
-                // TODO: uncomment when totals calculations are implemented
-                // captured_amount: 100,
-                // captured_at: expect.any(Date),
+                captured_at: expect.any(Date),
               })
             )
           })
 
-          // TODO: uncomment when totals are implemented
+          it("should split a payment in two captures a payment successfully", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
 
-          //   it("should fail to capture amount greater than authorized", async () => {
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 200,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "Total captured amount for payment: pay-id-1 exceeds authorised amount."
-          //     )
-          //   })
-          //
-          //   it("should fail to capture already captured payment", async () => {
-          //     await service.capturePayment({
-          //       amount: 100,
-          //       payment_id: "pay-id-1",
-          //     })
-          //
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 100,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "The payment: pay-id-1 is already fully captured."
-          //     )
-          //   })
-          //
-          //   it("should fail to capture a canceled payment", async () => {
-          //     await service.cancelPayment("pay-id-1")
-          //
-          //     const error = await service
-          //       .capturePayment({
-          //         amount: 100,
-          //         payment_id: "pay-id-1",
-          //       })
-          //       .catch((e) => e)
-          //
-          //     expect(error.message).toEqual(
-          //       "The payment: pay-id-1 has been canceled."
-          //     )
-          //   })
+            const capturedPayment = await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+
+                captures: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should fail to capture amount greater than authorized", async () => {
+            const error = await service
+              .capturePayment({
+                amount: 200,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture amount greater than what is already captured", async () => {
+            await service.capturePayment({
+              amount: 99,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 2,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture already captured payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture a canceled payment", async () => {
+            await service.cancelPayment("pay-id-1")
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "The payment: pay-id-1 has been canceled."
+            )
+          })
         })
 
         describe("refund", () => {
@@ -625,23 +641,23 @@ moduleIntegrationTestRunner({
             )
           })
 
-          // it("should throw if refund is greater than captured amount", async () => {
-          //   await service.capturePayment({
-          //     amount: 50,
-          //     payment_id: "pay-id-1",
-          //   })
-          //
-          //   const error = await service
-          //     .refundPayment({
-          //       amount: 100,
-          //       payment_id: "pay-id-1",
-          //     })
-          //     .catch((e) => e)
-          //
-          //   expect(error.message).toEqual(
-          //     "Refund amount for payment: pay-id-1 cannot be greater than the amount captured on the payment."
-          //   )
-          // })
+          it("should throw if refund is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
         })
 
         describe("cancel", () => {

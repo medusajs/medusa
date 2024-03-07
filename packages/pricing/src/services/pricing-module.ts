@@ -28,7 +28,6 @@ import {
 } from "@medusajs/utils"
 
 import {
-  Currency,
   MoneyAmount,
   PriceList,
   PriceListRule,
@@ -55,7 +54,6 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
-  currencyService: ModulesSdkTypes.InternalModuleService<any>
   moneyAmountService: ModulesSdkTypes.InternalModuleService<any>
   priceSetService: ModulesSdkTypes.InternalModuleService<any>
   priceSetMoneyAmountRulesService: ModulesSdkTypes.InternalModuleService<any>
@@ -69,7 +67,6 @@ type InjectedDependencies = {
 }
 
 const generateMethodForModels = [
-  Currency,
   MoneyAmount,
   PriceList,
   PriceListRule,
@@ -84,7 +81,6 @@ const generateMethodForModels = [
 export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
     TMoneyAmount extends MoneyAmount = MoneyAmount,
-    TCurrency extends Currency = Currency,
     TRuleType extends RuleType = RuleType,
     TPriceSetMoneyAmountRules extends PriceSetMoneyAmountRules = PriceSetMoneyAmountRules,
     TPriceRule extends PriceRule = PriceRule,
@@ -98,7 +94,6 @@ export default class PricingModuleService<
     InjectedDependencies,
     PricingTypes.PriceSetDTO,
     {
-      Currency: { dto: PricingTypes.CurrencyDTO }
       MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
       PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
       PriceSetMoneyAmountRules: {
@@ -114,7 +109,6 @@ export default class PricingModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService
-  protected readonly currencyService_: ModulesSdkTypes.InternalModuleService<TCurrency>
   protected readonly moneyAmountService_: ModulesSdkTypes.InternalModuleService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceSetService_: ModulesSdkTypes.InternalModuleService<TPriceSet>
@@ -131,7 +125,6 @@ export default class PricingModuleService<
       baseRepository,
       pricingRepository,
       moneyAmountService,
-      currencyService,
       ruleTypeService,
       priceSetService,
       priceSetMoneyAmountRulesService,
@@ -149,7 +142,6 @@ export default class PricingModuleService<
 
     this.baseRepository_ = baseRepository
     this.pricingRepository_ = pricingRepository
-    this.currencyService_ = currencyService
     this.moneyAmountService_ = moneyAmountService
     this.ruleTypeService_ = ruleTypeService
     this.priceSetService_ = priceSetService
@@ -743,36 +735,6 @@ export default class PricingModuleService<
 
     return await this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
       moneyAmounts,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createCurrencies(
-    data: PricingTypes.CreateCurrencyDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const currencies = await this.currencyService_.create(data, sharedContext)
-
-    return await this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
-      currencies,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updateCurrencies(
-    data: PricingTypes.UpdateCurrencyDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const currencies = await this.currencyService_.update(data, sharedContext)
-
-    return await this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
-      currencies,
       {
         populate: true,
       }

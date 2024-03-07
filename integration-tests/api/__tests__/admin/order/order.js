@@ -2523,6 +2523,9 @@ describe("/admin/orders", () => {
         refundable_amount: 10000,
         gift_card_total: 0,
         gift_card_tax_total: 0,
+        items: [{ refundable: 7200 }],
+        claims: [],
+        swaps: [],
       })
     })
 

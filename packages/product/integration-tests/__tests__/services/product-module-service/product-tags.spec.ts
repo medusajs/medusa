@@ -222,10 +222,9 @@ describe("ProductModuleService product tags", () => {
           id: tagOne.id,
           value: tagOne.value,
           products: [
-            {
-              id: "product-1",
+            expect.objectContaining({
               title: "product 1",
-            },
+            }),
           ],
         })
       )
