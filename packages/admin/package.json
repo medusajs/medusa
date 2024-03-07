@@ -27,7 +27,7 @@
     "directory": "packages/admin"
   },
   "dependencies": {
-    "@medusajs/admin": "npm:@nelomobile/medusa-admin-ui@latest",
+    "@medusajs/admin-ui": "npm:@nelomobile/medusa-admin-ui@latest",
     "@rollup/plugin-alias": "5.0.0",
     "@rollup/plugin-commonjs": "24.1.0",
     "@rollup/plugin-json": "6.0.0",
