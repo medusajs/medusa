@@ -8311,7 +8311,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory-next@workspace:packages/inventory-next":
+"@medusajs/inventory-next@workspace:^, @medusajs/inventory-next@workspace:packages/inventory-next":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory-next@workspace:packages/inventory-next"
   dependencies:
@@ -8843,7 +8843,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location-next@workspace:packages/stock-location-next":
+"@medusajs/stock-location-next@workspace:^, @medusajs/stock-location-next@workspace:packages/stock-location-next":
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location-next@workspace:packages/stock-location-next"
   dependencies:
@@ -31857,13 +31857,14 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/inventory": "workspace:^"
+    "@medusajs/inventory-next": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
+    "@medusajs/stock-location-next": "workspace:^"
     "@medusajs/store": "workspace:^"
     "@medusajs/tax": "workspace:^"
     "@medusajs/types": "workspace:^"
