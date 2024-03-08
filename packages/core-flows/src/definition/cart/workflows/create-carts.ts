@@ -5,7 +5,9 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
+import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
+  confirmInventoryStep,
   createCartsStep,
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
@@ -45,6 +47,67 @@ export const createCartWorkflow = createWorkflow(
       validateVariantsExistStep({ variantIds })
     )
 
+    const variants = getVariantsStep({
+      filter: { id: variantIds },
+      config: {
+        select: [
+          "id",
+          "title",
+          "sku",
+          "barcode",
+          "product.id",
+          "product.title",
+          "product.description",
+          "product.subtitle",
+          "product.thumbnail",
+          "product.type",
+          "product.collection",
+          "product.handle",
+        ],
+        relations: ["product"],
+      },
+    })
+
+    const salesChannelLocations = useRemoteQueryStep({
+      entry_point: "sales_channels",
+      fields: ["id", "name", "locations.id", "locations.name"],
+      variables: { id: salesChannel.id },
+    })
+
+    const productVariantInventoryItems = useRemoteQueryStep({
+      entry_point: "product_variant_inventory_items",
+      fields: ["variant_id", "inventory_item_id", "required_quantity"],
+      variables: { variant_id: variantIds },
+    }).config({ name: "inventory-items" })
+
+    const confirmInventoryInput = transform(
+      { productVariantInventoryItems, salesChannelLocations, input },
+      (data) => {
+        const locationIds = data.salesChannelLocations[0].locations.map(
+          (l) => l.id
+        )
+
+        const itemsToConfirm = data.input.items?.map((item) => {
+          const variantInventoryItem = data.productVariantInventoryItems.find(
+            (i) => i.variant_id === item.variant_id
+          )
+
+          return {
+            inventory_item_id: variantInventoryItem.inventory_item_id,
+            required_quantity: variantInventoryItem.required_quantity,
+            quantity: item.quantity,
+            location_ids: locationIds,
+          }
+        })
+
+        return {
+          items: itemsToConfirm ?? [],
+        }
+      }
+    )
+
+    confirmInventoryStep(confirmInventoryInput)
+
     // TODO: This is on par with the context used in v1.*, but we can be more flexible.
     const pricingContext = transform(
       { input, region, customerData },
@@ -82,31 +145,6 @@ export const createCartWorkflow = createWorkflow(
 
         return data_
       }
-    )
-
-    const variants = getVariantsStep(
-      transform({ variantIds }, (data) => {
-        return {
-          filter: { id: data.variantIds },
-          config: {
-            select: [
-              "id",
-              "title",
-              "sku",
-              "barcode",
-              "product.id",
-              "product.title",
-              "product.description",
-              "product.subtitle",
-              "product.thumbnail",
-              "product.type",
-              "product.collection",
-              "product.handle",
-            ],
-            relations: ["product"],
-          },
-        }
-      })
     )
 
     const lineItems = transform({ priceSets, input, variants }, (data) => {

@@ -1,4 +1,5 @@
 export * from "./add-to-cart"
+export * from "./confirm-inventory"
 export * from "./create-carts"
 export * from "./create-line-item-adjustments"
 export * from "./create-shipping-method-adjustments"

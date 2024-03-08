@@ -15,11 +15,13 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IInventoryServiceNext,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -40,6 +42,8 @@ medusaIntegrationTestRunner({
       let productModule: IProductModuleService
       let pricingModule: IPricingModuleService
       let paymentModule: IPaymentModuleService
+      let inventoryModule: IInventoryServiceNext
+      let stockLocationModule: IStockLocationServiceNext
       let remoteLink, remoteQuery
 
       let defaultRegion
@@ -57,6 +61,10 @@ medusaIntegrationTestRunner({
         productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
         pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
         paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
+        inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
+        stockLocationModule = appContainer.resolve(
+          ModuleRegistrationName.STOCK_LOCATION
+        )
         remoteLink = appContainer.resolve("remoteLink")
         remoteQuery = appContainer.resolve("remoteQuery")
       })
@@ -82,6 +90,10 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
           const [product] = await productModule.create([
             {
               title: "Test product",
@@ -90,6 +102,19 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                 },
               ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
             },
           ])
 
@@ -104,11 +129,27 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
-              pricingService: {
+              [Modules.PRICING]: {
                 price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
               },
             },
           ])
@@ -165,6 +206,99 @@ medusaIntegrationTestRunner({
               action: "find-one-or-any-region",
               handlerType: "invoke",
               error: new Error("No regions found"),
+            },
+          ])
+        })
+
+        it("should throw if variants are out of stock", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.create([
+            {
+              title: "Test product",
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 2,
+            },
+          ])
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          const { errors } = await createCartWorkflow(appContainer).run({
+            input: {
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toEqual([
+            {
+              action: "confirm-inventory-step",
+              handlerType: "invoke",
+              error: new Error(
+                "Some variant does not have the required inventory"
+              ),
             },
           ])
         })
