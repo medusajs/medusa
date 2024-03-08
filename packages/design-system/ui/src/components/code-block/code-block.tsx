@@ -240,7 +240,7 @@ const Body = ({
               {
                 types: ["comment"],
                 style: {
-                  color: "rgb(52,211,153)",
+                  color: "var(--code-fg-subtle)",
                 },
               },
             ],
