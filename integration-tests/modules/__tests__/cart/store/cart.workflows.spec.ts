@@ -402,8 +402,17 @@ medusaIntegrationTestRunner({
 
       describe("AddToCartWorkflow", () => {
         it("should add item to cart", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
           let cart = await cartModuleService.create({
             currency_code: "usd",
+            sales_channel_id: salesChannel.id,
           })
 
           const [product] = await productModule.create([
@@ -414,6 +423,19 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                 },
               ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
             },
           ])
 
@@ -428,11 +450,27 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
-              pricingService: {
+              [Modules.PRICING]: {
                 price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
               },
             },
           ])
@@ -473,8 +511,17 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if no price sets for variant exist", async () => {
-          const cart = await cartModuleService.create({
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
+          let cart = await cartModuleService.create({
             currency_code: "usd",
+            sales_channel_id: salesChannel.id,
           })
 
           const [product] = await productModule.create([
@@ -485,6 +532,38 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                 },
               ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
             },
           ])
 
@@ -542,6 +621,14 @@ medusaIntegrationTestRunner({
 
       describe("updateLineItemInCartWorkflow", () => {
         it("should update item in cart", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
           const [product] = await productModule.create([
             {
               title: "Test product",
@@ -550,6 +637,19 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                 },
               ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
             },
           ])
 
@@ -564,17 +664,34 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
-              pricingService: {
+              [Modules.PRICING]: {
                 price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
               },
             },
           ])
 
           let cart = await cartModuleService.create({
             currency_code: "usd",
+            sales_channel_id: salesChannel.id,
             items: [
               {
                 variant_id: product.variants[0].id,
@@ -592,7 +709,9 @@ medusaIntegrationTestRunner({
 
           const item = cart.items?.[0]!
 
-          await updateLineItemInCartWorkflow(appContainer).run({
+          const { errors } = await updateLineItemInCartWorkflow(
+            appContainer
+          ).run({
             input: {
               cart,
               item,
@@ -629,6 +748,14 @@ medusaIntegrationTestRunner({
               },
             })
 
+            const salesChannel = await scModuleService.create({
+              name: "Webshop",
+            })
+
+            const location = await stockLocationModule.create({
+              name: "Warehouse",
+            })
+
             const [product] = await productModule.create([
               {
                 title: "Test product",
@@ -637,6 +764,55 @@ medusaIntegrationTestRunner({
                     title: "Test variant",
                   },
                 ],
+              },
+            ])
+
+            const inventoryItem = await inventoryModule.create({
+              sku: "inv-1234",
+            })
+
+            await inventoryModule.createInventoryLevels([
+              {
+                inventory_item_id: inventoryItem.id,
+                location_id: location.id,
+                stocked_quantity: 2,
+                reserved_quantity: 0,
+              },
+            ])
+
+            const priceSet = await pricingModule.create({
+              prices: [
+                {
+                  amount: 3000,
+                  currency_code: "usd",
+                },
+              ],
+            })
+
+            await remoteLink.create([
+              {
+                [Modules.PRODUCT]: {
+                  variant_id: product.variants[0].id,
+                },
+                [Modules.PRICING]: {
+                  price_set_id: priceSet.id,
+                },
+              },
+              {
+                [Modules.SALES_CHANNEL]: {
+                  sales_channel_id: salesChannel.id,
+                },
+                [Modules.STOCK_LOCATION]: {
+                  location_id: location.id,
+                },
+              },
+              {
+                [Modules.PRODUCT]: {
+                  variant_id: product.variants[0].id,
+                },
+                [Modules.INVENTORY]: {
+                  inventory_item_id: inventoryItem.id,
+                },
               },
             ])
 
@@ -651,26 +827,6 @@ medusaIntegrationTestRunner({
                 },
               ],
             })
-
-            const priceSet = await pricingModule.create({
-              prices: [
-                {
-                  amount: 5000,
-                  currency_code: "usd",
-                },
-              ],
-            })
-
-            await remoteLink.create([
-              {
-                productService: {
-                  variant_id: product.variants[0].id,
-                },
-                pricingService: {
-                  price_set_id: priceSet.id,
-                },
-              },
-            ])
 
             cart = await cartModuleService.retrieve(cart.id, {
               select: ["id", "region_id", "currency_code"],

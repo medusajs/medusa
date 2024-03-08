@@ -2,13 +2,16 @@ import {
   AddToCartWorkflowInputDTO,
   CreateLineItemForCartDTO,
 } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
+import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   addToCartStep,
+  confirmInventoryStep,
   getVariantPriceSetsStep,
   getVariantsStep,
   validateVariantsExistStep,
@@ -18,7 +21,6 @@ import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 // TODO: The AddToCartWorkflow are missing the following steps:
-// - Confirm inventory exists (inventory module)
 // - Refresh/delete shipping methods (fulfillment module)
 // - Update payment sessions (payment module)
 
@@ -26,11 +28,86 @@ export const addToCartWorkflowId = "add-to-cart"
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
   (input: WorkflowData<AddToCartWorkflowInputDTO>) => {
-    const variantIds = validateVariantsExistStep({
-      variantIds: transform({ input }, (data) => {
-        return (data.input.items ?? []).map((i) => i.variant_id)
-      }),
+    const variantIds = transform({ input }, (data) => {
+      return (data.input.items ?? []).map((i) => i.variant_id)
     })
+
+    validateVariantsExistStep({ variantIds })
+
+    const variants = getVariantsStep({
+      filter: { id: variantIds },
+      config: {
+        select: [
+          "id",
+          "title",
+          "sku",
+          "barcode",
+          "product.id",
+          "product.title",
+          "product.description",
+          "product.subtitle",
+          "product.thumbnail",
+          "product.type",
+          "product.collection",
+          "product.handle",
+        ],
+        relations: ["product"],
+      },
+    })
+
+    const salesChannelLocations = useRemoteQueryStep({
+      entry_point: "sales_channels",
+      fields: ["id", "name", "locations.id", "locations.name"],
+      variables: { id: input.cart.sales_channel_id },
+    })
+
+    const productVariantInventoryItems = useRemoteQueryStep({
+      entry_point: "product_variant_inventory_items",
+      fields: ["variant_id", "inventory_item_id", "required_quantity"],
+      variables: { variant_id: variantIds },
+    }).config({ name: "inventory-items" })
+
+    const confirmInventoryInput = transform(
+      { productVariantInventoryItems, salesChannelLocations, input },
+      (data) => {
+        if (!data.salesChannelLocations.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Sales channel ${data.input.cart.sales_channel_id} is not associated with any stock locations.`
+          )
+        }
+
+        const locationIds = data.salesChannelLocations[0].locations.map(
+          (l) => l.id
+        )
+
+        const itemsToConfirm = data.input.items?.map((item) => {
+          const variantInventoryItem = data.productVariantInventoryItems.find(
+            (i) => i.variant_id === item.variant_id
+          )
+
+          if (!variantInventoryItem) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Variant ${item.variant_id} does not have any inventory items associated with it.`
+            )
+          }
+
+          return {
+            inventory_item_id: variantInventoryItem.inventory_item_id,
+            required_quantity: variantInventoryItem.required_quantity,
+            quantity: item.quantity,
+            location_ids: locationIds,
+          }
+        })
+
+        return {
+          items: itemsToConfirm ?? [],
+        }
+      }
+    )
+
+    confirmInventoryStep(confirmInventoryInput)
 
     // TODO: This is on par with the context used in v1.*, but we can be more flexible.
     const pricingContext = transform({ cart: input.cart }, (data) => {
@@ -45,31 +122,6 @@ export const addToCartWorkflow = createWorkflow(
       variantIds,
       context: pricingContext,
     })
-
-    const variants = getVariantsStep(
-      transform({ variantIds }, (data) => {
-        return {
-          filter: { id: data.variantIds },
-          config: {
-            select: [
-              "id",
-              "title",
-              "sku",
-              "barcode",
-              "product.id",
-              "product.title",
-              "product.description",
-              "product.subtitle",
-              "product.thumbnail",
-              "product.type",
-              "product.collection",
-              "product.handle",
-            ],
-            relations: ["product"],
-          },
-        }
-      })
-    )
 
     const lineItems = transform({ priceSets, input, variants }, (data) => {
       const items = (data.input.items ?? []).map((item) => {

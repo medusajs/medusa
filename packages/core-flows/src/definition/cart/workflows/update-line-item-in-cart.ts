@@ -4,14 +4,14 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { getVariantPriceSetsStep } from ".."
+import { MedusaError } from "medusa-core-utils"
+import { confirmInventoryStep, getVariantPriceSetsStep } from ".."
+import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updateLineItemsStep } from "../../line-item/steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
-// - Confirm inventory exists (inventory module)
 // - Validate shipping methods for new items (fulfillment module)
-// - Refresh line item adjustments (promotion module)
 // - Update payment sessions (payment module)
 
 export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
@@ -31,6 +31,58 @@ export const updateLineItemInCartWorkflow = createWorkflow(
     const variantIds = transform({ input }, (data) => [
       data.input.item.variant_id!,
     ])
+
+    const salesChannelLocations = useRemoteQueryStep({
+      entry_point: "sales_channels",
+      fields: ["id", "name", "locations.id", "locations.name"],
+      variables: { id: input.cart.sales_channel_id },
+    })
+
+    const productVariantInventoryItems = useRemoteQueryStep({
+      entry_point: "product_variant_inventory_items",
+      fields: ["variant_id", "inventory_item_id", "required_quantity"],
+      variables: { variant_id: variantIds },
+    }).config({ name: "inventory-items" })
+
+    const confirmInventoryInput = transform(
+      { productVariantInventoryItems, salesChannelLocations, input },
+      (data) => {
+        if (!data.salesChannelLocations.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Sales channel ${data.input.cart.sales_channel_id} is not associated with any stock locations.`
+          )
+        }
+
+        const locationIds = data.salesChannelLocations[0].locations.map(
+          (l) => l.id
+        )
+
+        const variantInventoryItem = data.productVariantInventoryItems.find(
+          (i) => i.variant_id === data.input.item.variant_id
+        )
+
+        if (!variantInventoryItem) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant ${item.variant_id} does not have any inventory items associated with it.`
+          )
+        }
+
+        return {
+          items: [
+            {
+              inventory_item_id: variantInventoryItem.inventory_item_id,
+              required_quantity: variantInventoryItem.required_quantity,
+              quantity: data.input.item.quantity,
+              location_ids: locationIds,
+            },
+          ],
+        }
+      }
+    )
+
+    confirmInventoryStep(confirmInventoryInput)
 
     const priceSets = getVariantPriceSetsStep({
       variantIds,

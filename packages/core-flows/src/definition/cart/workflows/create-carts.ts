@@ -5,6 +5,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
+import { MedusaError } from "medusa-core-utils"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   confirmInventoryStep,
@@ -19,8 +20,7 @@ import {
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
-// TODO: The UpdateLineItemsWorkflow are missing the following steps:
-// - Confirm inventory exists (inventory module)
+// TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
 // - Refresh/create line item adjustments (promotion module)
 // - Update payment sessions (payment module)
@@ -83,6 +83,13 @@ export const createCartWorkflow = createWorkflow(
     const confirmInventoryInput = transform(
       { productVariantInventoryItems, salesChannelLocations, input },
       (data) => {
+        if (!data.salesChannelLocations.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Sales channel ${data.salesChannelLocations[0].id} is not associated with any stock locations.`
+          )
+        }
+
         const locationIds = data.salesChannelLocations[0].locations.map(
           (l) => l.id
         )
@@ -91,6 +98,13 @@ export const createCartWorkflow = createWorkflow(
           const variantInventoryItem = data.productVariantInventoryItems.find(
             (i) => i.variant_id === item.variant_id
           )
+
+          if (!variantInventoryItem) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Variant ${item.variant_id} does not have any inventory items associated with it.`
+            )
+          }
 
           return {
             inventory_item_id: variantInventoryItem.inventory_item_id,
