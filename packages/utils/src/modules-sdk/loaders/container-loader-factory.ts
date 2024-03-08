@@ -6,10 +6,11 @@ import {
   ModuleServiceInitializeOptions,
   RepositoryService,
 } from "@medusajs/types"
+
 import { asClass } from "awilix"
+import { internalModuleServiceFactory } from "../internal-module-service-factory"
 import { lowerCaseFirst } from "../../common"
 import { mikroOrmBaseRepositoryFactory } from "../../dal"
-import { internalModuleServiceFactory } from "../internal-module-service-factory"
 
 type RepositoryLoaderOptions = {
   moduleModels: Record<string, any>

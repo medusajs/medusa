@@ -32,6 +32,12 @@ export const LINKS = {
     Modules.PROMOTION,
     "promotion_id"
   ),
+  SalesChannelLocation: composeLinkName(
+    Modules.SALES_CHANNEL,
+    "sales_channel_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(

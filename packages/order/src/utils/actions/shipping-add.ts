@@ -14,7 +14,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
     })
 
     currentOrder.shipping_methods = shipping
-    return action.amount
   },
   revert({ action, currentOrder }) {
     const shipping = Array.isArray(currentOrder.shipping_methods)
