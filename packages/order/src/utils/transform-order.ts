@@ -1,11 +1,11 @@
 import { OrderTypes } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+import { deduplicate, isDefined } from "@medusajs/utils"
 
 export function formatOrder(
   order
 ): OrderTypes.OrderDTO | OrderTypes.OrderDTO[] {
   const isArray = Array.isArray(order)
-  const orders = isArray ? order : [order]
+  const orders = [...(isArray ? order : [order])]
 
   orders.map((order) => {
     order.items = order.items?.map((orderItem) => {
@@ -21,6 +21,8 @@ export function formatOrder(
       }
     })
 
+    order.summary = order.summary?.[0]?.totals
+
     return order
   })
 
@@ -35,25 +37,27 @@ export function mapRepositoryToOrderModel(config) {
       return
     }
 
-    return [
-      ...new Set<string>(
-        obj[type].sort().map((rel) => {
-          if (rel == "items.quantity") {
-            if (type === "fields") {
-              obj.populate.push("items.item")
-            }
-            return "items.item.quantity"
-          } else if (rel.includes("items.detail")) {
-            return rel.replace("items.detail", "items")
-          } else if (rel == "items") {
-            return "items.item"
-          } else if (rel.includes("items.") && !rel.includes("items.item")) {
-            return rel.replace("items.", "items.item.")
+    return deduplicate(
+      obj[type].sort().map((rel) => {
+        if (rel == "items.quantity") {
+          if (type === "fields") {
+            obj.populate.push("items.item")
           }
-          return rel
-        })
-      ),
-    ]
+          return "items.item.quantity"
+        }
+        if (rel == "summary" && type === "fields") {
+          obj.populate.push("summary")
+          return "summary.totals"
+        } else if (rel.includes("items.detail")) {
+          return rel.replace("items.detail", "items")
+        } else if (rel == "items") {
+          return "items.item"
+        } else if (rel.includes("items.") && !rel.includes("items.item")) {
+          return rel.replace("items.", "items.item.")
+        }
+        return rel
+      })
+    )
   }
 
   conf.options.fields = replace(config.options, "fields")

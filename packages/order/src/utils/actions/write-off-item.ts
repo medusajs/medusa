@@ -8,15 +8,15 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.written_off_quantity ??= 0
-    existing.written_off_quantity += action.details.quantity
+    existing.detail.written_off_quantity ??= 0
+    existing.detail.written_off_quantity += action.details.quantity
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.written_off_quantity -= action.details.quantity
+    existing.detail.written_off_quantity -= action.details.quantity
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id
@@ -36,8 +36,15 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       )
     }
 
+    if (!action.details?.quantity) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity to write-off item ${refId} is required.`
+      )
+    }
+
     const quantityAvailable = existing!.quantity ?? 0
-    if (action.details.quantity > quantityAvailable) {
+    if (action.details?.quantity > quantityAvailable) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Cannot claim more items than what was ordered."

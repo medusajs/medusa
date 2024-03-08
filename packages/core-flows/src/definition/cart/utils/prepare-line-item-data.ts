@@ -10,6 +10,7 @@ interface Input {
 
 export function prepareLineItemData(data: Input) {
   const { variant, unitPrice, quantity, metadata, cartId } = data
+
   const lineItem: any = {
     quantity,
     title: variant.title,
