@@ -260,6 +260,30 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
   }
 }
 
+export const runV2ModuleMigrations = async (configModule) => {
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
+
+  for (const moduleResolution of Object.values(moduleResolutions)) {
+    if (
+      !moduleResolution.resolutionPath ||
+      moduleResolution.moduleDeclaration.scope !== "internal"
+    ) {
+      continue
+    }
+
+    await MedusaModule.migrateUp(
+      moduleResolution.definition.key,
+      moduleResolution.resolutionPath,
+      moduleResolution.options
+    )
+  }
+}
+
 export const runIsolatedModulesMigration = async (configModule) => {
   const moduleResolutions = {}
   Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {

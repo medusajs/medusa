@@ -3,7 +3,11 @@ import {
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
-import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  isString,
+  MedusaV2Flag,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
@@ -77,9 +81,7 @@ async function loadLegacyModulesEntities(configModules, container) {
   }
 }
 
-async function loadMedusaV2({ directory, expressApp }) {
-  const configModule = loadConfig(directory)
-
+async function loadMedusaV2({ configModule, featureFlagRouter, expressApp }) {
   const container = createMedusaContainer()
 
   // Add additional information to context of request
@@ -91,12 +93,10 @@ async function loadMedusaV2({ directory, expressApp }) {
     next()
   })
 
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
-
   const pgConnection = await pgConnectionLoader({ container, configModule })
 
   container.register({
-    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+    // [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
@@ -142,11 +142,13 @@ export default async ({
   app: Express
   pgConnection: unknown
 }> => {
-  if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
-    return await loadMedusaV2({ directory: rootDirectory, expressApp })
-  }
-
   const configModule = loadConfig(rootDirectory)
+  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  track("FEATURE_FLAGS_LOADED")
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    return await loadMedusaV2({ configModule, featureFlagRouter, expressApp })
+  }
 
   const container = createMedusaContainer()
   container.register(
@@ -162,9 +164,6 @@ export default async ({
     }
     next()
   })
-
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
-  track("FEATURE_FLAGS_LOADED")
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),

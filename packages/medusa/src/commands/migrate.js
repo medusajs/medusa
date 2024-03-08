@@ -2,18 +2,21 @@ import { asValue, createContainer } from "awilix"
 import getMigrations, {
   getModuleSharedResources,
   revertIsolatedModulesMigration,
+  runV2ModuleMigrations,
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  MedusaV2Flag,
+  promiseAll,
 } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
-import { loadMedusaApp } from "../loaders/medusa-app"
+import { migrateMedusaApp, loadMedusaApp } from "../loaders/medusa-app"
 import pgConnectionLoader from "../loaders/pg-connection"
 
 const getDataSource = async (directory) => {
@@ -70,15 +73,32 @@ const main = async function ({ directory }) {
   args.shift()
   args.shift()
 
+  const featureFlagRouter = featureFlagLoader(configModule)
   const configModule = configModuleLoader(directory)
   const dataSource = await getDataSource(directory)
 
   if (args[0] === "run") {
-    await dataSource.runMigrations()
-    await dataSource.destroy()
-    await runIsolatedModulesMigration(configModule)
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      const container = createMedusaContainer()
+      const pgConnection = await pgConnectionLoader({ configModule, container })
+      container.register({
+        [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+        [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
+        [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+        [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
+        featureFlagRouter: asValue(featureFlagRouter),
+      })
+      await migrateMedusaApp(
+        { configModule, container },
+        { registerInContainer: false }
+      )
+    } else {
+      await dataSource.runMigrations()
+      await dataSource.destroy()
+      await runIsolatedModulesMigration(configModule)
 
-    await runLinkMigrations(directory)
+      await runLinkMigrations(directory)
+    }
     process.exit()
 
     Logger.info("Migrations completed.")
