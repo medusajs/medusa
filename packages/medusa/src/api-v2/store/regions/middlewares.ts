@@ -24,4 +24,9 @@ export const storeRegionRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
+  {
+    method: ["GET"],
+    matcher: "/store/regions/:id/payment-providers",
+    middlewares: [],
+  },
 ]

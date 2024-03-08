@@ -656,7 +656,13 @@ describe("RemoteJoiner", () => {
           products {
             variant {
               user_shortcut(arg: 123) {
+                name
                 email
+                products {
+                  product {
+                    handler
+                  }
+                }
               }
             }
           }
@@ -669,13 +675,7 @@ describe("RemoteJoiner", () => {
       [
         {
           service: "order",
-          fieds: ["id", "product_user_alias", "products"],
-        },
-      ],
-      [
-        {
-          service: "variantService",
-          fieds: ["user_shortcut", "id", "product_id"],
+          fieds: ["id", "products"],
         },
       ],
       [
@@ -700,6 +700,12 @@ describe("RemoteJoiner", () => {
       ],
       [
         {
+          service: "variantService",
+          fieds: ["id", "product_id"],
+        },
+      ],
+      [
+        {
           service: "product",
           fieds: ["id", "user_id"],
         },
@@ -707,7 +713,13 @@ describe("RemoteJoiner", () => {
       [
         {
           service: "user",
-          fieds: ["email", "id"],
+          fieds: ["name", "email", "products", "id"],
+        },
+      ],
+      [
+        {
+          service: "product",
+          fieds: ["handler", "id"],
         },
       ],
     ])
@@ -736,8 +748,58 @@ describe("RemoteJoiner", () => {
         user_shortcut: {
           email: "janedoe@example.com",
           id: 2,
+          name: "Jane Doe",
+          products: [
+            {
+              product_id: [101, 102],
+              product: [
+                {
+                  handler: "product-1-handler",
+                  id: 101,
+                },
+                {
+                  handler: "product-2-handler",
+                  id: 102,
+                },
+              ],
+            },
+          ],
         },
       },
     })
+  })
+
+  it("It shouldn't register the service name as an alias if option autoCreateServiceNameAlias is false", async () => {
+    const newJoiner = new RemoteJoiner(
+      serviceConfigs,
+      fetchServiceDataCallback,
+      { autoCreateServiceNameAlias: false }
+    )
+
+    const query = {
+      service: "user",
+      fields: ["id", "name", "email"],
+    }
+
+    const data = await newJoiner.query(query)
+
+    expect(data).toEqual(
+      expect.arrayContaining([
+        {
+          id: 1,
+          name: "John Doe",
+          email: "johndoe@example.com",
+        },
+      ])
+    )
+
+    const queryWithAlias = {
+      alias: "user",
+      fields: ["id", "name", "email"],
+    }
+
+    expect(newJoiner.query(queryWithAlias)).rejects.toThrowError(
+      `Service with alias "user" was not found.`
+    )
   })
 })

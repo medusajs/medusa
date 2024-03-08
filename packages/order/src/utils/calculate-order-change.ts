@@ -1,14 +1,16 @@
+import { OrderSummaryDTO } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,
   InternalOrderChangeEvent,
   OrderChangeEvent,
-  OrderSummary,
+  OrderSummaryCalculated,
   OrderTransaction,
   VirtualOrder,
 } from "@types"
 
-type InternalOrderSummary = OrderSummary & {
+type InternalOrderSummary = OrderSummaryCalculated & {
   futureTemporarySum: number
 }
 
@@ -55,8 +57,8 @@ export class OrderChangeProcessing {
       pendingDifference: 0,
       futureTemporarySum: 0,
       differenceSum: 0,
-      currentOrderTotal: order.total as number,
-      originalOrderTotal: order.total as number,
+      currentOrderTotal: order?.summary?.total ?? 0,
+      originalOrderTotal: order?.summary?.total ?? 0,
       transactionTotal,
     }
   }
@@ -181,7 +183,10 @@ export class OrderChangeProcessing {
     if (typeof type.operation === "function") {
       calculatedAmount = type.operation(params) as number
 
-      action.amount = calculatedAmount ?? 0
+      // the action.amount has priority over the calculated amount
+      if (!isDefined(action.amount)) {
+        action.amount = calculatedAmount ?? 0
+      }
     }
 
     // If an action commits previous ones, replay them with updated values
@@ -313,7 +318,7 @@ export class OrderChangeProcessing {
     })
   }
 
-  public getSummary(): OrderSummary {
+  public getSummary(): OrderSummaryDTO {
     const summary = this.summary
     const orderSummary = {
       transactionTotal: summary.transactionTotal,
@@ -324,7 +329,35 @@ export class OrderChangeProcessing {
       futureTemporaryDifference: summary.futureTemporaryDifference,
       pendingDifference: summary.pendingDifference,
       differenceSum: summary.differenceSum,
+    } as unknown as OrderSummaryDTO
+
+    /*
+    {
+      total: summary.currentOrderTotal
+      
+      subtotal: number
+      total_tax: number
+
+      ordered_total: summary.originalOrderTotal
+      fulfilled_total: number
+      returned_total: number
+      return_request_total: number
+      write_off_total: number
+      projected_total: number
+
+      net_total: number
+      net_subtotal: number
+      net_total_tax: number
+
+      future_total: number
+      future_subtotal: number
+      future_total_tax: number
+      future_projected_total: number
+
+      balance: summary.pendingDifference
+      future_balance: number
     }
+    */
 
     return orderSummary
   }

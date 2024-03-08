@@ -1,7 +1,7 @@
+import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { FilterablePriceListProps, MedusaContainer } from "@medusajs/types"
-import { FindConfig } from "../../../../../types/common"
 import { CustomerGroup, MoneyAmount, PriceList } from "../../../../../models"
-import { CustomerGroupService } from "../../../../../services"
+import { FindConfig } from "../../../../../types/common"
 import { defaultAdminPriceListRemoteQueryObject } from "../index"
 
 export async function listAndCountPriceListPricingModule({
@@ -13,10 +13,8 @@ export async function listAndCountPriceListPricingModule({
   filters?: FilterablePriceListProps
   listConfig?: FindConfig<PriceList>
 }): Promise<[PriceList[], number]> {
-  const remoteQuery = container.resolve("remoteQuery")
-  const customerGroupService: CustomerGroupService = container.resolve(
-    "customerGroupService"
-  )
+  const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
+  const customerModule = container.resolve(ModuleRegistrationName.CUSTOMER)
 
   const query = {
     price_list: {
@@ -44,17 +42,8 @@ export async function listAndCountPriceListPricingModule({
     )
     .flat(2)
 
-  const priceListCustomerGroups = await customerGroupService.list(
-    { id: customerGroupIds },
-    {}
-  )
-
-  const customerGroupIdCustomerGroupMap = new Map(
-    priceListCustomerGroups.map((customerGroup) => [
-      customerGroup.id,
-      customerGroup,
-    ])
-  )
+  const customerGroups = await customerModule.list({ id: customerGroupIds }, {})
+  const customerGroupIdMap = new Map(customerGroups.map((cg) => [cg.id, cg]))
 
   for (const priceList of priceLists) {
     const priceSetMoneyAmounts = priceList.price_set_money_amounts || []
@@ -83,27 +72,14 @@ export async function listAndCountPriceListPricingModule({
     priceList.name = priceList.title
     delete priceList.title
 
-    const customerGroupPriceListRule = priceListRulesData.find(
+    const customerGroupRule = priceListRulesData.find(
       (plr) => plr.rule_type.rule_attribute === "customer_group_id"
     )
 
-    if (
-      customerGroupPriceListRule &&
-      customerGroupPriceListRule?.price_list_rule_values
-    ) {
-      priceList.customer_groups =
-        customerGroupPriceListRule?.price_list_rule_values
-          .map((customerGroupRule) =>
-            customerGroupIdCustomerGroupMap.get(customerGroupRule.value)
-          )
-          .filter(
-            (
-              customerGroup: CustomerGroup | undefined
-            ): customerGroup is CustomerGroup => !!customerGroup
-          )
-    } else {
-      priceList.customer_groups = []
-    }
+    priceList.customer_groups =
+      customerGroupRule?.price_list_rule_values
+        .map((cgr) => customerGroupIdMap.get(cgr.value))
+        .filter((cg): cg is CustomerGroup => !!cg) || []
   }
 
   return [priceLists, count]

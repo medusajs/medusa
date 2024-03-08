@@ -1,4 +1,4 @@
-import { pick } from "lodash"
+import { pickDeep } from "@medusajs/utils"
 import { omitDeep } from "./omit-deep"
 
 // TODO: once the legacy totals decoration will be removed.
@@ -52,9 +52,9 @@ function cleanResponseData<T extends unknown | unknown[]>(
 
   fields = [...fieldsSet]
 
-  arrayData = arrayData.map((record) =>
-    pick(omitDeep(record, EXCLUDED_FIELDS), fields)
-  )
+  arrayData = arrayData.map((record) => {
+    return pickDeep(omitDeep(record, EXCLUDED_FIELDS), fields)
+  })
 
   return (isDataArray ? arrayData : arrayData[0]) as T extends []
     ? Partial<T>[]

@@ -6,6 +6,11 @@ import {
 
 import { upperCaseFirst } from "@medusajs/utils"
 
+export enum LinkModuleUtils {
+  REMOTE_QUERY = "remoteQuery",
+  REMOTE_LINK = "remoteLink",
+}
+
 export enum Modules {
   AUTH = "auth",
   CACHE = "cacheService",

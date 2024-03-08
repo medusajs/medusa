@@ -53,9 +53,6 @@ export default class Payment {
   order_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  order_edit_id: string | null = null
-
-  @Property({ columnType: "text", nullable: true })
   customer_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -109,18 +106,26 @@ export default class Payment {
   captures = new Collection<Capture>(this)
 
   @ManyToOne({
+    entity: () => PaymentCollection,
+    persist: false,
+  })
+  payment_collection: PaymentCollection
+
+  @ManyToOne({
+    entity: () => PaymentCollection,
+    columnType: "text",
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
-    onDelete: "cascade",
+    mapToPk: true,
   })
-  payment_collection!: PaymentCollection
+  payment_collection_id: string
 
   @OneToOne({
     owner: true,
-    fieldName: "session_id",
+    fieldName: "payment_session_id",
     index: "IDX_payment_payment_session_id",
   })
-  payment_session!: PaymentSession
+  payment_session: PaymentSession
 
   /** COMPUTED PROPERTIES START **/
 
