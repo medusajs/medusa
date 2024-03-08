@@ -2,7 +2,7 @@ import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
-import { useAdminCreateBatchJob } from "medusa-react"
+import { useAdminCreateBatchJob, useAdminGetSession } from "medusa-react"
 import Spacer from "../../components/atoms/spacer"
 import RouteContainer from "../../components/extensions/route-container"
 import WidgetContainer from "../../components/extensions/widget-container"
@@ -20,8 +20,6 @@ import { useWidgets } from "../../providers/widget-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
-
-const VIEWS = ["orders", "drafts"]
 
 const OrderIndex = () => {
   const view = "orders"
@@ -84,6 +82,14 @@ const OrderIndex = () => {
     })
 
     closeExportModal()
+  }
+
+  const { user } = useAdminGetSession()
+
+  const VIEWS = ["orders"]
+
+  if (!user?.store_id) {
+    VIEWS.push("drafts")
   }
 
   return (

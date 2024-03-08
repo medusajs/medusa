@@ -1,5 +1,5 @@
 import { Region } from "@medusajs/medusa"
-import { useAdminDeleteRegion } from "medusa-react"
+import { useAdminDeleteRegion, useAdminGetSession } from "medusa-react"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import Tooltip from "../../../../../components/atoms/tooltip"
@@ -25,6 +25,7 @@ const GeneralSection = ({ region }: Props) => {
   const navigate = useNavigate()
   const notification = useNotification()
   const dialog = useImperativeDialog()
+  const { user } = useAdminGetSession()
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
@@ -59,12 +60,14 @@ const GeneralSection = ({ region }: Props) => {
             label: "Edit Region Details",
             onClick: toggle,
             icon: <EditIcon size={20} className="text-grey-50" />,
+            disabled: user?.store_id != undefined,
           },
           {
             label: "Delete Region",
             onClick: handleDelete,
             icon: <TrashIcon size={20} />,
             variant: "danger",
+            disabled: user?.store_id != undefined,
           },
         ]}
       >

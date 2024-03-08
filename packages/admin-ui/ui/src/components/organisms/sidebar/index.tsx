@@ -1,4 +1,4 @@
-import { useAdminStore } from "medusa-react"
+import { useAdminStore, useAdminGetSession } from "medusa-react"
 import React, { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -39,6 +39,8 @@ const Sidebar: React.FC = () => {
   // infinite updates, and we do not want the variable to be free floating.
   triggerHandler.id = 0
 
+  const { user } = useAdminGetSession()
+
   const inventoryEnabled =
     isFeatureEnabled("inventoryService") &&
     isFeatureEnabled("stockLocationService")
@@ -72,46 +74,50 @@ const Sidebar: React.FC = () => {
             text={t("sidebar-products", "Products")}
             triggerHandler={triggerHandler}
           />
-          {isFeatureEnabled("product_categories") && (
-            <SidebarMenuItem
-              pageLink={"/a/product-categories"}
-              icon={<SwatchIcon size={ICON_SIZE} />}
-              text={t("sidebar-categories", "Categories")}
-              triggerHandler={triggerHandler}
-            />
-          )}
           <SidebarMenuItem
             pageLink={"/a/customers"}
             icon={<UsersIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={t("sidebar-customers", "Customers")}
           />
-          {inventoryEnabled && (
-            <SidebarMenuItem
-              pageLink={"/a/inventory"}
-              icon={<BuildingsIcon size={ICON_SIZE} />}
-              triggerHandler={triggerHandler}
-              text={t("sidebar-inventory", "Inventory")}
-            />
+          {!user?.store_id && (
+            <>
+              {inventoryEnabled && (
+                <SidebarMenuItem
+                  pageLink={"/a/inventory"}
+                  icon={<BuildingsIcon size={ICON_SIZE} />}
+                  triggerHandler={triggerHandler}
+                  text={t("sidebar-inventory", "Inventory")}
+                />
+              )}
+              {isFeatureEnabled("product_categories") && (
+                <SidebarMenuItem
+                  pageLink={"/a/product-categories"}
+                  icon={<SwatchIcon size={ICON_SIZE} />}
+                  text={t("sidebar-categories", "Categories")}
+                  triggerHandler={triggerHandler}
+                />
+              )}
+              <SidebarMenuItem
+                pageLink={"/a/discounts"}
+                icon={<SaleIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={t("sidebar-discounts", "Discounts")}
+              />
+              <SidebarMenuItem
+                pageLink={"/a/gift-cards"}
+                icon={<GiftIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={t("sidebar-gift-cards", "Gift Cards")}
+              />
+              <SidebarMenuItem
+                pageLink={"/a/pricing"}
+                icon={<CashIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={t("sidebar-pricing", "Pricing")}
+              />
+            </>
           )}
-          <SidebarMenuItem
-            pageLink={"/a/discounts"}
-            icon={<SaleIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={t("sidebar-discounts", "Discounts")}
-          />
-          <SidebarMenuItem
-            pageLink={"/a/gift-cards"}
-            icon={<GiftIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={t("sidebar-gift-cards", "Gift Cards")}
-          />
-          <SidebarMenuItem
-            pageLink={"/a/pricing"}
-            icon={<CashIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={t("sidebar-pricing", "Pricing")}
-          />
           {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
 

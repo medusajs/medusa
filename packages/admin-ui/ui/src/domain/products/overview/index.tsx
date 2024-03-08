@@ -1,4 +1,8 @@
-import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
+import {
+  useAdminCreateBatchJob,
+  useAdminCreateCollection,
+  useAdminGetSession,
+} from "medusa-react"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -22,8 +26,6 @@ import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
-
-const VIEWS = ["products", "collections"]
 
 const Overview = () => {
   const { t } = useTranslation()
@@ -198,6 +200,14 @@ const Overview = () => {
     })
 
     closeExportModal()
+  }
+
+  const { user } = useAdminGetSession()
+
+  const VIEWS = ["products"]
+
+  if (!user?.store_id) {
+    VIEWS.push("collections")
   }
 
   return (
