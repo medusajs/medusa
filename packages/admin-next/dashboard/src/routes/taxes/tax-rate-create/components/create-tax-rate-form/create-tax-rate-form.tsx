@@ -312,7 +312,7 @@ export const CreateTaxRateForm = () => {
                             <Form.Item>
                               <Form.Label>{t("fields.code")}</Form.Label>
                               <Form.Control>
-                                <Input type="number" {...field} />
+                                <Input {...field} />
                               </Form.Control>
                               <Form.ErrorMessage />
                             </Form.Item>

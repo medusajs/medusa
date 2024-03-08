@@ -405,6 +405,7 @@
       "sectionTitle": "Tax Rates",
       "createTaxRate": "Create Tax Rate",
       "createTaxRateHint": "Create a new tax rate for the region.",
+      "deleteRateDescription": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
       "editTaxRate": "Edit Tax Rate",
       "editRateAction": "Edit rate",
       "editOverridesAction": "Edit overrides",

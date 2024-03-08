@@ -71,7 +71,7 @@ export const TaxDetailsSection = ({ region }: Props) => {
           {t("fields.taxInclusivePricing")}
         </Text>
         <StatusBadge
-          color={region.gift_cards_taxable ? "green" : "grey"}
+          color={region.includes_tax ? "green" : "grey"}
           className="w-fit"
         >
           {region.gift_cards_taxable
