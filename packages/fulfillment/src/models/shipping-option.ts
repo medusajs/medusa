@@ -5,7 +5,7 @@ import {
   ShippingOptionPriceType,
 } from "@medusajs/utils"
 
-import {DAL} from "@medusajs/types"
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -133,6 +133,7 @@ export default class ShippingOption {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
     fieldName: "shipping_option_type_id",
+    onDelete: "cascade",
   })
   type: ShippingOptionType
 

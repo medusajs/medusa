@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240308113101_InitialSetupMigration extends Migration {
+export class Migration20240308113313_InitialSetupMigration extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
@@ -68,7 +68,7 @@ export class Migration20240308113101_InitialSetupMigration extends Migration {
     this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_service_zone_id_foreign" foreign key ("service_zone_id") references "service_zone" ("id") on update cascade on delete cascade;');
     this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_shipping_profile_id_foreign" foreign key ("shipping_profile_id") references "shipping_profile" ("id") on update cascade on delete set null;');
     this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_fulfillment_provider_id_foreign" foreign key ("fulfillment_provider_id") references "fulfillment_provider" ("id") on update cascade on delete set null;');
-    this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_shipping_option_type_id_foreign" foreign key ("shipping_option_type_id") references "shipping_option_type" ("id") on update cascade;');
+    this.addSql('alter table if exists "shipping_option" add constraint "shipping_option_shipping_option_type_id_foreign" foreign key ("shipping_option_type_id") references "shipping_option_type" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table if exists "shipping_option_rule" add constraint "shipping_option_rule_shipping_option_id_foreign" foreign key ("shipping_option_id") references "shipping_option" ("id") on update cascade on delete cascade;');
 

@@ -1132,6 +1132,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_option_type",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
