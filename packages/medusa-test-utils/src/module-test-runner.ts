@@ -1,10 +1,7 @@
-import {
-  MedusaAppOutput,
-  ModulesDefinition
-} from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
 import { InitModulesOptions, initModules } from "./init-modules"
+import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
+import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
 
 import { MockEventBusService } from "."
 
@@ -25,6 +22,7 @@ export function moduleIntegrationTestRunner({
   joinerConfig = [],
   schema = "public",
   debug = false,
+  resolve,
   testSuite,
   injectedDependencies = {},
 }: {
@@ -34,6 +32,7 @@ export function moduleIntegrationTestRunner({
   joinerConfig?: any[]
   schema?: string
   dbName?: string
+  resolve?: string
   injectedDependencies?: Record<string, any>
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
@@ -64,6 +63,7 @@ export function moduleIntegrationTestRunner({
   const modulesConfig_ = {
     [moduleName]: {
       definition: ModulesDefinition[moduleName],
+      resolve,
       options: {
         defaultAdapterOptions: {
           database: dbConfig,
