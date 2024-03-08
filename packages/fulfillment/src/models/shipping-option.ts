@@ -5,7 +5,7 @@ import {
   ShippingOptionPriceType,
 } from "@medusajs/utils"
 
-import { DAL } from "@medusajs/types"
+import {DAL} from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -81,6 +81,7 @@ export default class ShippingOption {
     type: "text",
     fieldName: "service_zone_id",
     mapToPk: true,
+    onDelete: "cascade",
   })
   @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
@@ -90,6 +91,7 @@ export default class ShippingOption {
     fieldName: "shipping_profile_id",
     mapToPk: true,
     nullable: true,
+    onDelete: "set null",
   })
   @ShippingProfileIdIndex.MikroORMIndex()
   shipping_profile_id: string | null
@@ -128,7 +130,7 @@ export default class ShippingOption {
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
     fieldName: "shipping_option_type_id",
   })

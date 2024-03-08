@@ -485,6 +485,7 @@
             "id"
           ],
           "referencedTableName": "public.fulfillment_set",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -678,6 +679,7 @@
             "id"
           ],
           "referencedTableName": "public.service_zone",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -971,7 +973,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "created_at": {
@@ -1091,6 +1093,7 @@
             "id"
           ],
           "referencedTableName": "public.service_zone",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "shipping_option_shipping_profile_id_foreign": {
@@ -1129,7 +1132,6 @@
             "id"
           ],
           "referencedTableName": "public.shipping_option_type",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1269,6 +1271,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_option",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1348,7 +1351,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "shipping_option_id": {
@@ -1375,7 +1378,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "created_at": {
@@ -1485,6 +1488,7 @@
             "id"
           ],
           "referencedTableName": "public.fulfillment_provider",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "fulfillment_shipping_option_id_foreign": {
@@ -1510,6 +1514,7 @@
             "id"
           ],
           "referencedTableName": "public.fulfillment_address",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
