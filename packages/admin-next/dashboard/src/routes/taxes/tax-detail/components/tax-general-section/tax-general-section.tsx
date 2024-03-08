@@ -74,9 +74,7 @@ export const TaxDetailsSection = ({ region }: Props) => {
           color={region.includes_tax ? "green" : "grey"}
           className="w-fit"
         >
-          {region.gift_cards_taxable
-            ? t("general.enabled")
-            : t("general.disabled")}
+          {region.includes_tax ? t("general.enabled") : t("general.disabled")}
         </StatusBadge>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
