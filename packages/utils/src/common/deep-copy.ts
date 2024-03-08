@@ -10,10 +10,6 @@ import { isObject } from "./is-object"
 export function deepCopy<T extends Record<any, any> = Record<any, any>>(
   obj: T | T[]
 ): T | T[] {
-  if (typeof structuredClone != "undefined") {
-    return structuredClone(obj)
-  }
-
   if (obj === null || typeof obj !== "object") {
     return obj
   }
