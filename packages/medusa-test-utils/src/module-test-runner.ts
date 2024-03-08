@@ -22,8 +22,8 @@ export function moduleIntegrationTestRunner({
   joinerConfig = [],
   schema = "public",
   debug = false,
-  resolve,
   testSuite,
+  resolve,
   injectedDependencies = {},
 }: {
   moduleName: string
@@ -32,8 +32,8 @@ export function moduleIntegrationTestRunner({
   joinerConfig?: any[]
   schema?: string
   dbName?: string
-  resolve?: string
   injectedDependencies?: Record<string, any>
+  resolve?: string
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
