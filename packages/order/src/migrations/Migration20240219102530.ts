@@ -31,7 +31,6 @@ export class Migration20240219102530 extends Migration {
           "id" TEXT NOT NULL,
           "region_id" TEXT NULL,
           "customer_id" TEXT NULL,
-          "original_order_id" TEXT NULL,
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
           "status" text check (
@@ -49,7 +48,6 @@ export class Migration20240219102530 extends Migration {
           "shipping_address_id" text NULL,
           "billing_address_id" text NULL,
           "no_notification" boolean NULL,
-          "summary" jsonb NOT NULL,
           "metadata" jsonb NULL,
           "created_at" timestamptz NOT NULL DEFAULT now(),
           "updated_at" timestamptz NOT NULL DEFAULT now(),
@@ -60,9 +58,6 @@ export class Migration20240219102530 extends Migration {
 
       ALTER TABLE "order"
       ADD COLUMN if NOT exists "deleted_at" timestamptz NULL;
-
-      ALTER TABLE "order"
-      ADD COLUMN if NOT exists "original_order_id" text NULL;
 
       ALTER TABLE "order" DROP constraint if EXISTS "FK_6ff7e874f01b478c115fdd462eb" CASCADE;
 
@@ -112,11 +107,6 @@ export class Migration20240219102530 extends Migration {
       )
       WHERE deleted_at IS NOT NULL;
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_original_order_id" ON "order" (
-          original_order_id
-      )
-      WHERE deleted_at IS NOT NULL;
-
       CREATE INDEX IF NOT EXISTS "IDX_order_customer_id" ON "order" (
           customer_id
       )
@@ -141,6 +131,22 @@ export class Migration20240219102530 extends Migration {
           deleted_at
       )
       WHERE deleted_at IS NOT NULL;
+
+
+      CREATE TABLE IF NOT EXISTS "order_summary" (
+          "id" TEXT NOT NULL,
+          "order_id" TEXT NOT NULL,
+          "version" INTEGER NOT NULL DEFAULT 1,
+          "totals" JSONB NULL,
+          "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
+          "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
+          CONSTRAINT "order_summary_pkey" PRIMARY KEY ("id")
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_summary_order_id_version" ON "order_summary" (
+          order_id,
+          version
+      );
 
       CREATE TABLE IF NOT EXISTS "order_change" (
           "id" TEXT NOT NULL,
@@ -186,12 +192,18 @@ export class Migration20240219102530 extends Migration {
 
       CREATE TABLE IF NOT EXISTS "order_change_action" (
           "id" TEXT NOT NULL,
-          "order_change_id" TEXT NOT NULL,
-          "reference" TEXT NOT NULL,
-          "reference_id" TEXT NOT NULL,
-          "action" JSONB NOT NULL,
-          "metadata" JSONB NULL,
+          "order_id" TEXT NULL,
+          "version" INTEGER NULL,
+          "ordering" BIGSERIAL NOT NULL,
+          "order_change_id" TEXT NULL,
+          "reference" TEXT NULL,
+          "reference_id" TEXT NULL,
+          "action" TEXT NOT NULL,
+          "details" JSONB NULL,
+          "amount" NUMERIC NULL,
+          "raw_amount" JSONB NULL,
           "internal_note" TEXT NULL,
+          "applied" BOOLEAN NOT NULL DEFAULT false,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           CONSTRAINT "order_change_action_pkey" PRIMARY KEY ("id")
@@ -201,9 +213,12 @@ export class Migration20240219102530 extends Migration {
           order_change_id
       );
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_reference_reference_id" ON "order_change_action" (
-          reference,
-          reference_id
+      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_order_id" ON "order_change_action" (
+          order_id
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_ordering" ON "order_change_action" (
+          ordering
       );
 
       CREATE TABLE IF NOT EXISTS "order_item" (

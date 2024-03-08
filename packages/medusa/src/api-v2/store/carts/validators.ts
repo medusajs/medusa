@@ -30,6 +30,14 @@ export class StorePostCartReq {
   region_id?: string
 
   @IsOptional()
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
+
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
+
+  @IsOptional()
   @IsString()
   email?: string
 

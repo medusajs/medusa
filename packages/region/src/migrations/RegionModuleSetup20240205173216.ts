@@ -26,14 +26,13 @@ ${generatePostgresAlterColummnIfExistStatement(
 CREATE INDEX IF NOT EXISTS "IDX_region_deleted_at" ON "region" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
 -- Create or update "region_country" table
 CREATE TABLE IF NOT EXISTS "region_country" (
-  "id" text NOT NULL,
   "iso_2" text NOT NULL,
   "iso_3" text NOT NULL,
   "num_code" int NOT NULL,
   "name" text NOT NULL,
   "display_name" text NOT NULL,
   "region_id" text NULL,
-  CONSTRAINT "region_country_pkey" PRIMARY KEY ("id")
+  CONSTRAINT "region_country_pkey" PRIMARY KEY ("iso_2")
 );
 CREATE UNIQUE INDEX IF NOT EXISTS "IDX_region_country_region_id_iso_2_unique" ON "region_country" (region_id, iso_2);
 -- Adjust foreign keys for "region_country"

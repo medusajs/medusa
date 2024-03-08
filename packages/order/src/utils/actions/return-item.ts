@@ -10,8 +10,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.return_requested_quantity ??= 0
-    existing.return_requested_quantity += action.details.quantity
+    existing.detail.return_requested_quantity ??= 0
+    existing.detail.return_requested_quantity += action.details.quantity
 
     return existing.unit_price * action.details.quantity
   },
@@ -20,7 +20,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.return_requested_quantity -= action.details.quantity
+    existing.detail.return_requested_quantity -= action.details.quantity
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id
@@ -40,14 +40,21 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       )
     }
 
-    const quantityAvailable =
-      (existing!.fulfilled_quantity ?? 0) -
-      (existing!.return_requested_quantity ?? 0)
-
-    if (action.details.quantity > quantityAvailable) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Cannot request to return more items than what was fulfilled."
+        `Quantity to return of item ${refId} is required.`
+      )
+    }
+
+    const quantityAvailable =
+      (existing!.detail?.shipped_quantity ?? 0) -
+      (existing!.detail?.return_requested_quantity ?? 0)
+
+    if (action.details?.quantity > quantityAvailable) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot request to return more items than what was shipped for item ${refId}.`
       )
     }
   },

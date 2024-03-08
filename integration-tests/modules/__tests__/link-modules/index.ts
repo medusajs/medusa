@@ -56,7 +56,22 @@ medusaIntegrationTestRunner({
       }
 
       jest.spyOn(MedusaModule, "getLoadedModules").mockImplementation((() => {
-        return [{ moduleA: [{}] }, { moduleB: [{}] }]
+        return [
+          {
+            moduleA: {
+              __definition: {
+                key: "moduleA",
+              },
+            },
+          },
+          {
+            moduleB: {
+              __definition: {
+                key: "moduleB",
+              },
+            },
+          },
+        ]
       }) as any)
 
       await runMigrations({ options: dbConfig }, linkDefinition)
