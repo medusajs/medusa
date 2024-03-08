@@ -1,4 +1,4 @@
-import { enUS } from "date-fns/locale"
+import { enUS, zhCN } from "date-fns/locale"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import Backend, { type HttpBackendOptions } from "i18next-http-backend"
@@ -12,7 +12,7 @@ void i18n
   .use(initReactI18next)
   .init<HttpBackendOptions>({
     fallbackLng: "en-US",
-    load: "languageOnly",
+    load: "currentOnly",
     debug: process.env.NODE_ENV === "development",
     interpolation: {
       escapeValue: false,
@@ -29,6 +29,12 @@ export const languages: Language[] = [
     display_name: "English (US)",
     ltr: true,
     date_locale: enUS,
+  },
+  {
+    code: "zh-CN",
+    display_name: "中文 (简体)",
+    ltr: true,
+    date_locale: zhCN,
   },
 ]
 
