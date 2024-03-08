@@ -1,18 +1,20 @@
 import { addToCartWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICartModuleService } from "@medusajs/types"
+import { LinkModuleUtils, Modules } from "@medusajs/modules-sdk"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { defaultStoreCartFields } from "../../query-config"
 import { StorePostCartsCartLineItemsReq } from "./validators"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const cartModuleService = req.scope.resolve<ICartModuleService>(
-    ModuleRegistrationName.CART
-  )
+  const remoteQuery = req.scope.resolve(LinkModuleUtils.REMOTE_QUERY)
 
-  const cart = await cartModuleService.retrieve(req.params.id, {
-    select: ["id", "region_id", "currency_code"],
+  const query = remoteQueryObjectFromString({
+    entryPoint: Modules.CART,
+    fields: defaultStoreCartFields,
+  })
+
+  const [cart] = await remoteQuery(query, {
+    cart: { id: req.params.id },
   })
 
   const workflowInput = {
@@ -28,13 +30,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
-
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "cart",
-    fields: defaultStoreCartFields,
-  })
 
   const [updatedCart] = await remoteQuery(query, {
     cart: { id: req.params.id },

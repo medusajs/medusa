@@ -34,6 +34,7 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["payment", "payments"],
       args: {
         entity: Payment.name,
+        methodSuffix: "Payments",
       },
     },
     {
