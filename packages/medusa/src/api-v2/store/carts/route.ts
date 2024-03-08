@@ -1,4 +1,5 @@
 import { createCartWorkflow } from "@medusajs/core-flows"
+import { LinkModuleUtils, Modules } from "@medusajs/modules-sdk"
 import { CreateCartWorkflowInputDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
@@ -25,16 +26,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id: result.id }
-
+  const remoteQuery = req.scope.resolve(LinkModuleUtils.REMOTE_QUERY)
   const query = remoteQueryObjectFromString({
-    entryPoint: "cart",
+    entryPoint: Modules.CART,
     fields: defaultStoreCartFields,
   })
 
-  const [cart] = await remoteQuery(query, { cart: variables })
+  const [cart] = await remoteQuery(query, { cart: { id: result.id } })
 
   res.status(200).json({ cart })
 }

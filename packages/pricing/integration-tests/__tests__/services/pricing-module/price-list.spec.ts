@@ -1,11 +1,11 @@
 import { MikroOrmWrapper } from "../../../utils"
 
+import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)

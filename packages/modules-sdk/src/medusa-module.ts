@@ -65,6 +65,10 @@ export type ModuleBootstrapOptions = {
    * Don't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done.
    */
   migrationOnly?: boolean
+  /**
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   */
+  loaderOnly?: boolean
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -220,6 +224,7 @@ export class MedusaModule {
     moduleDefinition,
     injectedDependencies,
     migrationOnly,
+    loaderOnly,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -227,25 +232,28 @@ export class MedusaModule {
       stringifyCircular({ moduleKey, defaultPath, declaration })
     )
 
-    if (MedusaModule.instances_.has(hashKey)) {
+    if (!loaderOnly && MedusaModule.instances_.has(hashKey)) {
       return MedusaModule.instances_.get(hashKey)! as {
         [key: string]: T
       }
     }
 
-    if (MedusaModule.loading_.has(hashKey)) {
+    if (!loaderOnly && MedusaModule.loading_.has(hashKey)) {
       return MedusaModule.loading_.get(hashKey)
     }
 
     let finishLoading: any
     let errorLoading: any
-    MedusaModule.loading_.set(
-      hashKey,
-      new Promise((resolve, reject) => {
-        finishLoading = resolve
-        errorLoading = reject
-      })
-    )
+
+    if (!loaderOnly) {
+      MedusaModule.loading_.set(
+        hashKey,
+        new Promise((resolve, reject) => {
+          finishLoading = resolve
+          errorLoading = reject
+        })
+      )
+    }
 
     let modDeclaration =
       declaration ??
@@ -294,6 +302,7 @@ export class MedusaModule {
         moduleResolutions,
         logger: logger_,
         migrationOnly,
+        loaderOnly
       })
     } catch (err) {
       errorLoading(err)
@@ -301,6 +310,10 @@ export class MedusaModule {
     }
 
     const services = {}
+
+    if (loaderOnly) {
+      return services
+    }
 
     for (const resolution of Object.values(
       moduleResolutions

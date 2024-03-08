@@ -53,6 +53,10 @@ export class AdminPostStoresStoreReq {
 
   @IsOptional()
   @IsString()
+  default_currency_code?: string
+
+  @IsOptional()
+  @IsString()
   default_sales_channel_id?: string
 
   @IsOptional()

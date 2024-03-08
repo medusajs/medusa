@@ -21,7 +21,7 @@ import {
   MedusaV2Flag,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from ".."
+import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 import { joinerConfig } from "../joiner-config"
 
 export function mergeDefaultModules(
@@ -229,6 +229,74 @@ export const loadMedusaApp = async (
   }
 
   return medusaApp
+}
+
+/**
+ * Run the modules loader without taking care of anything else. This is useful for running the loader as a separate action or to re run all modules loaders.
+ *
+ * @param configModule
+ * @param container
+ */
+export async function runModulesLoader({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
+  }
+
+  const sharedResourcesConfig = {
+    database: {
+      clientUrl: configModule.projectConfig.database_url,
+      driverOptions: configModule.projectConfig.database_extra,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
+    },
+  }
+
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: configModule.projectConfig.database_url,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
+
+  await MedusaApp({
+    modulesConfig: configModules,
+    servicesConfig: joinerConfig,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    sharedResourcesConfig,
+    injectedDependencies,
+    loaderOnly: true,
+  })
 }
 
 export default loadMedusaApp

@@ -1,4 +1,4 @@
-import { createAdminUser } from "../../helpers/create-admin-user"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(50000)
@@ -12,8 +12,14 @@ medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /admin/users/me", () => {
+      let container
+
+      beforeAll(() => {
+        container = getContainer()
+      })
+
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, container)
       })
 
       it("gets the current user", async () => {
