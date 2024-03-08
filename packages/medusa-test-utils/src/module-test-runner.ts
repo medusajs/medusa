@@ -22,7 +22,6 @@ export function moduleIntegrationTestRunner({
   joinerConfig = [],
   schema = "public",
   debug = false,
-  resolve,
   testSuite,
   resolve,
   injectedDependencies = {},
@@ -33,7 +32,6 @@ export function moduleIntegrationTestRunner({
   joinerConfig?: any[]
   schema?: string
   dbName?: string
-  resolve?: string
   injectedDependencies?: Record<string, any>
   resolve?: string
   debug?: boolean
