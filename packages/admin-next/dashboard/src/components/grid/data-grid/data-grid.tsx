@@ -11,13 +11,9 @@ export const DataGrid = <TData, TFieldValues extends FieldValues = any>({
   isLoading,
   ...props
 }: DataGridProps<TData, TFieldValues>) => {
-  return (
-    <div>
-      {isLoading ? (
-        <DataGridSkeleton columns={props.columns} rowCount={10} />
-      ) : (
-        <DataGridRoot {...props} />
-      )}
-    </div>
+  return isLoading ? (
+    <DataGridSkeleton columns={props.columns} rowCount={10} />
+  ) : (
+    <DataGridRoot {...props} />
   )
 }

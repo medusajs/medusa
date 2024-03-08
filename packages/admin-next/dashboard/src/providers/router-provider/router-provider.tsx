@@ -380,12 +380,34 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/pricing/list"),
+                path: "",
+                lazy: () => import("../../routes/pricing/pricing-list"),
+                children: [
+                  // {
+                  //   path: "create",
+                  //   lazy: () => import("../../routes/pricing/pricing-create"),
+                  // },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/pricing/details"),
+                lazy: () => import("../../routes/pricing/pricing-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../routes/pricing/pricing-products-add"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../routes/pricing/pricing-products-edit"),
+                  },
+                ],
               },
             ],
           },
