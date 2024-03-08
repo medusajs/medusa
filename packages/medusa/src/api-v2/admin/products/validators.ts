@@ -17,6 +17,7 @@ import { OperatorMapValidator } from "../../../types/validators/operator-map"
 import { ProductStatus } from "@medusajs/utils"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
+import { ProductTagReq, ProductTypeReq } from "../../../types/product"
 
 export class AdminGetProductsProductParams extends FindParams {}
 export class AdminGetProductsProductVariantsVariantParams extends FindParams {}
@@ -89,26 +90,26 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   // @IsOptional()
   // price_list_id?: string[]
 
-  // /**
-  //  * Filter products by their associated product collection's ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // collection_id?: string[]
+  /**
+   * Filter products by their associated product collection's ID.
+   */
+  @IsArray()
+  @IsOptional()
+  collection_id?: string[]
 
-  // /**
-  //  * Filter products by their associated tags' value.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // tags?: string[]
+  /**
+   * Filter products by their associated tags' value.
+   */
+  @IsArray()
+  @IsOptional()
+  tags?: string[]
 
-  // /**
-  //  * Filter products by their associated product type's ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // type_id?: string[]
+  /**
+   * Filter products by their associated product type's ID.
+   */
+  @IsArray()
+  @IsOptional()
+  type_id?: string[]
 
   // /**
   //  * Filter products by their associated sales channels' ID.
@@ -172,6 +173,7 @@ export class AdminGetProductsVariantsParams extends extendedFindParamsMixin({
   limit: 50,
   offset: 0,
 }) {
+  // TODO: Will search be handled the same way? Should it be part of the `findParams` class instead, or the mixin?
   /**
    * Search term to search product variants' title, sku, and products' title.
    */
@@ -185,14 +187,6 @@ export class AdminGetProductsVariantsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
-
-  // TODO: This should be part of the Mixin or base FindParams
-  // /**
-  //  * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-  //  */
-  // @IsString()
-  // @IsOptional()
-  // order?: string
 
   /**
    * Filter product variants by whether their inventory is managed or not.
@@ -295,21 +289,20 @@ export class AdminPostProductsReq {
   @IsEnum(ProductStatus)
   status?: ProductStatus = ProductStatus.DRAFT
 
-  // TODO: Add in next iteration
-  // @IsOptional()
-  // @Type(() => ProductTypeReq)
-  // @ValidateNested()
-  // type?: ProductTypeReq
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
 
-  // @IsOptional()
-  // @IsString()
-  // collection_id?: string
+  @IsOptional()
+  @IsString()
+  collection_id?: string
 
-  // @IsOptional()
-  // @Type(() => ProductTagReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // tags?: ProductTagReq[]
+  @IsOptional()
+  @Type(() => ProductTagReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  tags?: ProductTagReq[]
 
   // @IsOptional()
   // @Type(() => ProductProductCategoryReq)
@@ -326,7 +319,6 @@ export class AdminPostProductsReq {
   // ])
   // sales_channels?: ProductSalesChannelReq[]
 
-  // TODO: I suggest we don't allow creation options and variants in 1 call, but rather do it through separate endpoints.
   @IsOptional()
   @Type(() => AdminPostProductsProductOptionsReq)
   @ValidateNested({ each: true })
@@ -416,15 +408,15 @@ export class AdminPostProductsProductReq {
   // @ValidateNested()
   // type?: ProductTypeReq
 
-  // @IsOptional()
-  // @IsString()
-  // collection_id?: string
+  @IsOptional()
+  @IsString()
+  collection_id?: string
 
-  // @IsOptional()
-  // @Type(() => ProductTagReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // tags?: ProductTagReq[]
+  @IsOptional()
+  @Type(() => ProductTagReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  tags?: ProductTagReq[]
 
   // @IsOptional()
   // @Type(() => ProductProductCategoryReq)
@@ -558,12 +550,9 @@ export class AdminPostProductsProductVariantsReq {
   // @Type(() => ProductVariantPricesCreateReq)
   // prices: ProductVariantPricesCreateReq[]
 
-  // TODO: Think how these link to the `options` on the product-level
-  // @IsOptional()
-  // @Type(() => ProductVariantOptionReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // options?: ProductVariantOptionReq[] = []
+  @IsOptional()
+  @IsObject()
+  options?: Record<string, string>
 }
 
 export class AdminPostProductsProductVariantsVariantReq {
@@ -642,20 +631,23 @@ export class AdminPostProductsProductVariantsVariantReq {
   // @Type(() => ProductVariantPricesUpdateReq)
   // prices?: ProductVariantPricesUpdateReq[]
 
-  // TODO: Align handling with the create case.
-  // @Type(() => ProductVariantOptionReq)
-  // @ValidateNested({ each: true })
-  // @IsOptional()
-  // @IsArray()
-  // options?: ProductVariantOptionReq[] = []
+  @IsOptional()
+  @IsObject()
+  options?: Record<string, string>
 }
 
 export class AdminPostProductsProductOptionsReq {
   @IsString()
   title: string
+
+  @IsArray()
+  values: string[]
 }
 
 export class AdminPostProductsProductOptionsOptionReq {
   @IsString()
   title: string
+
+  @IsArray()
+  values: string[]
 }
