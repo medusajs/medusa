@@ -9,6 +9,7 @@ import {
   UpdateStockLocationInput,
   ModulesSdkTypes,
   DAL,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -18,6 +19,7 @@ import {
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
+import { UpdateStockLocationNextInput } from "@medusajs/types"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -33,16 +35,19 @@ const generateMethodForModels = [StockLocationAddress]
  */
 
 export default class StockLocationModuleService<
-  TEntity extends StockLocation = StockLocation,
-  TStockLocationAddress extends StockLocationAddress = StockLocationAddress
-> extends ModulesSdkUtils.abstractModuleServiceFactory<
-  InjectedDependencies,
-  StockLocationTypes.StockLocationDTO,
-  {
-    StockLocation: { dto: StockLocationTypes.StockLocationDTO }
-    StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
-  }
->(StockLocation, generateMethodForModels, entityNameToLinkableKeysMap) {
+    TEntity extends StockLocation = StockLocation,
+    TStockLocationAddress extends StockLocationAddress = StockLocationAddress
+  >
+  extends ModulesSdkUtils.abstractModuleServiceFactory<
+    InjectedDependencies,
+    StockLocationTypes.StockLocationDTO,
+    {
+      StockLocation: { dto: StockLocationTypes.StockLocationDTO }
+      StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
+    }
+  >(StockLocation, generateMethodForModels, entityNameToLinkableKeysMap)
+  implements IStockLocationServiceNext
+{
   protected readonly eventBusService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
   protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
@@ -113,11 +118,11 @@ export default class StockLocationModuleService<
   }
 
   update(
-    data: UpdateStockLocationInput & { id: string },
+    data: UpdateStockLocationNextInput,
     context: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
   update(
-    data: (UpdateStockLocationInput & { id: string })[],
+    data: UpdateStockLocationNextInput[],
     context: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
   /**
@@ -129,9 +134,7 @@ export default class StockLocationModuleService<
    */
   @InjectManager("baseRepository_")
   async update(
-    data:
-      | (UpdateStockLocationInput & { id: string })
-      | (UpdateStockLocationInput & { id: string })[],
+    data: UpdateStockLocationNextInput | UpdateStockLocationNextInput[],
     @MedusaContext() context: Context = {}
   ): Promise<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
