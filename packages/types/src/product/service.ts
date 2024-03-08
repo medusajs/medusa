@@ -28,6 +28,7 @@ import {
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
+  UpsertProductDTO,
 } from "./common"
 
 import { FindConfig } from "../common"
@@ -2500,7 +2501,7 @@ export interface IProductModuleService extends IModuleService {
   deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
 
   /**
-   * This method is used to create a product.
+   * This method is used to create a list of products.
    *
    * @param {CreateProductDTO[]} data - The products to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -2529,11 +2530,96 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductDTO[]>
 
   /**
+   * This method is used to create a product.
+   *
+   * @param {CreateProductDTO} data - The product to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The created product.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const product = await productModule.create(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  create(data: CreateProductDTO, sharedContext?: Context): Promise<ProductDTO>
+
+  /**
+   * This method updates existing products, or creates new ones if they don't exist.
+   *
+   * @param {CreateProductDTO[]} data - The attributes to update or create for each product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The updated and created products.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upserProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdProducts = await productModule.upsert([
+   *     {
+   *       title
+   *     }
+   *   ])
+   *
+   *   // do something with the products or return them
+   * }
+   */
+  upsert(
+    data: UpsertProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
+   * This method updates the product if it exists, or creates a new ones if it doesn't.
+   *
+   * @param {CreateProductDTO} data - The attributes to update or create for the new product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The updated or created product.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upserProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdProduct = await productModule.upsert(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  upsert(
+    data: UpsertProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
    * This method is used to update a product.
    *
-   * @param {UpdateProductDTO[]} data - The products to be updated, each holding the attributes that should be updated in the product.
+   * @param {string} id - The ID of the product to be updated.
+   * @param {UpdateProductDTO} data - The attributes of the product to be updated
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} The list of updated products.
+   * @returns {Promise<ProductDTO>} The updated product.
    *
    * @example
    * import {
@@ -2543,18 +2629,47 @@ export interface IProductModuleService extends IModuleService {
    * async function updateProduct (id: string, title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const products = await productModule.update([
-   *     {
-   *       id,
+   *   const product = await productModule.update(id, {
    *       title
    *     }
-   *   ])
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  update(
+    id: string,
+    data: UpdateProductDTO,
+    sharedContext?: Context
+  ): Promise<ProductDTO>
+
+  /**
+   * This method is used to update a list of products determined by the selector filters.
+   *
+   * @param {FilterableProductProps} selector - The filters that will determine which products will be updated.
+   * @param {UpdateProductDTO} data - The attributes to be updated on the selected products
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The updated products.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateProduct (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const products = await productModule.update({id}, {
+   *       title
+   *     }
+   *   )
    *
    *   // do something with the products or return them
    * }
    */
   update(
-    data: UpdateProductDTO[],
+    selector: FilterableProductProps,
+    data: UpdateProductDTO,
     sharedContext?: Context
   ): Promise<ProductDTO[]>
 
