@@ -1,11 +1,7 @@
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { initModules, InitModulesOptions } from "./init-modules"
-import {
-  MedusaAppOutput,
-  MedusaModuleConfig,
-  ModulesDefinition
-} from "@medusajs/modules-sdk"
-import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
+import { InitModulesOptions, initModules } from "./init-modules"
+import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
+import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
 
 import { MockEventBusService } from "."
 
@@ -27,6 +23,7 @@ export function moduleIntegrationTestRunner({
   schema = "public",
   debug = false,
   testSuite,
+  resolve,
   injectedDependencies = {},
 }: {
   moduleName: string
@@ -36,6 +33,7 @@ export function moduleIntegrationTestRunner({
   schema?: string
   dbName?: string
   injectedDependencies?: Record<string, any>
+  resolve?: string
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
@@ -65,6 +63,7 @@ export function moduleIntegrationTestRunner({
   const modulesConfig_ = {
     [moduleName]: {
       definition: ModulesDefinition[moduleName],
+      resolve,
       options: {
         defaultAdapterOptions: {
           database: dbConfig,
@@ -113,26 +112,18 @@ export function moduleIntegrationTestRunner({
   } as SuiteOptions
 
   const beforeEach_ = async () => {
-    try {
-      await MikroOrmWrapper.setupDatabase()
-      const output = await initModules(moduleOptions_)
-      shutdown = output.shutdown
-      medusaApp = output.medusaApp
-      moduleService = output.medusaApp.modules[moduleName]
-    } catch (error) {
-      console.error("Error setting up database:", error)
-    }
+    await MikroOrmWrapper.setupDatabase()
+    const output = await initModules(moduleOptions_)
+    shutdown = output.shutdown
+    medusaApp = output.medusaApp
+    moduleService = output.medusaApp.modules[moduleName]
   }
 
   const afterEach_ = async () => {
-    try {
-      await MikroOrmWrapper.clearDatabase()
-      await shutdown()
-      moduleService = {}
-      medusaApp = {} as MedusaAppOutput
-    } catch (error) {
-      console.error("Error tearing down database:", error)
-    }
+    await MikroOrmWrapper.clearDatabase()
+    await shutdown()
+    moduleService = {}
+    medusaApp = {} as MedusaAppOutput
   }
 
   return describe("", () => {

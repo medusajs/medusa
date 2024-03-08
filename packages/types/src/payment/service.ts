@@ -2,24 +2,29 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CaptureDTO,
+  FilterableCaptureProps,
   FilterablePaymentCollectionProps,
   FilterablePaymentProps,
   FilterablePaymentProviderProps,
   FilterablePaymentSessionProps,
+  FilterableRefundProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentProviderDTO,
   PaymentSessionDTO,
+  RefundDTO,
 } from "./common"
 import {
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
+  PaymentCollectionUpdatableFields,
   ProviderWebhookPayload,
-  UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
+  UpsertPaymentCollectionDTO,
 } from "./mutations"
 
 /**
@@ -160,33 +165,23 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[PaymentCollectionDTO[], number]>
 
-  /**
-   * This method updates existing payment collections.
-   *
-   * @param {UpdatePaymentCollectionDTO[]} data - The attributes to update in payment collections.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO[]>} The updated payment collections.
-   *
-   * @example
-   * {example-code}
-   */
   updatePaymentCollections(
-    data: UpdatePaymentCollectionDTO[],
+    paymentCollectionId: string,
+    data: PaymentCollectionUpdatableFields,
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO>
+  updatePaymentCollections(
+    selector: FilterablePaymentCollectionProps,
+    data: PaymentCollectionUpdatableFields,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
-  /**
-   * This method updates an existing payment collection.
-   *
-   * @param {UpdatePaymentCollectionDTO} data - The attributes to update in a payment collection.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO[]>} The updated payment collection.
-   *
-   * @example
-   * {example-code}
-   */
-  updatePaymentCollections(
-    data: UpdatePaymentCollectionDTO,
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
@@ -401,6 +396,18 @@ export interface IPaymentModuleService extends IModuleService {
     config?: FindConfig<PaymentProviderDTO>,
     sharedContext?: Context
   ): Promise<PaymentProviderDTO[]>
+
+  listCaptures(
+    filters?: FilterableCaptureProps,
+    config?: FindConfig<CaptureDTO>,
+    sharedContext?: Context
+  ): Promise<CaptureDTO[]>
+
+  listRefunds(
+    filters?: FilterableRefundProps,
+    config?: FindConfig<RefundDTO>,
+    sharedContext?: Context
+  ): Promise<RefundDTO[]>
 
   /* ********** HOOKS ********** */
 

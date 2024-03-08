@@ -1,7 +1,7 @@
 import { ITaxModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import {
   createTaxRateRulesStepId,
   updateTaxRatesWorkflow,
@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       it("compensates rules correctly", async () => {

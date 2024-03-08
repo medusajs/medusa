@@ -6,6 +6,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  TaxRegionDTO,
   TaxTypes,
 } from "@medusajs/types"
 import {
@@ -14,16 +15,14 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  arrayDifference,
   isDefined,
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { TaxProvider, TaxRate, TaxRegion, TaxRateRule } from "@models"
+import { TaxProvider, TaxRate, TaxRateRule, TaxRegion } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { TaxRegionDTO } from "@medusajs/types"
-import { uniqueRateReferenceIndexName } from "../models/tax-rate-rule"
 import { singleDefaultRegionIndexName } from "../models/tax-rate"
+import { uniqueRateReferenceIndexName } from "../models/tax-rate-rule"
 import { countryCodeProvinceIndexName } from "../models/tax-region"
 
 type InjectedDependencies = {

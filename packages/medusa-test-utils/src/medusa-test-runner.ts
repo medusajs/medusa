@@ -3,12 +3,13 @@ import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { createDatabase, dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
 
 const axios = require("axios").default
 
 const keepTables = [
-  "store",
-  "staged_job",
+  /*"store",*/
+  /*  "staged_job",
   "shipping_profile",
   "fulfillment_provider",
   "payment_provider",
@@ -16,7 +17,7 @@ const keepTables = [
   "region_country",
   "currency",
   "migrations",
-  "mikro_orm_migrations",
+  "mikro_orm_migrations",*/
 ]
 
 const DB_HOST = process.env.DB_HOST
@@ -45,26 +46,19 @@ const dbTestUtilFactory = (): any => ({
     forceDelete,
     schema,
   }: { forceDelete?: string[]; schema?: string } = {}) {
-    forceDelete = forceDelete || []
+    forceDelete ??= []
     const manager = this.db_.manager
+
+    schema ??= "public"
 
     await manager.query(`SET session_replication_role = 'replica';`)
     const tableNames = await manager.query(`SELECT table_name
                                             FROM information_schema.tables
-                                            WHERE table_schema = '${
-                                              schema ?? "public"
-                                            }';`)
+                                            WHERE table_schema = '${schema}';`)
 
     for (const { table_name } of tableNames) {
-      if (
-        keepTables.includes(table_name) &&
-        !forceDelete.includes(table_name)
-      ) {
-        continue
-      }
-
       await manager.query(`DELETE
-                           FROM "${table_name}";`)
+                           FROM ${schema}."${table_name}";`)
     }
 
     await manager.query(`SET session_replication_role = 'origin';`)
@@ -182,40 +176,56 @@ export function medusaIntegrationTestRunner({
   } as MedusaSuiteOptions
 
   const beforeAll_ = async () => {
-    try {
-      await dbUtils.create(dbName)
-      const { dbDataSource, pgConnection } = await initDb({
-        cwd,
-        env,
-        force_modules_migration,
-        database_extra: {},
-        dbUrl: dbConfig.clientUrl,
-        dbSchema: dbConfig.schema,
+    await dbUtils.create(dbName)
+    const { dbDataSource, pgConnection } = await initDb({
+      cwd,
+      env,
+      force_modules_migration,
+      database_extra: {},
+      dbUrl: dbConfig.clientUrl,
+      dbSchema: dbConfig.schema,
+    })
+    dbUtils.db_ = dbDataSource
+    dbUtils.pgConnection_ = pgConnection
+
+    const {
+      shutdown: shutdown_,
+      container: container_,
+      port,
+    } = await startBootstrapApp({
+      cwd,
+      env,
+    })
+
+    apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
+
+    container = container_
+    shutdown = shutdown_
+  }
+
+  const beforeEach_ = async () => {
+    const container = options.getContainer()
+    const copiedContainer = createMedusaContainer({}, container)
+
+    if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
+      const defaultLoader =
+        require("@medusajs/medusa/dist/loaders/defaults").default
+      await defaultLoader({
+        container: copiedContainer,
       })
-      dbUtils.db_ = dbDataSource
-      dbUtils.pgConnection_ = pgConnection
-
-      const {
-        shutdown: shutdown_,
-        container: container_,
-        port,
-      } = await startBootstrapApp({
-        cwd,
-        env,
-      })
-
-      apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
-
-      container = container_
-      shutdown = shutdown_
-    } catch (error) {
-      console.error("Error setting up integration environment:", error)
     }
+
+    const medusaAppLoaderRunner =
+      require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
+    await medusaAppLoaderRunner({
+      container: copiedContainer,
+      configModule: container.resolve("configModule"),
+    })
   }
 
   const afterEach_ = async () => {
     try {
-      await dbUtils.teardown({ forceDelete: [], schema })
+      await dbUtils.teardown({ schema })
     } catch (error) {
       console.error("Error tearing down database:", error)
     }
@@ -223,14 +233,11 @@ export function medusaIntegrationTestRunner({
 
   return describe("", () => {
     beforeAll(beforeAll_)
+    beforeEach(beforeEach_)
     afterEach(afterEach_)
     afterAll(async () => {
-      try {
-        await dbUtils.shutdown(dbName)
-        await shutdown()
-      } catch (error) {
-        console.error("Error shutting down integration environment:", error)
-      }
+      await dbUtils.shutdown(dbName)
+      await shutdown()
     })
 
     testSuite(options!)
