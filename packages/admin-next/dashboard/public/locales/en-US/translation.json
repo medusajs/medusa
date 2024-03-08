@@ -424,8 +424,12 @@
       "sectionTitle": "History",
       "runningState": "Running...",
       "awaitingState": "Awaiting",
+      "failedState": "Failed",
       "definitionLabel": "Definition",
-      "outputLabel": "Output"
+      "outputLabel": "Output",
+      "compensateInputLabel": "Compensate input",
+      "revertedLabel": "Reverted",
+      "errorLabel": "Error"
     },
     "state": {
       "done": "Done",

@@ -19,7 +19,10 @@ import {
   STEP_OK_STATES,
 } from "../../../constants"
 import {
+  StepError,
+  StepInvoke,
   TransactionStepState,
+  TransactionStepStatus,
   WorkflowExecutionDTO,
   WorkflowExecutionStep,
 } from "../../../types"
@@ -36,6 +39,21 @@ export const ExecutionHistorySection = ({
   const map = Object.values(execution.execution?.steps || {})
   const steps = map.filter((step) => step.id !== "_root")
 
+  // check if any of the steps have a .invoke.state of "permanent_failure" and if that is the case then return its id
+  const unreachableStepId = steps.find(
+    (step) => step.invoke.status === TransactionStepStatus.PERMANENT_FAILURE
+  )?.id
+
+  // return an array of step ids of all steps that come after the unreachable step if there is one
+  const unreachableSteps = unreachableStepId
+    ? steps
+        .filter(
+          (step) =>
+            step.id !== unreachableStepId && step.id.includes(unreachableStepId)
+        )
+        .map((step) => step.id)
+    : []
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -50,13 +68,18 @@ export const ExecutionHistorySection = ({
           }
 
           const context = execution.context?.data.invoke[stepId]
+          const error = execution.context?.errors.find(
+            (e) => e.action === stepId
+          )
 
           return (
             <Event
               key={step.id}
               step={step}
               stepInvokeContext={context}
+              stepError={error}
               isLast={index === steps.length - 1}
+              isUnreachable={unreachableSteps.includes(step.id)}
             />
           )
         })}
@@ -68,18 +91,15 @@ export const ExecutionHistorySection = ({
 const Event = ({
   step,
   stepInvokeContext,
+  stepError,
   isLast,
+  isUnreachable,
 }: {
   step: WorkflowExecutionStep
-  stepInvokeContext:
-    | {
-        output: {
-          output: unknown
-          comensateInput: unknown
-        }
-      }
-    | undefined
+  stepInvokeContext: StepInvoke | undefined
+  stepError?: StepError | undefined
   isLast: boolean
+  isUnreachable?: boolean
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -97,7 +117,8 @@ const Event = ({
   }, [hash, stepId])
 
   const identifier = step.id.split(".").pop()
-  const isInvoking = step.invoke.state === TransactionStepState.INVOKING
+
+  stepInvokeContext
 
   return (
     <div
@@ -142,34 +163,11 @@ const Event = ({
               {identifier}
             </Text>
             <div className="flex items-center gap-x-2">
-              {isInvoking ? (
-                <div className="flex items-center gap-x-1">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-subtle"
-                  >
-                    {t("executions.history.runningState")}
-                  </Text>
-                  <Spinner className="text-ui-fg-interactive animate-spin" />
-                </div>
-              ) : step.startedAt ? (
-                <Text
-                  size="small"
-                  leading="compact"
-                  className="text-ui-fg-muted"
-                >
-                  {format(step.startedAt, "dd MMM yyyy HH:mm:ss")}
-                </Text>
-              ) : (
-                <Text
-                  size="small"
-                  leading="compact"
-                  className="text-ui-fg-muted"
-                >
-                  {t("executions.history.awaitingState")}
-                </Text>
-              )}
+              <StepState
+                state={step.invoke.state}
+                startedAt={step.startedAt}
+                isUnreachable={isUnreachable}
+              />
               <IconButton size="2xsmall" variant="transparent">
                 <TriangleDownMini className="text-ui-fg-muted transition-transform group-data-[state=open]:rotate-180" />
               </IconButton>
@@ -203,8 +201,62 @@ const Event = ({
                 <CodeBlock
                   snippets={[
                     {
-                      code: JSON.stringify(stepInvokeContext.output, null, 2),
+                      code: JSON.stringify(
+                        stepInvokeContext.output.output,
+                        null,
+                        2
+                      ),
                       label: t("executions.history.outputLabel"),
+                      language: "json",
+                      hideLineNumbers: true,
+                    },
+                  ]}
+                >
+                  <CodeBlock.Body />
+                </CodeBlock>
+              </div>
+            )}
+            {!!stepInvokeContext?.output.compensateInput &&
+              step.compensate.state === TransactionStepState.REVERTED && (
+                <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+                  <Text size="small" leading="compact">
+                    {t("executions.history.compensateInputLabel")}
+                  </Text>
+                  <CodeBlock
+                    snippets={[
+                      {
+                        code: JSON.stringify(
+                          stepInvokeContext.output.compensateInput,
+                          null,
+                          2
+                        ),
+                        label: t("executions.history.compensateInputLabel"),
+                        language: "json",
+                        hideLineNumbers: true,
+                      },
+                    ]}
+                  >
+                    <CodeBlock.Body />
+                  </CodeBlock>
+                </div>
+              )}
+            {stepError && (
+              <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+                <Text size="small" leading="compact">
+                  {t("executions.history.errorLabel")}
+                </Text>
+                <CodeBlock
+                  snippets={[
+                    {
+                      code: JSON.stringify(
+                        {
+                          error: stepError.error,
+                          handlerType: stepError.handlerType,
+                        },
+                        null,
+                        2
+                      ),
+                      label: t("executions.history.errorLabel"),
                       language: "json",
                       hideLineNumbers: true,
                     },
@@ -219,4 +271,50 @@ const Event = ({
       </Collapsible.Root>
     </div>
   )
+}
+
+const StepState = ({
+  state,
+  startedAt,
+  isUnreachable,
+}: {
+  state: TransactionStepState
+  startedAt?: number | null
+  isUnreachable?: boolean
+}) => {
+  const { t } = useTranslation()
+
+  const isFailed = state === TransactionStepState.FAILED
+  const isRunning = state === TransactionStepState.INVOKING
+
+  if (isUnreachable) {
+    return null
+  }
+
+  if (isRunning) {
+    return (
+      <div className="flex items-center gap-x-1">
+        <Text size="small" leading="compact" className="text-ui-fg-subtle">
+          {t("executions.history.runningState")}
+        </Text>
+        <Spinner className="text-ui-fg-interactive animate-spin" />
+      </div>
+    )
+  }
+
+  if (isFailed) {
+    return (
+      <Text size="small" leading="compact" className="text-ui-fg-subtle">
+        {t("executions.history.failedState")}
+      </Text>
+    )
+  }
+
+  if (startedAt) {
+    return (
+      <Text size="small" leading="compact" className="text-ui-fg-muted">
+        {format(startedAt, "dd MMM yyyy HH:mm:ss")}
+      </Text>
+    )
+  }
 }

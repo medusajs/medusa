@@ -16,23 +16,34 @@ export type WorkflowExecutionStep = {
     saveResponse?: boolean
     timeout?: number
   }
+  compensate: {
+    state: TransactionStepState
+    status: TransactionStepStatus
+  }
   depth: number
   startedAt: number
 }
 
-type WorkflowExecutionContext = {
+export type StepInvoke = {
+  output: {
+    output: unknown
+    compensateInput: unknown
+  }
+}
+
+export type StepError = {
+  error: Record<string, unknown>
+  action: string
+  handlerType: string
+}
+
+export type WorkflowExecutionContext = {
   data: {
-    invoke: Record<
-      string,
-      {
-        output: {
-          output: unknown
-          comensateInput: unknown
-        }
-      }
-    >
+    invoke: Record<string, StepInvoke>
+    payload?: unknown
   }
   compensate: Record<string, unknown>
+  errors: StepError[]
 }
 
 type WorflowExecutionExecution = {

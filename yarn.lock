@@ -8156,7 +8156,7 @@ __metadata:
     "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
-    "@uiw/react-json-view": 2.0.0-alpha.10
+    "@uiw/react-json-view": ^2.0.0-alpha.17
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
@@ -18909,14 +18909,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uiw/react-json-view@npm:2.0.0-alpha.10":
-  version: 2.0.0-alpha.10
-  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.10"
+"@uiw/react-json-view@npm:^2.0.0-alpha.17":
+  version: 2.0.0-alpha.17
+  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.17"
   peerDependencies:
     "@babel/runtime": ">=7.10.0"
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: d1278e92320251b1b61ecacd5c701989bd732ce4155b14a00b674d151c5b0da1b4a043b8696d23675006bf345559e56492960e33a9c0f40bc3c18eed031a136d
+  checksum: 6c8f10af40db9ae60da4b799fc391a544d2e6eec071d882d64050869b057e26fa6104c00de0406693a341c03a8017cb37c14136d803c9ff60e86c6e0d0187cbc
   languageName: node
   linkType: hard
 
