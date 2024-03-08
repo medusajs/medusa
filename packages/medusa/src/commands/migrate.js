@@ -2,7 +2,6 @@ import { asValue, createContainer } from "awilix"
 import getMigrations, {
   getModuleSharedResources,
   revertIsolatedModulesMigration,
-  runV2ModuleMigrations,
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
