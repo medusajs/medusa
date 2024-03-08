@@ -3,6 +3,7 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -32,6 +33,13 @@ export class AdminGetApiKeysParams extends extendedFindParamsMixin({
   @IsString({ each: true })
   @IsOptional()
   title?: string | string[]
+
+  /**
+   * Filter by token
+   */
+  @IsString({ each: true })
+  @IsOptional()
+  token?: string | string[]
 
   /**
    * Filter by type
@@ -65,6 +73,10 @@ export class AdminPostApiKeysApiKeyReq {
   title: string
 }
 
-export class AdminRevokeApiKeysApiKeyReq {}
+export class AdminRevokeApiKeysApiKeyReq {
+  @IsOptional()
+  @IsNumber()
+  revoke_in?: number
+}
 
 export class AdminDeleteApiKeysApiKeyReq {}

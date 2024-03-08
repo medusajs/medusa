@@ -1,8 +1,4 @@
 import { OrderStatus } from "@medusajs/utils"
-import {
-  CreateOrderLineItemAdjustmentDTO,
-  UpdateOrderLineItemAdjustmentDTO,
-} from "./line-item-adjustment"
 
 export interface CreateOrderDTO {
   region_id?: string
@@ -26,9 +22,4 @@ export interface UpdateOrderDTO {
   status?: OrderStatus
   no_notification?: boolean
   metadata?: Record<string, unknown>
-
-  adjustments?: (
-    | CreateOrderLineItemAdjustmentDTO
-    | UpdateOrderLineItemAdjustmentDTO
-  )[]
 }

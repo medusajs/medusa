@@ -1,12 +1,12 @@
-import path from "path"
 import { FeatureFlagUtils, FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import bodyParser from "body-parser"
 import { Express } from "express"
+import path from "path"
 import qs from "qs"
-import { RoutesLoader } from "./helpers/routing"
 import routes from "../api"
 import { ConfigModule } from "../types/global"
+import { RoutesLoader } from "./helpers/routing"
 
 type Options = {
   app: Express
@@ -47,7 +47,9 @@ export default async ({
         configModule,
       }).load()
     } catch (err) {
-      throw Error("An error occurred while registering Medusa Core API Routes")
+      throw Error(
+        "An error occurred while registering Medusa Core API Routes. See error in logs for more details."
+      )
     }
   } else {
     app.use(bodyParser.json())

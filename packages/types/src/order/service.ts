@@ -11,7 +11,9 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
+  OrderChangeDTO,
   OrderDTO,
+  OrderItemDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
@@ -20,18 +22,23 @@ import {
   OrderShippingMethodTaxLineDTO,
 } from "./common"
 import {
+  CancelOrderChangeDTO,
+  ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
+  CreateOrderChangeDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
-  CreateOrderShippingMethodForSingleOrderDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  DeclineOrderChangeDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
+  UpdateOrderItemDTO,
+  UpdateOrderItemWithSelectorDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
@@ -62,8 +69,17 @@ export interface IOrderModuleService extends IModuleService {
   create(data: CreateOrderDTO[], sharedContext?: Context): Promise<OrderDTO[]>
   create(data: CreateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
 
-  update(data: UpdateOrderDTO[], sharedContext?: Context): Promise<OrderDTO[]>
-  update(data: UpdateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
+  update(data: UpdateOrderDTO[]): Promise<OrderDTO[]>
+  update(
+    orderId: string,
+    data: UpdateOrderDTO,
+    sharedContext?: Context
+  ): Promise<OrderDTO>
+  update(
+    selector: Partial<OrderDTO>,
+    data: UpdateOrderDTO,
+    sharedContext?: Context
+  ): Promise<OrderDTO[]>
 
   delete(orderIds: string[], sharedContext?: Context): Promise<void>
   delete(orderId: string, sharedContext?: Context): Promise<void>
@@ -140,6 +156,26 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  updateOrderItem(
+    selector: Partial<OrderItemDTO>,
+    data: UpdateOrderItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderItemDTO[]>
+  updateOrderItem(
+    orderDetailId: string,
+    data: Partial<UpdateOrderItemDTO>,
+    sharedContext?: Context
+  ): Promise<OrderItemDTO>
+
+  updateOrderItem(
+    orderDetailIdOrDataOrSelector:
+      | string
+      | UpdateOrderItemWithSelectorDTO[]
+      | Partial<OrderItemDTO>,
+    data?: UpdateOrderItemDTO | Partial<UpdateOrderItemDTO>,
+    sharedContext?: Context
+  ): Promise<OrderItemDTO[] | OrderItemDTO>
+
   listShippingMethods(
     filters: FilterableOrderShippingMethodProps,
     config: FindConfig<OrderShippingMethodDTO>,
@@ -154,7 +190,7 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodDTO[]>
   addShippingMethods(
     orderId: string,
-    methods: CreateOrderShippingMethodForSingleOrderDTO[],
+    methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 
@@ -325,4 +361,55 @@ export interface IOrderModuleService extends IModuleService {
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
+
+  // Order Change
+  createOrderChange(
+    data: CreateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+  createOrderChange(
+    data: CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+  createOrderChange(
+    data: CreateOrderChangeDTO | CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO | OrderChangeDTO[]>
+
+  cancelOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  cancelOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  cancelOrderChange(
+    data: CancelOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  cancelOrderChange(
+    data: CancelOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  confirmOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  confirmOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    data: ConfirmOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  confirmOrderChange(
+    data: ConfirmOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  declineOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  declineOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    data: DeclineOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  declineOrderChange(
+    data: DeclineOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
+
+  addOrderAction(data: any, sharedContext?: Context)
 }

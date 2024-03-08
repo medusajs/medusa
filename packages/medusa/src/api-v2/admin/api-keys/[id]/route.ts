@@ -20,7 +20,7 @@ export const GET = async (
   const variables = { id: req.params.id }
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "api-key",
+    entryPoint: "api_key",
     variables,
     fields: defaultAdminApiKeyFields,
   })
@@ -37,7 +37,7 @@ export const POST = async (
   const { result, errors } = await updateApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update: req.validatedBody as UpdateApiKeyDTO,
     },
     throwOnError: false,
   })
@@ -66,7 +66,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id,
-    object: "api-key",
+    object: "api_key",
     deleted: true,
   })
 }

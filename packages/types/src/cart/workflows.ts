@@ -1,4 +1,7 @@
-import { CartDTO } from "./common"
+import { CustomerDTO } from "../customer"
+import { ProductDTO } from "../product"
+import { CartDTO, CartLineItemDTO } from "./common"
+import { UpdateLineItemDTO } from "./mutations"
 
 export interface CreateCartCreateLineItemDTO {
   quantity: number
@@ -32,6 +35,12 @@ export interface CreateCartCreateLineItemDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpdateLineItemInCartWorkflowInputDTO {
+  cart: CartDTO
+  item: CartLineItemDTO
+  update: Partial<UpdateLineItemDTO>
+}
+
 export interface CreateCartAddressDTO {
   first_name?: string
   last_name?: string
@@ -63,5 +72,29 @@ export interface CreateCartWorkflowInputDTO {
 
 export interface AddToCartWorkflowInputDTO {
   items: CreateCartCreateLineItemDTO[]
-  cart: CartDTO
+  cart: CartWorkflowDTO
+}
+
+export interface UpdateCartWorkflowInputDTO {
+  id: string
+  promo_codes?: string[]
+  region_id?: string
+  customer_id?: string | null
+  sales_channel_id?: string | null
+  email?: string | null
+  currency_code?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreatePaymentCollectionForCartWorkflowInputDTO {
+  cart_id: string
+  region_id: string
+  currency_code: string
+  amount: number
+  metadata?: Record<string, unknown>
+}
+
+export interface CartWorkflowDTO extends CartDTO {
+  customer?: CustomerDTO
+  product?: ProductDTO
 }

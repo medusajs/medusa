@@ -17,6 +17,7 @@ export interface ApiKeyDTO {
 export interface FilterableApiKeyProps
   extends BaseFilterable<FilterableApiKeyProps> {
   id?: string | string[]
+  token?: string | string[]
   title?: string | string[]
   type?: ApiKeyType
 }

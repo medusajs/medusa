@@ -1,12 +1,13 @@
 import {
+  CreatePaymentProviderSession,
   IPaymentProvider,
   MedusaContainer,
-  PaymentProviderContext,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
   ProviderWebhookPayload,
-  WebhookActionResult,
+  UpdatePaymentProviderSession,
+  WebhookActionResult
 } from "@medusajs/types"
 
 export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
@@ -107,7 +108,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract initiatePayment(
-    context: PaymentProviderContext
+    context: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   abstract deletePayment(
@@ -128,7 +129,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract updatePayment(
-    context: PaymentProviderContext
+    context: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   abstract getWebhookActionAndData(

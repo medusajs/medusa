@@ -4,10 +4,8 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableRegionCountryProps,
-  FilterableRegionCurrencyProps,
   FilterableRegionProps,
   RegionCountryDTO,
-  RegionCurrencyDTO,
   RegionDTO,
 } from "./common"
 import { CreateRegionDTO, UpsertRegionDTO, UpdateRegionDTO } from "./mutations"
@@ -286,36 +284,6 @@ export interface IRegionModuleService extends IModuleService {
   ): Promise<RegionCountryDTO[]>
 
   /**
-   * This method retrieves a currency by its ID.
-   *
-   * @param {string} currencyId - The currency's ID.
-   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the region country is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region country.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RegionCurrencyDTO>} The retrieved currency.
-   *
-   * @example
-   * A simple example that retrieves a {type name} by its ID:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
-   */
-  retrieveCurrency(
-    currencyId: string,
-    config?: FindConfig<RegionCountryDTO>,
-    sharedContext?: Context
-  ): Promise<RegionCurrencyDTO>
-
-  /**
    * This method retrieves a paginated list of countries along with the total count of available countries satisfying the provided filters.
    *
    * @param {FilterableRegionCountryProps} filters - The filters to apply on the retrieved region country.
@@ -352,78 +320,6 @@ export interface IRegionModuleService extends IModuleService {
   ): Promise<[RegionCountryDTO[], number]>
 
   /**
-   * This method retrieves a paginated list of currencies based on optional filters and configuration.
-   *
-   * @param {FilterableRegionCurrencyProps} filters - The filters to apply on the retrieved region currency.
-   * @param {FindConfig<RegionCurrencyDTO>} config - The configurations determining how the region currency is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RegionCurrencyDTO[]>} The list of currencies.
-   *
-   * @example
-   * To retrieve a list of {type name} using their IDs:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * To specify relations that should be retrieved within the {type name}:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
-   */
-  listCurrencies(
-    filters?: FilterableRegionCurrencyProps,
-    config?: FindConfig<RegionCurrencyDTO>,
-    sharedContext?: Context
-  ): Promise<RegionCurrencyDTO[]>
-
-  /**
-   * This method retrieves a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
-   *
-   * @param {FilterableRegionCurrencyProps} filters - The filters to apply on the retrieved region currency.
-   * @param {FindConfig<RegionCurrencyDTO>} config - The configurations determining how the region currency is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[RegionCurrencyDTO[], number]>} The list of currencies along with their total count.
-   *
-   * @example
-   * To retrieve a list of {type name} using their IDs:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * To specify relations that should be retrieved within the {type name}:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
-   */
-  listAndCountCurrencies(
-    filters?: FilterableRegionCurrencyProps,
-    config?: FindConfig<RegionCurrencyDTO>,
-    sharedContext?: Context
-  ): Promise<[RegionCurrencyDTO[], number]>
-
-  /**
    * This method soft deletes regions by their IDs.
    *
    * @param {string[]} regionIds - The list of IDs of regions to soft delete.
@@ -445,12 +341,12 @@ export interface IRegionModuleService extends IModuleService {
    *
    * @param {string[]} regionIds - The list of IDs of regions to restore.
    * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the regions. You can pass to its `returnLinkableKeys`
-   * property any of the regions's relation attribute names, such as `currency`.
+   * property any of the regions's relation attribute names, such as `country`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated currency.
-   * The object's keys are the ID attribute names of the regions entity's relations, such as `currency_code`,
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated country.
+   * The object's keys are the ID attribute names of the regions entity's relations, such as `country`,
    * and its value is an array of strings, each being the ID of the record associated with the region through this relation,
-   * such as the IDs of associated currency.
+   * such as the IDs of associated country.
    *
    * @example
    * {example-code}
@@ -460,15 +356,4 @@ export interface IRegionModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method creates default countries and currencies.
-   *
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the default countries and currencies are created.
-   *
-   * @example
-   * {example-code}
-   */
-  createDefaultCountriesAndCurrencies(sharedContext?: Context): Promise<void>
 }

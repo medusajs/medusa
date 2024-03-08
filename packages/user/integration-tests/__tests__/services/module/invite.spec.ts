@@ -200,6 +200,24 @@ describe("UserModuleService - Invite", () => {
     })
   })
 
+  describe("resendInvite", () => {
+    it("should emit token generated event for invites", async () => {
+      await createInvites(testManager, defaultInviteData)
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+
+      await service.refreshInviteTokens(["1"])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.invite_token_generated,
+        }),
+      ])
+    })
+  })
   describe("createInvitie", () => {
     it("should create an invite successfully", async () => {
       await service.createInvites(defaultInviteData)
@@ -238,13 +256,13 @@ describe("UserModuleService - Invite", () => {
           body: expect.objectContaining({
             data: { id: "1" },
           }),
-          eventName: "invite.token_generated",
+          eventName: UserEvents.invite_token_generated,
         }),
         expect.objectContaining({
           body: expect.objectContaining({
             data: { id: "2" },
           }),
-          eventName: "invite.token_generated",
+          eventName: UserEvents.invite_token_generated,
         }),
       ])
     })

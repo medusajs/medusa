@@ -1,4 +1,4 @@
-import { CartDTO } from "@medusajs/types"
+import { PromotionActions } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -12,20 +12,24 @@ import {
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
   retrieveCartStep,
+  updateCartPromotionsStep,
 } from "../steps"
 
 type WorkflowInput = {
   promoCodes: string[]
   cartId: string
-  removePromotions?: boolean
+  action?:
+    | PromotionActions.ADD
+    | PromotionActions.REMOVE
+    | PromotionActions.REPLACE
 }
 
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
     const retrieveCartInput = {
-      cartId: input.cartId,
+      id: input.cartId,
       config: {
         relations: [
           "items",
@@ -36,11 +40,15 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       },
     }
 
+    updateCartPromotionsStep({
+      id: input.cartId,
+      promo_codes: input.promoCodes,
+      action: input.action || PromotionActions.ADD,
+    })
+
     const cart = retrieveCartStep(retrieveCartInput)
     const actions = getActionsToComputeFromPromotionsStep({
       cart,
-      promoCodes: input.promoCodes,
-      removePromotions: input.removePromotions || false,
     })
 
     const {
@@ -61,9 +69,5 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
       createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
     )
-
-    return retrieveCartStep(retrieveCartInput).config({
-      name: "retrieve-cart-result-step",
-    })
   }
 )

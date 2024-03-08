@@ -12,11 +12,11 @@ import {
   Enum,
   ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { OneToMany } from "typeorm"
 import Order from "./order"
 import OrderChangeAction from "./order-change-action"
 
@@ -32,26 +32,40 @@ const OrderChangeStatusIndex = createPsqlIndexStatementHelper({
   columns: "status",
 })
 
+const VersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: ["order_id", "version"],
+})
+
 @Entity({ tableName: "order_change" })
+@VersionIndex.MikroORMIndex()
 export default class OrderChange {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    columnType: "text",
+    fieldName: "order_id",
+    cascade: [Cascade.REMOVE],
+    mapToPk: true,
+  })
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+  @ManyToOne(() => Order, {
+    persist: false,
   })
   order: Order
 
-  @OneToMany(() => OrderChangeAction, (action) => action.order_change_id, {
-    cascade: [Cascade.REMOVE],
+  @Property({ columnType: "integer" })
+  @VersionIndex.MikroORMIndex()
+  version: number
+
+  @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
+    cascade: [Cascade.PERSIST],
   })
   actions = new Collection<OrderChangeAction>(this)
 
@@ -63,7 +77,7 @@ export default class OrderChange {
 
   @Enum({ items: () => OrderChangeStatus, default: OrderChangeStatus.PENDING })
   @OrderChangeStatusIndex.MikroORMIndex()
-  status: OrderChangeStatus
+  status: OrderChangeStatus = OrderChangeStatus.PENDING
 
   @Property({ columnType: "text", nullable: true })
   internal_note: string | null = null
@@ -78,7 +92,7 @@ export default class OrderChange {
     columnType: "timestamptz",
     nullable: true,
   })
-  requested_at?: Date
+  requested_at: Date | null = null
 
   @Property({ columnType: "text", nullable: true })
   confirmed_by: string | null = null // customer or user ID
@@ -87,7 +101,7 @@ export default class OrderChange {
     columnType: "timestamptz",
     nullable: true,
   })
-  confirmed_at?: Date
+  confirmed_at: Date | null = null
 
   @Property({ columnType: "text", nullable: true })
   declined_by: string | null = null // customer or user ID
@@ -131,10 +145,12 @@ export default class OrderChange {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordch")
+    this.order_id ??= this.order?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordch")
+    this.order_id ??= this.order?.id
   }
 }

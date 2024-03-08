@@ -15,6 +15,8 @@
     "next": "Next",
     "prev": "Prev",
     "is": "is",
+    "select": "Select",
+    "selected": "Selected",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -38,7 +40,8 @@
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
-    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "actions": {
     "create": "Create",
@@ -49,7 +52,8 @@
     "save": "Save",
     "continue": "Continue",
     "edit": "Edit",
-    "download": "Download"
+    "download": "Download",
+    "clearAll": "Clear all"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -60,6 +64,11 @@
     "internalServerErrorMessage": "An error occurred on the server.",
     "defaultTitle": "An error occurred",
     "defaultMessage": "An error occurred while rendering this page."
+  },
+  "addresses": {
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "sameAsShipping": "Same as shipping address"
   },
   "products": {
     "domain": "Products",
@@ -160,34 +169,120 @@
   },
   "orders": {
     "domain": "Orders",
-    "paymentStatusLabel": "Payment Status",
-    "paymentStatus": {
-      "notPaid": "Not Paid",
-      "awaiting": "Awaiting",
-      "captured": "Captured",
-      "partiallyRefunded": "Partially Refunded",
-      "refunded": "Refunded",
-      "canceled": "Canceled",
-      "requresAction": "Requires Action"
+    "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
+    "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
+    "summary": {
+      "allocateItems": "Allocate items",
+      "editItems": "Edit items"
     },
-    "fulfillmentStatusLabel": "Fulfillment Status",
-    "fulfillmentStatus": {
-      "notFulfilled": "Not Fulfilled",
-      "partiallyFulfilled": "Partially Fulfilled",
-      "fulfilled": "Fulfilled",
-      "partiallyShipped": "Partially Shipped",
-      "shipped": "Shipped",
-      "partiallyReturned": "Partially Returned",
-      "returned": "Returned",
-      "canceled": "Canceled",
-      "requresAction": "Requires Action"
+    "payment": {
+      "title": "Payments",
+      "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
+      "totalPaidByCustomer": "Total paid by customer",
+      "capture": "Capture",
+      "refund": "Refund",
+      "statusLabel": "Payment status",
+      "statusTitle": "Payment Status",
+      "status": {
+        "notPaid": "Not paid",
+        "awaiting": "Awaiting",
+        "captured": "Captured",
+        "partiallyRefunded": "Partially refunded",
+        "refunded": "Refunded",
+        "canceled": "Canceled",
+        "requiresAction": "Requires action"
+      }
+    },
+    "reservations": {
+      "allocatedLabel": "Allocated",
+      "notAllocatedLabel": "Not allocated"
+    },
+    "fulfillment": {
+      "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
+      "unfulfilledItems": "Unfulfilled Items",
+      "statusLabel": "Fulfillment status",
+      "statusTitle": "Fulfillment Status",
+      "awaitingFullfillmentBadge": "Awaiting fulfillment",
+      "number": "Fulfillment #{{number}}",
+      "status": {
+        "notFulfilled": "Not fulfilled",
+        "partiallyFulfilled": "Partially fulfilled",
+        "fulfilled": "Fulfilled",
+        "partiallyShipped": "Partially shipped",
+        "shipped": "Shipped",
+        "partiallyReturned": "Partially returned",
+        "returned": "Returned",
+        "canceled": "Canceled",
+        "requiresAction": "Requires action"
+      },
+      "trackingLabel": "Tracking",
+      "shippingFromLabel": "Shipping from",
+      "itemsLabel": "Items"
+    },
+    "customer": {
+      "contactLabel": "Contact",
+      "editEmail": "Edit email",
+      "transferOwnership": "Transfer ownership",
+      "editBillingAddress": "Edit billing address",
+      "editShippingAddress": "Edit shipping address"
     }
   },
   "draftOrders": {
     "domain": "Draft Orders"
   },
   "discounts": {
-    "domain": "Discounts"
+    "domain": "Discounts",
+    "startDate": "Start date",
+    "validDuration": "Duration of the discount",
+    "redemptionsLimit": "Redemptions limit",
+    "endDate": "End date",
+    "percentageDiscount": "Percentage discount",
+    "freeShipping": "Free shipping",
+    "fixedDiscount": "Fixed discount",
+    "validRegions": "Valid regions",
+    "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
+    "editDiscountDetails": "Edit discount details",
+    "editDiscountConfiguration": "Edit discount configuration",
+    "hasStartDate": "Discount has a start date",
+    "hasEndDate": "Discount has an expiry date",
+    "startDateHint": "Schedule the discount to activate in the future.",
+    "endDateHint": "Schedule the discount to deactivate in the future.",
+    "codeHint": "Discount code applies from when you hit the publish button and forever if left untouched.",
+    "hasUsageLimit": "Limit the number of redemptions?",
+    "usageLimitHint": "Limit applies across all customers, not per customer.",
+    "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
+    "hasDurationLimit": "Availability duration",
+    "durationHint": "Set the duration of the discount",
+    "chooseValidRegions": "Choose valid regions",
+    "noConditions": "No conditions are defined for this discount.",
+    "editConditions": "Edit conditions",
+    "conditions": {
+      "including": {
+        "products_one": "Discount applies to <0/> product.",
+        "products_other": "Discount applies to <0/> products.",
+        "customer_groups_one": "Discount applies to <0/> customer group.",
+        "customer_groups_other": "Discount applies to <0/> customer groups.",
+        "product_tags_one": "Discount applies to <0/> tag.",
+        "product_tags_other": "Discount applies to <0/> tags.",
+        "product_collections_one": "Discount applies to <0/> product collection.",
+        "product_collections_other": "Discount applies to <0/> product collections.",
+        "product_types_one": "Discount applies to <0/> product type.",
+        "product_types_other": "Discount applies to <0/> product types."
+      },
+      "excluding": {
+        "products": "Discount applies to <1>all</1> products except <0/>.",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
+        "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
+        "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
+        "product_types": "Discount applies to <1>all</1> product types except <0/>."
+      }
+    },
+    "discountStatus": {
+      "scheduled": "Scheduled",
+      "expired": "Expired",
+      "active": "Active",
+      "disabled": "Disabled"
+    }
   },
   "pricing": {
     "domain": "Pricing"
@@ -245,17 +340,47 @@
     "domain": "Regions",
     "createRegion": "Create Region",
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
+    "addCountries": "Add countries",
     "editRegion": "Edit Region",
+    "countriesHint": "Add the countries that should be included in this region.",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
+    "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
+    "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region.",
+    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
-    "returnShippingOptions": "Return Shipping Options",
+    "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
     "outbound": "Outbound",
     "priceType": "Price Type",
     "flatRate": "Flat Rate",
-    "calculated": "Calculated"
+    "calculated": "Calculated",
+    "shippingOption": {
+      "createShippingOption": "Create Shipping Option",
+      "createShippingOptionHint": "Create a new shipping option for the region.",
+      "editShippingOption": "Edit Shipping Option",
+      "fulfillmentMethod": "Fulfillment Method",
+      "type": {
+        "outbound": "Outbound",
+        "outboundHint": "Use this if you are creating a shipping option for sending products to the customer.",
+        "return": "Return",
+        "returnHint": "Use this if you are creating a shipping option for the customer to return products to you."
+      },
+      "priceType": {
+        "label": "Price Type",
+        "flatRate": "Flat rate",
+        "calculated": "Calculated"
+      },
+      "availability": {
+        "adminOnly": "Admin only",
+        "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
+      },
+      "requirements": {
+        "label": "Requirements",
+        "hint": "Specify the requirements for the shipping option."
+      }
+    }
   },
   "locations": {
     "domain": "Locations",
@@ -333,6 +458,7 @@
     "invalidCredentials": "Wrong email or password"
   },
   "fields": {
+    "amount": "Amount",
     "name": "Name",
     "lastName": "Last Name",
     "firstName": "First Name",
@@ -345,19 +471,34 @@
     "newPassword": "New Password",
     "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
+    "configurations": "Configurations",
+    "conditions": "Conditions",
     "category": "Category",
     "collection": "Collection",
     "discountable": "Discountable",
     "handle": "Handle",
     "subtitle": "Subtitle",
+    "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "value": "Value",
+    "disabled": "Disabled",
+    "dynamic": "Dynamic",
+    "normal": "Normal",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
+    "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
@@ -382,6 +523,9 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
     "created": "Created",
     "key": "Key",
     "customer": "Customer",
@@ -392,12 +536,14 @@
     "items": "Items",
     "salesChannel": "Sales Channel",
     "region": "Region",
+    "discount": "Discount",
     "role": "Role",
     "sent": "Sent",
     "salesChannels": "Sales Channels",
     "product": "Product",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
     "giftCard": "Gift Card",
@@ -416,6 +562,28 @@
     "material": "Material",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
-    "managedInventory": "Managed inventory"
+    "managedInventory": "Managed inventory",
+    "id": "ID",
+    "minSubtotal": "Min. Subtotal",
+    "maxSubtotal": "Max. Subtotal",
+    "shippingProfile": "Shipping Profile",
+    "summary": "Summary",
+    "shippingProfile": "Shipping Profile"
+  },
+  "dateTime" : {
+    "years_one": "Year",
+    "years_other": "Years",
+    "months_one": "Month",
+    "months_other": "Months",
+    "weeks_one": "Week",
+    "weeks_other": "Weeks",
+    "days_one": "Day",
+    "days_other": "Days",
+    "hours_one": "Hour",
+    "hours_other": "Hours",
+    "minutes_one": "Minute",
+    "minutes_other": "Minutes",
+    "seconds_one": "Second",
+    "seconds_other": "Seconds"
   }
 }

@@ -17,9 +17,9 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { OrderSummary } from "../types/common"
 import Address from "./address"
-import OrderDetail from "./order-detail"
+import OrderItem from "./order-item"
+import OrderSummary from "./order-summary"
 import ShippingMethod from "./shipping-method"
 import Transaction from "./transaction"
 
@@ -49,12 +49,6 @@ const SalesChannelIdIndex = createPsqlIndexStatementHelper({
 const OrderDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "deleted_at",
-  where: "deleted_at IS NOT NULL",
-})
-
-const OriginalOrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
-  columns: "original_order_id",
   where: "deleted_at IS NOT NULL",
 })
 
@@ -96,13 +90,6 @@ export default class Order {
   })
   @CustomerIdIndex.MikroORMIndex()
   customer_id: string | null = null
-
-  @Property({
-    columnType: "text",
-    nullable: true,
-  })
-  @OriginalOrderIdIndex.MikroORMIndex()
-  original_order_id: string | null = null
 
   @Property({
     columnType: "integer",
@@ -154,24 +141,26 @@ export default class Order {
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
 
-  @Property({ columnType: "jsonb" })
-  summary: OrderSummary | null = {} as OrderSummary
+  @OneToMany(() => OrderSummary, (summary) => summary.order, {
+    cascade: [Cascade.PERSIST],
+  })
+  summary = new Collection<OrderSummary>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @OneToMany(() => OrderDetail, (itemDetail) => itemDetail.order, {
-    cascade: [Cascade.REMOVE],
+  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.order, {
+    cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderDetail>(this)
+  items = new Collection<OrderItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   transactions = new Collection<Transaction>(this)
 

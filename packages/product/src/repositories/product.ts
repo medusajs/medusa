@@ -22,6 +22,7 @@ import {
 } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
+import { UpdateProductInput } from "src/types/services/product"
 
 // eslint-disable-next-line max-len
 export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Product>(
@@ -120,7 +121,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
   async update(
     data: {
       entity: Product
-      update: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">
+      update: UpdateProductInput
     }[],
     context: Context = {}
   ): Promise<Product[]> {
@@ -136,7 +137,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
         productData?.categories?.map((c) => c.id) || []
       )
 
-      tagIds = tagIds.concat(productData?.tags?.map((c) => c.id) || [])
+      tagIds = tagIds.concat(productData?.tags?.map((c: any) => c.id) || [])
 
       if (productData.collection_id) {
         collectionIds.push(productData.collection_id)
@@ -204,7 +205,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
 
         const {
           categories: categoriesData = [],
-          tags: tagsData = [],
+          tags: tagsData = [] as any,
           collection_id: collectionId,
           type_id: typeId,
         } = updateData

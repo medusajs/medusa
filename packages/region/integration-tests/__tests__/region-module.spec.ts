@@ -1,6 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
-import { DefaultsUtils } from "@medusajs/utils"
 import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../utils"
 import { getInitModuleConfig } from "../utils/get-init-module-config"
@@ -26,31 +25,9 @@ describe("Region Module Service", () => {
     await shutdownFunc()
   })
 
-  it("should create countries and currencies on application start", async () => {
-    const countries = await service.listCountries()
-    const currencies = await service.listCurrencies()
-
-    expect(countries.length).toBeGreaterThan(0)
-    expect(currencies.length).toBeGreaterThan(0)
-  })
-
-  it("should create countries added to default ones", async () => {
-    const [, count] = await service.listAndCountCountries()
-    const initialCountries = DefaultsUtils.defaultCountries.length
-
-    expect(count).toEqual(initialCountries)
-
-    DefaultsUtils.defaultCountries.push({
-      name: "Dogecoin",
-      alpha2: "DOGE",
-      alpha3: "DOGE",
-      numeric: "420",
-    })
-
-    await service.createDefaultCountriesAndCurrencies()
-
-    const [, newCount] = await service.listAndCountCountries()
-    expect(newCount).toEqual(initialCountries + 1)
+  it("should create countries on application start", async () => {
+    const countries = await service.listCountries({}, { take: null })
+    expect(countries.length).toEqual(250)
   })
 
   it("should create and list a region", async () => {
@@ -69,7 +46,7 @@ describe("Region Module Service", () => {
     )
 
     const region = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(region).toEqual(
@@ -77,10 +54,6 @@ describe("Region Module Service", () => {
         id: region.id,
         name: "Europe",
         currency_code: "eur",
-        currency: expect.objectContaining({
-          code: "eur",
-          name: "Euro",
-        }),
         countries: [],
       })
     )
@@ -94,7 +67,7 @@ describe("Region Module Service", () => {
     })
 
     const region = await service.retrieve(createdRegion.id, {
-      relations: ["countries", "currency"],
+      relations: ["countries"],
     })
 
     expect(region).toEqual(
@@ -102,10 +75,6 @@ describe("Region Module Service", () => {
         id: region.id,
         name: "North America",
         currency_code: "usd",
-        currency: expect.objectContaining({
-          code: "usd",
-          name: "US Dollar",
-        }),
         countries: [
           expect.objectContaining({
             display_name: "Canada",
@@ -182,7 +151,7 @@ describe("Region Module Service", () => {
     })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(latestRegion).toMatchObject({
@@ -243,7 +212,7 @@ describe("Region Module Service", () => {
     })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(latestRegion).toMatchObject({
@@ -268,7 +237,7 @@ describe("Region Module Service", () => {
     })
 
     const updatedRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(updatedRegion).toMatchObject({
@@ -294,7 +263,7 @@ describe("Region Module Service", () => {
     })
 
     const updatedRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(updatedRegion).toMatchObject({
@@ -304,23 +273,6 @@ describe("Region Module Service", () => {
     })
 
     expect(updatedRegion.countries).toHaveLength(0)
-  })
-
-  it("should fail updating the region currency to a non-existent one", async () => {
-    const createdRegion = await service.create({
-      name: "North America",
-      currency_code: "USD",
-      countries: ["us", "ca"],
-    })
-
-    await expect(
-      service.update(
-        { id: createdRegion.id },
-        {
-          currency_code: "DOGECOIN",
-        }
-      )
-    ).rejects.toThrowError('Currencies with codes: "dogecoin" were not found')
   })
 
   it("should fail updating the region countries to non-existent ones", async () => {
@@ -385,12 +337,21 @@ describe("Region Module Service", () => {
     )
   })
 
-  it("should fail when currency does not exist", async () => {
-    await expect(
-      service.create({
-        name: "Europe",
-        currency_code: "DOGECOIN",
-      })
-    ).rejects.toThrowError('Currencies with codes: "dogecoin" were not found')
+  it("should unset the region ID on the country when deleting a region", async () => {
+    const createdRegion = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    await service.delete(createdRegion.id)
+
+    const resp = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    expect(resp.countries).toHaveLength(2)
   })
 })
