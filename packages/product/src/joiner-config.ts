@@ -49,7 +49,7 @@ export const joinerConfig: ModuleJoinerConfig = {
       },
     },
     {
-      name: ["variant", "variants"],
+      name: ["producyt_variant", "product_variants", "variant", "variants"],
       args: {
         entity: "ProductVariant",
         methodSuffix: "Variants",
