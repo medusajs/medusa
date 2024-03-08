@@ -114,7 +114,7 @@ export interface PaymentCollectionDTO {
   /**
    * Holds custom data in key-value pairs
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: Record<string, unknown>
 
   /**
    * The status of the payment collection
@@ -416,6 +416,11 @@ export interface PaymentSessionDTO {
    * Payment provider data
    */
   data: Record<string, unknown>
+
+  /**
+   * Payment session context
+   */
+  context?: Record<string, unknown>
 
   /**
    * The status of the payment session

@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --ci --silent=true -i --detectOpenHandles --logHeapUsage --forceExit",
+    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --ci --silent=false -i --detectOpenHandles --logHeapUsage --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -14,13 +14,14 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
-    "@medusajs/inventory": "workspace:^",
+    "@medusajs/inventory-next": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
     "@medusajs/region": "workspace:^",
+    "@medusajs/stock-location-next": "workspace:^",
     "@medusajs/store": "workspace:^",
     "@medusajs/tax": "workspace:^",
     "@medusajs/user": "workspace:^",

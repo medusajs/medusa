@@ -8,17 +8,19 @@ OrderChangeProcessing.registerActionType(ChangeActionType.FULFILL_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.fulfilled_quantity += action.details.quantity
+    existing.detail.fulfilled_quantity ??= 0
+
+    existing.detail.fulfilled_quantity += action.details.quantity
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.reference_id
     )!
 
-    existing.fulfilled_quantity -= action.details.quantity
+    existing.detail.fulfilled_quantity -= action.details.quantity
   },
   validate({ action, currentOrder }) {
-    const refId = action.details.reference_id
+    const refId = action.details?.reference_id
     if (!isDefined(refId)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -34,10 +36,28 @@ OrderChangeProcessing.registerActionType(ChangeActionType.FULFILL_ITEM, {
       )
     }
 
-    if (action.details.quantity < 1) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Quantity must be greater than 0."
+        `Quantity to fulfill of item ${refId} is required.`
+      )
+    }
+
+    if (action.details?.quantity < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity of item ${refId} must be greater than 0.`
+      )
+    }
+
+    const notFulfilled =
+      (existing.quantity as number) -
+      (existing.detail?.fulfilled_quantity as number)
+
+    if (action.details?.quantity > notFulfilled) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot fulfill more items than what was ordered for item ${refId}.`
       )
     }
   },

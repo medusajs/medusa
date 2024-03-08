@@ -277,8 +277,7 @@ moduleIntegrationTestRunner({
 
         describe("update", () => {
           it("should update a Payment Collection", async () => {
-            await service.updatePaymentCollections({
-              id: "pay-col-id-2",
+            await service.updatePaymentCollections("pay-col-id-2", {
               currency_code: "eur",
               region_id: "reg-2",
             })
@@ -642,23 +641,23 @@ moduleIntegrationTestRunner({
             )
           })
 
-          // it("should throw if refund is greater than captured amount", async () => {
-          //   await service.capturePayment({
-          //     amount: 50,
-          //     payment_id: "pay-id-1",
-          //   })
-          //
-          //   const error = await service
-          //     .refundPayment({
-          //       amount: 100,
-          //       payment_id: "pay-id-1",
-          //     })
-          //     .catch((e) => e)
-          //
-          //   expect(error.message).toEqual(
-          //     "Refund amount for payment: pay-id-1 cannot be greater than the amount captured on the payment."
-          //   )
-          // })
+          it("should throw if refund is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
         })
 
         describe("cancel", () => {
