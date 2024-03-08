@@ -595,12 +595,21 @@ export interface ProductOptionValueDTO {
  * @prop categories - Filters on a product's categories.
  * @prop collection_id - Filters a product by its associated collections.
  */
+
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
   /**
    * Search through the products' attributes, such as titles and descriptions, using this search term.
    */
   q?: string
+  /**
+   * The status to filter products by
+   */
+  status?: ProductStatus | ProductStatus[]
+  /**
+   * The titles to filter products by.
+   */
+  title?: string | string[]
   /**
    * The handles to filter products by.
    */
@@ -609,6 +618,10 @@ export interface FilterableProductProps
    * The IDs to filter products by.
    */
   id?: string | string[]
+  /**
+   * Filters only or excluding gift card products
+   */
+  is_giftcard?: boolean
   /**
    * Filters on a product's tags.
    */
@@ -636,6 +649,10 @@ export interface FilterableProductProps
     is_active?: boolean
   }
   /**
+   * Filter a product by the ID of the associated type
+   */
+  type_id?: string | string[]
+  /**
    * Filter a product by the IDs of their associated categories.
    */
   category_id?: string | string[] | OperatorMap<string>
@@ -643,6 +660,18 @@ export interface FilterableProductProps
    * Filters a product by the IDs of their associated collections.
    */
   collection_id?: string | string[] | OperatorMap<string>
+  /**
+   * Filters a product based on when it was created
+   */
+  created_at?: OperatorMap<string>
+  /**
+   * Filters a product based on when it was updated
+   */
+  updated_at?: OperatorMap<string>
+  /**
+   * Filters soft-deleted products based on the date they were deleted at.
+   */
+  deleted_at?: OperatorMap<string>
 }
 
 /**
