@@ -533,11 +533,13 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Add on next iteration
+  // TODO: Add on next iteration, adding temporary field for now
   // @IsArray()
   // @ValidateNested({ each: true })
   // @Type(() => ProductVariantPricesCreateReq)
   // prices: ProductVariantPricesCreateReq[]
+  @IsArray()
+  prices: any[]
 
   @IsOptional()
   @IsObject()
