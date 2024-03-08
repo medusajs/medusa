@@ -140,7 +140,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   // @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   // include_category_children?: boolean
 
-  // TODO: The OperatorMap and DateOperator are slightly different, so the date comparisons is a breaking change.
   @IsOptional()
   @ValidateNested()
   @Type(() => OperatorMapValidator)

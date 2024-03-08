@@ -33,31 +33,35 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
 
     const config = mapRepositoryToOrderModel(findOptions_)
 
-    const expandDetails = config.options.populate?.filter((p) =>
-      p.includes("items")
-    )?.length
+    let defaultVersion = knex.raw(`"o0"."version"`)
+    const strategy = config.options.strategy ?? LoadStrategy.JOINED
+    if (strategy === LoadStrategy.SELECT_IN) {
+      const sql = manager
+        .qb(Order, "_sub0")
+        .select("version")
+        .where({ id: knex.raw(`"o0"."order_id"`) })
+        .getKnexQuery()
+        .toString()
 
-    // If no version is specified, we default to the latest version
-    if (expandDetails) {
-      let defaultVersion = knex.raw(`"o0"."version"`)
-      const strategy = config.options.strategy ?? LoadStrategy.JOINED
-      if (strategy === LoadStrategy.SELECT_IN) {
-        const sql = manager
-          .qb(Order, "_sub0")
-          .select("version")
-          .where({ id: knex.raw(`"o0"."order_id"`) })
-          .getKnexQuery()
-          .toString()
+      defaultVersion = knex.raw(`(${sql})`)
+    }
 
-        defaultVersion = knex.raw(`(${sql})`)
-      }
+    const version = config.where.version ?? defaultVersion
+    delete config.where?.version
 
-      const version = config.where.version ?? defaultVersion
-      delete config.where?.version
+    config.options.populateWhere ??= {}
 
-      config.options.populateWhere ??= {}
-      config.options.populateWhere.items ??= {}
-      config.options.populateWhere.items.version = version
+    config.options.populateWhere.items ??= {}
+    config.options.populateWhere.items.version = version
+
+    config.options.populateWhere.summary ??= {}
+    config.options.populateWhere.summary.version = version
+
+    config.options.populateWhere.shipping_methods ??= {}
+    config.options.populateWhere.shipping_methods.version = version
+
+    if (!config.options.orderBy) {
+      config.options.orderBy = { id: "ASC" }
     }
 
     return await manager.find(Order, config.where, config.options)
@@ -82,31 +86,34 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
 
     const config = mapRepositoryToOrderModel(findOptions_)
 
-    const expandDetails = config.options.populate?.filter((p) =>
-      p.includes("items")
-    )?.length
+    let defaultVersion = knex.raw(`"o0"."version"`)
+    const strategy = config.options.strategy ?? LoadStrategy.JOINED
+    if (strategy === LoadStrategy.SELECT_IN) {
+      const sql = manager
+        .qb(Order, "_sub0")
+        .select("version")
+        .where({ id: knex.raw(`"o0"."order_id"`) })
+        .getKnexQuery()
+        .toString()
 
-    // If no version is specified, we default to the latest version
-    if (expandDetails) {
-      let defaultVersion = knex.raw(`"o0"."version"`)
-      const strategy = config.options.strategy ?? LoadStrategy.JOINED
-      if (strategy === LoadStrategy.SELECT_IN) {
-        const sql = manager
-          .qb(Order, "_sub0")
-          .select("version")
-          .where({ id: knex.raw(`"o0"."order_id"`) })
-          .getKnexQuery()
-          .toString()
+      defaultVersion = knex.raw(`(${sql})`)
+    }
 
-        defaultVersion = knex.raw(`(${sql})`)
-      }
+    const version = config.where.version ?? defaultVersion
+    delete config.where.version
 
-      const version = config.where.version ?? defaultVersion
-      delete config.where.version
+    config.options.populateWhere ??= {}
+    config.options.populateWhere.items ??= {}
+    config.options.populateWhere.items.version = version
 
-      config.options.populateWhere ??= {}
-      config.options.populateWhere.items ??= {}
-      config.options.populateWhere.items.version = version
+    config.options.populateWhere.summary ??= {}
+    config.options.populateWhere.summary.version = version
+
+    config.options.populateWhere.shipping_methods ??= {}
+    config.options.populateWhere.shipping_methods.version = version
+
+    if (!config.options.orderBy) {
+      config.options.orderBy = { id: "ASC" }
     }
 
     return await manager.findAndCount(Order, config.where, config.options)

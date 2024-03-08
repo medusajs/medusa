@@ -765,6 +765,23 @@ describe("ProductModuleService products", function () {
       }
     })
 
+    it("should retrieve soft-deleted products if filtered on deleted_at", async () => {
+      const data = buildProductAndRelationsData({
+        images,
+        thumbnail: images[0],
+      })
+
+      const products = await module.create([data])
+
+      await module.softDelete([products[0].id])
+
+      const softDeleted = await module.list({
+        deleted_at: { $gt: "01-01-2022" },
+      })
+
+      expect(softDeleted).toHaveLength(1)
+    })
+
     it("should emit events through eventBus", async () => {
       const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
