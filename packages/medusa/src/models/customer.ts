@@ -19,7 +19,7 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-@Unique(["email", "has_account"])
+@Index(["email", "has_account"], { unique: true, where: "deleted_at IS NULL" })
 export class Customer extends SoftDeletableEntity {
   @Index()
   @Column()
