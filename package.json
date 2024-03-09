@@ -71,7 +71,7 @@
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --concurrency=50% --no-daemon",
-    "test:integration:packages": "turbo run test:integration --concurrency=1 --no-daemon --filter='./packages/*'",
+    "test:integration:packages": "turbo run test:integration --concurrency=50% --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-plugins",
     "test:integration:modules": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-modules",

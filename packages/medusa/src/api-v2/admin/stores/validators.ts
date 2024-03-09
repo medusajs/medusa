@@ -1,5 +1,11 @@
 import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsArray,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
 export class AdminGetStoresStoreParams extends FindParams {}
@@ -40,6 +46,14 @@ export class AdminPostStoresStoreReq {
   @IsOptional()
   @IsString()
   name?: string
+
+  @IsOptional()
+  @IsArray()
+  supported_currency_codes?: string[]
+
+  @IsOptional()
+  @IsString()
+  default_currency_code?: string
 
   @IsOptional()
   @IsString()

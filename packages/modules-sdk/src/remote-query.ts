@@ -58,7 +58,8 @@ export class RemoteQuery {
 
     this.remoteJoiner = new RemoteJoiner(
       servicesConfig_ as JoinerServiceConfig[],
-      this.remoteFetchData.bind(this)
+      this.remoteFetchData.bind(this),
+      { autoCreateServiceNameAlias: false }
     )
   }
 

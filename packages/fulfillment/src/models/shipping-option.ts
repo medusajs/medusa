@@ -22,7 +22,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
-import ServiceProvider from "./service-provider"
+import FulfillmentProvider from "./fulfillment-provider"
 import ServiceZone from "./service-zone"
 import ShippingOptionRule from "./shipping-option-rule"
 import ShippingOptionType from "./shipping-option-type"
@@ -48,9 +48,9 @@ const ShippingProfileIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-const ServiceProviderIdIndex = createPsqlIndexStatementHelper({
+const FulfillmentProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
-  columns: "service_provider_id",
+  columns: "fulfillment_provider_id",
   where: "deleted_at IS NULL",
 })
 
@@ -94,14 +94,14 @@ export default class ShippingOption {
   @ShippingProfileIdIndex.MikroORMIndex()
   shipping_profile_id: string | null
 
-  @ManyToOne(() => ServiceProvider, {
+  @ManyToOne(() => FulfillmentProvider, {
     type: "text",
-    fieldName: "service_provider_id",
+    fieldName: "fulfillment_provider_id",
     mapToPk: true,
     nullable: true,
   })
-  @ServiceProviderIdIndex.MikroORMIndex()
-  service_provider_id: string
+  @FulfillmentProviderIdIndex.MikroORMIndex()
+  fulfillment_provider_id: string
 
   @Property({ columnType: "text", persist: false })
   @ShippingOptionTypeIdIndex.MikroORMIndex()
@@ -121,10 +121,10 @@ export default class ShippingOption {
   })
   shipping_profile: ShippingProfile | null
 
-  @ManyToOne(() => ServiceProvider, {
+  @ManyToOne(() => FulfillmentProvider, {
     persist: false,
   })
-  service_provider: ServiceProvider | null
+  fulfillment_provider: FulfillmentProvider | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,

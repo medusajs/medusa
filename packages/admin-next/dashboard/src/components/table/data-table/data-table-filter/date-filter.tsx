@@ -127,7 +127,7 @@ export const DateFilter = ({
           sideOffset={8}
           collisionPadding={24}
           className={clx(
-            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] w-[300px] overflow-hidden rounded-lg"
+            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg"
           )}
           onInteractOutside={(e) => {
             if (e.target instanceof HTMLElement) {

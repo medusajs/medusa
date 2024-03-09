@@ -11,7 +11,11 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
     )
 
     const existing = currentOrder.items[existingIndex]
+
+    existing.detail.quantity ??= 0
+
     existing.quantity -= action.details.quantity
+    existing.detail.quantity -= action.details.quantity
 
     if (existing.quantity <= 0) {
       currentOrder.items.splice(existingIndex, 1)
@@ -26,6 +30,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
 
     if (existing) {
       existing.quantity += action.details.quantity
+      existing.detail.quantity += action.details.quantity
     } else {
       currentOrder.items.push({
         id: action.reference_id!,
@@ -51,27 +56,35 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       )
     }
 
-    if (!isDefined(action.details.unit_price)) {
+    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Unit price is required."
+        `Unit price of item ${refId} is required if no action.amount is provided.`
       )
     }
 
-    if (action.details.quantity < 1) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Quantity must be greater than 0."
+        `Quantity of item ${refId} is required.`
+      )
+    }
+
+    if (action.details?.quantity < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity of item ${refId} must be greater than 0.`
       )
     }
 
     const notFulfilled =
-      (existing.quantity as number) - (existing.fulfilled_quantity as number)
+      (existing.quantity as number) -
+      (existing.detail?.fulfilled_quantity as number)
 
-    if (action.details.quantity > notFulfilled) {
+    if (action.details?.quantity > notFulfilled) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Cannot remove fulfilled items."
+        `Cannot remove fulfilled item: Item ${refId}.`
       )
     }
   },

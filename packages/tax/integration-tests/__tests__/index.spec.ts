@@ -1,6 +1,7 @@
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { setupTaxStructure } from "../utils/setup-tax-structure"
 
 jest.setTimeout(30000)
 
@@ -70,6 +71,89 @@ moduleIntegrationTestRunner({
               name: "Updated Rate",
               code: "TEST",
               is_default: false,
+            }),
+          ])
+        )
+      })
+
+      it("should update tax rates with rules", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const rate = await service.create({
+          tax_region_id: region.id,
+          name: "Shipping Rate",
+          code: "test",
+          rate: 8.23,
+        })
+
+        await service.update(rate.id, {
+          name: "Updated Rate",
+          code: "TEST",
+          rate: 8.25,
+          rules: [
+            { reference: "product", reference_id: "product_id_1" },
+            { reference: "product_type", reference_id: "product_type_id" },
+          ],
+        })
+
+        const rules = await service.listTaxRateRules({ tax_rate_id: rate.id })
+
+        expect(rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_1",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id",
+            }),
+          ])
+        )
+
+        await service.update(rate.id, {
+          rules: [
+            { reference: "product", reference_id: "product_id_1" },
+            { reference: "product", reference_id: "product_id_2" },
+            { reference: "product_type", reference_id: "product_type_id_2" },
+            { reference: "product_type", reference_id: "product_type_id_3" },
+          ],
+        })
+
+        const rulesWithDeletes = await service.listTaxRateRules(
+          { tax_rate_id: rate.id },
+          { withDeleted: true }
+        )
+
+        expect(rulesWithDeletes).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_2",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id_2",
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id_3",
+            }),
+            expect.objectContaining({
+              reference: "product",
+              reference_id: "product_id_1",
+              deleted_at: expect.any(Date),
+            }),
+            expect.objectContaining({
+              reference: "product_type",
+              reference_id: "product_type_id",
+              deleted_at: expect.any(Date),
             }),
           ])
         )
@@ -626,7 +710,27 @@ moduleIntegrationTestRunner({
               { reference: "product", reference_id: "product_id_1" },
             ],
           })
-        ).rejects.toThrowError()
+        ).rejects.toThrowError(
+          /You are trying to create a Tax Rate Rule for a reference that already exists. Tax Rate id: .*?, reference id: product_id_1./
+        )
+
+        const rate = await service.create({
+          tax_region_id: region.id,
+          value: 10,
+          code: "test",
+          name: "test",
+          rules: [{ reference: "product", reference_id: "product_id_1" }],
+        })
+
+        await expect(
+          service.createTaxRateRules({
+            tax_rate_id: rate.id,
+            reference: "product",
+            reference_id: "product_id_1",
+          })
+        ).rejects.toThrowError(
+          /You are trying to create a Tax Rate Rule for a reference that already exists. Tax Rate id: .*?, reference id: product_id_1./
+        )
       })
 
       it("should fail to create province region belonging to a parent with non-matching country", async () => {
@@ -639,7 +743,29 @@ moduleIntegrationTestRunner({
             parent_id: caRegion.id,
             province_code: "QC",
           })
-        ).rejects.toThrowError()
+        ).rejects.toThrowError(
+          `Province region must belong to a parent region with the same country code. You are trying to create a province region with (country: us, province: qc) but parent expects (country: ca)`
+        )
+      })
+
+      it("should fail duplicate regions", async () => {
+        await service.createTaxRegions({
+          country_code: "CA",
+        })
+
+        await service.createTaxRegions({
+          country_code: "CA",
+          province_code: "QC",
+        })
+
+        await expect(
+          service.createTaxRegions({
+            country_code: "CA",
+            province_code: "QC",
+          })
+        ).rejects.toThrowError(
+          "You are trying to create a Tax Region for (country_code: ca, province_code: qc) but one already exists."
+        )
       })
 
       it("should fail to create region with non-existing parent", async () => {
@@ -649,7 +775,30 @@ moduleIntegrationTestRunner({
             country_code: "CA",
             province_code: "QC",
           })
-        ).rejects.toThrowError()
+        ).rejects.toThrowError(
+          `Province region must belong to a parent region. You are trying to create a province region with (country: ca, province: qc) but parent does not exist`
+        )
+      })
+
+      it("should fail to create two default tax rates", async () => {
+        const rate = await service.createTaxRegions({
+          country_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        await expect(
+          service.create({
+            tax_region_id: rate.id,
+            name: "Shipping Rate",
+            rate: 8.23,
+            is_default: true,
+          })
+        ).rejects.toThrowError(
+          /You are trying to create a default tax rate for region: .*? which already has a default tax rate. Unset the current default rate and try again./
+        )
       })
 
       it("should delete all child regions when parent region is deleted", async () => {
@@ -671,7 +820,7 @@ moduleIntegrationTestRunner({
         expect(taxRegions).toEqual([])
       })
 
-      it("it should soft delete all child regions when parent region is deleted", async () => {
+      it("should soft delete all child regions when parent region is deleted", async () => {
         const region = await service.createTaxRegions({
           country_code: "CA",
         })
@@ -684,9 +833,7 @@ moduleIntegrationTestRunner({
         await service.softDeleteTaxRegions([region.id])
 
         const taxRegions = await service.listTaxRegions(
-          {
-            id: provinceRegion.id,
-          },
+          { id: provinceRegion.id },
           { withDeleted: true }
         )
 
@@ -700,243 +847,3 @@ moduleIntegrationTestRunner({
     })
   },
 })
-
-const setupTaxStructure = async (service: ITaxModuleService) => {
-  // Setup for this specific test
-  //
-  // Using the following structure to setup tests.
-  // US - default 2%
-  // - Region: CA - default 5%
-  //   - Override: Reduced rate (for 3 product ids): 3%
-  //   - Override: Reduced rate (for product type): 1%
-  // - Region: NY - default: 6%
-  // - Region: FL - default: 4%
-  //
-  // Denmark - default 25%
-  //
-  // Germany - default 19%
-  // - Override: Reduced Rate (for product type) - 7%
-  //
-  // Canada - default 5%
-  // - Override: Reduced rate (for product id) - 3%
-  // - Override: Reduced rate (for product type) - 3.5%
-  // - Region: QC - default 2%
-  //   - Override: Reduced rate (for same product type as country reduced rate): 1%
-  // - Region: BC - default 2%
-  //
-  const [us, dk, de, ca] = await service.createTaxRegions([
-    {
-      country_code: "US",
-      default_tax_rate: { name: "US Default Rate", rate: 2 },
-    },
-    {
-      country_code: "DK",
-      default_tax_rate: { name: "Denmark Default Rate", rate: 25 },
-    },
-    {
-      country_code: "DE",
-      default_tax_rate: {
-        code: "DE19",
-        name: "Germany Default Rate",
-        rate: 19,
-      },
-    },
-    {
-      country_code: "CA",
-      default_tax_rate: { name: "Canada Default Rate", rate: 5 },
-    },
-  ])
-
-  // Create province regions within the US
-  const [cal, ny, fl, qc, bc] = await service.createTaxRegions([
-    {
-      country_code: "US",
-      province_code: "CA",
-      parent_id: us.id,
-      default_tax_rate: {
-        rate: 5,
-        name: "CA Default Rate",
-        code: "CADEFAULT",
-      },
-    },
-    {
-      country_code: "US",
-      province_code: "NY",
-      parent_id: us.id,
-      default_tax_rate: {
-        rate: 6,
-        name: "NY Default Rate",
-        code: "NYDEFAULT",
-      },
-    },
-    {
-      country_code: "US",
-      province_code: "FL",
-      parent_id: us.id,
-      default_tax_rate: {
-        rate: 4,
-        name: "FL Default Rate",
-        code: "FLDEFAULT",
-      },
-    },
-    {
-      country_code: "CA",
-      province_code: "QC",
-      parent_id: ca.id,
-      default_tax_rate: {
-        rate: 2,
-        name: "QC Default Rate",
-        code: "QCDEFAULT",
-      },
-    },
-    {
-      country_code: "CA",
-      province_code: "BC",
-      parent_id: ca.id,
-      default_tax_rate: {
-        rate: 2,
-        name: "BC Default Rate",
-        code: "BCDEFAULT",
-      },
-    },
-  ])
-
-  const [calProd, calType, deType, canProd, canType, qcType] =
-    await service.create([
-      {
-        tax_region_id: cal.id,
-        name: "CA Reduced Rate for Products",
-        rate: 3,
-        code: "CAREDUCE_PROD",
-      },
-      {
-        tax_region_id: cal.id,
-        name: "CA Reduced Rate for Product Type",
-        rate: 1,
-        code: "CAREDUCE_TYPE",
-      },
-      {
-        tax_region_id: de.id,
-        name: "Germany Reduced Rate for Product Type",
-        rate: 7,
-        code: "DEREDUCE_TYPE",
-      },
-      {
-        tax_region_id: ca.id,
-        name: "Canada Reduced Rate for Product",
-        rate: 3,
-        code: "CAREDUCE_PROD_CA",
-      },
-      {
-        tax_region_id: ca.id,
-        name: "Canada Reduced Rate for Product Type",
-        rate: 3.5,
-        code: "CAREDUCE_TYPE_CA",
-      },
-      {
-        tax_region_id: qc.id,
-        name: "QC Reduced Rate for Product Type",
-        rate: 1,
-        code: "QCREDUCE_TYPE",
-      },
-    ])
-
-  // Create tax rate rules for specific products and product types
-  await service.createTaxRateRules([
-    {
-      reference: "product",
-      reference_id: "product_id_1",
-      tax_rate_id: calProd.id,
-    },
-    {
-      reference: "product",
-      reference_id: "product_id_2",
-      tax_rate_id: calProd.id,
-    },
-    {
-      reference: "product",
-      reference_id: "product_id_3",
-      tax_rate_id: calProd.id,
-    },
-    {
-      reference: "product_type",
-      reference_id: "product_type_id_1",
-      tax_rate_id: calType.id,
-    },
-    {
-      reference: "product_type",
-      reference_id: "product_type_id_2",
-      tax_rate_id: deType.id,
-    },
-    {
-      reference: "product",
-      reference_id: "product_id_4",
-      tax_rate_id: canProd.id,
-    },
-    {
-      reference: "product_type",
-      reference_id: "product_type_id_3",
-      tax_rate_id: canType.id,
-    },
-    {
-      reference: "product_type",
-      reference_id: "product_type_id_3",
-      tax_rate_id: qcType.id,
-    },
-  ])
-
-  return {
-    us: {
-      country: us,
-      children: {
-        cal: {
-          province: cal,
-          overrides: {
-            calProd,
-            calType,
-          },
-        },
-        ny: {
-          province: ny,
-          overrides: {},
-        },
-        fl: {
-          province: fl,
-          overrides: {},
-        },
-      },
-      overrides: {},
-    },
-    dk: {
-      country: dk,
-      children: {},
-      overrides: {},
-    },
-    de: {
-      country: de,
-      children: {},
-      overrides: {
-        deType,
-      },
-    },
-    ca: {
-      country: ca,
-      children: {
-        qc: {
-          province: qc,
-          overrides: {
-            qcType,
-          },
-        },
-        bc: {
-          province: bc,
-          overrides: {},
-        },
-      },
-      overrides: {
-        canProd,
-        canType,
-      },
-    },
-  }
-}

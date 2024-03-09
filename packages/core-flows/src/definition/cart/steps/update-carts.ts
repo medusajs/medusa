@@ -48,6 +48,6 @@ export const updateCartsStep = createStep(
       })
     }
 
-    await cartModule.update(dataToUpdate)
+    return await cartModule.update(dataToUpdate)
   }
 )

@@ -290,27 +290,29 @@ describe("/store/carts", () => {
         "/store/orders/order_test?fields=status&expand=billing_address"
       )
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
+      expect(Object.keys(response.data.order).sort()).toEqual(
+        [
+          // fields
+          "status",
 
-        // selected relations
-        "billing_address",
+          // selected relations
+          "billing_address",
 
-        // totals
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "refunded_total",
-        "total",
-        "subtotal",
-        "paid_total",
-        "refundable_amount",
-        "gift_card_total",
-        "gift_card_tax_total",
-        "item_tax_total",
-        "shipping_tax_total",
-      ])
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+          "item_tax_total",
+          "shipping_tax_total",
+        ].sort()
+      )
     })
 
     it("looks up order", async () => {

@@ -86,7 +86,7 @@ const DiscountActions = ({ discount }: { discount: Discount }) => {
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("discounts.deleteWarning", {
-        title: discount.code,
+        code: discount.code,
       }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),

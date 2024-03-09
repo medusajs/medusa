@@ -60,7 +60,7 @@ export interface TaxProviderDTO {
 export interface FilterableTaxRateProps
   extends BaseFilterable<FilterableTaxRateProps> {
   id?: string | string[]
-
+  tax_region_id?: string | string[]
   rate?: number | number[] | OperatorMap<number>
   code?: string | string[] | OperatorMap<string>
   name?: string | string[] | OperatorMap<string>
@@ -97,6 +97,7 @@ export interface FilterableTaxRegionProps
 }
 
 export interface TaxRateRuleDTO {
+  id: string
   reference: string
   reference_id: string
   tax_rate_id: string
@@ -164,6 +165,7 @@ interface TaxLineDTO {
   rate: number | null
   code: string | null
   name: string
+  provider_id: string
 }
 
 export interface ItemTaxLineDTO extends TaxLineDTO {

@@ -3,6 +3,7 @@ import type {
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminGiftCardsRes,
+  AdminOrdersRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -87,12 +88,16 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/orders/details"),
+                lazy: () => import("../../routes/orders/order-detail"),
+                handle: {
+                  crumb: (data: AdminOrdersRes) =>
+                    `Order #${data.order.display_id}`,
+                },
               },
             ],
           },
@@ -373,8 +378,23 @@ const router = createBrowserRouter([
                 lazy: () => import("../../routes/discounts/list"),
               },
               {
+                path: "create",
+                lazy: () => import("../../routes/discounts/create"),
+              },
+              {
                 path: ":id",
                 lazy: () => import("../../routes/discounts/details"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/discounts/edit-details"),
+                  },
+                  {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../routes/discounts/edit-configuration"),
+                  },
+                ],
               },
             ],
           },
@@ -564,12 +584,34 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/taxes/views/tax-list"),
+                path: "",
+                lazy: () => import("../../routes/taxes/tax-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/taxes/views/tax-details"),
+                lazy: () => import("../../routes/taxes/tax-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/taxes/tax-edit"),
+                  },
+                  {
+                    path: "tax-rates/create",
+                    lazy: () => import("../../routes/taxes/tax-rate-create"),
+                  },
+                  {
+                    path: "tax-rates/:rate_id/edit",
+                    lazy: () => import("../../routes/taxes/tax-rate-edit"),
+                  },
+                  {
+                    path: "tax-rates/:rate_id/edit-overrides",
+                    lazy: () =>
+                      import("../../routes/taxes/tax-rate-edit-overrides"),
+                  },
+                ],
               },
             ],
           },
