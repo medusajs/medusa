@@ -420,6 +420,14 @@
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
   },
+  "returnReasons": {
+    "domain": "Return Reasons",
+    "calloutHint": "Manage the reasons to categorize returns.",
+    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+    "createReason": "Create Return Reason",
+    "createReasonHint": "Create a new return reason to categorize returns.",
+    "editReason": "Edit Return Reason"
+  },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Log in",
@@ -568,9 +576,9 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "shippingProfile": "Shipping Profile"
+    "label": "Label"
   },
-  "dateTime" : {
+  "dateTime": {
     "years_one": "Year",
     "years_other": "Years",
     "months_one": "Month",

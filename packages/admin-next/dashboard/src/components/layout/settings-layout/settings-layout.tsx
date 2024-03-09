@@ -37,6 +37,10 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/regions",
       },
       {
+        label: t("returnReasons.domain"),
+        to: "/settings/return-reasons",
+      },
+      {
         label: "Taxes",
         to: "/settings/taxes",
       },
