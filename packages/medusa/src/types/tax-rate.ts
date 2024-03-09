@@ -12,6 +12,7 @@ export type FilterableTaxRateProps = {
   created_at?: Date | DateComparisonOperator
   updated_at?: Date | DateComparisonOperator
   deleted_at?: Date | DateComparisonOperator
+  q?: string
 }
 
 export type UpdateTaxRateInput = {
