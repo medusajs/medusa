@@ -83,7 +83,6 @@ const main = async function ({ directory }) {
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
-        [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
         [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
         featureFlagRouter: asValue(featureFlagRouter),
       })
