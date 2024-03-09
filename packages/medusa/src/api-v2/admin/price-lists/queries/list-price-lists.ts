@@ -9,7 +9,7 @@ import {
 } from "@medusajs/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { adminPriceListRemoteQueryFields } from "../query-config"
-import { AdminPriceListEndpointDTO } from "../types"
+import { AdminPriceListRemoteQueryDTO } from "../types"
 
 export async function listPriceLists({
   container,
@@ -19,7 +19,7 @@ export async function listPriceLists({
   container: MedusaContainer
   fields: string[]
   variables: Record<string, any>
-}): Promise<[AdminPriceListEndpointDTO[], number]> {
+}): Promise<[AdminPriceListRemoteQueryDTO[], number]> {
   const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "price_list",
@@ -34,13 +34,13 @@ export async function listPriceLists({
   }
 
   for (const priceList of priceLists) {
-    priceList.rules = buildPriceListRules(
+    priceList.rules = buildPriceListRules(priceList.price_list_rules || [])
+    priceList.prices = buildPriceSetPrices(
       priceList.price_set_money_amounts || []
     )
-    priceList.prices = buildPriceSetPrices(priceList.price_list_rules || [])
   }
 
-  const sanitizedPriceLists: AdminPriceListEndpointDTO[] = priceLists.map(
+  const sanitizedPriceLists: AdminPriceListRemoteQueryDTO[] = priceLists.map(
     (priceList) => cleanResponseData(priceList, fields)
   )
 

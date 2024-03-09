@@ -1,6 +1,6 @@
 import { PriceListStatus, PriceListType } from "@medusajs/types"
 
-export type AdminPriceListEndpointDTO = {
+export type AdminPriceListRemoteQueryDTO = {
   id: string
   type?: PriceListType
   description?: string
