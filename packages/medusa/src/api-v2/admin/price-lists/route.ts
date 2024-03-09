@@ -1,8 +1,11 @@
+import { createPriceListsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "./queries"
+import { defaultAdminPriceListFields } from "./query-config"
+import { AdminPostPriceListsReq } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -26,4 +29,33 @@ export const GET = async (
     offset,
     limit,
   })
+}
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostPriceListsReq>,
+  res: MedusaResponse
+) => {
+  const workflow = createPriceListsWorkflow(req.scope)
+  const priceListsData = [req.validatedBody]
+
+  const { result, errors } = await workflow.run({
+    input: { priceListsData },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  const [[priceList]] = await listPriceLists({
+    container: req.scope,
+    fields: defaultAdminPriceListFields,
+    variables: {
+      filters: { id: result[0].id },
+      skip: 0,
+      take: 1,
+    },
+  })
+
+  res.status(200).json({ price_list: priceList })
 }

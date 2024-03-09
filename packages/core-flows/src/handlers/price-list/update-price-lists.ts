@@ -1,8 +1,8 @@
 import {
   AddPriceListPricesDTO,
+  CreatePriceListPriceDTO,
   IPricingModuleService,
   PriceListDTO,
-  PriceListPriceDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceListDTO,
 } from "@medusajs/types"
@@ -19,7 +19,7 @@ export async function updatePriceLists({
   data,
 }: WorkflowArguments<{
   priceLists: UpdatePriceListDTO[]
-  priceListPricesMap: Map<string, PriceListPriceDTO[]>
+  priceListPricesMap: Map<string, CreatePriceListPriceDTO[]>
 }>): Promise<Result> {
   const { priceLists: priceListsData, priceListPricesMap } = data
   const pricingService: IPricingModuleService = container.resolve(
@@ -31,7 +31,7 @@ export async function updatePriceLists({
   const moneyAmountsToUpdate: UpdateMoneyAmountDTO[] = []
 
   for (const [priceListId, prices] of priceListPricesMap.entries()) {
-    const moneyAmountsToCreate: PriceListPriceDTO[] = []
+    const moneyAmountsToCreate: CreatePriceListPriceDTO[] = []
 
     for (const price of prices) {
       if (price.id) {

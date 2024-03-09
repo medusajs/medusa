@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
@@ -7,11 +8,10 @@ import {
 import { PriceListType } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
+import { initModules } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -20,7 +20,7 @@ const defaultRules = {
   region_id: ["DE", "DK"],
 }
 
-const defaultPriceListPrices: PricingTypes.PriceListPriceDTO[] = [
+const defaultPriceListPrices: PricingTypes.CreatePriceListPriceDTO[] = [
   {
     amount: 232,
     currency_code: "PLN",

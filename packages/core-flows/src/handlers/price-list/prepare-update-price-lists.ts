@@ -1,5 +1,5 @@
 import {
-  PriceListPriceDTO,
+  CreatePriceListPriceDTO,
   UpdatePriceListDTO,
   WorkflowTypes,
 } from "@medusajs/types"
@@ -7,7 +7,7 @@ import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type Result = {
   priceLists: UpdatePriceListDTO[]
-  priceListPricesMap: Map<string, PriceListPriceDTO[]>
+  priceListPricesMap: Map<string, CreatePriceListPriceDTO[]>
 }
 
 export async function prepareUpdatePriceLists({
@@ -21,7 +21,7 @@ export async function prepareUpdatePriceLists({
   const regionService = container.resolve("regionService")
 
   const variantPriceSetMap = new Map<string, string>()
-  const priceListPricesMap = new Map<string, PriceListPriceDTO[]>()
+  const priceListPricesMap = new Map<string, CreatePriceListPriceDTO[]>()
 
   const variantIds = priceListsData
     .map((priceListData) => priceListData.prices?.map((p) => p.variant_id))
@@ -57,7 +57,7 @@ export async function prepareUpdatePriceLists({
   )
 
   const priceLists = priceListsData.map((priceListData) => {
-    const priceListPrices: PriceListPriceDTO[] = []
+    const priceListPrices: CreatePriceListPriceDTO[] = []
 
     priceListData.prices?.forEach((price) => {
       const { variant_id, ...priceData } = price

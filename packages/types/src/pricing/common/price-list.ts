@@ -1,8 +1,11 @@
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount";
-
-import { BaseFilterable } from "../../dal";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
-import { RuleTypeDTO } from "./rule-type";
+import { BaseFilterable } from "../../dal"
+import {
+  CreateMoneyAmountDTO,
+  MoneyAmountDTO,
+  UpdateMoneyAmountDTO,
+} from "./money-amount"
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
+import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @enum
@@ -106,7 +109,18 @@ export interface PriceListDTO {
  *
  * The prices associated with a price list.
  */
-export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
+export interface CreatePriceListPriceDTO extends CreateMoneyAmountDTO {
+  /**
+   * The ID of the associated price set.
+   */
+  price_set_id: string
+  /**
+   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   */
+  rules?: CreatePriceSetPriceRules
+}
+
+export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
   /**
    * The ID of the associated price set.
    */
@@ -176,7 +190,7 @@ export interface CreatePriceListDTO {
   /**
    * The prices associated with the price list.
    */
-  prices?: PriceListPriceDTO[]
+  prices?: CreatePriceListPriceDTO[]
 }
 
 /**
@@ -416,7 +430,23 @@ export interface AddPriceListPricesDTO {
   /**
    * The prices to add.
    */
-  prices: PriceListPriceDTO[]
+  prices: CreatePriceListPriceDTO[]
+}
+
+/**
+ * @interface
+ *
+ * The prices to be added to a price list.
+ */
+export interface UpdatePriceListPricesDTO {
+  /**
+   * The ID of the price list to add prices to.
+   */
+  priceListId: string
+  /**
+   * The prices to add.
+   */
+  prices: UpdatePriceListPriceDTO[]
 }
 
 /**
