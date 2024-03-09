@@ -1,4 +1,4 @@
-import { AdminProductsRes } from "@medusajs/medusa"
+import { AdminRegionsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { adminRegionKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
@@ -15,7 +15,7 @@ export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = regionQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminProductsRes>>(query.queryKey) ??
+    queryClient.getQueryData<Response<AdminRegionsRes>>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

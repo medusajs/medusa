@@ -545,14 +545,24 @@ export class FindPaginationParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 20
+
+  /**
+   * {@inheritDoc RequestQueryFields.order}
+   */
+  @IsString()
+  @IsOptional()
+  @Type(() => String)
+  order?: string
 }
 
 export function extendedFindParamsMixin({
   limit,
   offset,
+  order,
 }: {
   limit?: number
   offset?: number
+  order?: string
 } = {}): ClassConstructor<FindParams & FindPaginationParams> {
   /**
    * {@inheritDoc FindParams}
@@ -575,6 +585,14 @@ export function extendedFindParamsMixin({
     @IsOptional()
     @Type(() => Number)
     limit?: number = limit ?? 20
+
+    /**
+     * {@inheritDoc FindPaginationParams.order}
+     */
+    @IsString()
+    @IsOptional()
+    @Type(() => String)
+    order?: string = order
   }
 
   return FindExtendedPaginationParams
