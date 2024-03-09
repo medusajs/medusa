@@ -1,4 +1,5 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
+import { authenticate } from "../utils/authenticate-middleware"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
@@ -24,6 +25,11 @@ import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
+    {
+      method: ["ALL"],
+      matcher: "/admin/*",
+      middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    },
     ...adminCustomerGroupRoutesMiddlewares,
     ...adminCustomerRoutesMiddlewares,
     ...adminPromotionRoutesMiddlewares,

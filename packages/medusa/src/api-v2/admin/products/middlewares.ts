@@ -1,5 +1,6 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetProductsOptionsParams,
   AdminGetProductsParams,
@@ -14,18 +15,10 @@ import {
   AdminPostProductsProductVariantsVariantReq,
   AdminPostProductsReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/products*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
-  },
-
   {
     method: ["GET"],
     matcher: "/admin/products",

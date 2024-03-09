@@ -8,7 +8,7 @@ import {
   PriceListType,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
 jest.setTimeout(50000)
@@ -43,7 +43,8 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+
         customerGroup = await customerModule.createCustomerGroup({
           name: "VIP",
         })
@@ -69,16 +70,11 @@ medusaIntegrationTestRunner({
       })
 
       describe("GET /admin/price-lists", () => {
-        it("should get price list and its money amounts with variants", async () => {
+        it("should get all price lists and its prices with rules", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
-            prices: [
-              {
-                amount: 3000,
-                currency_code: "usd",
-              },
-            ],
+            prices: [],
           })
 
           await pricingModule.createPriceLists([
@@ -94,6 +90,9 @@ medusaIntegrationTestRunner({
                   amount: 5000,
                   currency_code: "usd",
                   price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
                 },
               ],
               rules: {
@@ -102,8 +101,42 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let response = await api.get(
-            `/admin/price-lists?fields=id,created_at,customer_groups.id,customer_groups.name,prices.id,prices.currency_code,prices.amount,prices.min_quantity,prices.max_quantity,prices.region_id,prices.variant_id`,
+          let response = await api.get(`/admin/price-lists`, adminHeaders)
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.price_lists).toEqual([
+            {
+              id: expect.any(String),
+              type: "override",
+              description: "test",
+              title: "test price list",
+              status: "active",
+              starts_at: expect.any(String),
+              ends_at: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 5000,
+                  min_quantity: null,
+                  max_quantity: null,
+                  variant_id: variant.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+            },
+          ])
+
+          response = await api.get(
+            `/admin/price-lists?fields=id,created_at,rules,prices.rules,prices.amount`,
             adminHeaders
           )
 
@@ -113,59 +146,28 @@ medusaIntegrationTestRunner({
             {
               id: expect.any(String),
               created_at: expect.any(String),
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
               prices: [
                 {
-                  id: expect.any(String),
-                  currency_code: "usd",
                   amount: 5000,
-                  min_quantity: null,
-                  max_quantity: null,
-                  variant_id: expect.any(String),
-                  region_id: null,
+                  rules: {
+                    region_id: region.id,
+                  },
                 },
               ],
-              customer_groups: [
-                {
-                  id: expect.any(String),
-                  name: "VIP",
-                },
-              ],
-            },
-          ])
-
-          response = await api.get(`/admin/price-lists`, adminHeaders)
-
-          expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(1)
-          expect(response.data.price_lists).toEqual([
-            {
-              id: expect.any(String),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              deleted_at: null,
-              name: "test price list",
-              description: "test",
-              type: "override",
-              status: "active",
-              starts_at: expect.any(String),
-              ends_at: expect.any(String),
             },
           ])
         })
       })
 
       describe("GET /admin/price-lists/:id", () => {
-        it("should get price list and its money amounts with variants", async () => {
+        it("should retrieve a price list and its prices with rules", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
-            prices: [
-              {
-                amount: 3000,
-                currency_code: "usd",
-              },
-            ],
-            rules: [],
+            prices: [],
           })
 
           const [priceList] = await pricingModule.createPriceLists([
@@ -181,26 +183,14 @@ medusaIntegrationTestRunner({
                   amount: 5000,
                   currency_code: "usd",
                   price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
                 },
               ],
-            },
-          ])
-
-          await pricingModule.createPriceLists([
-            {
-              title: "test price list 1",
-              description: "test 1",
-              ends_at: new Date(),
-              starts_at: new Date(),
-              status: PriceListStatus.ACTIVE,
-              type: PriceListType.OVERRIDE,
-              prices: [
-                {
-                  amount: 5000,
-                  currency_code: "usd",
-                  price_set_id: priceSet.id,
-                },
-              ],
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
             },
           ])
 
@@ -213,15 +203,30 @@ medusaIntegrationTestRunner({
           expect(response.data.price_list).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              deleted_at: null,
-              name: "test price list",
-              description: "test",
               type: "override",
+              description: "test",
+              title: "test price list",
               status: "active",
               starts_at: expect.any(String),
               ends_at: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 5000,
+                  min_quantity: null,
+                  max_quantity: null,
+                  variant_id: variant.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
             })
           )
 
@@ -251,144 +256,6 @@ medusaIntegrationTestRunner({
             type: "not_found",
             message: "Price list with id: does-not-exist was not found",
           })
-        })
-      })
-
-      describe("GET /admin/price-lists/:id/products", () => {
-        beforeEach(async () => {
-          ;[product2] = await productModule.create([
-            { title: "test product 2 uniquely" },
-          ])
-
-          await pricingModule.createRuleTypes([
-            { name: "Customer Group ID", rule_attribute: "customer_group_id" },
-            { name: "Region ID", rule_attribute: "region_id" },
-          ])
-
-          const [productOption2] = await productModule.createOptions([
-            { title: "Test option 1", product_id: product2.id },
-          ])
-
-          ;[variant2] = await productModule.createVariants([
-            {
-              product_id: product2.id,
-              title: "test product variant 2",
-              options: [{ value: "test 2", option_id: productOption2.id }],
-            },
-          ])
-        })
-
-        it("should list all products in a price list", async () => {
-          const priceSet = await createVariantPriceSet({
-            container: appContainer,
-            variantId: variant.id,
-            prices: [{ amount: 3000, currency_code: "usd" }],
-            rules: [],
-          })
-
-          const priceSet2 = await createVariantPriceSet({
-            container: appContainer,
-            variantId: variant2.id,
-            prices: [{ amount: 4000, currency_code: "usd" }],
-            rules: [],
-          })
-
-          const [priceList] = await pricingModule.createPriceLists([
-            {
-              title: "test price list",
-              description: "test",
-              ends_at: new Date(),
-              starts_at: new Date(),
-              status: PriceListStatus.ACTIVE,
-              type: PriceListType.OVERRIDE,
-              prices: [
-                {
-                  amount: 5000,
-                  currency_code: "usd",
-                  price_set_id: priceSet.id,
-                },
-                {
-                  amount: 6000,
-                  currency_code: "usd",
-                  price_set_id: priceSet2.id,
-                },
-              ],
-            },
-          ])
-
-          let response = await api.get(
-            `/admin/price-lists/${priceList.id}/products`,
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(2)
-          expect(response.data.products).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                id: product.id,
-                title: product.title,
-              }),
-              expect.objectContaining({
-                id: product2.id,
-                title: product2.title,
-              }),
-            ])
-          )
-        })
-
-        it("should list all products constrained by search query in a price list", async () => {
-          const priceSet = await createVariantPriceSet({
-            container: appContainer,
-            variantId: variant2.id,
-            prices: [
-              {
-                amount: 3000,
-                currency_code: "usd",
-              },
-            ],
-            rules: [],
-          })
-
-          const [priceList] = await pricingModule.createPriceLists([
-            {
-              title: "test price list",
-              description: "test",
-              ends_at: new Date(),
-              starts_at: new Date(),
-              status: PriceListStatus.ACTIVE,
-              type: PriceListType.OVERRIDE,
-              prices: [
-                {
-                  amount: 5000,
-                  currency_code: "usd",
-                  price_set_id: priceSet.id,
-                },
-              ],
-            },
-          ])
-
-          let response = await api.get(
-            `/admin/price-lists/${priceList.id}/products?q=shouldnotreturnanything`,
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(0)
-          expect(response.data.products).toEqual([])
-
-          response = await api.get(
-            `/admin/price-lists/${priceList.id}/products?q=uniquely`,
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(1)
-          expect(response.data.products).toEqual([
-            expect.objectContaining({
-              id: product2.id,
-            }),
-          ])
         })
       })
     })

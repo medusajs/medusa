@@ -1,14 +1,15 @@
-import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaContainer } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  MedusaContainer,
+  PriceListRuleDTO,
+  PriceSetMoneyAmountDTO,
+} from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { PriceListRelations, priceListRemoteQueryFields } from "../query-config"
+import { adminPriceListRemoteQueryFields } from "../query-config"
 import { AdminPriceListEndpointDTO } from "../types"
-
-enum RuleAttributes {
-  CUSTOMER_GROUP_ID = "customer_group_id",
-  REGION_ID = "region_id",
-}
 
 export async function listPriceLists({
   container,
@@ -19,32 +20,10 @@ export async function listPriceLists({
   fields: string[]
   variables: Record<string, any>
 }): Promise<[AdminPriceListEndpointDTO[], number]> {
-  const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
-  const customerModule = container.resolve(ModuleRegistrationName.CUSTOMER)
-
-  const remoteQueryFields = fields.filter(
-    (field) =>
-      !field.startsWith(PriceListRelations.CUSTOMER_GROUPS) &&
-      !field.startsWith(PriceListRelations.PRICES)
-  )
-  const customerGroupFields = fields.filter((field) =>
-    field.startsWith(PriceListRelations.CUSTOMER_GROUPS)
-  )
-  const pricesFields = fields.filter((field) =>
-    field.startsWith(PriceListRelations.PRICES)
-  )
-
-  if (customerGroupFields.length) {
-    remoteQueryFields.push(...priceListRemoteQueryFields.customerGroupsFields)
-  }
-
-  if (pricesFields.length) {
-    remoteQueryFields.push(...priceListRemoteQueryFields.pricesFields)
-  }
-
+  const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "price_list",
-    fields: remoteQueryFields,
+    fields: adminPriceListRemoteQueryFields,
     variables,
   })
 
@@ -54,70 +33,52 @@ export async function listPriceLists({
     return [[], 0]
   }
 
-  const customerGroupIds: string[] = customerGroupFields.length
-    ? priceLists
-        .map((priceList) => priceList.price_list_rules)
-        .flat(1)
-        .filter(
-          (rule) =>
-            rule.rule_type?.rule_attribute === RuleAttributes.CUSTOMER_GROUP_ID
-        )
-        .map((rule) => rule.price_list_rule_values.map((plrv) => plrv.value))
-        .flat(1)
-    : []
-
-  const customerGroups = await customerModule.listCustomerGroups(
-    { id: customerGroupIds },
-    {}
-  )
-
-  const customerGroupIdMap = new Map(customerGroups.map((cg) => [cg.id, cg]))
-
   for (const priceList of priceLists) {
-    const priceSetMoneyAmounts = priceList.price_set_money_amounts || []
-    const priceListRulesData = priceList.price_list_rules || []
-    delete priceList.price_set_money_amounts
-    delete priceList.price_list_rules
-
-    if (pricesFields.length) {
-      priceList.prices = priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-        const productVariant = priceSetMoneyAmount.price_set.variant
-        const rules = priceSetMoneyAmount.price_rules.reduce((acc, curr) => {
-          acc[curr.rule_type.rule_attribute] = curr.value
-          return acc
-        }, {})
-
-        return {
-          ...priceSetMoneyAmount.money_amount,
-          price_list_id: priceList.id,
-          variant_id: productVariant?.id ?? null,
-          region_id: rules["region_id"] ?? null,
-          rules,
-        }
-      })
-    }
-
-    priceList.name = priceList.title
-    delete priceList.title
-
-    if (customerGroupFields.length) {
-      const customerGroupPriceListRule = priceListRulesData.find(
-        (plr) =>
-          plr.rule_type.rule_attribute === RuleAttributes.CUSTOMER_GROUP_ID
-      )
-
-      priceList.customer_groups =
-        customerGroupPriceListRule?.price_list_rule_values
-          .map((cgr) => customerGroupIdMap.get(cgr.value))
-          .filter(Boolean) || []
-    }
+    priceList.rules = buildPriceListRules(
+      priceList.price_set_money_amounts || []
+    )
+    priceList.prices = buildPriceSetPrices(priceList.price_list_rules || [])
   }
 
   const sanitizedPriceLists: AdminPriceListEndpointDTO[] = priceLists.map(
-    (priceList) => {
-      return cleanResponseData(priceList, fields)
-    }
+    (priceList) => cleanResponseData(priceList, fields)
   )
 
   return [sanitizedPriceLists, metadata.count]
+}
+
+function buildPriceListRules(
+  priceListRules: PriceListRuleDTO[]
+): Record<string, string[]> {
+  return priceListRules.reduce((acc, curr) => {
+    const ruleAttribute = curr.rule_type.rule_attribute
+    const ruleValues = curr.price_list_rule_values || []
+
+    if (ruleAttribute) {
+      acc[ruleAttribute] = ruleValues.map((ruleValue) => ruleValue.value)
+    }
+
+    return acc
+  }, {})
+}
+
+function buildPriceSetPrices(
+  priceSetMoneyAmounts: PriceSetMoneyAmountDTO[]
+): Record<string, any>[] {
+  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
+    const productVariant = (priceSetMoneyAmount.price_set as any).variant
+    const rules = priceSetMoneyAmount.price_rules?.reduce((acc, curr) => {
+      if (curr.rule_type.rule_attribute) {
+        acc[curr.rule_type.rule_attribute] = curr.value
+      }
+
+      return acc
+    }, {})
+
+    return {
+      ...priceSetMoneyAmount.money_amount,
+      variant_id: productVariant?.id ?? null,
+      rules,
+    }
+  })
 }

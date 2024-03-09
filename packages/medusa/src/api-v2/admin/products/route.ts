@@ -1,22 +1,58 @@
 import { createProductsWorkflow } from "@medusajs/core-flows"
-import { LinkModuleUtils } from "@medusajs/modules-sdk"
 import { CreateProductDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  isString,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { listPriceLists } from "../price-lists/queries"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(LinkModuleUtils.REMOTE_QUERY)
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const filterableFields = { ...req.filterableFields }
+  const filterByPriceListIds =
+    (filterableFields.price_list_id as string[]) || []
+  const priceListVariantIds: string[] = []
+
+  // When filtering by price_list_id, we need use the remote query to get
+  // the variant IDs through the price list price sets.
+  if (filterByPriceListIds.length) {
+    const [priceLists] = await listPriceLists({
+      container: req.scope,
+      fields: ["prices.variant_id"],
+      variables: { filters: { id: filterByPriceListIds }, skip: 0, take: null },
+    })
+
+    priceListVariantIds.push(
+      ...(priceLists
+        .map((priceList) => priceList.prices?.map((price) => price.variant_id))
+        .flat(2)
+        .filter(isString) || [])
+    )
+
+    delete filterableFields.price_list_id
+  }
+
+  if (priceListVariantIds.length) {
+    const existingVariantFilters = filterableFields.variants || {}
+
+    filterableFields.variants = {
+      ...existingVariantFilters,
+      id: priceListVariantIds,
+    }
+  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {
-      filters: req.filterableFields,
+      filters: filterableFields,
       order: req.listConfig.order,
       skip: req.listConfig.skip,
       take: req.listConfig.take,

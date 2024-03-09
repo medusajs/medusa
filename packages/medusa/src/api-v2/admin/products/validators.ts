@@ -1,4 +1,5 @@
 import { OperatorMap } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Transform, Type } from "class-transformer"
 import {
   IsArray,
@@ -13,11 +14,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { ProductTagReq, ProductTypeReq } from "../../../types/product"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { ProductStatus } from "@medusajs/utils"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
-import { ProductTagReq, ProductTypeReq } from "../../../types/product"
 
 export class AdminGetProductsProductParams extends FindParams {}
 export class AdminGetProductsProductVariantsVariantParams extends FindParams {}
@@ -82,13 +82,12 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  // TODO: Add in next iteration
-  // /**
-  //  * Filter products by their associated price lists' ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // price_list_id?: string[]
+  /**
+   * Filter products by their associated price lists' ID.
+   */
+  @IsOptional()
+  @IsArray()
+  price_list_id?: string[]
 
   /**
    * Filter products by their associated product collection's ID.
