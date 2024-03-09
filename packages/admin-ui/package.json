@@ -2,7 +2,7 @@
   "name": "@nelomobile/medusa-admin-ui",
   "author": "Daniel Rodriguez <daniel@nelo.co>",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/nelo/medusa",
