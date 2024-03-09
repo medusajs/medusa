@@ -96,7 +96,6 @@ async function loadMedusaV2({ configModule, featureFlagRouter, expressApp }) {
   const pgConnection = await pgConnectionLoader({ container, configModule })
 
   container.register({
-    // [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
