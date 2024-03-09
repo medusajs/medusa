@@ -1,7 +1,8 @@
 import { useAdminReservations } from "medusa-react"
 
-import { Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { reservationListExpand } from "../../constants"
@@ -48,6 +49,9 @@ export const ReservationListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("reservations.domain")}</Heading>
+        <Button variant="secondary" size="small" asChild>
+          <Link to="create">{t("actions.create")}</Link>
+        </Button>
       </div>
       <DataTable
         table={table}
@@ -58,6 +62,7 @@ export const ReservationListTable = () => {
         filters={filters}
         pagination
         navigateTo={(row) => `${row.id}`}
+        orderBy={["created_at", "updated_at"]}
         queryObject={raw}
         search={false}
       />

@@ -113,7 +113,7 @@ export const SelectFilter = ({
                     ref={setSearchRef}
                     value={search}
                     onValueChange={setSearch}
-                    className="txt-compact-small placeholder:text-ui-fg-muted outline-none"
+                    className="txt-compact-small placeholder:text-ui-fg-muted bg-transparent outline-none"
                     placeholder="Search"
                   />
                   <div className="flex h-5 w-5 items-center justify-center">

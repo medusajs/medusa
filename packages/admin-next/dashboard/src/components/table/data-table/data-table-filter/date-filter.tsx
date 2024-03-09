@@ -118,7 +118,7 @@ export const DateFilter = ({
   }
 
   return (
-    <Popover.Root open={open} onOpenChange={handleOpenChange}>
+    <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
       <DateDisplay label={label} value={displayValue} onRemove={handleRemove} />
       <Popover.Portal>
         <Popover.Content

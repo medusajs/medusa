@@ -56,6 +56,7 @@ export const InventoryListTable = () => {
         search
         filters={filters}
         queryObject={raw}
+        orderBy={["title", "sku", "stocked_quantity", "reserved_quantity"]}
         navigateTo={(row) => `${row.id}`}
       />
     </Container>

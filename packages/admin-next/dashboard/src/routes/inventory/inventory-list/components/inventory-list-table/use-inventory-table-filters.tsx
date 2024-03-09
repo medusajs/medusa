@@ -32,9 +32,50 @@ export const useInventoryTableFilters = () => {
   })
 
   filters.push({
-    type: "date",
-    key: "created_at",
-    label: t("fields.createdAt"),
+    type: "string",
+    key: "sku",
+    label: t("fields.sku"),
+  })
+
+  filters.push({
+    type: "string",
+    key: "mid_code",
+    label: t("fields.midCode"),
+  })
+
+  filters.push({
+    type: "number",
+    key: "height",
+    label: t("fields.height"),
+  })
+
+  filters.push({
+    type: "number",
+    key: "width",
+    label: t("fields.width"),
+  })
+
+  filters.push({
+    type: "number",
+    key: "length",
+    label: t("fields.length"),
+  })
+
+  filters.push({
+    type: "number",
+    key: "weight",
+    label: t("fields.weight"),
+  })
+
+  filters.push({
+    type: "select",
+    options: [
+      { label: t("fields.true"), value: "true" },
+      { label: t("fields.false"), value: "false" },
+    ],
+    key: "requires_shipping",
+    multiple: false,
+    label: t("fields.requiresShipping"),
   })
 
   return filters

@@ -1,5 +1,5 @@
 import { XMarkMini } from "@medusajs/icons"
-import { Input, Text, clx } from "@medusajs/ui"
+import { Input, Label, Text, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import { debounce } from "lodash"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
@@ -66,7 +66,7 @@ export const StringFilter = ({
   }
 
   return (
-    <Popover.Root open={open} onOpenChange={handleOpenChange}>
+    <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
       <StringDisplay label={label} value={query?.[0]} onRemove={handleRemove} />
       <Popover.Portal>
         <Popover.Content
@@ -89,14 +89,20 @@ export const StringFilter = ({
             }
           }}
         >
-          <div className="p-1">
-            <Input
-              name={key}
-              type="search"
-              size="small"
-              defaultValue={query?.[0] || undefined}
-              onChange={debouncedOnChange}
-            />
+          <div className="px-1 pb-3 pt-1">
+            <div className="px-2 py-1.5">
+              <Label size="xsmall" weight="plus" htmlFor={key}>
+                {label}
+              </Label>
+            </div>
+            <div className="px-2 py-0.5">
+              <Input
+                name={key}
+                size="small"
+                defaultValue={query?.[0] || undefined}
+                onChange={debouncedOnChange}
+              />
+            </div>
           </div>
         </Popover.Content>
       </Popover.Portal>

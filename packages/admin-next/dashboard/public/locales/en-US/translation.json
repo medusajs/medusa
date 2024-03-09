@@ -68,9 +68,13 @@
     "compare": {
       "lessThan": "Less than",
       "greaterThan": "Greater than",
-      "equals": "Equals",
-      "between": "Between"
-    }
+      "exact": "Exact",
+      "range": "Range",
+      "lessThanLabel": "less than {{value}}",
+      "greaterThanLabel": "greater than {{value}}",
+      "andLabel": "and"
+    },
+    "addFilter": "Add filter"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -639,7 +643,8 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "rate": "Rate"
+    "rate": "Rate",
+    "requiresShipping": "Requires shipping"
   },
   "dateTime": {
     "years_one": "Year",
