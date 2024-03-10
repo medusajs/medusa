@@ -79,16 +79,18 @@ export const EditDiscountConfigurationForm = ({
   const { mutateAsync, isLoading } = useAdminUpdateDiscount(discount.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const duration = pick(data, ["years", "months", "days", "hours", "minutes"])
+    const isDurationEmpty = Object.values(duration).every((v) => !v)
+
     await mutateAsync(
       {
         starts_at: data.start_date,
         ends_at: data.end_date_enabled ? data.end_date : null,
         usage_limit: data.enable_usage_limit ? data.usage_limit : null,
-        valid_duration: data.enable_duration
-          ? formatISODuration(
-              pick(data, ["years", "months", "days", "hours", "minutes"])
-            )
-          : null,
+        valid_duration:
+          data.enable_duration && !isDurationEmpty
+            ? formatISODuration(duration)
+            : null,
       },
       {
         onSuccess: () => {

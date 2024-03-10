@@ -138,6 +138,16 @@ export const CreateDiscountForm = () => {
       return getDbAmount(amount, region!.currency_code)
     }
 
+    const duration = {
+      years: values.years,
+      months: values.months,
+      days: values.days,
+      hours: values.hours,
+      minutes: values.minutes,
+    }
+
+    const isDurationEmpty = Object.values(duration).every((v) => !v)
+
     await mutateAsync(
       {
         code: values.code,
@@ -149,15 +159,10 @@ export const CreateDiscountForm = () => {
         usage_limit: values.usage_limit_enabled
           ? values.usage_limit
           : undefined,
-        valid_duration: values.valid_duration_enabled
-          ? formatISODuration({
-              years: values.years,
-              months: values.months,
-              days: values.days,
-              hours: values.hours,
-              minutes: values.minutes,
-            })
-          : undefined,
+        valid_duration:
+          values.valid_duration_enabled && !isDurationEmpty
+            ? formatISODuration(duration)
+            : undefined,
         rule: {
           value: getValue(),
           type: values.type,
