@@ -261,7 +261,10 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                           {...field}
                         />
                       </Form.Control>
-                      <Form.Label tooltip={t("discounts.templateHint")}>
+                      <Form.Label
+                        className="cursor-pointer"
+                        tooltip={t("discounts.templateHint")}
+                      >
                         {t("discounts.isTemplateDiscount")}
                       </Form.Label>
                     </div>
@@ -321,32 +324,33 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                   </Form.Item>
                 )}
               />
-              <Form.Field
-                control={form.control}
-                name="start_date"
-                render={({
-                  field: { value, onChange, ref: _ref, ...field },
-                }) => {
-                  return (
-                    <Form.Item>
-                      <div className="grid grid-cols-2 gap-x-4">
-                        <Form.Control>
-                          <DatePicker
-                            showTimePicker
-                            value={value ?? undefined}
-                            onChange={(v) => {
-                              onChange(v ?? null)
-                            }}
-                            {...field}
-                            disabled={!form.watch("start_date_enabled")}
-                          />
-                        </Form.Control>
-                      </div>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
+              {form.watch("start_date_enabled") && (
+                <Form.Field
+                  control={form.control}
+                  name="start_date"
+                  render={({
+                    field: { value, onChange, ref: _ref, ...field },
+                  }) => {
+                    return (
+                      <Form.Item>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <Form.Control>
+                            <DatePicker
+                              showTimePicker
+                              value={value ?? undefined}
+                              onChange={(v) => {
+                                onChange(v ?? null)
+                              }}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </div>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              )}
             </div>
 
             <div className="flex flex-col gap-y-4">
@@ -376,40 +380,34 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                   )
                 }}
               />
-              <Form.Field
-                control={form.control}
-                name="end_date"
-                render={({
-                  field: { value, onChange, ref: _ref, ...field },
-                }) => {
-                  return (
-                    <Form.Item>
-                      <div className="grid grid-cols-2 gap-x-4">
-                        <Form.Control>
-                          <DatePicker
-                            showTimePicker
-                            value={value ?? undefined}
-                            onChange={(v) => {
-                              onChange(v ?? null)
-                            }}
-                            {...field}
-                            /**
-                             * TODO: FIX bug in the picker when a placeholder is provided it resets selected value to undefined
-                             */
-                            // placeholder="DD/MM/YYYY HH:MM"
-                            /*
-                             * Disable input here. If set on Field it wont properly set the value.
-                             */
-                            disabled={!form.watch("end_date_enabled")}
-                          />
-                        </Form.Control>
-                      </div>
+              {form.watch("end_date_enabled") && (
+                <Form.Field
+                  control={form.control}
+                  name="end_date"
+                  render={({
+                    field: { value, onChange, ref: _ref, ...field },
+                  }) => {
+                    return (
+                      <Form.Item>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <Form.Control>
+                            <DatePicker
+                              showTimePicker
+                              value={value ?? undefined}
+                              onChange={(v) => {
+                                onChange(v ?? null)
+                              }}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </div>
 
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -438,36 +436,37 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                 }}
               />
 
-              <Form.Field
-                control={form.control}
-                name="usage_limit"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Control>
-                        <div className="grid grid-cols-2 gap-x-4">
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("usage_limit_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
+              {form.watch("usage_limit_enabled") && (
+                <Form.Field
+                  control={form.control}
+                  name="usage_limit"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Control>
+                          <div className="grid grid-cols-2 gap-x-4">
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
 
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </div>
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </div>
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -495,152 +494,149 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                   )
                 }}
               />
-              <div className="flex items-center justify-between gap-3">
-                <Form.Field
-                  control={form.control}
-                  name="years"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="flex-1">
-                        <Form.Label>{t("fields.years")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("valid_duration_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
+              {form.watch("valid_duration_enabled") && (
+                <div className="flex items-center justify-between gap-3">
+                  <Form.Field
+                    control={form.control}
+                    name="years"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex-1">
+                          <Form.Label>{t("fields.years")}</Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
 
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="months"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="flex-1">
-                        <Form.Label>{t("fields.months")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("valid_duration_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="months"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex-1">
+                          <Form.Label>{t("fields.months")}</Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
 
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="days"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="flex-1">
-                        <Form.Label>{t("fields.days")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("valid_duration_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="days"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex-1">
+                          <Form.Label>{t("fields.days")}</Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
 
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="hours"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="flex-1">
-                        <Form.Label>{t("fields.hours")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("valid_duration_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="hours"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex-1">
+                          <Form.Label>{t("fields.hours")}</Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
 
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="minutes"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="flex-1">
-                        <Form.Label>{t("fields.minutes")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            {...field}
-                            type="number"
-                            min={0}
-                            disabled={!form.watch("valid_duration_enabled")}
-                            onChange={(e) => {
-                              const value = e.target.value
-                              if (value === "") {
-                                field.onChange(null)
-                              } else {
-                                field.onChange(Number(value))
-                              }
-                            }}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-              </div>
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="minutes"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex-1">
+                          <Form.Label>{t("fields.minutes")}</Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={0}
+                              onChange={(e) => {
+                                const value = e.target.value
+                                if (value === "") {
+                                  field.onChange(null)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
