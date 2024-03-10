@@ -26,6 +26,10 @@ export interface ProductCategory {
    */
   handle: string
   /**
+   * An image for the category.
+   */
+  thumbnail?: string
+  /**
    * A string for Materialized Paths - used for finding ancestors and descendents
    */
   mpath: string | null
