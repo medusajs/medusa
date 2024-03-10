@@ -12,6 +12,7 @@ import { ProductCategory } from "../models"
 export const tempReorderRank = 99999
 type ProductCategoryInput = {
   handle?: string
+  thumbnail?: string
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
@@ -37,6 +38,10 @@ export class AdminProductCategoriesReqBase {
   @IsOptional()
   @IsString()
   handle?: string
+
+  @IsOptional()
+  @IsString()
+  thumbnail?: string
 
   @IsBoolean()
   @IsOptional()

@@ -32,6 +32,9 @@ export class ProductCategory extends BaseEntity {
   @Column()
   name: string
 
+  @Column({nullable: true})
+  thumbnail: string
+
   @Column({ nullable: false, default: "" })
   description: string
 
@@ -131,6 +134,10 @@ export class ProductCategory extends BaseEntity {
  *     description: A unique string that identifies the Product Category - can for example be used in slug structures.
  *     type: string
  *     example: regular-fit
+ *   thumbnail:
+ *     description: An image for the category.
+ *     type: string
+ *     example: https://www.example.com/image.jpg
  *   mpath:
  *     description: A string for Materialized Paths - used for finding ancestors and descendents
  *     nullable: true
