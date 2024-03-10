@@ -768,4 +768,38 @@ describe("RemoteJoiner", () => {
       },
     })
   })
+
+  it("It shouldn't register the service name as an alias if option autoCreateServiceNameAlias is false", async () => {
+    const newJoiner = new RemoteJoiner(
+      serviceConfigs,
+      fetchServiceDataCallback,
+      { autoCreateServiceNameAlias: false }
+    )
+
+    const query = {
+      service: "user",
+      fields: ["id", "name", "email"],
+    }
+
+    const data = await newJoiner.query(query)
+
+    expect(data).toEqual(
+      expect.arrayContaining([
+        {
+          id: 1,
+          name: "John Doe",
+          email: "johndoe@example.com",
+        },
+      ])
+    )
+
+    const queryWithAlias = {
+      alias: "user",
+      fields: ["id", "name", "email"],
+    }
+
+    expect(newJoiner.query(queryWithAlias)).rejects.toThrowError(
+      `Service with alias "user" was not found.`
+    )
+  })
 })

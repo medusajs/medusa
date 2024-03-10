@@ -1,5 +1,4 @@
 import { refundPaymentWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -9,9 +8,10 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { defaultAdminPaymentFields } from "../../query-config"
+import { AdminPostPaymentsRefundsReq } from "../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminPostPaymentsRefundsReq>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -22,6 +22,7 @@ export const POST = async (
     input: {
       payment_id: id,
       created_by: req.auth?.actor_id,
+      amount: req.validatedBody.amount,
     },
     throwOnError: false,
   })
@@ -31,7 +32,7 @@ export const POST = async (
   }
 
   const query = remoteQueryObjectFromString({
-    entryPoint: Modules.PAYMENT,
+    entryPoint: "payments",
     variables: { id },
     fields: defaultAdminPaymentFields,
   })

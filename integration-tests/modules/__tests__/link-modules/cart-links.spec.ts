@@ -129,7 +129,7 @@ medusaIntegrationTestRunner({
         })
 
         const paymentCollections = await remoteQuery({
-          payment: {
+          payment_collection: {
             fields: ["id"],
             cart: {
               fields: ["id"],

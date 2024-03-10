@@ -17,9 +17,6 @@
     "is": "is",
     "select": "Select",
     "selected": "Selected",
-    "extensions": "Extensions",
-    "settings": "Settings",
-    "general": "General",
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -41,7 +38,14 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
+    "timeline": "Timeline"
+  },
+  "nav": {
+    "general": "General",
+    "developer": "Developer",
+    "extensions": "Extensions",
+    "settings": "Settings"
   },
   "actions": {
     "create": "Create",
@@ -357,7 +361,7 @@
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
-    "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
+    "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
     "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
@@ -390,6 +394,50 @@
         "label": "Requirements",
         "hint": "Specify the requirements for the shipping option."
       }
+    }
+  },
+  "taxes": {
+    "domain": "Taxes",
+    "countries": {
+      "taxCountriesHint": "Tax settings apply to the listed countries."
+    },
+    "settings": {
+      "editTaxSettings": "Edit Tax Settings",
+      "taxProviderLabel": "Tax provider",
+      "systemTaxProviderLabel": "System Tax Provider",
+      "calculateTaxesAutomaticallyLabel": "Calculate taxes automatically",
+      "calculateTaxesAutomaticallyHint": "When enabled, tax rates will be calculated automatically and applied to carts. When disabled, taxes must be manually computed at checkout. Manual taxes are recommended for usage with third-party tax providers.",
+      "applyTaxesOnGiftCardsLabel": "Apply taxes on gift cards",
+      "applyTaxesOnGiftCardsHint": "When enabled, taxes will be applied to gift cards at checkout. In some countries, tax regulations require the application of taxes to gift cards upon purchase.",
+      "defaultTaxRateLabel": "Default tax rate",
+      "defaultTaxCodeLabel": "Default tax code"
+    },
+    "defaultRate": {
+      "sectionTitle": "Default Tax Rate"
+    },
+    "taxRate": {
+      "sectionTitle": "Tax Rates",
+      "createTaxRate": "Create Tax Rate",
+      "createTaxRateHint": "Create a new tax rate for the region.",
+      "deleteRateDescription": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+      "editTaxRate": "Edit Tax Rate",
+      "editRateAction": "Edit rate",
+      "editOverridesAction": "Edit overrides",
+      "editOverridesTitle": "Edit Tax Rate Overrides",
+      "editOverridesHint": "Specify the overrides for the tax rate.",
+      "deleteTaxRateWarning": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+      "productOverridesLabel": "Product overrides",
+      "productOverridesHint": "Specify the product overrides for the tax rate.",
+      "addProductOverridesAction": "Add product overrides",
+      "productTypeOverridesLabel": "Product type overrides",
+      "productTypeOverridesHint": "Specify the product type overrides for the tax rate.",
+      "addProductTypeOverridesAction": "Add product type overrides",
+      "shippingOptionOverridesLabel": "Shipping option overrides",
+      "shippingOptionOverridesHint": "Specify the shipping option overrides for the tax rate.",
+      "addShippingOptionOverridesAction": "Add shipping option overrides",
+      "productOverridesHeader": "Products",
+      "productTypeOverridesHeader": "Product Types",
+      "shippingOptionOverridesHeader": "Shipping Options"
     }
   },
   "locations": {
@@ -463,6 +511,45 @@
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
   },
+  "executions": {
+    "domain": "Executions",
+    "transactionIdLabel": "Transaction ID",
+    "workflowIdLabel": "Workflow ID",
+    "progressLabel": "Progress",
+    "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
+    "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
+    "history": {
+      "sectionTitle": "History",
+      "runningState": "Running...",
+      "awaitingState": "Awaiting",
+      "failedState": "Failed",
+      "definitionLabel": "Definition",
+      "outputLabel": "Output",
+      "compensateInputLabel": "Compensate input",
+      "revertedLabel": "Reverted",
+      "errorLabel": "Error"
+    },
+    "state": {
+      "done": "Done",
+      "failed": "Failed",
+      "reverted": "Reverted",
+      "invoking": "Invoking",
+      "compensating": "Compensating",
+      "notStarted": "Not started"
+    },
+    "transaction": {
+      "state": {
+        "waitingToCompensate": "Waiting to compensate"
+      }
+    },
+    "step": {
+      "state": {
+        "skipped": "Skipped",
+        "dormant": "Dormant",
+        "timeout": "Timeout"
+      }
+    }
+  },
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
@@ -513,7 +600,7 @@
     "availability": "Availability",
     "inventory": "Inventory",
     "optional": "Optional",
-    "taxInclusivePricing": "Tax Inclusive Pricing",
+    "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",
     "currency": "Currency",
@@ -578,9 +665,9 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "shippingProfile": "Shipping Profile"
+    "rate": "Rate"
   },
-  "dateTime" : {
+  "dateTime": {
     "years_one": "Year",
     "years_other": "Years",
     "months_one": "Month",

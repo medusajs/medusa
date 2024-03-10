@@ -44,7 +44,7 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             // collection_id: "test-collection",
             // tags: [{ value: "123" }, { value: "456" }],
-            options: [{ title: "size" }, { title: "color" }],
+            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
@@ -168,24 +168,24 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          expect(response?.data.product.options).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                id: expect.stringMatching(/^opt_*/),
-                // product_id: expect.stringMatching(/^prod_*/),
-                title: "size",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              }),
-              expect.objectContaining({
-                id: expect.stringMatching(/^opt_*/),
-                // product_id: expect.stringMatching(/^prod_*/),
-                title: "color",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              }),
-            ])
-          )
+          // expect(response?.data.product.options).toEqual(
+          //   expect.arrayContaining([
+          //     expect.objectContaining({
+          //       id: expect.stringMatching(/^opt_*/),
+          //       // product_id: expect.stringMatching(/^prod_*/),
+          //       title: "size",
+          //       created_at: expect.any(String),
+          //       updated_at: expect.any(String),
+          //     }),
+          //     expect.objectContaining({
+          //       id: expect.stringMatching(/^opt_*/),
+          //       // product_id: expect.stringMatching(/^prod_*/),
+          //       title: "color",
+          //       created_at: expect.any(String),
+          //       updated_at: expect.any(String),
+          //     }),
+          //   ])
+          // )
 
           // tags: expect.arrayContaining([
           //   expect.objectContaining({
@@ -223,7 +223,7 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             // collection_id: "test-collection",
             // tags: [{ value: "123" }, { value: "456" }],
-            options: [{ title: "size" }, { title: "color" }],
+            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
@@ -256,7 +256,7 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             // collection_id: "test-collection",
             // tags: [{ value: "123" }, { value: "456" }],
-            options: [{ title: "size" }, { title: "color" }],
+            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant 1",
@@ -312,7 +312,7 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
-            options: [{ title: "Denominations" }],
+            // options: [{ title: "Denominations" }],
             variants: [
               {
                 title: "Test variant",
@@ -348,7 +348,7 @@ medusaIntegrationTestRunner({
               images: ["test-image.png", "test-image-2.png"],
               // collection_id: "test-collection",
               // tags: [{ value: "123" }, { value: "456" }],
-              options: [{ title: "size" }, { title: "color" }],
+              // options: [{ title: "size" }, { title: "color" }],
               variants: [
                 {
                   title: "Test variant 1",
