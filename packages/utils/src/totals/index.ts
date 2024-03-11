@@ -7,7 +7,10 @@ import { BigNumber as BigNumberJs } from "bignumber.js"
 import { BigNumber } from "./big-number"
 import { toBigNumberJs } from "./to-big-number-js"
 
+export * from "./math"
 export * from "./promotion"
+export * from "./to-big-number-js"
+export * from "./transform-properties-to-bignumber"
 
 type GetLineItemTotalsContext = {
   includeTax?: boolean
