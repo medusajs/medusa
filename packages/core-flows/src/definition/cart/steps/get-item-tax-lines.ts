@@ -25,8 +25,7 @@ function normalizeTaxModuleContext(
   forceTaxCalculation: boolean
 ): TaxCalculationContext | null {
   const address = cart.shipping_address
-  const region = cart.region
-  const shouldCalculateTax = forceTaxCalculation || region?.automatic_taxes
+  const shouldCalculateTax = forceTaxCalculation || cart.region?.automatic_taxes
 
   if (!shouldCalculateTax) {
     return null

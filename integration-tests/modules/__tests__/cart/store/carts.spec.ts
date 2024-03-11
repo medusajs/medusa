@@ -494,7 +494,6 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          // Should remove earlier adjustments from other promocodes
           let updated = await api.post(`/store/carts/${cart.id}`, {
             email: "another@tax.com",
           })
@@ -517,7 +516,6 @@ medusaIntegrationTestRunner({
             region_id: region.id,
           })
 
-          // Should remove all adjustments from other promo codes
           updated = await api.post(`/store/carts/${cart.id}`, {
             email: "another@tax.com",
           })
@@ -994,7 +992,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("POST /store/carts/:id/taxes", () => {
+      describe("POST /store/carts/:id/taxes", () => {
         it("should update a carts tax lines when region.automatic_taxes is false", async () => {
           await setupTaxStructure(taxModule)
 

@@ -37,5 +37,7 @@ export const POST = async (
     cart: { id: req.params.id },
   })
 
+  // TODO: wrap result with totals when totals calculation is ready
+
   res.status(200).json({ cart })
 }
