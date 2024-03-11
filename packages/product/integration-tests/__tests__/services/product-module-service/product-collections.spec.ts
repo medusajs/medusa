@@ -294,7 +294,7 @@ describe("ProductModuleService product collections", () => {
     it("should emit events through event bus", async () => {
       const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
 
-      await service.updateCollections([
+      await service.upsertCollections([
         {
           id: collectionId,
           title: "New Collection",
@@ -311,7 +311,7 @@ describe("ProductModuleService product collections", () => {
     })
 
     it("should update the value of the collection successfully", async () => {
-      await service.updateCollections([
+      await service.upsertCollections([
         {
           id: collectionId,
           title: "New Collection",
@@ -324,7 +324,7 @@ describe("ProductModuleService product collections", () => {
     })
 
     it("should add products to a collection successfully", async () => {
-      await service.updateCollections([
+      await service.upsertCollections([
         {
           id: collectionId,
           product_ids: [productOne.id, productTwo.id],
@@ -355,7 +355,7 @@ describe("ProductModuleService product collections", () => {
       let error
 
       try {
-        await service.updateCollections([
+        await service.upsertCollections([
           {
             id: "does-not-exist",
             title: "New Collection",

@@ -68,6 +68,7 @@ export interface CreateCartWorkflowInputDTO {
   metadata?: Record<string, unknown>
 
   items?: CreateCartCreateLineItemDTO[]
+  promo_codes?: string[]
 }
 
 export interface AddToCartWorkflowInputDTO {

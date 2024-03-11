@@ -61,12 +61,10 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const manager = req.scope.resolve("manager")
   const deleteCampaigns = deleteCampaignsWorkflow(req.scope)
 
   const { errors } = await deleteCampaigns.run({
     input: { ids: [id] },
-    context: { manager },
     throwOnError: false,
   })
 
