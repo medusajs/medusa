@@ -250,8 +250,7 @@ export default async (req: Request, res) => {
     ;[products, count] = await priceListService.listProducts(
       id,
       filterableFields,
-      req.listConfig,
-      true
+      req.listConfig
     )
   }
 
