@@ -271,6 +271,7 @@
     "selectRegionFirst": "Select region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
+      "manageTypes": "Manage Condition Types",
       "including": {
         "products_one": "Discount applies to <0/> product.",
         "products_other": "Discount applies to <0/> products.",
@@ -289,6 +290,21 @@
         "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
         "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
         "product_types": "Discount applies to <1>all</1> product types except <0/>."
+      },
+      "edit": {
+        "appliesTo" : "Discount applies to",
+        "except" : {
+          "products_one": "product, except",
+          "products_other": "products, except",
+          "product_tags_one": "product tag, except",
+          "product_tags_other": "product tags, except",
+          "product_types_one": "product type, except",
+          "product_types_other": "product types, except",
+          "product_collections_one": "product collection, except",
+          "product_collections_other": "product collections, except",
+          "customer_groups_one": "customer group, except",
+          "customer_groups_other": "customer groups, except"
+        }
       }
     },
     "discountStatus": {
@@ -578,8 +594,14 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "none": "None",
+    "all": "All",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
+    "customer_groups": "Customer Groups",
+    "product_tags": "Product Tags",
+    "product_types": "Product Types",
+    "product_collections": "Product Collections",
     "status": "Status",
     "code": "Code",
     "value": "Value",

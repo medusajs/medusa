@@ -369,6 +369,11 @@ const router = createBrowserRouter([
                     lazy: () =>
                       import("../../routes/discounts/edit-configuration"),
                   },
+                  {
+                    path: "conditions",
+                    lazy: () =>
+                      import("../../routes/discounts/edit-conditions"),
+                  },
                 ],
               },
             ],
