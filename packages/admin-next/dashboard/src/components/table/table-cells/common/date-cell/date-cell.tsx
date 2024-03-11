@@ -3,7 +3,7 @@ import format from "date-fns/format"
 import { useTranslation } from "react-i18next"
 
 type DateCellProps = {
-  date: Date
+  date: Date | string
 }
 
 export const DateCell = ({ date }: DateCellProps) => {
