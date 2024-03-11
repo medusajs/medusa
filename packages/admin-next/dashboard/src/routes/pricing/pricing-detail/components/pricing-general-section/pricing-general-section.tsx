@@ -54,6 +54,11 @@ export const PricingGeneralSection = ({
     })
   }
 
+  const type =
+    priceList.type === "sale"
+      ? t("pricing.type.sale")
+      : t("pricing.type.override")
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -83,6 +88,14 @@ export const PricingGeneralSection = ({
             ]}
           />
         </div>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text leading="compact" size="small" weight="plus">
+          {t("fields.type")}
+        </Text>
+        <Text size="small" className="text-pretty">
+          {type}
+        </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text leading="compact" size="small" weight="plus">

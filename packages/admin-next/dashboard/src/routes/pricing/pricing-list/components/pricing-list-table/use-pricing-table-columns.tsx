@@ -17,6 +17,21 @@ export const usePricingTableColumns = () => {
         header: t("fields.name"),
         cell: (info) => info.getValue(),
       }),
+      columnHelper.accessor("type", {
+        header: t("fields.type"),
+        cell: ({ getValue }) => {
+          const label =
+            getValue() === "sale"
+              ? t("pricing.type.sale")
+              : t("pricing.type.override")
+
+          return (
+            <div className="flex size-full items-center overflow-hidden">
+              <span>{label}</span>
+            </div>
+          )
+        },
+      }),
       columnHelper.accessor("status", {
         header: t("fields.status"),
         cell: ({ row }) => {

@@ -293,11 +293,13 @@
       "active": "Active",
       "scheduled": "Scheduled"
     },
+    "type": {
+      "sale": "Sale",
+      "override": "Override"
+    },
     "settings": {
       "typeHint": "Choose the type of price list you want to create.",
-      "saleType": "Sale",
       "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideType": "Override",
       "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
       "editPriceListTitle": "Edit Price List",
       "customerGroupsLabel": "Customer groups",

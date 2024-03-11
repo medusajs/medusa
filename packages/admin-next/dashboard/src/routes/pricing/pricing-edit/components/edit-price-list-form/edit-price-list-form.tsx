@@ -68,12 +68,12 @@ export const EditPriceListForm = ({ priceList }: EditPriceListFormProps) => {
                     <RadioGroup {...field} onValueChange={onChange}>
                       <RadioGroup.ChoiceBox
                         value={PriceListType.SALE}
-                        label={t("pricing.settings.saleType")}
+                        label={t("pricing.type.sale")}
                         description={t("pricing.settings.saleTypeHint")}
                       />
                       <RadioGroup.ChoiceBox
                         value={PriceListType.OVERRIDE}
-                        label={t("pricing.settings.overrideType")}
+                        label={t("pricing.type.override")}
                         description={t("pricing.settings.overrideTypeHint")}
                       />
                     </RadioGroup>

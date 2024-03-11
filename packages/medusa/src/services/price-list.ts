@@ -379,8 +379,6 @@ class PriceListService extends TransactionBaseService {
         this.productVariantRepo_
       )
 
-      console.log(selector, config, priceListId, requiresPriceList)
-
       const [products, count] = await this.productService_
         .withTransaction(manager)
         .listAndCount(selector, config)
