@@ -740,7 +740,9 @@
     "summary": "Summary",
     "label": "Label",
     "rate": "Rate",
-    "requiresShipping": "Requires shipping"
+    "requiresShipping": "Requires shipping",
+    "startDate": "Start date",
+    "endDate": "End date"
   },
   "dateTime": {
     "years_one": "Year",
