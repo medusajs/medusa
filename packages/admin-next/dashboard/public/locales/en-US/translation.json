@@ -255,7 +255,11 @@
     }
   },
   "draftOrders": {
-    "domain": "Draft Orders"
+    "domain": "Draft Orders",
+    "status": {
+      "open": "Open",
+      "completed": "Completed"
+    }
   },
   "discounts": {
     "domain": "Discounts",
