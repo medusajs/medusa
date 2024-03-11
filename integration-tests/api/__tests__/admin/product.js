@@ -561,19 +561,27 @@ medusaIntegrationTestRunner({
           }
         })
 
-        // TODO: This is failing, investigate
-        it.skip("returns a list of products with only giftcard in list", async () => {
+        it("returns a list of products with only giftcard in list", async () => {
           const payload = {
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
-            // TODO: Enable these and assertions once they are supported
-            // options: [{ title: "Denominations" }],
+            options: [
+              breaking(
+                () => ({ title: "Denominations" }),
+                () => ({ title: "Denominations", values: ["100"] })
+              ),
+            ],
             variants: [
               {
                 title: "Test variant",
-                // prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "100" }],
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: breaking(
+                  () => [{ value: "100" }],
+                  () => ({
+                    Denominations: "100",
+                  })
+                ),
               },
             ],
           }
@@ -605,15 +613,19 @@ medusaIntegrationTestRunner({
                 is_giftcard: true,
                 description: "test-giftcard-description",
                 // profile_id: expect.stringMatching(/^sp_*/),
-                // options: expect.arrayContaining([
-                //   expect.objectContaining({
-                //     title: "Denominations",
-                //     id: expect.stringMatching(/^opt_*/),
-                //     product_id: expect.stringMatching(/^prod_*/),
-                //     created_at: expect.any(String),
-                //     updated_at: expect.any(String),
-                //   }),
-                // ]),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    title: "Denominations",
+                    ...breaking(
+                      () => ({}),
+                      () => ({ values: ["100"] })
+                    ),
+                    id: expect.stringMatching(/^opt_*/),
+                    product_id: expect.stringMatching(/^prod_*/),
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
 
                 variants: expect.arrayContaining([
                   expect.objectContaining({
@@ -632,15 +644,21 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^opt_*/),
-                    //     option_id: expect.stringMatching(/^opt_*/),
-                    //     created_at: expect.any(String),
-                    //     variant_id: expect.stringMatching(/^variant_*/),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^opt_*/),
+                            option_id: expect.stringMatching(/^opt_*/),
+                            created_at: expect.any(String),
+                            variant_id: expect.stringMatching(/^variant_*/),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                 ]),
                 created_at: expect.any(String),
@@ -655,12 +673,10 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
-            // options: [{ title: "Denominations" }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
-                options: [{ value: "100" }],
               },
             ],
           }
@@ -691,20 +707,21 @@ medusaIntegrationTestRunner({
               console.log(err)
             })
 
+          console.log(JSON.stringify(response.data.products, null, 2))
           // TODO: Enable other assertions once supported
           expect(response.data.products).toHaveLength(5)
           expect(response.data.products).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: "test-product",
-                // options: expect.arrayContaining([
-                //   expect.objectContaining({
-                //     id: expect.stringMatching(/^test-*/),
-                //     product_id: expect.stringMatching(/^test-*/),
-                //     created_at: expect.any(String),
-                //     updated_at: expect.any(String),
-                //   }),
-                // ]),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: expect.stringMatching(/^test-*/),
+                    product_id: expect.stringMatching(/^test-*/),
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
                 images: expect.arrayContaining([
                   expect.objectContaining({
                     id: expect.stringMatching(/^test-*/),
@@ -726,15 +743,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                   expect.objectContaining({
                     id: "test-variant_2",
@@ -749,15 +773,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                   expect.objectContaining({
                     id: "test-variant_1",
@@ -772,15 +803,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                   expect.objectContaining({
                     id: "test-variant-sale",
@@ -795,15 +833,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                 ]),
                 tags: expect.arrayContaining([
@@ -830,7 +875,7 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: "test-product1",
                 created_at: expect.any(String),
-                // options: [],
+                options: [],
                 variants: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-variant_4",
@@ -845,15 +890,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                   expect.objectContaining({
                     id: "test-variant_3",
@@ -868,15 +920,22 @@ medusaIntegrationTestRunner({
                     //     updated_at: expect.any(String),
                     //   }),
                     // ]),
-                    // options: expect.arrayContaining([
-                    //   expect.objectContaining({
-                    //     id: expect.stringMatching(/^test-variant-option*/),
-                    //     variant_id: expect.stringMatching(/^test-variant*/),
-                    //     option_id: expect.stringMatching(/^test-opt*/),
-                    //     created_at: expect.any(String),
-                    //     updated_at: expect.any(String),
-                    //   }),
-                    // ]),
+                    options: breaking(
+                      () =>
+                        expect.arrayContaining([
+                          expect.objectContaining({
+                            id: expect.stringMatching(/^test-variant-option*/),
+                            variant_id: expect.stringMatching(/^test-variant*/),
+                            option_id: expect.stringMatching(/^test-opt*/),
+                            created_at: expect.any(String),
+                            updated_at: expect.any(String),
+                          }),
+                        ]),
+                      () => ({
+                        // TODO: Add correct assertion here
+                        Denominations: "100",
+                      })
+                    ),
                   }),
                 ]),
                 tags: expect.arrayContaining([
@@ -905,7 +964,7 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 type: expect.any(Object),
                 collection: expect.any(Object),
-                // options: expect.any(Array),
+                options: expect.any(Array),
                 tags: expect.any(Array),
                 variants: expect.any(Array),
                 updated_at: expect.any(String),
@@ -916,7 +975,7 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 type: expect.any(Object),
                 collection: expect.any(Object),
-                // options: expect.any(Array),
+                options: expect.any(Array),
                 tags: expect.any(Array),
                 variants: expect.any(Array),
                 updated_at: expect.any(String),
@@ -927,7 +986,7 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 type: expect.any(Object),
                 collection: expect.any(Object),
-                // options: expect.any(Array),
+                options: expect.any(Array),
                 tags: expect.any(Array),
                 variants: expect.any(Array),
                 updated_at: expect.any(String),
@@ -1081,7 +1140,13 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
-            // options: [{ title: "size" }, { title: "color" }],
+            options: breaking(
+              () => [{ title: "size" }, { title: "color" }],
+              () => [
+                { title: "size", values: ["large"] },
+                { title: "color", values: ["green"] },
+              ]
+            ),
             variants: [
               {
                 title: "Test variant",
@@ -1100,7 +1165,13 @@ medusaIntegrationTestRunner({
                     amount: 30,
                   },
                 ],
-                // options: [{ value: "large" }, { value: "green" }],
+                options: breaking(
+                  () => [{ value: "large" }, { value: "green" }],
+                  () => ({
+                    size: "large",
+                    color: "green",
+                  })
+                ),
               },
             ],
           }
@@ -1158,33 +1229,40 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
               }),
-              // TODO: Collection isn't populated, investigate
-              // collection: expect.objectContaining({
-              //   id: "test-collection",
-              //   title: "Test collection",
-              //   created_at: expect.any(String),
-              //   updated_at: expect.any(String),
-              // }),
-              // options: expect.arrayContaining([
-              //   expect.objectContaining({
-              //     id: expect.stringMatching(/^opt_*/),
-              //     product_id: expect.stringMatching(/^prod_*/),
-              //     title: "size",
-              //     created_at: expect.any(String),
-              //     updated_at: expect.any(String),
-              //   }),
-              //   expect.objectContaining({
-              //     id: expect.stringMatching(/^opt_*/),
-              //     product_id: expect.stringMatching(/^prod_*/),
-              //     title: "color",
-              //     created_at: expect.any(String),
-              //     updated_at: expect.any(String),
-              //   }),
-              // ]),
+              collection: expect.objectContaining({
+                id: "test-collection",
+                title: "Test collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.stringMatching(/^opt_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
+                  title: "size",
+                  ...breaking(
+                    () => ({}),
+                    () => ({ values: ["large"] })
+                  ),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                }),
+                expect.objectContaining({
+                  id: expect.stringMatching(/^opt_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
+                  title: "color",
+                  ...breaking(
+                    () => ({}),
+                    () => ({ values: ["green"] })
+                  ),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                }),
+              ]),
               variants: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.stringMatching(/^variant_*/),
-                  // product_id: expect.stringMatching(/^prod_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
                   updated_at: expect.any(String),
                   created_at: expect.any(String),
                   title: "Test variant",
@@ -1214,24 +1292,31 @@ medusaIntegrationTestRunner({
                   //     variant_id: expect.stringMatching(/^variant_*/),
                   //   }),
                   // ]),
-                  // options: expect.arrayContaining([
-                  //   expect.objectContaining({
-                  //     value: "large",
-                  //     created_at: expect.any(String),
-                  //     updated_at: expect.any(String),
-                  //     variant_id: expect.stringMatching(/^variant_*/),
-                  //     option_id: expect.stringMatching(/^opt_*/),
-                  //     id: expect.stringMatching(/^optval_*/),
-                  //   }),
-                  //   expect.objectContaining({
-                  //     value: "green",
-                  //     created_at: expect.any(String),
-                  //     updated_at: expect.any(String),
-                  //     variant_id: expect.stringMatching(/^variant_*/),
-                  //     option_id: expect.stringMatching(/^opt_*/),
-                  //     id: expect.stringMatching(/^optval_*/),
-                  //   }),
-                  // ]),
+                  options: breaking(
+                    () =>
+                      expect.arrayContaining([
+                        expect.objectContaining({
+                          value: "large",
+                          created_at: expect.any(String),
+                          updated_at: expect.any(String),
+                          variant_id: expect.stringMatching(/^variant_*/),
+                          option_id: expect.stringMatching(/^opt_*/),
+                          id: expect.stringMatching(/^optval_*/),
+                        }),
+                        expect.objectContaining({
+                          value: "green",
+                          created_at: expect.any(String),
+                          updated_at: expect.any(String),
+                          variant_id: expect.stringMatching(/^variant_*/),
+                          option_id: expect.stringMatching(/^opt_*/),
+                          id: expect.stringMatching(/^optval_*/),
+                        }),
+                      ]),
+                    () => ({
+                      size: "large",
+                      color: "green",
+                    })
+                  ),
                 }),
               ]),
             })
@@ -1280,19 +1365,16 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
-            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant 1",
                 inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "large" }, { value: "green" }],
               },
               {
                 title: "Test variant 2",
                 inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "large" }, { value: "green" }],
               },
             ],
           }
@@ -1333,12 +1415,10 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
-            // options: [{ title: "Denominations" }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "100" }],
               },
             ],
           }
@@ -1404,15 +1484,19 @@ medusaIntegrationTestRunner({
                 }),
               ]),
               is_giftcard: false,
-              // options: expect.arrayContaining([
-              //   expect.objectContaining({
-              //     created_at: expect.any(String),
-              //     id: "test-option",
-              //     product_id: "test-product",
-              //     title: "test-option",
-              //     updated_at: expect.any(String),
-              //   }),
-              // ]),
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  created_at: expect.any(String),
+                  id: "test-option",
+                  product_id: "test-product",
+                  title: "test-option",
+                  ...breaking(
+                    () => ({}),
+                    () => ({ values: ["large"] })
+                  ),
+                  updated_at: expect.any(String),
+                }),
+              ]),
               // profile_id: expect.stringMatching(/^sp_*/),
               status: "published",
               tags: expect.arrayContaining([
@@ -1618,8 +1702,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      // TODO: Reenable once the options breaking changes are applied
-      describe.skip("DELETE /admin/products/:id/options/:option_id", () => {
+      describe("DELETE /admin/products/:id/options/:option_id", () => {
         beforeEach(async () => {
           await simpleProductFactory(dbConnection, {
             id: "test-product-without-variants",
@@ -1628,6 +1711,10 @@ medusaIntegrationTestRunner({
               {
                 id: "test-product-option",
                 title: "Test option",
+                ...breaking(
+                  () => ({}),
+                  () => ({ values: ["test"] })
+                ),
               },
             ],
           })
@@ -1636,15 +1723,20 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 product_id: "test-product-with-variant",
-                options: [
-                  { option_id: "test-product-option-1", value: "test" },
-                ],
+                options: breaking(
+                  () => [{ option_id: "test-product-option-1", value: "test" }],
+                  () => ({ "Test option 1": "test" })
+                ),
               },
             ],
             options: [
               {
                 id: "test-product-option-1",
                 title: "Test option 1",
+                ...breaking(
+                  () => ({}),
+                  () => ({ values: ["test"] })
+                ),
               },
             ],
           })
@@ -1670,7 +1762,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("deletes a values associated with deleted option", async () => {
+        // TODO: Change to using the API instead.
+        it.skip("deletes a values associated with deleted option", async () => {
           const response = await api.delete(
             "/admin/products/test-product-with-variant/options/test-product-option-1",
             adminHeaders
@@ -2522,13 +2615,11 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
-            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
                 inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "large" }, { value: "green" }],
               },
             ],
           }
@@ -2559,13 +2650,11 @@ medusaIntegrationTestRunner({
             images: ["test-image.png", "test-image-2.png"],
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
-            // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
                 inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
-                // options: [{ value: "large" }, { value: "green" }],
               },
             ],
           }

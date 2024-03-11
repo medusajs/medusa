@@ -568,12 +568,6 @@ export interface ProductOptionValueDTO {
    */
   option: ProductOptionDTO
   /**
-   * The associated product variant.
-   *
-   * @expandable
-   */
-  variant: ProductVariantDTO
-  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
@@ -790,12 +784,7 @@ export interface FilterableProductVariantProps
   /**
    * Filter product variants by their associated options.
    */
-  options?: {
-    /**
-     * IDs to filter options by.
-     */
-    id?: string[]
-  }
+  options?: Record<string, string>
 }
 
 /**
@@ -1001,6 +990,10 @@ export interface CreateProductOptionDTO {
    */
   title: string
   /**
+   * The product option values.
+   */
+  values: string[]
+  /**
    * The ID of the associated product.
    */
   product_id?: string
@@ -1009,21 +1002,8 @@ export interface CreateProductOptionDTO {
 export interface UpdateProductOptionDTO {
   id: string
   title?: string
+  values?: string[]
   product_id?: string
-}
-
-/**
- * @interface
- *
- * A product variant option to create.
- */
-export interface CreateProductVariantOptionDTO {
-  /**
-   * The value of a product variant option.
-   */
-  value: string
-
-  option_id?: string
 }
 
 /**
@@ -1101,9 +1081,9 @@ export interface CreateProductVariantDTO {
    */
   width?: number
   /**
-   * The product variant options to create and associate with the product variant.
+   * The product variant options to associate with the product variant.
    */
-  options?: CreateProductVariantOptionDTO[]
+  options?: Record<string, string>
   /**
    * Holds custom data in key-value pairs.
    */
@@ -1193,9 +1173,9 @@ export interface UpdateProductVariantDTO {
    */
   width?: number
   /**
-   * The product variant options to create and associate with the product variant.
+   * The product variant options to associate with the product variant.
    */
-  options?: CreateProductVariantOptionDTO[]
+  options?: Record<string, string>
   /**
    * Holds custom data in key-value pairs.
    */
@@ -1427,79 +1407,4 @@ export interface UpdateProductDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown>
-}
-
-export interface CreateProductOnlyDTO {
-  title: string
-  subtitle?: string
-  description?: string
-  is_giftcard?: boolean
-  discountable?: boolean
-  images?: { id?: string; url: string }[]
-  thumbnail?: string
-  handle?: string
-  status?: ProductStatus
-  collection_id?: string
-  width?: number
-  height?: number
-  length?: number
-  weight?: number
-  origin_country?: string
-  hs_code?: string
-  material?: string
-  mid_code?: string
-  metadata?: Record<string, unknown>
-  tags?: { id: string }[]
-  categories?: { id: string }[]
-  type_id?: string
-}
-
-export interface CreateProductVariantOnlyDTO {
-  product_id?: string
-  title: string
-  sku?: string
-  barcode?: string
-  ean?: string
-  upc?: string
-  allow_backorder?: boolean
-  inventory_quantity?: number
-  manage_inventory?: boolean
-  hs_code?: string
-  origin_country?: string
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
-  options?: (CreateProductVariantOptionDTO & { option: any })[]
-  metadata?: Record<string, unknown>
-}
-
-export interface UpdateProductVariantOnlyDTO {
-  id: string
-  title?: string
-  sku?: string
-  barcode?: string
-  ean?: string
-  upc?: string
-  allow_backorder?: boolean
-  inventory_quantity?: number
-  manage_inventory?: boolean
-  hs_code?: string
-  origin_country?: string
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
-  options?: (CreateProductVariantOptionDTO & { option: any })[]
-  metadata?: Record<string, unknown>
-}
-
-export interface CreateProductOptionOnlyDTO {
-  product_id?: string
-  product?: Record<any, any>
-  title: string
 }
