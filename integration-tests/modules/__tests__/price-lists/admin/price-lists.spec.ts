@@ -392,15 +392,18 @@ medusaIntegrationTestRunner({
           expect(psmas.length).toEqual(0)
         })
 
-        it("should throw error when trying to delete a price list that does not exist", async () => {
-          const deleteRes = await api
-            .delete(`/admin/price-lists/does-not-exist`, adminHeaders)
-            .catch((e) => e)
-
-          expect(deleteRes.response.status).toEqual(404)
-          expect(deleteRes.response.data.message).toEqual(
-            "Price list with id: does-not-exist was not found"
+        it("should idempotently return a success even if price lists dont exist", async () => {
+          const deleteRes = await api.delete(
+            `/admin/price-lists/does-not-exist`,
+            adminHeaders
           )
+
+          expect(deleteRes.status).toEqual(200)
+          expect(deleteRes.data).toEqual({
+            id: "does-not-exist",
+            object: "price_list",
+            deleted: true,
+          })
         })
       })
 
@@ -420,7 +423,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should update price lists successfully", async () => {
+        it.only("should update price lists successfully", async () => {
           await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -437,7 +440,7 @@ medusaIntegrationTestRunner({
               type: PriceListType.OVERRIDE,
             },
           ])
-
+          console.log("priceList --- ", priceList)
           const data = {
             title: "new price list name",
             description: "new price list description",

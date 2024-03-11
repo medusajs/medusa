@@ -109,7 +109,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         pricingModuleService.addPriceListPrices(
           priceListsToUpdate.map((priceList) => {
             return {
-              priceListId: priceList.id,
+              price_list_id: priceList.id,
               prices: priceList.prices
                 .filter((price) =>
                   variantIdPriceSetIdMap.has(price.variants?.[0]?.id)

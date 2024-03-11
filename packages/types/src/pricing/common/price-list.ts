@@ -426,7 +426,7 @@ export interface AddPriceListPricesDTO {
   /**
    * The ID of the price list to add prices to.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The prices to add.
    */
@@ -442,7 +442,7 @@ export interface UpdatePriceListPricesDTO {
   /**
    * The ID of the price list to add prices to.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The prices to add.
    */
@@ -458,7 +458,7 @@ export interface SetPriceListRulesDTO {
   /**
    * The ID of the price list to add rules to.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value
    * is the value(s) of the rule.
@@ -475,7 +475,7 @@ export interface RemovePriceListRulesDTO {
   /**
    * The ID of the price list to remove rules from.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The rules to remove from the price list. Each item being a rule type's `rule_attribute`.
    */

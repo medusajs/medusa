@@ -1169,7 +1169,7 @@ export default class PricingModuleService<
       .flat()
 
     for (const priceListData of data) {
-      priceListIds.push(priceListData.priceListId)
+      priceListIds.push(priceListData.price_list_id)
 
       for (const price of priceListData.prices) {
         moneyAmountIds.push(price.id)
@@ -1257,7 +1257,7 @@ export default class PricingModuleService<
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
-    for (const { priceListId, prices } of data) {
+    for (const { price_list_id: priceListId, prices } of data) {
       const priceList = priceListMap.get(priceListId)
 
       if (!priceList) {
@@ -1345,7 +1345,7 @@ export default class PricingModuleService<
     const priceSetIds: string[] = []
 
     for (const priceListData of data) {
-      priceListIds.push(priceListData.priceListId)
+      priceListIds.push(priceListData.price_list_id)
 
       for (const price of priceListData.prices) {
         ruleTypeAttributes.push(...Object.keys(price.rules || {}))
@@ -1417,7 +1417,7 @@ export default class PricingModuleService<
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
-    for (const { priceListId, prices } of data) {
+    for (const { price_list_id: priceListId, prices } of data) {
       const priceList = priceListMap.get(priceListId)
 
       if (!priceList) {
@@ -1488,7 +1488,7 @@ export default class PricingModuleService<
     sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.priceListService_.list(
-      { id: data.map((d) => d.priceListId) },
+      { id: data.map((d) => d.price_list_id) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
       },
@@ -1513,7 +1513,7 @@ export default class PricingModuleService<
 
     const priceRuleValues = new Map<string, Map<string, string[]>>()
 
-    for (const { priceListId, rules } of data) {
+    for (const { price_list_id: priceListId, rules } of data) {
       const priceList = priceListMap.get(priceListId)
 
       if (!priceList) {
@@ -1631,7 +1631,7 @@ export default class PricingModuleService<
     sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.priceListService_.list(
-      { id: data.map((d) => d.priceListId) },
+      { id: data.map((d) => d.price_list_id) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
       },
@@ -1641,7 +1641,7 @@ export default class PricingModuleService<
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
     const idsToDelete: string[] = []
-    for (const { priceListId, rules } of data) {
+    for (const { price_list_id: priceListId, rules } of data) {
       const priceList = priceListMap.get(priceListId)
 
       if (!priceList) {

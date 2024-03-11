@@ -686,7 +686,7 @@ describe("PriceList Service", () => {
     it("should add a price to a priceList successfully", async () => {
       await service.addPriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             {
               amount: 123,
@@ -754,7 +754,7 @@ describe("PriceList Service", () => {
       try {
         await service.addPriceListPrices([
           {
-            priceListId: "price-list-1",
+            price_list_id: "price-list-1",
             prices: [
               {
                 amount: 123,
@@ -794,7 +794,7 @@ describe("PriceList Service", () => {
 
       await service.addPriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             {
               amount: 123,
@@ -877,7 +877,7 @@ describe("PriceList Service", () => {
 
       await service.addPriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             {
               id: "test-price-id",
@@ -894,7 +894,7 @@ describe("PriceList Service", () => {
 
       await service.updatePriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             {
               id: "test-price-id",
@@ -979,7 +979,7 @@ describe("PriceList Service", () => {
 
       await service.addPriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             {
               id: "test-price-id",
@@ -995,7 +995,7 @@ describe("PriceList Service", () => {
       const error = await service
         .updatePriceListPrices([
           {
-            priceListId: "price-list-1",
+            price_list_id: "price-list-1",
             prices: [
               {
                 id: "test-price-id",
@@ -1022,7 +1022,7 @@ describe("PriceList Service", () => {
 
       await service.addPriceListPrices([
         {
-          priceListId: "price-list-1",
+          price_list_id: "price-list-1",
           prices: [
             { amount: 123, currency_code: "EUR", price_set_id: priceSet.id },
           ],
