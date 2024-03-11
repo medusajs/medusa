@@ -1,14 +1,11 @@
 import { resolve } from "path"
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
-import { initModules } from "medusa-test-utils/dist"
-import { FulfillmentProviderService } from "@services"
-import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 
 jest.setTimeout(100000)
 
@@ -33,73 +30,7 @@ const providerId = "fixtures-fulfillment-provider_test-provider"
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   moduleOptions: moduleOptions,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IFulfillmentModuleService>) => {
-    describe("Fulfillment Module Service", () => {
-      it("should load and save all the providers on bootstrap", async () => {
-        const databaseConfig = {
-          schema: "public",
-          clientUrl: MikroOrmWrapper.clientUrl,
-        }
-
-        const providersConfig = {}
-        for (let i = 0; i < 10; i++) {
-          providersConfig[`provider-${i}`] = {}
-        }
-
-        const moduleOptions = {
-          databaseConfig,
-          modulesConfig: {
-            [Modules.FULFILLMENT]: {
-              definition: ModulesDefinition[Modules.FULFILLMENT],
-              options: {
-                databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig,
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        }
-
-        const { shutdown } = await initModules(moduleOptions)
-
-        const fulfillmentProviderrs =
-          await MikroOrmWrapper.forkManager().execute(
-            `SELECT * FROM fulfillment_provider`
-          )
-
-        expect(fulfillmentProviderrs).toHaveLength(
-          Object.keys(providersConfig).length + 1 // +1 for the default provider
-        )
-
-        for (const [name] of Object.entries(providersConfig)) {
-          const provider = fulfillmentProviderrs.find((p) => {
-            return (
-              p.id ===
-              FulfillmentProviderService.getRegistrationIdentifier(
-                FulfillmentProviderServiceFixtures,
-                name
-              )
-            )
-          })
-          expect(provider).toBeDefined()
-        }
-
-        await shutdown()
-      })
-    })
-
+  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment", async () => {

@@ -255,7 +255,12 @@
     }
   },
   "draftOrders": {
-    "domain": "Draft Orders"
+    "domain": "Draft Orders",
+    "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "status": {
+      "open": "Open",
+      "completed": "Completed"
+    }
   },
   "discounts": {
     "domain": "Discounts",
