@@ -46,21 +46,6 @@ export const POST = async (
 ) => {
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
-
-  const [_, count] = await listPriceLists({
-    container: req.scope,
-    remoteQueryFields: adminPriceListRemoteQueryFields,
-    apiFields: ["id"],
-    variables: { filters: { id }, skip: 0, take: 1 },
-  })
-
-  if (count === 0) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Price list with id: ${id} was not found`
-    )
-  }
-
   const { errors } = await workflow.run({
     input: { priceListsData: [{ id, ...req.validatedBody }] },
     throwOnError: false,

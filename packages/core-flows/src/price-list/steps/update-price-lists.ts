@@ -13,6 +13,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  arrayDifference,
   buildPriceListRules,
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
@@ -30,6 +31,21 @@ export const updatePriceListsStep = createStep(
     const pricingModule = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )
+
+    const priceListIds = data.map((d) => d.id)
+    const priceLists = await pricingModule.listPriceLists({ id: priceListIds })
+
+    const diff = arrayDifference(
+      priceListIds,
+      priceLists.map((pl) => pl.id)
+    )
+
+    if (diff.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Price lists with id: ${diff.join(", ")} was not found`
+      )
+    }
 
     const variantIds: string[] = data
       .map((pl) => pl?.prices?.map((price) => price.variant_id!) || [])
