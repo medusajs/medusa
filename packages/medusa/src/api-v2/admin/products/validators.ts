@@ -14,7 +14,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { ProductTagReq, ProductTypeReq } from "../../../types/product"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
