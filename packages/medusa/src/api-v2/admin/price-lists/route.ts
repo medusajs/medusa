@@ -40,10 +40,8 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const workflow = createPriceListsWorkflow(req.scope)
-  const priceListsData = [req.validatedBody]
-
   const { result, errors } = await workflow.run({
-    input: { priceListsData },
+    input: { price_lists_data: [req.validatedBody] },
     throwOnError: false,
   })
 
