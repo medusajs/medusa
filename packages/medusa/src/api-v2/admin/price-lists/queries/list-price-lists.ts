@@ -30,7 +30,7 @@ export async function listPriceLists({
   })
 
   const { rows: priceLists, metadata } = await remoteQuery(queryObject)
-  console.log("priceLists -- ", priceLists)
+
   if (!metadata.count) {
     return [[], 0]
   }

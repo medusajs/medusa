@@ -419,7 +419,7 @@ medusaIntegrationTestRunner({
 
           expect(updateRes.response.status).toEqual(404)
           expect(updateRes.response.data.message).toEqual(
-            "Price list with id: does-not-exist was not found"
+            "Price lists with id: does-not-exist was not found"
           )
         })
 
