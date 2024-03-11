@@ -36,7 +36,6 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["fulfillment_set", "fulfillment_sets"],
       args: {
         entity: FulfillmentSet.name,
-        methodSuffix: "FulfillmentSets",
       },
     },
     {
