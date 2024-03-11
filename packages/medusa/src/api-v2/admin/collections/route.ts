@@ -1,10 +1,10 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "../../../types/routing"
 
-import { CreateProductOptionDTO } from "@medusajs/types"
-import { createProductOptionsWorkflow } from "@medusajs/core-flows"
+import { CreateProductCollectionDTO } from "@medusajs/types"
+import { createCollectionsWorkflow } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -12,12 +12,11 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
-  const productId = req.params.id
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_option",
+    entryPoint: "product_collection",
     variables: {
-      filters: { ...req.filterableFields, product_id: productId },
+      filters: req.filterableFields,
       order: req.listConfig.order,
       skip: req.listConfig.skip,
       take: req.listConfig.take,
@@ -25,10 +24,10 @@ export const GET = async (
     fields: req.listConfig.select as string[],
   })
 
-  const { rows: product_options, metadata } = await remoteQuery(queryObject)
+  const { rows: collections, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    product_options,
+    collections,
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
@@ -36,19 +35,17 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateProductOptionDTO>,
+  req: AuthenticatedMedusaRequest<CreateProductCollectionDTO>,
   res: MedusaResponse
 ) => {
-  const productId = req.params.id
   const input = [
     {
       ...req.validatedBody,
-      product_id: productId,
     },
   ]
 
-  const { result, errors } = await createProductOptionsWorkflow(req.scope).run({
-    input: { product_options: input },
+  const { result, errors } = await createCollectionsWorkflow(req.scope).run({
+    input: { collections: input },
     throwOnError: false,
   })
 
@@ -56,5 +53,5 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_option: result[0] })
+  res.status(200).json({ collection: result[0] })
 }
