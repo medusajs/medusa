@@ -108,9 +108,16 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
