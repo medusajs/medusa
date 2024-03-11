@@ -49,8 +49,8 @@ export const VariantTable = ({ onSave, order }: VariantTableProps) => {
 
   const { searchParams, raw } = useVariantTableQuery({
     pageSize: PAGE_SIZE,
-    prefix: "product_variant",
   })
+
   const { variants, count, isLoading, isError, error } = useAdminVariants(
     {
       ...searchParams,
@@ -120,7 +120,6 @@ export const VariantTable = ({ onSave, order }: VariantTableProps) => {
       state: rowSelection,
       updater,
     },
-    prefix: "product_variant",
   })
 
   if (isError) {
