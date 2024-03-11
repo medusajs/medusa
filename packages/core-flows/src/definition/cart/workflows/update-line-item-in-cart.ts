@@ -4,9 +4,10 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { getVariantPriceSetsStep } from ".."
 import { updateLineItemsStep } from "../../line-item/steps"
+import { getVariantPriceSetsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
 // - Confirm inventory exists (inventory module)
@@ -57,6 +58,9 @@ export const updateLineItemInCartWorkflow = createWorkflow(
     })
 
     refreshCartPromotionsStep({ id: input.cart.id })
+    refreshPaymentCollectionForCartStep({
+      cart_id: input.cart.id,
+    })
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 

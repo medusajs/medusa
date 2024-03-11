@@ -16,6 +16,7 @@ import {
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
+import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 // TODO: The AddToCartWorkflow are missing the following steps:
 // - Confirm inventory exists (inventory module)
@@ -96,6 +97,9 @@ export const addToCartWorkflow = createWorkflow(
     })
 
     refreshCartPromotionsStep({ id: input.cart.id })
+    refreshPaymentCollectionForCartStep({
+      cart_id: input.cart.id,
+    })
 
     return items
   }
