@@ -8156,7 +8156,7 @@ __metadata:
     "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
-    "@uiw/react-json-view": 2.0.0-alpha.10
+    "@uiw/react-json-view": ^2.0.0-alpha.17
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
@@ -9047,6 +9047,7 @@ __metadata:
     jsdom: ^22.1.0
     postcss: ^8.4.33
     prism-react-renderer: ^2.0.6
+    prismjs: ^1.29.0
     prop-types: ^15.8.1
     react: ^18.2.0
     react-currency-input-field: ^3.6.11
@@ -18958,14 +18959,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uiw/react-json-view@npm:2.0.0-alpha.10":
-  version: 2.0.0-alpha.10
-  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.10"
+"@uiw/react-json-view@npm:^2.0.0-alpha.17":
+  version: 2.0.0-alpha.17
+  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.17"
   peerDependencies:
     "@babel/runtime": ">=7.10.0"
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: d1278e92320251b1b61ecacd5c701989bd732ce4155b14a00b674d151c5b0da1b4a043b8696d23675006bf345559e56492960e33a9c0f40bc3c18eed031a136d
+  checksum: 6c8f10af40db9ae60da4b799fc391a544d2e6eec071d882d64050869b057e26fa6104c00de0406693a341c03a8017cb37c14136d803c9ff60e86c6e0d0187cbc
   languageName: node
   linkType: hard
 
@@ -43008,7 +43009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.27.0":
+"prismjs@npm:^1.27.0, prismjs@npm:^1.29.0":
   version: 1.29.0
   resolution: "prismjs@npm:1.29.0"
   checksum: d906c4c4d01b446db549b4f57f72d5d7e6ccaca04ecc670fb85cea4d4b1acc1283e945a9cbc3d81819084a699b382f970e02f9d1378e14af9808d366d9ed7ec6

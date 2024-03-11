@@ -81,7 +81,7 @@ You can learn how to create or generate a migration in [this documentation](./mi
 
 Here’s an example of a migration of the entity extended in this guide:
 
-```ts title="src/migration/1680013376180-changeProduct.ts"
+```ts title="src/migrations/1680013376180-changeProduct.ts"
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 class changeProduct1680013376180 implements MigrationInterface {
