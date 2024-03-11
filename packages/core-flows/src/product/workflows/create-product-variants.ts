@@ -1,5 +1,6 @@
-import { ProductTypes } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+
+import { ProductTypes } from "@medusajs/types"
 import { createProductVariantsStep } from "../steps"
 
 type WorkflowInput = {
@@ -13,5 +14,8 @@ export const createProductVariantsWorkflow = createWorkflow(
     input: WorkflowData<WorkflowInput>
   ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
     return createProductVariantsStep(input.product_variants)
+
+    // TODO: create inventory items
+    // TODO: attach inventory items to product variants
   }
 )
