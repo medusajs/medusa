@@ -18,41 +18,55 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Address from "./address"
-import LineItem from "./line-item"
+import OrderItem from "./order-item"
+import OrderSummary from "./order-summary"
 import ShippingMethod from "./shipping-method"
+import Transaction from "./transaction"
 
 type OptionalOrderProps =
   | "shipping_address"
   | "billing_address"
   | DAL.EntityDateColumns
 
-const regionIdIndex = createPsqlIndexStatementHelper({
+const RegionIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "region_id",
   where: "deleted_at IS NOT NULL",
 })
 
-const customerIdIndex = createPsqlIndexStatementHelper({
+const CustomerIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "customer_id",
   where: "deleted_at IS NOT NULL",
 })
 
-const salesChannelIdIndex = createPsqlIndexStatementHelper({
+const SalesChannelIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "customer_id",
   where: "deleted_at IS NOT NULL",
 })
 
-const orderDeletedAtIndex = createPsqlIndexStatementHelper({
+const OrderDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-const currencyCodeIndex = createPsqlIndexStatementHelper({
+const CurrencyCodeIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ShippingAddressIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "shipping_address_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const BillingAddressIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "billing_address_id",
   where: "deleted_at IS NOT NULL",
 })
 
@@ -67,21 +81,27 @@ export default class Order {
     columnType: "text",
     nullable: true,
   })
-  @regionIdIndex.MikroORMIndex()
+  @RegionIdIndex.MikroORMIndex()
   region_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
   })
-  @customerIdIndex.MikroORMIndex()
+  @CustomerIdIndex.MikroORMIndex()
   customer_id: string | null = null
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @Property({
     columnType: "text",
     nullable: true,
   })
-  @salesChannelIdIndex.MikroORMIndex()
+  @SalesChannelIdIndex.MikroORMIndex()
   sales_channel_id: string | null = null
 
   @Enum({ items: () => OrderStatus, default: OrderStatus.PENDING })
@@ -91,29 +111,29 @@ export default class Order {
   email: string | null = null
 
   @Property({ columnType: "text" })
-  @currencyCodeIndex.MikroORMIndex()
+  @CurrencyCodeIndex.MikroORMIndex()
   currency_code: string
 
   @Property({ columnType: "text", nullable: true })
+  @ShippingAddressIdIndex.MikroORMIndex()
   shipping_address_id?: string | null
 
   @ManyToOne({
     entity: () => Address,
     fieldName: "shipping_address_id",
     nullable: true,
-    index: "IDX_order_shipping_address_id",
     cascade: [Cascade.PERSIST],
   })
   shipping_address?: Address | null
 
   @Property({ columnType: "text", nullable: true })
+  @BillingAddressIdIndex.MikroORMIndex()
   billing_address_id?: string | null
 
   @ManyToOne({
     entity: () => Address,
     fieldName: "billing_address_id",
     nullable: true,
-    index: "IDX_order_billing_address_id",
     cascade: [Cascade.PERSIST],
   })
   billing_address?: Address | null
@@ -121,18 +141,28 @@ export default class Order {
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
 
+  @OneToMany(() => OrderSummary, (summary) => summary.order, {
+    cascade: [Cascade.PERSIST],
+  })
+  summary = new Collection<OrderSummary>(this)
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
-    cascade: [Cascade.REMOVE],
+  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.order, {
+    cascade: [Cascade.PERSIST],
   })
-  items = new Collection<LineItem>(this)
+  items = new Collection<OrderItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   shipping_methods = new Collection<ShippingMethod>(this)
+
+  @OneToMany(() => Transaction, (transaction) => transaction.order, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Transaction>(this)
 
   @Property({
     onCreate: () => new Date(),
@@ -150,7 +180,7 @@ export default class Order {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  @orderDeletedAtIndex.MikroORMIndex()
+  @OrderDeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
 
   @Property({ columnType: "timestamptz", nullable: true })

@@ -4,10 +4,17 @@ import {
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
   FilterableShippingOptionProps,
+  FilterableShippingOptionRuleProps,
+  FilterableShippingOptionTypeProps,
+  FilterableShippingProfileProps,
+  FulfillmentDTO,
   FulfillmentSetDTO,
   GeoZoneDTO,
   ServiceZoneDTO,
   ShippingOptionDTO,
+  ShippingOptionRuleDTO,
+  ShippingOptionTypeDTO,
+  ShippingProfileDTO,
 } from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
@@ -17,11 +24,16 @@ import {
   CreateGeoZoneDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
+  CreateShippingOptionRuleDTO,
+  UpdateFulfillmentDTO,
   UpdateFulfillmentSetDTO,
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
+  UpdateShippingOptionRuleDTO,
 } from "./mutations"
+import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
+import { CreateFulfillmentDTO } from "./mutations/fulfillment"
 
 export interface IFulfillmentModuleService extends IModuleService {
   /**
@@ -67,6 +79,21 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Create a new shipping profile
+   * @param data
+   * @param sharedContext
+   */
+  createShippingProfiles(
+    data: CreateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO[]>
+
+  createShippingProfiles(
+    data: CreateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO>
+
+  /**
    * Create a new geo zone
    * @param data
    * @param sharedContext
@@ -79,6 +106,20 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: CreateGeoZoneDTO,
     sharedContext?: Context
   ): Promise<GeoZoneDTO>
+
+  /**
+   * Create a new shipping option rules
+   * @param data
+   * @param sharedContext
+   */
+  createShippingOptionRules(
+    data: CreateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+  createShippingOptionRules(
+    data: CreateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
 
   /**
    * Update a fulfillment set
@@ -123,6 +164,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Update a shipping profile
+   * @param data
+   * @param sharedContext
+   */
+  updateShippingProfiles(
+    data: CreateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO[]>
+  updateShippingProfiles(
+    data: CreateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO>
+
+  /**
    * Update a geo zone
    * @param data
    * @param sharedContext
@@ -135,6 +190,31 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: UpdateGeoZoneDTO,
     sharedContext?: Context
   ): Promise<GeoZoneDTO>
+
+  /**
+   * Update a shipping option rule
+   * @param data
+   * @param sharedContext
+   */
+  updateShippingOptionRules(
+    data: UpdateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+  updateShippingOptionRules(
+    data: UpdateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
+
+  /**
+   * Update a fulfillment
+   * @param data
+   * @param sharedContext
+   */
+  updateFulfillment(
+    id: string,
+    data: UpdateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
 
   /**
    * Delete a fulfillment set
@@ -161,12 +241,31 @@ export interface IFulfillmentModuleService extends IModuleService {
   deleteShippingOptions(id: string, sharedContext?: Context): Promise<void>
 
   /**
+   * Delete a shipping profile
+   * @param ids
+   * @param sharedContext
+   */
+  deleteShippingProfiles(ids: string[], sharedContext?: Context): Promise<void>
+  deleteShippingProfiles(id: string, sharedContext?: Context): Promise<void>
+
+  /**
    * Delete a geo zone
    * @param ids
    * @param sharedContext
    */
   deleteGeoZones(ids: string[], sharedContext?: Context): Promise<void>
   deleteGeoZones(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * Delete a shipping option rule
+   * @param ids
+   * @param sharedContext
+   */
+  deleteShippingOptionRules(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteShippingOptionRules(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * Retrieve a fulfillment set
@@ -205,6 +304,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Retrieve a shipping profile
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveShippingProfile(
+    id: string,
+    config?: FindConfig<ShippingProfileDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO>
+
+  /**
    * Retrieve a geo zone
    * @param id
    * @param config
@@ -215,6 +326,42 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<GeoZoneDTO>,
     sharedContext?: Context
   ): Promise<GeoZoneDTO>
+
+  /**
+   * Retrieve a shipping option rule
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveShippingOptionRule(
+    id: string,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
+
+  /**
+   * Retrieve a shipping option type
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveShippingOptionType(
+    id: string,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionTypeDTO>
+
+  /**
+   * Retrieve a fulfillment
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveFulfillment(
+    id: string,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
 
   /**
    * List fulfillment sets
@@ -253,6 +400,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO[]>
 
   /**
+   * List shipping profiles
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingProfiles(
+    filters?: FilterableShippingProfileProps,
+    config?: FindConfig<ShippingProfileDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO[]>
+
+  /**
    * List geo zones
    * @param filters
    * @param config
@@ -263,6 +422,42 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<GeoZoneDTO>,
     sharedContext?: Context
   ): Promise<GeoZoneDTO[]>
+
+  /**
+   * List shipping option rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionRules(
+    filters?: FilterableShippingOptionRuleProps,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+
+  /**
+   * List shipping option types
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionTypes(
+    filters?: FilterableShippingOptionTypeProps,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionTypeDTO[]>
+
+  /**
+   * List fulfillments
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO[]>
 
   /**
    * List and count fulfillment sets
@@ -301,6 +496,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<[ShippingOptionDTO[], number]>
 
   /**
+   * List and count shipping profiles
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountShippingProfiles(
+    filters?: FilterableShippingProfileProps,
+    config?: FindConfig<ShippingProfileDTO>,
+    sharedContext?: Context
+  ): Promise<[ShippingProfileDTO[], number]>
+
+  /**
    * List and count geo zones
    * @param filters
    * @param config
@@ -311,6 +518,42 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<GeoZoneDTO>,
     sharedContext?: Context
   ): Promise<[GeoZoneDTO[], number]>
+
+  /**
+   * List and count shipping option rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountShippingOptionRules(
+    filters?: FilterableShippingOptionRuleProps,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<[ShippingOptionRuleDTO[], number]>
+
+  /**
+   * List and count shipping options types
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountShippingOptionTypes(
+    filters?: FilterableShippingOptionTypeProps,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[ShippingOptionTypeDTO[], number]>
+
+  /**
+   * List and count fulfillments
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<[FulfillmentDTO[], number]>
 
   /**
    * Soft delete fulfillment sets
@@ -349,6 +592,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<Record<string, string[]> | void>
 
   /**
+   * Soft delete shipping profiles
+   * @param shippingProfileIds
+   * @param config
+   * @param sharedContext
+   */
+  softDeleteShippingProfiles<TReturnableLinkableKeys extends string = string>(
+    shippingProfileIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
    * Soft delete geo zones
    * @param geoZoneIds
    * @param config
@@ -365,4 +620,33 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  // TODO define needed soft delete/delete/restore methods
+
+  /**
+   * Retrieve the available fulfillment options for the given data.
+   */
+  retrieveFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, unknown>[]>
+
+  /**
+   * Create a new fulfillment including into the third party provider
+   * @param data
+   * @param sharedContext
+   */
+  createFulfillment(
+    data: CreateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
+
+  /**
+   * Cancel the given fulfillment including into the third party provider
+   * @param id
+   * @param sharedContext
+   */
+  cancelFulfillment(
+    id: string,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
 }

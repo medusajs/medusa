@@ -1,39 +1,76 @@
 import {
   Context,
   DAL,
+  FilterableFulfillmentSetProps,
+  FilterableShippingOptionProps,
+  FilterQuery,
+  FindConfig,
+  FulfillmentDTO,
   FulfillmentTypes,
   IFulfillmentModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  ShippingOptionDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
+  getSetDifference,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-  getSetDifference
 } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
+import {
+  Fulfillment,
+  FulfillmentSet,
+  GeoZone,
+  ServiceZone,
+  ShippingOption,
+  ShippingOptionRule,
+  ShippingOptionType,
+  ShippingProfile,
+} from "@models"
+import { isContextValid, validateRules } from "@utils"
+import FulfillmentProviderService from "./fulfillment-provider"
 
-const generateMethodForModels = [ServiceZone, ShippingOption, GeoZone]
+const generateMethodForModels = [
+  ServiceZone,
+  ShippingOption,
+  GeoZone,
+  ShippingProfile,
+  ShippingOptionRule,
+  ShippingOptionType,
+  // Not adding Fulfillment to not auto generate the methods under the hood and only provide the methods we want to expose8
+]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   fulfillmentSetService: ModulesSdkTypes.InternalModuleService<any>
   serviceZoneService: ModulesSdkTypes.InternalModuleService<any>
   geoZoneService: ModulesSdkTypes.InternalModuleService<any>
+  shippingProfileService: ModulesSdkTypes.InternalModuleService<any>
+  shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
+  shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
+  shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentProviderService: FulfillmentProviderService
+  fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
     TEntity extends FulfillmentSet = FulfillmentSet,
     TServiceZoneEntity extends ServiceZone = ServiceZone,
-    TGeoZoneEntity extends GeoZone = GeoZone
+    TGeoZoneEntity extends GeoZone = GeoZone,
+    TShippingProfileEntity extends ShippingProfile = ShippingProfile,
+    TShippingOptionEntity extends ShippingOption = ShippingOption,
+    TShippingOptionRuleEntity extends ShippingOptionRule = ShippingOptionRule,
+    TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType,
+    TFulfillmentEntity extends Fulfillment = Fulfillment
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -43,6 +80,9 @@ export default class FulfillmentModuleService<
       ServiceZone: { dto: FulfillmentTypes.ServiceZoneDTO }
       ShippingOption: { dto: FulfillmentTypes.ShippingOptionDTO }
       GeoZone: { dto: FulfillmentTypes.GeoZoneDTO }
+      ShippingProfile: { dto: FulfillmentTypes.ShippingProfileDTO }
+      ShippingOptionRule: { dto: FulfillmentTypes.ShippingOptionRuleDTO }
+      ShippingOptionType: { dto: FulfillmentTypes.ShippingOptionTypeDTO }
     }
   >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService
@@ -51,6 +91,12 @@ export default class FulfillmentModuleService<
   protected readonly fulfillmentSetService_: ModulesSdkTypes.InternalModuleService<TEntity>
   protected readonly serviceZoneService_: ModulesSdkTypes.InternalModuleService<TServiceZoneEntity>
   protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
+  protected readonly shippingProfileService_: ModulesSdkTypes.InternalModuleService<TShippingProfileEntity>
+  protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
+  protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
+  protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
 
   constructor(
     {
@@ -58,6 +104,12 @@ export default class FulfillmentModuleService<
       fulfillmentSetService,
       serviceZoneService,
       geoZoneService,
+      shippingProfileService,
+      shippingOptionService,
+      shippingOptionRuleService,
+      shippingOptionTypeService,
+      fulfillmentProviderService,
+      fulfillmentService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -67,10 +119,180 @@ export default class FulfillmentModuleService<
     this.fulfillmentSetService_ = fulfillmentSetService
     this.serviceZoneService_ = serviceZoneService
     this.geoZoneService_ = geoZoneService
+    this.shippingProfileService_ = shippingProfileService
+    this.shippingOptionService_ = shippingOptionService
+    this.shippingOptionRuleService_ = shippingOptionRuleService
+    this.shippingOptionTypeService_ = shippingOptionTypeService
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.fulfillmentService_ = fulfillmentService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  protected static normalizeShippingOptionsListParams(
+    filters: FilterableShippingOptionProps = {},
+    config: FindConfig<ShippingOptionDTO> = {}
+  ) {
+    let { fulfillment_set_id, fulfillment_set_type, context, ...where } =
+      filters
+
+    const normalizedConfig = { ...config }
+    normalizedConfig.relations = [
+      "rules",
+      "type",
+      "shipping_profile",
+      "fulfillment_provider",
+      ...(normalizedConfig.relations ?? []),
+    ]
+    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
+    normalizedConfig.take =
+      normalizedConfig.take ?? (context ? null : undefined)
+
+    let normalizedFilters = { ...where } as FilterQuery
+
+    if (fulfillment_set_id || fulfillment_set_type) {
+      const fulfillmentSetConstraints = {}
+
+      if (fulfillment_set_id) {
+        fulfillmentSetConstraints["id"] = fulfillment_set_id
+      }
+
+      if (fulfillment_set_type) {
+        fulfillmentSetConstraints["type"] = fulfillment_set_type
+      }
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          fulfillment_set: fulfillmentSetConstraints,
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.fulfillment_set")
+    }
+
+    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
+
+    return {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    }
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async listShippingOptions(
+    filters: FilterableShippingOptionProps = {},
+    config: FindConfig<ShippingOptionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
+    const {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    } = FulfillmentModuleService.normalizeShippingOptionsListParams(
+      filters,
+      config
+    )
+
+    let shippingOptions = await this.shippingOptionService_.list(
+      normalizedFilters,
+      normalizedConfig,
+      sharedContext
+    )
+
+    // Apply rules context filtering
+    if (context) {
+      shippingOptions = shippingOptions.filter((shippingOption) => {
+        if (!shippingOption.rules?.length) {
+          return true
+        }
+
+        return isContextValid(
+          context,
+          shippingOption.rules.map((r) => r)
+        )
+      })
+    }
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO[]
+    >(shippingOptions, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveFulfillment(
+    id: string,
+    config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const fulfillment = await this.fulfillmentService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  async retrieveFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, any>[]> {
+    return await this.fulfillmentProviderService_.getFulfillmentOptions(
+      providerId
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async listFulfillments(
+    filters: FulfillmentTypes.FilterableFulfillmentProps = {},
+    config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO[]> {
+    const fulfillments = await this.fulfillmentService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.FulfillmentDTO[]
+    >(fulfillments, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[FulfillmentDTO[], number]> {
+    const [fulfillments, count] = await this.fulfillmentService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO[]>(
+        fulfillments,
+        {
+          populate: true,
+        }
+      ),
+      count,
+    ]
   }
 
   create(
@@ -179,7 +401,7 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createShippingOptions(
     data:
       | FulfillmentTypes.CreateShippingOptionDTO[]
@@ -188,7 +410,98 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
   > {
-    return []
+    const createdShippingOptions = await this.createShippingOptions_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
+    >(createdShippingOptions, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingOptions_(
+    data:
+      | FulfillmentTypes.CreateShippingOptionDTO[]
+      | FulfillmentTypes.CreateShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
+    let data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const rules = data_.flatMap((d) => d.rules)
+    if (rules.length) {
+      validateRules(rules as Record<string, unknown>[])
+    }
+
+    const createdShippingOptions = await this.shippingOptionService_.create(
+      data_,
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? createdShippingOptions
+      : createdShippingOptions[0]
+  }
+
+  createShippingProfiles(
+    data: FulfillmentTypes.CreateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
+  createShippingProfiles(
+    data: FulfillmentTypes.CreateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingProfiles(
+    data:
+      | FulfillmentTypes.CreateShippingProfileDTO[]
+      | FulfillmentTypes.CreateShippingProfileDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
+  > {
+    const createdShippingProfiles = await this.createShippingProfiles_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingProfileDTO
+      | FulfillmentTypes.ShippingProfileDTO[]
+    >(createdShippingProfiles, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingProfiles_(
+    data:
+      | FulfillmentTypes.CreateShippingProfileDTO[]
+      | FulfillmentTypes.CreateShippingProfileDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingProfileEntity[] | TShippingProfileEntity> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const createdShippingProfiles = await this.shippingProfileService_.create(
+      data_,
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? createdShippingProfiles
+      : createdShippingProfiles[0]
   }
 
   createGeoZones(
@@ -214,6 +527,110 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
       createdGeoZones,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  async createShippingOptionRules(
+    data: FulfillmentTypes.CreateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO[]>
+  async createShippingOptionRules(
+    data: FulfillmentTypes.CreateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
+
+  @InjectManager("baseRepository_")
+  async createShippingOptionRules(
+    data:
+      | FulfillmentTypes.CreateShippingOptionRuleDTO[]
+      | FulfillmentTypes.CreateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    | FulfillmentTypes.ShippingOptionRuleDTO
+    | FulfillmentTypes.ShippingOptionRuleDTO[]
+  > {
+    const createdShippingOptionRules = await this.createShippingOptionRules_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingOptionRuleDTO
+      | FulfillmentTypes.ShippingOptionRuleDTO[]
+    >(createdShippingOptionRules, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingOptionRules_(
+    data:
+      | FulfillmentTypes.CreateShippingOptionRuleDTO[]
+      | FulfillmentTypes.CreateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    validateRules(data_ as unknown as Record<string, unknown>[])
+
+    const createdShippingOptionRules =
+      await this.shippingOptionRuleService_.create(data_, sharedContext)
+
+    return Array.isArray(data)
+      ? createdShippingOptionRules
+      : createdShippingOptionRules[0]
+  }
+
+  @InjectManager("baseRepository_")
+  async createFulfillment(
+    data: FulfillmentTypes.CreateFulfillmentDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const { order, ...fulfillmentDataToCreate } = data
+
+    const fulfillment = await this.fulfillmentService_.create(
+      fulfillmentDataToCreate,
+      sharedContext
+    )
+
+    const {
+      items,
+      data: fulfillmentData,
+      provider_id,
+      ...fulfillmentRest
+    } = fulfillment
+
+    let fulfillmentThirdPartyData!: any
+    try {
+      fulfillmentThirdPartyData =
+        await this.fulfillmentProviderService_.createFulfillment(
+          provider_id,
+          fulfillmentData || {},
+          items.map((i) => i),
+          order,
+          fulfillmentRest
+        )
+      await this.fulfillmentService_.update(
+        {
+          id: fulfillment.id,
+          data: fulfillmentThirdPartyData ?? {},
+        },
+        sharedContext
+      )
+    } catch (error) {
+      await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
+      throw error
+    }
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment,
       {
         populate: true,
       }
@@ -267,6 +684,7 @@ export default class FulfillmentModuleService<
       },
       {
         relations: ["service_zones", "service_zones.geo_zones"],
+        take: fulfillmentSetIds.length,
       },
       sharedContext
     )
@@ -449,6 +867,7 @@ export default class FulfillmentModuleService<
       },
       {
         relations: ["geo_zones"],
+        take: serviceZoneIds.length,
       },
       sharedContext
     )
@@ -473,7 +892,6 @@ export default class FulfillmentModuleService<
       serviceZones.map((s) => [s.id, s])
     )
 
-    const serviceZoneIdsToDelete: string[] = []
     const geoZoneIdsToDelete: string[] = []
 
     data_.forEach((serviceZone) => {
@@ -555,7 +973,7 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async updateShippingOptions(
     data:
       | FulfillmentTypes.UpdateShippingOptionDTO[]
@@ -563,6 +981,143 @@ export default class FulfillmentModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    const updatedShippingOptions = await this.updateShippingOptions_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
+    >(updatedShippingOptions, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingOptions_(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionDTO[]
+      | FulfillmentTypes.UpdateShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
+    const dataArray = Array.isArray(data) ? data : [data]
+
+    if (!dataArray.length) {
+      return []
+    }
+
+    const shippingOptionIds = dataArray.map((s) => s.id)
+    if (!shippingOptionIds.length) {
+      return []
+    }
+
+    const shippingOptions = await this.shippingOptionService_.list(
+      {
+        id: shippingOptionIds,
+      },
+      {
+        relations: ["rules"],
+        take: shippingOptionIds.length,
+      },
+      sharedContext
+    )
+    const existingShippingOptions = new Map(
+      shippingOptions.map((s) => [s.id, s])
+    )
+
+    FulfillmentModuleService.validateMissingShippingOptions_(
+      shippingOptions,
+      dataArray
+    )
+
+    const ruleIdsToDelete: string[] = []
+    dataArray.forEach((shippingOption) => {
+      if (!shippingOption.rules) {
+        return
+      }
+
+      const existingShippingOption = existingShippingOptions.get(
+        shippingOption.id
+      )! // Garuantueed to exist since the validation above have been performed
+      const existingRules = existingShippingOption.rules
+
+      FulfillmentModuleService.validateMissingShippingOptionRules(
+        existingShippingOption,
+        shippingOption
+      )
+
+      const existingRulesMap = new Map(
+        existingRules.map((rule) => [rule.id, rule])
+      )
+
+      const updatedRules = shippingOption.rules
+      const updatedRuleIds = updatedRules
+        .map((r) => "id" in r && r.id)
+        .filter((id): id is string => !!id)
+
+      const toDeleteRuleIds = arrayDifference(
+        updatedRuleIds,
+        Array.from(existingRulesMap.keys())
+      ) as string[]
+
+      if (toDeleteRuleIds.length) {
+        ruleIdsToDelete.push(...toDeleteRuleIds)
+      }
+
+      const newRules = updatedRules
+        .map((rule) => {
+          if (!("id" in rule)) {
+            return rule
+          }
+          return
+        })
+        .filter(Boolean)
+
+      validateRules(newRules as Record<string, unknown>[])
+
+      shippingOption.rules = shippingOption.rules.map((rule) => {
+        if (!("id" in rule)) {
+          return rule
+        }
+        return existingRulesMap.get(rule.id)!
+      })
+    })
+
+    if (ruleIdsToDelete.length) {
+      await this.shippingOptionRuleService_.delete(
+        ruleIdsToDelete,
+        sharedContext
+      )
+    }
+
+    const updatedShippingOptions = await this.shippingOptionService_.update(
+      dataArray,
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? updatedShippingOptions
+      : updatedShippingOptions[0]
+  }
+
+  updateShippingProfiles(
+    data: FulfillmentTypes.UpdateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
+  updateShippingProfiles(
+    data: FulfillmentTypes.UpdateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingProfiles(
+    data:
+      | FulfillmentTypes.UpdateShippingProfileDTO
+      | FulfillmentTypes.UpdateShippingProfileDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
     return []
   }
@@ -595,5 +1150,190 @@ export default class FulfillmentModuleService<
     })
 
     return Array.isArray(data) ? serialized : serialized[0]
+  }
+
+  updateShippingOptionRules(
+    data: FulfillmentTypes.UpdateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO[]>
+  updateShippingOptionRules(
+    data: FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
+
+  @InjectManager("baseRepository_")
+  async updateShippingOptionRules(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    | FulfillmentTypes.ShippingOptionRuleDTO[]
+    | FulfillmentTypes.ShippingOptionRuleDTO
+  > {
+    const updatedShippingOptionRules = await this.updateShippingOptionRules_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingOptionRuleDTO
+      | FulfillmentTypes.ShippingOptionRuleDTO[]
+    >(updatedShippingOptionRules, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingOptionRules_(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    validateRules(data_ as unknown as Record<string, unknown>[])
+
+    const updatedShippingOptionRules =
+      await this.shippingOptionRuleService_.update(data_, sharedContext)
+
+    return Array.isArray(data)
+      ? updatedShippingOptionRules
+      : updatedShippingOptionRules[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateFulfillment(
+    id: string,
+    data: FulfillmentTypes.UpdateFulfillmentDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const fulfillment = await this.fulfillmentService_.update(
+      { id, ...data },
+      sharedContext
+    )
+
+    const serialized =
+      await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+        fulfillment,
+        {
+          populate: true,
+        }
+      )
+
+    return Array.isArray(serialized) ? serialized[0] : serialized
+  }
+
+  @InjectManager("baseRepository_")
+  async cancelFulfillment(
+    id: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentDTO> {
+    const canceledAt = new Date()
+
+    let fulfillment = await this.fulfillmentService_.retrieve(
+      id,
+      {},
+      sharedContext
+    )
+
+    FulfillmentModuleService.canCancelFulfillmentOrThrow(fulfillment)
+
+    // Make this action idempotent
+    if (!fulfillment.canceled_at) {
+      try {
+        await this.fulfillmentProviderService_.cancelFulfillment(
+          fulfillment.provider_id,
+          fulfillment.data ?? {}
+        )
+      } catch (error) {
+        throw error
+      }
+
+      fulfillment = await this.fulfillmentService_.update(
+        {
+          id,
+          canceled_at: canceledAt,
+        },
+        sharedContext
+      )
+    }
+
+    const result = await this.baseRepository_.serialize(fulfillment, {
+      populate: true,
+    })
+
+    return Array.isArray(result) ? result[0] : result
+  }
+
+  protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {
+    if (fulfillment.shipped_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already shipped`
+      )
+    }
+
+    if (fulfillment.delivered_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Fulfillment with id ${fulfillment.id} already delivered`
+      )
+    }
+
+    return true
+  }
+
+  protected static validateMissingShippingOptions_(
+    shippingOptions: ShippingOption[],
+    shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
+  ) {
+    const missingShippingOptionIds = arrayDifference(
+      shippingOptionsData.map((s) => s.id),
+      shippingOptions.map((s) => s.id)
+    )
+
+    if (missingShippingOptionIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following shipping options do not exist: ${Array.from(
+          missingShippingOptionIds
+        ).join(", ")}`
+      )
+    }
+  }
+
+  protected static validateMissingShippingOptionRules(
+    shippingOption: ShippingOption,
+    shippingOptionUpdateData: FulfillmentTypes.UpdateShippingOptionDTO
+  ) {
+    if (!shippingOptionUpdateData.rules) {
+      return
+    }
+
+    const existingRules = shippingOption.rules
+
+    const rulesSet = new Set(existingRules.map((r) => r.id))
+    // Only validate the rules that have an id to validate that they really exists in the shipping option
+    const expectedRuleSet = new Set(
+      shippingOptionUpdateData.rules
+        .map((r) => "id" in r && r.id)
+        .filter((id): id is string => !!id)
+    )
+    const nonAlreadyExistingRules = getSetDifference(expectedRuleSet, rulesSet)
+
+    if (nonAlreadyExistingRules.size) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following rules does not exists: ${Array.from(
+          nonAlreadyExistingRules
+        ).join(", ")} on shipping option ${shippingOptionUpdateData.id}`
+      )
+    }
   }
 }

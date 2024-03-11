@@ -1,5 +1,13 @@
 import "reflect-metadata"
 
+import { Transform, Type } from "class-transformer"
+import {
+  IsDate,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   FindManyOptions,
   FindOneOptions,
@@ -8,20 +16,12 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
-import {
-  IsDate,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator"
-import { Transform, Type } from "class-transformer"
 
-import { BaseEntity } from "../interfaces"
-import { ClassConstructor } from "./global"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import { BaseEntity } from "../interfaces"
 import { transformDate } from "../utils/validators/date-transform"
+import { ClassConstructor } from "./global"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -545,14 +545,24 @@ export class FindPaginationParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 20
+
+  /**
+   * {@inheritDoc RequestQueryFields.order}
+   */
+  @IsString()
+  @IsOptional()
+  @Type(() => String)
+  order?: string
 }
 
 export function extendedFindParamsMixin({
   limit,
   offset,
+  order,
 }: {
   limit?: number
   offset?: number
+  order?: string
 } = {}): ClassConstructor<FindParams & FindPaginationParams> {
   /**
    * {@inheritDoc FindParams}
@@ -575,6 +585,14 @@ export function extendedFindParamsMixin({
     @IsOptional()
     @Type(() => Number)
     limit?: number = limit ?? 20
+
+    /**
+     * {@inheritDoc FindPaginationParams.order}
+     */
+    @IsString()
+    @IsOptional()
+    @Type(() => String)
+    order?: string = order
   }
 
   return FindExtendedPaginationParams

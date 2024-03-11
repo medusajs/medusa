@@ -67,10 +67,11 @@ export type SharedResources = {
   }
 }
 
-async function loadModules(
+export async function loadModules(
   modulesConfig,
   sharedContainer,
-  migrationOnly = false
+  migrationOnly = false,
+  loaderOnly = false
 ) {
   const allModules = {}
 
@@ -111,7 +112,12 @@ async function loadModules(
         moduleDefinition: definition as ModuleDefinition,
         moduleExports,
         migrationOnly,
+        loaderOnly,
       })) as LoadedModule
+
+      if (loaderOnly) {
+        return
+      }
 
       const service = loaded[moduleName]
       sharedContainer.register({
@@ -207,6 +213,10 @@ export type MedusaAppOptions = {
   remoteFetchData?: RemoteFetchDataCallback
   injectedDependencies?: any
   onApplicationStartCb?: () => void
+  /**
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   */
+  loaderOnly?: boolean
 }
 
 async function MedusaApp_({
@@ -221,6 +231,7 @@ async function MedusaApp_({
   injectedDependencies = {},
   onApplicationStartCb,
   migrationOnly = false,
+  loaderOnly = false,
 }: MedusaAppOptions & { migrationOnly?: boolean } = {}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
@@ -285,7 +296,25 @@ async function MedusaApp_({
     })
   }
 
-  const allModules = await loadModules(modules, sharedContainer_, migrationOnly)
+  const allModules = await loadModules(
+    modules,
+    sharedContainer_,
+    migrationOnly,
+    loaderOnly
+  )
+
+  if (loaderOnly) {
+    return {
+      modules: allModules,
+      link: undefined,
+      query: async () => {
+        throw new Error("Querying not allowed in loaderOnly mode")
+      },
+      runMigrations: async () => {
+        throw new Error("Migrations not allowed in loaderOnly mode")
+      },
+    }
+  }
 
   // Share Event bus with link modules
   injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
@@ -293,16 +322,13 @@ async function MedusaApp_({
       allowUnregistered: true,
     })
 
-  const {
-    remoteLink,
-    linkResolution,
-    runMigrations: linkModuleMigration,
-  } = await initializeLinks({
-    config: linkModuleOptions,
-    linkModules,
-    injectedDependencies,
-    moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
-  })
+  const { remoteLink, runMigrations: linkModuleMigration } =
+    await initializeLinks({
+      config: linkModuleOptions,
+      linkModules,
+      injectedDependencies,
+      moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
+    })
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
@@ -340,7 +366,7 @@ async function MedusaApp_({
       )
     }
 
-    const linkModuleOpt = { ...linkModuleOptions }
+    const linkModuleOpt = { ...(linkModuleOptions ?? {}) }
     linkModuleOpt.database ??= {
       ...(sharedResourcesConfig?.database ?? {}),
     }

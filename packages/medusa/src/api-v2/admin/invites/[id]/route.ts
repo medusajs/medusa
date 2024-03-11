@@ -1,15 +1,20 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+
 import { deleteInvitesWorkflow } from "@medusajs/core-flows"
-import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
 
 // Get invite
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -34,7 +39,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 // delete invite
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
   const workflow = deleteInvitesWorkflow(req.scope)
 

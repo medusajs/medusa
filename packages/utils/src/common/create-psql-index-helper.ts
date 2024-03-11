@@ -47,7 +47,7 @@ export function createPsqlIndexStatementHelper({
   const columnsName = Array.isArray(columns) ? columns.join("_") : columns
 
   columns = Array.isArray(columns) ? columns.join(", ") : columns
-  name = name || `IDX_${tableName}_${columnsName}`
+  name = name || `IDX_${tableName}_${columnsName}${unique ? "_unique" : ""}`
 
   const typeStr = type ? ` USING ${type}` : ""
   const optionsStr = where ? ` WHERE ${where}` : ""
@@ -63,7 +63,7 @@ export function createPsqlIndexStatementHelper({
     },
     name,
     expression,
-    MikroORMIndex: (options = {}) => {
+    MikroORMIndex: (options?: Parameters<typeof Index>[0]) => {
       return Index({
         name,
         expression,

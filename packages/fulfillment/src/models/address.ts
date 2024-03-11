@@ -6,7 +6,6 @@ import {
 import {
   BeforeCreate,
   Entity,
-  Index,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -15,21 +14,11 @@ import {
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
-const fulfillmentIdIndexName = "IDX_fulfillment_address_fulfillment_id"
-const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentIdIndexName,
-  tableName: "fulfillment_address",
-  columns: "fulfillment_id",
-  where: "deleted_at IS NULL",
-}).expression
-
-const fulfillmentDeletedAtIndexName = "IDX_fulfillment_address_deleted_at"
-const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentDeletedAtIndexName,
+const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
 @Entity({ tableName: "fulfillment_address" })
 export default class Address {
@@ -37,13 +26,6 @@ export default class Address {
 
   @PrimaryKey({ columnType: "text" })
   id!: string
-
-  @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: fulfillmentIdIndexName,
-    expression: fulfillmentIdIndexStatement,
-  })
-  fulfillment_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null
@@ -94,10 +76,7 @@ export default class Address {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  @Index({
-    name: fulfillmentDeletedAtIndexName,
-    expression: fulfillmentDeletedAtIndexStatement,
-  })
+  @FulfillmentDeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
 
   @BeforeCreate()

@@ -1,3 +1,4 @@
 export * from "./create-invite"
-export * from "./update-invite"
 export * from "./delete-invite"
+export * from "./accept-invite"
+export * from "./resend-invite"

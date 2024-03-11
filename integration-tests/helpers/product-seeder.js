@@ -16,11 +16,11 @@ const {
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  const defaultProfile = await manager.findOne(ShippingProfile, {
+  const defaultProfile = (await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.DEFAULT,
     },
-  })
+  })) || { id: "default-profile" }
 
   const coll = manager.create(ProductCollection, {
     id: "test-collection",

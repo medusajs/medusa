@@ -1,5 +1,31 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { BigNumberRawValue } from "../totals"
+
+export type OrderSummaryDTO = {
+  total: number
+  subtotal: number
+  total_tax: number
+
+  ordered_total: number
+  fulfilled_total: number
+  returned_total: number
+  return_request_total: number
+  write_off_total: number
+  projected_total: number
+
+  net_total: number
+  net_subtotal: number
+  net_total_tax: number
+
+  future_total: number
+  future_subtotal: number
+  future_total_tax: number
+  future_projected_total: number
+
+  balance: number
+  future_balance: number
+}
 
 export interface OrderAdjustmentLineDTO {
   /**
@@ -251,10 +277,6 @@ export interface OrderShippingMethodDTO {
    */
   updated_at: Date | string
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
-
   total: number
   subtotal: number
   tax_total: number
@@ -280,93 +302,120 @@ export interface OrderLineItemTotalsDTO {
 
 export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   /**
-   * The ID of the line item.
+   * The ID of the order line item.
    */
   id: string
+
   /**
-   * The title of the line item.
+   * The title of the order line item.
    */
   title: string
+
   /**
-   * The subtitle of the line item.
+   * The subtitle of the order line item.
    */
-  subtitle?: string
+  subtitle?: string | null
+
   /**
-   * The url of the line item thumbnail.
+   * The thumbnail of the order line item.
    */
-  thumbnail?: string
+  thumbnail?: string | null
+
   /**
-   * The line item quantity
+   * The ID of the variant associated with the order line item.
    */
-  quantity: number
+  variant_id?: string | null
+
   /**
-   * The product ID of the line item.
+   * The ID of the product associated with the order line item.
    */
-  product_id?: string
+  product_id?: string | null
+
   /**
-   * The product title of the line item.
+   * The title of the product associated with the order line item.
    */
-  product_title?: string
+  product_title?: string | null
+
   /**
-   * The product description of the line item.
+   * The description of the product associated with the order line item.
    */
-  product_description?: string
+  product_description?: string | null
+
   /**
-   * The product subtitle of the line item.
+   * The subtitle of the product associated with the order line item.
    */
-  product_subtitle?: string
+  product_subtitle?: string | null
+
   /**
-   * The product type of the line item.
+   * The type of the product associated with the order line item.
    */
-  product_type?: string
+  product_type?: string | null
+
   /**
-   * The product collection of the line item.
+   * The collection of the product associated with the order line item.
    */
-  product_collection?: string
+  product_collection?: string | null
+
   /**
-   * The product handle of the line item.
+   * The handle of the product associated with the order line item.
    */
-  product_handle?: string
+  product_handle?: string | null
+
   /**
-   * The variant ID of the line item.
+   * The SKU (stock keeping unit) of the variant associated with the order line item.
    */
-  variant_id?: string
+  variant_sku?: string | null
+
   /**
-   * The variant sku of the line item.
+   * The barcode of the variant associated with the order line item.
    */
-  variant_sku?: string
+  variant_barcode?: string | null
+
   /**
-   * The variant barcode of the line item.
+   * The title of the variant associated with the order line item.
    */
-  variant_barcode?: string
+  variant_title?: string | null
+
   /**
-   * The variant title of the line item.
+   * The option values of the variant associated with the order line item.
    */
-  variant_title?: string
+  variant_option_values?: Record<string, unknown> | null
+
   /**
-   * The variant option values of the line item.
-   */
-  variant_option_values?: Record<string, unknown>
-  /**
-   * Whether the line item requires shipping or not
+   * Indicates whether the order line item requires shipping.
    */
   requires_shipping: boolean
+
   /**
-   * Whether the line item is discountable or not
+   * Indicates whether the order line item is discountable.
    */
   is_discountable: boolean
+
   /**
-   * Whether the line item price is tax inclusive or not
+   * Indicates whether the order line item price is tax inclusive.
    */
   is_tax_inclusive: boolean
+
   /**
-   * The original price of the item before an adjustment or a sale.
+   * The compare at unit price of the order line item.
    */
   compare_at_unit_price?: number
+
   /**
-   * The price of the item
+   * The raw compare at unit price of the order line item.
+   */
+  raw_compare_at_unit_price?: BigNumberRawValue
+
+  /**
+   * The unit price of the order line item.
    */
   unit_price: number
+
+  /**
+   * The raw unit price of the order line item.
+   */
+  raw_unit_price: BigNumberRawValue
+
   /**
    * The associated tax lines.
    *
@@ -379,28 +428,123 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
    * @expandable
    */
   adjustments?: OrderLineItemAdjustmentDTO[]
+
   /**
-   * The associated order.
-   *
-   * @expandable
+   * The details of the item
    */
-  order: OrderDTO
+  detail: OrderItemDTO
+
   /**
-   * The ID of the associated order.
+   * The date when the order line item was created.
    */
-  order_id: string
+  created_at: Date
+
   /**
-   * Holds custom data in key-value pairs.
+   * The date when the order line item was last updated.
    */
-  metadata?: Record<string, unknown> | null
+  updated_at: Date
+}
+
+export interface OrderItemDTO {
   /**
-   * When the line item was created.
+   * The ID of the order detail.
    */
-  created_at?: Date
+  id: string
+
   /**
-   * When the line item was updated.
+   * The ID of the associated item.
    */
-  updated_at?: Date
+  item_id: string
+
+  /**
+   * The Line Item of the order detail.
+   */
+  item: OrderLineItemDTO
+
+  /**
+   * The quantity of the order line item.
+   */
+  quantity: number
+
+  /**
+   * The raw quantity of the order line item.
+   */
+  raw_quantity: BigNumberRawValue
+
+  /**
+   * The fulfilled quantity of the order line item.
+   */
+  fulfilled_quantity: number
+
+  /**
+   * The raw fulfilled quantity of the order line item.
+   */
+  raw_fulfilled_quantity: BigNumberRawValue
+
+  /**
+   * The shipped quantity of the order line item.
+   */
+  shipped_quantity: number
+
+  /**
+   * The raw shipped quantity of the order line item.
+   */
+  raw_shipped_quantity: BigNumberRawValue
+
+  /**
+   * The quantity of return requested for the order line item.
+   */
+  return_requested_quantity: number
+
+  /**
+   * The raw quantity of return requested for the order line item.
+   */
+  raw_return_requested_quantity: BigNumberRawValue
+
+  /**
+   * The quantity of return received for the order line item.
+   */
+  return_received_quantity: number
+
+  /**
+   * The raw quantity of return received for the order line item.
+   */
+  raw_return_received_quantity: BigNumberRawValue
+
+  /**
+   * The quantity of return dismissed for the order line item.
+   */
+  return_dismissed_quantity: number
+
+  /**
+   * The raw quantity of return dismissed for the order line item.
+   */
+  raw_return_dismissed_quantity: BigNumberRawValue
+
+  /**
+   * The quantity of written off for the order line item.
+   */
+  written_off_quantity: number
+
+  /**
+   * The raw quantity of written off for the order line item.
+   */
+  raw_written_off_quantity: BigNumberRawValue
+
+  /**
+   * The metadata of the order detail
+   */
+  metadata: Record<string, unknown> | null
+
+  /**
+   * The date when the order line item was created.
+   */
+  created_at: Date
+
+  /**
+   * The date when the order line item was last updated.
+   */
+  updated_at: Date
 }
 
 export interface OrderDTO {
@@ -408,6 +552,10 @@ export interface OrderDTO {
    * The ID of the order.
    */
   id: string
+  /**
+   * The version of the order.
+   */
+  version: number
   /**
    * The ID of the region the order belongs to.
    */
@@ -441,7 +589,7 @@ export interface OrderDTO {
    */
   billing_address?: OrderAddressDTO
   /**
-   * The associated line items.
+   * The associated order details / line items.
    *
    * @expandable
    */
@@ -452,6 +600,17 @@ export interface OrderDTO {
    * @expandable
    */
   shipping_methods?: OrderShippingMethodDTO[]
+
+  /**
+   * The tramsactions associated with the order
+   *
+   * @expandable
+   */
+  transactions?: OrderTransactionDTO[]
+  /**
+   * The summary of the order totals.
+   */
+  summary?: OrderSummaryDTO
   /**
    * Holds custom data in key-value pairs.
    */
@@ -464,36 +623,183 @@ export interface OrderDTO {
    * When the order was updated.
    */
   updated_at?: string | Date
+}
 
-  original_item_total: number
-  original_item_subtotal: number
-  original_item_tax_total: number
+export interface OrderChangeDTO {
+  /**
+   * The ID of the order change
+   */
+  id: string
+  /**
+   * The ID of the associated order
+   */
+  order_id: string
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO
 
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
+  /**
+   * The actions of the order change
+   *
+   * @expandable
+   */
+  actions: OrderChangeActionDTO[]
+  /**
+   * The status of the order change
+   */
+  status: string
+  /**
+   * The requested by of the order change
+   */
+  requested_by: string | null
+  /**
+   * When the order change was requested
+   */
+  requested_at: Date | string | null
+  /**
+   * The confirmed by of the order change
+   */
+  confirmed_by: string | null
+  /**
+   * When the order change was confirmed
+   */
+  confirmed_at: Date | string | null
+  /**
+   * The declined by of the order change
+   */
+  declined_by: string | null
+  /**
+   * The declined reason of the order change
+   */
+  declined_reason: string | null
+  /**
+   * The metadata of the order change
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the order change was declined
+   */
+  declined_at: Date | string | null
+  /**
+   * The canceled by of the order change
+   */
+  canceled_by: string | null
+  /**
+   * When the order change was canceled
+   */
+  canceled_at: Date | string | null
+  /**
+   * When the order change was created
+   */
+  created_at: Date | string
+  /**
+   * When the order change was updated
+   */
+  updated_at: Date | string
+}
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+export interface OrderChangeActionDTO {
+  /**
+   * The ID of the order change action
+   */
+  id: string
+  /**
+   * The ID of the associated order change
+   */
+  order_change_id: string | null
+  /**
+   * The associated order change
+   *
+   * @expandable
+   */
+  order_change: OrderChangeDTO | null
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  raw_discount_total: any
-  discount_tax_total: number
+  /**
+   * The ID of the associated order
+   */
+  order_id: string | null
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO | null
+  /**
+   * The reference of the order change action
+   */
+  reference: string
+  /**
+   * The ID of the reference
+   */
+  reference_id: string
+  /**
+   * The action of the order change action
+   */
+  action: Record<string, unknown>
+  /**
+   * The metadata of the order change action
+   */
+  metadata?: Record<string, unknown> | null
+  /**
+   * The internal note of the order change action
+   */
+  internal_note: string | null
+  /**
+   * When the order change action was created
+   */
+  created_at: Date | string
+  /**
+   * When the order change action was updated
+   */
+  updated_at: Date | string
+}
 
-  gift_card_total: number
-  gift_card_tax_total: number
-
-  shipping_total: number
-  shipping_subtotal: number
-  shipping_tax_total: number
-
-  original_shipping_total: number
-  original_shipping_subtotal: number
-  original_shipping_tax_total: number
+export interface OrderTransactionDTO {
+  /**
+   * The ID of the transaction
+   */
+  id: string
+  /**
+   * The ID of the associated order
+   */
+  order_id: string
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO
+  /**
+   * The amount of the transaction
+   */
+  amount: number
+  /**
+   * The currency code of the transaction
+   */
+  currency_code: string
+  /**
+   * The reference of the transaction
+   */
+  reference: string
+  /**
+   * The ID of the reference
+   */
+  reference_id: string
+  /**
+   * The metadata of the transaction
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the transaction was created
+   */
+  created_at: Date | string
+  /**
+   * When the transaction was updated
+   */
+  updated_at: Date | string
 }
 
 export interface FilterableOrderProps
@@ -567,4 +873,32 @@ export interface FilterableOrderShippingMethodTaxLineProps
   provider_id?: string | string[]
   shipping_method_id?: string | string[]
   shipping_method?: FilterableOrderShippingMethodProps
+}
+
+export interface FilterableOrderChangeProps
+  extends BaseFilterable<FilterableOrderChangeProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  status?: string | string[]
+  requested_by?: string | string[]
+  confirmed_by?: string | string[]
+  declined_by?: string | string[]
+  canceled_by?: string | string[]
+}
+
+export interface FilterableOrderChangeActionProps
+  extends BaseFilterable<FilterableOrderChangeActionProps> {
+  id?: string | string[]
+  order_change_id?: string | string[]
+  reference?: string | string[]
+  reference_id?: string | string[]
+}
+
+export interface FilterableOrderTransactionProps
+  extends BaseFilterable<FilterableOrderTransactionProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  currency_code?: string | string[]
+  reference?: string | string[]
+  reference_id?: string | string[]
 }
