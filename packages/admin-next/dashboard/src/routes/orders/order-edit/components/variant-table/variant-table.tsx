@@ -4,6 +4,7 @@ import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 import { useAdminVariants } from "medusa-react"
 import { Button } from "@medusajs/ui"
+import { Order } from "@medusajs/medusa"
 
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
@@ -39,9 +40,10 @@ const Footer = ({ onSave }: { onSave: () => void }) => {
 
 type VariantTableProps = {
   onSave: (ids: string[]) => Promise<void>
+  order: Order
 }
 
-export const VariantTable = ({ onSave }: VariantTableProps) => {
+export const VariantTable = ({ onSave, order }: VariantTableProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [intermediate, setIntermediate] = useState<string[]>([])
 
@@ -52,11 +54,10 @@ export const VariantTable = ({ onSave }: VariantTableProps) => {
   const { variants, count, isLoading, isError, error } = useAdminVariants(
     {
       ...searchParams,
-      // TODO - add fields for pricing
-      // region_id: "",
-      // cart_id: "",
-      // customer_id: "",
-      // currency_code: "",
+      region_id: order.region_id,
+      cart_id: order.cart_id,
+      customer_id: order.customer_id,
+      currency_code: order.currency_code,
     },
     {
       keepPreviousData: true,

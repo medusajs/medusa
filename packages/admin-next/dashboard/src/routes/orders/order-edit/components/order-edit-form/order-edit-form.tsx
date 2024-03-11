@@ -55,14 +55,12 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     data: currentItems,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getRowId,
   })
 
   const addedItemsTable = useReactTable({
     data: addedItems,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getRowId,
   })
 
   useEffect(() => {
@@ -163,7 +161,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
             </div>
           </SplitView.Content>
           <SplitView.Drawer>
-            <VariantTable onSave={onVariantsSelect} />
+            <VariantTable onSave={onVariantsSelect} order={order} />
           </SplitView.Drawer>
         </SplitView>
       </RouteFocusModal.Body>
