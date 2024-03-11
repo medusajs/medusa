@@ -18,6 +18,8 @@ import { buildProductAndRelationsData } from "../../../__fixtures__/product/data
 import { DB_URL, TestDatabase, getInitModuleConfig } from "../../../utils"
 import { UpdateProductInput } from "../../../../src/types/services/product"
 
+jest.setTimeout(30000)
+
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
   return await TestDatabase.forkManager()

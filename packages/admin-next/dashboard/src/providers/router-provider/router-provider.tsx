@@ -224,6 +224,38 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            lazy: () => import("../../routes/inventory/inventory-list"),
+          },
+          {
+            path: "/reservations",
+            handle: {
+              crumb: () => "Reservations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/reservations/reservation-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/reservations/reservation-detail"),
+                // children: [
+                //   {
+                //     path: "edit",
+                //     lazy: () =>
+                //       import("../../routes/reservations/reservation-edit"),
+                //   },
+                // ],
+              },
+            ],
+          },
+          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -336,13 +368,6 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "/inventory",
-            handle: {
-              crumb: () => "Inventory",
-            },
-            lazy: () => import("../../routes/inventory/list"),
-          },
-          {
             path: "/discounts",
             handle: {
               crumb: () => "Discounts",
@@ -380,12 +405,34 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/pricing/list"),
+                path: "",
+                lazy: () => import("../../routes/pricing/pricing-list"),
+                children: [
+                  // {
+                  //   path: "create",
+                  //   lazy: () => import("../../routes/pricing/pricing-create"),
+                  // },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/pricing/details"),
+                lazy: () => import("../../routes/pricing/pricing-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../routes/pricing/pricing-products-add"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../routes/pricing/pricing-products-edit"),
+                  },
+                ],
               },
             ],
           },
@@ -464,6 +511,34 @@ const router = createBrowserRouter([
                       import(
                         "../../routes/locations/location-add-sales-channels"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "return-reasons",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Return Reasons",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/return-reasons/return-reason-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/return-reasons/return-reason-create"
+                      ),
+                  },
+                  {
+                    path: ":id/edit",
+                    lazy: () =>
+                      import("../../routes/return-reasons/return-reason-edit"),
                   },
                 ],
               },
@@ -685,6 +760,23 @@ const router = createBrowserRouter([
                       ),
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "executions",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Executions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../routes/executions/execution-list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/executions/execution-detail"),
               },
             ],
           },

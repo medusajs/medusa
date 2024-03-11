@@ -3,9 +3,12 @@ import * as Popover from "@radix-ui/react-popover"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
+import { useTranslation } from "react-i18next"
 import { DataTableFilterContext, useDataTableFilterContext } from "./context"
 import { DateFilter } from "./date-filter"
+import { NumberFilter } from "./number-filter"
 import { SelectFilter } from "./select-filter"
+import { StringFilter } from "./string-filter"
 
 type Option = {
   label: string
@@ -26,6 +29,14 @@ export type Filter = {
       type: "date"
       options?: never
     }
+  | {
+      type: "string"
+      options?: never
+    }
+  | {
+      type: "number"
+      options?: never
+    }
 )
 
 type DataTableFilterProps = {
@@ -34,6 +45,7 @@ type DataTableFilterProps = {
 }
 
 export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const [open, setOpen] = useState(false)
 
@@ -60,7 +72,6 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
         const key = prefix ? `${prefix}_${filter.key}` : filter.key
         const value = params.get(key)
         if (value && !activeFilters.find((af) => af.key === filter.key)) {
-          console.log("adding filter", filter.key, "to active filters")
           if (filter.type === "select") {
             setActiveFilters((prev) => [
               ...prev,
@@ -109,40 +120,61 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
     >
       <div className="max-w-2/3 flex flex-wrap items-center gap-2">
         {activeFilters.map((filter) => {
-          if (filter.type === "select") {
-            return (
-              <SelectFilter
-                key={filter.key}
-                filter={filter}
-                prefix={prefix}
-                options={filter.options}
-                multiple={filter.multiple}
-                searchable={filter.searchable}
-                openOnMount={filter.openOnMount}
-              />
-            )
+          switch (filter.type) {
+            case "select":
+              return (
+                <SelectFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  options={filter.options}
+                  multiple={filter.multiple}
+                  searchable={filter.searchable}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            case "date":
+              return (
+                <DateFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            case "string":
+              return (
+                <StringFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            case "number":
+              return (
+                <NumberFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            default:
+              break
           }
-
-          return (
-            <DateFilter
-              key={filter.key}
-              filter={filter}
-              prefix={prefix}
-              openOnMount={filter.openOnMount}
-            />
-          )
         })}
         {availableFilters.length > 0 && (
           <Popover.Root modal open={open} onOpenChange={setOpen}>
             <Popover.Trigger asChild id="filters_menu_trigger">
               <Button size="small" variant="secondary">
-                Add filter
+                {t("filters.addFilter")}
               </Button>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content
                 className={clx(
-                  "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout z-[1] h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg p-1 outline-none"
+                  "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout z-[1] h-full max-h-[200px] w-[300px] overflow-auto rounded-lg p-1 outline-none"
                 )}
                 data-name="filters_menu_content"
                 align="start"

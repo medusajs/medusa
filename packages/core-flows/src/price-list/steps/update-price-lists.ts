@@ -88,14 +88,14 @@ export const updatePriceListsStep = createStep(
 
       if (pricesToUpdate.length) {
         priceListPricesToUpdate.push({
-          priceListId: priceListData.id,
+          price_list_id: priceListData.id,
           prices: pricesToUpdate,
         })
       }
 
       if (pricesToAdd.length) {
         priceListPricesToAdd.push({
-          priceListId: priceListData.id,
+          price_list_id: priceListData.id,
           prices: pricesToAdd,
         })
       }

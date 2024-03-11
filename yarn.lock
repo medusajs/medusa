@@ -7918,7 +7918,7 @@ __metadata:
     "@rollup/plugin-virtual": ^3.0.1
     "@types/express": ^4.17.13
     commander: ^10.0.0
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     esbuild: 0.17.18
     express: 4.18.2
     fs-extra: 11.1.0
@@ -7948,7 +7948,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -7975,7 +7975,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
@@ -8035,7 +8035,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8095,7 +8095,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
@@ -8156,7 +8156,7 @@ __metadata:
     "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
-    "@uiw/react-json-view": 2.0.0-alpha.10
+    "@uiw/react-json-view": ^2.0.0-alpha.17
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
@@ -8263,7 +8263,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8324,7 +8324,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8385,7 +8385,7 @@ __metadata:
     configstore: 5.0.1
     core-js: ^3.6.5
     cross-env: ^5.2.1
-    dotenv: 16.0.3
+    dotenv: ^16.4.5
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
@@ -8642,7 +8642,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8690,7 +8690,7 @@ __metadata:
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8717,7 +8717,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.41
@@ -8744,7 +8744,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     faker: ^6.6.6
     jest: ^29.6.3
     knex: 2.4.2
@@ -8801,7 +8801,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
@@ -8828,7 +8828,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8855,7 +8855,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8897,7 +8897,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
@@ -8924,7 +8924,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8950,7 +8950,7 @@ __metadata:
     "@types/react": ^18.2.14
     axios: ^0.24.0
     commander: 11.0.0
-    dotenv: 16.3.1
+    dotenv: ^16.4.5
     eslint: 7.32.0
     fs-extra: 11.1.1
     picocolors: ^1.0.0
@@ -9047,6 +9047,7 @@ __metadata:
     jsdom: ^22.1.0
     postcss: ^8.4.33
     prism-react-renderer: ^2.0.6
+    prismjs: ^1.29.0
     prop-types: ^15.8.1
     react: ^18.2.0
     react-currency-input-field: ^3.6.11
@@ -9081,7 +9082,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: 16.4.5
+    dotenv: ^16.4.5
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
@@ -9153,7 +9154,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -9180,7 +9181,7 @@ __metadata:
     awilix: ^8.0.0
     bullmq: ^5.1.3
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: ^16.4.5
     ioredis: ^5.3.2
     jest: ^29.6.3
     knex: 2.4.2
@@ -18958,14 +18959,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uiw/react-json-view@npm:2.0.0-alpha.10":
-  version: 2.0.0-alpha.10
-  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.10"
+"@uiw/react-json-view@npm:^2.0.0-alpha.17":
+  version: 2.0.0-alpha.17
+  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.17"
   peerDependencies:
     "@babel/runtime": ">=7.10.0"
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: d1278e92320251b1b61ecacd5c701989bd732ce4155b14a00b674d151c5b0da1b4a043b8696d23675006bf345559e56492960e33a9c0f40bc3c18eed031a136d
+  checksum: 6c8f10af40db9ae60da4b799fc391a544d2e6eec071d882d64050869b057e26fa6104c00de0406693a341c03a8017cb37c14136d803c9ff60e86c6e0d0187cbc
   languageName: node
   linkType: hard
 
@@ -25855,21 +25856,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.3":
-  version: 16.0.3
-  resolution: "dotenv@npm:16.0.3"
-  checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:16.3.1, dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.1.4":
+"dotenv@npm:16.3.1, dotenv@npm:^16.0.0, dotenv@npm:^16.0.3":
   version: 16.3.1
   resolution: "dotenv@npm:16.3.1"
   checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.4.5, dotenv@npm:^16.4.5":
+"dotenv@npm:^16.4.5":
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
@@ -43008,7 +43002,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.27.0":
+"prismjs@npm:^1.27.0, prismjs@npm:^1.29.0":
   version: 1.29.0
   resolution: "prismjs@npm:1.29.0"
   checksum: d906c4c4d01b446db549b4f57f72d5d7e6ccaca04ecc670fb85cea4d4b1acc1283e945a9cbc3d81819084a699b382f970e02f9d1378e14af9808d366d9ed7ec6

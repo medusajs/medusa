@@ -10,23 +10,24 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "../price-lists/queries"
+import { AdminGetProductsParams } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetProductsParams>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const filterableFields = { ...req.filterableFields }
-  const filterByPriceListIds =
-    (filterableFields.price_list_id as string[]) || []
+  const filterableFields: AdminGetProductsParams = { ...req.filterableFields }
+  const filterByPriceListIds = filterableFields.price_list_id
   const priceListVariantIds: string[] = []
 
   // When filtering by price_list_id, we need use the remote query to get
   // the variant IDs through the price list price sets.
-  if (filterByPriceListIds.length) {
+  if (Array.isArray(filterByPriceListIds)) {
     const [priceLists] = await listPriceLists({
       container: req.scope,
-      fields: ["prices.variant_id"],
+      remoteQueryFields: ["price_set_money_amounts.price_set.variant.id"],
+      apiFields: ["prices.variant_id"],
       variables: { filters: { id: filterByPriceListIds }, skip: 0, take: null },
     })
 

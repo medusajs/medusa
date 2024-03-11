@@ -8,7 +8,10 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { listPriceLists } from "../queries"
-import { defaultAdminPriceListFields } from "../query-config"
+import {
+  adminPriceListRemoteQueryFields,
+  defaultAdminPriceListFields,
+} from "../query-config"
 import { AdminPostPriceListsPriceListReq } from "../validators"
 
 export const GET = async (
@@ -18,8 +21,13 @@ export const GET = async (
   const id = req.params.id
   const [[priceList], count] = await listPriceLists({
     container: req.scope,
-    fields: req.retrieveConfig.select!,
-    variables: { filters: { id }, skip: 0, take: 1 },
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: req.retrieveConfig.select!,
+    variables: {
+      filters: { id },
+      skip: 0,
+      take: 1,
+    },
   })
 
   if (count === 0) {
@@ -41,7 +49,8 @@ export const POST = async (
 
   const [_, count] = await listPriceLists({
     container: req.scope,
-    fields: ["id"],
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: ["id"],
     variables: { filters: { id }, skip: 0, take: 1 },
   })
 
@@ -63,7 +72,8 @@ export const POST = async (
 
   const [[priceList]] = await listPriceLists({
     container: req.scope,
-    fields: defaultAdminPriceListFields,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: defaultAdminPriceListFields,
     variables: { filters: { id }, skip: 0, take: 1 },
   })
 

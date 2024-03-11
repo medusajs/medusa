@@ -423,7 +423,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it.only("should update price lists successfully", async () => {
+        it("should update price lists successfully", async () => {
           await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -440,7 +440,7 @@ medusaIntegrationTestRunner({
               type: PriceListType.OVERRIDE,
             },
           ])
-          console.log("priceList --- ", priceList)
+
           const data = {
             title: "new price list name",
             description: "new price list description",

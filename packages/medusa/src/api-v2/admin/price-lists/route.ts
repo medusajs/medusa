@@ -4,7 +4,10 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "./queries"
-import { defaultAdminPriceListFields } from "./query-config"
+import {
+  adminPriceListRemoteQueryFields,
+  defaultAdminPriceListFields,
+} from "./query-config"
 import { AdminPostPriceListsReq } from "./validators"
 
 export const GET = async (
@@ -14,7 +17,8 @@ export const GET = async (
   const { limit, offset } = req.validatedQuery
   const [priceLists, count] = await listPriceLists({
     container: req.scope,
-    fields: req.listConfig.select!,
+    apiFields: req.listConfig.select!,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
     variables: {
       filters: req.filterableFields,
       order: req.listConfig.order,
@@ -49,7 +53,8 @@ export const POST = async (
 
   const [[priceList]] = await listPriceLists({
     container: req.scope,
-    fields: defaultAdminPriceListFields,
+    apiFields: defaultAdminPriceListFields,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
     variables: {
       filters: { id: result[0].id },
       skip: 0,

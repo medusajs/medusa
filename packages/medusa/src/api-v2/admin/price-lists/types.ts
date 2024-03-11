@@ -19,7 +19,4 @@ export type AdminPriceListRemoteQueryDTO = {
     min_quantity?: number
     max_quantity?: number
   }[]
-  customer_groups?: {
-    id: string
-  }
 }

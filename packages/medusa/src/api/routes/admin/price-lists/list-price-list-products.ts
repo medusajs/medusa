@@ -6,7 +6,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { isDefined } from "medusa-core-utils"
 import {
   DateComparisonOperator,
   extendedFindParamsMixin,
@@ -14,10 +13,10 @@ import {
 
 import { Type } from "class-transformer"
 import { Request } from "express"
-import { pickBy } from "lodash"
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
+import { IsType } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -28,7 +27,19 @@ import { FilterableProductProps } from "../../../../types/product"
  * parameters:
  *   - (path) id=* {string} ID of the price list.
  *   - (query) q {string} term used to search products' title, description, product variant's title and sku, and product collection's title.
- *   - (query) id {string} Filter by product ID
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by product IDs.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of the product.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a product.
  *   - in: query
  *     name: status
  *     description: Filter by product status
@@ -60,7 +71,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - (query) title {string} Filter by title
  *   - (query) description {string} Filter by description
  *   - (query) handle {string} Filter by handle
- *   - (query) is_giftcard {string} A boolean value to filter by whether the product is a gift card or not.
+ *   - (query) is_giftcard {boolean} A boolean value to filter by whether the product is a gift card or not.
  *   - (query) type {string} Filter product type.
  *   - (query) order {string} A product field to sort-order the retrieved products by.
  *   - in: query
@@ -226,7 +237,7 @@ export default async (req: Request, res) => {
 
   const [products, count] = await priceListService.listProducts(
     id,
-    pickBy(filterableFields, (val) => isDefined(val)),
+    filterableFields,
     req.listConfig
   )
 
@@ -250,9 +261,9 @@ export class AdminGetPriceListsPriceListProductsParams extends extendedFindParam
   /**
    * ID to filter products by.
    */
-  @IsString()
   @IsOptional()
-  id?: string
+  @IsType([String, [String]])
+  id?: string | string[]
 
   /**
    * Search term to search products' title, description, product variant's title and sku, and product collection's title.
@@ -309,7 +320,7 @@ export class AdminGetPriceListsPriceListProductsParams extends extendedFindParam
   @IsBoolean()
   @IsOptional()
   @Type(() => Boolean)
-  is_giftcard?: string
+  is_giftcard?: boolean
 
   /**
    * Type to filter products by.
