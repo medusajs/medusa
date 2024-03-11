@@ -1,4 +1,5 @@
 import { OperatorMap } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Transform, Type } from "class-transformer"
 import {
   IsArray,
@@ -14,7 +15,6 @@ import {
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { ProductStatus } from "@medusajs/utils"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 
@@ -73,13 +73,12 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  // TODO: Add in next iteration
-  // /**
-  //  * Filter products by their associated price lists' ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // price_list_id?: string[]
+  /**
+   * Filter products by their associated price lists' ID.
+   */
+  @IsOptional()
+  @IsArray()
+  price_list_id?: string[]
 
   /**
    * Filter products by their associated product collection's ID.
@@ -101,6 +100,11 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsArray()
   @IsOptional()
   type_id?: string[]
+
+  // TODO: Replace this with AdminGetProductVariantsParams when its available
+  @IsOptional()
+  @IsObject()
+  variants?: Record<any, any>
 
   // /**
   //  * Filter products by their associated sales channels' ID.
