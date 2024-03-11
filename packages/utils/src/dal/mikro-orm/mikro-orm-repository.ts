@@ -22,9 +22,9 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { isString } from "../../common"
 import {
+  buildQuery,
   InjectTransactionManager,
   MedusaContext,
-  buildQuery,
 } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
@@ -278,10 +278,11 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     async update(data: { entity; update }[], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
       const entities = data.map((data_) => {
-        for (const key of Object.keys(data_.update)) {
+        /*for (const key of Object.keys(data_.update)) {
           data_.entity[key] = data_.update[key]
         }
-        return data_.entity
+        return data_.entity*/
+        return manager.assign(data_.entity, data_.update)
       })
 
       manager.persist(entities)
@@ -407,10 +408,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
         const existingEntity = existingEntitiesMap.get(key)
         if (existingEntity) {
-          for (const key of Object.keys(data_)) {
-            existingEntity[key] = data_[key]
-          }
-          updatedEntities.push(existingEntity)
+          const updatedType = manager.assign(existingEntity, data_)
+          updatedEntities.push(updatedType)
         } else {
           const newEntity = manager.create<T>(entity, data_)
           createdEntities.push(newEntity)

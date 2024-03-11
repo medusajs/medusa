@@ -42,7 +42,7 @@ export function transformPropertiesToBigNumber(
         ) {
           const newKey = key.replace(prefix, "")
           current[newKey] = new BigNumber(value)
-        } else if (include.includes(currentPath)) {
+        } else if (include.includes(currentPath) && value != null) {
           current[key] = new BigNumber(value)
         } else {
           stack.push({ current: value, path: currentPath })
