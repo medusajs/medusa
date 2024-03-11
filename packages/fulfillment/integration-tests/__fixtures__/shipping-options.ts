@@ -14,14 +14,16 @@ export function generateCreateShippingOptionsData({
   name?: string
   type?: CreateShippingOptionDTO["type"]
 }): Required<CreateShippingOptionDTO> {
+  const randomString = Math.random().toString(36).substring(7)
+
   return {
     service_zone_id: service_zone_id,
     shipping_profile_id: shipping_profile_id,
     fulfillment_provider_id: fulfillment_provider_id,
     type: type ?? {
-      code: "test-type",
-      description: "test-description",
-      label: "test-label",
+      code: "test-type_" + randomString,
+      description: "test-description_" + randomString,
+      label: "test-label_" + randomString,
     },
     data: data ?? {
       amount: 1000,
