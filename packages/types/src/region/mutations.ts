@@ -11,6 +11,10 @@ export interface CreateRegionDTO {
    */
   currency_code: string
   /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
+  /**
    * The region's countries.
    */
   countries?: string[]
@@ -34,6 +38,10 @@ export interface UpsertRegionDTO {
    */
   currency_code?: string
   /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
+  /**
    * The region's countries.
    */
   countries?: string[]
@@ -52,6 +60,10 @@ export interface UpdateRegionDTO {
    * The currency code of the region.
    */
   currency_code?: string
+  /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
   /**
    * The region's countries.
    */
