@@ -5,16 +5,30 @@ import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDraftOrderTableColumns } from "./use-draft-order-table-columns"
+import { useDraftOrderTableFilters } from "./use-draft-order-table-filters"
+import { useDraftOrderTableQuery } from "./use-draft-order-table-query"
 
 const PAGE_SIZE = 20
 
 export const DraftOrderListTable = () => {
   const { t } = useTranslation()
 
+  const { searchParams, raw } = useDraftOrderTableQuery({
+    pageSize: PAGE_SIZE,
+  })
   const { draft_orders, count, isLoading, isError, error } =
-    useAdminDraftOrders()
+    useAdminDraftOrders(
+      {
+        ...searchParams,
+        expand: "cart,cart.customer",
+      },
+      {
+        keepPreviousData: true,
+      }
+    )
 
   const columns = useDraftOrderTableColumns()
+  const filters = useDraftOrderTableFilters()
 
   const { table } = useDataTable({
     data: draft_orders || [],
@@ -41,11 +55,14 @@ export const DraftOrderListTable = () => {
         table={table}
         isLoading={isLoading}
         columns={columns}
+        filters={filters}
         pageSize={PAGE_SIZE}
         count={count}
         search
         pagination
         navigateTo={(row) => row.original.id}
+        orderBy={["status", "created_at", "updated_at"]}
+        queryObject={raw}
       />
     </Container>
   )

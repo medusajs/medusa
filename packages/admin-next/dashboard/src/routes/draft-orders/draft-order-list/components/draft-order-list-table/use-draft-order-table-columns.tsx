@@ -8,6 +8,7 @@ import {
   CustomerCell,
   CustomerHeader,
 } from "../../../../../components/table/table-cells/order/customer-cell"
+import { DraftOrderTableActions } from "./draft-order-table-actions"
 
 const columnHelper = createColumnHelper<DraftOrder>()
 
@@ -54,6 +55,14 @@ export const useDraftOrderTableColumns = () => {
           )
         },
       }),
+      columnHelper.accessor("cart.customer", {
+        header: () => <CustomerHeader />,
+        cell: ({ getValue }) => {
+          const customer = getValue()
+
+          return <CustomerCell customer={customer} />
+        },
+      }),
       columnHelper.accessor("created_at", {
         header: t("fields.createdAt"),
         cell: ({ getValue }) => {
@@ -62,13 +71,9 @@ export const useDraftOrderTableColumns = () => {
           return <DateCell date={date} />
         },
       }),
-      columnHelper.accessor("cart.customer", {
-        header: () => <CustomerHeader />,
-        cell: ({ getValue }) => {
-          const customer = getValue()
-
-          return <CustomerCell customer={customer} />
-        },
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <DraftOrderTableActions draftOrder={row.original} />,
       }),
     ],
     [t]
