@@ -34,6 +34,9 @@ export default class FulfillmentProvider {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "boolean", defaultRaw: "true" })
+  is_enabled: boolean = true
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 

@@ -2,7 +2,7 @@ import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
 import { asFunction, asValue, Lifetime } from "awilix"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
-import { lowerCaseFirst } from "@medusajs/utils"
+import { lowerCaseFirst, promiseAll } from "@medusajs/utils"
 import { FulfillmentProviderService } from "@services"
 import { ContainerRegistrationKeys } from "@medusajs/utils/src"
 
@@ -56,7 +56,8 @@ async function syncDatabaseProviders({ container }) {
     FulfillmentProviderService.name
   )
 
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console
+
   try {
     const providerIdentifiers: string[] = (
       container.resolve(FulfillmentIdentifiersRegistrationName) ?? []
@@ -65,22 +66,34 @@ async function syncDatabaseProviders({ container }) {
     const providerService: ModulesSdkTypes.InternalModuleService<any> =
       container.resolve(providerServiceRegistrationKey)
 
-    const providers = await providerService.list({
-      id: providerIdentifiers,
-    })
-
+    const providers = await providerService.list({})
     const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
 
-    const providersToCreate: any[] = []
-    for (const identifier of providerIdentifiers) {
-      if (loadedProvidersMap.has(identifier)) {
-        continue
-      }
+    const providersToCreate = providerIdentifiers.filter(
+      (id) => !loadedProvidersMap.has(id)
+    )
+    const providersToEnabled = providerIdentifiers.filter((id) =>
+      loadedProvidersMap.has(id)
+    )
+    const providersToDisable = providers.filter(
+      (p) => !providerIdentifiers.includes(p.id)
+    )
 
-      providersToCreate.push({ id: identifier })
-    }
-
-    await providerService.create(providersToCreate)
+    await promiseAll([
+      providersToCreate.length
+        ? providerService.create(providersToCreate.map((id) => ({ id })))
+        : Promise.resolve(),
+      providersToEnabled.length
+        ? providerService.update(
+            providersToEnabled.map((id) => ({ id, is_enabled: true }))
+          )
+        : Promise.resolve(),
+      providersToDisable.length
+        ? providerService.update(
+            providersToDisable.map((p) => ({ id: p.id, is_enabled: false }))
+          )
+        : Promise.resolve(),
+    ])
   } catch (error) {
     logger.error(`Error syncing providers: ${error.message}`)
   }

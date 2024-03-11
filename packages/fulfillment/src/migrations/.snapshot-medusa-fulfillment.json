@@ -184,6 +184,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "is_enabled": {
+          "name": "is_enabled",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",

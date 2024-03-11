@@ -1,11 +1,14 @@
-import { Modules } from "@medusajs/modules-sdk"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
 import {
+  initModules,
   moduleIntegrationTestRunner,
   SuiteOptions,
 } from "medusa-test-utils/dist"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
+import { FulfillmentProviderService } from "@services"
+import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 
 let moduleOptions = {
   providers: [
@@ -98,8 +101,137 @@ function expectSoftDeleted(
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   moduleOptions,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) =>
+  testSuite: ({
+    MikroOrmWrapper,
+    service,
+  }: SuiteOptions<IFulfillmentModuleService>) =>
     describe("Fulfillment Module Service", () => {
+      it("should load and save all the providers on bootstrap with the correct is_enabled value", async () => {
+        const databaseConfig = {
+          schema: "public",
+          clientUrl: MikroOrmWrapper.clientUrl,
+        }
+
+        const providersConfig = {}
+        for (let i = 0; i < 10; i++) {
+          providersConfig[`provider-${i}`] = {}
+        }
+
+        let moduleOptions = {
+          databaseConfig,
+          modulesConfig: {
+            [Modules.FULFILLMENT]: {
+              definition: ModulesDefinition[Modules.FULFILLMENT],
+              options: {
+                databaseConfig,
+                providers: [
+                  {
+                    resolve: resolve(
+                      process.cwd() +
+                        "/integration-tests/__fixtures__/providers/default-provider"
+                    ),
+                    options: {
+                      config: providersConfig,
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }
+
+        let { shutdown } = await initModules(moduleOptions)
+
+        let fulfillmentProviders = await MikroOrmWrapper.forkManager().execute(
+          `SELECT * FROM fulfillment_provider`
+        )
+
+        expect(fulfillmentProviders).toHaveLength(
+          Object.keys(providersConfig).length + 1 // +1 for the default provider
+        )
+
+        for (const [name] of Object.entries(providersConfig)) {
+          const provider = fulfillmentProviders.find((p) => {
+            return (
+              p.id ===
+              FulfillmentProviderService.getRegistrationIdentifier(
+                FulfillmentProviderServiceFixtures,
+                name
+              )
+            )
+          })
+          expect(provider).toBeDefined()
+          expect(provider.is_enabled).toBeTruthy()
+        }
+
+        await shutdown()
+
+        const providersConfig2 = {}
+        for (let i = 10; i < 20; i++) {
+          providersConfig2[`provider-${i}`] = {}
+        }
+
+        moduleOptions = {
+          databaseConfig,
+          modulesConfig: {
+            [Modules.FULFILLMENT]: {
+              definition: ModulesDefinition[Modules.FULFILLMENT],
+              options: {
+                databaseConfig,
+                providers: [
+                  {
+                    resolve: resolve(
+                      process.cwd() +
+                        "/integration-tests/__fixtures__/providers/default-provider"
+                    ),
+                    options: {
+                      config: providersConfig2,
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }
+
+        const medusaApp = await initModules(moduleOptions)
+        shutdown = medusaApp.shutdown
+
+        fulfillmentProviders = await MikroOrmWrapper.forkManager().execute(
+          `SELECT * FROM fulfillment_provider`
+        )
+
+        expect(fulfillmentProviders).toHaveLength(
+          Object.keys(providersConfig2).length +
+            Object.keys(providersConfig).length +
+            1 // +1 for the default provider
+        )
+
+        const allProviders = Object.assign(
+          {},
+          providersConfig,
+          providersConfig2
+        )
+
+        for (const [name] of Object.entries(allProviders)) {
+          const provider = fulfillmentProviders.find((p) => {
+            return (
+              p.id ===
+              FulfillmentProviderService.getRegistrationIdentifier(
+                FulfillmentProviderServiceFixtures,
+                name
+              )
+            )
+          })
+          expect(provider).toBeDefined()
+
+          const isEnabled = !!providersConfig2[name]
+          expect(provider.is_enabled).toEqual(isEnabled)
+        }
+
+        await shutdown()
+      })
+
       it("should soft delete and restore the data respecting the configured cascade", async () => {
         await createFullDataStructure(service, { providerId })
 

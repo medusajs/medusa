@@ -1,12 +1,12 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240308113313_InitialSetupMigration extends Migration {
+export class Migration20240311134415_InitialSetupMigration extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_address_deleted_at" ON "fulfillment_address" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
-    this.addSql('create table if not exists "fulfillment_provider" ("id" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_provider_pkey" primary key ("id"));');
+    this.addSql('create table if not exists "fulfillment_provider" ("id" text not null, "is_enabled" boolean not null default true, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_provider_pkey" primary key ("id"));');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_provider_deleted_at" ON "fulfillment_provider" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
     this.addSql('create table if not exists "fulfillment_set" ("id" text not null, "name" text not null, "type" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_set_pkey" primary key ("id"));');
