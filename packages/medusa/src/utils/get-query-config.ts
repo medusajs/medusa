@@ -44,14 +44,37 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
 }
 
 export function getListConfig<TModel extends BaseEntity>(
-  defaultFields: (keyof TModel)[],
-  defaultRelations: string[],
-  fields?: (keyof TModel)[],
-  expand?: string[],
+  defaultFields: string[] = [],
+  defaultRelations: string[] = [],
+  fields: string[] = [],
+  expand: string[] = [],
   limit = 50,
   offset = 0,
   order: { [k: string | symbol]: "DESC" | "ASC" } = {}
 ): FindConfig<TModel> {
+  const defaultFieldsSet = new Set([...defaultFields, ...defaultRelations])
+  const finalFieldsSet = new Set()
+
+  const shouldOverrideDefaultFields = fields.some(
+    (field) => !(field.startsWith("-") || field.startsWith("+"))
+  )
+
+  if (!shouldOverrideDefaultFields) {
+    defaultFields.forEach((field) => {
+      finalFieldsSet.add(field)
+    })
+  }
+
+  fields.forEach((field) => {
+    if (field.startsWith("-") && finalFieldsSet.has(field.slice(1))) {
+      finalFieldsSet.delete(field.slice(1))
+    } else if (field.startsWith("+") && finalFieldsSet.has(field)) {
+      finalFieldsSet.add(field)
+    }
+  })
+
+  // TODO: continue from there
+
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
     const fieldSet = new Set(fields)
