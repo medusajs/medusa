@@ -110,6 +110,11 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   type_id?: string[]
 
+  // TODO: Replace this with AdminGetProductVariantsParams when its available
+  @IsOptional()
+  @IsObject()
+  variants?: Record<any, any>
+
   // /**
   //  * Filter products by their associated sales channels' ID.
   //  */

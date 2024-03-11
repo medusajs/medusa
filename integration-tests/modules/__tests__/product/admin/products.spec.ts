@@ -60,8 +60,8 @@ medusaIntegrationTestRunner({
         await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
-      describe("GET /admin/products/:id", () => {
-        describe("should filter by price lists", () => {
+      describe("GET /admin/products", () => {
+        describe("should filter products by price lists", () => {
           beforeEach(async () => {
             ;[product, [variant]] = await createProductsWithVariants(
               productModule,

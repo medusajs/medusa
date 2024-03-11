@@ -2,28 +2,30 @@ import {
   MedusaContainer,
   PriceListRuleDTO,
   PriceSetMoneyAmountDTO,
+  ProductVariantDTO,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { adminPriceListRemoteQueryFields } from "../query-config"
 import { AdminPriceListRemoteQueryDTO } from "../types"
 
 export async function listPriceLists({
   container,
-  fields,
+  remoteQueryFields,
+  apiFields,
   variables,
 }: {
   container: MedusaContainer
-  fields: string[]
+  remoteQueryFields: string[]
+  apiFields: string[]
   variables: Record<string, any>
 }): Promise<[AdminPriceListRemoteQueryDTO[], number]> {
   const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "price_list",
-    fields: adminPriceListRemoteQueryFields,
+    fields: remoteQueryFields,
     variables,
   })
 
@@ -41,7 +43,7 @@ export async function listPriceLists({
   }
 
   const sanitizedPriceLists: AdminPriceListRemoteQueryDTO[] = priceLists.map(
-    (priceList) => cleanResponseData(priceList, fields)
+    (priceList) => cleanResponseData(priceList, apiFields)
   )
 
   return [sanitizedPriceLists, metadata.count]
@@ -63,10 +65,14 @@ function buildPriceListRules(
 }
 
 function buildPriceSetPrices(
-  priceSetMoneyAmounts: PriceSetMoneyAmountDTO[]
+  priceSetMoneyAmounts: (PriceSetMoneyAmountDTO & {
+    price_set: PriceSetMoneyAmountDTO["price_set"] & {
+      variant?: ProductVariantDTO
+    }
+  })[]
 ): Record<string, any>[] {
   return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const productVariant = (priceSetMoneyAmount.price_set as any).variant
+    const productVariant = priceSetMoneyAmount.price_set?.variant
     const rules = priceSetMoneyAmount.price_rules?.reduce((acc, curr) => {
       if (curr.rule_type.rule_attribute) {
         acc[curr.rule_type.rule_attribute] = curr.value
