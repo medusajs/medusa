@@ -1,25 +1,29 @@
 import { IEventBusService, ISearchService } from "@medusajs/types"
-import { defaultSearchIndexingProductRelations } from "@medusajs/utils"
+import { defaultSearchIndexingProductRelations, FlagRouter } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
 import { isSearchEngineInstalledResolutionKey } from "../loaders/plugins"
 import ProductService from "../services/product"
 import ProductVariantService from "../services/product-variant"
+import ProductCategoryFeatureFlag from "../loaders/feature-flags/product-categories";
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
   searchService: ISearchService
   productService: ProductService
+  featureFlagRouter: FlagRouter
 }
 
 class ProductSearchSubscriber {
   private readonly eventBusService_: IEventBusService
   private readonly searchService_: ISearchService
   private readonly productService_: ProductService
+  private readonly featureFlagRouter_: FlagRouter
 
   constructor(container: InjectedDependencies) {
     this.eventBusService_ = container.eventBusService
     this.searchService_ = container.searchService
     this.productService_ = container.productService
+    this.featureFlagRouter_ = container.featureFlagRouter
 
     /**
      * Do not subscribe to any event in case no search engine have been installed.
@@ -51,9 +55,17 @@ class ProductSearchSubscriber {
   }
 
   handleProductCreation = async (data) => {
+    const relations = [...defaultSearchIndexingProductRelations]
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+    ) {
+      relations.push("categories")
+    }
+
     const product = await this.productService_.retrieve(data.id, {
-      relations: defaultSearchIndexingProductRelations,
+      relations,
     })
+
     await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
@@ -62,9 +74,17 @@ class ProductSearchSubscriber {
   }
 
   handleProductUpdate = async (data) => {
+    const relations = [...defaultSearchIndexingProductRelations]
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+    ) {
+      relations.push("categories")
+    }
+
     const product = await this.productService_.retrieve(data.id, {
-      relations: defaultSearchIndexingProductRelations,
+      relations,
     })
+
     await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
@@ -77,9 +97,17 @@ class ProductSearchSubscriber {
   }
 
   handleProductVariantChange = async (data) => {
+    const relations = [...defaultSearchIndexingProductRelations]
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+    ) {
+      relations.push("categories")
+    }
+
     const product = await this.productService_.retrieve(data.product_id, {
-      relations: defaultSearchIndexingProductRelations,
+      relations,
     })
+
     await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
