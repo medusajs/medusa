@@ -229,7 +229,7 @@ moduleIntegrationTestRunner({
           expect(provider.is_enabled).toEqual(isEnabled)
         }
 
-        await shutdown()
+        await shutdown().catch(() => void 0)
       })
 
       it("should soft delete and restore the data respecting the configured cascade", async () => {
