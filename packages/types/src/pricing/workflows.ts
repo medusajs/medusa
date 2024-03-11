@@ -10,7 +10,7 @@ export interface CreatePriceListPriceWorkflowDTO {
 }
 
 export interface UpdatePriceListPriceWorkflowDTO {
-  id?: string
+  id: string
   amount?: number
   currency_code?: string
   variant_id?: string
@@ -22,8 +22,8 @@ export interface UpdatePriceListPriceWorkflowDTO {
 export interface CreatePriceListWorkflowInputDTO {
   title: string
   description: string
-  starts_at?: string
-  ends_at?: string
+  starts_at?: string | null
+  ends_at?: string | null
   status?: PriceListStatus
   rules?: Record<string, string[]>
   prices?: CreatePriceListPriceWorkflowDTO[]
@@ -33,8 +33,9 @@ export interface UpdatePriceListWorkflowInputDTO {
   id: string
   title?: string
   description?: string
-  starts_at?: string
-  ends_at?: string
+  starts_at?: string | null
+  ends_at?: string | null
   status?: PriceListStatus
   rules?: Record<string, string[]>
+  prices?: (UpdatePriceListPriceWorkflowDTO | CreatePriceListPriceWorkflowDTO)[]
 }

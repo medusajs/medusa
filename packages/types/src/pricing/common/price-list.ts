@@ -166,11 +166,11 @@ export interface CreatePriceListDTO {
   /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: Date | string | null
+  starts_at?: string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: Date | string | null
+  ends_at?: string | null
   /**
    * The price list's status.
    */
@@ -214,11 +214,11 @@ export interface UpdatePriceListDTO {
   /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: Date | string | null
+  starts_at?: string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: Date | string | null
+  ends_at?: string | null
   /**
    * The price list's status.
    */

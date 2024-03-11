@@ -407,7 +407,11 @@ medusaIntegrationTestRunner({
       describe("POST /admin/price-lists/:id", () => {
         it("should throw error when trying to update a price list that does not exist", async () => {
           const updateRes = await api
-            .post(`admin/price-lists/does-not-exist`, {}, adminHeaders)
+            .post(
+              `admin/price-lists/does-not-exist`,
+              { title: "new price list name" },
+              adminHeaders
+            )
             .catch((e) => e)
 
           expect(updateRes.response.status).toEqual(404)
@@ -417,6 +421,12 @@ medusaIntegrationTestRunner({
         })
 
         it("should update price lists successfully", async () => {
+          await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
           const [priceList] = await pricingModule.createPriceLists([
             {
               title: "test price list",
@@ -434,6 +444,14 @@ medusaIntegrationTestRunner({
             rules: {
               customer_group_id: [customerGroup.id],
             },
+            prices: [
+              {
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+            ],
           }
 
           const response = await api.post(
@@ -457,6 +475,19 @@ medusaIntegrationTestRunner({
               rules: {
                 customer_group_id: [customerGroup.id],
               },
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 400,
+                  min_quantity: null,
+                  max_quantity: null,
+                  variant_id: variant.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
             })
           )
         })

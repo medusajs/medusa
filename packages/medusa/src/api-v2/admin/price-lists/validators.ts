@@ -97,6 +97,10 @@ export class AdminPostPriceListsPriceListReq {
   type?: PriceListType
 
   @IsOptional()
+  @IsArray()
+  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+
+  @IsOptional()
   @IsObject()
   rules?: Record<string, string[]>
 }
@@ -104,7 +108,7 @@ export class AdminPostPriceListsPriceListReq {
 export class AdminPriceListPricesUpdateReq {
   @IsOptional()
   @IsString()
-  id?: string
+  id: string
 
   @IsOptional()
   @ValidateIf((object) => !object.id)
