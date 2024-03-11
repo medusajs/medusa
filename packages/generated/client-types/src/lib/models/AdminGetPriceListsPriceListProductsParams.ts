@@ -9,9 +9,9 @@ export interface AdminGetPriceListsPriceListProductsParams {
    */
   q?: string
   /**
-   * Filter by product ID
+   * Filter by product IDs.
    */
-  id?: string
+  id?: string | Array<string>
   /**
    * Filter by product status
    */
@@ -39,7 +39,7 @@ export interface AdminGetPriceListsPriceListProductsParams {
   /**
    * A boolean value to filter by whether the product is a gift card or not.
    */
-  is_giftcard?: string
+  is_giftcard?: boolean
   /**
    * Filter product type.
    */

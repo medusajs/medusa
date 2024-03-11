@@ -327,7 +327,35 @@
     }
   },
   "pricing": {
-    "domain": "Pricing"
+    "domain": "Pricing",
+    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "status": {
+      "draft": "Draft",
+      "expired": "Expired",
+      "active": "Active",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "sale": "Sale",
+      "override": "Override"
+    },
+    "settings": {
+      "typeHint": "Choose the type of price list you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "editPriceListTitle": "Edit Price List",
+      "customerGroupsLabel": "Customer groups",
+      "priceOverridesLabel": "Price overrides",
+      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
+    },
+    "products": {
+      "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
+      "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
+    },
+    "prices": {
+      "addPrices": "Add prices",
+      "editPrices": "Edit prices"
+    }
   },
   "profile": {
     "domain": "Profile",

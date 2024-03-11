@@ -19,3 +19,7 @@ export type CreateProductCollection =
   ProductTypes.CreateProductCollectionDTO & {
     products?: string[]
   }
+
+export type UpdateCollectionInput = ProductTypes.UpdateProductCollectionDTO & {
+  id: string
+}

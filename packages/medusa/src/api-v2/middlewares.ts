@@ -1,6 +1,7 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
+import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
@@ -47,5 +48,6 @@ export const config: MiddlewaresConfig = {
     ...adminProductRoutesMiddlewares,
     ...adminPaymentRoutesMiddlewares,
     ...adminPriceListsRoutesMiddlewares,
+    ...adminCollectionRoutesMiddlewares,
   ],
 }

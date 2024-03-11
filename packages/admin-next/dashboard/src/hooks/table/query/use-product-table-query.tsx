@@ -26,6 +26,7 @@ export const useProductTableQuery = ({
       "tags",
       "type_id",
       "status",
+      "id",
     ],
     prefix
   )
