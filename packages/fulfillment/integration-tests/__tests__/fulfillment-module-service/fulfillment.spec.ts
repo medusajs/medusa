@@ -1,7 +1,7 @@
-import {resolve} from "path"
-import {Modules} from "@medusajs/modules-sdk"
-import {IFulfillmentModuleService} from "@medusajs/types"
-import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
+import { resolve } from "path"
+import { Modules } from "@medusajs/modules-sdk"
+import { IFulfillmentModuleService } from "@medusajs/types"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
@@ -30,9 +30,7 @@ const providerId = "fixtures-fulfillment-provider_test-provider"
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   moduleOptions: moduleOptions,
-  testSuite: ({
-    service,
-  }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment", async () => {
