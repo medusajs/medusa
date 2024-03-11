@@ -1,6 +1,6 @@
 import { ShippingOptionDTO } from "./shipping-option"
 
-export interface ServiceProviderDTO {
+export interface FulfillmentProviderDTO {
   id: string
   name: string
   metadata: Record<string, unknown> | null

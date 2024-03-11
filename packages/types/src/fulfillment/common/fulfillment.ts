@@ -1,5 +1,5 @@
 import { ShippingOptionDTO } from "./shipping-option"
-import { ServiceProviderDTO } from "./service-provider"
+import { FulfillmentProviderDTO } from "./fulfillment-provider"
 import { FulfillmentAddressDTO } from "./address"
 import { FulfillmentItemDTO } from "./fulfillment-item"
 import { FulfillmentLabelDTO } from "./fulfillment-label"
@@ -17,7 +17,7 @@ export interface FulfillmentDTO {
   shipping_option_id: string | null
   metadata: Record<string, unknown> | null
   shipping_option: ShippingOptionDTO | null
-  provider: ServiceProviderDTO
+  provider: FulfillmentProviderDTO
   delivery_address: FulfillmentAddressDTO
   items: FulfillmentItemDTO[]
   labels: FulfillmentLabelDTO[]
