@@ -220,6 +220,13 @@
         "requiresAction": "Requires action"
       }
     },
+    "edits": {
+      "title": "Edit order",
+      "currentItems": "Current items",
+      "currentItemsDescription": "Replace, duplicate, remove, or adjust quantity.",
+      "addItemsDescription": "You can add new items to the order.",
+      "addItems": "Add items"
+    },
     "reservations": {
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"
