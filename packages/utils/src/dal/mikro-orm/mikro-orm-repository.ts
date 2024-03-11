@@ -278,10 +278,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     async update(data: { entity; update }[], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
       const entities = data.map((data_) => {
-        return manager.assign(
-          data_.entity,
-          data_.update as RequiredEntityData<T>
-        )
+        for (const key of Object.keys(data_.update)) {
+          data_.entity[key] = data_.update[key]
+        }
+        return data_.entity
       })
 
       manager.persist(entities)
@@ -407,8 +407,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
         const existingEntity = existingEntitiesMap.get(key)
         if (existingEntity) {
-          const updatedType = manager.assign(existingEntity, data_)
-          updatedEntities.push(updatedType)
+          for (const key of Object.keys(data_)) {
+            existingEntity[key] = data_[key]
+          }
+          updatedEntities.push(existingEntity)
         } else {
           const newEntity = manager.create<T>(entity, data_)
           createdEntities.push(newEntity)

@@ -1,5 +1,9 @@
-import { OrderSummaryDTO } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+import { BigNumberInput, OrderSummaryDTO } from "@medusajs/types"
+import {
+  MathBN,
+  isDefined,
+  transformPropertiesToBigNumber,
+} from "@medusajs/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,
@@ -11,7 +15,7 @@ import {
 } from "@types"
 
 type InternalOrderSummary = OrderSummaryCalculated & {
-  futureTemporarySum: number
+  futureTemporarySum: BigNumberInput
 }
 
 export class OrderChangeProcessing {
@@ -26,7 +30,7 @@ export class OrderChangeProcessing {
   private actions: InternalOrderChangeEvent[]
 
   private actionsProcessed: { [key: string]: InternalOrderChangeEvent[] } = {}
-  private groupTotal: Record<string, number> = {}
+  private groupTotal: Record<string, BigNumberInput> = {}
   private summary: InternalOrderSummary
 
   public static registerActionType(key: string, type: ActionTypeDefinition) {
@@ -46,9 +50,13 @@ export class OrderChangeProcessing {
     this.transactions = JSON.parse(JSON.stringify(transactions ?? []))
     this.actions = JSON.parse(JSON.stringify(actions ?? []))
 
-    const transactionTotal = transactions.reduce((acc, transaction) => {
-      return acc + transaction.amount
-    }, 0)
+    const transactionTotal = MathBN.add(...transactions.map((tr) => tr.amount))
+
+    transformPropertiesToBigNumber(this.order, {
+      include: ["summary.total"],
+    })
+
+    transformPropertiesToBigNumber(this.transactions)
 
     this.summary = {
       futureDifference: 0,
@@ -57,8 +65,8 @@ export class OrderChangeProcessing {
       pendingDifference: 0,
       futureTemporarySum: 0,
       differenceSum: 0,
-      currentOrderTotal: order?.summary?.total ?? 0,
-      originalOrderTotal: order?.summary?.total ?? 0,
+      currentOrderTotal: this.order.summary?.total ?? 0,
+      originalOrderTotal: this.order.summary?.total ?? 0,
       transactionTotal,
     }
   }
@@ -97,55 +105,71 @@ export class OrderChangeProcessing {
         ...OrderChangeProcessing.typeDefinition[action.action],
       }
 
-      const amount = action.amount! * (type.isDeduction ? -1 : 1)
+      const amount = MathBN.mult(action.amount!, type.isDeduction ? -1 : 1)
 
       if (action.group_id && !action.evaluationOnly) {
         this.groupTotal[action.group_id] ??= 0
-        this.groupTotal[action.group_id] += amount
+        this.groupTotal[action.group_id] = MathBN.add(
+          this.groupTotal[action.group_id],
+          amount
+        )
       }
 
       if (type.awaitRequired && !this.isEventDone(action)) {
         if (action.evaluationOnly) {
-          summary.futureTemporarySum += amount
+          summary.futureTemporarySum = MathBN.add(
+            summary.futureTemporarySum,
+            amount
+          )
         } else {
-          summary.temporaryDifference += amount
+          summary.temporaryDifference = MathBN.add(
+            summary.temporaryDifference,
+            amount
+          )
         }
       }
 
       if (action.evaluationOnly) {
-        summary.futureDifference += amount
+        summary.futureDifference = MathBN.add(summary.futureDifference, amount)
       } else {
         if (!this.isEventDone(action) && !action.group_id) {
-          summary.differenceSum += amount
+          summary.differenceSum = MathBN.add(summary.differenceSum, amount)
         }
-        summary.currentOrderTotal += amount
+        summary.currentOrderTotal = MathBN.add(
+          summary.currentOrderTotal,
+          amount
+        )
       }
     }
 
-    const groupSum = Object.values(this.groupTotal).reduce((acc, amount) => {
-      return acc + amount
-    }, 0)
+    const groupSum = MathBN.add(...Object.values(this.groupTotal))
 
-    summary.differenceSum += groupSum
+    summary.differenceSum = MathBN.add(summary.differenceSum, groupSum)
 
-    summary.transactionTotal = this.transactions.reduce((acc, transaction) => {
-      return acc + transaction.amount
-    }, 0)
+    summary.transactionTotal = MathBN.add(
+      ...this.transactions.map((tr) => tr.amount)
+    )
 
-    summary.futureTemporaryDifference =
-      summary.futureDifference - summary.futureTemporarySum
+    summary.futureTemporaryDifference = MathBN.minus(
+      summary.futureDifference,
+      summary.futureTemporarySum
+    )
 
-    summary.temporaryDifference =
-      summary.differenceSum - summary.temporaryDifference
+    summary.temporaryDifference = MathBN.minus(
+      summary.differenceSum,
+      summary.temporaryDifference
+    )
 
-    summary.pendingDifference =
-      summary.currentOrderTotal - summary.transactionTotal
+    summary.pendingDifference = MathBN.minus(
+      summary.currentOrderTotal,
+      summary.transactionTotal
+    )
   }
 
   private processAction_(
     action: InternalOrderChangeEvent,
     isReplay = false
-  ): number | void {
+  ): BigNumberInput | void {
     const type = {
       ...OrderChangeProcessing.defaultConfig,
       ...OrderChangeProcessing.typeDefinition[action.action],
@@ -166,7 +190,7 @@ export class OrderChangeProcessing {
       )
     }
 
-    let calculatedAmount: number = action.amount ?? 0
+    let calculatedAmount = action.amount ?? 0
     const params = {
       actions: this.actions,
       action,
@@ -181,7 +205,7 @@ export class OrderChangeProcessing {
     }
 
     if (typeof type.operation === "function") {
-      calculatedAmount = type.operation(params) as number
+      calculatedAmount = type.operation(params) as BigNumberInput
 
       // the action.amount has priority over the calculated amount
       if (!isDefined(action.amount)) {
@@ -207,7 +231,10 @@ export class OrderChangeProcessing {
       }
       if (action.resolve.amount && !action.evaluationOnly) {
         this.groupTotal[groupId] ??= 0
-        this.groupTotal[groupId] -= action.resolve.amount
+        this.groupTotal[groupId] = MathBN.minus(
+          this.groupTotal[groupId],
+          action.resolve.amount
+        )
       }
     }
 

@@ -27,6 +27,7 @@ export function MikroOrmBigNumberProperty(
 
         if (value instanceof BigNumber) {
           bigNumber = value
+          this[rawColumnName].value = trimZeros(bigNumber.raw!.value as string)
         } else if (this[rawColumnName]) {
           const precision = this[rawColumnName].precision
 
