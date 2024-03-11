@@ -57,7 +57,28 @@
     "continue": "Continue",
     "edit": "Edit",
     "download": "Download",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "apply": "Apply"
+  },
+  "filters": {
+    "date": {
+      "today": "Today",
+      "lastSevenDays": "Last 7 days",
+      "lastThirtyDays": "Last 30 days",
+      "lastNinetyDays": "Last 90 days",
+      "lastTwelveMonths": "Last 12 months",
+      "custom": "Custom"
+    },
+    "compare": {
+      "lessThan": "Less than",
+      "greaterThan": "Greater than",
+      "exact": "Exact",
+      "range": "Range",
+      "lessThanLabel": "less than {{value}}",
+      "greaterThanLabel": "greater than {{value}}",
+      "andLabel": "and"
+    },
+    "addFilter": "Add filter"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -125,7 +146,9 @@
     "domain": "Categories"
   },
   "inventory": {
-    "domain": "Inventory"
+    "domain": "Inventory",
+    "reserved": "Reserved",
+    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
     "domain": "Gift Cards",
@@ -451,6 +474,10 @@
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
   },
+  "reservations": {
+    "domain": "Reservations",
+    "deleteWarning": "You are about to delete a reservation. This action cannot be undone."
+  },
   "salesChannels": {
     "domain": "Sales Channels",
     "createSalesChannel": "Create Sales Channel",
@@ -660,12 +687,17 @@
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
+    "inStock": "In stock",
+    "location": "Location",
+    "quantity": "Quantity",
+    "variant": "Variant",
     "id": "ID",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "rate": "Rate"
+    "rate": "Rate",
+    "requiresShipping": "Requires shipping"
   },
   "dateTime": {
     "years_one": "Year",

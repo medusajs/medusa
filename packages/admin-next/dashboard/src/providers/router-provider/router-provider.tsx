@@ -224,6 +224,38 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            lazy: () => import("../../routes/inventory/inventory-list"),
+          },
+          {
+            path: "/reservations",
+            handle: {
+              crumb: () => "Reservations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/reservations/reservation-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/reservations/reservation-detail"),
+                // children: [
+                //   {
+                //     path: "edit",
+                //     lazy: () =>
+                //       import("../../routes/reservations/reservation-edit"),
+                //   },
+                // ],
+              },
+            ],
+          },
+          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -334,13 +366,6 @@ const router = createBrowserRouter([
                 ],
               },
             ],
-          },
-          {
-            path: "/inventory",
-            handle: {
-              crumb: () => "Inventory",
-            },
-            lazy: () => import("../../routes/inventory/list"),
           },
           {
             path: "/discounts",
