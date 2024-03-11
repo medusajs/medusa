@@ -24,7 +24,7 @@ function ItemsTable({ table }: ItemsTableProps<LineItem>) {
               {headerGroup.headers.map((header) => {
                 return (
                   <Table.HeaderCell
-                    className="bg-ui-tag-neutral-bg after:bg-ui-border-base"
+                    className="bg-ui-tag-neutral-bg border-r px-2 last:border-r-0"
                     data-table-header-id={header.id}
                     key={header.id}
                   >
@@ -50,7 +50,10 @@ function ItemsTable({ table }: ItemsTableProps<LineItem>) {
             >
               {row.getVisibleCells().map((cell) => {
                 return (
-                  <Table.Cell key={cell.id}>
+                  <Table.Cell
+                    className="border-r px-2 last:border-r-0"
+                    key={cell.id}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Table.Cell>
                 )
