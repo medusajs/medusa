@@ -11,4 +11,5 @@ export * from "./product-variant-inventory-item"
 export * from "./product-variant-price-set"
 export * from "./publishable-api-key-sales-channel"
 export * from "./region-payment-provider"
+export * from "./sales-channel-location"
 

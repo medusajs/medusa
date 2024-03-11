@@ -1,5 +1,7 @@
+import { promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager, ILike, In } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import {
   ProductTaxRate,
   ProductTypeTaxRate,
@@ -18,8 +20,6 @@ import {
   UpdateTaxRateInput,
 } from "../types/tax-rate"
 import { buildQuery, PostgresError } from "../utils"
-import { TransactionBaseService } from "../interfaces"
-import { promiseAll } from "@medusajs/utils"
 
 class TaxRateService extends TransactionBaseService {
   protected readonly productService_: ProductService
@@ -49,7 +49,20 @@ class TaxRateService extends TransactionBaseService {
     const taxRateRepo = this.activeManager_.withRepository(
       this.taxRateRepository_
     )
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
+
+    if (q) {
+      query.where["name"] = ILike(`%${q}%`)
+    }
+
     return await taxRateRepo.findWithResolution(query)
   }
 
@@ -60,7 +73,20 @@ class TaxRateService extends TransactionBaseService {
     const taxRateRepo = this.activeManager_.withRepository(
       this.taxRateRepository_
     )
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
+
+    if (q) {
+      query.where["name"] = ILike(`%${q}%`)
+    }
+
     return await taxRateRepo.findAndCountWithResolution(query)
   }
 

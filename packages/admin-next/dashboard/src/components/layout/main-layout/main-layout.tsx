@@ -1,4 +1,5 @@
 import {
+  Buildings,
   ChevronDownMini,
   CurrencyDollar,
   MinusMini,
@@ -61,14 +62,14 @@ const Header = () => {
           {fallback ? (
             <Avatar variant="squared" fallback={fallback} />
           ) : (
-            <Skeleton className="w-8 h-8 rounded-md" />
+            <Skeleton className="h-8 w-8 rounded-md" />
           )}
           {name ? (
             <Text size="small" weight="plus" leading="compact">
               {store.name}
             </Text>
           ) : (
-            <Skeleton className="w-[120px] h-[9px]" />
+            <Skeleton className="h-[9px] w-[120px]" />
           )}
         </div>
       </div>
@@ -108,9 +109,16 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
           label: t("giftCards.domain"),
           to: "/gift-cards",
         },
+      ],
+    },
+    {
+      icon: <Buildings />,
+      label: t("inventory.domain"),
+      to: "/inventory",
+      items: [
         {
-          label: t("inventory.domain"),
-          to: "/inventory",
+          label: t("reservations.domain"),
+          to: "/reservations",
         },
       ],
     },

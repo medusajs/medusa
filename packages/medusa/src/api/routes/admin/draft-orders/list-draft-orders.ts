@@ -1,15 +1,19 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
-import {
-  defaultAdminDraftOrdersFields,
-  defaultAdminDraftOrdersRelations,
-} from "."
-
-import { DraftOrder } from "../../../../models"
-import { DraftOrderListSelector } from "../../../../types/draft-orders"
-import { DraftOrderService } from "../../../../services"
-import { FindConfig } from "../../../../types/common"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import {
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { DraftOrderStatus } from "../../../../models"
+import { DraftOrderService } from "../../../../services"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
+import { DraftOrderStatusValue } from "../../../../types/draft-orders"
 
 /**
  * @oas [get] /admin/draft-orders
@@ -21,6 +25,63 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset=0 {number} The number of draft orders to skip when retrieving the draft orders.
  *   - (query) limit=50 {number} Limit the number of draft orders returned.
  *   - (query) q {string} a term to search draft orders' display IDs and emails in the draft order's cart
+ *   - (query) order {string} Field to sort retrieved draft orders by.
+ *   - (query) expand {string} A comma-separated list of fields to expand.
+ *   - (query) fields {string} A comma-separated list of fields to include in the response.
+ *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Filter by an update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Filter by status
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [open, completed]
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetDraftOrdersParams
@@ -98,39 +159,27 @@ export default async (req, res) => {
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
 
-  const validated = await validator(AdminGetDraftOrdersParams, req.query)
-
-  const selector: DraftOrderListSelector = {}
-
-  if (validated.q) {
-    selector.q = validated.q
-  }
-
-  const listConfig: FindConfig<DraftOrder> = {
-    select: defaultAdminDraftOrdersFields,
-    relations: defaultAdminDraftOrdersRelations,
-    skip: validated.offset ?? 0,
-    take: validated.limit ?? 50,
-    order: { created_at: "DESC" },
-  }
+  const { skip, take } = req.listConfig
 
   const [draftOrders, count] = await draftOrderService.listAndCount(
-    selector,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({
     draft_orders: draftOrders,
     count,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset: skip,
+    limit: take,
   })
 }
 
 /**
  * Parameters used to filter and configure the pagination of the retrieved draft orders.
  */
-export class AdminGetDraftOrdersParams {
+export class AdminGetDraftOrdersParams extends extendedFindParamsMixin({
+  limit: 50,
+}) {
   /**
    * Search term to search draft orders by their display IDs and emails.
    */
@@ -139,18 +188,41 @@ export class AdminGetDraftOrdersParams {
   q?: string
 
   /**
-   * {@inheritDoc FindPaginationParams.limit}
+   * {@inheritDoc FindParams.expand}
    */
-  @IsNumber()
   @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
+  @IsString()
+  expand?: string
 
   /**
-   * {@inheritDoc FindPaginationParams.offset}
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
    */
-  @IsNumber()
   @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
+  @IsNumber()
+  fields?: string
+
+  /**
+   * Statuses to filter draft orders by.
+   */
+  @IsArray()
+  @IsEnum(DraftOrderStatus, { each: true })
+  @IsOptional()
+  status?: DraftOrderStatusValue[]
+
+  /**
+   * Date filters to apply on the draft orders' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the draft orders' `updated_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
