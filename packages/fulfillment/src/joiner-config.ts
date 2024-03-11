@@ -1,11 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import {
-  MapToConfig,
-  pluralize,
-  toCamelCase,
-  upperCaseFirst,
-} from "@medusajs/utils"
+import { MapToConfig } from "@medusajs/utils"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -32,24 +27,52 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
 
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
-const aliases = [
-  { name: "fulfillment_set", entityName: FulfillmentSet.name },
-  { name: "shipping_option", entityName: ShippingOption.name },
-  { name: "shipping_profile", entityName: ShippingProfile.name },
-  { name: "fulfillment", entityName: Fulfillment.name },
-  { name: "service_zone", entityName: ServiceZone.name },
-  { name: "geo_zone", entityName: GeoZone.name },
-].map(({ name, entityName }) => ({
-  name: [name, pluralize(name)],
-  args: {
-    entity: entityName,
-    methodSuffix: upperCaseFirst(toCamelCase(pluralize(name))),
-  },
-}))
-
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.FULFILLMENT,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: aliases,
+  alias: [
+    {
+      name: ["fulfillment_set", "fulfillment_sets"],
+      args: {
+        entity: FulfillmentSet.name,
+        methodSuffix: "FulfillmentSets",
+      },
+    },
+    {
+      name: ["shipping_option", "shipping_options"],
+      args: {
+        entity: ShippingOption.name,
+        methodSuffix: "ShippingOptions",
+      },
+    },
+    {
+      name: ["shipping_profile", "shipping_profiles"],
+      args: {
+        entity: ShippingProfile.name,
+        methodSuffix: "ShippingProfiles",
+      },
+    },
+    {
+      name: ["fulfillment", "fulfillments"],
+      args: {
+        entity: Fulfillment.name,
+        methodSuffix: "Fulfillments",
+      },
+    },
+    {
+      name: ["service_zone", "service_zones"],
+      args: {
+        entity: ServiceZone.name,
+        methodSuffix: "ServiceZones",
+      },
+    },
+    {
+      name: ["geo_zone", "geo_zones"],
+      args: {
+        entity: GeoZone.name,
+        methodSuffix: "GeoZones",
+      },
+    },
+  ],
 } as ModuleJoinerConfig

@@ -79,21 +79,31 @@ async function syncDatabaseProviders({ container }) {
       (p) => !providerIdentifiers.includes(p.id)
     )
 
-    await promiseAll([
-      providersToCreate.length
-        ? providerService.create(providersToCreate.map((id) => ({ id })))
-        : Promise.resolve(),
-      providersToEnabled.length
-        ? providerService.update(
-            providersToEnabled.map((id) => ({ id, is_enabled: true }))
-          )
-        : Promise.resolve(),
-      providersToDisable.length
-        ? providerService.update(
-            providersToDisable.map((p) => ({ id: p.id, is_enabled: false }))
-          )
-        : Promise.resolve(),
-    ])
+    const promises: Promise<any>[] = []
+
+    if (providersToCreate.length) {
+      promises.push(
+        providerService.create(providersToCreate.map((id) => ({ id })))
+      )
+    }
+
+    if (providersToEnabled.length) {
+      promises.push(
+        providerService.update(
+          providersToEnabled.map((id) => ({ id, is_enabled: true }))
+        )
+      )
+    }
+
+    if (providersToDisable.length) {
+      promises.push(
+        providerService.update(
+          providersToDisable.map((p) => ({ id: p.id, is_enabled: false }))
+        )
+      )
+    }
+
+    await promiseAll(promises)
   } catch (error) {
     logger.error(`Error syncing providers: ${error.message}`)
   }
