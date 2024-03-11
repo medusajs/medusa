@@ -288,9 +288,9 @@
     "editConditions": "Edit conditions",
     "conditionsHint": "Create conditions to apply on the discount",
     "isTemplateDiscount": "Is this a template discount?",
-    "percentageDescription" : "Discount applied in %",
-    "fixedDescription" : "Amount discount",
-    "shippingDescription" : "Override delivery amount",
+    "percentageDescription": "Discount applied in %",
+    "fixedDescription": "Amount discount",
+    "shippingDescription": "Override delivery amount",
     "selectRegionFirst": "Select region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
@@ -533,6 +533,15 @@
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
   },
+  "returnReasons": {
+    "domain": "Return Reasons",
+    "calloutHint": "Manage the reasons to categorize returns.",
+    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+    "createReason": "Create Return Reason",
+    "createReasonHint": "Create a new return reason to categorize returns.",
+    "editReason": "Edit Return Reason",
+    "valueTooltip": "The value should be a unique identifier for the return reason."
+  },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Log in",
@@ -724,6 +733,7 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
+    "label": "Label",
     "rate": "Rate",
     "requiresShipping": "Requires shipping"
   },

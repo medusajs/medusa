@@ -517,6 +517,34 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "return-reasons",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Return Reasons",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/return-reasons/return-reason-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/return-reasons/return-reason-create"
+                      ),
+                  },
+                  {
+                    path: ":id/edit",
+                    lazy: () =>
+                      import("../../routes/return-reasons/return-reason-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "regions",
             element: <Outlet />,
             handle: {
