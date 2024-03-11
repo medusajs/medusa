@@ -52,49 +52,47 @@ function expectSoftDeleted(
   fulfillmentSets: FulfillmentSetDTO[],
   { softDeleted = false } = {}
 ) {
-  const deletedAt = !softDeleted ? null : expect.any(Date)
-
   expect(fulfillmentSets).toHaveLength(1)
 
   let fulfillmentSet = fulfillmentSets[0]
-  expect(fulfillmentSet.deleted_at).toEqual(deletedAt)
+  expect(!!fulfillmentSet.deleted_at).toEqual(softDeleted)
   expect(fulfillmentSet.service_zones).toHaveLength(1)
 
   let serviceZone = fulfillmentSet.service_zones[0]
-  expect(serviceZone.deleted_at).toEqual(deletedAt)
+  expect(!!serviceZone.deleted_at).toEqual(softDeleted)
   expect(serviceZone.geo_zones).toHaveLength(1)
   expect(serviceZone.shipping_options).toHaveLength(1)
 
   let geoZone = serviceZone.geo_zones[0]
-  expect(geoZone.deleted_at).toEqual(deletedAt)
+  expect(!!geoZone.deleted_at).toEqual(softDeleted)
 
   let shippingOption = serviceZone.shipping_options[0]
-  expect(shippingOption.deleted_at).toEqual(deletedAt)
-  expect(shippingOption.shipping_profile.deleted_at).toEqual(null)
-  expect(shippingOption.type.deleted_at).toEqual(deletedAt)
+  expect(!!shippingOption.deleted_at).toEqual(softDeleted)
+  expect(!!shippingOption.shipping_profile.deleted_at).toEqual(false)
+  expect(!!shippingOption.type.deleted_at).toEqual(softDeleted)
   expect(shippingOption.fulfillments).toHaveLength(1)
   expect(shippingOption.rules).toHaveLength(1)
 
   let rule = shippingOption.rules[0]
-  expect(rule.deleted_at).toEqual(deletedAt)
+  expect(!!rule.deleted_at).toEqual(softDeleted)
 
   /**
    * We do not expect the fulfillment to be soft deleted when soft deleting parents entities
    */
 
   let fulfillment = shippingOption.fulfillments[0]
-  expect(fulfillment.deleted_at).toEqual(null)
+  expect(!!fulfillment.deleted_at).toEqual(false)
   expect(fulfillment.labels).toHaveLength(1)
   expect(fulfillment.items).toHaveLength(1)
 
   let label = fulfillment.labels[0]
-  expect(label.deleted_at).toEqual(null)
+  expect(!!label.deleted_at).toEqual(false)
 
   let item = fulfillment.items[0]
-  expect(item.deleted_at).toEqual(null)
+  expect(!!item.deleted_at).toEqual(false)
 
   let deliveryAddress = fulfillment.delivery_address
-  expect(deliveryAddress.deleted_at).toEqual(null)
+  expect(!!deliveryAddress.deleted_at).toEqual(false)
 }
 
 moduleIntegrationTestRunner({
@@ -113,16 +111,22 @@ moduleIntegrationTestRunner({
          */
 
         await service.softDelete(fulfillmentSets[0].id)
-
-        let deletedFulfillmentSets = await list(
+        const deletedFulfillmentSets = await list(
           service,
           {},
           {
             withDeleted: true,
           }
         )
-
         expectSoftDeleted(deletedFulfillmentSets, { softDeleted: true })
+
+        /**
+         * Restore the fulfillment set
+         */
+
+        await service.restore(fulfillmentSets[0].id)
+        const restoredFulfillmentSets = await list(service)
+        expectSoftDeleted(restoredFulfillmentSets)
       })
     }),
 })
