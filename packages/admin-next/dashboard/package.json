@@ -25,7 +25,7 @@
     "@tanstack/react-query": "4.22.0",
     "@tanstack/react-table": "8.10.7",
     "@tanstack/react-virtual": "^3.0.4",
-    "@uiw/react-json-view": "2.0.0-alpha.10",
+    "@uiw/react-json-view": "^2.0.0-alpha.17",
     "cmdk": "^0.2.0",
     "date-fns": "^3.2.0",
     "framer-motion": "^11.0.3",
