@@ -105,7 +105,7 @@ export const VariantTable = ({ onSave, order }: VariantTableProps) => {
     onSave(intermediate)
   }
 
-  const columns = useVariantTableColumns()
+  const columns = useVariantTableColumns(order.currency_code)
   const filters = useVariantTableFilters()
 
   const { table } = useDataTable({
