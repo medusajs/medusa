@@ -470,7 +470,8 @@
     "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
     "createReason": "Create Return Reason",
     "createReasonHint": "Create a new return reason to categorize returns.",
-    "editReason": "Edit Return Reason"
+    "editReason": "Edit Return Reason",
+    "valueTooltip": "The value should be a unique identifier for the return reason."
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",

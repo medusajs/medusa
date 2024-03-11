@@ -92,7 +92,9 @@ export const CreateReturnReasonForm = () => {
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{t("fields.value")}</Form.Label>
+                        <Form.Label tooltip={t("returnReasons.valueTooltip")}>
+                          {t("fields.value")}
+                        </Form.Label>
                         <Form.Control>
                           <Input {...field} />
                         </Form.Control>
