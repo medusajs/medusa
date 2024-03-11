@@ -1,26 +1,17 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-
-import { DAL } from "@medusajs/types"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
-  Filter,
   OneToMany,
   OnInit,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
-type FulfillmentProviderOptionalProps = DAL.SoftDeletableEntityDateColumns
-
 @Entity()
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class FulfillmentProvider {
-  [OptionalProps]?: FulfillmentProviderOptionalProps
-
   @PrimaryKey({ columnType: "text" })
   id: string
 
