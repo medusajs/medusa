@@ -22,8 +22,6 @@ import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collectio
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
 // - Confirm inventory exists (inventory module)
 // - Refresh/delete shipping methods (fulfillment module)
-// - Refresh/create line item adjustments (promotion module)
-// - Update payment sessions (payment module)
 
 export const createCartWorkflowId = "create-cart"
 export const createCartWorkflow = createWorkflow(

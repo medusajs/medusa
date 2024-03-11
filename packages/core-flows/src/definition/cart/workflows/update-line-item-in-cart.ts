@@ -13,7 +13,6 @@ import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collectio
 // - Confirm inventory exists (inventory module)
 // - Validate shipping methods for new items (fulfillment module)
 // - Refresh line item adjustments (promotion module)
-// - Update payment sessions (payment module)
 
 export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
 export const updateLineItemInCartWorkflow = createWorkflow(
