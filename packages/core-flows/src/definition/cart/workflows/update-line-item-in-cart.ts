@@ -5,10 +5,15 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { MedusaError } from "medusa-core-utils"
-import { confirmInventoryStep, getVariantPriceSetsStep } from ".."
+import {
+  confirmInventoryStep,
+  getVariantPriceSetsStep,
+  getVariantsStep,
+} from ".."
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updateLineItemsStep } from "../../line-item/steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
 // - Validate shipping methods for new items (fulfillment module)
@@ -44,8 +49,13 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       variables: { variant_id: variantIds },
     }).config({ name: "inventory-items" })
 
+    const variants = getVariantsStep({
+      filter: { id: variantIds },
+      config: { select: ["id", "manage_inventory"] },
+    })
+
     const confirmInventoryInput = transform(
-      { productVariantInventoryItems, salesChannelLocations, input },
+      { productVariantInventoryItems, salesChannelLocations, input, variants },
       (data) => {
         if (!data.salesChannelLocations.length) {
           throw new MedusaError(
@@ -54,31 +64,14 @@ export const updateLineItemInCartWorkflow = createWorkflow(
           )
         }
 
-        const locationIds = data.salesChannelLocations[0].locations.map(
-          (l) => l.id
-        )
+        const items = prepareConfirmInventoryInput({
+          productVariantInventoryItems: data.productVariantInventoryItems,
+          locationIds: data.salesChannelLocations[0].locations.map((l) => l.id),
+          items: [data.input.item],
+          variants: data.variants,
+        })
 
-        const variantInventoryItem = data.productVariantInventoryItems.find(
-          (i) => i.variant_id === data.input.item.variant_id
-        )
-
-        if (!variantInventoryItem) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Variant ${item.variant_id} does not have any inventory items associated with it.`
-          )
-        }
-
-        return {
-          items: [
-            {
-              inventory_item_id: variantInventoryItem.inventory_item_id,
-              required_quantity: variantInventoryItem.required_quantity,
-              quantity: data.input.item.quantity,
-              location_ids: locationIds,
-            },
-          ],
-        }
+        return { items }
       }
     )
 

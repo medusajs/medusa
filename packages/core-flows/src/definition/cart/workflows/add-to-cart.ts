@@ -2,12 +2,12 @@ import {
   AddToCartWorkflowInputDTO,
   CreateLineItemForCartDTO,
 } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
+import { MedusaError } from "medusa-core-utils"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   addToCartStep,
@@ -18,6 +18,7 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 // TODO: The AddToCartWorkflow are missing the following steps:
@@ -68,7 +69,7 @@ export const addToCartWorkflow = createWorkflow(
     }).config({ name: "inventory-items" })
 
     const confirmInventoryInput = transform(
-      { productVariantInventoryItems, salesChannelLocations, input },
+      { productVariantInventoryItems, salesChannelLocations, input, variants },
       (data) => {
         if (!data.salesChannelLocations.length) {
           throw new MedusaError(
@@ -77,33 +78,14 @@ export const addToCartWorkflow = createWorkflow(
           )
         }
 
-        const locationIds = data.salesChannelLocations[0].locations.map(
-          (l) => l.id
-        )
-
-        const itemsToConfirm = data.input.items?.map((item) => {
-          const variantInventoryItem = data.productVariantInventoryItems.find(
-            (i) => i.variant_id === item.variant_id
-          )
-
-          if (!variantInventoryItem) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Variant ${item.variant_id} does not have any inventory items associated with it.`
-            )
-          }
-
-          return {
-            inventory_item_id: variantInventoryItem.inventory_item_id,
-            required_quantity: variantInventoryItem.required_quantity,
-            quantity: item.quantity,
-            location_ids: locationIds,
-          }
+        const items = prepareConfirmInventoryInput({
+          productVariantInventoryItems: data.productVariantInventoryItems,
+          locationIds: data.salesChannelLocations[0].locations.map((l) => l.id),
+          items: data.input.items!,
+          variants: data.variants,
         })
 
-        return {
-          items: itemsToConfirm ?? [],
-        }
+        return { items }
       }
     )
 

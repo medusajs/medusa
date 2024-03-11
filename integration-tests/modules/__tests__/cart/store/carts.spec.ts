@@ -80,9 +80,11 @@ medusaIntegrationTestRunner({
               title: "Test product",
               variants: [
                 {
+                  manage_inventory: false,
                   title: "Test variant",
                 },
                 {
+                  manage_inventory: false,
                   title: "Test variant 2",
                 },
               ],
@@ -178,9 +180,15 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.create([
             {
               title: "Test product default tax",
-              variants: [{ title: "Test variant default tax" }],
+              variants: [
+                { title: "Test variant default tax", manage_inventory: false },
+              ],
             },
           ])
+
+          const salesChannel = await scModule.create({
+            name: "Webshop",
+          })
 
           const [priceSet] = await pricingModule.create([
             { prices: [{ amount: 3000, currency_code: "usd" }] },
@@ -204,6 +212,7 @@ medusaIntegrationTestRunner({
               province: "NY",
               postal_code: "94016",
             },
+            sales_channel_id: salesChannel.id,
             items: [
               {
                 quantity: 1,
@@ -704,25 +713,32 @@ medusaIntegrationTestRunner({
             email: "tony@stark-industries.com",
           })
 
+          const salesChannel = await scModule.create({
+            name: "Webshop",
+          })
+
           const [productWithSpecialTax] = await productModule.create([
             {
               // This product ID is setup in the tax structure fixture (setupTaxStructure)
               id: "product_id_1",
               title: "Test product",
-              variants: [{ title: "Test variant" }],
+              variants: [{ title: "Test variant", manage_inventory: false }],
             } as any,
           ])
 
           const [productWithDefaultTax] = await productModule.create([
             {
               title: "Test product default tax",
-              variants: [{ title: "Test variant default tax" }],
+              variants: [
+                { title: "Test variant default tax", manage_inventory: false },
+              ],
             },
           ])
 
           const cart = await cartModule.create({
             currency_code: "usd",
             customer_id: customer.id,
+            sales_channel_id: salesChannel.id,
             shipping_address: {
               customer_id: customer.id,
               address_1: "test address 1",
