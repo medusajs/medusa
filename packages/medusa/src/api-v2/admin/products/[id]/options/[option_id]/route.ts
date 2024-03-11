@@ -9,6 +9,7 @@ import {
 
 import { UpdateProductDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { UpdateProductOptionDTO } from "../../../../../../../../types/dist"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -33,7 +34,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateProductDTO>,
+  req: AuthenticatedMedusaRequest<UpdateProductOptionDTO>,
   res: MedusaResponse
 ) => {
   // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id

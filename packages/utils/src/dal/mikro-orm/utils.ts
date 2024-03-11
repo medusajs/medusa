@@ -149,7 +149,7 @@ export const mikroOrmSerializer = async <TOutput extends object>(
 ): Promise<TOutput> => {
   options ??= {}
 
-  const data_ = Array.isArray(data) ? data : [data]
+  const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
 
   const forSerialization: unknown[] = []
   const notForSerialization: unknown[] = []
