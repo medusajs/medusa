@@ -66,14 +66,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   handle?: string
 
-  // TODO: Should we remove this? It makes sense for search, but not for equality comparison
-  /**
-   * Description to filter products by.
-   */
-  @IsString()
-  @IsOptional()
-  description?: string
-
   /**
    * Filter products by whether they're gift cards.
    */
@@ -406,11 +398,10 @@ export class AdminPostProductsProductReq {
   @ValidateIf((_, value) => value !== undefined)
   status?: ProductStatus
 
-  // TODO: Deal with in next iteration
-  // @IsOptional()
-  // @Type(() => ProductTypeReq)
-  // @ValidateNested()
-  // type?: ProductTypeReq
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
 
   @IsOptional()
   @IsString()
@@ -436,12 +427,11 @@ export class AdminPostProductsProductReq {
   // ])
   // sales_channels?: ProductSalesChannelReq[] | null
 
-  // TODO: Should we remove this on update?
-  // @IsOptional()
-  // @Type(() => ProductVariantReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // variants?: ProductVariantReq[]
+  @IsOptional()
+  @Type(() => ProductVariantReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  variants?: ProductVariantReq[]
 
   @IsNumber()
   @IsOptional()
@@ -548,11 +538,13 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Add on next iteration
+  // TODO: Add on next iteration, adding temporary field for now
   // @IsArray()
   // @ValidateNested({ each: true })
   // @Type(() => ProductVariantPricesCreateReq)
   // prices: ProductVariantPricesCreateReq[]
+  @IsArray()
+  prices: any[]
 
   @IsOptional()
   @IsObject()
@@ -654,4 +646,37 @@ export class AdminPostProductsProductOptionsOptionReq {
 
   @IsArray()
   values: string[]
+}
+
+// eslint-disable-next-line max-len
+export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
+  @IsString()
+  id: string
+}
+
+export class ProductTagReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  value: string
+}
+
+/**
+ * The details of a product type, used to create or update an existing product type.
+ */
+export class ProductTypeReq {
+  /**
+   * The ID of the product type. It's only required when referring to an existing product type.
+   */
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  /**
+   * The value of the product type.
+   */
+  @IsString()
+  value: string
 }

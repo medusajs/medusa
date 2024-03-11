@@ -1,3 +1,7 @@
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -5,24 +9,20 @@ import {
   PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
-import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
-import { DeepPartial, EntityManager } from "typeorm"
-import { FindConfig, Selector } from "../types/common"
-import { isDefined, MedusaError } from "medusa-core-utils"
 
-import { CustomerGroupService } from "."
-import { FilterableProductProps } from "../types/product"
-import { FilterableProductVariantProps } from "../types/product-variant"
 import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { CustomerGroupService } from "."
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListRepository } from "../repositories/price-list"
-import ProductService from "./product"
 import { ProductVariantRepository } from "../repositories/product-variant"
+import { FilterableProductProps } from "../types/product"
+import { FilterableProductVariantProps } from "../types/product-variant"
+import { buildQuery } from "../utils"
+import ProductService from "./product"
 import ProductVariantService from "./product-variant"
 import RegionService from "./region"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -378,6 +378,7 @@ class PriceListService extends TransactionBaseService {
       const productVariantRepo = manager.withRepository(
         this.productVariantRepo_
       )
+
       const [products, count] = await this.productService_
         .withTransaction(manager)
         .listAndCount(selector, config)

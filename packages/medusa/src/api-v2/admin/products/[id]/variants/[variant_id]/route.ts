@@ -24,13 +24,13 @@ export const GET = async (
   const variables = { id: variantId, product_id: productId }
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_variant",
+    entryPoint: "variant",
     variables,
     fields: req.retrieveConfig.select as string[],
   })
 
-  const [product_variant] = await remoteQuery(queryObject)
-  res.status(200).json({ product_variant })
+  const [variant] = await remoteQuery(queryObject)
+  res.status(200).json({ variant })
 }
 
 export const POST = async (
@@ -55,7 +55,7 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_variant: result[0] })
+  res.status(200).json({ variant: result[0] })
 }
 
 export const DELETE = async (
@@ -78,7 +78,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id: variantId,
-    object: "product_variant",
+    object: "variant",
     deleted: true,
   })
 }

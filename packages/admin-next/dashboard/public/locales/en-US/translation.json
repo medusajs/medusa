@@ -288,9 +288,9 @@
     "editConditions": "Edit conditions",
     "conditionsHint": "Create conditions to apply on the discount",
     "isTemplateDiscount": "Is this a template discount?",
-    "percentageDescription" : "Discount applied in %",
-    "fixedDescription" : "Amount discount",
-    "shippingDescription" : "Override delivery amount",
+    "percentageDescription": "Discount applied in %",
+    "fixedDescription": "Amount discount",
+    "shippingDescription": "Override delivery amount",
     "selectRegionFirst": "Select region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
@@ -322,7 +322,35 @@
     }
   },
   "pricing": {
-    "domain": "Pricing"
+    "domain": "Pricing",
+    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "status": {
+      "draft": "Draft",
+      "expired": "Expired",
+      "active": "Active",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "sale": "Sale",
+      "override": "Override"
+    },
+    "settings": {
+      "typeHint": "Choose the type of price list you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "editPriceListTitle": "Edit Price List",
+      "customerGroupsLabel": "Customer groups",
+      "priceOverridesLabel": "Price overrides",
+      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
+    },
+    "products": {
+      "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
+      "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
+    },
+    "prices": {
+      "addPrices": "Add prices",
+      "editPrices": "Edit prices"
+    }
   },
   "profile": {
     "domain": "Profile",
@@ -504,6 +532,15 @@
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
+  },
+  "returnReasons": {
+    "domain": "Return Reasons",
+    "calloutHint": "Manage the reasons to categorize returns.",
+    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+    "createReason": "Create Return Reason",
+    "createReasonHint": "Create a new return reason to categorize returns.",
+    "editReason": "Edit Return Reason",
+    "valueTooltip": "The value should be a unique identifier for the return reason."
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
@@ -696,6 +733,7 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
+    "label": "Label",
     "rate": "Rate",
     "requiresShipping": "Requires shipping"
   },
