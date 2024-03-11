@@ -22,7 +22,7 @@ OrderChangeProcessing.registerActionType(
         existing.detail.return_dismissed_quantity,
         toReturn
       )
-      existing.detail.return_requested_quantity = MathBN.minus(
+      existing.detail.return_requested_quantity = MathBN.sub(
         existing.detail.return_requested_quantity,
         toReturn
       )
@@ -32,9 +32,9 @@ OrderChangeProcessing.registerActionType(
           previousEvent.original_ = JSON.parse(JSON.stringify(previousEvent))
 
           let ret = MathBN.min(toReturn, previousEvent.details.quantity)
-          toReturn = MathBN.minus(toReturn, ret)
+          toReturn = MathBN.sub(toReturn, ret)
 
-          previousEvent.details.quantity = MathBN.minus(
+          previousEvent.details.quantity = MathBN.sub(
             previousEvent.details.quantity,
             ret
           )
@@ -51,7 +51,7 @@ OrderChangeProcessing.registerActionType(
         (item) => item.id === action.details.reference_id
       )!
 
-      existing.detail.return_dismissed_quantity = MathBN.minus(
+      existing.detail.return_dismissed_quantity = MathBN.sub(
         existing.detail.return_dismissed_quantity,
         action.details.quantity
       )

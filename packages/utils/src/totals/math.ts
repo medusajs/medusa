@@ -26,7 +26,11 @@ export class MathBN {
     return sum
   }
 
-  static minus(...nums: BNInput[]): BigNumberJS {
+  static sum(...nums: BNInput[]): BigNumberJS {
+    return MathBN.add(...nums)
+  }
+
+  static sub(...nums: BNInput[]): BigNumberJS {
     let agg = MathBN.convert(nums[0])
     for (let i = 1; i < nums.length; i++) {
       const n = MathBN.convert(nums[i])

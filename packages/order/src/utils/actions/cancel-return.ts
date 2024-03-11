@@ -10,7 +10,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
 
     existing.detail.return_requested_quantity ??= 0
 
-    existing.detail.return_requested_quantity = MathBN.minus(
+    existing.detail.return_requested_quantity = MathBN.sub(
       existing.detail.return_requested_quantity,
       action.details.quantity
     )

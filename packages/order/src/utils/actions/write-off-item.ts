@@ -19,7 +19,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.detail.written_off_quantity = MathBN.minus(
+    existing.detail.written_off_quantity = MathBN.sub(
       existing.detail.written_off_quantity,
       action.details.quantity
     )

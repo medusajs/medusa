@@ -20,7 +20,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIP_ITEM, {
       (item) => item.id === action.reference_id
     )!
 
-    existing.detail.shipped_quantity = MathBN.minus(
+    existing.detail.shipped_quantity = MathBN.sub(
       existing.detail.shipped_quantity,
       action.details.quantity
     )
@@ -56,7 +56,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIP_ITEM, {
       )
     }
 
-    const notShipped = MathBN.minus(
+    const notShipped = MathBN.sub(
       existing.detail?.fulfilled_quantity,
       existing.detail?.shipped_quantity
     )

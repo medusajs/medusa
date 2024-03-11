@@ -142,21 +142,21 @@ export class OrderChangeProcessing {
 
     summary.differenceSum = MathBN.add(summary.differenceSum, groupSum)
 
-    summary.transactionTotal = MathBN.add(
+    summary.transactionTotal = MathBN.sum(
       ...this.transactions.map((tr) => tr.amount)
     )
 
-    summary.futureTemporaryDifference = MathBN.minus(
+    summary.futureTemporaryDifference = MathBN.sub(
       summary.futureDifference,
       summary.futureTemporarySum
     )
 
-    summary.temporaryDifference = MathBN.minus(
+    summary.temporaryDifference = MathBN.sub(
       summary.differenceSum,
       summary.temporaryDifference
     )
 
-    summary.pendingDifference = MathBN.minus(
+    summary.pendingDifference = MathBN.sub(
       summary.currentOrderTotal,
       summary.transactionTotal
     )
@@ -227,7 +227,7 @@ export class OrderChangeProcessing {
       }
       if (action.resolve.amount && !action.evaluationOnly) {
         this.groupTotal[groupId] ??= 0
-        this.groupTotal[groupId] = MathBN.minus(
+        this.groupTotal[groupId] = MathBN.sub(
           this.groupTotal[groupId],
           action.resolve.amount
         )

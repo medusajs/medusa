@@ -35,11 +35,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
 
     if (existingIndex > -1) {
       const existing = currentOrder.items[existingIndex]
-      existing.quantity = MathBN.minus(
-        existing.quantity,
-        action.details.quantity
-      )
-      existing.detail.quantity = MathBN.minus(
+      existing.quantity = MathBN.sub(existing.quantity, action.details.quantity)
+      existing.detail.quantity = MathBN.sub(
         existing.detail.quantity,
         action.details.quantity
       )

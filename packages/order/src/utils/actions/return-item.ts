@@ -23,7 +23,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.detail.return_requested_quantity = MathBN.minus(
+    existing.detail.return_requested_quantity = MathBN.sub(
       existing.detail.return_requested_quantity,
       action.details.quantity
     )
@@ -53,7 +53,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       )
     }
 
-    const quantityAvailable = MathBN.minus(
+    const quantityAvailable = MathBN.sub(
       existing!.detail?.shipped_quantity ?? 0,
       existing!.detail?.return_requested_quantity ?? 0
     )

@@ -14,8 +14,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
 
     existing.detail.quantity ??= 0
 
-    existing.quantity = MathBN.minus(existing.quantity, action.details.quantity)
-    existing.detail.quantity = MathBN.minus(
+    existing.quantity = MathBN.sub(existing.quantity, action.details.quantity)
+    existing.detail.quantity = MathBN.sub(
       existing.detail.quantity,
       action.details.quantity
     )
@@ -83,7 +83,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       )
     }
 
-    const notFulfilled = MathBN.minus(
+    const notFulfilled = MathBN.sub(
       existing.quantity,
       existing.detail?.fulfilled_quantity
     )

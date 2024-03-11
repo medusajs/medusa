@@ -34,19 +34,22 @@ export function transformPropertiesToBigNumber(
         const value = current[key]
         const currentPath = path ? `${path}.${key}` : key
 
-        if (
-          key.startsWith(prefix) &&
-          value != null &&
-          key !== prefix &&
-          !exclude.includes(currentPath)
-        ) {
-          const newKey = key.replace(prefix, "")
-          current[newKey] = new BigNumber(value)
-        } else if (include.includes(currentPath) && value != null) {
-          current[key] = new BigNumber(value)
-        } else {
-          stack.push({ current: value, path: currentPath })
+        if (value != null && !exclude.includes(currentPath)) {
+          if (key.startsWith(prefix)) {
+            const newKey = key.replace(prefix, "")
+
+            const newPath = path ? `${path}.${newKey}` : newKey
+            if (!exclude.includes(newPath)) {
+              current[newKey] = new BigNumber(value)
+              continue
+            }
+          } else if (include.includes(currentPath)) {
+            current[key] = new BigNumber(value)
+            continue
+          }
         }
+
+        stack.push({ current: value, path: currentPath })
       }
     }
   }
