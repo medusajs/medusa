@@ -3,7 +3,8 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { listPriceLists } from "../utils"
+import { listPriceLists } from "../queries"
+import { adminPriceListRemoteQueryFields } from "../query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -12,7 +13,8 @@ export const GET = async (
   const id = req.params.id
   const [[priceList], count] = await listPriceLists({
     container: req.scope,
-    fields: req.retrieveConfig.select!,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: req.retrieveConfig.select!,
     variables: {
       filters: { id },
       skip: 0,
