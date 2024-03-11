@@ -52,11 +52,7 @@ export class OrderChangeProcessing {
 
     const transactionTotal = MathBN.add(...transactions.map((tr) => tr.amount))
 
-    transformPropertiesToBigNumber(this.order, {
-      include: ["summary.total"],
-    })
-
-    transformPropertiesToBigNumber(this.transactions)
+    transformPropertiesToBigNumber(this.order.metadata)
 
     this.summary = {
       futureDifference: 0,

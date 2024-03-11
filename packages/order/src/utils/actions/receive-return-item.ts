@@ -73,7 +73,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
         previousEvent.details = JSON.parse(
           JSON.stringify(previousEvent.original_.details)
         )
-        transformPropertiesToBigNumber(previousEvent.details)
+        transformPropertiesToBigNumber(previousEvent.details?.metadata)
 
         delete previousEvent.original_
 

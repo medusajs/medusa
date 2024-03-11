@@ -18,7 +18,7 @@ export function transformPropertiesToBigNumber(
     const { current, path } = stack.pop()!
 
     if (
-      current === null ||
+      current == null ||
       typeof current !== "object" ||
       current instanceof BigNumber
     ) {
