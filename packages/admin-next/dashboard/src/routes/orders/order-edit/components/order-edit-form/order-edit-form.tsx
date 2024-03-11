@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as zod from "zod"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button, clx, Heading, Text } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
@@ -13,30 +12,44 @@ import { RouteFocusModal } from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
 import ItemsTable from "./items-table.tsx"
 import { useItemsTableColumns } from "./items-table-columns.tsx"
+import { VariantTable } from "../variant-table"
+import {
+  adminOrderKeys,
+  useAdminCreateOrderEdit,
+  useAdminOrderEditAddLineItem,
+} from "medusa-react"
+import { queryClient } from "../../../../../lib/medusa.ts"
 
 type OrderEditFormProps = {
   order: Order
 }
 
+let flag = false
+
 export function OrderEditForm({ order }: OrderEditFormProps) {
   const { t } = useTranslation()
 
-  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const orderEdit = order.edits.find((oe) => oe.status === "created")
+
+  const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
+  const { mutateAsync: addLineItemToOrderEdit } = useAdminOrderEditAddLineItem(
+    orderEdit?.id
+  )
 
   const [, setSearchParams] = useSearchParams()
 
   const columns = useItemsTableColumns(order)
 
   const currentItems = order.items || []
-  // TODO check status - only one OE can be active
-  const addedItems =
-    order.edits.find((e) => e.status === "created")?.items || []
+  const addedItems = useMemo(
+    () => orderEdit?.items.filter((i) => !i.original_item_id) || [],
+    [orderEdit]
+  )
 
-  const form = useForm<zod.infer<any>>({
-    defaultValues: {},
-    // resolver: zodResolver(any),
-  })
+  const form = useForm<zod.infer<any>>({})
 
   const currentItemsTable = useReactTable({
     data: currentItems,
@@ -53,7 +66,16 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   })
 
   useEffect(() => {
-    // TODO create OE on mount or fetch active one
+    ;(async () => {
+      if (!orderEdit && !flag) {
+        flag = true
+        await createOrderEdit({
+          order_id: order.id,
+          // created_by: // TODO
+        })
+      }
+      flag = false
+    })()
   }, [])
 
   const handleOpenChange = (open: boolean) => {
@@ -69,69 +91,82 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     setOpen(open)
   }
 
+  const onVariantsSelect = async (variantIds: string[]) => {
+    await Promise.all(
+      variantIds.map((id) =>
+        addLineItemToOrderEdit({ variant_id: id, quantity: 1 })
+      )
+    )
+
+    await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
+
+    setOpen(false)
+  }
+
   return (
     <RouteFocusModal.Form form={form}>
-      <form
-        className="flex h-full flex-col overflow-hidden"
-        // onSubmit={handleSubmit}
-      >
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
-              {t("actions.save")}
+      <RouteFocusModal.Header>
+        <div className="flex   h-full items-center justify-end gap-x-2">
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              {t("actions.cancel")}
             </Button>
-          </div>
-        </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
-          <SplitView open={open} onOpenChange={handleOpenChange}>
-            <SplitView.Content>
-              <div className="conatiner mx-auto max-w-[720px]">
-                <div className={clx("flex h-full w-full flex-col pt-16")}>
-                  <Heading level="h1" className="pb-8 text-left">
-                    {t("orders.edits.title")}
-                  </Heading>
+          </RouteFocusModal.Close>
+          <Button type="submit" size="small" isLoading={isLoading}>
+            {t("actions.save")}
+          </Button>
+        </div>
+      </RouteFocusModal.Header>
+      <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
+        <SplitView open={open} onOpenChange={handleOpenChange}>
+          <SplitView.Content>
+            <div className="conatiner mx-auto max-w-[720px]">
+              <div className={clx("flex h-full w-full flex-col pt-16")}>
+                <Heading level="h1" className="pb-8 text-left">
+                  {t("orders.edits.title")}
+                </Heading>
 
-                  <Text className="text-ui-fg-base mb-1" weight="plus">
-                    {t("orders.edits.currentItems")}
+                <Text className="text-ui-fg-base mb-1" weight="plus">
+                  {t("orders.edits.currentItems")}
+                </Text>
+                <Text className="text-ui-fg-subtle mb-4">
+                  {t("orders.edits.currentItemsDescription")}
+                </Text>
+
+                <ItemsTable table={currentItemsTable} />
+
+                <div className="border-b border-dashed pb-10 ">
+                  <Text className="text-ui-fg-base mb-1 mt-8" weight="plus">
+                    {t("orders.edits.addItems")}
                   </Text>
-                  <Text className="text-ui-fg-subtle mb-4">
-                    {t("orders.edits.currentItemsDescription")}
+                  <Text className="text-ui-fg-subtle mb-2">
+                    {t("orders.edits.addItemsDescription")}
                   </Text>
 
-                  <ItemsTable table={currentItemsTable} />
-
-                  <div className="border-b border-dashed pb-10 ">
-                    <Text className="text-ui-fg-base mb-1 mt-8" weight="plus">
-                      {t("orders.edits.addItems")}
-                    </Text>
-                    <Text className="text-ui-fg-subtle mb-2">
-                      {t("orders.edits.addItemsDescription")}
-                    </Text>
-
-                    {!!addedItems.length && (
-                      <div className="pb-4">
-                        <ItemsTable table={addedItemsTable} />
-                      </div>
-                    )}
-
-                    <div className="mt-2 flex justify-end">
-                      <Button variant="secondary" type="button">
-                        {t("orders.edits.addItems")}
-                      </Button>
+                  {!!addedItems.length && (
+                    <div className="pb-4 pt-2">
+                      <ItemsTable table={addedItemsTable} />
                     </div>
+                  )}
+
+                  <div className="mt-2 flex justify-end">
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={() => setOpen(true)}
+                    >
+                      {t("orders.edits.addItems")}
+                    </Button>
                   </div>
                 </div>
               </div>
-            </SplitView.Content>
-            <SplitView.Drawer> TODO table</SplitView.Drawer>
-          </SplitView>
-        </RouteFocusModal.Body>
-      </form>
+            </div>
+          </SplitView.Content>
+          <SplitView.Drawer>
+            <VariantTable onSave={onVariantsSelect} />
+          </SplitView.Drawer>
+        </SplitView>
+      </RouteFocusModal.Body>
     </RouteFocusModal.Form>
   )
 }
