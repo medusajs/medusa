@@ -229,7 +229,7 @@ export interface ProductVariantDTO {
    *
    * @expandable
    */
-  options: ProductOptionValueDTO[]
+  options: ProductVariantOptionDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
@@ -511,6 +511,25 @@ export interface ProductOptionDTO {
   deleted_at?: string | Date
 }
 
+export interface ProductVariantOptionDTO {
+  /**
+   * The ID of the product variant option.
+   */
+  id: string
+  /**
+   * The value of the product variant option.
+   *
+   * @expandable
+   */
+  option_value: ProductOptionValueDTO
+  /**
+   * The associated product variant.
+   *
+   * @expandable
+   */
+  variant: ProductVariantDTO
+}
+
 /**
  * @interface
  *
@@ -726,7 +745,7 @@ export interface FilterableProductOptionProps
   /**
    * The titles to filter product options by.
    */
-  title?: string
+  title?: string | string[]
   /**
    * Filter the product options by their associated products' IDs.
    */
@@ -992,7 +1011,7 @@ export interface CreateProductOptionDTO {
   /**
    * The product option values.
    */
-  values: string[]
+  values: string[] | { value: string }[]
   /**
    * The ID of the associated product.
    */
@@ -1002,7 +1021,7 @@ export interface CreateProductOptionDTO {
 export interface UpdateProductOptionDTO {
   id: string
   title?: string
-  values?: string[]
+  values?: string[] | { value: string }[]
   product_id?: string
 }
 

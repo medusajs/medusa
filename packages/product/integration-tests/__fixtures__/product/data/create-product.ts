@@ -48,7 +48,9 @@ export const buildProductAndRelationsData = ({
   variants,
   collection_id,
 }: Partial<ProductTypes.CreateProductDTO>) => {
-  const defaultOptionTitle = faker.commerce.productName()
+  const defaultOptionTitle = "test-option"
+  const defaultOptionValue = "test-value"
+
   return {
     title: title ?? faker.commerce.productName(),
     description: description ?? faker.commerce.productName(),
@@ -64,17 +66,16 @@ export const buildProductAndRelationsData = ({
     options: options ?? [
       {
         title: defaultOptionTitle,
+        values: [defaultOptionValue],
       },
     ],
     variants: variants ?? [
       {
         title: faker.commerce.productName(),
         sku: faker.commerce.productName(),
-        options: [
-          {
-            value: defaultOptionTitle + faker.commerce.productName(),
-          },
-        ],
+        options: {
+          [defaultOptionTitle]: defaultOptionValue,
+        },
       },
     ],
     // TODO: add categories, must be created first

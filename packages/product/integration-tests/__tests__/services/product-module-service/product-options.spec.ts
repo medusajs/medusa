@@ -219,7 +219,7 @@ moduleIntegrationTestRunner({
           }
 
           expect(error.message).toEqual(
-            "ProductOption with id: does-not-exist was not found"
+            `ProductOption with id: does-not-exist was not found`
           )
         })
       })
@@ -268,7 +268,7 @@ moduleIntegrationTestRunner({
           }
 
           expect(error.message).toEqual(
-            'ProductOption with id "does-not-exist" not found'
+            `Option with id "does-not-exist" does not exist, but was referenced in the update request`
           )
         })
       })
@@ -278,6 +278,7 @@ moduleIntegrationTestRunner({
           const res = await service.createOptions([
             {
               title: "test",
+              values: [],
               product_id: productOne.id,
             },
           ])
