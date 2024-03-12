@@ -14,6 +14,7 @@ const columnHelper = createColumnHelper<LineItem>()
 export const useItemsTableColumns = (
   order: Order,
   form: NestedForm<Record<string, number>>,
+  items: LineItem[],
   onQuantityChangeComplete: (id: string) => void
 ) => {
   const { t } = useTranslation()
@@ -130,6 +131,6 @@ export const useItemsTableColumns = (
         ),
       }),
     ],
-    []
+    [items]
   )
 }

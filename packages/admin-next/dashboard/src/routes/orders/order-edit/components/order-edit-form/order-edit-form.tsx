@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {
+  adminOrderEditsKeys,
   adminOrderKeys,
   useAdminCreateOrderEdit,
   useAdminOrderEdit,
@@ -66,11 +67,19 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     await medusa.admin.orderEdits.updateLineItem(_orderEdit.id, itemId, {
       quantity: form.getValues()[itemId],
     })
+    await queryClient.invalidateQueries(
+      adminOrderEditsKeys.detail(_orderEdit.id)
+    )
 
     setIsLoading(false)
   }
 
-  const columns = useItemsTableColumns(order, form, onQuantityChangeComplete)
+  const columns = useItemsTableColumns(
+    order,
+    form,
+    orderEdit?.items,
+    onQuantityChangeComplete
+  )
 
   const currentItems = useMemo(
     () =>
