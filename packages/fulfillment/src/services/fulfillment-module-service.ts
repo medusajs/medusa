@@ -143,7 +143,7 @@ export default class FulfillmentModuleService<
       "rules",
       "type",
       "shipping_profile",
-      "fulfillment_provider",
+      "provider",
       ...(normalizedConfig.relations ?? []),
     ]
     // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
