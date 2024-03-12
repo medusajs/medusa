@@ -4,105 +4,40 @@ import {
   CreatePriceListPriceDTO,
   CreatePriceListPriceWorkflowDTO,
   IPricingModuleService,
-  PriceListDTO,
   PriceSetMoneyAmountDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPricesDTO,
+  UpdatePriceListWorkflowInputDTO,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  arrayDifference,
-  buildPriceSetPricesForModule,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { buildPriceSetPricesForModule } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type WorkflowStepInput = {
-  id: string
-  prices?: (UpdatePriceListPriceWorkflowDTO | CreatePriceListPriceWorkflowDTO)[]
-}[]
+  data: Pick<UpdatePriceListWorkflowInputDTO, "id" | "prices">[]
+  variant_price_map: Record<string, string>
+}
 
 export const upsertPriceListPricesStepId = "upsert-price-list-prices"
 export const upsertPriceListPricesStep = createStep(
   upsertPriceListPricesStepId,
-  async (data: WorkflowStepInput, { container }) => {
-    if (!data.length) {
-      return new StepResponse(null, {
-        createdPriceListPrices: [],
-        updatedPriceListPrices: [],
-      })
-    }
+  async (stepInput: WorkflowStepInput, { container }) => {
+    const { data, variant_price_map: variantPriceSetMap } = stepInput
 
-    const remoteQuery = container.resolve(
-      ContainerRegistrationKeys.REMOTE_QUERY
-    )
+    const priceListPricesToUpdate: UpdatePriceListPricesDTO[] = []
+    const priceListPricesToAdd: AddPriceListPricesDTO[] = []
     const pricingModule = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )
 
-    const priceListIds = data.map((d) => d.id)
-    const priceLists = await pricingModule.listPriceLists({
-      id: priceListIds,
-    })
-
-    const priceListMap: Map<string, PriceListDTO> = new Map(
-      priceLists.map((priceList) => [priceList.id, priceList])
-    )
-
-    const diff = arrayDifference(
-      priceListIds,
-      priceLists.map((pl) => pl.id)
-    )
-
-    if (diff.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Price lists with id: ${diff.join(", ")} was not found`
-      )
-    }
-
-    const variantIds: string[] = data
-      .map((pl) => pl?.prices?.map((price) => price.variant_id!) || [])
-      .filter(Boolean)
-      .flat(1)
-
-    const variantPricingLinkQuery = remoteQueryObjectFromString({
-      entryPoint: "product_variant_price_set",
-      fields: ["variant_id", "price_set_id"],
-      variables: { variant_id: variantIds, take: null },
-    })
-
-    const links = await remoteQuery(variantPricingLinkQuery)
-    const variantPriceSetMap: Map<string, string> = new Map(
-      links.map((link) => [link.variant_id, link.price_set_id])
-    )
-    const withoutLinks = variantIds.filter((id) => !variantPriceSetMap.has(id!))
-
-    if (withoutLinks.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `No price set exist for variants: ${withoutLinks.join(", ")}`
-      )
-    }
-
-    const priceListPricesToUpdate: UpdatePriceListPricesDTO[] = []
-    const priceListPricesToAdd: AddPriceListPricesDTO[] = []
-
     for (const upsertPriceListPricesData of data) {
-      const { prices, id: priceListId } = upsertPriceListPricesData
-      const priceList = priceListMap.get(priceListId)!
+      const { prices = [], id } = upsertPriceListPricesData
 
       const pricesToAdd: CreatePriceListPriceDTO[] = []
       const pricesToUpdate: UpdatePriceListPriceDTO[] = []
 
-      if (typeof prices === "undefined") {
-        continue
-      }
-
       for (const price of prices) {
-        const priceSetId = variantPriceSetMap.get(price.variant_id!)!
+        const priceSetId = variantPriceSetMap[price.variant_id!]
 
         if (isPriceUpdate(price)) {
           pricesToUpdate.push({ ...price, price_set_id: priceSetId })
@@ -113,14 +48,14 @@ export const upsertPriceListPricesStep = createStep(
 
       if (pricesToUpdate.length) {
         priceListPricesToUpdate.push({
-          price_list_id: priceList.id,
+          price_list_id: id,
           prices: pricesToUpdate,
         })
       }
 
       if (pricesToAdd.length) {
         priceListPricesToAdd.push({
-          price_list_id: priceList.id,
+          price_list_id: id,
           prices: pricesToAdd,
         })
       }
