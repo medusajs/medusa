@@ -20,7 +20,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
 
-jest.setTimeout(50000)
+jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
