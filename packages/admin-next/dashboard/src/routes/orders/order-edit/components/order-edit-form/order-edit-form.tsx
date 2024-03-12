@@ -7,6 +7,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {
   adminOrderEditsKeys,
   adminOrderKeys,
+  useAdminCancelOrderEdit,
   useAdminConfirmOrderEdit,
   useAdminOrderEditAddLineItem,
   useAdminUpdateOrderEdit,
@@ -68,6 +69,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   const { mutateAsync: confirmOrderEdit } = useAdminConfirmOrderEdit(
     orderEdit.id
   )
+  const { mutateAsync: cancelOrderEdit } = useAdminCancelOrderEdit(orderEdit.id)
   const { mutateAsync: addLineItemToOrderEdit } = useAdminOrderEditAddLineItem(
     orderEdit.id
   )
@@ -78,9 +80,11 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
 
     const quantity = form.getValues()[itemId]
 
-    if (form.getValues()[itemId] === 0) {
-      await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
-    } else if (quantity > 0) {
+    // if (form.getValues()[itemId] === 0) {
+    //   await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+    // } else
+
+    if (quantity > 0) {
       await medusa.admin.orderEdits.updateLineItem(orderEdit.id, itemId, {
         quantity,
       })
@@ -95,14 +99,14 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   const currentItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) => i1.title.localeCompare(i2))
+        .sort((i1, i2) => i1.id.localeCompare(i2.id))
         .filter((i) => i.original_item_id) || [],
     [orderEdit]
   )
   const addedItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) => i1.title.localeCompare(i2))
+        .sort((i1, i2) => i1.id.localeCompare(i2.id))
         .filter((i) => !i.original_item_id) || [],
     [orderEdit]
   )
@@ -178,8 +182,15 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
     handleSuccess(`/orders/${order.id}`)
   })
 
+  // TODO pass on "cancle" close
+  const handlCancle = async () => {
+    await cancelOrderEdit()
+
+    handleSuccess(`/orders/${order.id}`)
+  }
+
   return (
-    <RouteFocusModal.Form form={form} onSubmit={handleSubmit}>
+    <RouteFocusModal.Form form={form}>
       <form className="flex h-full flex-col" onSubmit={handleSubmit}>
         <RouteFocusModal.Header>
           <div className="flex   h-full items-center justify-end gap-x-2">

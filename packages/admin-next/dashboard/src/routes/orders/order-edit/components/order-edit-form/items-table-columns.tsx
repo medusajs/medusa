@@ -88,7 +88,7 @@ export const useItemsTableColumns = (
                     <Form.Control>
                       <Input
                         className="w-full border-none bg-transparent shadow-none"
-                        min={0}
+                        min={1}
                         type="number"
                         {...field}
                         onChange={(e) => {
@@ -101,7 +101,7 @@ export const useItemsTableColumns = (
                         }}
                         onBlur={() => {
                           if (typeof form.getValues()[id] === "undefined") {
-                            form.setValue(id, 0)
+                            form.setValue(id, 1)
                           }
                           onQuantityChangeComplete(id)
                         }}
