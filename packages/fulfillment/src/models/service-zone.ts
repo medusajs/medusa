@@ -19,7 +19,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import FulfillmentSet from "./fullfilment-set"
+import FulfillmentSet from "./fulfillment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
 
