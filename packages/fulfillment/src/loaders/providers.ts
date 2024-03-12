@@ -1,13 +1,13 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
-import { asFunction, asValue, Lifetime } from "awilix"
-import { FulfillmentIdentifiersRegistrationName } from "@types"
 import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
   promiseAll,
 } from "@medusajs/utils"
 import { FulfillmentProviderService } from "@services"
+import { FulfillmentIdentifiersRegistrationName } from "@types"
+import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {

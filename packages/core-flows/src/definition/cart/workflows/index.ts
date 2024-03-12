@@ -1,3 +1,4 @@
+export * from "./add-shipping-method-to-cart"
 export * from "./add-to-cart"
 export * from "./create-carts"
 export * from "./create-payment-collection-for-cart"
