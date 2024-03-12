@@ -116,8 +116,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -520,6 +519,28 @@
           "nullable": false,
           "default": "0",
           "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
         }
       },
       "name": "rule_type",
