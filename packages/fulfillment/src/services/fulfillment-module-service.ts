@@ -192,7 +192,7 @@ export default class FulfillmentModuleService<
         config
       )
 
-    let shippingOptions = await this.shippingOptionService_.list(
+    const shippingOptions = await this.shippingOptionService_.list(
       normalizedFilters,
       normalizedConfig,
       sharedContext
@@ -203,6 +203,36 @@ export default class FulfillmentModuleService<
     >(shippingOptions, {
       populate: true,
     })
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async listAndCountShippingOptions(
+    filters: FilterableShippingOptionProps = {},
+    config: FindConfig<ShippingOptionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[ShippingOptionDTO[], number]> {
+    const { filters: normalizedFilters, config: normalizedConfig } =
+      FulfillmentModuleService.normalizeShippingOptionsListParams(
+        filters,
+        config
+      )
+
+    const [shippingOptions, count] =
+      await this.shippingOptionService_.listAndCount(
+        normalizedFilters,
+        normalizedConfig,
+        sharedContext
+      )
+
+    return [
+      await this.baseRepository_.serialize<
+        FulfillmentTypes.ShippingOptionDTO[]
+      >(shippingOptions, {
+        populate: true,
+      }),
+      count,
+    ]
   }
 
   @InjectManager("baseRepository_")
@@ -1261,20 +1291,26 @@ export default class FulfillmentModuleService<
     )
   }
 
+  @InjectManager('baseRepository_')
   async isShippingOptionValidForContext(
     shippingOptionId: string,
-    context: Record<string, unknown> = {}
+    context: Record<string, unknown> = {},
+    @MedusaContext() sharedContext: Context = {}
   ) {
     const shippingOption = await this.shippingOptionService_.retrieve(
       shippingOptionId,
       {
         relations: ["rules"],
-      }
+      },
+      sharedContext
     )
 
-    return !shippingOption.rules?.length || isContextValid(
-      context,
-      shippingOption.rules.map((r) => r)
+    return (
+      !shippingOption.rules?.length ||
+      isContextValid(
+        context,
+        shippingOption.rules.map((r) => r)
+      )
     )
   }
 
