@@ -39,9 +39,11 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<CreateProductOptionDTO>,
   res: MedusaResponse
 ) => {
+  const productId = req.params.id
   const input = [
     {
       ...req.validatedBody,
+      product_id: productId,
     },
   ]
 

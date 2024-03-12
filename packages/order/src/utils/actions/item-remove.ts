@@ -1,4 +1,4 @@
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
@@ -14,14 +14,17 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
 
     existing.detail.quantity ??= 0
 
-    existing.quantity -= action.details.quantity
-    existing.detail.quantity -= action.details.quantity
+    existing.quantity = MathBN.sub(existing.quantity, action.details.quantity)
+    existing.detail.quantity = MathBN.sub(
+      existing.detail.quantity,
+      action.details.quantity
+    )
 
-    if (existing.quantity <= 0) {
+    if (MathBN.lte(existing.quantity, 0)) {
       currentOrder.items.splice(existingIndex, 1)
     }
 
-    return existing.unit_price * action.details.quantity
+    return MathBN.mult(existing.unit_price, action.details.quantity)
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
@@ -29,8 +32,11 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
     )
 
     if (existing) {
-      existing.quantity += action.details.quantity
-      existing.detail.quantity += action.details.quantity
+      existing.quantity = MathBN.add(existing.quantity, action.details.quantity)
+      existing.detail.quantity = MathBN.add(
+        existing.detail.quantity,
+        action.details.quantity
+      )
     } else {
       currentOrder.items.push({
         id: action.reference_id!,
@@ -70,18 +76,20 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       )
     }
 
-    if (action.details?.quantity < 1) {
+    if (MathBN.lt(action.details?.quantity, 1)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Quantity of item ${refId} must be greater than 0.`
       )
     }
 
-    const notFulfilled =
-      (existing.quantity as number) -
-      (existing.detail?.fulfilled_quantity as number)
+    const notFulfilled = MathBN.sub(
+      existing.quantity,
+      existing.detail?.fulfilled_quantity
+    )
 
-    if (action.details?.quantity > notFulfilled) {
+    const greater = MathBN.gt(action.details?.quantity, notFulfilled)
+    if (greater) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cannot remove fulfilled item: Item ${refId}.`

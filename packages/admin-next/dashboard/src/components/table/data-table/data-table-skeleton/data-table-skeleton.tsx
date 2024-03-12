@@ -9,6 +9,7 @@ type DataTableSkeletonProps = {
   orderBy: boolean
   filterable: boolean
   pagination: boolean
+  layout?: "fit" | "fill"
 }
 
 export const DataTableSkeleton = ({
@@ -18,6 +19,7 @@ export const DataTableSkeleton = ({
   searchable,
   orderBy,
   pagination,
+  layout = "fit",
 }: DataTableSkeletonProps) => {
   const rows = Array.from({ length: rowCount }, (_, i) => i)
 
@@ -30,7 +32,11 @@ export const DataTableSkeleton = ({
   const colWidth = 100 / colCount
 
   return (
-    <div>
+    <div
+      className={clx({
+        "flex h-full flex-col overflow-hidden": layout === "fill",
+      })}
+    >
       {hasToolbar && (
         <div className="flex items-center justify-between px-6 py-4">
           {filterable && <Skeleton className="h-7 w-full max-w-[160px]" />}
@@ -42,74 +48,91 @@ export const DataTableSkeleton = ({
           )}
         </div>
       )}
-      <Table>
-        <Table.Header>
-          <Table.Row
-            className={clx({
-              "border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
-                hasActions,
-              "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
-                hasSelect,
+      <div
+        className={clx("flex w-full flex-col overflow-hidden", {
+          "flex flex-1 flex-col": layout === "fill",
+        })}
+      >
+        <div
+          className={clx("w-full", {
+            "min-h-0 flex-grow overflow-hidden": layout === "fill",
+            "overflow-x-auto": layout === "fit",
+          })}
+        >
+          <Table>
+            <Table.Header>
+              <Table.Row
+                className={clx({
+                  "border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
+                    hasActions,
+                  "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
+                    hasSelect,
+                })}
+              >
+                {columns.map((col, i) => {
+                  const isSelectHeader = col.id === "select"
+                  const isActionsHeader = col.id === "actions"
+
+                  const isSpecialHeader = isSelectHeader || isActionsHeader
+
+                  return (
+                    <Table.HeaderCell
+                      key={i}
+                      style={{
+                        width: !isSpecialHeader ? `${colWidth}%` : undefined,
+                      }}
+                    >
+                      {isActionsHeader ? null : (
+                        <Skeleton
+                          className={clx("h-7", {
+                            "w-7": isSelectHeader,
+                            "w-full": !isSelectHeader,
+                          })}
+                        />
+                      )}
+                    </Table.HeaderCell>
+                  )
+                })}
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {rows.map((_, j) => (
+                <Table.Row key={j}>
+                  {columns.map((col, k) => {
+                    const isSpecialCell =
+                      col.id === "select" || col.id === "actions"
+
+                    return (
+                      <Table.Cell key={k}>
+                        <Skeleton
+                          className={clx("h-7", {
+                            "w-7": isSpecialCell,
+                            "w-full": !isSpecialCell,
+                          })}
+                        />
+                      </Table.Cell>
+                    )
+                  })}
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
+        {pagination && (
+          <div
+            className={clx("flex items-center justify-between p-4", {
+              "border-t": layout === "fill",
             })}
           >
-            {columns.map((col, i) => {
-              const isSelectHeader = col.id === "select"
-              const isActionsHeader = col.id === "actions"
-
-              const isSpecialHeader = isSelectHeader || isActionsHeader
-
-              return (
-                <Table.HeaderCell
-                  key={i}
-                  style={{
-                    width: !isSpecialHeader ? `${colWidth}%` : undefined,
-                  }}
-                >
-                  {isActionsHeader ? null : (
-                    <Skeleton
-                      className={clx("h-7", {
-                        "w-7": isSelectHeader,
-                        "w-full": !isSelectHeader,
-                      })}
-                    />
-                  )}
-                </Table.HeaderCell>
-              )
-            })}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {rows.map((_, j) => (
-            <Table.Row key={j}>
-              {columns.map((col, k) => {
-                const isSpecialCell =
-                  col.id === "select" || col.id === "actions"
-
-                return (
-                  <Table.Cell key={k}>
-                    <Skeleton
-                      className={clx("h-7", {
-                        "w-7": isSpecialCell,
-                        "w-full": !isSpecialCell,
-                      })}
-                    />
-                  </Table.Cell>
-                )
-              })}
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-      {pagination && (
-        <div className="flex items-center justify-between p-4">
-          <Skeleton className="h-7 w-[138px]" />
-          <div className="flex items-center gap-x-2">
-            <Skeleton className="h-7 w-24" />
-            <Skeleton className="h-7 w-11" />
-            <Skeleton className="h-7 w-11" />
+            <Skeleton className="h-7 w-[138px]" />
+            <div className="flex items-center gap-x-2">
+              <Skeleton className="h-7 w-24" />
+              <Skeleton className="h-7 w-11" />
+              <Skeleton className="h-7 w-11" />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
