@@ -25,7 +25,6 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -37,6 +36,7 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
@@ -435,7 +435,7 @@ export default class FulfillmentModuleService<
       return []
     }
 
-    const rules = data_.flatMap((d) => d.rules)
+    const rules = data_.flatMap((d) => d.rules).filter(Boolean)
     if (rules.length) {
       validateRules(rules as Record<string, unknown>[])
     }
