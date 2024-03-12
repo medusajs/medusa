@@ -73,7 +73,7 @@ export default class ShippingOption {
 
   @Enum({
     items: () => ShippingOptionPriceType,
-    default: ShippingOptionPriceType.CALCULATED,
+    default: ShippingOptionPriceType.FLAT,
   })
   price_type: ShippingOptionPriceType
 
