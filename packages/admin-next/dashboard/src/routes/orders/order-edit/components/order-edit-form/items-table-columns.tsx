@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { createColumnHelper } from "@tanstack/react-table"
-import { NestedForm } from "@medusajs/admin-ui/ui/src/utils/nested-form.ts"
+import { NestedForm } from "@medusajs/admin-ui/ui/src/utils/nested-form"
 
 import { Input } from "@medusajs/ui"
 import { LineItem, Order } from "@medusajs/medusa"
@@ -78,7 +78,7 @@ export const useItemsTableColumns = (
             original: { id },
           },
         }) => (
-          <div className="block w-full">
+          <div className="block">
             <Form.Field
               control={form.control}
               name={id}
@@ -122,7 +122,7 @@ export const useItemsTableColumns = (
           </div>
         ),
         cell: ({ getValue }) => (
-          <div className="flex items-center overflow-hidden">
+          <div className="flex min-w-[200px] items-center overflow-hidden">
             <MoneyAmountCell
               currencyCode={order.currency_code}
               amount={getValue()}

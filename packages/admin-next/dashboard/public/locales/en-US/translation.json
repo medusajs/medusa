@@ -55,6 +55,7 @@
     "cancel": "Cancel",
     "save": "Save",
     "continue": "Continue",
+    "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
     "clearAll": "Clear all",
@@ -225,7 +226,10 @@
       "currentItems": "Current items",
       "currentItemsDescription": "Replace, duplicate, remove, or adjust quantity.",
       "addItemsDescription": "You can add new items to the order.",
-      "addItems": "Add items"
+      "addItems": "Add items",
+      "amountPaid": "Amount paid",
+      "newTotal": "New total",
+      "differenceDue": "Difference due"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -676,6 +680,7 @@
     "availability": "Availability",
     "inventory": "Inventory",
     "optional": "Optional",
+    "note": "Note",
     "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",

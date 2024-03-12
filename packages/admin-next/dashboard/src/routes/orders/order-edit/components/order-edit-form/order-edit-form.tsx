@@ -12,16 +12,17 @@ import {
   useAdminOrderEditAddLineItem,
 } from "medusa-react"
 
-import { Button, clx, Heading, Text } from "@medusajs/ui"
+import { Button, clx, Heading, Text, Textarea } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
 
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
-import ItemsTable from "./items-table.tsx"
-import { useItemsTableColumns } from "./items-table-columns.tsx"
+import { useItemsTableColumns } from "./items-table-columns"
 import { VariantTable } from "../variant-table"
+import ItemsTable from "./items-table"
 
 import { medusa, queryClient } from "../../../../../lib/medusa.ts"
+import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 
 type OrderEditFormProps = {
   order: Order
@@ -49,11 +50,11 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
 
   // We need to refetch OE with this endpoint to get calculated totals
   const { order_edit: orderEdit } = useAdminOrderEdit(
-    _orderEdit.id,
+    _orderEdit?.id,
     {
       expand: "items,items.variant,items.variant.product", // TODO -> product are not joined
     },
-    { enabled: !!_orderEdit.id }
+    { enabled: !!_orderEdit?.id }
   )
 
   const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
@@ -64,11 +65,17 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   const onQuantityChangeComplete = async (itemId: string) => {
     setIsLoading(true)
 
-    await medusa.admin.orderEdits.updateLineItem(_orderEdit.id, itemId, {
-      quantity: form.getValues()[itemId],
-    })
+    const quantity = form.getValues()[itemId]
+
+    if (form.getValues()[itemId] === 0) {
+      await medusa.admin.orderEdits.removeLineItem(_orderEdit?.id, itemId)
+    } else if (quantity > 0) {
+      await medusa.admin.orderEdits.updateLineItem(_orderEdit?.id, itemId, {
+        quantity,
+      })
+    }
     await queryClient.invalidateQueries(
-      adminOrderEditsKeys.detail(_orderEdit.id)
+      adminOrderEditsKeys.detail(_orderEdit?.id)
     )
 
     setIsLoading(false)
@@ -84,18 +91,14 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   const currentItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) =>
-          (i1.created_at as string).localeCompare(i2.created_at)
-        )
+        .sort((i1, i2) => new Date(i1.created_at) - new Date(i2.created_at))
         .filter((i) => i.original_item_id) || [],
     [orderEdit]
   )
   const addedItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) =>
-          (i1.created_at as string).localeCompare(i2.created_at)
-        )
+        .sort((i1, i2) => new Date(i1.created_at) - new Date(i2.created_at))
         .filter((i) => !i.original_item_id) || [],
     [orderEdit]
   )
@@ -168,7 +171,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
             </Button>
           </RouteFocusModal.Close>
           <Button type="submit" size="small" isLoading={isLoading}>
-            {t("actions.save")}
+            {t("actions.confirm")}
           </Button>
         </div>
       </RouteFocusModal.Header>
@@ -213,6 +216,46 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
                       {t("orders.edits.addItems")}
                     </Button>
                   </div>
+                </div>
+
+                <div className="flex flex-col gap-y-2 border-b border-dashed py-10">
+                  <div className="text-ui-fg-subtle flex justify-between text-sm">
+                    <Text className="min-w-[50%] ">
+                      {t("orders.edits.amountPaid")}
+                    </Text>
+                    <MoneyAmountCell
+                      align="right"
+                      currencyCode={order.currency_code}
+                      amount={order.paid_total - order.refunded_total}
+                    />
+                  </div>
+                  <div className="text-ui-fg-subtle flex justify-between text-sm ">
+                    <Text className="min-w-[50%] ">
+                      {t("orders.edits.newTotal")}
+                    </Text>
+                    <MoneyAmountCell
+                      align="right"
+                      currencyCode={order.currency_code}
+                      amount={orderEdit?.total}
+                    />
+                  </div>
+                  <div className="text-ui-fg-base flex justify-between text-sm">
+                    <Text className="min-w-[50%]" weight="plus">
+                      {t("orders.edits.differenceDue")}
+                    </Text>
+                    <MoneyAmountCell
+                      align="right"
+                      currencyCode={order.currency_code}
+                      amount={orderEdit?.total - order.paid_total}
+                    />
+                  </div>
+                </div>
+
+                <div className="py-10">
+                  <Text className="text-ui-fg-base mb-1" weight="plus">
+                    {t("fields.note")}
+                  </Text>
+                  <Textarea />
                 </div>
               </div>
             </div>
