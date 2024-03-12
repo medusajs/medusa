@@ -114,3 +114,5 @@ export class StorePostCartsCartReq {
   // @Type(() => Discount)
   // discounts?: Discount[]
 }
+
+export class StorePostCartsCartTaxesReq {}

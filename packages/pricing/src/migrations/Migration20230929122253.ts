@@ -24,8 +24,9 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "rule_type" ("id" text not null, "name" text not null, "rule_attribute" text not null, "default_priority" integer not null default 0, constraint "rule_type_pkey" primary key ("id"));'
+      'create table "rule_type" ("id" text not null, "name" text not null, "rule_attribute" text not null, "default_priority" integer not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "rule_type_pkey" primary key ("id"));'
     )
+
     this.addSql(
       'create index "IDX_rule_type_rule_attribute" on "rule_type" ("rule_attribute");'
     )

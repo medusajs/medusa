@@ -15,15 +15,15 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  deduplicate,
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   PriceListType,
+  arrayDifference,
+  deduplicate,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -47,9 +47,9 @@ import {
   PriceRuleService,
   RuleTypeService,
 } from "@services"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
+import { validatePriceListDates } from "@utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService

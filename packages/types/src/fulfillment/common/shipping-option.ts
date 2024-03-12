@@ -1,6 +1,6 @@
 import { FilterableServiceZoneProps, ServiceZoneDTO } from "./service-zone"
 import { ShippingProfileDTO } from "./shipping-profile"
-import { ServiceProviderDTO } from "./service-provider"
+import { FulfillmentProviderDTO } from "./fulfillment-provider"
 import {
   FilterableShippingOptionTypeProps,
   ShippingOptionTypeDTO,
@@ -10,6 +10,7 @@ import {
   ShippingOptionRuleDTO,
 } from "./shipping-option-rule"
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { FulfillmentDTO } from "./fulfillment"
 
 export type ShippingOptionPriceType = "calculated" | "flat"
 
@@ -19,15 +20,16 @@ export interface ShippingOptionDTO {
   price_type: ShippingOptionPriceType
   service_zone_id: string
   shipping_profile_id: string
-  service_provider_id: string
+  provider_id: string
   shipping_option_type_id: string | null
   data: Record<string, unknown> | null
   metadata: Record<string, unknown> | null
   service_zone: ServiceZoneDTO
   shipping_profile: ShippingProfileDTO
-  service_provider: ServiceProviderDTO
-  shipping_option_type: ShippingOptionTypeDTO
+  fulfillment_provider: FulfillmentProviderDTO
+  type: ShippingOptionTypeDTO
   rules: ShippingOptionRuleDTO[]
+  fulfillments: FulfillmentDTO[]
   created_at: Date
   updated_at: Date
   deleted_at: Date | null

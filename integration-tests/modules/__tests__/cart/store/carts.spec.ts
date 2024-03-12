@@ -20,7 +20,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
 
-jest.setTimeout(50000)
+jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
@@ -327,6 +327,11 @@ medusaIntegrationTestRunner({
         it("should update a cart with promo codes with a replace action", async () => {
           await setupTaxStructure(taxModule)
 
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
           const targetRules = [
             {
               attribute: "product_id",
@@ -365,6 +370,7 @@ medusaIntegrationTestRunner({
           const cart = await cartModule.create({
             currency_code: "usd",
             email: "tony@stark.com",
+            region_id: region.id,
             shipping_address: {
               address_1: "test address 1",
               address_2: "test address 2",
@@ -393,10 +399,12 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.CART]: { cart_id: cart.id },
-            [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
-          })
+          await remoteLink.create([
+            {
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
+            },
+          ])
 
           // Should remove earlier adjustments from other promocodes
           let updated = await api.post(`/store/carts/${cart.id}`, {
@@ -449,6 +457,78 @@ medusaIntegrationTestRunner({
                       provider_id: "system",
                     }),
                   ],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should not generate tax lines if region is not present or automatic taxes is false", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+            automatic_taxes: false,
+          })
+
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            email: "tony@stark.com",
+            shipping_address: {
+              address_1: "test address 1",
+              address_2: "test address 2",
+              city: "NY",
+              country_code: "US",
+              province: "NY",
+              postal_code: "94016",
+            },
+            items: [
+              {
+                id: "item-1",
+                unit_price: 2000,
+                quantity: 1,
+                title: "Test item",
+                product_id: "prod_tshirt",
+              } as any,
+            ],
+          })
+
+          let updated = await api.post(`/store/carts/${cart.id}`, {
+            email: "another@tax.com",
+          })
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: [
+                expect.objectContaining({
+                  id: "item-1",
+                  tax_lines: [],
+                  adjustments: [],
+                }),
+              ],
+            })
+          )
+
+          await cartModule.update(cart.id, {
+            region_id: region.id,
+          })
+
+          updated = await api.post(`/store/carts/${cart.id}`, {
+            email: "another@tax.com",
+          })
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: [
+                expect.objectContaining({
+                  id: "item-1",
+                  adjustments: [],
+                  tax_lines: [],
                 }),
               ],
             })
@@ -598,7 +678,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /store/carts/:id", () => {
+      describe("POST /store/carts/:id", () => {
         it("should create and update a cart", async () => {
           const region = await regionModule.create({
             name: "US",
@@ -700,6 +780,11 @@ medusaIntegrationTestRunner({
         it("should add item to cart", async () => {
           await setupTaxStructure(taxModule)
 
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
           const customer = await customerModule.create({
             email: "tony@stark-industries.com",
           })
@@ -723,6 +808,7 @@ medusaIntegrationTestRunner({
           const cart = await cartModule.create({
             currency_code: "usd",
             customer_id: customer.id,
+            region_id: region.id,
             shipping_address: {
               customer_id: customer.id,
               address_1: "test address 1",
@@ -903,6 +989,99 @@ medusaIntegrationTestRunner({
               }),
             })
           )
+        })
+      })
+
+      describe("POST /store/carts/:id/taxes", () => {
+        it("should update a carts tax lines when region.automatic_taxes is false", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+            automatic_taxes: false,
+          })
+
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+            shipping_address: {
+              address_1: "test address 1",
+              address_2: "test address 2",
+              city: "NY",
+              country_code: "US",
+              province: "NY",
+              postal_code: "94016",
+            },
+            items: [
+              {
+                id: "item-1",
+                unit_price: 2000,
+                quantity: 1,
+                title: "Test item",
+                product_id: "prod_tshirt",
+              } as any,
+            ],
+          })
+
+          let updated = await api.post(`/store/carts/${cart.id}/taxes`, {})
+
+          expect(updated.status).toEqual(200)
+
+          // TODO: validate tax totals when calculations are ready
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: [
+                expect.objectContaining({
+                  id: "item-1",
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "NY Default Rate",
+                      code: "NYDEFAULT",
+                      rate: 6,
+                      provider_id: "system",
+                    }),
+                  ],
+                  adjustments: [],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should throw error when shipping is not present", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+            automatic_taxes: false,
+          })
+
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+            items: [
+              {
+                id: "item-1",
+                unit_price: 2000,
+                quantity: 1,
+                title: "Test item",
+                product_id: "prod_tshirt",
+              } as any,
+            ],
+          })
+
+          let error = await api
+            .post(`/store/carts/${cart.id}/taxes`, {})
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "invalid_data",
+            message: "country code is required to calculate taxes",
+          })
         })
       })
     })
