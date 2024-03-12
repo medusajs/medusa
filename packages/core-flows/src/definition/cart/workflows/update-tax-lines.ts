@@ -18,6 +18,8 @@ const cartFields = [
   "id",
   "currency_code",
   "email",
+  "region.id",
+  "region.automatic_taxes",
   "items.id",
   "items.variant_id",
   "items.product_id",
@@ -62,6 +64,7 @@ type WorkflowInput = {
   cart_or_cart_id: string | CartWorkflowDTO
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
+  force_tax_calculation?: boolean
 }
 
 export const updateTaxLinesWorkflowId = "update-tax-lines"
@@ -79,6 +82,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
         items: data.input.items || data.cart.items,
         shipping_methods:
           data.input.shipping_methods || data.cart.shipping_methods,
+        force_tax_calculation: data.input.force_tax_calculation,
       }))
     )
 
