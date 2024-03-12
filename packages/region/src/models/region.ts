@@ -6,7 +6,6 @@ import {
   Entity,
   Filter,
   Index,
-  ManyToOne,
   OnInit,
   OneToMany,
   OptionalProps,
@@ -30,6 +29,9 @@ export default class Region {
 
   @Property({ columnType: "text" })
   currency_code: string
+
+  @Property({ columnType: "boolean" })
+  automatic_taxes = true
 
   @OneToMany(() => Country, (country) => country.region)
   countries = new Collection<Country>(this)

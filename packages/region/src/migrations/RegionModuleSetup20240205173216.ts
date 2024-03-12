@@ -20,9 +20,10 @@ ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_3bdd5896ec93be2f1c62a3309a5";
 ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
 ${generatePostgresAlterColummnIfExistStatement(
   "region",
-  ["tax_rate", "gift_cards_taxable", "automatic_taxes", "includes_tax"],
+  ["tax_rate", "gift_cards_taxable", "includes_tax"],
   "DROP NOT NULL"
 )}
+ALTER TABLE "region" ADD COLUMN IF NOT EXISTS "automatic_taxes" BOOLEAN NOT NULL DEFAULT TRUE;
 CREATE INDEX IF NOT EXISTS "IDX_region_deleted_at" ON "region" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
 -- Create or update "region_country" table
 CREATE TABLE IF NOT EXISTS "region_country" (

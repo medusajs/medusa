@@ -50,7 +50,7 @@ const ShippingProfileIdIndex = createPsqlIndexStatementHelper({
 
 const FulfillmentProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
-  columns: "fulfillment_provider_id",
+  columns: "provider_id",
   where: "deleted_at IS NULL",
 })
 
@@ -73,7 +73,7 @@ export default class ShippingOption {
 
   @Enum({
     items: () => ShippingOptionPriceType,
-    default: ShippingOptionPriceType.CALCULATED,
+    default: ShippingOptionPriceType.FLAT,
   })
   price_type: ShippingOptionPriceType
 
@@ -98,12 +98,12 @@ export default class ShippingOption {
 
   @ManyToOne(() => FulfillmentProvider, {
     type: "text",
-    fieldName: "fulfillment_provider_id",
+    fieldName: "provider_id",
     mapToPk: true,
     nullable: true,
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
-  fulfillment_provider_id: string
+  provider_id: string
 
   @Property({ columnType: "text", persist: false })
   @ShippingOptionTypeIdIndex.MikroORMIndex()
@@ -126,7 +126,7 @@ export default class ShippingOption {
   @ManyToOne(() => FulfillmentProvider, {
     persist: false,
   })
-  fulfillment_provider: FulfillmentProvider | null
+  provider: FulfillmentProvider | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,

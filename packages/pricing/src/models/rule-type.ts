@@ -32,6 +32,21 @@ class RuleType {
   @ManyToMany(() => PriceSet, (priceSet) => priceSet.rule_types)
   price_sets = new Collection<PriceSet>(this)
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "rul-typ")

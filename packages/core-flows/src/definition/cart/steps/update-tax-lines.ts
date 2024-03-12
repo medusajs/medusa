@@ -10,6 +10,7 @@ interface StepInput {
   cart_or_cart_id: CartWorkflowDTO | string
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
+  force_tax_calculation?: boolean
 }
 
 export const updateTaxLinesStepId = "update-tax-lines-step"

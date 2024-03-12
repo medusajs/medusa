@@ -12,4 +12,5 @@ export * from "./product-variant-price-set"
 export * from "./publishable-api-key-sales-channel"
 export * from "./region-payment-provider"
 export * from "./sales-channel-location"
+export * from "./shipping-option-price-set"
 

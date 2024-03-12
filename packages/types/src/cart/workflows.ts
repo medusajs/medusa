@@ -1,5 +1,6 @@
 import { CustomerDTO } from "../customer"
 import { ProductDTO } from "../product"
+import { RegionDTO } from "../region"
 import { CartDTO, CartLineItemDTO } from "./common"
 import { UpdateLineItemDTO } from "./mutations"
 
@@ -98,4 +99,5 @@ export interface CreatePaymentCollectionForCartWorkflowInputDTO {
 export interface CartWorkflowDTO extends CartDTO {
   customer?: CustomerDTO
   product?: ProductDTO
+  region?: RegionDTO
 }

@@ -20,7 +20,7 @@ export interface ShippingOptionDTO {
   price_type: ShippingOptionPriceType
   service_zone_id: string
   shipping_profile_id: string
-  fulfillment_provider_id: string
+  provider_id: string
   shipping_option_type_id: string | null
   data: Record<string, unknown> | null
   metadata: Record<string, unknown> | null
