@@ -7,7 +7,7 @@ export interface CreateShippingOptionDTO {
   price_type: ShippingOptionPriceType
   service_zone_id: string
   shipping_profile_id: string
-  service_provider_id: string
+  fulfillment_provider_id: string
   type: Omit<CreateShippingOptionTypeDTO, "shipping_option_id">
   data?: Record<string, unknown> | null
   rules?: Omit<CreateShippingOptionRuleDTO, "shipping_option_id">[]
@@ -19,7 +19,7 @@ export interface UpdateShippingOptionDTO {
   price_type?: ShippingOptionPriceType
   service_zone_id?: string
   shipping_profile_id?: string
-  service_provider_id?: string
+  fulfillment_provider_id?: string
   type: Omit<CreateShippingOptionTypeDTO, "shipping_option_id"> | { id: string }
   data?: Record<string, unknown> | null
   rules?: (
