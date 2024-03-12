@@ -18,6 +18,10 @@ export class Migration20240311145700_InitialSetupMigration extends Migration {
  * This migration is for the initial setup of the fulfillment module in the case of
  * an already existing database. It will check if the `shipping_option` table exists and in that case
  * assume that all other associated tables exists and will migrate them all.
+ *
+ * This migration does not take into account the data migration part which
+ * should be handled separately. Also, after the data migration
+ * the tables should be cleaned up from the old columns.
  **/
 async function migrateUpBackwardCompatibility(
   this: Migration20240311145700_InitialSetupMigration
