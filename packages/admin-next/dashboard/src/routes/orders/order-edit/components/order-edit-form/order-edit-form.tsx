@@ -4,6 +4,12 @@ import * as zod from "zod"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
+import {
+  adminOrderKeys,
+  useAdminCreateOrderEdit,
+  useAdminOrderEdit,
+  useAdminOrderEditAddLineItem,
+} from "medusa-react"
 
 import { Button, clx, Heading, Text } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
@@ -13,12 +19,8 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import ItemsTable from "./items-table.tsx"
 import { useItemsTableColumns } from "./items-table-columns.tsx"
 import { VariantTable } from "../variant-table"
-import {
-  adminOrderKeys,
-  useAdminCreateOrderEdit,
-  useAdminOrderEditAddLineItem,
-} from "medusa-react"
-import { queryClient } from "../../../../../lib/medusa.ts"
+
+import { medusa, queryClient } from "../../../../../lib/medusa.ts"
 
 type OrderEditFormProps = {
   order: Order
@@ -28,13 +30,28 @@ let flag = false
 
 export function OrderEditForm({ order }: OrderEditFormProps) {
   const { t } = useTranslation()
+  const [, setSearchParams] = useSearchParams()
 
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const [quantities, setQuantities] = useState<Record<string, number>>({})
+  const [quantities, setQuantities] = useState<Record<string, number>>(() =>
+    order.items.reduce((acc, i) => {
+      acc[i.id] = i.quantity
+      return acc
+    }, {})
+  )
 
-  const orderEdit = order.edits.find((oe) => oe.status === "created")
+  const _orderEdit = order.edits.find((oe) => oe.status === "created")
+
+  // We need to refetch OE with this endpoint to get calculated totals
+  const { order_edit: orderEdit } = useAdminOrderEdit(
+    _orderEdit.id,
+    {
+      expand: "items,items.variant,items.variant.product", // TODO -> product are not joined
+    },
+    { enabled: !!_orderEdit.id }
+  )
 
   const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
   const { mutateAsync: addLineItemToOrderEdit } = useAdminOrderEditAddLineItem(
@@ -47,11 +64,23 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     setQuantities(state)
   }
 
-  const [, setSearchParams] = useSearchParams()
+  const onQuantityChangeComplete = (itemId: string) => {
+    medusa.admin.orderEdits.updateLineItem(orderEdit.id, itemId, {
+      quantity: quantities[itemId],
+    })
+  }
 
-  const columns = useItemsTableColumns(order, quantities, onQuantityChange)
+  const columns = useItemsTableColumns(
+    order,
+    quantities,
+    onQuantityChange,
+    onQuantityChangeComplete
+  )
 
-  const currentItems = order.items || []
+  const currentItems = useMemo(
+    () => orderEdit?.items.filter((i) => i.original_item_id) || [],
+    [orderEdit]
+  )
   const addedItems = useMemo(
     () => orderEdit?.items.filter((i) => !i.original_item_id) || [],
     [orderEdit]
@@ -73,7 +102,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
 
   useEffect(() => {
     ;(async () => {
-      if (!orderEdit && !flag) {
+      if (!_orderEdit && !flag) {
         flag = true
         await createOrderEdit({
           order_id: order.id,

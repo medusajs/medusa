@@ -12,27 +12,31 @@ const columnHelper = createColumnHelper<LineItem>()
 export const useItemsTableColumns = (
   order: Order,
   quantities: Record<string, number>,
-  onQuantityChange: (value: number, id: string) => void
+  onQuantityChange: (value: number, id: string) => void,
+  onQuantityChangeComplete: (id: string) => void
 ) => {
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "product",
-        header: () => (
-          <div className="flex size-full items-center overflow-hidden">
-            <span className="truncate">{t("fields.product")}</span>
-          </div>
-        ),
-        cell: ({ row }) => (
-          <div className="flex items-center overflow-hidden">
-            <span className="truncate">
-              {row.original.variant.product.title}
-            </span>
-          </div>
-        ),
-      }),
+      /**
+       * TODO: investigate why enpoint doesn't joion `product`
+       */
+      // columnHelper.display({
+      //   id: "product",
+      //   header: () => (
+      //     <div className="flex size-full items-center overflow-hidden">
+      //       <span className="truncate">{t("fields.product")}</span>
+      //     </div>
+      //   ),
+      //   cell: ({ row }) => (
+      //     <div className="flex items-center overflow-hidden">
+      //       <span className="truncate">
+      //         {row.original.variant.product.title}
+      //       </span>
+      //     </div>
+      //   ),
+      // }),
       columnHelper.display({
         id: "sku",
         header: () => (
@@ -90,6 +94,8 @@ export const useItemsTableColumns = (
                 if (typeof quantities[id] === "undefined") {
                   onQuantityChange(0, id)
                 }
+                console.log("BLUUUR")
+                onQuantityChangeComplete(id)
               }}
             />
           </div>
