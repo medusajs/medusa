@@ -1,4 +1,5 @@
 const { Modules } = require("@medusajs/modules-sdk")
+const { resolve } = require("path")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -70,5 +71,20 @@ module.exports = {
     [Modules.TAX]: true,
     [Modules.CURRENCY]: true,
     [Modules.PAYMENT]: true,
+    [Modules.FULFILLMENT]: {
+      /** @type {FulfillmentModuleServiceInitializeOptions} */
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/fulfillment-manual",
+            options: {
+              config: {
+                "test-provider": {},
+              },
+            },
+          },
+        ],
+      },
+    },
   },
 }

@@ -50,7 +50,7 @@ const ShippingProfileIdIndex = createPsqlIndexStatementHelper({
 
 const FulfillmentProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
-  columns: "fulfillment_provider_id",
+  columns: "provider_id",
   where: "deleted_at IS NULL",
 })
 
@@ -98,12 +98,12 @@ export default class ShippingOption {
 
   @ManyToOne(() => FulfillmentProvider, {
     type: "text",
-    fieldName: "fulfillment_provider_id",
+    fieldName: "provider_id",
     mapToPk: true,
     nullable: true,
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
-  fulfillment_provider_id: string
+  provider_id: string
 
   @Property({ columnType: "text", persist: false })
   @ShippingOptionTypeIdIndex.MikroORMIndex()
