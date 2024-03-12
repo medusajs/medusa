@@ -5,17 +5,15 @@ import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {
-  adminCustomerKeys,
   adminOrderEditsKeys,
   adminOrderKeys,
-  useAdminCreateOrderEdit,
-  useAdminOrderEdit,
+  useAdminConfirmOrderEdit,
   useAdminOrderEditAddLineItem,
   useAdminUpdateOrderEdit,
 } from "medusa-react"
 
 import { Button, clx, Heading, Text, Textarea } from "@medusajs/ui"
-import { Order } from "@medusajs/medusa"
+import { Order, OrderEdit } from "@medusajs/medusa"
 
 import {
   RouteFocusModal,
@@ -32,6 +30,7 @@ import { Form } from "../../../../../components/common/form"
 
 type OrderEditFormProps = {
   order: Order
+  orderEdit: OrderEdit
 }
 
 const QuantitiesSchema = zod.union(
@@ -39,47 +38,40 @@ const QuantitiesSchema = zod.union(
   zod.object({ note: zod.string().optional() })
 )
 
-let flag = false
-
-export function OrderEditForm({ order }: OrderEditFormProps) {
+export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [, setSearchParams] = useSearchParams()
 
+  /**
+   * STATE
+   */
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const _orderEdit = order.edits.find((oe) => oe.status === "created")
-
+  /**
+   * FORM
+   */
   const form = useForm<zod.infer<typeof QuantitiesSchema>>({
     defaultValues: order.items.reduce(
       (acc, i) => {
         acc[i.id] = i.quantity
         return acc
       },
-      { note: _orderEdit.internal_note }
+      { note: orderEdit.internal_note }
     ),
   })
 
   /**
    * CRUD HOOKS
    */
-
-  // We need to refetch OE with this endpoint to get calculated totals
-  const { order_edit: orderEdit } = useAdminOrderEdit(
-    _orderEdit?.id,
-    {
-      expand: "items,items.variant,items.variant.product", // TODO -> product are not joined
-    },
-    { enabled: !!_orderEdit?.id }
+  const { mutateAsync: confirmOrderEdit } = useAdminConfirmOrderEdit(
+    orderEdit.id
   )
-  const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
   const { mutateAsync: addLineItemToOrderEdit } = useAdminOrderEditAddLineItem(
-    orderEdit?.id
+    orderEdit.id
   )
-  const { mutateAsync: updateOrderEdit } = useAdminUpdateOrderEdit(
-    _orderEdit?.id
-  )
+  const { mutateAsync: updateOrderEdit } = useAdminUpdateOrderEdit(orderEdit.id)
 
   const onQuantityChangeComplete = async (itemId: string) => {
     setIsLoading(true)
@@ -87,39 +79,42 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     const quantity = form.getValues()[itemId]
 
     if (form.getValues()[itemId] === 0) {
-      await medusa.admin.orderEdits.removeLineItem(_orderEdit?.id, itemId)
+      await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
     } else if (quantity > 0) {
-      await medusa.admin.orderEdits.updateLineItem(_orderEdit?.id, itemId, {
+      await medusa.admin.orderEdits.updateLineItem(orderEdit.id, itemId, {
         quantity,
       })
     }
     await queryClient.invalidateQueries(
-      adminOrderEditsKeys.detail(_orderEdit?.id)
+      adminOrderEditsKeys.detail(orderEdit.id)
     )
 
     setIsLoading(false)
   }
 
-  const columns = useItemsTableColumns(
-    order,
-    form,
-    orderEdit?.items,
-    onQuantityChangeComplete
-  )
-
   const currentItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) => new Date(i1.created_at) - new Date(i2.created_at))
+        .sort((i1, i2) => i1.title.localeCompare(i2))
         .filter((i) => i.original_item_id) || [],
     [orderEdit]
   )
   const addedItems = useMemo(
     () =>
       orderEdit?.items
-        .sort((i1, i2) => new Date(i1.created_at) - new Date(i2.created_at))
+        .sort((i1, i2) => i1.title.localeCompare(i2))
         .filter((i) => !i.original_item_id) || [],
     [orderEdit]
+  )
+
+  /**
+   * TABLE
+   */
+  const columns = useItemsTableColumns(
+    order,
+    form,
+    orderEdit?.items,
+    onQuantityChangeComplete
   )
 
   const currentItemsTable = useReactTable({
@@ -134,19 +129,9 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  useEffect(() => {
-    ;(async () => {
-      if (!_orderEdit && !flag) {
-        flag = true
-        await createOrderEdit({
-          order_id: order.id,
-          // created_by: // TODO
-        })
-      }
-      flag = false
-    })()
-  }, [])
-
+  /**
+   * EFFECTS
+   */
   useEffect(() => {
     if (orderEdit) {
       orderEdit?.items.forEach((i) => {
@@ -155,6 +140,9 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     }
   }, [orderEdit?.items.length])
 
+  /**
+   * HANDLERS
+   */
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setSearchParams(
@@ -185,7 +173,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
       await updateOrderEdit({ internal_note: data.note })
     }
 
-    // TODO confirm OE
+    await confirmOrderEdit() // TODO error notification if fails
 
     handleSuccess(`/orders/${order.id}`)
   })
@@ -266,7 +254,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
                       <MoneyAmountCell
                         align="right"
                         currencyCode={order.currency_code}
-                        amount={orderEdit?.total}
+                        amount={orderEdit.total}
                       />
                     </div>
                     <div className="text-ui-fg-base flex justify-between text-sm">
@@ -276,7 +264,7 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
                       <MoneyAmountCell
                         align="right"
                         currencyCode={order.currency_code}
-                        amount={orderEdit?.total - order.paid_total}
+                        amount={orderEdit.total - order.paid_total}
                       />
                     </div>
                   </div>
