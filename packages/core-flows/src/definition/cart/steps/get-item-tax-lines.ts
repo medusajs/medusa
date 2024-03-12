@@ -31,14 +31,14 @@ function normalizeTaxModuleContext(
     return null
   }
 
-  if (!address || !address?.country_code) {
-    if (forceTaxCalculation) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `country code is required to calculate taxes`
-      )
-    }
+  if (forceTaxCalculation && !address?.country_code) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `country code is required to calculate taxes`
+    )
+  }
 
+  if (!address?.country_code) {
     return null
   }
 

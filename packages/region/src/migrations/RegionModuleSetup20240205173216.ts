@@ -20,7 +20,7 @@ ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_3bdd5896ec93be2f1c62a3309a5";
 ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
 ${generatePostgresAlterColummnIfExistStatement(
   "region",
-  ["tax_rate", "automatic_taxes", "gift_cards_taxable", "includes_tax"],
+  ["tax_rate", "gift_cards_taxable", "includes_tax"],
   "DROP NOT NULL"
 )}
 ALTER TABLE "region" ADD COLUMN IF NOT EXISTS "automatic_taxes" BOOLEAN NOT NULL DEFAULT TRUE;
