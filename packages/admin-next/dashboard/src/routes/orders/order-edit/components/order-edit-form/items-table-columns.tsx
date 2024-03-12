@@ -1,18 +1,19 @@
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { createColumnHelper } from "@tanstack/react-table"
+import { NestedForm } from "@medusajs/admin-ui/ui/src/utils/nested-form.ts"
 
 import { Input } from "@medusajs/ui"
 import { LineItem, Order } from "@medusajs/medusa"
 
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
+import { Form } from "../../../../../components/common/form"
 
 const columnHelper = createColumnHelper<LineItem>()
 
 export const useItemsTableColumns = (
   order: Order,
-  quantities: Record<string, number>,
-  onQuantityChange: (value: number, id: string) => void,
+  form: NestedForm<Record<string, number>>,
   onQuantityChangeComplete: (id: string) => void
 ) => {
   const { t } = useTranslation()
@@ -77,25 +78,37 @@ export const useItemsTableColumns = (
           },
         }) => (
           <div className="block w-full">
-            <Input
-              className="w-full border-none bg-transparent shadow-none"
-              type="number"
-              min={0}
-              value={quantities[id]}
-              onChange={(e) => {
-                const val = e.target.value
-                if (val === "") {
-                  onQuantityChange(undefined, id)
-                } else {
-                  onQuantityChange(Number(val), id)
-                }
-              }}
-              onBlur={() => {
-                if (typeof quantities[id] === "undefined") {
-                  onQuantityChange(0, id)
-                }
-                console.log("BLUUUR")
-                onQuantityChangeComplete(id)
+            <Form.Field
+              control={form.control}
+              name={id}
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Control>
+                      <Input
+                        className="w-full border-none bg-transparent shadow-none"
+                        min={0}
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          const val = e.target.value
+                          if (val === "") {
+                            form.setValue(id, null)
+                          } else {
+                            form.setValue(id, Number(val))
+                          }
+                        }}
+                        onBlur={() => {
+                          if (typeof form.getValues()[id] === "undefined") {
+                            form.setValue(id, 0)
+                          }
+                          onQuantityChangeComplete(id)
+                        }}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
               }}
             />
           </div>
@@ -117,6 +130,6 @@ export const useItemsTableColumns = (
         ),
       }),
     ],
-    [quantities]
+    []
   )
 }

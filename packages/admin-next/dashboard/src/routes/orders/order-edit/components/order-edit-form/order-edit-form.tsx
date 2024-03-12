@@ -26,6 +26,8 @@ type OrderEditFormProps = {
   order: Order
 }
 
+const QuantitiesSchema = zod.record(zod.string(), zod.number().optional())
+
 let flag = false
 
 export function OrderEditForm({ order }: OrderEditFormProps) {
@@ -35,12 +37,12 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const [quantities, setQuantities] = useState<Record<string, number>>(() =>
-    order.items.reduce((acc, i) => {
+  const form = useForm<zod.infer<typeof QuantitiesSchema>>({
+    defaultValues: order.items.reduce((acc, i) => {
       acc[i.id] = i.quantity
       return acc
-    }, {})
-  )
+    }, {}),
+  })
 
   const _orderEdit = order.edits.find((oe) => oe.status === "created")
 
@@ -58,35 +60,36 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     orderEdit?.id
   )
 
-  const onQuantityChange = (value: number, itemId: string) => {
-    const state = { ...quantities }
-    state[itemId] = value
-    setQuantities(state)
-  }
+  const onQuantityChangeComplete = async (itemId: string) => {
+    setIsLoading(true)
 
-  const onQuantityChangeComplete = (itemId: string) => {
-    medusa.admin.orderEdits.updateLineItem(orderEdit.id, itemId, {
-      quantity: quantities[itemId],
+    await medusa.admin.orderEdits.updateLineItem(_orderEdit.id, itemId, {
+      quantity: form.getValues()[itemId],
     })
+
+    setIsLoading(false)
   }
 
-  const columns = useItemsTableColumns(
-    order,
-    quantities,
-    onQuantityChange,
-    onQuantityChangeComplete
-  )
+  const columns = useItemsTableColumns(order, form, onQuantityChangeComplete)
 
   const currentItems = useMemo(
-    () => orderEdit?.items.filter((i) => i.original_item_id) || [],
+    () =>
+      orderEdit?.items
+        .sort((i1, i2) =>
+          (i1.created_at as string).localeCompare(i2.created_at)
+        )
+        .filter((i) => i.original_item_id) || [],
     [orderEdit]
   )
   const addedItems = useMemo(
-    () => orderEdit?.items.filter((i) => !i.original_item_id) || [],
+    () =>
+      orderEdit?.items
+        .sort((i1, i2) =>
+          (i1.created_at as string).localeCompare(i2.created_at)
+        )
+        .filter((i) => !i.original_item_id) || [],
     [orderEdit]
   )
-
-  const form = useForm<zod.infer<any>>({})
 
   const currentItemsTable = useReactTable({
     data: currentItems,
@@ -116,12 +119,10 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   useEffect(() => {
     if (orderEdit) {
       orderEdit?.items.forEach((i) => {
-        if (!(i.id in quantities)) {
-          quantities[i.id] = i.quantity
-        }
+        form.setValue(i.id, i.quantity)
       })
     }
-  }, [orderEdit?.items.length, quantities])
+  }, [orderEdit?.items.length])
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
