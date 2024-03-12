@@ -32,6 +32,8 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const [quantities, setQuantities] = useState<Record<string, number>>({})
+
   const orderEdit = order.edits.find((oe) => oe.status === "created")
 
   const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
@@ -39,9 +41,15 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     orderEdit?.id
   )
 
+  const onQuantityChange = (value: number, itemId: string) => {
+    const state = { ...quantities }
+    state[itemId] = value
+    setQuantities(state)
+  }
+
   const [, setSearchParams] = useSearchParams()
 
-  const columns = useItemsTableColumns(order)
+  const columns = useItemsTableColumns(order, quantities, onQuantityChange)
 
   const currentItems = order.items || []
   const addedItems = useMemo(
@@ -75,6 +83,16 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
       flag = false
     })()
   }, [])
+
+  useEffect(() => {
+    if (orderEdit) {
+      orderEdit?.items.forEach((i) => {
+        if (!(i.id in quantities)) {
+          quantities[i.id] = i.quantity
+        }
+      })
+    }
+  }, [orderEdit?.items.length, quantities])
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {

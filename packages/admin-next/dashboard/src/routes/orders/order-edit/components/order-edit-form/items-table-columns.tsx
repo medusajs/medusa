@@ -9,7 +9,11 @@ import { MoneyAmountCell } from "../../../../../components/table/table-cells/com
 
 const columnHelper = createColumnHelper<LineItem>()
 
-export const useItemsTableColumns = (order: Order) => {
+export const useItemsTableColumns = (
+  order: Order,
+  quantities: Record<string, number>,
+  onQuantityChange: (value: number, id: string) => void
+) => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -63,13 +67,30 @@ export const useItemsTableColumns = (order: Order) => {
             <span className="truncate">{t("fields.quantity")}</span>
           </div>
         ),
-        cell: ({ getValue }) => (
-          <div className="flex items-center overflow-hidden">
+        cell: ({
+          row: {
+            original: { id },
+          },
+        }) => (
+          <div className="block w-full">
             <Input
-              className="border-none bg-transparent shadow-none"
+              className="w-full border-none bg-transparent shadow-none"
               type="number"
               min={0}
-              value={getValue()}
+              value={quantities[id]}
+              onChange={(e) => {
+                const val = e.target.value
+                if (val === "") {
+                  onQuantityChange(undefined, id)
+                } else {
+                  onQuantityChange(Number(val), id)
+                }
+              }}
+              onBlur={() => {
+                if (typeof quantities[id] === "undefined") {
+                  onQuantityChange(0, id)
+                }
+              }}
             />
           </div>
         ),
@@ -90,6 +111,6 @@ export const useItemsTableColumns = (order: Order) => {
         ),
       }),
     ],
-    []
+    [quantities]
   )
 }
