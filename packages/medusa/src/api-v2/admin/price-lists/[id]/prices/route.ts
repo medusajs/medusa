@@ -24,7 +24,9 @@ export const POST = async (
   const id = req.params.id
   const workflow = upsertPriceListPricesWorkflow(req.scope)
   const { errors } = await workflow.run({
-    input: [{ price_list_id: id, prices }],
+    input: {
+      price_lists_data: [{ id, prices }],
+    },
     throwOnError: false,
   })
 

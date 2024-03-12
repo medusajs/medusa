@@ -12,27 +12,16 @@ export const updatePriceListsWorkflowId = "update-price-lists"
 export const updatePriceListsWorkflow = createWorkflow(
   updatePriceListsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
-    upsertPriceListPricesStep(
-      transform({ input }, (data) => {
-        return data.input.price_lists_data.map((priceListsData) => {
-          const { prices = [], ...rest } = priceListsData
+    upsertPriceListPricesStep(input.price_lists_data)
 
-          return {
-            price_list_id: rest.id,
-            prices,
-          }
-        })
+    const updatePriceListInput = transform({ input }, (data) => {
+      return data.input.price_lists_data.map((priceListData) => {
+        delete priceListData.prices
+
+        return priceListData
       })
-    )
+    })
 
-    updatePriceListsStep(
-      transform({ input }, (data) => {
-        return data.input.price_lists_data.map((priceListsData) => {
-          const { prices, ...rest } = priceListsData
-
-          return rest
-        })
-      })
-    )
+    updatePriceListsStep(updatePriceListInput)
   }
 )

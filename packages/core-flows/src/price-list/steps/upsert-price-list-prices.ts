@@ -20,7 +20,7 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type WorkflowStepInput = {
-  price_list_id: string
+  id: string
   prices?: (UpdatePriceListPriceWorkflowDTO | CreatePriceListPriceWorkflowDTO)[]
 }[]
 
@@ -31,7 +31,7 @@ export const upsertPriceListPricesStep = createStep(
     if (!data.length) {
       return new StepResponse(null, {
         createdPriceListPrices: [],
-        dataBeforePriceUpdate: [],
+        updatedPriceListPrices: [],
       })
     }
 
@@ -42,7 +42,7 @@ export const upsertPriceListPricesStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    const priceListIds = data.map((d) => d.price_list_id)
+    const priceListIds = data.map((d) => d.id)
     const priceLists = await pricingModule.listPriceLists({
       id: priceListIds,
     })
@@ -91,7 +91,7 @@ export const upsertPriceListPricesStep = createStep(
     const priceListPricesToAdd: AddPriceListPricesDTO[] = []
 
     for (const upsertPriceListPricesData of data) {
-      const { prices, price_list_id: priceListId } = upsertPriceListPricesData
+      const { prices, id: priceListId } = upsertPriceListPricesData
       const priceList = priceListMap.get(priceListId)!
 
       const pricesToAdd: CreatePriceListPriceDTO[] = []
@@ -140,7 +140,6 @@ export const upsertPriceListPricesStep = createStep(
       )
 
     const priceListPsmaMap = new Map<string, PriceSetMoneyAmountDTO[]>()
-
     const dataBeforePriceUpdate: UpdatePriceListPricesDTO[] = []
 
     for (const priceSetMoneyAmount of updatedPriceSetMoneyAmounts) {
@@ -167,11 +166,11 @@ export const upsertPriceListPricesStep = createStep(
 
     return new StepResponse(null, {
       createdPriceListPrices,
-      dataBeforePriceUpdate,
+      updatedPriceListPrices: dataBeforePriceUpdate,
     })
   },
   async (data, { container }) => {
-    const { createdPriceListPrices = [], dataBeforePriceUpdate = [] } =
+    const { createdPriceListPrices = [], updatedPriceListPrices = [] } =
       data || {}
 
     const pricingModule = container.resolve<IPricingModuleService>(
@@ -182,8 +181,8 @@ export const upsertPriceListPricesStep = createStep(
       pricingModule.removePrices(createdPriceListPrices.map((p) => p.id))
     }
 
-    if (dataBeforePriceUpdate.length) {
-      pricingModule.updatePriceListPrices(dataBeforePriceUpdate)
+    if (updatedPriceListPrices.length) {
+      pricingModule.updatePriceListPrices(updatedPriceListPrices)
     }
   }
 )

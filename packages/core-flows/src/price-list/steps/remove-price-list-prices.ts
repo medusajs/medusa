@@ -7,7 +7,7 @@ export const removePriceListPricesStep = createStep(
   removePriceListPricesStepId,
   async (ids: string[], { container }) => {
     if (!ids.length) {
-      return new StepResponse(null, { removedPriceListPrices: [] })
+      return new StepResponse(null, [])
     }
 
     const pricingModule = container.resolve<IPricingModuleService>(
@@ -21,10 +21,13 @@ export const removePriceListPricesStep = createStep(
 
     await pricingModule.removePrices(psmas.map((psma) => psma.id))
 
-    return new StepResponse(null, psmas.map(psma => psma.id))
+    return new StepResponse(
+      null,
+      psmas.map((psma) => psma.id)
+    )
   },
-  async (data, { container }) => {
-    if (!data) {
+  async (ids, { container }) => {
+    if (!ids) {
       return
     }
 
@@ -33,6 +36,6 @@ export const removePriceListPricesStep = createStep(
     )
 
     // TODO: This needs to be implemented
-    // pricingModule.restorePrices(data)
+    // pricingModule.restorePrices(ids)
   }
 )
