@@ -260,6 +260,24 @@
     "status": {
       "open": "Open",
       "completed": "Completed"
+    },
+    "create": {
+      "createDraftOrder": "Create Draft Order",
+      "createDraftOrderHint": "Create a new draft order to manage the details of an order before it is placed.",
+      "chooseRegionHint": "Choose region",
+      "existingItemsLabel": "Existing items",
+      "existingItemsHint": "Add existing products to the draft order.",
+      "customItemsLabel": "Custom items",
+      "customItemsHint": "Add custom items to the draft order.",
+      "addExistingItemsAction": "Add existing items",
+      "addCustomItemAction": "Add custom item",
+      "noCustomItemsAddedLabel": "No custom items added yet",
+      "noExistingItemsAddedLabel": "No existing items added yet",
+      "chooseRegionTooltip": "Choose a region first",
+      "findExistingCustomerLabel": "Find existing customer",
+      "shippingMethodsLabel": "Shipping methods",
+      "shippingMethodsHint": "Choose the shipping methods for the draft order.",
+      "addShippingMethodsAction": "Add shipping methods"
     }
   },
   "discounts": {
@@ -740,7 +758,8 @@
     "summary": "Summary",
     "label": "Label",
     "rate": "Rate",
-    "requiresShipping": "Requires shipping"
+    "requiresShipping": "Requires shipping",
+    "unitPrice": "Unit Price"
   },
   "dateTime": {
     "years_one": "Year",

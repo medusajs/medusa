@@ -1,6 +1,10 @@
 import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import { Button, Checkbox } from "@medusajs/ui"
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import {
+  OnChangeFn,
+  RowSelectionState,
+  createColumnHelper,
+} from "@tanstack/react-table"
 import { useAdminVariants } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -10,9 +14,11 @@ import { MoneyAmountCell } from "../../../../components/table/table-cells/common
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
 import { ProductCell } from "../../../../components/table/table-cells/product/product-cell"
 import { useDataTable } from "../../../../hooks/use-data-table"
+import { ExistingItem } from "./types"
 
 type AddVariantDrawerProps = {
-  onSave: () => void
+  onSave: (items: ExistingItem[]) => void
+  items?: ExistingItem[]
   regionId?: string
   customerId?: string
   currencyCode?: string
@@ -20,12 +26,24 @@ type AddVariantDrawerProps = {
 
 const PAGE_SIZE = 50
 
+const initRowState = (items: ExistingItem[]): RowSelectionState => {
+  return items.reduce((acc, curr) => {
+    acc[curr.variant_id] = true
+    return acc
+  }, {} as RowSelectionState)
+}
+
 export const AddVariantDrawer = ({
+  onSave,
+  items = [],
   regionId,
   customerId,
   currencyCode,
 }: AddVariantDrawerProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    initRowState(items)
+  )
+  const [intermediate, setIntermediate] = useState<ExistingItem[]>(items)
 
   const { t } = useTranslation()
 
@@ -33,6 +51,42 @@ export const AddVariantDrawer = ({
     region_id: regionId,
     customer_id: customerId,
   })
+
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const newState: RowSelectionState =
+      typeof fn === "function" ? fn(rowSelection) : fn
+
+    const diff = Object.keys(newState).filter(
+      (k) => newState[k] !== rowSelection[k]
+    )
+
+    const addedVariants = variants?.filter((p) => diff.includes(p.id!)) ?? []
+
+    const newVariants: ExistingItem[] = addedVariants.map((v) => ({
+      variant_id: v.id!,
+      variant_title: v.title!,
+      unit_price: v.calculated_price_incl_tax!,
+      custom_unit_price: v.calculated_price_incl_tax!,
+      sku: v.sku ?? undefined,
+      product_title: v.product?.title,
+      quantity: 1,
+    }))
+
+    setIntermediate((prev) => {
+      const filteredPrev = prev.filter((p) =>
+        Object.keys(newState).includes(p.variant_id)
+      )
+
+      const update = Array.from(new Set([...filteredPrev, ...newVariants]))
+      return update
+    })
+
+    setRowSelection(newState)
+  }
+
+  const handleSave = () => {
+    onSave(intermediate)
+  }
 
   const columns = useVariantTableColumns()
 
@@ -44,6 +98,10 @@ export const AddVariantDrawer = ({
     enablePagination: true,
     enableRowSelection: true,
     getRowId: (row) => row.id!,
+    rowSelection: {
+      state: rowSelection,
+      updater,
+    },
     meta: {
       currencyCode,
     },
@@ -72,7 +130,7 @@ export const AddVariantDrawer = ({
             {t("actions.cancel")}
           </Button>
         </SplitView.Close>
-        <Button size="small" type="button">
+        <Button size="small" type="button" onClick={handleSave}>
           {t("actions.save")}
         </Button>
       </div>
@@ -108,9 +166,6 @@ const useVariantTableColumns = () => {
             <Checkbox
               checked={row.getIsSelected()}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
             />
           )
         },
