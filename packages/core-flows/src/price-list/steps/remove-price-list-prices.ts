@@ -21,18 +21,18 @@ export const removePriceListPricesStep = createStep(
 
     await pricingModule.removePrices(psmas.map((psma) => psma.id))
 
-    return new StepResponse(null, { removedPriceListPrices: psmas })
+    return new StepResponse(null, psmas.map(psma => psma.id))
   },
   async (data, { container }) => {
-    const { removedPriceListPrices = [] } = data || {}
+    if (!data) {
+      return
+    }
 
     const pricingModule = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )
 
-    if (removedPriceListPrices.length) {
-      // TODO: This needs to be implemented
-      // pricingModule.restorePrices(removedPriceListPrices.map((p) => p.id))
-    }
+    // TODO: This needs to be implemented
+    // pricingModule.restorePrices(data)
   }
 )
