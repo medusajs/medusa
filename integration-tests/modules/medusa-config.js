@@ -1,5 +1,4 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { resolve } = require("path")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -72,7 +71,7 @@ module.exports = {
     [Modules.CURRENCY]: true,
     [Modules.PAYMENT]: true,
     [Modules.FULFILLMENT]: {
-      /** @type {FulfillmentModuleServiceInitializeOptions} */
+      /** @type {import('@medusajs/fulfillment').FulfillmentModuleServiceInitializeOptions} */
       options: {
         providers: [
           {
