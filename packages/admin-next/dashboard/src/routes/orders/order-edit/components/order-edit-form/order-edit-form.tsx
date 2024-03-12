@@ -5,17 +5,22 @@ import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {
+  adminCustomerKeys,
   adminOrderEditsKeys,
   adminOrderKeys,
   useAdminCreateOrderEdit,
   useAdminOrderEdit,
   useAdminOrderEditAddLineItem,
+  useAdminUpdateOrderEdit,
 } from "medusa-react"
 
 import { Button, clx, Heading, Text, Textarea } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
 
-import { RouteFocusModal } from "../../../../../components/route-modal"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
 import { useItemsTableColumns } from "./items-table-columns"
 import { VariantTable } from "../variant-table"
@@ -23,30 +28,42 @@ import ItemsTable from "./items-table"
 
 import { medusa, queryClient } from "../../../../../lib/medusa.ts"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
+import { Form } from "../../../../../components/common/form"
 
 type OrderEditFormProps = {
   order: Order
 }
 
-const QuantitiesSchema = zod.record(zod.string(), zod.number().optional())
+const QuantitiesSchema = zod.union(
+  zod.record(zod.string(), zod.number().optional()),
+  zod.object({ note: zod.string().optional() })
+)
 
 let flag = false
 
 export function OrderEditForm({ order }: OrderEditFormProps) {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
   const [, setSearchParams] = useSearchParams()
 
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const _orderEdit = order.edits.find((oe) => oe.status === "created")
+
   const form = useForm<zod.infer<typeof QuantitiesSchema>>({
-    defaultValues: order.items.reduce((acc, i) => {
-      acc[i.id] = i.quantity
-      return acc
-    }, {}),
+    defaultValues: order.items.reduce(
+      (acc, i) => {
+        acc[i.id] = i.quantity
+        return acc
+      },
+      { note: _orderEdit.internal_note }
+    ),
   })
 
-  const _orderEdit = order.edits.find((oe) => oe.status === "created")
+  /**
+   * CRUD HOOKS
+   */
 
   // We need to refetch OE with this endpoint to get calculated totals
   const { order_edit: orderEdit } = useAdminOrderEdit(
@@ -56,10 +73,12 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     },
     { enabled: !!_orderEdit?.id }
   )
-
   const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
   const { mutateAsync: addLineItemToOrderEdit } = useAdminOrderEditAddLineItem(
     orderEdit?.id
+  )
+  const { mutateAsync: updateOrderEdit } = useAdminUpdateOrderEdit(
+    _orderEdit?.id
   )
 
   const onQuantityChangeComplete = async (itemId: string) => {
@@ -161,110 +180,138 @@ export function OrderEditForm({ order }: OrderEditFormProps) {
     setOpen(false)
   }
 
+  const handleSubmit = form.handleSubmit(async (data) => {
+    if (data.note !== orderEdit?.internal_note) {
+      await updateOrderEdit({ internal_note: data.note })
+    }
+
+    // TODO confirm OE
+
+    handleSuccess(`/orders/${order.id}`)
+  })
+
   return (
-    <RouteFocusModal.Form form={form}>
-      <RouteFocusModal.Header>
-        <div className="flex   h-full items-center justify-end gap-x-2">
-          <RouteFocusModal.Close asChild>
-            <Button variant="secondary" size="small">
-              {t("actions.cancel")}
+    <RouteFocusModal.Form form={form} onSubmit={handleSubmit}>
+      <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+        <RouteFocusModal.Header>
+          <div className="flex   h-full items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button type="submit" size="small" isLoading={isLoading}>
+              {t("actions.confirm")}
             </Button>
-          </RouteFocusModal.Close>
-          <Button type="submit" size="small" isLoading={isLoading}>
-            {t("actions.confirm")}
-          </Button>
-        </div>
-      </RouteFocusModal.Header>
-      <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
-        <SplitView open={open} onOpenChange={handleOpenChange}>
-          <SplitView.Content>
-            <div className="conatiner mx-auto max-w-[720px]">
-              <div className={clx("flex h-full w-full flex-col pt-16")}>
-                <Heading level="h1" className="pb-8 text-left">
-                  {t("orders.edits.title")}
-                </Heading>
+          </div>
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
+          <SplitView open={open} onOpenChange={handleOpenChange}>
+            <SplitView.Content>
+              <div className="conatiner mx-auto max-w-[720px]">
+                <div className={clx("flex h-full w-full flex-col pt-16")}>
+                  <Heading level="h1" className="pb-8 text-left">
+                    {t("orders.edits.title")}
+                  </Heading>
 
-                <Text className="text-ui-fg-base mb-1" weight="plus">
-                  {t("orders.edits.currentItems")}
-                </Text>
-                <Text className="text-ui-fg-subtle mb-4">
-                  {t("orders.edits.currentItemsDescription")}
-                </Text>
-
-                <ItemsTable table={currentItemsTable} />
-
-                <div className="border-b border-dashed pb-10 ">
-                  <Text className="text-ui-fg-base mb-1 mt-8" weight="plus">
-                    {t("orders.edits.addItems")}
-                  </Text>
-                  <Text className="text-ui-fg-subtle mb-2">
-                    {t("orders.edits.addItemsDescription")}
-                  </Text>
-
-                  {!!addedItems.length && (
-                    <div className="pb-4 pt-2">
-                      <ItemsTable table={addedItemsTable} />
-                    </div>
-                  )}
-
-                  <div className="mt-2 flex justify-end">
-                    <Button
-                      variant="secondary"
-                      type="button"
-                      onClick={() => setOpen(true)}
-                    >
-                      {t("orders.edits.addItems")}
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-y-2 border-b border-dashed py-10">
-                  <div className="text-ui-fg-subtle flex justify-between text-sm">
-                    <Text className="min-w-[50%] ">
-                      {t("orders.edits.amountPaid")}
-                    </Text>
-                    <MoneyAmountCell
-                      align="right"
-                      currencyCode={order.currency_code}
-                      amount={order.paid_total - order.refunded_total}
-                    />
-                  </div>
-                  <div className="text-ui-fg-subtle flex justify-between text-sm ">
-                    <Text className="min-w-[50%] ">
-                      {t("orders.edits.newTotal")}
-                    </Text>
-                    <MoneyAmountCell
-                      align="right"
-                      currencyCode={order.currency_code}
-                      amount={orderEdit?.total}
-                    />
-                  </div>
-                  <div className="text-ui-fg-base flex justify-between text-sm">
-                    <Text className="min-w-[50%]" weight="plus">
-                      {t("orders.edits.differenceDue")}
-                    </Text>
-                    <MoneyAmountCell
-                      align="right"
-                      currencyCode={order.currency_code}
-                      amount={orderEdit?.total - order.paid_total}
-                    />
-                  </div>
-                </div>
-
-                <div className="py-10">
                   <Text className="text-ui-fg-base mb-1" weight="plus">
-                    {t("fields.note")}
+                    {t("orders.edits.currentItems")}
                   </Text>
-                  <Textarea />
+                  <Text className="text-ui-fg-subtle mb-4">
+                    {t("orders.edits.currentItemsDescription")}
+                  </Text>
+
+                  <ItemsTable table={currentItemsTable} />
+
+                  <div className="border-b border-dashed pb-10 ">
+                    <Text className="text-ui-fg-base mb-1 mt-8" weight="plus">
+                      {t("orders.edits.addItems")}
+                    </Text>
+                    <Text className="text-ui-fg-subtle mb-2">
+                      {t("orders.edits.addItemsDescription")}
+                    </Text>
+
+                    {!!addedItems.length && (
+                      <div className="pb-4 pt-2">
+                        <ItemsTable table={addedItemsTable} />
+                      </div>
+                    )}
+
+                    <div className="mt-2 flex justify-end">
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setOpen(true)}
+                      >
+                        {t("orders.edits.addItems")}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-y-2 border-b border-dashed py-10">
+                    <div className="text-ui-fg-subtle flex justify-between text-sm">
+                      <Text className="min-w-[50%] ">
+                        {t("orders.edits.amountPaid")}
+                      </Text>
+                      <MoneyAmountCell
+                        align="right"
+                        currencyCode={order.currency_code}
+                        amount={order.paid_total - order.refunded_total}
+                      />
+                    </div>
+                    <div className="text-ui-fg-subtle flex justify-between text-sm ">
+                      <Text className="min-w-[50%] ">
+                        {t("orders.edits.newTotal")}
+                      </Text>
+                      <MoneyAmountCell
+                        align="right"
+                        currencyCode={order.currency_code}
+                        amount={orderEdit?.total}
+                      />
+                    </div>
+                    <div className="text-ui-fg-base flex justify-between text-sm">
+                      <Text className="min-w-[50%]" weight="plus">
+                        {t("orders.edits.differenceDue")}
+                      </Text>
+                      <MoneyAmountCell
+                        align="right"
+                        currencyCode={order.currency_code}
+                        amount={orderEdit?.total - order.paid_total}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="py-10">
+                    <Form.Field
+                      control={form.control}
+                      name="note"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Text
+                              className="text-ui-fg-base mb-1"
+                              weight="plus"
+                            >
+                              {t("fields.note")}
+                            </Text>
+                            <Form.Control>
+                              <Textarea {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </SplitView.Content>
-          <SplitView.Drawer>
-            <VariantTable onSave={onVariantsSelect} order={order} />
-          </SplitView.Drawer>
-        </SplitView>
-      </RouteFocusModal.Body>
+            </SplitView.Content>
+            <SplitView.Drawer>
+              <VariantTable onSave={onVariantsSelect} order={order} />
+            </SplitView.Drawer>
+          </SplitView>
+        </RouteFocusModal.Body>
+      </form>
     </RouteFocusModal.Form>
   )
 }

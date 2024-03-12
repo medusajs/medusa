@@ -22,7 +22,7 @@ export const useItemsTableColumns = (
   return useMemo(
     () => [
       /**
-       * TODO: investigate why enpoint doesn't joion `product`
+       * TODO: investigate why endpoint doesn't join `product`
        */
       // columnHelper.display({
       //   id: "product",
