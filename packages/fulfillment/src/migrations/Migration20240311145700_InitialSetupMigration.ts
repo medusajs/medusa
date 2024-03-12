@@ -151,7 +151,7 @@ async function migrateUpBackwardCompatibility(
         on shipping_option (shipping_profile_id)
         where (deleted_at IS NULL);
     
-    create index if not exists "IDX_shipping_option_fulfillment_provider_id"
+    create index if not exists "IDX_shipping_option_provider_id"
         on shipping_option (provider_id)
         where (deleted_at IS NULL);
     
@@ -187,7 +187,7 @@ async function migrateUpBackwardCompatibility(
                 on update cascade on delete set null;
     
     alter table shipping_option
-        add constraint shipping_option_fulfillment_provider_id_foreign
+        add constraint shipping_option_provider_id_foreign
             foreign key (provider_id) references fulfillment_provider
                 on update cascade on delete set null;
     
@@ -573,7 +573,7 @@ async function migrateUpModuleMigration(
     'alter table if exists "shipping_option" add constraint "shipping_option_shipping_profile_id_foreign" foreign key ("shipping_profile_id") references "shipping_profile" ("id") on update cascade on delete set null;'
   )
   this.addSql(
-    'alter table if exists "shipping_option" add constraint "shipping_option_fulfillment_provider_id_foreign" foreign key ("provider_id") references "fulfillment_provider" ("id") on update cascade on delete set null;'
+    'alter table if exists "shipping_option" add constraint "shipping_option_provider_id_foreign" foreign key ("provider_id") references "fulfillment_provider" ("id") on update cascade on delete set null;'
   )
   this.addSql(
     'alter table if exists "shipping_option" add constraint "shipping_option_shipping_option_type_id_foreign" foreign key ("shipping_option_type_id") references "shipping_option_type" ("id") on update cascade on delete cascade;'

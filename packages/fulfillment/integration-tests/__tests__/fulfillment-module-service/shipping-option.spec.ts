@@ -711,18 +711,13 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [fulfillmentProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into fulfillment_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
-
             const shippingOptionData = {
               id: "sp_jdafwfleiwuonl",
               name: "test",
               price_type: "flat",
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              provider_id: fulfillmentProvider.id,
+              provider_id: providerId,
               type: {
                 code: "test",
                 description: "test",
@@ -857,12 +852,6 @@ moduleIntegrationTestRunner({
               name: "test",
               fulfillment_set_id: fulfillmentSet.id,
             })
-
-            // service provider
-            const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into fulfillment_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
 
             const shippingOption = await service.createShippingOptions(
               generateCreateShippingOptionsData({

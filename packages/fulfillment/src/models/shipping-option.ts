@@ -126,7 +126,7 @@ export default class ShippingOption {
   @ManyToOne(() => FulfillmentProvider, {
     persist: false,
   })
-  fulfillment_provider: FulfillmentProvider | null
+  provider: FulfillmentProvider | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,

@@ -13,7 +13,7 @@ export type InitializeModuleInjectableDependencies = {
 export const FulfillmentIdentifiersRegistrationName =
   "fulfillment_providers_identifier"
 
-export type FulfillmentModuleServiceInitializeOptions =
+export type FulfillmentModuleOptions =
   Partial<ModuleServiceInitializeOptions> & {
     /**
      * Providers to be registered
