@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
             relations: [
               "service_zones.geo_zones",
               "service_zones.shipping_options.shipping_profile",
-              "service_zones.shipping_options.fulfillment_provider",
+              "service_zones.shipping_options.provider",
               "service_zones.shipping_options.type",
               "service_zones.shipping_options.rules",
               "service_zones.shipping_options.fulfillments.labels",
