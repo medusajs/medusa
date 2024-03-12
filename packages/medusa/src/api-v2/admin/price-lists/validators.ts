@@ -105,6 +105,19 @@ export class AdminPostPriceListsPriceListReq {
   rules?: Record<string, string[]>
 }
 
+export class AdminPostPriceListsPriceListPricesReq {
+  @IsOptional()
+  @IsArray()
+  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+}
+
+export class AdminDeletePriceListsPriceListPricesReq {
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  ids: string[]
+}
+
 export class AdminPriceListPricesUpdateReq {
   @IsOptional()
   @IsString()
