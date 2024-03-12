@@ -487,14 +487,13 @@ export const DataGridRoot = <
   }, [handleMouseUp, handleCopy, handlePaste, handleCommandHistory])
 
   return (
-    <div className="overflow-hidden">
-      <div className="border-b p-4"></div>
+    <div className="size-full overflow-hidden">
       <div
         ref={tableContainerRef}
         style={{
           overflow: "auto",
           position: "relative",
-          height: "600px",
+          height: "100%",
           userSelect: isSelecting || isDragging ? "none" : "auto",
         }}
       >

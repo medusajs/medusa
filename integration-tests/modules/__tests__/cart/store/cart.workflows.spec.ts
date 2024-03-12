@@ -1,4 +1,5 @@
 import {
+  addShippingMethodToWorkflow,
   addToCartWorkflow,
   createCartWorkflow,
   createPaymentCollectionForCartWorkflow,
@@ -15,6 +16,7 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IFulfillmentModuleService,
   IInventoryServiceNext,
   IPaymentModuleService,
   IPricingModuleService,
@@ -44,6 +46,7 @@ medusaIntegrationTestRunner({
       let paymentModule: IPaymentModuleService
       let inventoryModule: IInventoryServiceNext
       let stockLocationModule: IStockLocationServiceNext
+      let fulfillmentModule: IFulfillmentModuleService
       let remoteLink, remoteQuery
 
       let defaultRegion
@@ -64,6 +67,9 @@ medusaIntegrationTestRunner({
         inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
         stockLocationModule = appContainer.resolve(
           ModuleRegistrationName.STOCK_LOCATION
+        )
+        fulfillmentModule = appContainer.resolve(
+          ModuleRegistrationName.FULFILLMENT
         )
         remoteLink = appContainer.resolve("remoteLink")
         remoteQuery = appContainer.resolve("remoteQuery")
@@ -1266,6 +1272,99 @@ medusaIntegrationTestRunner({
               })
             )
           })
+        })
+      })
+      describe("AddShippingMethodToCartWorkflow", () => {
+        it("should add shipping method to cart", async () => {
+          let cart = await cartModuleService.create({
+            currency_code: "usd",
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+          })
+          const serviceZone = await fulfillmentModule.createServiceZones({
+            name: "Test",
+            fulfillment_set_id: fulfillmentSet.id,
+            geo_zones: [
+              {
+                type: "country",
+                country_code: "us",
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: {
+                shipping_option_id: shippingOption.id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            select: ["id", "region_id", "currency_code"],
+          })
+
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [
+                {
+                  id: shippingOption.id,
+                },
+              ],
+              cart_id: cart.id,
+              currency_code: cart.currency_code,
+            },
+          })
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            relations: ["shipping_methods"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 3000,
+                  name: "Test shipping option",
+                }),
+              ]),
+            })
+          )
         })
       })
     })

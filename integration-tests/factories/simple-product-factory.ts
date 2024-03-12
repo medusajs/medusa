@@ -48,11 +48,11 @@ export const simpleProductFactory = async (
 
   const manager = dataSource.manager
 
-  const defaultProfile = await manager.findOne(ShippingProfile, {
+  const defaultProfile = (await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.DEFAULT,
     },
-  })
+  })) || { id: "default-profile-id" }
 
   const gcProfile = await manager.findOne(ShippingProfile, {
     where: {

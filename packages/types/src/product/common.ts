@@ -760,7 +760,7 @@ export interface FilterableProductCollectionProps
   /**
    * The title to filter product collections by.
    */
-  title?: string
+  title?: string | string[]
 }
 
 /**
@@ -872,16 +872,19 @@ export interface CreateProductCollectionDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductCollectionDTO extends UpdateProductCollectionDTO {
+  /**
+   * The ID of the product collection to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
  * The data to update in a product collection. The `id` is used to identify which product collection to update.
  */
 export interface UpdateProductCollectionDTO {
-  /**
-   * The ID of the product collection to update.
-   */
-  id: string
   /**
    * The value of the product collection.
    */

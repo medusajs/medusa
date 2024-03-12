@@ -1,4 +1,5 @@
 import { OperatorMap } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Transform, Type } from "class-transformer"
 import {
   IsArray,
@@ -14,10 +15,8 @@ import {
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { ProductStatus } from "@medusajs/utils"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
-import { ProductTagReq, ProductTypeReq } from "../../../types/product"
 
 export class AdminGetProductsProductParams extends FindParams {}
 export class AdminGetProductsProductVariantsVariantParams extends FindParams {}
@@ -66,14 +65,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   handle?: string
 
-  // TODO: Should we remove this? It makes sense for search, but not for equality comparison
-  /**
-   * Description to filter products by.
-   */
-  @IsString()
-  @IsOptional()
-  description?: string
-
   /**
    * Filter products by whether they're gift cards.
    */
@@ -82,13 +73,12 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  // TODO: Add in next iteration
-  // /**
-  //  * Filter products by their associated price lists' ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // price_list_id?: string[]
+  /**
+   * Filter products by their associated price lists' ID.
+   */
+  @IsOptional()
+  @IsArray()
+  price_list_id?: string[]
 
   /**
    * Filter products by their associated product collection's ID.
@@ -110,6 +100,11 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsArray()
   @IsOptional()
   type_id?: string[]
+
+  // TODO: Replace this with AdminGetProductVariantsParams when its available
+  @IsOptional()
+  @IsObject()
+  variants?: Record<any, any>
 
   // /**
   //  * Filter products by their associated sales channels' ID.
@@ -402,11 +397,10 @@ export class AdminPostProductsProductReq {
   @ValidateIf((_, value) => value !== undefined)
   status?: ProductStatus
 
-  // TODO: Deal with in next iteration
-  // @IsOptional()
-  // @Type(() => ProductTypeReq)
-  // @ValidateNested()
-  // type?: ProductTypeReq
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
 
   @IsOptional()
   @IsString()
@@ -432,12 +426,11 @@ export class AdminPostProductsProductReq {
   // ])
   // sales_channels?: ProductSalesChannelReq[] | null
 
-  // TODO: Should we remove this on update?
-  // @IsOptional()
-  // @Type(() => ProductVariantReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // variants?: ProductVariantReq[]
+  @IsOptional()
+  @Type(() => ProductVariantReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  variants?: ProductVariantReq[]
 
   @IsNumber()
   @IsOptional()
@@ -544,11 +537,13 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Add on next iteration
+  // TODO: Add on next iteration, adding temporary field for now
   // @IsArray()
   // @ValidateNested({ each: true })
   // @Type(() => ProductVariantPricesCreateReq)
   // prices: ProductVariantPricesCreateReq[]
+  @IsArray()
+  prices: any[]
 
   @IsOptional()
   @IsObject()
@@ -650,4 +645,37 @@ export class AdminPostProductsProductOptionsOptionReq {
 
   @IsArray()
   values: string[]
+}
+
+// eslint-disable-next-line max-len
+export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
+  @IsString()
+  id: string
+}
+
+export class ProductTagReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  value: string
+}
+
+/**
+ * The details of a product type, used to create or update an existing product type.
+ */
+export class ProductTypeReq {
+  /**
+   * The ID of the product type. It's only required when referring to an existing product type.
+   */
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  /**
+   * The value of the product type.
+   */
+  @IsString()
+  value: string
 }
