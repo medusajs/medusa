@@ -48,5 +48,4 @@ export interface FilterableShippingOptionProps
   service_zone?: FilterableServiceZoneProps
   shipping_option_type?: FilterableShippingOptionTypeProps
   rules?: FilterableShippingOptionRuleProps
-  context?: Record<string, unknown>
 }

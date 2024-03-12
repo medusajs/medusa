@@ -135,8 +135,7 @@ export default class FulfillmentModuleService<
     filters: FilterableShippingOptionProps = {},
     config: FindConfig<ShippingOptionDTO> = {}
   ) {
-    let { fulfillment_set_id, fulfillment_set_type, context, ...where } =
-      filters
+    let { fulfillment_set_id, fulfillment_set_type, ...where } = filters
 
     const normalizedConfig = { ...config }
     normalizedConfig.relations = [
@@ -146,9 +145,8 @@ export default class FulfillmentModuleService<
       "provider",
       ...(normalizedConfig.relations ?? []),
     ]
-    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
-    normalizedConfig.take =
-      normalizedConfig.take ?? (context ? null : undefined)
+
+    normalizedConfig.take = normalizedConfig.take ?? null
 
     let normalizedFilters = { ...where } as FilterQuery
 
@@ -178,7 +176,6 @@ export default class FulfillmentModuleService<
     return {
       filters: normalizedFilters,
       config: normalizedConfig,
-      context,
     }
   }
 
@@ -189,34 +186,17 @@ export default class FulfillmentModuleService<
     config: FindConfig<ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
-    const {
-      filters: normalizedFilters,
-      config: normalizedConfig,
-      context,
-    } = FulfillmentModuleService.normalizeShippingOptionsListParams(
-      filters,
-      config
-    )
+    const { filters: normalizedFilters, config: normalizedConfig } =
+      FulfillmentModuleService.normalizeShippingOptionsListParams(
+        filters,
+        config
+      )
 
     let shippingOptions = await this.shippingOptionService_.list(
       normalizedFilters,
       normalizedConfig,
       sharedContext
     )
-
-    // Apply rules context filtering
-    if (context) {
-      shippingOptions = shippingOptions.filter((shippingOption) => {
-        if (!shippingOption.rules?.length) {
-          return true
-        }
-
-        return isContextValid(
-          context,
-          shippingOption.rules.map((r) => r)
-        )
-      })
-    }
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO[]
@@ -242,14 +222,6 @@ export default class FulfillmentModuleService<
       {
         populate: true,
       }
-    )
-  }
-
-  async retrieveFulfillmentOptions(
-    providerId: string
-  ): Promise<Record<string, any>[]> {
-    return await this.fulfillmentProviderService_.getFulfillmentOptions(
-      providerId
     )
   }
 
@@ -1269,6 +1241,41 @@ export default class FulfillmentModuleService<
     })
 
     return Array.isArray(result) ? result[0] : result
+  }
+
+  async retrieveFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, any>[]> {
+    return await this.fulfillmentProviderService_.getFulfillmentOptions(
+      providerId
+    )
+  }
+
+  async validateFulfillmentOption(
+    providerId: string,
+    data: Record<string, unknown>
+  ): Promise<boolean> {
+    return await this.fulfillmentProviderService_.validateOption(
+      providerId,
+      data
+    )
+  }
+
+  async isShippingOptionValidForContext(
+    shippingOptionId: string,
+    context: Record<string, unknown> = {}
+  ) {
+    const shippingOption = await this.shippingOptionService_.retrieve(
+      shippingOptionId,
+      {
+        relations: ["rules"],
+      }
+    )
+
+    return !shippingOption.rules?.length || isContextValid(
+      context,
+      shippingOption.rules.map((r) => r)
+    )
   }
 
   protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {

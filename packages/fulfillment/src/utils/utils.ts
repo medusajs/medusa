@@ -79,7 +79,7 @@ export function isContextValid(
   } = {
     someAreValid: false,
   }
-) {
+): boolean {
   const { someAreValid } = options
 
   const loopComparator = someAreValid ? rules.some : rules.every

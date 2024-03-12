@@ -664,4 +664,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   retrieveFulfillmentOptions(
     providerId: string
   ): Promise<Record<string, unknown>[]>
+
+  /**
+   * Validate the given shipping option option from the provided data
+   */
+  validateFulfillmentOption(
+    providerId: string,
+    data: Record<string, unknown>
+  ): Promise<boolean>
+
+  /**
+   * Validate if the given shipping option rules are valid for a given context
+   */
+  isShippingOptionValidForContext(
+    shippingOptionId: string,
+    context: Record<string, unknown>
+  ): Promise<boolean>
 }
