@@ -9,7 +9,7 @@ import { listShippingOptionsForContextStep } from "../../../shipping-options"
 import { getShippingOptionPriceSetsStep } from "../steps"
 
 export const listShippingOptionsForCartWorkflowId =
-  "create-payment-collection-for-cart"
+  "list-shipping-options-for-cart"
 export const listShippingOptionsForCartWorkflow = createWorkflow(
   listShippingOptionsForCartWorkflowId,
   (input: WorkflowData<ListShippingOptionsForCartWorkflowInputDTO>) => {
