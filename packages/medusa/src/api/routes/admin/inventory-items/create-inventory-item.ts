@@ -1,17 +1,17 @@
 import {
+  CreateInventoryItemActions,
+  createInventoryItems,
+} from "@medusajs/core-flows"
+import {
   FlagRouter,
   ManyToManyInventoryFeatureFlag,
   MedusaError,
 } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import {
-  CreateInventoryItemActions,
-  createInventoryItems,
-} from "@medusajs/core-flows"
-import { pipe } from "@medusajs/workflows-sdk"
-import { ProductVariantInventoryService } from "../../../../services"
 
 import { FindParams } from "../../../../types/common"
+import { ProductVariantInventoryService } from "../../../../services"
+import { pipe } from "@medusajs/workflows-sdk"
 
 /**
  * @oas [post] /admin/inventory-items

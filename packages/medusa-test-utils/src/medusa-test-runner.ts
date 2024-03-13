@@ -1,9 +1,10 @@
+import { createDatabase, dropDatabase } from "pg-god"
+
+import { ContainerLike } from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
 import { getDatabaseURL } from "./database"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { createDatabase, dropDatabase } from "pg-god"
-import { ContainerLike } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
 
 const axios = require("axios").default
 
@@ -109,7 +110,6 @@ export function medusaIntegrationTestRunner({
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
   dbName ??= `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
-
   let dbConfig = {
     dbName,
     clientUrl: getDatabaseURL(dbName),

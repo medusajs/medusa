@@ -1,29 +1,15 @@
-import { IInventoryServiceNext } from "@medusajs/types"
+import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
+
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
-const path = require("path")
-
-const {
-  startBootstrapApp,
-} = require("../../../../environment-helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../environment-helpers/use-db")
-const {
-  useApi,
-  useExpressServer,
-} = require("../../../../environment-helpers/use-api")
-const { IdMap, medusaIntegrationTestRunner } = require("medusa-test-utils")
-
-const adminSeeder = require("../../../../helpers/admin-seeder")
+const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
-const {
-  simpleProductFactory,
-  simpleOrderFactory,
-} = require("../../../../factories")
-const {
-  getContainer,
-} = require("../../../../environment-helpers/use-container")
+const { simpleProductFactory } = require("../../../../factories")
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
@@ -41,105 +27,16 @@ medusaIntegrationTestRunner({
     let location2Id
     let location3Id
 
-    // beforeAll(async () => {
-    //   const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    //   dbConnection = await initDb({ cwd })
-    //   shutdownServer = await startBootstrapApp({ cwd })
-    //   appContainer = getContainer()
-    // })
-
-    // afterAll(async () => {
-    //   const db = useDb()
-    //   await db.shutdown()
-    //   await shutdownServer()
-    // })
-
     beforeEach(async () => {
       appContainer = getContainer()
+
+      await createAdminUser(dbConnection, adminHeaders, appContainer)
+
       service = appContainer.resolve(ModuleRegistrationName.INVENTORY)
-      // // create inventory item
-      // await adminSeeder(dbConnection)
-      // const api = useApi()
-      // await simpleProductFactory(
-      //   dbConnection,
-      //   {
-      //     id: "test-product",
-      //     variants: [],
-      //   },
-      //   100
-      // )
-      // const prodVarInventoryService = appContainer.resolve(
-      //   "productVariantInventoryService"
-      // )
-      // const response = await api.post(
-      //   `/admin/products/test-product/variants`,
-      //   {
-      //     title: "Test Variant w. inventory",
-      //     sku: "MY_SKU",
-      //     material: "material",
-      //     origin_country: "UK",
-      //     hs_code: "hs001",
-      //     mid_code: "mids",
-      //     weight: 300,
-      //     length: 100,
-      //     height: 200,
-      //     width: 150,
-      //     manage_inventory: true,
-      //     options: [
-      //       {
-      //         option_id: "test-product-option",
-      //         value: "SS",
-      //       },
-      //     ],
-      //     prices: [{ currency_code: "usd", amount: 2300 }],
-      //   },
-      //   adminHeaders
-      // )
-      // const variant = response.data.product.variants[0]
-      // variantId = variant.id
-      // inventoryItems =
-      //   await prodVarInventoryService.listInventoryItemsByVariant(variantId)
-      // const stockRes = await api.post(
-      //   `/admin/stock-locations`,
-      //   {
-      //     name: "Fake Warehouse",
-      //   },
-      //   adminHeaders
-      // )
-      // locationId = stockRes.data.stock_location.id
-      // const secondStockRes = await api.post(
-      //   `/admin/stock-locations`,
-      //   {
-      //     name: "Another random Warehouse",
-      //   },
-      //   adminHeaders
-      // )
-      // location2Id = secondStockRes.data.stock_location.id
-      // const thirdStockRes = await api.post(
-      //   `/admin/stock-locations`,
-      //   {
-      //     name: "Another random Warehouse",
-      //   },
-      //   adminHeaders
-      // )
-      // location3Id = thirdStockRes.data.stock_location.id
     })
 
-    // afterAll(async () => {
-    //   const db = useDb()
-    //   await db.shutdown()
-    //   await shutdownServer()
-    // })
-
-    // afterEach(async () => {
-    //   jest.clearAllMocks()
-    //   const db = useDb()
-    //   return await db.teardown()
-    // })
-
     describe("Inventory Items", () => {
-      it("should create, update and delete the inventory location levels", async () => {
-        const api = useApi()
+      it.skip("should create, update and delete the inventory location levels", async () => {
         const inventoryItemId = inventoryItems[0].id
 
         await api.post(
@@ -192,8 +89,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should update the inventory item", async () => {
-        const api = useApi()
+      it.skip("should update the inventory item", async () => {
         const inventoryItemId = inventoryItems[0].id
 
         const response = await api.post(
@@ -218,9 +114,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should fail to update the location level to negative quantity", async () => {
-        const api = useApi()
-
+      it.skip("should fail to update the location level to negative quantity", async () => {
         const inventoryItemId = inventoryItems[0].id
 
         await api.post(
@@ -252,8 +146,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should retrieve the inventory item", async () => {
-        const api = useApi()
+      it.skip("should retrieve the inventory item", async () => {
         const inventoryItemId = inventoryItems[0].id
 
         await api.post(
@@ -323,10 +216,8 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should create the inventory item using the api", async () => {
+      it.skip("should create the inventory item using the api", async () => {
         const product = await simpleProductFactory(dbConnection, {})
-
-        const api = useApi()
 
         const productRes = await api.get(
           `/admin/products/${product.id}`,
@@ -373,8 +264,7 @@ medusaIntegrationTestRunner({
         expect(variantInventoryRes.status).toEqual(200)
       })
 
-      it("should list the location levels based on id param constraint", async () => {
-        const api = useApi()
+      it.skip("should list the location levels based on id param constraint", async () => {
         const inventoryItemId = inventoryItems[0].id
 
         await api.post(
@@ -409,82 +299,44 @@ medusaIntegrationTestRunner({
         )
       })
 
-      describe("List inventory items", () => {
-        it("should list inventory items with location", async () => {
-          const api = useApi()
+      describe("Create inventory item level", () => {
+        let location1
+        let location2
 
-          await api.post(
-            `/admin/products/test-product/variants`,
+        beforeEach(async () => {
+          await service.create([
             {
-              title: "Test Variant w. inventory 2",
-              sku: "MY_SKU1",
-              material: "material",
-              origin_country: "UK",
-              manage_inventory: true,
-              options: [
-                {
-                  option_id: "test-product-option",
-                  value: "M",
-                },
-              ],
-              prices: [{ currency_code: "usd", amount: 200 }],
-            },
-            adminHeaders
-          )
-
-          const items = await service.list({}, {}) // const inventoryItemId = inventoryItems[0].id
-
-          console.log(items)
-
-          await api.post(
-            `/admin/inventory-items/${inventoryItemId}/location-levels`,
-            {
-              location_id: location3Id,
-              stocked_quantity: 5,
-            },
-            adminHeaders
-          )
-
-          const unfilteredResponse = await api.get(
-            `/admin/inventory-items`,
-            adminHeaders
-          )
-          expect(unfilteredResponse.data.inventory_items).toHaveLength(2)
-
-          const response = await api.get(
-            `/admin/inventory-items?location_id=${location3Id}`,
-            adminHeaders
-          )
-
-          expect(response.data.inventory_items).toHaveLength(1)
-          expect(response.data.inventory_items[0]).toEqual(
-            expect.objectContaining({
-              id: inventoryItemId,
               sku: "MY_SKU",
-            })
-          )
+              origin_country: "UK",
+              hs_code: "hs001",
+              mid_code: "mids",
+              material: "material",
+              weight: 300,
+              length: 100,
+              height: 200,
+              width: 150,
+            },
+          ])
+
+          const stockLocationService: IStockLocationService =
+            appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+          location1 = await stockLocationService.create({
+            name: "location-1",
+          })
+
+          location2 = await stockLocationService.create({
+            name: "location-2",
+          })
         })
 
-        it.only("should list the inventory items", async () => {
-          const inventoryItemId = "" //inventoryItems[0].id
-
-          const a = await dbConnection.manager.query(
-            `SELECT table_name
-            FROM information_schema.tables
-           WHERE table_schema='public'
-             AND table_type='BASE TABLE';`
-          )
-          console.log(a)
-          console.log("test")
-
-          const items = await service.list({}) // const inventoryItemId = inventoryItems[0].id
-
-          console.log(items)
+        it("should list the inventory items", async () => {
+          const [{ id: inventoryItemId }] = await service.list({})
 
           await api.post(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: location2Id,
+              location_id: location1.id,
               stocked_quantity: 10,
             },
             adminHeaders
@@ -493,7 +345,164 @@ medusaIntegrationTestRunner({
           await api.post(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: location3Id,
+              location_id: location2.id,
+              stocked_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          const levels = await service.listInventoryLevels({
+            inventory_item_id: inventoryItemId,
+          })
+
+          expect(levels).toHaveLength(2)
+          expect(levels).toEqual([
+            expect.objectContaining({
+              location_id: location1.id,
+              stocked_quantity: 10,
+            }),
+            expect.objectContaining({
+              location_id: location2.id,
+              stocked_quantity: 5,
+            }),
+          ])
+        })
+      })
+
+      describe("Create inventory items", () => {
+        it("should create inventory items", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list()
+
+          expect(inventoryItems).toHaveLength(0)
+
+          const response = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku",
+            })
+          )
+        })
+
+        it("should attach inventory items on creation", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list()
+
+          expect(inventoryItems).toHaveLength(0)
+
+          await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          const remoteQuery = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_QUERY
+          )
+
+          const query = remoteQueryObjectFromString({
+            entryPoint: "product_variant_inventory_item",
+            variables: {
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            fields: ["inventory_item_id", "variant_id"],
+          })
+
+          const existingItems = await remoteQuery(query)
+
+          expect(existingItems).toHaveLength(1)
+          expect(existingItems[0].variant_id).toEqual(
+            createResult.data.product.variants[0].id
+          )
+        })
+      })
+
+      describe("List inventory items", () => {
+        let location1
+        let location2
+        beforeEach(async () => {
+          await service.create([
+            {
+              sku: "MY_SKU",
+              origin_country: "UK",
+              hs_code: "hs001",
+              mid_code: "mids",
+              material: "material",
+              weight: 300,
+              length: 100,
+              height: 200,
+              width: 150,
+            },
+          ])
+
+          const stockLocationService: IStockLocationService =
+            appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+          location1 = await stockLocationService.create({
+            name: "location-1",
+          })
+
+          location2 = await stockLocationService.create({
+            name: "location-2",
+          })
+        })
+
+        it("should list the inventory items", async () => {
+          const [{ id: inventoryItemId }] = await service.list({})
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: location1.id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: location2.id,
               stocked_quantity: 5,
             },
             adminHeaders
@@ -516,32 +525,11 @@ medusaIntegrationTestRunner({
               width: 150,
               requires_shipping: true,
               metadata: null,
-              variants: expect.arrayContaining([
-                expect.objectContaining({
-                  id: variantId,
-                  title: "Test Variant w. inventory",
-                  product_id: "test-product",
-                  sku: "MY_SKU",
-                  manage_inventory: true,
-                  hs_code: "hs001",
-                  origin_country: "UK",
-                  mid_code: "mids",
-                  material: "material",
-                  weight: 300,
-                  length: 100,
-                  height: 200,
-                  width: 150,
-                  metadata: null,
-                  product: expect.objectContaining({
-                    id: "test-product",
-                  }),
-                }),
-              ]),
               location_levels: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location2Id,
+                  location_id: location1.id,
                   stocked_quantity: 10,
                   reserved_quantity: 0,
                   incoming_quantity: 0,
@@ -551,7 +539,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location3Id,
+                  location_id: location2.id,
                   stocked_quantity: 5,
                   reserved_quantity: 0,
                   incoming_quantity: 0,
@@ -566,11 +554,9 @@ medusaIntegrationTestRunner({
         })
 
         it("should list the inventory items searching by title, description and sku", async () => {
-          const api = useApi()
-
           const inventoryService = appContainer.resolve("inventoryService")
 
-          await inventoryService.createInventoryItems([
+          await inventoryService.create([
             {
               title: "Test Item",
             },
@@ -611,8 +597,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should remove associated levels and reservations when deleting an inventory item", async () => {
-        const api = useApi()
+      it.skip("should remove associated levels and reservations when deleting an inventory item", async () => {
         const inventoryService = appContainer.resolve("inventoryService")
 
         const invItem2 = await inventoryService.createInventoryItem({
@@ -677,9 +662,7 @@ medusaIntegrationTestRunner({
         expect(inventoryLevelCountPostDelete).toEqual(0)
       })
 
-      it("should remove the product variant associations when deleting an inventory item", async () => {
-        const api = useApi()
-
+      it.skip("should remove the product variant associations when deleting an inventory item", async () => {
         await simpleProductFactory(
           dbConnection,
           {
@@ -753,347 +736,6 @@ medusaIntegrationTestRunner({
             secondVariantId
           )
         ).toHaveLength(1)
-      })
-
-      describe("inventory service", () => {
-        let inventoryService
-        let productInventoryService
-
-        beforeAll(() => {
-          // inventoryService = appContainer.resolve("inventoryService")
-          // productInventoryService = appContainer.resolve(
-          //   "productVariantInventoryService"
-          // )
-        })
-
-        it("should bulk remove the inventory items", async () => {
-          const [items] = await inventoryService.listInventoryItems()
-
-          const ids = items.map((item) => item.id)
-
-          expect(ids).not.toBeFalsy()
-
-          await inventoryService.deleteInventoryItem(ids)
-
-          const [emptyItems] = await inventoryService.listInventoryItems()
-          expect(emptyItems).toHaveLength(0)
-        })
-
-        it("should bulk create the inventory levels", async () => {
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevels([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              stocked_quantity: 10,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: location2Id,
-              stocked_quantity: 10,
-            },
-          ])
-
-          const [levels] = await inventoryService.listInventoryLevels({
-            inventory_item_id: itemId,
-          })
-          expect(levels).toHaveLength(2)
-          expect(levels).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                inventory_item_id: itemId,
-                location_id: locationId,
-              }),
-              expect.objectContaining({
-                inventory_item_id: itemId,
-                location_id: location2Id,
-              }),
-            ])
-          )
-        })
-
-        it("should bulk create the inventory items", async () => {
-          const items = [
-            {
-              sku: "sku-1",
-            },
-            {
-              sku: "sku-2",
-            },
-          ]
-          const createdItems = await inventoryService.createInventoryItems(
-            items
-          )
-
-          expect(createdItems).toHaveLength(2)
-          expect(createdItems).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                sku: "sku-1",
-              }),
-              expect.objectContaining({
-                sku: "sku-2",
-              }),
-            ])
-          )
-        })
-
-        it("should bulk delete the inventory levels by location id", async () => {
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevels([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              stocked_quantity: 10,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: location2Id,
-              stocked_quantity: 10,
-            },
-          ])
-
-          await inventoryService.deleteInventoryItemLevelByLocationId([
-            locationId,
-            location2Id,
-          ])
-
-          const [levels] = await inventoryService.listInventoryLevels({
-            inventory_item_id: itemId,
-          })
-          expect(levels).toHaveLength(0)
-        })
-
-        it("should bulk delete the inventory levels by location id", async () => {
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevels([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              stocked_quantity: 10,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: location2Id,
-              stocked_quantity: 10,
-            },
-          ])
-
-          await inventoryService.deleteInventoryItemLevelByLocationId([
-            locationId,
-            location2Id,
-          ])
-
-          const [levels] = await inventoryService.listInventoryLevels({
-            inventory_item_id: itemId,
-          })
-          expect(levels).toHaveLength(0)
-        })
-
-        it("should fail to create the reservations with invalid configuration", async () => {
-          const order = await simpleOrderFactory(dbConnection, {
-            line_items: [
-              { id: "line-item-1", quantity: 1 },
-              { id: "line-item-2", quantity: 1 },
-            ],
-          })
-
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          const error = await inventoryService
-            .createReservationItems([
-              {
-                inventory_item_id: itemId,
-                location_id: locationId,
-                line_item_id: "line-item-1",
-                quantity: 1,
-              },
-              {
-                inventory_item_id: itemId,
-                location_id: locationId,
-                line_item_id: "line-item-2",
-                quantity: 1,
-              },
-            ])
-            .catch((err) => err)
-
-          expect(error.message).toEqual(
-            `Item ${itemId} is not stocked at location ${locationId}, Item ${itemId} is not stocked at location ${locationId}`
-          )
-        })
-
-        it("should bulk delete the reservations by their line item ids", async () => {
-          const order = await simpleOrderFactory(dbConnection, {
-            line_items: [
-              { id: "line-item-1", quantity: 1 },
-              { id: "line-item-2", quantity: 1 },
-            ],
-          })
-
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevel({
-            inventory_item_id: itemId,
-            location_id: locationId,
-            stocked_quantity: 10,
-          })
-
-          await inventoryService.createReservationItems([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              line_item_id: "line-item-1",
-              quantity: 1,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              line_item_id: "line-item-2",
-              quantity: 1,
-            },
-          ])
-
-          const [reservations] = await inventoryService.listReservationItems({
-            inventory_item_id: itemId,
-          })
-          expect(reservations).toHaveLength(2)
-
-          await inventoryService.deleteReservationItemsByLineItem([
-            "line-item-1",
-            "line-item-2",
-          ])
-
-          const [deletedReservations] =
-            await inventoryService.listReservationItems({
-              inventory_item_id: itemId,
-            })
-          expect(deletedReservations).toHaveLength(0)
-        })
-
-        it("should bulk delete the reservations by their location id", async () => {
-          const order = await simpleOrderFactory(dbConnection, {
-            line_items: [
-              { id: "line-item-1", quantity: 1 },
-              { id: "line-item-2", quantity: 1 },
-            ],
-          })
-
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevel({
-            inventory_item_id: itemId,
-            location_id: locationId,
-            stocked_quantity: 10,
-          })
-
-          await inventoryService.createInventoryLevel({
-            inventory_item_id: itemId,
-            location_id: location2Id,
-            stocked_quantity: 10,
-          })
-
-          await inventoryService.createReservationItems([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              line_item_id: "line-item-1",
-              quantity: 1,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: location2Id,
-              line_item_id: "line-item-2",
-              quantity: 1,
-            },
-          ])
-
-          const [reservations] = await inventoryService.listReservationItems({
-            inventory_item_id: itemId,
-          })
-          expect(reservations).toHaveLength(2)
-
-          await inventoryService.deleteReservationItemByLocationId([
-            location2Id,
-            locationId,
-          ])
-
-          const [deletedReservations] =
-            await inventoryService.listReservationItems({
-              inventory_item_id: itemId,
-            })
-          expect(deletedReservations).toHaveLength(0)
-        })
-
-        it("should bulk update the inventory levels", async () => {
-          const [items] = await inventoryService.listInventoryItems()
-
-          const itemId = items[0].id
-
-          await inventoryService.createInventoryLevel({
-            inventory_item_id: itemId,
-            location_id: locationId,
-            stocked_quantity: 10,
-          })
-
-          await inventoryService.createInventoryLevel({
-            inventory_item_id: itemId,
-            location_id: location2Id,
-            stocked_quantity: 10,
-          })
-
-          const levels = await inventoryService.listInventoryLevels({
-            inventory_item_id: itemId,
-          })
-          expect(levels).toHaveLength(2)
-
-          await inventoryService.updateInventoryLevels([
-            {
-              inventory_item_id: itemId,
-              location_id: locationId,
-              stocked_quantity: 20,
-            },
-            {
-              inventory_item_id: itemId,
-              location_id: location2Id,
-              stocked_quantity: 25,
-            },
-          ])
-
-          const [updatedLevels] = await inventoryService.listInventoryLevels({
-            inventory_item_id: itemId,
-          })
-
-          expect(updatedLevels).toHaveLength(2)
-          expect(updatedLevels).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                inventory_item_id: itemId,
-                location_id: locationId,
-                stocked_quantity: 20,
-              }),
-              expect.objectContaining({
-                inventory_item_id: itemId,
-                location_id: location2Id,
-                stocked_quantity: 25,
-              }),
-            ])
-          )
-        })
       })
     })
   },

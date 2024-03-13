@@ -92,7 +92,7 @@ export class InventoryLevel {
   })
   inventory_item: InventoryItem
 
-  available_quantity: number | null
+  available_quantity: number | null = null
 
   @BeforeCreate()
   private beforeCreate(): void {

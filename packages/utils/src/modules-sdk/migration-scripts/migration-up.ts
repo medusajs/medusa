@@ -1,8 +1,9 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+
 import { EntitySchema } from "@mikro-orm/core"
-import { upperCaseFirst } from "../../common"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { upperCaseFirst } from "../../common"
 
 /**
  * Utility function to build a migration script that will run the migrations.

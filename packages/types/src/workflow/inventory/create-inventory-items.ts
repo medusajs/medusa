@@ -1,3 +1,5 @@
+import { CreateInventoryItemInput } from "../../inventory"
+
 export interface CreateInventoryItemInputDTO {
   sku?: string
   hs_code?: string
@@ -16,4 +18,8 @@ export interface CreateInventoryItemInputDTO {
 
 export interface CreateInventoryItemsWorkflowInputDTO {
   inventoryItems: CreateInventoryItemInputDTO[]
+}
+
+export interface TaggedInventoryItem extends CreateInventoryItemInput {
+  _associationTag?: string
 }

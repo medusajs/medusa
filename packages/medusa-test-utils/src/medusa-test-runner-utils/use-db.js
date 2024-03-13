@@ -18,7 +18,7 @@ module.exports = {
     database_extra,
     env,
     force_modules_migration,
-    dbUrl = DB_URL,
+    dbUrl = process.env.DB_URL,
     dbSchema = "public",
   }) {
     if (isObject(env)) {
@@ -70,7 +70,7 @@ module.exports = {
       entities: enabledEntities.concat(moduleModels),
       migrations: enabledMigrations.concat(moduleMigrations),
       extra: database_extra ?? {},
-      //name: "integration-tests",
+      // name: "integration-tests",
       schema: dbSchema,
     })
 
@@ -78,6 +78,7 @@ module.exports = {
 
     await dbDataSource.runMigrations()
 
+    let pgConnection
     if (
       force_modules_migration ||
       featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
@@ -92,7 +93,7 @@ module.exports = {
 
       const featureFlagRouter = await featureFlagLoader(configModule)
 
-      const pgConnection = await pgConnectionLoader({ configModule, container })
+      pgConnection = await pgConnectionLoader({ configModule, container })
 
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
