@@ -7,14 +7,14 @@ interface GetShippingMethodsTotalsContext {
   includeTax?: boolean
 }
 
-interface GetShippingMethodTotalInput {
+export interface GetShippingMethodTotalInput {
   id: string
   amount: BigNumber
   is_tax_inclusive?: boolean
   tax_lines?: TaxLineDTO[]
 }
 
-interface GetShippingMethodTotalOutput {
+export interface GetShippingMethodTotalOutput {
   amount: BigNumber
 
   subtotal: BigNumber

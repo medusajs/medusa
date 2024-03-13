@@ -60,10 +60,12 @@ export default class ShippingMethodTaxLine extends TaxLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "casmtxl")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "casmtxl")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 }

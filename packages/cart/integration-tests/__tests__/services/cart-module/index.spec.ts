@@ -2332,4 +2332,67 @@ describe("Cart Module Service", () => {
       expect(taxLines?.length).toBe(0)
     })
   })
+
+  describe("retrieve", () => {
+    it("should decorate cart with totals if fields are requested", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      await service.addLineItems(createdCart.id, [
+        {
+          quantity: 2,
+          unit_price: 100,
+          title: "test",
+          tax_lines: [
+            {
+              rate: 0.2,
+              code: "TX",
+            },
+          ],
+        },
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test",
+          tax_lines: [
+            {
+              rate: 0.2,
+              code: "TX",
+            },
+          ],
+        },
+      ])
+
+      await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 100,
+          name: "test",
+          tax_lines: [
+            {
+              rate: 0.2,
+              code: "TX",
+            },
+          ],
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        select: ["total"],
+      })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          total: 840,
+          subtotal: 600,
+          shipping_total: 100,
+          tax_total: 140,
+          item_tax_total: 120,
+          shipping_tax_total: 20,
+        })
+      )
+    })
+  })
 })

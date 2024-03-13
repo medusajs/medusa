@@ -598,7 +598,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /store/carts/:id", () => {
+      describe("POST /store/carts/:id", () => {
         it("should create and update a cart", async () => {
           const region = await regionModule.create({
             name: "US",

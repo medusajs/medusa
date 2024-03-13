@@ -9,7 +9,7 @@ import {
   Filter,
   ManyToOne,
   OnInit,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
@@ -60,10 +60,12 @@ export default class LineItemTaxLine extends TaxLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "calitxl")
+    this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "calitxl")
+    this.item_id ??= this.item?.id
   }
 }

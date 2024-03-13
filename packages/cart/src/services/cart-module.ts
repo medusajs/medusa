@@ -130,7 +130,7 @@ export default class CartModuleService<
     return joinerConfig
   }
 
-  private async decorate(cart: CartDTO, config: FindConfig<CartDTO>, context) {
+  private async decorate(cartId: string, config: FindConfig<CartDTO>, context) {
     const totalFields = [
       "total",
       "subtotal",
@@ -139,32 +139,25 @@ export default class CartModuleService<
       "discount_total",
     ]
 
+    const shouldDecorate = config.select?.some((field) =>
+      totalFields.includes(field)
+    )
+
     // If no total fields are requested, we return early
-    if (!config.select?.some((field) => totalFields.includes(field))) {
-      return cart
+    if (shouldDecorate) {
+      config = {
+        ...config,
+        relations: deduplicate([
+          ...(config.relations || []),
+          "items.tax_lines",
+          "items.adjustments",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+        ]),
+      }
     }
 
-    const objectWithRequiredRelations = await super.retrieve(cart.id, {
-      ...config,
-      relations: deduplicate([
-        ...(config.relations || []),
-        "items.tax_lines",
-        "items.adjustments",
-        "shipping_methods.tax_lines",
-        "shipping_methods.adjustments",
-      ]),
-    })
-
-    return decorateCartTotals(objectWithRequiredRelations)
-  }
-
-  @InjectManager("baseRepository_")
-  async retrieve(
-    cartId: string,
-    config: FindConfig<CartDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartDTO> {
-    const cart = await this.cartService_.retrieve(cartId, config, sharedContext)
+    const cart = await this.cartService_.retrieve(cartId, config, context)
 
     const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(
       cart,
@@ -173,7 +166,16 @@ export default class CartModuleService<
       }
     )
 
-    return this.decorate(serialized, config, sharedContext)
+    return shouldDecorate ? decorateCartTotals(serialized) : serialized
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieve(
+    cartId: string,
+    config: FindConfig<CartDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartDTO> {
+    return await this.decorate(cartId, config, sharedContext)
   }
 
   async create(

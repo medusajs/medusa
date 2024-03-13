@@ -1,8 +1,15 @@
-import { CartDTO } from "@medusajs/types"
+import {
+  CartDTO,
+  CartLineItemDTO,
+  CartShippingMethodDTO,
+} from "@medusajs/types"
 import { BigNumber } from "../big-number"
-import { getLineItemsTotals } from "../line-item"
+import { GetItemTotalInput, getLineItemsTotals } from "../line-item"
 import { MathBN } from "../math"
-import { getShippingMethodsTotals } from "../shipping-method"
+import {
+  GetShippingMethodTotalInput,
+  getShippingMethodsTotals,
+} from "../shipping-method"
 import { transformPropertiesToBigNumber } from "../transform-properties-to-bignumber"
 
 interface TotalsConfig {
@@ -10,8 +17,8 @@ interface TotalsConfig {
 }
 
 export interface DecorateCartTotalsInputDTO {
-  items?: any[]
-  shipping_methods?: any[]
+  items?: CartLineItemDTO[]
+  shipping_methods?: CartShippingMethodDTO[]
 }
 
 export function decorateCartTotals(
@@ -22,8 +29,9 @@ export function decorateCartTotals(
 
   const includeTax = config?.includeTaxes
 
-  const cartItems = cartLike.items ?? []
-  const cartShippingMethods = cartLike.shipping_methods ?? []
+  const cartItems = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
+  const cartShippingMethods = (cartLike.shipping_methods ??
+    []) as unknown as GetShippingMethodTotalInput[]
 
   const itemsTotals = getLineItemsTotals(cartItems, {
     includeTax,
@@ -39,6 +47,7 @@ export function decorateCartTotals(
   let shippingTotal = MathBN.convert(0)
   let shippingTaxTotal = MathBN.convert(0)
 
+  // @ts-ignore
   cartLike.items = cartItems.map((item) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id] ?? {})
 
@@ -73,7 +82,7 @@ export function decorateCartTotals(
   // TODO: Discount + Gift Card calculations
 
   // TODO: subtract (cart.gift_card_total + cart.discount_total + cart.gift_card_tax_total)
-  const total = subtotal.plus(shippingTotal).plus(shippingTotal).plus(taxTotal)
+  const total = MathBN.add(subtotal, shippingTotal, taxTotal)
 
   const cart = { ...cartLike } as CartDTO
 
@@ -89,5 +98,5 @@ export function decorateCartTotals(
   // cart.gift_card_total = giftCardTotal.total || 0
   // cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-  return cartLike as CartDTO
+  return cart as CartDTO
 }

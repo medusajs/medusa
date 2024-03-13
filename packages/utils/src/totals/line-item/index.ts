@@ -7,7 +7,7 @@ interface GetLineItemsTotalsContext {
   includeTax?: boolean
 }
 
-interface GetItemTotalInput {
+export interface GetItemTotalInput {
   id: string
   unit_price: BigNumber
   quantity: number
@@ -15,7 +15,7 @@ interface GetItemTotalInput {
   tax_lines?: TaxLineDTO[]
 }
 
-interface GetItemTotalOutput {
+export interface GetItemTotalOutput {
   quantity: number
   unit_price: BigNumber
 
