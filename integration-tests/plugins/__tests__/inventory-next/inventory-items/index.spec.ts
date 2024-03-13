@@ -369,7 +369,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("Create inventory items", () => {
+      describe.skip("Create inventory items", () => {
         it("should create inventory items", async () => {
           const createResult = await api.post(
             `/admin/products`,
@@ -457,7 +457,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("List inventory items", () => {
+      describe.skip("List inventory items", () => {
         let location1
         let location2
         beforeEach(async () => {

@@ -106,7 +106,7 @@ export class InventoryItem {
     () => InventoryLevel,
     (inventoryLevel) => inventoryLevel.inventory_item
   )
-  inventory_levels = new Collection<InventoryLevel>(this)
+  location_levels = new Collection<InventoryLevel>(this)
 
   @BeforeCreate()
   private beforeCreate(): void {
