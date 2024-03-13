@@ -155,7 +155,7 @@ medusaIntegrationTestRunner({
                 sales_channel_id: salesChannel.id,
               },
               [Modules.STOCK_LOCATION]: {
-                location_id: location.id,
+                stock_location_id: location.id,
               },
             },
             {
@@ -280,7 +280,7 @@ medusaIntegrationTestRunner({
                 sales_channel_id: salesChannel.id,
               },
               [Modules.STOCK_LOCATION]: {
-                location_id: location.id,
+                stock_location_id: location.id,
               },
             },
             {
@@ -476,7 +476,7 @@ medusaIntegrationTestRunner({
                 sales_channel_id: salesChannel.id,
               },
               [Modules.STOCK_LOCATION]: {
-                location_id: location.id,
+                stock_location_id: location.id,
               },
             },
             {
@@ -568,7 +568,7 @@ medusaIntegrationTestRunner({
                 sales_channel_id: salesChannel.id,
               },
               [Modules.STOCK_LOCATION]: {
-                location_id: location.id,
+                stock_location_id: location.id,
               },
             },
             {
@@ -690,7 +690,7 @@ medusaIntegrationTestRunner({
                 sales_channel_id: salesChannel.id,
               },
               [Modules.STOCK_LOCATION]: {
-                location_id: location.id,
+                stock_location_id: location.id,
               },
             },
             {
@@ -817,7 +817,7 @@ medusaIntegrationTestRunner({
                   sales_channel_id: salesChannel.id,
                 },
                 [Modules.STOCK_LOCATION]: {
-                  location_id: location.id,
+                  stock_location_id: location.id,
                 },
               },
               {
