@@ -35,10 +35,7 @@ const providerId = FulfillmentProviderService.getRegistrationIdentifier(
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   moduleOptions,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list shipping options with a filter", async function () {
@@ -95,6 +92,117 @@ moduleIntegrationTestRunner({
 
           expect(listedOptions).toHaveLength(1)
           expect(listedOptions[0].id).toEqual(shippingOption1.id)
+        })
+
+        it("should list shipping options with a context", async function () {
+          const fulfillmentSet = await service.create({
+            name: "test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "test",
+              },
+            ],
+          })
+
+          const shippingProfile = await service.createShippingProfiles({
+            name: "test",
+            type: "default",
+          })
+
+          const [shippingOption1, , shippingOption3] =
+            await service.createShippingOptions([
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test"],
+                  },
+                ],
+              }),
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test-test"],
+                  },
+                ],
+              }),
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "eq",
+                    value: "test",
+                  },
+                  {
+                    attribute: "test-attribute2.options",
+                    operator: "in",
+                    value: ["test", "test2"],
+                  },
+                ],
+              }),
+            ])
+
+          let listedOptions = await service.listShippingOptions({
+            context: {
+              "test-attribute": "test",
+              "test-attribute2": {
+                options: "test2",
+              },
+            },
+          })
+
+          expect(listedOptions).toHaveLength(2)
+          expect(listedOptions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: shippingOption1.id }),
+              expect.objectContaining({ id: shippingOption3.id }),
+            ])
+          )
+
+          listedOptions = await service.listShippingOptions({
+            service_zone: {
+              fulfillment_set: {
+                id: { $ne: fulfillmentSet.id },
+              },
+            },
+            context: {
+              "test-attribute": "test",
+              "test-attribute2": {
+                options: "test2",
+              },
+            },
+          })
+
+          expect(listedOptions).toHaveLength(0)
+
+          listedOptions = await service.listShippingOptions({
+            service_zone: {
+              fulfillment_set: {
+                type: "non-existing-type",
+              },
+            },
+            context: {
+              "test-attribute": "test",
+              "test-attribute2": {
+                options: "test2",
+              },
+            },
+          })
+
+          expect(listedOptions).toHaveLength(0)
         })
       })
 
@@ -171,24 +279,15 @@ moduleIntegrationTestRunner({
         }
 
         const isShippingOption1Applicable =
-          await service.isShippingOptionValidForContext(
-            shippingOption1.id,
-            context
-          )
+          await service.validateShippingOption(shippingOption1.id, context)
         expect(isShippingOption1Applicable).toBeTruthy()
 
         const isShippingOption2Applicable =
-          await service.isShippingOptionValidForContext(
-            shippingOption2.id,
-            context
-          )
+          await service.validateShippingOption(shippingOption2.id, context)
         expect(isShippingOption2Applicable).toBeFalsy()
 
         const isShippingOption3Applicable =
-          await service.isShippingOptionValidForContext(
-            shippingOption3.id,
-            context
-          )
+          await service.validateShippingOption(shippingOption3.id, context)
         expect(isShippingOption3Applicable).toBeTruthy()
       })
 

@@ -315,7 +315,7 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
   /**
-   * List shipping options
+   * List shipping options and eventually filter the result based on the context and their rules
    * @param filters
    * @param config
    * @param sharedContext
@@ -326,13 +326,13 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
   /**
-   * List and count shipping options
+   * List and count shipping options without taking into account the context
    * @param filters
    * @param config
    * @param sharedContext
    */
   listAndCountShippingOptions(
-    filters?: FilterableShippingOptionProps,
+    filters?: Omit<FilterableShippingOptionProps, "context">,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<[ShippingOptionDTO[], number]>
@@ -666,7 +666,7 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<Record<string, unknown>[]>
 
   /**
-   * Validate the given shipping option option from the provided data
+   * Validate the given shipping option fulfillment option from the provided data
    */
   validateFulfillmentOption(
     providerId: string,
@@ -674,9 +674,9 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<boolean>
 
   /**
-   * Validate if the given shipping option rules are valid for a given context
+   * Validate if the given shipping option is valid for a given context
    */
-  isShippingOptionValidForContext(
+  validateShippingOption(
     shippingOptionId: string,
     context: Record<string, unknown>
   ): Promise<boolean>

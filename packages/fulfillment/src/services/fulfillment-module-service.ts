@@ -3,7 +3,6 @@ import {
   DAL,
   FilterableFulfillmentSetProps,
   FilterableShippingOptionProps,
-  FilterQuery,
   FindConfig,
   FulfillmentDTO,
   FulfillmentTypes,
@@ -131,54 +130,6 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
-  protected static normalizeShippingOptionsListParams(
-    filters: FilterableShippingOptionProps = {},
-    config: FindConfig<ShippingOptionDTO> = {}
-  ) {
-    let { fulfillment_set_id, fulfillment_set_type, ...where } = filters
-
-    const normalizedConfig = { ...config }
-    normalizedConfig.relations = [
-      "rules",
-      "type",
-      "shipping_profile",
-      "provider",
-      ...(normalizedConfig.relations ?? []),
-    ]
-
-    normalizedConfig.take = normalizedConfig.take ?? null
-
-    let normalizedFilters = { ...where } as FilterQuery
-
-    if (fulfillment_set_id || fulfillment_set_type) {
-      const fulfillmentSetConstraints = {}
-
-      if (fulfillment_set_id) {
-        fulfillmentSetConstraints["id"] = fulfillment_set_id
-      }
-
-      if (fulfillment_set_type) {
-        fulfillmentSetConstraints["type"] = fulfillment_set_type
-      }
-
-      normalizedFilters = {
-        ...normalizedFilters,
-        service_zone: {
-          fulfillment_set: fulfillmentSetConstraints,
-        },
-      }
-
-      normalizedConfig.relations.push("service_zone.fulfillment_set")
-    }
-
-    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
-
-    return {
-      filters: normalizedFilters,
-      config: normalizedConfig,
-    }
-  }
-
   @InjectManager("baseRepository_")
   // @ts-ignore
   async listShippingOptions(
@@ -186,53 +137,36 @@ export default class FulfillmentModuleService<
     config: FindConfig<ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
-    const { filters: normalizedFilters, config: normalizedConfig } =
-      FulfillmentModuleService.normalizeShippingOptionsListParams(
-        filters,
-        config
-      )
+    const { context, ...restFilters } = filters
 
-    const shippingOptions = await this.shippingOptionService_.list(
-      normalizedFilters,
-      normalizedConfig,
+    if (context) {
+      config.relations = Array.from(new Set(["rules", ...(config.relations ?? [])]))
+    }
+
+    let shippingOptions = await this.shippingOptionService_.list(
+      restFilters,
+      config,
       sharedContext
     )
+
+    if (context) {
+      shippingOptions = shippingOptions.filter((shippingOption) => {
+        if (!shippingOption.rules?.length) {
+          return true
+        }
+
+        return isContextValid(
+          context,
+          shippingOption.rules.map((r) => r)
+        )
+      })
+    }
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO[]
     >(shippingOptions, {
       populate: true,
     })
-  }
-
-  @InjectManager("baseRepository_")
-  // @ts-ignore
-  async listAndCountShippingOptions(
-    filters: FilterableShippingOptionProps = {},
-    config: FindConfig<ShippingOptionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[ShippingOptionDTO[], number]> {
-    const { filters: normalizedFilters, config: normalizedConfig } =
-      FulfillmentModuleService.normalizeShippingOptionsListParams(
-        filters,
-        config
-      )
-
-    const [shippingOptions, count] =
-      await this.shippingOptionService_.listAndCount(
-        normalizedFilters,
-        normalizedConfig,
-        sharedContext
-      )
-
-    return [
-      await this.baseRepository_.serialize<
-        FulfillmentTypes.ShippingOptionDTO[]
-      >(shippingOptions, {
-        populate: true,
-      }),
-      count,
-    ]
   }
 
   @InjectManager("baseRepository_")
@@ -1291,27 +1225,21 @@ export default class FulfillmentModuleService<
     )
   }
 
-  @InjectManager('baseRepository_')
-  async isShippingOptionValidForContext(
+  @InjectManager("baseRepository_")
+  async validateShippingOption(
     shippingOptionId: string,
     context: Record<string, unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const shippingOption = await this.shippingOptionService_.retrieve(
-      shippingOptionId,
+    const shippingOptions = await this.listShippingOptions(
+      { id: shippingOptionId, context },
       {
         relations: ["rules"],
       },
       sharedContext
     )
 
-    return (
-      !shippingOption.rules?.length ||
-      isContextValid(
-        context,
-        shippingOption.rules.map((r) => r)
-      )
-    )
+    return !!shippingOptions.length
   }
 
   protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {
