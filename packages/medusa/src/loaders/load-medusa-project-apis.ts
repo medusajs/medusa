@@ -1,19 +1,11 @@
 import { promiseAll } from "@medusajs/utils"
-import { aliasTo, asFunction } from "awilix"
 import { Express } from "express"
 import glob from "glob"
 import _ from "lodash"
 import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
-import {
-  AbstractBatchJobStrategy,
-  AbstractCartCompletionStrategy,
-  AbstractPriceSelectionStrategy,
-  AbstractTaxCalculationStrategy,
-} from "../interfaces"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
-import { formatRegistrationName } from "../utils/format-registration-name"
 import ScheduledJobsLoader from "./helpers/jobs"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
@@ -35,8 +27,6 @@ type PluginDetails = {
   version: string
 }
 
-export const isSearchEngineInstalledResolutionKey = "isSearchEngineInstalled"
-
 export const MEDUSA_PROJECT_NAME = "project-plugin"
 
 /**
@@ -50,12 +40,6 @@ export default async ({
   activityId,
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
-
-  await promiseAll(
-    resolved.map(
-      async (pluginDetails) => await runSetupFunctions(pluginDetails)
-    )
-  )
 
   await promiseAll(
     resolved.map(async (pluginDetails) => {
@@ -136,99 +120,6 @@ async function registerScheduledJobs(
   ).load()
 }
 
-export function registerStrategies(
-  pluginDetails: PluginDetails,
-  container: MedusaContainer
-): void {
-  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {
-    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
-  })
-  const registeredServices = {}
-
-  files.map((file) => {
-    const module = require(file).default
-
-    switch (true) {
-      case AbstractTaxCalculationStrategy.isTaxCalculationStrategy(
-        module.prototype
-      ): {
-        if (!("taxCalculationStrategy" in registeredServices)) {
-          container.register({
-            taxCalculationStrategy: asFunction(
-              (cradle) => new module(cradle, pluginDetails.options)
-            ).singleton(),
-          })
-          registeredServices["taxCalculationStrategy"] = file
-        } else {
-          logger.warn(
-            `Cannot register ${file}. A tax calculation strategy is already registered`
-          )
-        }
-        break
-      }
-
-      case AbstractCartCompletionStrategy.isCartCompletionStrategy(
-        module.prototype
-      ): {
-        if (!("cartCompletionStrategy" in registeredServices)) {
-          container.register({
-            cartCompletionStrategy: asFunction(
-              (cradle) => new module(cradle, pluginDetails.options)
-            ).singleton(),
-          })
-          registeredServices["cartCompletionStrategy"] = file
-        } else {
-          logger.warn(
-            `Cannot register ${file}. A cart completion strategy is already registered`
-          )
-        }
-        break
-      }
-
-      case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
-        container.registerAdd(
-          "batchJobStrategies",
-          asFunction((cradle) => new module(cradle, pluginDetails.options))
-        )
-
-        const name = formatRegistrationName(file)
-        container.register({
-          [name]: asFunction(
-            (cradle) => new module(cradle, pluginDetails.options)
-          ).singleton(),
-          [`batch_${module.identifier}`]: aliasTo(name),
-          [`batchType_${module.batchType}`]: aliasTo(name),
-        })
-        break
-      }
-
-      case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
-        module.prototype
-      ): {
-        if (!("priceSelectionStrategy" in registeredServices)) {
-          container.register({
-            priceSelectionStrategy: asFunction(
-              (cradle) => new module(cradle, pluginDetails.options)
-            ).singleton(),
-          })
-
-          registeredServices["priceSelectionStrategy"] = file
-        } else {
-          logger.warn(
-            `Cannot register ${file}. A price selection strategy is already registered`
-          )
-        }
-        break
-      }
-
-      default:
-        logger.warn(
-          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
-        )
-    }
-  })
-}
-
 /**
  * Registers the plugin's api routes.
  */
@@ -297,28 +188,6 @@ async function registerSubscribers(
 async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
   await Promise.all(files.map(async (file) => import(file)))
-}
-
-/**
- * Runs all setup functions in a plugin. Setup functions are run before anything from the plugin is
- * registered to the container. This is useful for running custom build logic, fetching remote
- * configurations, etc.
- * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
- */
-async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
-  await promiseAll(
-    files.map(async (fn) => {
-      const loaded = require(fn).default
-      try {
-        await loaded()
-      } catch (err) {
-        throw new Error(
-          `A setup function from ${pluginDetails.name} failed. ${err}`
-        )
-      }
-    })
-  )
 }
 
 // TODO: Create unique id for each plugin
