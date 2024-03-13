@@ -57,7 +57,10 @@ export function prepareListQuery<
     allFields.add("id")
   }
 
-  const allAllowedFields = new Set([...allowedFields, ...allowedRelations])
+  const allAllowedFields = new Set([
+    ...(allowedFields.length ? allowedFields : Array.from(allFields)), // In case there is no allowedFields, allow all fields
+    ...allowedRelations,
+  ])
   const notAllowedFields = !allAllowedFields.size
     ? new Set()
     : getSetDifference(allFields, allAllowedFields)
@@ -109,7 +112,7 @@ export function prepareListQuery<
   return {
     listConfig: {
       select: select.length ? select : undefined,
-      relations: relations.length ? relations : undefined,
+      relations: relations,
       skip: offset,
       take: limit ?? defaultLimit,
       order: orderBy,
