@@ -14,7 +14,7 @@ import { Modules } from "../../../../../modules-sdk/dist"
 import { createInventoryItemsWorkflow } from "@medusajs/core-flows"
 import { defaultAdminProductsVariantFields } from "../products/query-config"
 
-// List invites
+// List inventory-items
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -60,7 +60,7 @@ export const GET = async (
   })
 }
 
-// // Create invite
+// Create inventory-item
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostInventoryItemsReq>,
   res: MedusaResponse

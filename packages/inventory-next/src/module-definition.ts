@@ -13,7 +13,7 @@ const migrationScriptOptions = {
   pathToMigrations: __dirname + "/migrations",
 }
 
-const runMigrationss = ModulesSdkUtils.buildMigrationScript(
+const runMigrations = ModulesSdkUtils.buildMigrationScript(
   migrationScriptOptions
 )
 
@@ -40,8 +40,5 @@ export const moduleDefinition: ModuleExports = {
   service,
   loaders,
   revertMigration,
-  runMigrations: (options) => {
-    console.log(options)
-    return runMigrationss(options)
-  },
+  runMigrations,
 }

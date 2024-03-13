@@ -14,8 +14,5 @@ export const createProductVariantsWorkflow = createWorkflow(
     input: WorkflowData<WorkflowInput>
   ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
     return createProductVariantsStep(input.product_variants)
-
-    // TODO: create inventory items
-    // TODO: attach inventory items to product variants
   }
 )

@@ -37,7 +37,7 @@ export const POST = async (
   }
 
   const workflow = createInventoryLevelsWorkflow(req.scope)
-  const { result } = await workflow.run({
+  const { errors } = await workflow.run({
     input: {
       inventory_levels: [
         {
@@ -48,7 +48,9 @@ export const POST = async (
     },
   })
 
-  // TODO: validate errors of workflow
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
 
   const itemQuery = remoteQueryObjectFromString({
     entryPoint: "inventory_items",
