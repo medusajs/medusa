@@ -39,7 +39,7 @@ export const addRulesToPromotionsStep = createStep(
 
     return new StepResponse(promotionRules, {
       id: data.id,
-      ruleIds: createdPromotionRules.map((pr) => pr.id),
+      promotionRuleIds: createdPromotionRules.map((pr) => pr.id),
       buyRuleIds: createdPromotionBuyRules.map((pr) => pr.id),
       targetRuleIds: createdPromotionBuyRules.map((pr) => pr.id),
     })
@@ -49,28 +49,24 @@ export const addRulesToPromotionsStep = createStep(
       return
     }
 
-    const { id, ruleIds = [], buyRuleIds = [], targetRuleIds = [] } = data
+    const {
+      id,
+      promotionRuleIds = [],
+      buyRuleIds = [],
+      targetRuleIds = [],
+    } = data
 
     const promotionModule = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION
     )
 
-    ruleIds.length &&
-      (await promotionModule.removePromotionRules(
-        id,
-        ruleIds.map((id) => ({ id }))
-      ))
+    promotionRuleIds.length &&
+      (await promotionModule.removePromotionRules(id, promotionRuleIds))
 
     buyRuleIds.length &&
-      (await promotionModule.removePromotionBuyRules(
-        id,
-        buyRuleIds.map((id) => ({ id }))
-      ))
+      (await promotionModule.removePromotionBuyRules(id, buyRuleIds))
 
     targetRuleIds.length &&
-      (await promotionModule.removePromotionBuyRules(
-        id,
-        targetRuleIds.map((id) => ({ id }))
-      ))
+      (await promotionModule.removePromotionBuyRules(id, targetRuleIds))
   }
 )
