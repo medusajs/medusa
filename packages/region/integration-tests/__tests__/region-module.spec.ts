@@ -34,6 +34,7 @@ describe("Region Module Service", () => {
     const createdRegion = await service.create({
       name: "Europe",
       currency_code: "EUR",
+      automatic_taxes: false,
     })
 
     expect(createdRegion).toEqual(
@@ -42,6 +43,7 @@ describe("Region Module Service", () => {
         name: "Europe",
         currency_code: "eur",
         countries: [],
+        automatic_taxes: false,
       })
     )
 
@@ -75,6 +77,7 @@ describe("Region Module Service", () => {
         id: region.id,
         name: "North America",
         currency_code: "usd",
+        automatic_taxes: true,
         countries: [
           expect.objectContaining({
             display_name: "Canada",
@@ -148,6 +151,7 @@ describe("Region Module Service", () => {
       name: "Americas",
       currency_code: "MXN",
       countries: ["us", "mx"],
+      automatic_taxes: false,
     })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
@@ -158,6 +162,7 @@ describe("Region Module Service", () => {
       id: createdRegion.id,
       name: "Americas",
       currency_code: "mxn",
+      automatic_taxes: false,
     })
     expect(latestRegion.countries.map((c) => c.iso_2)).toEqual(["mx", "us"])
   })

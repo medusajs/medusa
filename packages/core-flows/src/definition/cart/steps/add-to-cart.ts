@@ -16,7 +16,7 @@ export const addToCartStep = createStep(
 
     const items = await cartService.addLineItems(data.items)
 
-    return new StepResponse(items)
+    return new StepResponse(items, items)
   },
   async (createdLineItems, { container }) => {
     const cartService: ICartModuleService = container.resolve(

@@ -10,7 +10,6 @@ import {
 import { AdminPostPromotionsPromotionReq } from "../validators"
 import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { UpdateApplicationMethodDTO } from "@medusajs/types"
 import { UpdatePromotionDTO } from "@medusajs/types"
 
 export const GET = async (
@@ -58,12 +57,10 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const manager = req.scope.resolve("manager")
   const deletePromotions = deletePromotionsWorkflow(req.scope)
 
   const { errors } = await deletePromotions.run({
     input: { ids: [id] },
-    context: { manager },
     throwOnError: false,
   })
 

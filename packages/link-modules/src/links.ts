@@ -14,6 +14,12 @@ export const LINKS = {
     Modules.PRICING,
     "price_set_id"
   ),
+  ShippingOptionPriceSet: composeLinkName(
+    Modules.FULFILLMENT,
+    "shipping_option_id",
+    Modules.PRICING,
+    "price_set_id"
+  ),
   CartPaymentCollection: composeLinkName(
     Modules.CART,
     "cart_id",
@@ -31,6 +37,18 @@ export const LINKS = {
     "cart_id",
     Modules.PROMOTION,
     "promotion_id"
+  ),
+  SalesChannelLocation: composeLinkName(
+    Modules.SALES_CHANNEL,
+    "sales_channel_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
+  ),
+  FulfillmentSetLocation: composeLinkName(
+    Modules.FULFILLMENT,
+    "fulfillment_set_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
   ),
 
   // Internal services

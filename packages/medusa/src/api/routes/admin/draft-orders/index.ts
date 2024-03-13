@@ -1,14 +1,23 @@
 import { Router } from "express"
 import { Cart, DraftOrder, Order } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetDraftOrdersParams } from "./list-draft-orders"
 
 const route = Router()
 
 export default (app) => {
   app.use("/draft-orders", route)
 
-  route.get("/", middlewares.wrap(require("./list-draft-orders").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetDraftOrdersParams, {
+      defaultFields: defaultAdminDraftOrdersFields,
+      defaultRelations: defaultAdminDraftOrdersRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-draft-orders").default)
+  )
 
   route.get("/:id", middlewares.wrap(require("./get-draft-order").default))
 

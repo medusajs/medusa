@@ -1,4 +1,5 @@
 import { OperatorMap } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Transform, Type } from "class-transformer"
 import {
   IsArray,
@@ -14,7 +15,6 @@ import {
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { ProductStatus } from "@medusajs/utils"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 
@@ -65,14 +65,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   handle?: string
 
-  // TODO: Should we remove this? It makes sense for search, but not for equality comparison
-  /**
-   * Description to filter products by.
-   */
-  @IsString()
-  @IsOptional()
-  description?: string
-
   /**
    * Filter products by whether they're gift cards.
    */
@@ -81,34 +73,38 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  // TODO: Add in next iteration
-  // /**
-  //  * Filter products by their associated price lists' ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // price_list_id?: string[]
+  /**
+   * Filter products by their associated price lists' ID.
+   */
+  @IsOptional()
+  @IsArray()
+  price_list_id?: string[]
 
-  // /**
-  //  * Filter products by their associated product collection's ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // collection_id?: string[]
+  /**
+   * Filter products by their associated product collection's ID.
+   */
+  @IsArray()
+  @IsOptional()
+  collection_id?: string[]
 
-  // /**
-  //  * Filter products by their associated tags' value.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // tags?: string[]
+  /**
+   * Filter products by their associated tags' value.
+   */
+  @IsArray()
+  @IsOptional()
+  tags?: string[]
 
-  // /**
-  //  * Filter products by their associated product type's ID.
-  //  */
-  // @IsArray()
-  // @IsOptional()
-  // type_id?: string[]
+  /**
+   * Filter products by their associated product type's ID.
+   */
+  @IsArray()
+  @IsOptional()
+  type_id?: string[]
+
+  // TODO: Replace this with AdminGetProductVariantsParams when its available
+  @IsOptional()
+  @IsObject()
+  variants?: Record<any, any>
 
   // /**
   //  * Filter products by their associated sales channels' ID.
@@ -172,6 +168,7 @@ export class AdminGetProductsVariantsParams extends extendedFindParamsMixin({
   limit: 50,
   offset: 0,
 }) {
+  // TODO: Will search be handled the same way? Should it be part of the `findParams` class instead, or the mixin?
   /**
    * Search term to search product variants' title, sku, and products' title.
    */
@@ -185,14 +182,6 @@ export class AdminGetProductsVariantsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
-
-  // TODO: This should be part of the Mixin or base FindParams
-  // /**
-  //  * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-  //  */
-  // @IsString()
-  // @IsOptional()
-  // order?: string
 
   /**
    * Filter product variants by whether their inventory is managed or not.
@@ -295,21 +284,20 @@ export class AdminPostProductsReq {
   @IsEnum(ProductStatus)
   status?: ProductStatus = ProductStatus.DRAFT
 
-  // TODO: Add in next iteration
-  // @IsOptional()
-  // @Type(() => ProductTypeReq)
-  // @ValidateNested()
-  // type?: ProductTypeReq
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
 
-  // @IsOptional()
-  // @IsString()
-  // collection_id?: string
+  @IsOptional()
+  @IsString()
+  collection_id?: string
 
-  // @IsOptional()
-  // @Type(() => ProductTagReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // tags?: ProductTagReq[]
+  @IsOptional()
+  @Type(() => ProductTagReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  tags?: ProductTagReq[]
 
   // @IsOptional()
   // @Type(() => ProductProductCategoryReq)
@@ -326,7 +314,6 @@ export class AdminPostProductsReq {
   // ])
   // sales_channels?: ProductSalesChannelReq[]
 
-  // TODO: I suggest we don't allow creation options and variants in 1 call, but rather do it through separate endpoints.
   @IsOptional()
   @Type(() => AdminPostProductsProductOptionsReq)
   @ValidateNested({ each: true })
@@ -410,21 +397,20 @@ export class AdminPostProductsProductReq {
   @ValidateIf((_, value) => value !== undefined)
   status?: ProductStatus
 
-  // TODO: Deal with in next iteration
-  // @IsOptional()
-  // @Type(() => ProductTypeReq)
-  // @ValidateNested()
-  // type?: ProductTypeReq
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
 
-  // @IsOptional()
-  // @IsString()
-  // collection_id?: string
+  @IsOptional()
+  @IsString()
+  collection_id?: string
 
-  // @IsOptional()
-  // @Type(() => ProductTagReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // tags?: ProductTagReq[]
+  @IsOptional()
+  @Type(() => ProductTagReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  tags?: ProductTagReq[]
 
   // @IsOptional()
   // @Type(() => ProductProductCategoryReq)
@@ -440,12 +426,11 @@ export class AdminPostProductsProductReq {
   // ])
   // sales_channels?: ProductSalesChannelReq[] | null
 
-  // TODO: Should we remove this on update?
-  // @IsOptional()
-  // @Type(() => ProductVariantReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // variants?: ProductVariantReq[]
+  @IsOptional()
+  @Type(() => ProductVariantReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  variants?: ProductVariantReq[]
 
   @IsNumber()
   @IsOptional()
@@ -552,18 +537,17 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Add on next iteration
+  // TODO: Add on next iteration, adding temporary field for now
   // @IsArray()
   // @ValidateNested({ each: true })
   // @Type(() => ProductVariantPricesCreateReq)
   // prices: ProductVariantPricesCreateReq[]
+  @IsArray()
+  prices: any[]
 
-  // TODO: Think how these link to the `options` on the product-level
-  // @IsOptional()
-  // @Type(() => ProductVariantOptionReq)
-  // @ValidateNested({ each: true })
-  // @IsArray()
-  // options?: ProductVariantOptionReq[] = []
+  @IsOptional()
+  @IsObject()
+  options?: Record<string, string>
 }
 
 export class AdminPostProductsProductVariantsVariantReq {
@@ -642,20 +626,56 @@ export class AdminPostProductsProductVariantsVariantReq {
   // @Type(() => ProductVariantPricesUpdateReq)
   // prices?: ProductVariantPricesUpdateReq[]
 
-  // TODO: Align handling with the create case.
-  // @Type(() => ProductVariantOptionReq)
-  // @ValidateNested({ each: true })
-  // @IsOptional()
-  // @IsArray()
-  // options?: ProductVariantOptionReq[] = []
+  @IsOptional()
+  @IsObject()
+  options?: Record<string, string>
 }
 
 export class AdminPostProductsProductOptionsReq {
   @IsString()
   title: string
+
+  @IsArray()
+  values: string[]
 }
 
 export class AdminPostProductsProductOptionsOptionReq {
   @IsString()
   title: string
+
+  @IsArray()
+  values: string[]
+}
+
+// eslint-disable-next-line max-len
+export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
+  @IsString()
+  id: string
+}
+
+export class ProductTagReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  value: string
+}
+
+/**
+ * The details of a product type, used to create or update an existing product type.
+ */
+export class ProductTypeReq {
+  /**
+   * The ID of the product type. It's only required when referring to an existing product type.
+   */
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  /**
+   * The value of the product type.
+   */
+  @IsString()
+  value: string
 }

@@ -19,6 +19,15 @@ export interface RuleTypeDTO {
   name: string
   rule_attribute: string
   default_priority: number
+  /**
+   * The creation date of the rule type.
+   */
+  created_at?: Date | string
+
+  /**
+   * The update date of the rule type.
+   */
+  updated_at?: Date | string
 }
 
 export interface FilterableRuleTypeProps

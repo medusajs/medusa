@@ -66,6 +66,7 @@ export const defaultStoreCartFields = [
   "region.id",
   "region.name",
   "region.currency_code",
+  "region.automatic_taxes",
   "sales_channel_id",
 
   // TODO: To be updated when payment sessions are introduces in the Rest API

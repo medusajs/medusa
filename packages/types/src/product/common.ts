@@ -760,7 +760,7 @@ export interface FilterableProductCollectionProps
   /**
    * The title to filter product collections by.
    */
-  title?: string
+  title?: string | string[]
 }
 
 /**
@@ -872,16 +872,19 @@ export interface CreateProductCollectionDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductCollectionDTO extends UpdateProductCollectionDTO {
+  /**
+   * The ID of the product collection to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
  * The data to update in a product collection. The `id` is used to identify which product collection to update.
  */
 export interface UpdateProductCollectionDTO {
-  /**
-   * The ID of the product collection to update.
-   */
-  id: string
   /**
    * The value of the product collection.
    */
@@ -927,6 +930,10 @@ export interface CreateProductTypeDTO {
 export interface UpsertProductTypeDTO {
   id?: string
   value: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
 
 /**
@@ -1103,6 +1110,14 @@ export interface CreateProductVariantDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductVariantDTO
+  extends Omit<UpdateProductVariantDTO, "id"> {
+  /**
+   * The ID of the product variant to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
@@ -1238,11 +1253,11 @@ export interface CreateProductDTO {
   /**
    * The product type to be associated with the product.
    */
-  type_id?: string
+  type_id?: string | null
   /**
    * The product collection to be associated with the product.
    */
-  collection_id?: string
+  collection_id?: string | null
   /**
    * The product tags to be created and associated with the product.
    */
@@ -1297,16 +1312,19 @@ export interface CreateProductDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductDTO extends UpdateProductDTO {
+  /**
+   * The ID of the product to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
  * The data to update in a product. The `id` is used to identify which product to update.
  */
 export interface UpdateProductDTO {
-  /**
-   * The ID of the product to update.
-   */
-  id: string
   /**
    * The title of the product.
    */
@@ -1372,7 +1390,7 @@ export interface UpdateProductDTO {
   /**
    * The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
    */
-  variants?: (CreateProductVariantDTO | UpdateProductVariantDTO)[]
+  variants?: UpsertProductVariantDTO[]
   /**
    * The width of the product.
    */
