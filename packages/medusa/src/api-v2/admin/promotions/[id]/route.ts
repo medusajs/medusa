@@ -1,16 +1,15 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
   deletePromotionsWorkflow,
   updatePromotionsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
-import { AdminPostPromotionsPromotionReq } from "../validators"
-import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { UpdatePromotionDTO } from "@medusajs/types"
+import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
+import { AdminPostPromotionsPromotionReq } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
