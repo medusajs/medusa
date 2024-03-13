@@ -39,7 +39,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
     const salesChannelLocations = useRemoteQueryStep({
       entry_point: "sales_channels",
-      fields: ["id", "name", "locations.id", "locations.name"],
+      fields: ["id", "name", "stock_locations.id", "stock_locations.name"],
       variables: { id: input.cart.sales_channel_id },
     })
 
@@ -66,7 +66,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
         const items = prepareConfirmInventoryInput({
           product_variant_inventory_items: data.productVariantInventoryItems,
-          location_ids: data.salesChannelLocations[0].locations.map(
+          location_ids: data.salesChannelLocations[0].stock_locations.map(
             (l) => l.id
           ),
           items: [data.input.item],
