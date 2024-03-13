@@ -2,23 +2,30 @@ import { ProductVariantDTO } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 
 interface ConfirmInventoryPreparationInput {
-  productVariantInventoryItems: {
+  product_variant_inventory_items: {
     variant_id: string
     inventory_item_id: string
     required_quantity: number
   }[]
   items: { variant_id?: string; quantity: number }[]
   variants: ProductVariantDTO[]
-  locationIds: string[]
+  location_ids: string[]
+}
+
+interface ConfirmInventoryItem {
+  inventory_item_id: string
+  required_quantity: number
+  quantity: number
+  location_ids: string[]
 }
 
 export const prepareConfirmInventoryInput = ({
-  productVariantInventoryItems,
-  locationIds,
+  product_variant_inventory_items,
+  location_ids,
   items,
   variants,
 }: ConfirmInventoryPreparationInput) => {
-  if (!productVariantInventoryItems.length) {
+  if (!product_variant_inventory_items.length) {
     return []
   }
 
@@ -26,19 +33,12 @@ export const prepareConfirmInventoryInput = ({
     variants.map((v) => [v.id, v])
   )
 
-  const itemsToConfirm: {
-    inventory_item_id: string
-    required_quantity: number
-    quantity: number
-    location_ids: string[]
-  }[] = []
+  const itemsToConfirm: ConfirmInventoryItem[] = []
 
   items.forEach((item) => {
-    const variantInventoryItem = productVariantInventoryItems.find(
+    const variantInventoryItem = product_variant_inventory_items.find(
       (i) => i.variant_id === item.variant_id
     )
-
-    const variant = variantsMap.get(item.variant_id!)
 
     if (!variantInventoryItem) {
       throw new MedusaError(
@@ -47,12 +47,14 @@ export const prepareConfirmInventoryInput = ({
       )
     }
 
+    const variant = variantsMap.get(item.variant_id!)
+
     if (variant?.manage_inventory) {
       itemsToConfirm.push({
         inventory_item_id: variantInventoryItem.inventory_item_id,
         required_quantity: variantInventoryItem.required_quantity,
         quantity: item.quantity,
-        location_ids: locationIds,
+        location_ids: location_ids,
       })
     }
   })

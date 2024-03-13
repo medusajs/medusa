@@ -65,8 +65,10 @@ export const updateLineItemInCartWorkflow = createWorkflow(
         }
 
         const items = prepareConfirmInventoryInput({
-          productVariantInventoryItems: data.productVariantInventoryItems,
-          locationIds: data.salesChannelLocations[0].locations.map((l) => l.id),
+          product_variant_inventory_items: data.productVariantInventoryItems,
+          location_ids: data.salesChannelLocations[0].locations.map(
+            (l) => l.id
+          ),
           items: [data.input.item],
           variants: data.variants,
         })
