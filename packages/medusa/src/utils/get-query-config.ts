@@ -20,83 +20,21 @@ export function pickByConfig<TModel extends BaseEntity>(
   return obj
 }
 
-export function getRetrieveConfig<TModel extends BaseEntity>(
-  defaultFields: (keyof TModel)[],
-  defaultRelations: string[],
-  fields?: (keyof TModel)[],
-  expand?: string[]
-): FindConfig<TModel> {
-  let includeFields: (keyof TModel)[] = []
-  if (isDefined(fields)) {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
-      return typeof field === "string" ? field.trim() : field
-    }) as (keyof TModel)[]
-  }
-
-  let expandFields: string[] = []
-  if (isDefined(expand)) {
-    expandFields = expand.map((expandRelation) => expandRelation.trim())
-  }
-
-  return {
-    select: includeFields.length ? includeFields : defaultFields,
-    relations: isDefined(expand) ? expandFields : defaultRelations,
-  }
-}
-
-export function getListConfig<TModel extends BaseEntity>(
-  defaultFields: string[] = [],
-  defaultRelations: string[] = [],
-  fields: string[] = [],
-  expand: string[] = [],
-  limit = 50,
-  offset = 0,
-  order: { [k: string | symbol]: "DESC" | "ASC" } = {}
-): FindConfig<TModel> {
-  let includeFields: (keyof TModel)[] = []
-  if (isDefined(fields)) {
-    const fieldSet = new Set(fields)
-    // Ensure created_at is included, since we are sorting on this
-    fieldSet.add("created_at")
-    fieldSet.add("id")
-    includeFields = Array.from(fieldSet) as (keyof TModel)[]
-  }
-
-  let expandFields: string[] = []
-  if (isDefined(expand)) {
-    expandFields = expand
-  }
-
-  const orderBy = order
-
-  if (!Object.keys(order).length) {
-    orderBy["created_at"] = "DESC"
-  }
-
-  return {
-    select: (includeFields.length
-      ? includeFields
-      : defaultFields) as (keyof TModel)[],
-    relations: isDefined(expand) ? expandFields : defaultRelations,
-    skip: offset,
-    take: limit,
-    order: orderBy,
-  }
-}
-
 export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
-  const { order, fields, limit, offset } = validated
+  const { order, fields, limit = 50, expand, offset = 0 } = validated
   const {
     defaultFields = [],
     defaultLimit,
     allowedFields = [],
     allowedRelations = [],
+    defaultRelations = [],
   } = queryConfig
 
   let allFields = new Set([...defaultFields]) as Set<string>
+
   if (fields) {
     const customFields = fields.split(",")
     const shouldReplaceDefaultFields = customFields.some(
@@ -104,7 +42,19 @@ export function prepareListQuery<
     )
     if (shouldReplaceDefaultFields) {
       allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
+    } else {
+      customFields.forEach((field) => {
+        if (field.startsWith("+")) {
+          allFields.add(field.replace(/^\+/, ""))
+        } else if (field.startsWith("-")) {
+          allFields.delete(field.replace(/^-/, ""))
+        }
+      })
     }
+
+    // TODO: Maintain backward compatibility, remove in future
+    allFields.add("created_at")
+    allFields.add("id")
   }
 
   const allAllowedFields = new Set([...allowedFields, ...allowedRelations])
@@ -143,16 +93,23 @@ export function prepareListQuery<
     }
   } else {
     orderBy["created_at"] = "DESC"
-    allFields.add("created_at")
   }
 
-  const { select, relations } = stringToSelectRelationObject(
+  let { select, relations } = stringToSelectRelationObject(
     Array.from(allFields)
   )
+  relations = Array.from(
+    new Set([
+      ...relations,
+      // Only to support old expand syntax that is deprecated
+      ...(expand ? expand.split(",") : defaultRelations),
+    ])
+  )
+
   return {
     listConfig: {
-      select,
-      relations,
+      select: select.length ? select : undefined,
+      relations: relations.length ? relations : undefined,
       skip: offset,
       take: limit ?? defaultLimit,
       order: orderBy,

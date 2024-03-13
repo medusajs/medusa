@@ -1,4 +1,8 @@
-import { buildSelects, objectToStringPath } from "@medusajs/utils"
+import {
+  buildSelects,
+  objectToStringPath,
+  stringToSelectRelationObject,
+} from "@medusajs/utils"
 import { ValidatorOptions } from "class-validator"
 import { NextFunction, Request, Response } from "express"
 import { omit } from "lodash"
@@ -160,7 +164,12 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
   const expand =
     validated.expand || includeKeys.length
       ? [...(validated.expand?.split(",") || []), ...includeKeys]
-      : queryConfig?.allowedRelations || []
+      : queryConfig?.allowedRelations ||
+        // Only to maintain backward compatibility when allowed relations is not defined
+        stringToSelectRelationObject(
+          (queryConfig?.allowedFields ?? []) as string[]
+        ).relations ||
+        []
 
   allowed.push(...fields, ...objectToStringPath(buildSelects(expand)))
 
@@ -189,7 +198,12 @@ function getAllowedProperties<TEntity extends BaseEntity>(
   const expand =
     validated.expand || includeKeys.length
       ? [...(validated.expand?.split(",") || []), ...includeKeys]
-      : queryConfig?.defaultRelations || []
+      : queryConfig?.defaultRelations ||
+        // Only to maintain backward compatibility when default relations is not defined
+        stringToSelectRelationObject(
+          (queryConfig?.defaultFields ?? []) as string[]
+        ).relations ||
+        []
 
   allowed.push(...fields, ...objectToStringPath(buildSelects(expand)))
 

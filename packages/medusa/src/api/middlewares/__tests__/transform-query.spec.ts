@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { transformQuery } from "../transform-query"
 import { extendedFindParamsMixin } from "../../../types/common"
+import {MedusaError} from "medusa-core-utils";
 
 describe("transformQuery", () => {
   it("should transform the input query", async () => {
@@ -10,7 +11,51 @@ describe("transformQuery", () => {
     const mockResponse = {} as Response
     const nextFunction: NextFunction = jest.fn()
 
-    let queryConfig = {
+    const expectations = ({ offset, limit, inputOrder, transformedOrder }) => {
+      expect(mockRequest.validatedQuery).toEqual({
+        offset,
+        limit,
+        order: inputOrder,
+      })
+      expect(mockRequest.filterableFields).toEqual({})
+      expect(mockRequest.allowedProperties).toEqual([
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "metadata",
+        "metadata.children",
+        "metadata.parent",
+        "metadata.product",
+      ])
+      expect(mockRequest.listConfig).toEqual({
+        take: limit,
+        skip: offset,
+        select: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id",
+        ],
+        relations: [
+          "metadata",
+          "metadata.parent",
+          "metadata.children",
+          "metadata.product",
+        ],
+        order: transformedOrder,
+      })
+    }
+
+    let queryConfig: any = {
       defaultFields: [
         "id",
         "created_at",
@@ -34,46 +79,11 @@ describe("transformQuery", () => {
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
-    expect(mockRequest.validatedQuery).toEqual({
-      offset: 0,
+    expectations({
       limit: 20,
-      order: undefined,
-    })
-    expect(mockRequest.filterableFields).toEqual({})
-    expect(mockRequest.allowedProperties).toEqual([
-      "id",
-      "created_at",
-      "updated_at",
-      "deleted_at",
-      "metadata.id",
-      "metadata.parent.id",
-      "metadata.children.id",
-      "metadata.product.id",
-      "metadata",
-      "metadata.children",
-      "metadata.parent",
-      "metadata.product",
-    ])
-    expect(mockRequest.listConfig).toEqual({
-      take: 20,
-      skip: 0,
-      select: [
-        "id",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-        "metadata.id",
-        "metadata.parent.id",
-        "metadata.children.id",
-        "metadata.product.id",
-      ],
-      relations: [
-        "metadata",
-        "metadata.parent",
-        "metadata.children",
-        "metadata.product",
-      ],
-      order: {
+      offset: 0,
+      inputOrder: undefined,
+      transformedOrder: {
         created_at: "DESC",
       },
     })
@@ -92,30 +102,25 @@ describe("transformQuery", () => {
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
-    expect(mockRequest.validatedQuery).toEqual({
-      offset: 5,
+    expectations({
       limit: 10,
-      order: "created_at",
+      offset: 5,
+      inputOrder: "created_at",
+      transformedOrder: { created_at: "ASC" },
     })
-    expect(mockRequest.filterableFields).toEqual({})
-    expect(mockRequest.allowedProperties).toEqual([
-      "id",
-      "created_at",
-      "updated_at",
-      "deleted_at",
-      "metadata.id",
-      "metadata.parent.id",
-      "metadata.children.id",
-      "metadata.product.id",
-      "metadata",
-      "metadata.children",
-      "metadata.parent",
-      "metadata.product",
-    ])
-    expect(mockRequest.listConfig).toEqual({
-      skip: 5,
-      take: 10,
-      select: [
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        limit: "10",
+        offset: "5",
+        order: "created_at",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaultFields: [
         "id",
         "created_at",
         "updated_at",
@@ -125,15 +130,154 @@ describe("transformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
       ],
-      relations: [
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expectations({
+      limit: 10,
+      offset: 5,
+      inputOrder: "created_at",
+      transformedOrder: { created_at: "ASC" },
+    })
+  })
+
+  it("should transform the input query taking into account the fields symbols (+,- or no symbol)", async () => {
+    let mockRequest = {
+      query: {
+        fields: "id",
+      },
+    } as unknown as Request
+    const mockResponse = {} as Response
+    const nextFunction: NextFunction = jest.fn()
+
+    let queryConfig: any = {
+      defaultFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      defaultRelations: [
         "metadata",
         "metadata.parent",
         "metadata.children",
         "metadata.product",
       ],
-      order: {
-        created_at: "ASC",
+      isList: true,
+    }
+
+    let middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: ["id", "created_at"],
+      })
+    )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "+test_prop,-updated_at",
       },
-    })
+    } as unknown as Request
+
+    queryConfig = {
+      defaultFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      defaultRelations: [
+        "metadata",
+        "metadata.parent",
+        "metadata.children",
+        "metadata.product",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: [
+          "id",
+          "created_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id",
+          "test_prop",
+        ],
+      })
+    )
+  })
+
+  it("should throw when attempting to transform the input if disallowed fields are requested", async () => {
+    let mockRequest = {
+      query: {
+        fields: "+test_prop",
+      },
+    } as unknown as Request
+    const mockResponse = {} as Response
+    const nextFunction: NextFunction = jest.fn()
+
+    let queryConfig: any = {
+      defaultFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      defaultRelations: [
+        "metadata",
+        "metadata.parent",
+        "metadata.children",
+        "metadata.product",
+      ],
+      allowedFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    let middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [test_prop] are not valid`
+    ))
   })
 })
