@@ -50,7 +50,7 @@ const ShippingProfileIdIndex = createPsqlIndexStatementHelper({
 
 const FulfillmentProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
-  columns: "fulfillment_provider_id",
+  columns: "provider_id",
   where: "deleted_at IS NULL",
 })
 
@@ -73,7 +73,7 @@ export default class ShippingOption {
 
   @Enum({
     items: () => ShippingOptionPriceType,
-    default: ShippingOptionPriceType.CALCULATED,
+    default: ShippingOptionPriceType.FLAT,
   })
   price_type: ShippingOptionPriceType
 
@@ -81,6 +81,7 @@ export default class ShippingOption {
     type: "text",
     fieldName: "service_zone_id",
     mapToPk: true,
+    onDelete: "cascade",
   })
   @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
@@ -90,18 +91,19 @@ export default class ShippingOption {
     fieldName: "shipping_profile_id",
     mapToPk: true,
     nullable: true,
+    onDelete: "set null",
   })
   @ShippingProfileIdIndex.MikroORMIndex()
   shipping_profile_id: string | null
 
   @ManyToOne(() => FulfillmentProvider, {
     type: "text",
-    fieldName: "fulfillment_provider_id",
+    fieldName: "provider_id",
     mapToPk: true,
     nullable: true,
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
-  fulfillment_provider_id: string
+  provider_id: string
 
   @Property({ columnType: "text", persist: false })
   @ShippingOptionTypeIdIndex.MikroORMIndex()
@@ -124,13 +126,14 @@ export default class ShippingOption {
   @ManyToOne(() => FulfillmentProvider, {
     persist: false,
   })
-  fulfillment_provider: FulfillmentProvider | null
+  provider: FulfillmentProvider | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
     fieldName: "shipping_option_type_id",
+    onDelete: "cascade",
   })
   type: ShippingOptionType
 

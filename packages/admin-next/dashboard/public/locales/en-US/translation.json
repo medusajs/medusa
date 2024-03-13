@@ -57,7 +57,28 @@
     "continue": "Continue",
     "edit": "Edit",
     "download": "Download",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "apply": "Apply"
+  },
+  "filters": {
+    "date": {
+      "today": "Today",
+      "lastSevenDays": "Last 7 days",
+      "lastThirtyDays": "Last 30 days",
+      "lastNinetyDays": "Last 90 days",
+      "lastTwelveMonths": "Last 12 months",
+      "custom": "Custom"
+    },
+    "compare": {
+      "lessThan": "Less than",
+      "greaterThan": "Greater than",
+      "exact": "Exact",
+      "range": "Range",
+      "lessThanLabel": "less than {{value}}",
+      "greaterThanLabel": "greater than {{value}}",
+      "andLabel": "and"
+    },
+    "addFilter": "Add filter"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -125,7 +146,9 @@
     "domain": "Categories"
   },
   "inventory": {
-    "domain": "Inventory"
+    "domain": "Inventory",
+    "reserved": "Reserved",
+    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
     "domain": "Gift Cards",
@@ -232,7 +255,12 @@
     }
   },
   "draftOrders": {
-    "domain": "Draft Orders"
+    "domain": "Draft Orders",
+    "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "status": {
+      "open": "Open",
+      "completed": "Completed"
+    }
   },
   "discounts": {
     "domain": "Discounts",
@@ -265,9 +293,9 @@
     "editConditions": "Edit conditions",
     "conditionsHint": "Create conditions to apply on the discount",
     "isTemplateDiscount": "Is this a template discount?",
-    "percentageDescription" : "Discount applied in %",
-    "fixedDescription" : "Amount discount",
-    "shippingDescription" : "Override delivery amount",
+    "percentageDescription": "Discount applied in %",
+    "fixedDescription": "Amount discount",
+    "shippingDescription": "Override delivery amount",
     "selectRegionFirst": "Select region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
@@ -315,7 +343,35 @@
     }
   },
   "pricing": {
-    "domain": "Pricing"
+    "domain": "Pricing",
+    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "status": {
+      "draft": "Draft",
+      "expired": "Expired",
+      "active": "Active",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "sale": "Sale",
+      "override": "Override"
+    },
+    "settings": {
+      "typeHint": "Choose the type of price list you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "editPriceListTitle": "Edit Price List",
+      "customerGroupsLabel": "Customer groups",
+      "priceOverridesLabel": "Price overrides",
+      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
+    },
+    "products": {
+      "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
+      "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
+    },
+    "prices": {
+      "addPrices": "Add prices",
+      "editPrices": "Edit prices"
+    }
   },
   "profile": {
     "domain": "Profile",
@@ -467,6 +523,10 @@
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
   },
+  "reservations": {
+    "domain": "Reservations",
+    "deleteWarning": "You are about to delete a reservation. This action cannot be undone."
+  },
   "salesChannels": {
     "domain": "Sales Channels",
     "createSalesChannel": "Create Sales Channel",
@@ -493,6 +553,15 @@
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
+  },
+  "returnReasons": {
+    "domain": "Return Reasons",
+    "calloutHint": "Manage the reasons to categorize returns.",
+    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+    "createReason": "Create Return Reason",
+    "createReasonHint": "Create a new return reason to categorize returns.",
+    "editReason": "Edit Return Reason",
+    "valueTooltip": "The value should be a unique identifier for the return reason."
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
@@ -682,12 +751,18 @@
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
+    "inStock": "In stock",
+    "location": "Location",
+    "quantity": "Quantity",
+    "variant": "Variant",
     "id": "ID",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "rate": "Rate"
+    "label": "Label",
+    "rate": "Rate",
+    "requiresShipping": "Requires shipping"
   },
   "dateTime": {
     "years_one": "Year",

@@ -2,7 +2,8 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { listPriceLists } from "./utils"
+import { listPriceLists } from "./queries"
+import { adminPriceListRemoteQueryFields } from "./query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -11,7 +12,8 @@ export const GET = async (
   const { limit, offset } = req.validatedQuery
   const [priceLists, count] = await listPriceLists({
     container: req.scope,
-    fields: req.listConfig.select!,
+    apiFields: req.listConfig.select!,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
     variables: {
       filters: req.filterableFields,
       order: req.listConfig.order,
