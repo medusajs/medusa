@@ -1,7 +1,7 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IFulfillmentModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 import { setupFullDataFulfillmentStructure } from "../fixtures"
-import { IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 jest.setTimeout(100000)
 

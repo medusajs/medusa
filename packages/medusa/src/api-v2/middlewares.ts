@@ -8,6 +8,7 @@ import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
+import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
@@ -49,5 +50,6 @@ export const config: MiddlewaresConfig = {
     ...adminPaymentRoutesMiddlewares,
     ...adminPriceListsRoutesMiddlewares,
     ...adminCollectionRoutesMiddlewares,
+    ...adminPricingRoutesMiddlewares,
   ],
 }

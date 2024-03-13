@@ -1,4 +1,5 @@
 import {
+  addShippingMethodToWorkflow,
   addToCartWorkflow,
   createCartWorkflow,
   createPaymentCollectionForCartWorkflow,
@@ -6,6 +7,7 @@ import {
   deleteLineItemsWorkflow,
   findOrCreateCustomerStepId,
   linkCartAndPaymentCollectionsStepId,
+  listShippingOptionsForCartWorkflow,
   refreshPaymentCollectionForCartWorkflow,
   updateLineItemInCartWorkflow,
   updateLineItemsStepId,
@@ -15,12 +17,15 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IFulfillmentModuleService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
@@ -40,6 +45,8 @@ medusaIntegrationTestRunner({
       let productModule: IProductModuleService
       let pricingModule: IPricingModuleService
       let paymentModule: IPaymentModuleService
+      let fulfillmentModule: IFulfillmentModuleService
+      let locationModule: IStockLocationServiceNext
       let remoteLink, remoteQuery
 
       let defaultRegion
@@ -57,8 +64,16 @@ medusaIntegrationTestRunner({
         productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
         pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
         paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-        remoteLink = appContainer.resolve("remoteLink")
-        remoteQuery = appContainer.resolve("remoteQuery")
+        fulfillmentModule = appContainer.resolve(
+          ModuleRegistrationName.FULFILLMENT
+        )
+        locationModule = appContainer.resolve(
+          ModuleRegistrationName.STOCK_LOCATION
+        )
+        remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+        remoteQuery = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
       })
 
       beforeEach(async () => {
@@ -666,12 +681,84 @@ medusaIntegrationTestRunner({
             expect(updatedItem).not.toBeUndefined()
           })
         })
+      })
 
-        describe("createPaymentCollectionForCart", () => {
-          it("should create a payment collection and link it to cart", async () => {
-            const cart = await cartModuleService.create({
-              currency_code: "dkk",
+      describe("createPaymentCollectionForCart", () => {
+        it("should create a payment collection and link it to cart", async () => {
+          const cart = await cartModuleService.create({
+            currency_code: "dkk",
+            region_id: defaultRegion.id,
+            items: [
+              {
+                quantity: 1,
+                unit_price: 5000,
+                title: "Test item",
+              },
+            ],
+          })
+
+          await createPaymentCollectionForCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
               region_id: defaultRegion.id,
+              currency_code: "dkk",
+              amount: 5000,
+            },
+            throwOnError: false,
+          })
+
+          const result = await remoteQuery(
+            {
+              cart: {
+                fields: ["id"],
+                payment_collection: {
+                  fields: ["id", "amount", "currency_code"],
+                },
+              },
+            },
+            {
+              cart: {
+                id: cart.id,
+              },
+            }
+          )
+
+          expect(result).toEqual([
+            expect.objectContaining({
+              id: cart.id,
+              payment_collection: expect.objectContaining({
+                amount: 5000,
+                currency_code: "dkk",
+              }),
+            }),
+          ])
+        })
+
+        describe("compensation", () => {
+          it("should dismiss cart <> payment collection link and delete created payment collection", async () => {
+            const workflow =
+              createPaymentCollectionForCartWorkflow(appContainer)
+
+            workflow.appendAction(
+              "throw",
+              linkCartAndPaymentCollectionsStepId,
+              {
+                invoke: async function failStep() {
+                  throw new Error(
+                    `Failed to do something after linking cart and payment collection`
+                  )
+                },
+              }
+            )
+
+            const region = await regionModuleService.create({
+              name: "US",
+              currency_code: "usd",
+            })
+
+            const cart = await cartModuleService.create({
+              currency_code: "usd",
+              region_id: region.id,
               items: [
                 {
                   quantity: 1,
@@ -681,17 +768,27 @@ medusaIntegrationTestRunner({
               ],
             })
 
-            await createPaymentCollectionForCartWorkflow(appContainer).run({
+            const { errors } = await workflow.run({
               input: {
                 cart_id: cart.id,
-                region_id: defaultRegion.id,
-                currency_code: "dkk",
+                region_id: region.id,
+                currency_code: "usd",
                 amount: 5000,
               },
               throwOnError: false,
             })
 
-            const result = await remoteQuery(
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: new Error(
+                  `Failed to do something after linking cart and payment collection`
+                ),
+              },
+            ])
+
+            const carts = await remoteQuery(
               {
                 cart: {
                   fields: ["id"],
@@ -707,101 +804,19 @@ medusaIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            const payCols = await remoteQuery({
+              payment_collection: {
+                fields: ["id"],
+              },
+            })
+
+            expect(carts).toEqual([
               expect.objectContaining({
                 id: cart.id,
-                payment_collection: expect.objectContaining({
-                  amount: 5000,
-                  currency_code: "dkk",
-                }),
+                payment_collection: undefined,
               }),
             ])
-          })
-
-          describe("compensation", () => {
-            it("should dismiss cart <> payment collection link and delete created payment collection", async () => {
-              const workflow =
-                createPaymentCollectionForCartWorkflow(appContainer)
-
-              workflow.appendAction(
-                "throw",
-                linkCartAndPaymentCollectionsStepId,
-                {
-                  invoke: async function failStep() {
-                    throw new Error(
-                      `Failed to do something after linking cart and payment collection`
-                    )
-                  },
-                }
-              )
-
-              const region = await regionModuleService.create({
-                name: "US",
-                currency_code: "usd",
-              })
-
-              const cart = await cartModuleService.create({
-                currency_code: "usd",
-                region_id: region.id,
-                items: [
-                  {
-                    quantity: 1,
-                    unit_price: 5000,
-                    title: "Test item",
-                  },
-                ],
-              })
-
-              const { errors } = await workflow.run({
-                input: {
-                  cart_id: cart.id,
-                  region_id: region.id,
-                  currency_code: "usd",
-                  amount: 5000,
-                },
-                throwOnError: false,
-              })
-
-              expect(errors).toEqual([
-                {
-                  action: "throw",
-                  handlerType: "invoke",
-                  error: new Error(
-                    `Failed to do something after linking cart and payment collection`
-                  ),
-                },
-              ])
-
-              const carts = await remoteQuery(
-                {
-                  cart: {
-                    fields: ["id"],
-                    payment_collection: {
-                      fields: ["id", "amount", "currency_code"],
-                    },
-                  },
-                },
-                {
-                  cart: {
-                    id: cart.id,
-                  },
-                }
-              )
-
-              const payCols = await remoteQuery({
-                payment_collection: {
-                  fields: ["id"],
-                },
-              })
-
-              expect(carts).toEqual([
-                expect.objectContaining({
-                  id: cart.id,
-                  payment_collection: undefined,
-                }),
-              ])
-              expect(payCols.length).toEqual(0)
-            })
+            expect(payCols.length).toEqual(0)
           })
         })
       })
@@ -976,6 +991,432 @@ medusaIntegrationTestRunner({
               })
             )
           })
+        })
+      })
+      describe("AddShippingMethodToCartWorkflow", () => {
+        it("should add shipping method to cart", async () => {
+          let cart = await cartModuleService.create({
+            currency_code: "usd",
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: {
+                shipping_option_id: shippingOption.id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            select: ["id", "region_id", "currency_code"],
+          })
+
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [
+                {
+                  id: shippingOption.id,
+                },
+              ],
+              cart_id: cart.id,
+              currency_code: cart.currency_code,
+            },
+          })
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            relations: ["shipping_methods"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 3000,
+                  name: "Test shipping option",
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("listShippingOptionsForCartWorkflow", () => {
+        it("should list shipping options for cart", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await locationModule.create({
+            name: "Europe",
+          })
+
+          let cart = await cartModuleService.create({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            shipping_address: {
+              city: "CPH",
+              province: "Sjaelland",
+              country_code: "dk",
+            },
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.FULFILLMENT]: {
+                shipping_option_id: shippingOption.id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            select: ["id"],
+            relations: ["shipping_address"],
+          })
+
+          const { result } = await listShippingOptionsForCartWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              sales_channel_id: salesChannel.id,
+              currency_code: "usd",
+              shipping_address: {
+                city: cart.shipping_address?.city,
+                province: cart.shipping_address?.province,
+                country_code: cart.shipping_address?.country_code,
+              },
+            },
+          })
+
+          expect(result).toEqual([
+            expect.objectContaining({
+              amount: 3000,
+              name: "Test shipping option",
+              id: shippingOption.id,
+            }),
+          ])
+        })
+
+        it("should list no shipping options for cart, if sales channel is not associated with location", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await locationModule.create({
+            name: "Europe",
+          })
+
+          let cart = await cartModuleService.create({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            shipping_address: {
+              city: "CPH",
+              province: "Sjaelland",
+              country_code: "dk",
+            },
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.FULFILLMENT]: {
+                shipping_option_id: shippingOption.id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            select: ["id"],
+            relations: ["shipping_address"],
+          })
+
+          const { result } = await listShippingOptionsForCartWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              sales_channel_id: salesChannel.id,
+              currency_code: "usd",
+              shipping_address: {
+                city: cart.shipping_address?.city,
+                province: cart.shipping_address?.province,
+                country_code: cart.shipping_address?.country_code,
+              },
+            },
+          })
+
+          expect(result).toEqual([])
+        })
+
+        it("should throw when shipping options are missing prices", async () => {
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await locationModule.create({
+            name: "Europe",
+          })
+
+          let cart = await cartModuleService.create({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            shipping_address: {
+              city: "CPH",
+              province: "Sjaelland",
+              country_code: "dk",
+            },
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieve(cart.id, {
+            select: ["id"],
+            relations: ["shipping_address"],
+          })
+
+          const { errors } = await listShippingOptionsForCartWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              sales_channel_id: salesChannel.id,
+              currency_code: "usd",
+              shipping_address: {
+                city: cart.shipping_address?.city,
+                province: cart.shipping_address?.province,
+                country_code: cart.shipping_address?.country_code,
+              },
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toEqual([
+            {
+              action: "get-shipping-option-price-sets",
+              error: new Error(
+                `Shipping options with IDs ${shippingOption.id} do not have a price`
+              ),
+              handlerType: "invoke",
+            },
+          ])
         })
       })
     })

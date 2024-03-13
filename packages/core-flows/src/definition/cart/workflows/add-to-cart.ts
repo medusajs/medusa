@@ -92,7 +92,6 @@ export const addToCartWorkflow = createWorkflow(
     updateTaxLinesStep({
       cart_or_cart_id: input.cart,
       items,
-      // TODO: add shipping methods here when its ready
     })
 
     refreshCartPromotionsStep({ id: input.cart.id })

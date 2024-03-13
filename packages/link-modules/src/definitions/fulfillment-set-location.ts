@@ -2,28 +2,28 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS } from "../links"
 
-export const SalesChannelLocation: ModuleJoinerConfig = {
-  serviceName: LINKS.SalesChannelLocation,
+export const FulfillmentSetLocation: ModuleJoinerConfig = {
+  serviceName: LINKS.FulfillmentSetLocation,
   isLink: true,
   databaseConfig: {
-    tableName: "sales_channel_locations",
-    idPrefix: "scloc",
+    tableName: "fulfillment_set_location",
+    idPrefix: "fsloc",
   },
   alias: [
     {
-      name: ["sales_channel_location", "sales_channel_locations"],
+      name: ["fulfillment_set_location", "fulfillment_set_locations"],
       args: {
-        entity: "LinkSalesChannelLocation",
+        entity: "LinkFulfillmentSetLocation",
       },
     },
   ],
-  primaryKeys: ["id", "sales_channel_id", "stock_location_id"],
+  primaryKeys: ["id", "fulfillment_set_id", "stock_location_id"],
   relationships: [
     {
-      serviceName: Modules.SALES_CHANNEL,
+      serviceName: Modules.FULFILLMENT,
       primaryKey: "id",
-      foreignKey: "sales_channel_id",
-      alias: "sales_channel",
+      foreignKey: "fulfillment_set_id",
+      alias: "fulfillment_set",
     },
     {
       serviceName: Modules.STOCK_LOCATION,
@@ -34,13 +34,13 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
   ],
   extends: [
     {
-      serviceName: Modules.SALES_CHANNEL,
+      serviceName: Modules.FULFILLMENT,
       fieldAlias: {
         stock_locations: "locations_link.location",
       },
       relationship: {
-        serviceName: LINKS.SalesChannelLocation,
-        primaryKey: "sales_channel_id",
+        serviceName: LINKS.FulfillmentSetLocation,
+        primaryKey: "fulfillment_set_id",
         foreignKey: "id",
         alias: "locations_link",
         isList: true,
@@ -48,15 +48,15 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.STOCK_LOCATION,
-      fieldAlias: {
-        sales_channels: "sales_channels_link.sales_channel",
-      },
       relationship: {
-        serviceName: LINKS.SalesChannelLocation,
+        serviceName: LINKS.FulfillmentSetLocation,
         primaryKey: "stock_location_id",
         foreignKey: "id",
-        alias: "sales_channels_link",
+        alias: "fulfillment_set_link",
         isList: true,
+      },
+      fieldAlias: {
+        fulfillment_sets: "fulfillment_set_link.fulfillment_set",
       },
     },
   ],
