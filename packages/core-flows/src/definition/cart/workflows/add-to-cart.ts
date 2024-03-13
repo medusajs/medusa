@@ -84,7 +84,10 @@ export const addToCartWorkflow = createWorkflow(
             (l) => l.id
           ),
           items: data.input.items!,
-          variants: data.variants,
+          variants: data.variants.map((v) => ({
+            id: v.id,
+            manage_inventory: v.manage_inventory,
+          })),
         })
 
         return { items }

@@ -1,4 +1,3 @@
-import { ProductVariantDTO } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 
 interface ConfirmInventoryPreparationInput {
@@ -8,7 +7,7 @@ interface ConfirmInventoryPreparationInput {
     required_quantity: number
   }[]
   items: { variant_id?: string; quantity: number }[]
-  variants: ProductVariantDTO[]
+  variants: { id: string; manage_inventory?: boolean }[]
   location_ids: string[]
 }
 
@@ -29,9 +28,10 @@ export const prepareConfirmInventoryInput = ({
     return []
   }
 
-  const variantsMap = new Map<string, ProductVariantDTO>(
-    variants.map((v) => [v.id, v])
-  )
+  const variantsMap = new Map<
+    string,
+    { id: string; manage_inventory?: boolean }
+  >(variants.map((v) => [v.id, v]))
 
   const itemsToConfirm: ConfirmInventoryItem[] = []
 
