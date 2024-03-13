@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from "express"
 import { transformQuery } from "../transform-query"
 import { extendedFindParamsMixin } from "../../../types/common"
-import {MedusaError} from "medusa-core-utils";
+import { MedusaError } from "medusa-core-utils"
 
 describe("transformQuery", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it("should transform the input query", async () => {
     let mockRequest = {
       query: {},
@@ -11,7 +15,19 @@ describe("transformQuery", () => {
     const mockResponse = {} as Response
     const nextFunction: NextFunction = jest.fn()
 
-    const expectations = ({ offset, limit, inputOrder, transformedOrder }) => {
+    const expectations = ({
+      offset,
+      limit,
+      inputOrder,
+      transformedOrder,
+      relations,
+    }: {
+      offset: number
+      limit: number
+      inputOrder: string | undefined
+      transformedOrder: Record<string, "ASC" | "DESC">
+      relations?: string[]
+    }) => {
       expect(mockRequest.validatedQuery).toEqual({
         offset,
         limit,
@@ -45,16 +61,16 @@ describe("transformQuery", () => {
           "metadata.children.id",
           "metadata.product.id",
         ],
-        relations: [
+        relations: relations ?? [
           "metadata",
-          "metadata.parent",
           "metadata.children",
+          "metadata.parent",
           "metadata.product",
         ],
         order: transformedOrder,
       })
       expect(mockRequest.remoteQueryConfig).toEqual({
-        "fields": [
+        fields: [
           "id",
           "created_at",
           "updated_at",
@@ -62,12 +78,12 @@ describe("transformQuery", () => {
           "metadata.id",
           "metadata.parent.id",
           "metadata.children.id",
-          "metadata.product.id"
+          "metadata.product.id",
         ],
-        "variables": {
-          "skip": offset,
-          "take": limit
-        }
+        variables: {
+          skip: offset,
+          take: limit,
+        },
       })
     }
 
@@ -158,6 +174,7 @@ describe("transformQuery", () => {
       offset: 5,
       inputOrder: "created_at",
       transformedOrder: { created_at: "ASC" },
+      relations: [],
     })
   })
 
@@ -291,10 +308,12 @@ describe("transformQuery", () => {
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
-    expect(nextFunction).toHaveBeenCalledWith(new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Requested fields [test_prop] are not valid`
-    ))
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [test_prop] are not valid`
+      )
+    )
 
     mockRequest = {
       query: {
@@ -329,6 +348,12 @@ describe("transformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
       ],
+      allowedRelations: [
+        "metadata",
+        "metadata.parent",
+        "metadata.children",
+        "metadata.product",
+      ],
       isList: true,
     }
 
@@ -336,9 +361,11 @@ describe("transformQuery", () => {
 
     await middleware(mockRequest, mockResponse, nextFunction)
 
-    expect(nextFunction).toHaveBeenCalledWith(new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Requested fields [product] are not valid`
-    ))
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [product] are not valid`
+      )
+    )
   })
 })

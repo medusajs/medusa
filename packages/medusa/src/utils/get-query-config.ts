@@ -33,7 +33,7 @@ export function prepareListQuery<
     defaultRelations = [],
   } = queryConfig
 
-  let allFields = new Set([...defaultFields]) as Set<string>
+  let allFields = new Set(defaultFields) as Set<string>
 
   if (fields) {
     const customFields = fields.split(",")
@@ -59,26 +59,10 @@ export function prepareListQuery<
     allFields.add("id")
   }
 
-  const allAllowedFields = new Set([
-    ...(allowedFields.length ? allowedFields : Array.from(allFields)), // In case there is no allowedFields, allow all fields
-    ...allowedRelations,
-  ])
+  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
   const notAllowedFields = !allAllowedFields.size
     ? new Set()
     : getSetDifference(allFields, allAllowedFields)
-
-  // TODO: maintain backward compatibility, remove in the future
-  let allRelations = new Set(defaultRelations)
-  if (expand) {
-    allRelations = new Set(expand.split(",") ?? [])
-    const notAllowedRelations = !allAllowedFields.size
-      ? new Set()
-      : getSetDifference(allRelations, allAllowedFields)
-
-    if (notAllowedRelations.size) {
-      notAllowedRelations.forEach((v) => notAllowedFields.add(v))
-    }
-  }
 
   if (notAllowedFields.size) {
     throw new MedusaError(
@@ -88,6 +72,38 @@ export function prepareListQuery<
       )}] are not valid`
     )
   }
+
+  const { select, relations } = stringToSelectRelationObject(
+    Array.from(allFields)
+  )
+
+  // TODO: maintain backward compatibility, remove in the future
+  let returnedRelations = new Set(defaultRelations)
+  const allRelations = new Set([...relations, ...defaultRelations])
+
+  if (expand) {
+    ;(expand.split(",") ?? []).forEach((r) => allRelations.add(r))
+    returnedRelations = new Set(expand.split(","))
+  }
+
+  const allAllowedRelations = new Set([
+    ...relations,
+    ...Array.from(allAllowedFields),
+    ...allowedRelations,
+  ])
+  const notAllowedRelations = !allowedRelations.length
+    ? new Set()
+    : getSetDifference(allRelations, allAllowedRelations)
+
+  if (notAllowedRelations.size) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [${Array.from(notAllowedRelations).join(
+        ", "
+      )}] are not valid`
+    )
+  }
+  // End of expand compatibility
 
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined = {}
   if (isDefined(order)) {
@@ -113,15 +129,10 @@ export function prepareListQuery<
     orderBy["created_at"] = "DESC"
   }
 
-  let { select, relations } = stringToSelectRelationObject(
-    Array.from(allFields)
-  )
-  relations = Array.from(new Set([...relations, ...Array.from(allRelations)]))
-
   return {
     listConfig: {
       select: select.length ? select : undefined,
-      relations: relations,
+      relations: Array.from(returnedRelations),
       skip: offset,
       take: limit ?? defaultLimit,
       order: orderBy,
