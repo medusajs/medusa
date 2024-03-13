@@ -1116,6 +1116,26 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("fails on apply discount if limit has been reached and removes discount", async () => {
+        const api = useApi()
+
+        const code = "FIXED200"
+
+        const response = await api.post(
+          "/store/carts/test-cart-w-invalid-discount",
+          {
+            discounts: [{ code }],
+          }
+        )
+        const discounts = response?.data?.cart?.discounts
+
+        const success = discounts.some((discount) => discount.code !== "SPENT")
+
+        expect(response).toBeTruthy()
+        expect(response.status).toEqual(200)
+        expect(success).toBeTruthy()
+      })
+
       it("successfully passes customer conditions with `in` operator and applies discount", async () => {
         await simpleCustomerFactory(dbConnection, {
           id: "cus_1234",
@@ -1127,25 +1147,6 @@ medusaIntegrationTestRunner({
             },
           ],
         })
-    it("fails on apply discount if limit has been reached and removes discount", async () => {
-      const api = useApi()
-
-      const code = "FIXED200"
-
-      const response = await api.post(
-        "/store/carts/test-cart-w-invalid-discount",
-        {
-          discounts: [{ code }],
-        }
-      )
-      const discounts = response?.data?.cart?.discounts
-
-      const success = discounts.some((discount) => discount.code !== "SPENT")
-
-      expect(response).toBeTruthy()
-      expect(response.status).toEqual(200)
-      expect(success).toBeTruthy()
-    })
 
         await simpleCustomerGroupFactory(dbConnection, {
           id: "customer-group-2",
