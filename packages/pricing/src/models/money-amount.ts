@@ -6,9 +6,8 @@ import {
   Filter,
   Index,
   ManyToMany,
-  ManyToOne,
-  OneToOne,
   OnInit,
+  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -30,7 +29,11 @@ class MoneyAmount {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_money_amount_currency_code",
+  })
   currency_code: string | null
 
   @ManyToMany({

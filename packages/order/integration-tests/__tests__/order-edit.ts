@@ -1,7 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { ChangeActionType } from "../../src/utils"
+import { BigNumber } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
@@ -17,7 +18,7 @@ moduleIntegrationTestRunner({
             title: "Item 1",
             subtitle: "Subtitle 1",
             thumbnail: "thumbnail1.jpg",
-            quantity: 1,
+            quantity: new BigNumber(1),
             product_id: "product1",
             product_title: "Product 1",
             product_description: "Description 1",

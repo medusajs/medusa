@@ -188,7 +188,6 @@ export const DataTableRoot = <TData,>({
                     data-selected={row.getIsSelected()}
                     className={clx(
                       "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                      "[&:has(td_a:focus-visible)_td]:bg-ui-bg-base-pressed",
                       {
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
@@ -215,8 +214,8 @@ export const DataTableRoot = <TData,>({
                       return (
                         <Table.Cell
                           key={cell.id}
-                          className={clx("has-[a]:cursor-pointer", {
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                          className={clx({
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "left-[68px]":
                               isStickyCell && hasSelect && !isSelectCell,

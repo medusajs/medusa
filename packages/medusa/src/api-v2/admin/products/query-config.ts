@@ -66,9 +66,9 @@ export const allowedAdminProductRelations = [
   // TODO: See how this should be handled
   // "options.values",
   // TODO: Handle in next iteration
-  // "tags",
-  // "type",
-  // "collection",
+  "tags",
+  "type",
+  "collection",
 ]
 
 // TODO: This is what we had in the v1 list. Do we still want to expand that much by default? Also this doesn't work in v2 it seems.
@@ -110,6 +110,12 @@ export const defaultAdminProductFields = [
   "updated_at",
   "deleted_at",
   "metadata",
+  "type.id",
+  "type.value",
+  "type.metadata",
+  "type.created_at",
+  "type.updated_at",
+  "type.deleted_at",
   "collection.id",
   "collection.title",
   "collection.handle",
