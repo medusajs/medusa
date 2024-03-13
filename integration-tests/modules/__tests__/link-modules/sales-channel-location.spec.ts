@@ -56,7 +56,7 @@ medusaIntegrationTestRunner({
               sales_channel_id: scWebshop.id,
             },
             [Modules.STOCK_LOCATION]: {
-              location_id: euWarehouse.id,
+              stock_location_id: euWarehouse.id,
             },
           },
           {
@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
               sales_channel_id: scCphStore.id,
             },
             [Modules.STOCK_LOCATION]: {
-              location_id: euWarehouse.id,
+              stock_location_id: euWarehouse.id,
             },
           },
           {
@@ -72,7 +72,7 @@ medusaIntegrationTestRunner({
               sales_channel_id: scNycStore.id,
             },
             [Modules.STOCK_LOCATION]: {
-              location_id: usWarehouse.id,
+              stock_location_id: usWarehouse.id,
             },
           },
         ])
