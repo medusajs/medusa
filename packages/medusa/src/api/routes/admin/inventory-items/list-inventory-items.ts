@@ -1,23 +1,20 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../services"
 import {
   NumericalComparisonOperator,
   StringComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../services"
-import { Request, Response } from "express"
-import { getLevelsByInventoryItemId, joinLevels } from "./utils/join-levels"
-import {
-  getVariantsByInventoryItemId,
-  joinVariants,
-} from "./utils/join-variants"
+import { joinLevels } from "./utils/join-levels"
+import { joinVariants } from "./utils/join-variants"
 
 import { IInventoryService } from "@medusajs/types"
-import { IsType } from "../../../../utils/validators/is-type"
 import { Transform } from "class-transformer"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/inventory-items
@@ -31,6 +28,7 @@ import { Transform } from "class-transformer"
  *   - (query) expand {string} Comma-separated relations that should be expanded in each returned inventory item.
  *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
  *   - (query) q {string} term to search inventory item's sku, title, and description.
+ *   - (query) order {string} Field to sort-order inventory items by.
  *   - in: query
  *     name: location_id
  *     style: form

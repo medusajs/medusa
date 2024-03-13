@@ -4,6 +4,7 @@ import {
   MedusaContextType,
   MedusaModuleType,
   createMedusaContainer,
+  isDefined,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -90,11 +91,10 @@ export class LocalWorkflow {
           }
 
           return async (...args) => {
-            const ctxIndex =
-              MedusaContext.getIndex(target, prop as string) ?? args.length - 1
+            const ctxIndex = MedusaContext.getIndex(target, prop as string)
 
-            const hasContext = args[ctxIndex]?.__type === MedusaContextType
-            if (!hasContext) {
+            const hasContext = args[ctxIndex!]?.__type === MedusaContextType
+            if (!hasContext && isDefined(ctxIndex)) {
               const context = this_.medusaContext
               if (context?.__type === MedusaContextType) {
                 delete context?.manager

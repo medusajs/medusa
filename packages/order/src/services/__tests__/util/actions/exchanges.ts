@@ -96,18 +96,20 @@ describe("Order Exchange - Actions", function () {
       actions: actions,
     })
 
-    expect(changes.summary).toEqual({
-      transactionTotal: 0,
+    const sumToJSON = JSON.parse(JSON.stringify(changes.summary))
+    expect(sumToJSON).toEqual({
+      transactionTotal: "0",
       originalOrderTotal: 270,
-      currentOrderTotal: 312.5,
-      temporaryDifference: 62.5,
+      currentOrderTotal: "312.5",
+      temporaryDifference: "62.5",
       futureDifference: 0,
-      futureTemporaryDifference: 0,
-      pendingDifference: 312.5,
-      differenceSum: 42.5,
+      futureTemporaryDifference: "0",
+      pendingDifference: "312.5",
+      differenceSum: "42.5",
     })
 
-    expect(changes.order.items).toEqual([
+    const toJson = JSON.parse(JSON.stringify(changes.order.items))
+    expect(toJson).toEqual([
       {
         id: "1",
         quantity: 1,
@@ -144,7 +146,7 @@ describe("Order Exchange - Actions", function () {
           quantity: 3,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
-          return_requested_quantity: 1,
+          return_requested_quantity: "1",
           return_received_quantity: 0,
           return_dismissed_quantity: 0,
           written_off_quantity: 0,

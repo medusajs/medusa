@@ -62,8 +62,11 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteDrawer.Body>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-1 flex-col overflow-hidden"
+      >
+        <RouteDrawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <div className="flex h-full flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
               <Form.Field
