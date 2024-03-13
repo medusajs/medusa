@@ -314,7 +314,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO>
   async update(
-    selector: Partial<OrderTypes.OrderDTO>,
+    selector: Partial<OrderTypes.FilterableOrderProps>,
     data: OrderTypes.UpdateOrderDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO[]>
@@ -324,7 +324,7 @@ export default class OrderModuleService<
     dataOrIdOrSelector:
       | OrderTypes.UpdateOrderDTO[]
       | string
-      | Partial<OrderTypes.OrderDTO>,
+      | Partial<OrderTypes.FilterableOrderProps>,
     data?: OrderTypes.UpdateOrderDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<OrderTypes.OrderDTO[] | OrderTypes.OrderDTO> {
@@ -344,7 +344,7 @@ export default class OrderModuleService<
     dataOrIdOrSelector:
       | OrderTypes.UpdateOrderDTO[]
       | string
-      | Partial<OrderTypes.OrderDTO>,
+      | Partial<OrderTypes.FilterableOrderProps>,
     data?: OrderTypes.UpdateOrderDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -479,7 +479,7 @@ export default class OrderModuleService<
     data: OrderTypes.UpdateOrderLineItemWithSelectorDTO[]
   ): Promise<OrderTypes.OrderLineItemDTO[]>
   updateLineItems(
-    selector: Partial<OrderTypes.OrderLineItemDTO>,
+    selector: Partial<OrderTypes.FilterableOrderLineItemProps>,
     data: OrderTypes.UpdateOrderLineItemDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemDTO[]>
@@ -494,7 +494,7 @@ export default class OrderModuleService<
     lineItemIdOrDataOrSelector:
       | string
       | OrderTypes.UpdateOrderLineItemWithSelectorDTO[]
-      | Partial<OrderTypes.OrderLineItemDTO>,
+      | Partial<OrderTypes.FilterableOrderLineItemProps>,
     data?:
       | OrderTypes.UpdateOrderLineItemDTO
       | Partial<OrderTypes.UpdateOrderLineItemDTO>,
@@ -694,20 +694,25 @@ export default class OrderModuleService<
   ): Promise<void>
   async removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
   async removeLineItems(
-    selector: Partial<OrderTypes.OrderLineItemDTO>,
+    selector: Partial<OrderTypes.FilterableOrderLineItemProps>,
     sharedContext?: Context
   ): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async removeLineItems(
-    itemIdsOrSelector: string | string[] | Partial<OrderTypes.OrderLineItemDTO>,
+    itemIdsOrSelector:
+      | string
+      | string[]
+      | Partial<OrderTypes.FilterableOrderLineItemProps>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let toDelete: string[]
 
     if (isObject(itemIdsOrSelector)) {
       const items = await this.listLineItems(
-        { ...itemIdsOrSelector } as Partial<OrderTypes.OrderLineItemDTO>,
+        {
+          ...itemIdsOrSelector,
+        } as Partial<OrderTypes.FilterableOrderLineItemProps>,
         {},
         sharedContext
       )

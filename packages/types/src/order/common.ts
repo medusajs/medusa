@@ -902,3 +902,11 @@ export interface FilterableOrderTransactionProps
   reference?: string | string[]
   reference_id?: string | string[]
 }
+
+export interface FilterableOrderItemProps
+  extends BaseFilterable<FilterableOrderItemProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  version?: string | string[]
+  item_id?: string | string[]
+}

@@ -76,7 +76,7 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderDTO>
   update(
-    selector: Partial<OrderDTO>,
+    selector: Partial<FilterableOrderProps>,
     data: UpdateOrderDTO,
     sharedContext?: Context
   ): Promise<OrderDTO[]>
@@ -139,7 +139,7 @@ export interface IOrderModuleService extends IModuleService {
     data: UpdateOrderLineItemWithSelectorDTO[]
   ): Promise<OrderLineItemDTO[]>
   updateLineItems(
-    selector: Partial<OrderLineItemDTO>,
+    selector: Partial<FilterableOrderLineItemProps>,
     data: Partial<UpdateOrderLineItemDTO>,
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
@@ -152,12 +152,12 @@ export interface IOrderModuleService extends IModuleService {
   removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
   removeLineItems(
-    selector: Partial<OrderLineItemDTO>,
+    selector: Partial<FilterableOrderLineItemProps>,
     sharedContext?: Context
   ): Promise<void>
 
   updateOrderItem(
-    selector: Partial<OrderItemDTO>,
+    selector: Partial<FilterableOrderShippingMethodProps>,
     data: UpdateOrderItemDTO,
     sharedContext?: Context
   ): Promise<OrderItemDTO[]>
@@ -203,7 +203,7 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeShippingMethods(
-    selector: Partial<OrderShippingMethodDTO>,
+    selector: Partial<FilterableOrderShippingMethodProps>,
     sharedContext?: Context
   ): Promise<void>
 
