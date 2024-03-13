@@ -19,7 +19,3 @@ export interface CreateInventoryItemInputDTO {
 export interface CreateInventoryItemsWorkflowInputDTO {
   inventoryItems: CreateInventoryItemInputDTO[]
 }
-
-export interface TaggedInventoryItem extends CreateInventoryItemInput {
-  _associationTag?: string
-}
