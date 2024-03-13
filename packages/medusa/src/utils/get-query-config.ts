@@ -2,6 +2,7 @@ import { pick } from "lodash"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BaseEntity } from "../interfaces"
+import { getSetDifference, stringToSelectRelationObject } from "@medusajs/utils"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -52,29 +53,6 @@ export function getListConfig<TModel extends BaseEntity>(
   offset = 0,
   order: { [k: string | symbol]: "DESC" | "ASC" } = {}
 ): FindConfig<TModel> {
-  const defaultFieldsSet = new Set([...defaultFields, ...defaultRelations])
-  const finalFieldsSet = new Set()
-
-  const shouldOverrideDefaultFields = fields.some(
-    (field) => !(field.startsWith("-") || field.startsWith("+"))
-  )
-
-  if (!shouldOverrideDefaultFields) {
-    defaultFields.forEach((field) => {
-      finalFieldsSet.add(field)
-    })
-  }
-
-  fields.forEach((field) => {
-    if (field.startsWith("-") && finalFieldsSet.has(field.slice(1))) {
-      finalFieldsSet.delete(field.slice(1))
-    } else if (field.startsWith("+") && finalFieldsSet.has(field)) {
-      finalFieldsSet.add(field)
-    }
-  })
-
-  // TODO: continue from there
-
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
     const fieldSet = new Set(fields)
@@ -96,7 +74,9 @@ export function getListConfig<TModel extends BaseEntity>(
   }
 
   return {
-    select: includeFields.length ? includeFields : defaultFields,
+    select: (includeFields.length
+      ? includeFields
+      : defaultFields) as (keyof TModel)[],
     relations: isDefined(expand) ? expandFields : defaultRelations,
     skip: offset,
     take: limit,
@@ -107,28 +87,41 @@ export function getListConfig<TModel extends BaseEntity>(
 export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
->(validated: T, queryConfig?: QueryConfig<TEntity>) {
-  const { order, fields, expand, limit, offset } = validated
+>(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+  const { order, fields, limit, offset } = validated
+  const {
+    defaultFields = [],
+    defaultLimit,
+    allowedFields = [],
+    allowedRelations = [],
+  } = queryConfig
 
-  let expandRelations: string[] | undefined = undefined
-  if (isDefined(expand)) {
-    expandRelations = expand.split(",").filter((v) => v)
+  let allFields = new Set([...defaultFields]) as Set<string>
+  if (fields) {
+    const customFields = fields.split(",")
+    const shouldReplaceDefaultFields = customFields.some(
+      (field) => !(field.startsWith("-") || field.startsWith("+"))
+    )
+    if (shouldReplaceDefaultFields) {
+      allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
+    }
   }
 
-  let expandFields: (keyof TEntity)[] | undefined = undefined
-  if (isDefined(fields)) {
-    expandFields = (fields.split(",") as (keyof TEntity)[]).filter((v) => v)
+  const allAllowedFields = new Set([...allowedFields, ...allowedRelations])
+  const notAllowedFields = !allAllowedFields.size
+    ? new Set()
+    : getSetDifference(allFields, allAllowedFields)
+
+  if (notAllowedFields.size) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [${Array.from(notAllowedFields).join(
+        ", "
+      )}] are not valid`
+    )
   }
 
-  if (expandFields?.length && queryConfig?.allowedFields?.length) {
-    validateFields(expandFields as string[], queryConfig.allowedFields)
-  }
-
-  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
-    validateRelations(expandRelations, queryConfig.allowedRelations)
-  }
-
-  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined = {}
   if (isDefined(order)) {
     let orderField = order
     if (order.startsWith("-")) {
@@ -148,82 +141,49 @@ export function prepareListQuery<
         `Order field ${orderField} is not valid`
       )
     }
+  } else {
+    orderBy["created_at"] = "DESC"
+    allFields.add("created_at")
   }
 
-  return getListConfig<TEntity>(
-    queryConfig?.defaultFields as (keyof TEntity)[],
-    (queryConfig?.defaultRelations ?? []) as string[],
-    expandFields,
-    expandRelations,
-    limit ?? queryConfig?.defaultLimit,
-    offset ?? 0,
-    orderBy
+  const { select, relations } = stringToSelectRelationObject(
+    Array.from(allFields)
   )
+  return {
+    listConfig: {
+      select,
+      relations,
+      skip: offset,
+      take: limit ?? defaultLimit,
+      order: orderBy,
+    },
+    remoteQueryConfig: {
+      fields: Array.from(allFields),
+      variables: {
+        skip: offset,
+        limit: limit ?? defaultLimit,
+      },
+    },
+  }
 }
 
 export function prepareRetrieveQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig?: QueryConfig<TEntity>) {
-  const { fields, expand } = validated
-
-  let expandRelations: string[] | undefined = undefined
-  if (isDefined(expand)) {
-    expandRelations = expand.split(",").filter((v) => v)
-  }
-
-  let expandFields: (keyof TEntity)[] | undefined = undefined
-  if (isDefined(fields)) {
-    expandFields = (fields.split(",") as (keyof TEntity)[]).filter((v) => v)
-  }
-
-  if (expandFields?.length && queryConfig?.allowedFields?.length) {
-    validateFields(expandFields as string[], queryConfig.allowedFields)
-  }
-
-  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
-    validateRelations(expandRelations, queryConfig.allowedRelations)
-  }
-
-  return getRetrieveConfig<TEntity>(
-    queryConfig?.defaultFields as (keyof TEntity)[],
-    (queryConfig?.defaultRelations ?? []) as string[],
-    expandFields,
-    expandRelations
+  const { listConfig, remoteQueryConfig } = prepareListQuery(
+    validated,
+    queryConfig
   )
-}
 
-function validateRelations(
-  relations: string[],
-  allowed: string[]
-): void | never {
-  const disallowedRelationsFound: string[] = []
-  relations?.forEach((field) => {
-    if (!allowed.includes(field as string)) {
-      disallowedRelationsFound.push(field)
-    }
-  })
-
-  if (disallowedRelationsFound.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Relations [${disallowedRelationsFound.join(", ")}] are not valid`
-    )
-  }
-}
-
-function validateFields(fields: string[], allowed: string[]): void | never {
-  const disallowedFieldsFound: string[] = []
-  fields?.forEach((field) => {
-    if (!allowed.includes(field as string)) {
-      disallowedFieldsFound.push(field)
-    }
-  })
-
-  if (disallowedFieldsFound.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Fields [${disallowedFieldsFound.join(", ")}] are not valid`
-    )
+  return {
+    retrieveConfig: {
+      select: listConfig.select,
+      relations: listConfig.relations,
+    },
+    remoteQueryConfig: {
+      fields: remoteQueryConfig.fields,
+      variables: {},
+    },
   }
 }

@@ -105,8 +105,14 @@ export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
 
 export type QueryConfig<TEntity extends BaseEntity> = {
   defaultFields?: (keyof TEntity | string)[]
+  /**
+   * @deprecated Use `defaultFields` instead and the relations will be inferred
+   */
   defaultRelations?: string[]
   allowedFields?: string[]
+  /**
+   * @deprecated Use `allowedFields` instead and the relations will be inferred
+   */
   allowedRelations?: string[]
   defaultLimit?: number
   isList?: boolean
@@ -120,10 +126,13 @@ export type QueryConfig<TEntity extends BaseEntity> = {
 export type RequestQueryFields = {
   /**
    * Comma-separated relations that should be expanded in the returned data.
+   * @deprecated Use `fields` instead and the relations will be inferred
    */
   expand?: string
   /**
    * Comma-separated fields that should be included in the returned data.
+   * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+   * without prefix it will replace the entire default fields.
    */
   fields?: string
   /**
@@ -511,6 +520,7 @@ export class AddressCreatePayload {
 export class FindParams {
   /**
    * {@inheritDoc RequestQueryFields.expand}
+   * @deprecated
    */
   @IsString()
   @IsOptional()

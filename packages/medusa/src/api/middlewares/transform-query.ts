@@ -40,6 +40,9 @@ export function transformQuery<
       )
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
+      /**
+       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
+       */
       req.allowedProperties = getAllowedProperties(
         validated,
         req.includes ?? {},
@@ -78,6 +81,9 @@ export function transformStoreQuery<
       )
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
+      /**
+       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
+       */
       req.allowedProperties = getStoreAllowedProperties(
         validated,
         req.includes ?? {},
@@ -100,6 +106,9 @@ function getFilterableFields<T extends RequestQueryFields>(obj: T): T {
   const result = omit(obj, [
     "limit",
     "offset",
+    /**
+     * @deprecated
+     */
     "expand",
     "fields",
     "order",
@@ -108,7 +117,7 @@ function getFilterableFields<T extends RequestQueryFields>(obj: T): T {
 }
 
 /**
- * build and attach the `retrieveConfig` or `listConfig`
+ * build and attach the `retrieveConfig` or `listConfig` and remoteQueryConfig to the request object
  * @param req
  * @param queryConfig
  */
@@ -118,15 +127,16 @@ function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
 ) {
   const validated = req.validatedQuery
   if (queryConfig?.isList) {
-    req.listConfig = prepareListQuery(
-      validated,
-      queryConfig
-    ) as FindConfig<unknown>
+    queryConfig.allowedFields = req.allowedFields ?? queryConfig.allowedFields
+    const queryConfigRes = prepareListQuery(validated, queryConfig)
+
+    req.listConfig = queryConfigRes.listConfig as FindConfig<any>
+    req.remoteQueryConfig = queryConfigRes.remoteQueryConfig
   } else {
-    req.retrieveConfig = prepareRetrieveQuery(
-      validated,
-      queryConfig
-    ) as FindConfig<unknown>
+    const queryConfigRes = prepareRetrieveQuery(validated, queryConfig)
+
+    req.retrieveConfig = queryConfigRes.retrieveConfig as FindConfig<any>
+    req.remoteQueryConfig = queryConfigRes.remoteQueryConfig
   }
 }
 /**
