@@ -76,7 +76,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       { priceSets, options },
       (data) => {
         const options = data.options.map((option) => {
-          const price = data.priceSets[option.id].calculated_amount
+          const price = data.priceSets?.[option.id].calculated_amount
 
           return {
             ...option,
