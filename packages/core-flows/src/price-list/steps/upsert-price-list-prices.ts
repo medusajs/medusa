@@ -10,7 +10,7 @@ import {
   UpdatePriceListPricesDTO,
   UpdatePriceListWorkflowInputDTO,
 } from "@medusajs/types"
-import { buildPriceSetPricesForModule } from "@medusajs/utils"
+import { buildPriceSetPricesForModule, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type WorkflowStepInput = {
@@ -94,7 +94,7 @@ export const upsertPriceListPricesStep = createStep(
     // TODO: `addPriceListPrices` will return a list of price lists
     // This should be reworked to return prices instead, as we need to
     // do a revert incase this step fails
-    const [createdPriceListPrices, _] = await Promise.all([
+    const [createdPriceListPrices, _] = await promiseAll([
       pricingModule.addPriceListPrices(priceListPricesToAdd),
       pricingModule.updatePriceListPrices(priceListPricesToUpdate),
     ])
@@ -105,19 +105,21 @@ export const upsertPriceListPricesStep = createStep(
     })
   },
   async (data, { container }) => {
-    const { createdPriceListPrices = [], updatedPriceListPrices = [] } =
-      data || {}
+    if (!data) {
+      return
+    }
 
+    const { createdPriceListPrices = [], updatedPriceListPrices = [] } = data
     const pricingModule = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )
 
     if (createdPriceListPrices.length) {
-      pricingModule.removePrices(createdPriceListPrices.map((p) => p.id))
+      await pricingModule.removePrices(createdPriceListPrices.map((p) => p.id))
     }
 
     if (updatedPriceListPrices.length) {
-      pricingModule.updatePriceListPrices(updatedPriceListPrices)
+      await pricingModule.updatePriceListPrices(updatedPriceListPrices)
     }
   }
 )

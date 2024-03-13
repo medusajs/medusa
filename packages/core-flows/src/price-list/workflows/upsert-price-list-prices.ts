@@ -1,5 +1,9 @@
 import { UpdatePriceListWorkflowInputDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  createWorkflow,
+  parallelize,
+} from "@medusajs/workflows-sdk"
 import {
   upsertPriceListPricesStep,
   validatePriceListsStep,
@@ -14,9 +18,9 @@ export const upsertPriceListPricesWorkflowId = "upsert-price-list-prices"
 export const upsertPriceListPricesWorkflow = createWorkflow(
   upsertPriceListPricesWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
-    validatePriceListsStep(input.price_lists_data)
-    const variantPriceMap = validateVariantPriceLinksStep(
-      input.price_lists_data
+    const [_, variantPriceMap] = parallelize(
+      validatePriceListsStep(input.price_lists_data),
+      validateVariantPriceLinksStep(input.price_lists_data)
     )
 
     upsertPriceListPricesStep({
