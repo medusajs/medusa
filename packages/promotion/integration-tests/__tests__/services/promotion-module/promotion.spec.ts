@@ -1084,8 +1084,8 @@ describe("Promotion Service", () => {
       expect(error.message).toEqual("promotion - id must be defined")
     })
 
-    it("should successfully create rules for a promotion", async () => {
-      promotion = await service.addPromotionRules(promotion.id, [
+    it("should successfully add rules to a promotion", async () => {
+      const promotionRules = await service.addPromotionRules(promotion.id, [
         {
           attribute: "customer_group_id",
           operator: "in",
@@ -1093,21 +1093,17 @@ describe("Promotion Service", () => {
         },
       ])
 
-      expect(promotion).toEqual(
+      expect(promotionRules).toEqual([
         expect.objectContaining({
-          id: promotion.id,
-          rules: [
-            expect.objectContaining({
-              attribute: "customer_group_id",
-              operator: "in",
-              values: [
-                expect.objectContaining({ value: "VIP" }),
-                expect.objectContaining({ value: "top100" }),
-              ],
-            }),
-          ],
-        })
-      )
+          id: promotionRules[0].id,
+          attribute: "customer_group_id",
+          operator: "in",
+          values: expect.arrayContaining([
+            expect.objectContaining({ value: "VIP" }),
+            expect.objectContaining({ value: "top100" }),
+          ]),
+        }),
+      ])
     })
   })
 
@@ -1160,31 +1156,28 @@ describe("Promotion Service", () => {
     })
 
     it("should successfully create target rules for a promotion", async () => {
-      promotion = await service.addPromotionTargetRules(promotion.id, [
-        {
+      const promotionRules = await service.addPromotionTargetRules(
+        promotion.id,
+        [
+          {
+            attribute: "customer_group_id",
+            operator: "in",
+            values: ["VIP", "top100"],
+          },
+        ]
+      )
+
+      expect(promotionRules).toEqual([
+        expect.objectContaining({
+          id: promotionRules[0].id,
           attribute: "customer_group_id",
           operator: "in",
-          values: ["VIP", "top100"],
-        },
+          values: expect.arrayContaining([
+            expect.objectContaining({ value: "VIP" }),
+            expect.objectContaining({ value: "top100" }),
+          ]),
+        }),
       ])
-
-      expect(promotion).toEqual(
-        expect.objectContaining({
-          id: promotion.id,
-          application_method: expect.objectContaining({
-            target_rules: [
-              expect.objectContaining({
-                attribute: "customer_group_id",
-                operator: "in",
-                values: [
-                  expect.objectContaining({ value: "VIP" }),
-                  expect.objectContaining({ value: "top100" }),
-                ],
-              }),
-            ],
-          }),
-        })
-      )
     })
   })
 
@@ -1250,7 +1243,7 @@ describe("Promotion Service", () => {
     })
 
     it("should successfully create buy rules for a buyget promotion", async () => {
-      promotion = await service.addPromotionBuyRules(promotion.id, [
+      const promotionRules = await service.addPromotionBuyRules(promotion.id, [
         {
           attribute: "product.id",
           operator: "in",
@@ -1258,30 +1251,17 @@ describe("Promotion Service", () => {
         },
       ])
 
-      expect(promotion).toEqual(
+      expect(promotionRules).toEqual([
         expect.objectContaining({
-          id: promotion.id,
-          application_method: expect.objectContaining({
-            buy_rules: expect.arrayContaining([
-              expect.objectContaining({
-                attribute: "product_collection.id",
-                operator: "eq",
-                values: expect.arrayContaining([
-                  expect.objectContaining({ value: "pcol_towel" }),
-                ]),
-              }),
-              expect.objectContaining({
-                attribute: "product.id",
-                operator: "in",
-                values: expect.arrayContaining([
-                  expect.objectContaining({ value: "prod_3" }),
-                  expect.objectContaining({ value: "prod_4" }),
-                ]),
-              }),
-            ]),
-          }),
-        })
-      )
+          id: promotionRules[0].id,
+          attribute: "product.id",
+          operator: "in",
+          values: expect.arrayContaining([
+            expect.objectContaining({ value: "prod_3" }),
+            expect.objectContaining({ value: "prod_4" }),
+          ]),
+        }),
+      ])
     })
   })
 
@@ -1337,14 +1317,16 @@ describe("Promotion Service", () => {
       expect(error.message).toEqual("promotion - id must be defined")
     })
 
-    it("should successfully create rules for a promotion", async () => {
+    it("should successfully remove rules for a promotion", async () => {
       const [ruleId] = promotion.rules.map((rule) => rule.id)
 
-      promotion = await service.removePromotionRules(promotion.id, [
-        { id: ruleId },
-      ])
+      await service.removePromotionRules(promotion.id, [{ id: ruleId }])
 
-      expect(promotion).toEqual(
+      const updatedPromotion = await service.retrieve(promotion.id, {
+        relations: ["rules", "rules.values"],
+      })
+
+      expect(updatedPromotion).toEqual(
         expect.objectContaining({
           id: promotion.id,
           rules: [],
@@ -1413,11 +1395,13 @@ describe("Promotion Service", () => {
         (rule) => rule.id
       )
 
-      promotion = await service.removePromotionTargetRules(promotion.id, [
-        { id: ruleId },
-      ])
+      await service.removePromotionTargetRules(promotion.id, [{ id: ruleId }])
 
-      expect(promotion).toEqual(
+      const updatedPromotion = await service.retrieve(promotion.id, {
+        relations: ["application_method.target_rules.values"],
+      })
+
+      expect(updatedPromotion).toEqual(
         expect.objectContaining({
           id: promotion.id,
           application_method: expect.objectContaining({
@@ -1497,11 +1481,13 @@ describe("Promotion Service", () => {
         (rule) => rule.id
       )
 
-      promotion = await service.removePromotionBuyRules(promotion.id, [
-        { id: ruleId },
-      ])
+      await service.removePromotionBuyRules(promotion.id, [{ id: ruleId }])
 
-      expect(promotion).toEqual(
+      const updatedPromotion = await service.retrieve(promotion.id, {
+        relations: ["application_method.buy_rules.values"],
+      })
+
+      expect(updatedPromotion).toEqual(
         expect.objectContaining({
           id: promotion.id,
           application_method: expect.objectContaining({
