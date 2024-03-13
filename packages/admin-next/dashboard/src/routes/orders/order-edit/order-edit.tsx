@@ -59,7 +59,8 @@ export const OrderEdit = () => {
   }, [order])
 
   if (isLoading || !order || !orderEdit) {
-    return <div>Loading...</div>
+    // TODO: Add loader
+    return null
   }
 
   if (isError) {
