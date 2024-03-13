@@ -25,6 +25,7 @@ import {
   ISalesChannelModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
@@ -69,8 +70,10 @@ medusaIntegrationTestRunner({
         locationModule = appContainer.resolve(
           ModuleRegistrationName.STOCK_LOCATION
         )
-        remoteLink = appContainer.resolve("remoteLink")
-        remoteQuery = appContainer.resolve("remoteQuery")
+        remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+        remoteQuery = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
       })
 
       beforeEach(async () => {
@@ -1001,24 +1004,26 @@ medusaIntegrationTestRunner({
               name: "Test",
               type: "default",
             })
+
           const fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
-          })
-          const serviceZone = await fulfillmentModule.createServiceZones({
-            name: "Test",
-            fulfillment_set_id: fulfillmentSet.id,
-            geo_zones: [
+            service_zones: [
               {
-                type: "country",
-                country_code: "us",
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
               },
             ],
           })
 
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
-            service_zone_id: serviceZone.id,
+            service_zone_id: fulfillmentSet.service_zones[0].id,
             shipping_profile_id: shippingProfile.id,
             provider_id: "manual_test-provider",
             price_type: "flat",
@@ -1113,22 +1118,22 @@ medusaIntegrationTestRunner({
           const fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
-          })
-
-          const serviceZone = await fulfillmentModule.createServiceZones({
-            name: "Test",
-            fulfillment_set_id: fulfillmentSet.id,
-            geo_zones: [
+            service_zones: [
               {
-                type: "country",
-                country_code: "us",
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
               },
             ],
           })
 
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
-            service_zone_id: serviceZone.id,
+            service_zone_id: fulfillmentSet.service_zones[0].id,
             shipping_profile_id: shippingProfile.id,
             provider_id: "manual_test-provider",
             price_type: "flat",
@@ -1232,22 +1237,22 @@ medusaIntegrationTestRunner({
           const fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
-          })
-
-          const serviceZone = await fulfillmentModule.createServiceZones({
-            name: "Test",
-            fulfillment_set_id: fulfillmentSet.id,
-            geo_zones: [
+            service_zones: [
               {
-                type: "country",
-                country_code: "us",
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
               },
             ],
           })
 
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
-            service_zone_id: serviceZone.id,
+            service_zone_id: fulfillmentSet.service_zones[0].id,
             shipping_profile_id: shippingProfile.id,
             provider_id: "manual_test-provider",
             price_type: "flat",
@@ -1337,22 +1342,22 @@ medusaIntegrationTestRunner({
           const fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
-          })
-
-          const serviceZone = await fulfillmentModule.createServiceZones({
-            name: "Test",
-            fulfillment_set_id: fulfillmentSet.id,
-            geo_zones: [
+            service_zones: [
               {
-                type: "country",
-                country_code: "us",
+                name: "Test",
+                geo_zones: [
+                  {
+                    type: "country",
+                    country_code: "us",
+                  },
+                ],
               },
             ],
           })
 
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
-            service_zone_id: serviceZone.id,
+            service_zone_id: fulfillmentSet.service_zones[0].id,
             shipping_profile_id: shippingProfile.id,
             provider_id: "manual_test-provider",
             price_type: "flat",
