@@ -44,6 +44,12 @@ export const LINKS = {
     Modules.STOCK_LOCATION,
     "location_id"
   ),
+  FulfillmentSetLocation: composeLinkName(
+    Modules.FULFILLMENT,
+    "fulfillment_set_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(
