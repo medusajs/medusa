@@ -1117,7 +1117,6 @@ medusaIntegrationTestRunner({
       })
 
       it("fails on apply discount if limit has been reached and removes discount", async () => {
-        const api = useApi()
 
         const code = "FIXED200"
 
