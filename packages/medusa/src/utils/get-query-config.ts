@@ -118,7 +118,7 @@ export function prepareListQuery<
       fields: Array.from(allFields),
       variables: {
         skip: offset,
-        limit: limit ?? defaultLimit,
+        take: limit ?? defaultLimit,
       },
     },
   }

@@ -53,6 +53,22 @@ describe("transformQuery", () => {
         ],
         order: transformedOrder,
       })
+      expect(mockRequest.remoteQueryConfig).toEqual({
+        "fields": [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id"
+        ],
+        "variables": {
+          "skip": offset,
+          "take": limit
+        }
+      })
     }
 
     let queryConfig: any = {
