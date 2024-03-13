@@ -9,7 +9,10 @@ import {
   adminOrderKeys,
   useAdminCancelOrderEdit,
   useAdminConfirmOrderEdit,
+  useAdminDeleteOrderEditItemChange,
   useAdminOrderEditAddLineItem,
+  useAdminOrderEditDeleteLineItem,
+  useAdminOrderEditUpdateLineItem,
   useAdminUpdateOrderEdit,
 } from "medusa-react"
 
@@ -21,13 +24,12 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
-import { useItemsTableColumns } from "./items-table-columns"
 import { VariantTable } from "../variant-table"
-import ItemsTable from "./items-table"
 
 import { medusa, queryClient } from "../../../../../lib/medusa.ts"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Form } from "../../../../../components/common/form"
+import { OrderEditItem } from "./order-edit-item"
 
 type OrderEditFormProps = {
   order: Order
@@ -112,28 +114,6 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   )
 
   /**
-   * TABLE
-   */
-  const columns = useItemsTableColumns(
-    order,
-    form,
-    orderEdit?.items,
-    onQuantityChangeComplete
-  )
-
-  const currentItemsTable = useReactTable({
-    data: currentItems,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
-
-  const addedItemsTable = useReactTable({
-    data: addedItems,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
-
-  /**
    * EFFECTS
    */
   useEffect(() => {
@@ -170,6 +150,36 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
     await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
 
     setOpen(false)
+  }
+
+  const onItemRemove = async (itemId: string) => {
+    const change = orderEdit.changes.find(
+      (change) =>
+        change.line_item_id === itemId ||
+        change.original_line_item_id === itemId
+    )
+
+    if (change) {
+      if (change.type === "item_add") {
+        await await medusa.admin.orderEdits.deleteItemChange(
+          orderEdit.id,
+          change.id
+        )
+      }
+      if (change.type === "item_update") {
+        await await medusa.admin.orderEdits.deleteItemChange(
+          orderEdit.id,
+          change.id
+        )
+        await await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+      }
+    } else {
+      await await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+    }
+
+    await queryClient.invalidateQueries(
+      adminOrderEditsKeys.detail(orderEdit.id)
+    )
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -220,7 +230,16 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
                     {t("orders.edits.currentItemsDescription")}
                   </Text>
 
-                  <ItemsTable table={currentItemsTable} />
+                  {currentItems.map((item) => (
+                    <OrderEditItem
+                      key={item.id}
+                      item={item}
+                      form={form}
+                      currencyCode={order.currency_code}
+                      onRemove={onItemRemove}
+                      onQuantityChangeComplete={onQuantityChangeComplete}
+                    />
+                  ))}
 
                   <div className="border-b border-dashed pb-10 ">
                     <Text className="text-ui-fg-base mb-1 mt-8" weight="plus">
@@ -230,13 +249,21 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
                       {t("orders.edits.addItemsDescription")}
                     </Text>
 
-                    {!!addedItems.length && (
-                      <div className="pb-4 pt-2">
-                        <ItemsTable table={addedItemsTable} />
-                      </div>
-                    )}
+                    {!!addedItems.length &&
+                      addedItems.map((item) => (
+                        <div className="pb-4 pt-2">
+                          <OrderEditItem
+                            key={item.id}
+                            item={item}
+                            form={form}
+                            currencyCode={order.currency_code}
+                            onRemove={onItemRemove}
+                            onQuantityChangeComplete={onQuantityChangeComplete}
+                          />
+                        </div>
+                      ))}
 
-                    <div className="mt-2 flex justify-end">
+                    <div className="m mt-2 flex justify-end">
                       <Button
                         variant="secondary"
                         type="button"

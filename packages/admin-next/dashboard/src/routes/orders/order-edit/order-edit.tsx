@@ -38,7 +38,7 @@ export const OrderEdit = () => {
   const { order_edit: orderEdit } = useAdminOrderEdit(
     _orderEdit?.id as unknown as string,
     {
-      expand: "items,items.variant,items.variant.product", // TODO -> product are not joined
+      expand: "changes,items,items.variant,items.variant.product", // TODO -> product are not joined
     },
     { enabled: !!_orderEdit?.id }
   )

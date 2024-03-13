@@ -224,7 +224,7 @@
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
-      "currentItemsDescription": "Replace, duplicate, remove, or adjust quantity.",
+      "currentItemsDescription": "Adjust item quantity or remove.",
       "addItemsDescription": "You can add new items to the order.",
       "addItems": "Add items",
       "amountPaid": "Amount paid",
