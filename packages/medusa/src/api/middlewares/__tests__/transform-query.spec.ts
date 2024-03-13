@@ -295,5 +295,50 @@ describe("transformQuery", () => {
       MedusaError.Types.INVALID_DATA,
       `Requested fields [test_prop] are not valid`
     ))
+
+    mockRequest = {
+      query: {
+        expand: "product",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaultFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      defaultRelations: [
+        "metadata",
+        "metadata.parent",
+        "metadata.children",
+        "metadata.product",
+      ],
+      allowedFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [product] are not valid`
+    ))
   })
 })

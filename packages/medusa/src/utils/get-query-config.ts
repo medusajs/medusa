@@ -52,8 +52,10 @@ export function prepareListQuery<
       })
     }
 
-    // TODO: Maintain backward compatibility, remove in future
-    allFields.add("created_at")
+    // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
+    if (queryConfig.isList) {
+      allFields.add("created_at")
+    }
     allFields.add("id")
   }
 
@@ -64,6 +66,19 @@ export function prepareListQuery<
   const notAllowedFields = !allAllowedFields.size
     ? new Set()
     : getSetDifference(allFields, allAllowedFields)
+
+  // TODO: maintain backward compatibility, remove in the future
+  let allRelations = new Set(defaultRelations)
+  if (expand) {
+    allRelations = new Set(expand.split(",") ?? [])
+    const notAllowedRelations = !allAllowedFields.size
+      ? new Set()
+      : getSetDifference(allRelations, allAllowedFields)
+
+    if (notAllowedRelations.size) {
+      notAllowedRelations.forEach((v) => notAllowedFields.add(v))
+    }
+  }
 
   if (notAllowedFields.size) {
     throw new MedusaError(
@@ -101,13 +116,7 @@ export function prepareListQuery<
   let { select, relations } = stringToSelectRelationObject(
     Array.from(allFields)
   )
-  relations = Array.from(
-    new Set([
-      ...relations,
-      // Only to support old expand syntax that is deprecated
-      ...(expand ? expand.split(",") : defaultRelations),
-    ])
-  )
+  relations = Array.from(new Set([...relations, ...Array.from(allRelations)]))
 
   return {
     listConfig: {
