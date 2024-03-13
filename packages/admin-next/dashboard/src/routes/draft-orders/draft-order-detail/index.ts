@@ -1,1 +1,1 @@
-export { DraftOrderDetails as Component } from "./details"
+export { DraftOrderDetail as Component } from "./draft-order-detail"

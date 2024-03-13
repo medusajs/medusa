@@ -98,7 +98,7 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
     ],
     returned: [t("orders.fulfillment.status.returned"), "green"],
     canceled: [t("orders.fulfillment.status.canceled"), "red"],
-    requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
+    requires_action: [t("orders.fulfillment.status.requiresAction"), "orange"],
   }[order.fulfillment_status] as [string, "red" | "orange" | "green"]
 
   return (
@@ -121,7 +121,7 @@ const PaymentBadge = ({ order }: { order: Order }) => {
       "orange",
     ],
     canceled: [t("orders.payment.status.canceled"), "red"],
-    requires_action: [t("orders.payment.status.requresAction"), "orange"],
+    requires_action: [t("orders.payment.status.requiresAction"), "orange"],
   }[order.payment_status] as [string, "red" | "orange" | "green"]
 
   return (
