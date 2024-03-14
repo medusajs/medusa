@@ -1,7 +1,9 @@
 import {
+  CartDTO,
   CartTypes,
   Context,
   DAL,
+  FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -13,6 +15,8 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  decorateCartTotals,
+  deduplicate,
   isObject,
   isString,
 } from "@medusajs/utils"
@@ -124,6 +128,54 @@ export default class CartModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  private async decorate(cartId: string, config: FindConfig<CartDTO>, context) {
+    const totalFields = [
+      "total",
+      "subtotal",
+      "tax_total",
+      "shipping_total",
+      "discount_total",
+    ]
+
+    const shouldDecorate = config.select?.some((field) =>
+      totalFields.includes(field)
+    )
+
+    // If no total fields are requested, we return early
+    if (shouldDecorate) {
+      config = {
+        ...config,
+        relations: deduplicate([
+          ...(config.relations || []),
+          "items.tax_lines",
+          "items.adjustments",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+        ]),
+      }
+    }
+
+    const cart = await this.cartService_.retrieve(cartId, config, context)
+
+    const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(
+      cart,
+      {
+        populate: true,
+      }
+    )
+
+    return shouldDecorate ? decorateCartTotals(serialized) : serialized
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieve(
+    cartId: string,
+    config: FindConfig<CartDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartDTO> {
+    return await this.decorate(cartId, config, sharedContext)
   }
 
   async create(
