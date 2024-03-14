@@ -755,19 +755,19 @@ export default class PromotionModuleService<
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
+  ): Promise<PromotionTypes.PromotionRuleDTO[]> {
     const promotion = await this.promotionService_.retrieve(promotionId)
 
-    await this.createPromotionRulesAndValues_(
+    const createdPromotionRules = await this.createPromotionRulesAndValues_(
       rulesData,
       "promotions",
       promotion,
       sharedContext
     )
 
-    return await this.retrieve(
-      promotionId,
-      { relations: ["rules", "rules.values"] },
+    return this.listPromotionRules(
+      { id: createdPromotionRules.map((r) => r.id) },
+      { relations: ["values"] },
       sharedContext
     )
   }
@@ -777,7 +777,7 @@ export default class PromotionModuleService<
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
+  ): Promise<PromotionTypes.PromotionRuleDTO[]> {
     const promotion = await this.promotionService_.retrieve(promotionId, {
       relations: ["application_method"],
     })
@@ -791,24 +791,16 @@ export default class PromotionModuleService<
       )
     }
 
-    await this.createPromotionRulesAndValues_(
+    const createdPromotionRules = await this.createPromotionRulesAndValues_(
       rulesData,
       "method_target_rules",
       applicationMethod,
       sharedContext
     )
 
-    return await this.retrieve(
-      promotionId,
-      {
-        relations: [
-          "rules",
-          "rules.values",
-          "application_method",
-          "application_method.target_rules",
-          "application_method.target_rules.values",
-        ],
-      },
+    return await this.listPromotionRules(
+      { id: createdPromotionRules.map((pr) => pr.id) },
+      { relations: ["values"] },
       sharedContext
     )
   }
@@ -818,7 +810,7 @@ export default class PromotionModuleService<
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
+  ): Promise<PromotionTypes.PromotionRuleDTO[]> {
     const promotion = await this.promotionService_.retrieve(promotionId, {
       relations: ["application_method"],
     })
@@ -832,24 +824,16 @@ export default class PromotionModuleService<
       )
     }
 
-    await this.createPromotionRulesAndValues_(
+    const createdPromotionRules = await this.createPromotionRulesAndValues_(
       rulesData,
       "method_buy_rules",
       applicationMethod,
       sharedContext
     )
 
-    return await this.retrieve(
-      promotionId,
-      {
-        relations: [
-          "rules",
-          "rules.values",
-          "application_method",
-          "application_method.buy_rules",
-          "application_method.buy_rules.values",
-        ],
-      },
+    return await this.listPromotionRules(
+      { id: createdPromotionRules.map((pr) => pr.id) },
+      { relations: ["values"] },
       sharedContext
     )
   }
@@ -860,7 +844,25 @@ export default class PromotionModuleService<
     relationName: "promotions" | "method_target_rules" | "method_buy_rules",
     relation: Promotion | ApplicationMethod,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<TPromotionRule[]> {
+    const createdPromotionRules: TPromotionRule[] = []
+    const promotion =
+      relation instanceof ApplicationMethod ? relation.promotion : relation
+
+    if (!rulesData.length) {
+      return []
+    }
+
+    if (
+      relationName === "method_buy_rules" &&
+      promotion.type === PromotionType.STANDARD
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Can't add buy rules to a ${PromotionType.STANDARD} promotion`
+      )
+    }
+
     validatePromotionRuleAttributes(rulesData)
 
     for (const ruleData of rulesData) {
@@ -875,6 +877,8 @@ export default class PromotionModuleService<
         sharedContext
       )
 
+      createdPromotionRules.push(createdPromotionRule)
+
       const ruleValues = Array.isArray(values) ? values : [values]
       const promotionRuleValuesData = ruleValues.map((ruleValue) => ({
         value: ruleValue,
@@ -886,43 +890,33 @@ export default class PromotionModuleService<
         sharedContext
       )
     }
+
+    return createdPromotionRules
   }
 
   @InjectManager("baseRepository_")
   async removePromotionRules(
     promotionId: string,
-    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    ruleIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
-    await this.removePromotionRules_(promotionId, rulesData, sharedContext)
-
-    return await this.retrieve(
-      promotionId,
-      { relations: ["rules", "rules.values"] },
-      sharedContext
-    )
+  ): Promise<void> {
+    await this.removePromotionRules_(promotionId, ruleIds, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async removePromotionRules_(
     promotionId: string,
-    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    ruleIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const promotionRuleIdsToRemove = rulesData.map((ruleData) => ruleData.id)
     const promotion = await this.promotionService_.retrieve(
       promotionId,
       { relations: ["rules"] },
       sharedContext
     )
 
-    const existingPromotionRuleIds = promotion.rules
-      .toArray()
-      .map((rule) => rule.id)
-
-    const idsToRemove = promotionRuleIdsToRemove.filter((ruleId) =>
-      existingPromotionRuleIds.includes(ruleId)
-    )
+    const existingRuleIds = promotion.rules.map((rule) => rule.id)
+    const idsToRemove = ruleIds.filter((id) => existingRuleIds.includes(id))
 
     await this.promotionRuleService_.delete(idsToRemove, sharedContext)
   }
@@ -930,27 +924,13 @@ export default class PromotionModuleService<
   @InjectManager("baseRepository_")
   async removePromotionTargetRules(
     promotionId: string,
-    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    ruleIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
+  ): Promise<void> {
     await this.removeApplicationMethodRules_(
       promotionId,
-      rulesData,
+      ruleIds,
       ApplicationMethodRuleTypes.TARGET_RULES,
-      sharedContext
-    )
-
-    return await this.retrieve(
-      promotionId,
-      {
-        relations: [
-          "rules",
-          "rules.values",
-          "application_method",
-          "application_method.target_rules",
-          "application_method.target_rules.values",
-        ],
-      },
       sharedContext
     )
   }
@@ -958,27 +938,13 @@ export default class PromotionModuleService<
   @InjectManager("baseRepository_")
   async removePromotionBuyRules(
     promotionId: string,
-    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    ruleIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO> {
+  ): Promise<void> {
     await this.removeApplicationMethodRules_(
       promotionId,
-      rulesData,
+      ruleIds,
       ApplicationMethodRuleTypes.BUY_RULES,
-      sharedContext
-    )
-
-    return await this.retrieve(
-      promotionId,
-      {
-        relations: [
-          "rules",
-          "rules.values",
-          "application_method",
-          "application_method.buy_rules",
-          "application_method.buy_rules.values",
-        ],
-      },
       sharedContext
     )
   }
@@ -986,13 +952,12 @@ export default class PromotionModuleService<
   @InjectTransactionManager("baseRepository_")
   protected async removeApplicationMethodRules_(
     promotionId: string,
-    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    ruleIds: string[],
     relation:
       | ApplicationMethodRuleTypes.TARGET_RULES
       | ApplicationMethodRuleTypes.BUY_RULES,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const promotionRuleIds = rulesData.map((ruleData) => ruleData.id)
     const promotion = await this.promotionService_.retrieve(
       promotionId,
       { relations: [`application_method.${relation}`] },
@@ -1009,8 +974,7 @@ export default class PromotionModuleService<
     }
 
     const targetRuleIdsToRemove = applicationMethod[relation]
-      .toArray()
-      .filter((rule) => promotionRuleIds.includes(rule.id))
+      .filter((rule) => ruleIds.includes(rule.id))
       .map((rule) => rule.id)
 
     await this.promotionRuleService_.delete(

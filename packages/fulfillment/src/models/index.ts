@@ -10,3 +10,4 @@ export { default as ShippingOption } from "./shipping-option"
 export { default as ShippingOptionRule } from "./shipping-option-rule"
 export { default as ShippingOptionType } from "./shipping-option-type"
 export { default as ShippingProfile } from "./shipping-profile"
+
