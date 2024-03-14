@@ -2,7 +2,7 @@ import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
