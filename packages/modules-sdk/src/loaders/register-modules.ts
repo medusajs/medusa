@@ -1,6 +1,7 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
@@ -25,7 +26,11 @@ export const registerMedusaModule = (
   const modDefinition = definition ?? ModulesDefinition[moduleKey]
 
   if (modDefinition === undefined) {
-    throw new Error(`Module: ${moduleKey} is not defined.`)
+    moduleResolutions[moduleKey] = getCustomModuleResolution(
+      moduleKey,
+      moduleDeclaration as InternalModuleDeclaration
+    )
+    return moduleResolutions
   }
 
   const modDeclaration =
@@ -51,6 +56,38 @@ export const registerMedusaModule = (
   )
 
   return moduleResolutions
+}
+
+function getCustomModuleResolution(
+  key: string,
+  moduleConfig: InternalModuleDeclaration | string
+): ModuleResolution {
+  const isString = typeof moduleConfig === "string"
+  const resolutionPath = resolveCwd(
+    isString ? moduleConfig : (moduleConfig.resolve as string)
+  )
+
+  return {
+    resolutionPath,
+    definition: {
+      key,
+      label: `Custom: ${key}`,
+      isRequired: false,
+      defaultPackage: "",
+      dependencies: [],
+      registrationName: key,
+      defaultModuleDeclaration: {
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+        scope: MODULE_SCOPE.INTERNAL,
+      },
+    },
+    moduleDeclaration: {
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+    dependencies: [],
+    options: {},
+  }
 }
 
 export const registerMedusaLinkModule = (
