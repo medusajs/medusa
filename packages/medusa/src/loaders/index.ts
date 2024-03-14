@@ -35,6 +35,7 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import medusaProjectApisLoader from "./load-medusa-project-apis"
 
 type Options = {
   directory: string
@@ -81,7 +82,12 @@ async function loadLegacyModulesEntities(configModules, container) {
   }
 }
 
-async function loadMedusaV2({ configModule, featureFlagRouter, expressApp }) {
+async function loadMedusaV2({
+  rootDirectory,
+  configModule,
+  featureFlagRouter,
+  expressApp,
+}) {
   const container = createMedusaContainer()
 
   // Add additional information to context of request
@@ -124,6 +130,14 @@ async function loadMedusaV2({ configModule, featureFlagRouter, expressApp }) {
     featureFlagRouter,
   })
 
+  medusaProjectApisLoader({
+    rootDirectory,
+    container,
+    app: expressApp,
+    configModule,
+    activityId: "medusa-project-apis",
+  })
+
   return {
     container,
     app: expressApp,
@@ -146,7 +160,12 @@ export default async ({
   track("FEATURE_FLAGS_LOADED")
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    return await loadMedusaV2({ configModule, featureFlagRouter, expressApp })
+    return await loadMedusaV2({
+      rootDirectory,
+      configModule,
+      featureFlagRouter,
+      expressApp,
+    })
   }
 
   const container = createMedusaContainer()
