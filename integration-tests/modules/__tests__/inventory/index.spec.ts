@@ -367,6 +367,27 @@ medusaIntegrationTestRunner({
             }),
           ])
         })
+
+        it("should fail to create a location level for an inventory item", async () => {
+          const [{ id: inventoryItemId }] = await service.list({})
+
+          const error = await api
+            .post(
+              `/admin/inventory-items/${inventoryItemId}/location-levels`,
+              {
+                location_id: "{location1.id}",
+                stocked_quantity: 10,
+              },
+              adminHeaders
+            )
+            .catch((error) => error)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: "Stock locations with ids: {location1.id} was not found",
+          })
+        })
       })
 
       describe.skip("Create inventory items", () => {

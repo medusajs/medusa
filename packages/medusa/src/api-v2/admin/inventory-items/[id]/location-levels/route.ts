@@ -17,25 +17,6 @@ export const POST = async (
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const locationId = req.validatedBody.location_id
-
-  const locationQuery = remoteQueryObjectFromString({
-    entryPoint: "stock_location",
-    variables: {
-      id: locationId,
-    },
-    fields: ["id"],
-  })
-
-  const [stock_location] = await remoteQuery(locationQuery)
-
-  if (!stock_location) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Stock location with id: ${locationId} not found`
-    )
-  }
-
   const workflow = createInventoryLevelsWorkflow(req.scope)
   const { errors } = await workflow.run({
     input: {
@@ -46,6 +27,7 @@ export const POST = async (
         },
       ],
     },
+    throwOnError: false,
   })
 
   if (Array.isArray(errors) && errors[0]) {
