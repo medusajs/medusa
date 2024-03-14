@@ -5,7 +5,10 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
+import { MedusaError } from "medusa-core-utils"
+import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
+  confirmInventoryStep,
   createCartsStep,
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
@@ -16,11 +19,11 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
-// TODO: The UpdateLineItemsWorkflow are missing the following steps:
-// - Confirm inventory exists (inventory module)
+// TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
@@ -44,6 +47,73 @@ export const createCartWorkflow = createWorkflow(
       }),
       validateVariantsExistStep({ variantIds })
     )
+
+    const variants = getVariantsStep({
+      filter: { id: variantIds },
+      config: {
+        select: [
+          "id",
+          "title",
+          "sku",
+          "manage_inventory",
+          "barcode",
+          "product.id",
+          "product.title",
+          "product.description",
+          "product.subtitle",
+          "product.thumbnail",
+          "product.type",
+          "product.collection",
+          "product.handle",
+        ],
+        relations: ["product"],
+      },
+    })
+
+    const salesChannelLocations = useRemoteQueryStep({
+      entry_point: "sales_channels",
+      fields: ["id", "name", "stock_locations.id", "stock_locations.name"],
+      variables: { id: salesChannel.id },
+    })
+
+    const productVariantInventoryItems = useRemoteQueryStep({
+      entry_point: "product_variant_inventory_items",
+      fields: ["variant_id", "inventory_item_id", "required_quantity"],
+      variables: { variant_id: variantIds },
+    }).config({ name: "inventory-items" })
+
+    const confirmInventoryInput = transform(
+      { productVariantInventoryItems, salesChannelLocations, input, variants },
+      (data) => {
+        // We don't want to confirm inventory if there are no items in the cart.
+        if (!data.input.items) {
+          return { items: [] }
+        }
+
+        if (!data.salesChannelLocations.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Sales channel ${data.input.sales_channel_id} is not associated with any stock locations.`
+          )
+        }
+
+        const items = prepareConfirmInventoryInput({
+          product_variant_inventory_items: data.productVariantInventoryItems,
+          location_ids: data.salesChannelLocations[0].stock_locations.map(
+            (l) => l.id
+          ),
+          items: data.input.items!,
+          variants: data.variants.map((v) => ({
+            id: v.id,
+            manage_inventory: v.manage_inventory,
+          })),
+        })
+
+        return { items }
+      }
+    )
+
+    confirmInventoryStep(confirmInventoryInput)
 
     // TODO: This is on par with the context used in v1.*, but we can be more flexible.
     const pricingContext = transform(
@@ -82,31 +152,6 @@ export const createCartWorkflow = createWorkflow(
 
         return data_
       }
-    )
-
-    const variants = getVariantsStep(
-      transform({ variantIds }, (data) => {
-        return {
-          filter: { id: data.variantIds },
-          config: {
-            select: [
-              "id",
-              "title",
-              "sku",
-              "barcode",
-              "product.id",
-              "product.title",
-              "product.description",
-              "product.subtitle",
-              "product.thumbnail",
-              "product.type",
-              "product.collection",
-              "product.handle",
-            ],
-            relations: ["product"],
-          },
-        }
-      })
     )
 
     const lineItems = transform({ priceSets, input, variants }, (data) => {

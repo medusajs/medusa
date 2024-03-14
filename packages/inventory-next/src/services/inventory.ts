@@ -1,29 +1,29 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
+  DAL,
   IInventoryServiceNext,
+  InventoryNext,
   InventoryTypes,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  InventoryNext,
   ReservationItemDTO,
 } from "@medusajs/types"
 import {
+  CommonEvents,
   EmitEvents,
+  InjectManager,
+  InjectTransactionManager,
+  InventoryEvents,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isDefined,
+  partitionArray,
 } from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
-import { DAL } from "@medusajs/types"
-import { InjectTransactionManager } from "@medusajs/utils"
-import { InjectManager } from "@medusajs/utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import InventoryLevelService from "./inventory-level"
-import { partitionArray } from "@medusajs/utils"
-import { InventoryEvents } from "@medusajs/utils"
-import { CommonEvents } from "@medusajs/utils"
-import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
