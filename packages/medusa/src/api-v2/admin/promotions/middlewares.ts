@@ -7,6 +7,7 @@ import {
   AdminPostPromotionsPromotionReq,
   AdminPostPromotionsPromotionRulesBatchAddReq,
   AdminPostPromotionsPromotionRulesBatchRemoveReq,
+  AdminPostPromotionsPromotionRulesBatchUpdateReq,
   AdminPostPromotionsReq,
 } from "./validators"
 
@@ -62,6 +63,13 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/promotions/:id/buy-rules/batch/add",
     middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/update",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchUpdateReq),
+    ],
   },
   {
     method: ["POST"],
