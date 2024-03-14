@@ -35,8 +35,17 @@ export function prepareListQuery<
     defaultRelations = [],
   } = queryConfig
 
-  allowedFields = allowedFields ?? allowed
-  defaultFields = defaultFields ?? defaults
+  allowedFields = allowedFields.length ? allowedFields : allowed
+  defaultFields = defaultFields.length ? defaultFields : defaults
+
+  // Fields such as *variants.options meaning that we want to select all fields
+  // from the variants.options relation without specifying them.
+  // In that case it needs to be removed from the fields and be part of the relations only
+  // TODO: It means that the remote query won't have it as part of the fields
+  // unless the properties are specified e.g variants.options.id, variants.options.name
+  // This is a limitation of the current implementation as we do not support select * from a
+  // relation. Once we add the support for it then we can update this logic
+  const starFields = new Set()
 
   let allFields = new Set(defaultFields) as Set<string>
 
@@ -58,6 +67,13 @@ export function prepareListQuery<
         }
       })
     }
+
+    allFields.forEach((field) => {
+      if (field.startsWith("*")) {
+        starFields.add(field.replace(/^\*/, ""))
+        allFields.delete(field)
+      }
+    })
 
     // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
     if (queryConfig.isList) {
@@ -85,7 +101,11 @@ export function prepareListQuery<
   )
 
   // TODO: maintain backward compatibility, remove in the future
-  let allRelations = new Set([...relations, ...defaultRelations])
+  let allRelations = new Set([
+    ...relations,
+    ...defaultRelations,
+    ...Array.from(starFields),
+  ])
 
   if (isDefined(expand)) {
     allRelations = new Set(expand.split(",").filter(Boolean))
@@ -146,6 +166,7 @@ export function prepareListQuery<
       variables: {
         skip: offset,
         take: limit ?? defaultLimit,
+        order: orderBy
       },
     },
   }
