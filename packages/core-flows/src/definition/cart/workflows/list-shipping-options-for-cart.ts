@@ -1,8 +1,8 @@
 import { ListShippingOptionsForCartWorkflowInputDTO } from "@medusajs/types"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { listShippingOptionsForContextStep } from "../../../shipping-options"
@@ -32,8 +32,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
 
         return {
           context: {
-            fulfillment_set_id: fulfillmentSetIds,
             service_zone: {
+              fulfillment_set: {
+                id: { $in: fulfillmentSetIds },
+              },
               geo_zones: {
                 city: data.input.shipping_address?.city,
                 country_code: data.input.shipping_address?.country_code,
