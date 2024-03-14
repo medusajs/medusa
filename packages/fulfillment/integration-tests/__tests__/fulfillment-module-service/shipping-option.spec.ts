@@ -155,7 +155,7 @@ moduleIntegrationTestRunner({
               }),
             ])
 
-          let listedOptions = await service.listShippingOptions({
+          let listedOptions = await service.listShippingOptionsForContext({
             context: {
               "test-attribute": "test",
               "test-attribute2": {
@@ -172,7 +172,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          listedOptions = await service.listShippingOptions({
+          listedOptions = await service.listShippingOptionsForContext({
             service_zone: {
               fulfillment_set: {
                 id: { $ne: fulfillmentSet.id },
@@ -188,7 +188,7 @@ moduleIntegrationTestRunner({
 
           expect(listedOptions).toHaveLength(0)
 
-          listedOptions = await service.listShippingOptions({
+          listedOptions = await service.listShippingOptionsForContext({
             service_zone: {
               fulfillment_set: {
                 type: "non-existing-type",

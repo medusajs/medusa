@@ -1,8 +1,6 @@
 import {
   Context,
-  DAL,
-  FilterableFulfillmentSetProps,
-  FilterableShippingOptionProps,
+  DAL, FilterableFulfillmentSetProps,
   FindConfig,
   FulfillmentDTO,
   FulfillmentTypes,
@@ -131,17 +129,17 @@ export default class FulfillmentModuleService<
   }
 
   @InjectManager("baseRepository_")
-  // @ts-ignore
-  async listShippingOptions(
-    filters: FilterableShippingOptionProps = {},
+  async listShippingOptionsForContext(
+    filters: FulfillmentTypes.FilterableShippingOptionForContextProps,
     config: FindConfig<ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
     const { context, ...restFilters } = filters
 
-    if (context) {
-      config.relations = Array.from(new Set(["rules", ...(config.relations ?? [])]))
-    }
+    config.relations = Array.from(
+      new Set(["rules", ...(config.relations ?? [])])
+    )
+    config.take ??= null
 
     let shippingOptions = await this.shippingOptionService_.list(
       restFilters,
@@ -1231,7 +1229,7 @@ export default class FulfillmentModuleService<
     context: Record<string, unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const shippingOptions = await this.listShippingOptions(
+    const shippingOptions = await this.listShippingOptionsForContext(
       { id: shippingOptionId, context },
       {
         relations: ["rules"],

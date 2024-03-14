@@ -3,6 +3,7 @@ import {
   FilterableFulfillmentSetProps,
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
+  FilterableShippingOptionForContextProps,
   FilterableShippingOptionProps,
   FilterableShippingOptionRuleProps,
   FilterableShippingOptionTypeProps,
@@ -315,13 +316,24 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
   /**
-   * List shipping options and eventually filter the result based on the context and their rules
+   * List shipping options
    * @param filters
    * @param config
    * @param sharedContext
    */
   listShippingOptions(
     filters?: FilterableShippingOptionProps,
+    config?: FindConfig<ShippingOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
+  /**
+   * List shipping options and eventually filter the result based on the context and their rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionsForContext(
+    filters: FilterableShippingOptionForContextProps,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
