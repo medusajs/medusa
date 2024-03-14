@@ -4,11 +4,12 @@ import {
   Filter,
   ManyToOne,
   OnInit,
+  OnLoad,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DALUtils, isDefined } from "@medusajs/utils"
 
-import { DALUtils } from "@medusajs/utils"
 import { InventoryItem } from "./inventory-item"
 import { createPsqlIndexStatementHelper } from "@medusajs/utils"
 import { generateEntityId } from "@medusajs/utils"
@@ -91,6 +92,8 @@ export class InventoryLevel {
   })
   inventory_item: InventoryItem
 
+  available_quantity: number | null = null
+
   @BeforeCreate()
   private beforeCreate(): void {
     this.id = generateEntityId(this.id, "ilev")
@@ -100,5 +103,12 @@ export class InventoryLevel {
   @OnInit()
   private onInit(): void {
     this.id = generateEntityId(this.id, "ilev")
+  }
+
+  @OnLoad()
+  private onLoad(): void {
+    if (isDefined(this.stocked_quantity) && isDefined(this.reserved_quantity)) {
+      this.available_quantity = this.stocked_quantity - this.reserved_quantity
+    }
   }
 }

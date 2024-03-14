@@ -4,7 +4,7 @@ export function generateCreateShippingOptionsData({
   name,
   service_zone_id,
   shipping_profile_id,
-  fulfillment_provider_id,
+  provider_id,
   price_type,
   rules,
   type,
@@ -19,7 +19,7 @@ export function generateCreateShippingOptionsData({
   return {
     service_zone_id: service_zone_id,
     shipping_profile_id: shipping_profile_id,
-    fulfillment_provider_id: fulfillment_provider_id,
+    provider_id: provider_id,
     type: type ?? {
       code: "test-type_" + randomString,
       description: "test-description_" + randomString,
