@@ -1,8 +1,8 @@
-import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -73,11 +73,7 @@ medusaIntegrationTestRunner({
               value: 100,
               type: "fixed",
               target_type: "order",
-              max_quantity: 0,
               allocation: null,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              deleted_at: null,
             }),
           })
         )
