@@ -6,8 +6,8 @@ import {
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 import { BaseFilterable } from "../../dal"
-import { CampaignDTO } from "./campaign"
 import { CreateCampaignDTO } from "../mutations"
+import { CampaignDTO } from "./campaign"
 
 export type PromotionTypeValues = "standard" | "buyget"
 

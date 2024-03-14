@@ -529,6 +529,113 @@ medusaIntegrationTestRunner({
           expect(promotion.application_method!.buy_rules!.length).toEqual(0)
         })
       })
+
+      describe("POST /admin/promotions/:id/rules/batch/update", () => {
+        it("should throw error when required params are missing", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+              {
+                rules: [
+                  {
+                    attribute: "test",
+                    operator: "eq",
+                    values: ["new value"],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message: "id must be a string, id should not be empty",
+          })
+        })
+
+        it("should throw error when promotion does not exist", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions/does-not-exist/rules/batch/update`,
+              {
+                rules: [
+                  {
+                    id: standardPromotion.rules[0].id,
+                    attribute: "new_attr",
+                    operator: "eq",
+                    values: ["new value"],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data).toEqual({
+            type: "not_found",
+            message: "Promotion with id: does-not-exist was not found",
+          })
+        })
+
+        it("should throw error when promotion rule id does not exist", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+              {
+                rules: [
+                  {
+                    id: "does-not-exist",
+                    attribute: "new_attr",
+                    operator: "eq",
+                    values: ["new value"],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message: "Promotion rules with id - does-not-exist not found",
+          })
+        })
+
+        it("should add rules to a promotion successfully", async () => {
+          const response = await api.post(
+            `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+            {
+              rules: [
+                {
+                  id: standardPromotion.rules[0].id,
+                  operator: "eq",
+                  attribute: "new_attr",
+                  values: ["new value"],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: standardPromotion.id,
+              rules: expect.arrayContaining([
+                expect.objectContaining({
+                  operator: "eq",
+                  attribute: "new_attr",
+                  values: [expect.objectContaining({ value: "new value" })],
+                }),
+              ]),
+            })
+          )
+        })
+      })
     })
   },
 })

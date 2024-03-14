@@ -17,6 +17,9 @@ import {
   MedusaError,
   ModulesSdkUtils,
   PromotionType,
+  arrayDifference,
+  deduplicate,
+  isDefined,
   isString,
 } from "@medusajs/utils"
 import {
@@ -47,6 +50,7 @@ import {
   validatePromotionRuleAttributes,
 } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -748,6 +752,83 @@ export default class PromotionModuleService<
     }
 
     return updatedPromotions
+  }
+
+  @InjectManager("baseRepository_")
+  async updatePromotionRules(
+    data: PromotionTypes.UpdatePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionRuleDTO[]> {
+    const updatedPromotionRules = await this.updatePromotionRules_(
+      data,
+      sharedContext
+    )
+
+    return this.listPromotionRules(
+      { id: updatedPromotionRules.map((r) => r.id) },
+      { relations: ["values"] },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updatePromotionRules_(
+    data: PromotionTypes.UpdatePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const promotionRuleIds = data.map((d) => d.id)
+
+    const promotionRules = await this.listPromotionRules(
+      { id: promotionRuleIds },
+      { relations: ["values"] },
+      sharedContext
+    )
+
+    const invalidRuleId = arrayDifference(
+      deduplicate(promotionRuleIds),
+      promotionRules.map((pr) => pr.id)
+    )
+
+    if (invalidRuleId.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Promotion rules with id - ${invalidRuleId.join(", ")} not found`
+      )
+    }
+
+    const promotionRulesMap = new Map<string, PromotionTypes.PromotionRuleDTO>(
+      promotionRules.map((pr) => [pr.id, pr])
+    )
+
+    const rulesToUpdate: PromotionTypes.UpdatePromotionRuleDTO[] = []
+    const ruleValueIdsToDelete: string[] = []
+    const ruleValuesToCreate: CreatePromotionRuleValueDTO[] = []
+
+    for (const promotionRuleData of data) {
+      const { values, ...rest } = promotionRuleData
+      const normalizedValues = Array.isArray(values) ? values : [values]
+      rulesToUpdate.push(rest)
+
+      if (isDefined(values)) {
+        const promotionRule = promotionRulesMap.get(promotionRuleData.id)!
+
+        ruleValueIdsToDelete.push(...promotionRule.values.map((v) => v.id))
+        ruleValuesToCreate.push(
+          ...normalizedValues.map((value) => ({
+            value,
+            promotion_rule: promotionRule,
+          }))
+        )
+      }
+    }
+
+    const [updatedRules] = await Promise.all([
+      this.promotionRuleService_.update(rulesToUpdate),
+      this.promotionRuleValueService_.delete(ruleValueIdsToDelete),
+      this.promotionRuleValueService_.create(ruleValuesToCreate, sharedContext),
+    ])
+
+    return updatedRules
   }
 
   @InjectManager("baseRepository_")
