@@ -1,10 +1,11 @@
+import { BaseFilterable, OperatorMap } from "../../dal"
+import { CreateCampaignDTO } from "../mutations"
 import {
   ApplicationMethodDTO,
   CreateApplicationMethodDTO,
   UpdateApplicationMethodDTO,
 } from "./application-method"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
-
 import { BaseFilterable } from "../../dal"
 import { CreateCampaignDTO } from "../mutations"
 import { CampaignDTO } from "./campaign"
@@ -42,9 +43,9 @@ export interface UpdatePromotionDTO {
 
 export interface FilterablePromotionProps
   extends BaseFilterable<FilterablePromotionProps> {
-  id?: string[]
-  code?: string[]
+  id?: string | string[]
+  code?: string | string[] | OperatorMap<string>
+  budget_id?: string[] | OperatorMap<string>
   is_automatic?: boolean
   type?: PromotionTypeValues[]
-  budget_id?: string[]
 }
