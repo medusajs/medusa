@@ -41,98 +41,47 @@ module.exports = {
   },
   modules: {
     workflows: true,
-    ...(enableMedusaV2
-      ? {
-          [Modules.AUTH]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/auth",
-            options: {
-              providers: [
-                {
-                  name: "emailpass",
-                  scopes: {
-                    admin: {},
-                    store: {},
-                  },
-                },
-              ],
+
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
             },
           },
-          [Modules.USER]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/user",
-            options: {
-              jwt_secret: "test",
-            },
-          },
-          [Modules.CACHE]: {
-            resolve: "@medusajs/cache-inmemory",
-            options: { ttl: 0 }, // Cache disabled
-          },
-          [Modules.STOCK_LOCATION]: {
-            resolve: "@medusajs/stock-location-next",
-          },
-          [Modules.INVENTORY]: {
-            resolve: "@medusajs/inventory-next",
-          },
-          [Modules.PRODUCT]: true,
-          [Modules.PRICING]: true,
-          [Modules.PROMOTION]: true,
-          [Modules.CUSTOMER]: true,
-          [Modules.SALES_CHANNEL]: true,
-          [Modules.CART]: true,
-          [Modules.WORKFLOW_ENGINE]: true,
-          [Modules.REGION]: true,
-          [Modules.API_KEY]: true,
-          [Modules.STORE]: true,
-          [Modules.TAX]: true,
-          [Modules.CURRENCY]: true,
-          [Modules.PAYMENT]: true,
-        }
-      : {
-          [Modules.AUTH]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/auth",
-            options: {
-              providers: [
-                {
-                  name: "emailpass",
-                  scopes: {
-                    admin: {},
-                    store: {},
-                  },
-                },
-              ],
-            },
-          },
-          [Modules.STOCK_LOCATION]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/stock-location",
-          },
-          [Modules.INVENTORY]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/inventory",
-          },
-          [Modules.PRICING]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/pricing",
-          },
-          [Modules.CACHE]: {
-            resolve: "@medusajs/cache-inmemory",
-            options: { ttl: 0 }, // Cache disabled
-          },
-          [Modules.PRODUCT]: {
-            scope: "internal",
-            resources: "shared",
-            resolve: "@medusajs/product",
-          },
-          [Modules.WORKFLOW_ENGINE]: true,
-        }),
+        ],
+      },
+    },
+    [Modules.STOCK_LOCATION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/stock-location",
+    },
+    [Modules.INVENTORY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/inventory",
+    },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
+    },
+    [Modules.CACHE]: {
+      resolve: "@medusajs/cache-inmemory",
+      options: { ttl: 0 }, // Cache disabled
+    },
+    [Modules.PRODUCT]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/product",
+    },
+    [Modules.WORKFLOW_ENGINE]: true,
   },
 }

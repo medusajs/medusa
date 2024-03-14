@@ -2,14 +2,14 @@ import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../../factories")
+const { simpleProductFactory } = require("../../../factories")
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
@@ -330,7 +330,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("should list the inventory items", async () => {
+        it("should create location levels for an inventory item", async () => {
           const [{ id: inventoryItemId }] = await service.list({})
 
           await api.post(
