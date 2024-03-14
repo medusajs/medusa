@@ -1,18 +1,15 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
+  AdminDeletePromotionsPromotionRulesReq,
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminPostPromotionsPromotionReq,
+  AdminPostPromotionsPromotionRulesReq,
   AdminPostPromotionsReq,
 } from "./validators"
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
 
-import { MedusaV2Flag } from "@medusajs/utils"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
@@ -50,5 +47,35 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/promotions/:id",
     middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/target-rules",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/buy-rules",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/target-rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/buy-rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
   },
 ]
