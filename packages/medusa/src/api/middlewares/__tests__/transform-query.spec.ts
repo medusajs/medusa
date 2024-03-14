@@ -20,7 +20,6 @@ describe("transformQuery", () => {
       limit,
       inputOrder,
       transformedOrder,
-      relations,
     }: {
       offset: number
       limit: number
@@ -61,10 +60,10 @@ describe("transformQuery", () => {
           "metadata.children.id",
           "metadata.product.id",
         ],
-        relations: relations ?? [
+        relations: [
           "metadata",
-          "metadata.children",
           "metadata.parent",
+          "metadata.children",
           "metadata.product",
         ],
         order: transformedOrder,
@@ -174,7 +173,6 @@ describe("transformQuery", () => {
       offset: 5,
       inputOrder: "created_at",
       transformedOrder: { created_at: "ASC" },
-      relations: [],
     })
   })
 

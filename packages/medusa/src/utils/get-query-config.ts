@@ -78,16 +78,14 @@ export function prepareListQuery<
   )
 
   // TODO: maintain backward compatibility, remove in the future
-  let returnedRelations = new Set(defaultRelations)
-  const allRelations = new Set([...relations, ...defaultRelations])
+  let allRelations = new Set([...relations, ...defaultRelations])
 
   if (expand) {
     ;(expand.split(",") ?? []).forEach((r) => allRelations.add(r))
-    returnedRelations = new Set(expand.split(","))
+    allRelations = new Set(expand.split(","))
   }
 
   const allAllowedRelations = new Set([
-    ...relations,
     ...Array.from(allAllowedFields),
     ...allowedRelations,
   ])
@@ -132,7 +130,7 @@ export function prepareListQuery<
   return {
     listConfig: {
       select: select.length ? select : undefined,
-      relations: Array.from(returnedRelations),
+      relations: Array.from(allRelations),
       skip: offset,
       take: limit ?? defaultLimit,
       order: orderBy,
