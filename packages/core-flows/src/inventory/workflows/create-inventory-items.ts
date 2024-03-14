@@ -10,9 +10,10 @@ import {
 } from "../steps"
 
 import { CreateInventoryItemInput } from "@medusajs/types"
+import { InventoryNext } from "@medusajs/types"
 
 interface WorkflowInput {
-  items: (CreateInventoryItemInput & { _associationTag?: string })[]
+  items: InventoryNext.TaggedInventoryItem[]
 }
 
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"

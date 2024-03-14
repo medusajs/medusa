@@ -10,7 +10,7 @@ export const createInventoryItemsStepId = "create-inventory-items"
 export const createInventoryItemsStep = createStep(
   createInventoryItemsStepId,
   async (
-    data: (CreateInventoryItemInput & { _associationTag?: string })[],
+    data: (CreateInventoryItemInput & { tag?: string })[],
     { container }
   ) => {
     const inventoryService: IInventoryServiceNext = container.resolve(
@@ -34,7 +34,7 @@ export const createInventoryItemsStep = createStep(
           width: item.width,
         })
 
-        return { tag: item._associationTag, inventoryItem }
+        return { tag: item.tag, inventoryItem }
       })
     )
 

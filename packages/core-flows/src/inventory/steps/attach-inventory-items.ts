@@ -17,16 +17,7 @@ export const attachInventoryItemToVariants = createStep(
     }[],
     { container }
   ) => {
-    const featureFlagRouter = container.resolve(
-      ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-    )
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-
-    if (
-      featureFlagRouter.isFeatureEnabled(ManyToManyInventoryFeatureFlag.key)
-    ) {
-      return
-    }
 
     const linkDefinitions = input
       .filter(({ tag }) => !!tag)
