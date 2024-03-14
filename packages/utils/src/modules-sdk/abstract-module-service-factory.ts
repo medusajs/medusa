@@ -292,6 +292,7 @@ export function abstractModuleServiceFactory<
           config?: FindConfig<any>,
           sharedContext: Context = {}
         ): Promise<T> {
+          console.warn("config", config)
           const entities = await this.__container__[
             serviceRegistrationName
           ].retrieve(id, config, sharedContext)
