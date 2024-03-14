@@ -383,7 +383,6 @@ medusaIntegrationTestRunner({
             { rule_ids: [standardPromotion.rules[0].id] },
             adminHeaders
           )
-          console.log("response.data ---- ", response.data)
           expect(response.status).toEqual(200)
           expect(response.data).toEqual({
             ids: [standardPromotion.rules[0].id],
