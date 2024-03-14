@@ -98,6 +98,12 @@ const router = createBrowserRouter([
                   crumb: (data: AdminOrdersRes) =>
                     `Order #${data.order.display_id}`,
                 },
+                children: [
+                  {
+                    path: "returns",
+                    lazy: () => import("../../routes/orders/returns-create"),
+                  },
+                ],
               },
             ],
           },
