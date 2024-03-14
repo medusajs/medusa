@@ -2,6 +2,7 @@ import * as QueryConfig from "./query-config"
 
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
+  AdminDeletePromotionsPromotionRulesReq,
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminPostPromotionsPromotionReq,
@@ -61,5 +62,20 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/promotions/:id/buy-rules",
     middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/target-rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/promotions/:id/buy-rules",
+    middlewares: [transformBody(AdminDeletePromotionsPromotionRulesReq)],
   },
 ]

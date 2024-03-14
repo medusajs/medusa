@@ -1318,9 +1318,9 @@ describe("Promotion Service", () => {
     })
 
     it("should successfully remove rules for a promotion", async () => {
-      const [ruleId] = promotion.rules.map((rule) => rule.id)
+      const ruleIds = promotion.rules.map((rule) => rule.id)
 
-      await service.removePromotionRules(promotion.id, [{ id: ruleId }])
+      await service.removePromotionRules(promotion.id, ruleIds)
 
       const updatedPromotion = await service.retrieve(promotion.id, {
         relations: ["rules", "rules.values"],
@@ -1391,11 +1391,11 @@ describe("Promotion Service", () => {
     })
 
     it("should successfully create rules for a promotion", async () => {
-      const [ruleId] = promotion.application_method.target_rules.map(
+      const ruleIds = promotion.application_method.target_rules.map(
         (rule) => rule.id
       )
 
-      await service.removePromotionTargetRules(promotion.id, [{ id: ruleId }])
+      await service.removePromotionTargetRules(promotion.id, ruleIds)
 
       const updatedPromotion = await service.retrieve(promotion.id, {
         relations: ["application_method.target_rules.values"],
@@ -1477,11 +1477,11 @@ describe("Promotion Service", () => {
     })
 
     it("should successfully remove rules for a promotion", async () => {
-      const [ruleId] = promotion.application_method.buy_rules.map(
+      const ruleIds = promotion.application_method.buy_rules.map(
         (rule) => rule.id
       )
 
-      await service.removePromotionBuyRules(promotion.id, [{ id: ruleId }])
+      await service.removePromotionBuyRules(promotion.id, ruleIds)
 
       const updatedPromotion = await service.retrieve(promotion.id, {
         relations: ["application_method.buy_rules.values"],
