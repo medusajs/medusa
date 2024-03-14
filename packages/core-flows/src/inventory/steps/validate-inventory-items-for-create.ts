@@ -8,8 +8,6 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { InventoryNext } from "@medusajs/types"
 
-// import { TaggedInventoryItem } from "@medusajs/types"
-
 export const validateInventoryItemsForCreateStepId =
   "validate-inventory-items-for-create-step"
 export const validateInventoryItemsForCreate = createStep(
@@ -31,7 +29,7 @@ export const validateInventoryItemsForCreate = createStep(
     const query = remoteQueryObjectFromString({
       entryPoint: "product_variant_inventory_item",
       variables: {
-        variant_id: input.map((i) => i._associationTag),
+        variant_id: input.map((i) => i.variant_id),
       },
       fields: ["inventory_item_id", "variant_id"],
     })
