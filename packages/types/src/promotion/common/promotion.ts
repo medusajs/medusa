@@ -5,10 +5,8 @@ import {
   CreateApplicationMethodDTO,
   UpdateApplicationMethodDTO,
 } from "./application-method"
-import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
-import { BaseFilterable } from "../../dal"
-import { CreateCampaignDTO } from "../mutations"
 import { CampaignDTO } from "./campaign"
+import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 export type PromotionTypeValues = "standard" | "buyget"
 

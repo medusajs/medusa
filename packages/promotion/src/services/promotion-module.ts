@@ -823,8 +823,11 @@ export default class PromotionModuleService<
     }
 
     const [updatedRules] = await Promise.all([
-      this.promotionRuleService_.update(rulesToUpdate),
-      this.promotionRuleValueService_.delete(ruleValueIdsToDelete),
+      this.promotionRuleService_.update(rulesToUpdate, sharedContext),
+      this.promotionRuleValueService_.delete(
+        ruleValueIdsToDelete,
+        sharedContext
+      ),
       this.promotionRuleValueService_.create(ruleValuesToCreate, sharedContext),
     ])
 
