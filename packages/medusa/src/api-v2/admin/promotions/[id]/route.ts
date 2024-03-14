@@ -29,7 +29,6 @@ export const GET = async (
       select: req.retrieveConfig.select,
       relations: req.retrieveConfig.relations,
       take: 1,
-      skip: 0,
     }
   )
 
