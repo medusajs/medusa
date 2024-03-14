@@ -216,14 +216,14 @@ export class AdminPostPromotionsPromotionReq {
   rules?: PromotionRule[]
 }
 
-export class AdminPostPromotionsPromotionRulesReq {
+export class AdminPostPromotionsPromotionRulesBatchAddReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
   rules: PromotionRule[]
 }
 
-export class AdminDeletePromotionsPromotionRulesReq {
+export class AdminPostPromotionsPromotionRulesBatchRemoveReq {
   @ArrayNotEmpty()
   @IsString({ each: true })
   rule_ids: string[]
