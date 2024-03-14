@@ -12,7 +12,6 @@ import {
   FilterablePromotionProps,
   PromotionDTO,
   PromotionRuleDTO,
-  RemovePromotionRuleDTO,
   UpdatePromotionDTO,
 } from "./common"
 import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
@@ -99,19 +98,19 @@ export interface IPromotionModuleService extends IModuleService {
 
   removePromotionRules(
     promotionId: string,
-    rulesData: RemovePromotionRuleDTO[],
+    ruleIds: string[],
     sharedContext?: Context
   ): Promise<void>
 
   removePromotionTargetRules(
     promotionId: string,
-    rulesData: RemovePromotionRuleDTO[],
+    ruleIds: string[],
     sharedContext?: Context
   ): Promise<void>
 
   removePromotionBuyRules(
     promotionId: string,
-    rulesData: RemovePromotionRuleDTO[],
+    ruleIds: string[],
     sharedContext?: Context
   ): Promise<void>
 

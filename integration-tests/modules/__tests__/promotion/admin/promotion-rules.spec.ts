@@ -342,6 +342,194 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("DELETE /admin/promotions/:id/rules", () => {
+        it("should throw error when required params are missing", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/${standardPromotion.id}/rules`, {
+              ...adminHeaders,
+              data: {},
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message:
+              "each value in rule_ids must be a string, rule_ids should not be empty",
+          })
+        })
+
+        it("should throw error when promotion does not exist", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/does-not-exist/rules`, {
+              ...adminHeaders,
+              data: { rule_ids: ["test-rule-id"] },
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data).toEqual({
+            type: "not_found",
+            message: "Promotion with id: does-not-exist was not found",
+          })
+        })
+
+        it("should remove rules from a promotion successfully", async () => {
+          const response = await api.delete(
+            `/admin/promotions/${standardPromotion.id}/rules`,
+            {
+              ...adminHeaders,
+              data: { rule_ids: [standardPromotion.rules[0].id] },
+            }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            ids: [standardPromotion.rules[0].id],
+            object: "promotion-rule",
+            deleted: true,
+          })
+
+          const promotion = await promotionModule.retrieve(
+            standardPromotion.id,
+            { relations: ["rules"] }
+          )
+
+          expect(promotion.rules!.length).toEqual(0)
+        })
+      })
+
+      describe("DELETE /admin/promotions/:id/target-rules", () => {
+        it("should throw error when required params are missing", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/${standardPromotion.id}/target-rules`, {
+              ...adminHeaders,
+              data: {},
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message:
+              "each value in rule_ids must be a string, rule_ids should not be empty",
+          })
+        })
+
+        it("should throw error when promotion does not exist", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/does-not-exist/target-rules`, {
+              ...adminHeaders,
+              data: { rule_ids: ["test-rule-id"] },
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data).toEqual({
+            type: "not_found",
+            message: "Promotion with id: does-not-exist was not found",
+          })
+        })
+
+        it("should remove target rules from a promotion successfully", async () => {
+          const ruleId = standardPromotion.application_method.target_rules[0].id
+          const response = await api.delete(
+            `/admin/promotions/${standardPromotion.id}/target-rules`,
+            {
+              ...adminHeaders,
+              data: { rule_ids: [ruleId] },
+            }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            ids: [ruleId],
+            object: "promotion-rule",
+            deleted: true,
+          })
+
+          const promotion = await promotionModule.retrieve(
+            standardPromotion.id,
+            { relations: ["application_method.target_rules"] }
+          )
+
+          expect(promotion.application_method!.target_rules!.length).toEqual(0)
+        })
+      })
+
+      describe("DELETE /admin/promotions/:id/buy-rules", () => {
+        it("should throw error when required params are missing", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/${standardPromotion.id}/buy-rules`, {
+              ...adminHeaders,
+              data: {},
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message:
+              "each value in rule_ids must be a string, rule_ids should not be empty",
+          })
+        })
+
+        it("should throw error when promotion does not exist", async () => {
+          const { response } = await api
+            .delete(`/admin/promotions/does-not-exist/buy-rules`, {
+              ...adminHeaders,
+              data: { rule_ids: ["test-rule-id"] },
+            })
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data).toEqual({
+            type: "not_found",
+            message: "Promotion with id: does-not-exist was not found",
+          })
+        })
+
+        it("should remove buy rules from a promotion successfully", async () => {
+          const buyGetPromotion = await promotionModule.create({
+            code: "TEST_BUYGET",
+            type: PromotionType.BUYGET,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 100,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              buy_rules: [promotionRule],
+              target_rules: [promotionRule],
+            },
+            rules: [promotionRule],
+          })
+
+          const ruleId = buyGetPromotion!.application_method!.buy_rules![0].id
+          const response = await api.delete(
+            `/admin/promotions/${buyGetPromotion.id}/buy-rules`,
+            {
+              ...adminHeaders,
+              data: { rule_ids: [ruleId] },
+            }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            ids: [ruleId],
+            object: "promotion-rule",
+            deleted: true,
+          })
+
+          const promotion = await promotionModule.retrieve(buyGetPromotion.id, {
+            relations: ["application_method.buy_rules"],
+          })
+
+          expect(promotion.application_method!.buy_rules!.length).toEqual(0)
+        })
+      })
     })
   },
 })
