@@ -1,14 +1,20 @@
 import { useAdminDraftOrder } from "medusa-react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { DraftOrderCustomerSection } from "./components/draft-order-customer-section"
 import { DraftOrderGeneralSection } from "./components/draft-order-general-section"
 import { DraftOrderSummarySection } from "./components/draft-order-summary-section"
+import { draftOrderLoader } from "./loader"
 
 export const DraftOrderDetail = () => {
   const { id } = useParams()
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof draftOrderLoader>
+  >
 
-  const { draft_order, isLoading, isError, error } = useAdminDraftOrder(id!)
+  const { draft_order, isLoading, isError, error } = useAdminDraftOrder(id!, {
+    initialData,
+  })
 
   if (isLoading || !draft_order) {
     return <div>Loading...</div>

@@ -1,4 +1,4 @@
-import { Buildings, PencilSquare } from "@medusajs/icons"
+import { Buildings } from "@medusajs/icons"
 import { Cart, DraftOrder, LineItem } from "@medusajs/medusa"
 import { ReservationItemDTO } from "@medusajs/types"
 import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
@@ -20,7 +20,7 @@ export const DraftOrderSummarySection = ({
 }: DraftOrderSummarySectionProps) => {
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header draftOrder={draftOrder} />
+      <Header />
       <ItemBreakdown draftOrder={draftOrder} />
       <CostBreakdown draftOrder={draftOrder} />
       <Total draftOrder={draftOrder} />
@@ -28,7 +28,7 @@ export const DraftOrderSummarySection = ({
   )
 }
 
-const Header = ({ draftOrder }: { draftOrder: DraftOrder }) => {
+const Header = () => {
   const { t } = useTranslation()
 
   return (
@@ -38,11 +38,6 @@ const Header = ({ draftOrder }: { draftOrder: DraftOrder }) => {
         groups={[
           {
             actions: [
-              {
-                label: t("orders.summary.editItems"),
-                to: "#", // TODO: Open modal to edit items
-                icon: <PencilSquare />,
-              },
               {
                 label: t("orders.summary.allocateItems"),
                 to: "#", // TODO: Open modal to allocate items

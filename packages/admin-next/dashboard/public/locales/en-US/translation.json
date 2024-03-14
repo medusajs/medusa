@@ -294,6 +294,13 @@
   "draftOrders": {
     "domain": "Draft Orders",
     "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "paymentLinkLabel": "Payment link",
+    "cartIdLabel": "Cart ID",
+    "markAsPaid": {
+      "label": "Mark as paid",
+      "warningTitle": "Mark as Paid",
+      "warningDescription": "You are about to mark the draft order as paid. This action cannot be undone, and collecting payment will not be possible later."
+    },
     "status": {
       "open": "Open",
       "completed": "Completed"

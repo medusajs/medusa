@@ -2,6 +2,7 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
                 path: ":id",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-detail"),
+                handle: {
+                  crumb: (data: AdminDraftOrdersRes) =>
+                    `Draft #${data.draft_order.display_id}`,
+                },
                 children: [
                   {
                     path: "transfer-ownership",
