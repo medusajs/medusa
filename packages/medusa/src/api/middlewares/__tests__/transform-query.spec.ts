@@ -80,6 +80,7 @@ describe("transformQuery", () => {
           "metadata.product.id",
         ],
         variables: {
+          order: transformedOrder,
           skip: offset,
           take: limit,
         },
