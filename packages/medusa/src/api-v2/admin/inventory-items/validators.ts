@@ -212,7 +212,7 @@ export class AdminPostInventoryItemsItemLocationLevelsParams extends FindParams 
 export class AdminPostInventoryItemsReq {
   @IsOptional()
   @IsString()
-  variant_id: string
+  variant_id?: string
 
   @IsString()
   @IsOptional()
