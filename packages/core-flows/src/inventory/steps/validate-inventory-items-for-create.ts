@@ -10,10 +10,10 @@ import { InventoryNext } from "@medusajs/types"
 
 // import { TaggedInventoryItem } from "@medusajs/types"
 
-export const prepareCreateInventoryItemsStepId =
-  "prepare-create-inventory-items-step"
-export const prepareCreateInventoryItems = createStep(
-  prepareCreateInventoryItemsStepId,
+export const validateInventoryItemsForCreateStepId =
+  "validate-inventory-items-for-create-step"
+export const validateInventoryItemsForCreate = createStep(
+  validateInventoryItemsForCreateStepId,
   async (input: InventoryNext.TaggedInventoryItem[], { container }) => {
     const featureFlagRouter = container.resolve(
       ContainerRegistrationKeys.FEATURE_FLAG_ROUTER

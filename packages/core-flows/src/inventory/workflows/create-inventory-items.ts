@@ -6,7 +6,7 @@ import {
 import {
   attachInventoryItemToVariants,
   createInventoryItemsStep,
-  prepareCreateInventoryItems,
+  validateInventoryItemsForCreate,
 } from "../steps"
 
 import { CreateInventoryItemInput } from "@medusajs/types"
@@ -19,7 +19,7 @@ export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
 export const createInventoryItemsWorkflow = createWorkflow(
   createInventoryItemsWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
-    prepareCreateInventoryItems(input.items)
+    validateInventoryItemsForCreate(input.items)
 
     const items = createInventoryItemsStep(input.items)
 
