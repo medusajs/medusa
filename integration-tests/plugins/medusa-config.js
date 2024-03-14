@@ -113,7 +113,11 @@ module.exports = {
             resources: "shared",
             resolve: "@medusajs/stock-location",
           },
-          [Modules.INVENTORY]: true,
+          [Modules.INVENTORY]: {
+            scope: "internal",
+            resources: "shared",
+            resolve: "@medusajs/inventory",
+          },
           [Modules.PRICING]: {
             scope: "internal",
             resources: "shared",
