@@ -25,24 +25,8 @@ export const GET = async (
     fields: [...(req.listConfig.select as string[])],
   })
 
-  const { rows: items, metadata } = await remoteQuery({
+  const { rows: inventory_items, metadata } = await remoteQuery({
     ...query,
-  })
-
-  const inventory_items = items.map((i) => {
-    const [stocked_quantity, reserved_quantity] = i.location_levels.reduce(
-      ([stocked, reserved], level) => [
-        stocked + level.stocked_quantity ?? 0,
-        reserved + level.reserved_quantity ?? 0,
-      ],
-      [0, 0]
-    )
-
-    return {
-      ...i,
-      reserved_quantity,
-      stocked_quantity,
-    }
   })
 
   res.status(200).json({

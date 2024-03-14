@@ -9,7 +9,7 @@ const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../../factories")
+const { simpleProductFactory } = require("../../../factories")
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
@@ -491,23 +491,6 @@ medusaIntegrationTestRunner({
               stocked_quantity: 5,
             },
           ])
-          // await api.post(
-          //   `/admin/inventory-items/${inventoryItemId}/location-levels`,
-          //   {
-          //     location_id: location1,
-          //     stocked_quantity: 10,
-          //   },
-          //   adminHeaders
-          // )
-
-          // await api.post(
-          //   `/admin/inventory-items/${inventoryItemId}/location-levels`,
-          //   {
-          //     location_id: location2,
-          //     stocked_quantity: 5,
-          //   },
-          //   adminHeaders
-          // )
 
           const response = await api.get(`/admin/inventory-items`, adminHeaders)
 
