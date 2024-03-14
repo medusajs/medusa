@@ -27,7 +27,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   if (!inventory_item) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Inventory item  with id: ${id} was not found`
+      `Inventory item with id: ${id} was not found`
     )
   }
 

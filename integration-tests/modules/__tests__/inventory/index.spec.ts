@@ -3,6 +3,7 @@ import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../helpers/create-admin-user"
+import e from "express"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
@@ -311,6 +312,18 @@ medusaIntegrationTestRunner({
               ],
             })
           )
+        })
+
+        it("should throw if inventory item doesn't exist", async () => {
+          const error = await api
+            .get(`/admin/inventory-items/does-not-exist`, adminHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: "Inventory item with id: does-not-exist was not found",
+          })
         })
       })
 
