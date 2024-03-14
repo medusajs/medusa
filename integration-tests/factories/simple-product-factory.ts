@@ -16,9 +16,9 @@ import {
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
 
-import { DataSource } from "typeorm"
-import faker from "faker"
 import { generateEntityId } from "@medusajs/utils"
+import faker from "faker"
+import { DataSource } from "typeorm"
 
 export type ProductFactoryData = {
   id?: string
