@@ -25,7 +25,9 @@ export function prepareListQuery<
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
   const { order, fields, limit = 50, expand, offset = 0 } = validated
-  const {
+  let {
+    allowed = [],
+    defaults = [],
     defaultFields = [],
     defaultLimit,
     allowedFields = [],
@@ -33,13 +35,18 @@ export function prepareListQuery<
     defaultRelations = [],
   } = queryConfig
 
+  allowedFields = allowedFields ?? allowed
+  defaultFields = defaultFields ?? defaults
+
   let allFields = new Set(defaultFields) as Set<string>
 
-  if (fields) {
-    const customFields = fields.split(",")
-    const shouldReplaceDefaultFields = customFields.some(
-      (field) => !(field.startsWith("-") || field.startsWith("+"))
-    )
+  if (isDefined(fields)) {
+    const customFields = fields.split(",").filter(Boolean)
+    const shouldReplaceDefaultFields =
+      !customFields.length ||
+      customFields.some(
+        (field) => !(field.startsWith("-") || field.startsWith("+"))
+      )
     if (shouldReplaceDefaultFields) {
       allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
     } else {
@@ -64,7 +71,7 @@ export function prepareListQuery<
     ? new Set()
     : getSetDifference(allFields, allAllowedFields)
 
-  if (notAllowedFields.size) {
+  if (allFields.size && notAllowedFields.size) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Requested fields [${Array.from(notAllowedFields).join(
@@ -80,9 +87,8 @@ export function prepareListQuery<
   // TODO: maintain backward compatibility, remove in the future
   let allRelations = new Set([...relations, ...defaultRelations])
 
-  if (expand) {
-    ;(expand.split(",") ?? []).forEach((r) => allRelations.add(r))
-    allRelations = new Set(expand.split(","))
+  if (isDefined(expand)) {
+    allRelations = new Set(expand.split(",").filter(Boolean))
   }
 
   const allAllowedRelations = new Set([
@@ -93,7 +99,7 @@ export function prepareListQuery<
     ? new Set()
     : getSetDifference(allRelations, allAllowedRelations)
 
-  if (notAllowedRelations.size) {
+  if (allRelations.size && notAllowedRelations.size) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Requested fields [${Array.from(notAllowedRelations).join(
