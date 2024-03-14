@@ -38,3 +38,5 @@ export interface FilterablePromotionRuleProps
   id?: string[]
   code?: string[]
 }
+
+export type PromotionRuleTypes = "buy_rules" | "target_rules" | "rules"
