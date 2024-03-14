@@ -50,10 +50,6 @@ export const createInventoryItemsStep = createStep(
 
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
-    await promiseAll(
-      data.map(async (item) => {
-        await inventoryService!.deleteInventoryItem(item)
-      })
-    )
+    await inventoryService!.delete(data)
   }
 )
