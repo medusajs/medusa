@@ -1,13 +1,4 @@
 import {
-  MedusaApp,
-  MedusaAppMigrateUp,
-  MedusaAppOutput,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
-  Modules,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
-import {
   CommonTypes,
   InternalModuleDeclaration,
   LoadedModule,
@@ -17,12 +8,22 @@ import {
 import {
   ContainerRegistrationKeys,
   FlagRouter,
-  isObject,
   MedusaV2Flag,
+  isObject,
 } from "@medusajs/utils"
+import {
+  MODULE_PACKAGE_NAMES,
+  MedusaApp,
+  MedusaAppMigrateUp,
+  MedusaAppOutput,
+  MedusaModule,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 import { joinerConfig } from "../joiner-config"
+import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -74,7 +75,6 @@ export async function migrateMedusaApp(
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
-
   const configModules = mergeDefaultModules(configModule.modules)
 
   // Apply default options to legacy modules
@@ -90,6 +90,7 @@ export async function migrateMedusaApp(
         database: {
           type: "postgres",
           url: sharedResourcesConfig.database.clientUrl,
+          clientUrl: sharedResourcesConfig.database.clientUrl,
           extra: configModule.projectConfig.database_extra,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
