@@ -1,23 +1,22 @@
-import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
+import { InventoryNext } from "@medusajs/types"
 
 export const defaultAdminInventoryItemRelations = []
 export const allowedAdminInventoryItemRelations = []
 
-export const defaultAdminLocationLevelFields: (
-  | keyof InventoryLevelDTO
-  | "available_quantity"
-)[] = [
-  "id",
-  "inventory_item_id",
-  "location_id",
-  "stocked_quantity",
-  "reserved_quantity",
-  "incoming_quantity",
-  "available_quantity",
-  "metadata",
-  "created_at",
-  "updated_at",
-]
+// eslint-disable-next-line max-len
+export const defaultAdminLocationLevelFields: (keyof InventoryNext.InventoryLevelDTO)[] =
+  [
+    "id",
+    "inventory_item_id",
+    "location_id",
+    "stocked_quantity",
+    "reserved_quantity",
+    "incoming_quantity",
+    "available_quantity",
+    "metadata",
+    "created_at",
+    "updated_at",
+  ]
 
 export const defaultAdminInventoryItemFields = [
   "id",
@@ -35,6 +34,8 @@ export const defaultAdminInventoryItemFields = [
   "height",
   "width",
   "metadata",
+  "reserved_quantity",
+  "stocked_quantity",
   "created_at",
   "updated_at",
   ...defaultAdminLocationLevelFields.map(

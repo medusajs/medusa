@@ -478,9 +478,97 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.skip("List inventory items", () => {
-        let location1
-        let location2
+      describe.skip("Create inventory items", () => {
+        it("should create inventory items", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list({})
+
+          expect(inventoryItems).toHaveLength(0)
+
+          const response = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku",
+            })
+          )
+        })
+
+        it("should attach inventory items on creation", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list({})
+
+          expect(inventoryItems).toHaveLength(0)
+
+          await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          const remoteQuery = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_QUERY
+          )
+
+          const query = remoteQueryObjectFromString({
+            entryPoint: "product_variant_inventory_item",
+            variables: {
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            fields: ["inventory_item_id", "variant_id"],
+          })
+
+          const existingItems = await remoteQuery(query)
+
+          expect(existingItems).toHaveLength(1)
+          expect(existingItems[0].variant_id).toEqual(
+            createResult.data.product.variants[0].id
+          )
+        })
+      })
+
+      describe("List inventory items", () => {
+        let location1 = "loc_1"
+        let location2 = "loc_2"
         beforeEach(async () => {
           await service.create([
             {
@@ -495,39 +583,23 @@ medusaIntegrationTestRunner({
               width: 150,
             },
           ])
-
-          const stockLocationService: IStockLocationService =
-            appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
-
-          location1 = await stockLocationService.create({
-            name: "location-1",
-          })
-
-          location2 = await stockLocationService.create({
-            name: "location-2",
-          })
         })
 
         it("should list the inventory items", async () => {
           const [{ id: inventoryItemId }] = await service.list({})
 
-          await api.post(
-            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+          await service.createInventoryLevels([
             {
-              location_id: location1.id,
+              inventory_item_id: inventoryItemId,
+              location_id: location1,
               stocked_quantity: 10,
             },
-            adminHeaders
-          )
-
-          await api.post(
-            `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: location2.id,
+              inventory_item_id: inventoryItemId,
+              location_id: location2,
               stocked_quantity: 5,
             },
-            adminHeaders
-          )
+          ])
 
           const response = await api.get(`/admin/inventory-items`, adminHeaders)
 
@@ -550,7 +622,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location1.id,
+                  location_id: location1,
                   stocked_quantity: 10,
                   reserved_quantity: 0,
                   incoming_quantity: 0,
@@ -560,7 +632,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location2.id,
+                  location_id: location2,
                   stocked_quantity: 5,
                   reserved_quantity: 0,
                   incoming_quantity: 0,
