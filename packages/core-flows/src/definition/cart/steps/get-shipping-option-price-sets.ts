@@ -3,6 +3,7 @@ import { IPricingModuleService, PricingContext } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  arrayDifference,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -12,7 +13,7 @@ interface StepInput {
   context?: Record<string, unknown>
 }
 
-export const getShippingOptionPriceSetsStepId = "get-variant-price-sets"
+export const getShippingOptionPriceSetsStepId = "get-shipping-option-price-sets"
 export const getShippingOptionPriceSetsStep = createStep(
   getShippingOptionPriceSetsStepId,
   async (data: StepInput, { container }) => {
@@ -38,26 +39,22 @@ export const getShippingOptionPriceSetsStep = createStep(
 
     const optionPriceSets = await remoteQuery(query)
 
-    const notFound: string[] = []
-    const priceSetIds: string[] = []
+    const optionsMissingPrices = arrayDifference(
+      data.optionIds,
+      optionPriceSets.map((v) => v.shipping_option_id)
+    )
 
-    optionPriceSets.forEach((v) => {
-      if (v.price_set_id) {
-        priceSetIds.push(v.price_set_id)
-      } else {
-        notFound.push(v.shipping_option_id)
-      }
-    })
-
-    if (notFound.length) {
+    if (optionsMissingPrices.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Shipping options with IDs ${notFound.join(", ")} do not have a price`
+        `Shipping options with IDs ${optionsMissingPrices.join(
+          ", "
+        )} do not have a price`
       )
     }
 
     const calculatedPriceSets = await pricingModuleService.calculatePrices(
-      { id: priceSetIds },
+      { id: optionPriceSets.map((v) => v.price_set_id) },
       { context: data.context as PricingContext["context"] }
     )
 
