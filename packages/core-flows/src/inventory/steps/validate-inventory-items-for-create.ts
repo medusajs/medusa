@@ -29,7 +29,7 @@ export const validateInventoryItemsForCreate = createStep(
     const query = remoteQueryObjectFromString({
       entryPoint: "product_variant_inventory_item",
       variables: {
-        variant_id: input.map((i) => i.variant_id),
+        variant_id: input.map((i) => i._associationTag),
       },
       fields: ["inventory_item_id", "variant_id"],
     })
