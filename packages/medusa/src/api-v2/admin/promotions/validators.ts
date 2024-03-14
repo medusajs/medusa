@@ -214,3 +214,10 @@ export class AdminPostPromotionsPromotionReq {
   @Type(() => PromotionRule)
   rules?: PromotionRule[]
 }
+
+export class AdminPostPromotionsPromotionRulesReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  rules: PromotionRule[]
+}
