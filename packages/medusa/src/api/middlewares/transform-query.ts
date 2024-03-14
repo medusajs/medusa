@@ -127,11 +127,14 @@ function getFilterableFields<T extends RequestQueryFields>(obj: T): T {
  */
 function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
   req: Request,
-  queryConfig?: QueryConfig<TEntity>
+  queryConfig: QueryConfig<TEntity> = {}
 ) {
   const validated = req.validatedQuery
-  if (queryConfig?.isList) {
-    queryConfig.allowedFields = req.allowedFields ?? queryConfig.allowedFields
+  queryConfig.allowed =
+    req.allowed ?? queryConfig.allowed ?? queryConfig.allowedFields ?? []
+  queryConfig.allowedFields = queryConfig.allowed
+
+  if (queryConfig.isList) {
     const queryConfigRes = prepareListQuery(validated, queryConfig)
 
     req.listConfig = queryConfigRes.listConfig as FindConfig<any>

@@ -35,8 +35,8 @@ export function prepareListQuery<
     defaultRelations = [],
   } = queryConfig
 
-  allowedFields = allowedFields.length ? allowedFields : allowed
-  defaultFields = defaultFields.length ? defaultFields : defaults
+  allowedFields = allowed.length ? allowed : allowedFields
+  defaultFields = defaults.length ? defaults : defaultFields
 
   // Fields such as *variants.options meaning that we want to select all fields
   // from the variants.options relation without specifying them.

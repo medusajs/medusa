@@ -31,8 +31,15 @@ export interface MedusaRequest<Body = unknown> extends Request {
   /**
    * An array of fields and relations that are allowed to be queried, this can be set by the
    * consumer as part of a middleware and it will take precedence over the defaultAllowedFields
+   * @deprecated use `allowed` instead
    */
   allowedFields?: string[]
+  /**
+   * An array of fields and relations that are allowed to be queried, this can be set by the
+   * consumer as part of a middleware and it will take precedence over the defaultAllowedFields set
+   * by the api
+   */
+  allowed?: string[]
   errors: string[]
   scope: MedusaContainer
   session?: any
