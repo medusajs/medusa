@@ -334,6 +334,13 @@ const router = createBrowserRouter([
                     path: "edit",
                     lazy: () => import("../../routes/customers/customer-edit"),
                   },
+                  {
+                    path: ":order_id/transfer-ownership",
+                    lazy: () =>
+                      import(
+                        "../../routes/customers/customer-transfer-ownership"
+                      ),
+                  },
                 ],
               },
             ],

@@ -777,7 +777,8 @@
     "summary": "Summary",
     "label": "Label",
     "rate": "Rate",
-    "requiresShipping": "Requires shipping"
+    "requiresShipping": "Requires shipping",
+    "draft": "Draft"
   },
   "dateTime": {
     "years_one": "Year",

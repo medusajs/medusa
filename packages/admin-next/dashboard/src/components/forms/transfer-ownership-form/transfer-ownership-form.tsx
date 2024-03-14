@@ -10,6 +10,10 @@ import { useTranslation } from "react-i18next"
 
 import { z } from "zod"
 import { getStylizedAmount } from "../../../lib/money-amount-helpers"
+import {
+  getOrderFulfillmentStatus,
+  getOrderPaymentStatus,
+} from "../../../lib/order-helpers"
 import { TransferOwnershipSchema } from "../../../lib/schemas"
 import { Combobox } from "../../common/combobox"
 import { Form } from "../../common/form"
@@ -186,11 +190,22 @@ export const TransferOwnerShipForm = ({
 }
 
 const OrderDetailsTable = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
+  const { label: fulfillmentLabel } = getOrderFulfillmentStatus(
+    t,
+    order.fulfillment_status
+  )
+
+  const { label: paymentLabel } = getOrderPaymentStatus(t, order.payment_status)
+
   return (
     <Table>
-      <div>Order</div>
-      <div>#{order.display_id}</div>
+      <Row label={t("fields.order")} value={`#${order.display_id}`} />
       <DateRow date={order.created_at} />
+      <Row label={t("fields.fulfillment")} value={fulfillmentLabel} />
+      <Row label={t("fields.payment")} value={paymentLabel} />
+      <TotalRow total={order.total || 0} currencyCode={order.currency_code} />
     </Table>
   )
 }
@@ -200,7 +215,7 @@ const DraftOrderDetailsTable = ({ draft }: { draft: DraftOrder }) => {
 
   return (
     <Table>
-      <Row label={"Draft"} value={`#${draft.display_id}`} />
+      <Row label={t("fields.draft")} value={`#${draft.display_id}`} />
       <DateRow date={draft.created_at} />
       <Row
         label={t("fields.status")}
