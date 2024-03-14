@@ -1,4 +1,7 @@
-import { addRulesToPromotionsWorkflow } from "@medusajs/core-flows"
+import {
+  addRulesToPromotionsWorkflow,
+  removeRulesFromPromotionsWorkflow,
+} from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { RuleType } from "@medusajs/utils"
@@ -10,7 +13,10 @@ import {
   defaultAdminPromotionFields,
   defaultAdminPromotionRelations,
 } from "../../query-config"
-import { AdminPostPromotionsPromotionRulesReq } from "../../validators"
+import {
+  AdminDeletePromotionsPromotionRulesReq,
+  AdminPostPromotionsPromotionRulesReq,
+} from "../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostPromotionsPromotionRulesReq>,
@@ -23,7 +29,7 @@ export const POST = async (
     input: {
       rule_type: RuleType.RULES,
       data: {
-        id: req.params.id,
+        id,
         ...req.validatedBody,
       },
     },
@@ -44,4 +50,34 @@ export const POST = async (
   })
 
   res.status(200).json({ promotion })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest<AdminDeletePromotionsPromotionRulesReq>,
+  res: MedusaResponse
+) => {
+  const id = req.params.id
+  const workflow = removeRulesFromPromotionsWorkflow(req.scope)
+  const validatedBody = req.validatedBody
+
+  const { errors } = await workflow.run({
+    input: {
+      rule_type: RuleType.RULES,
+      data: {
+        id,
+        ...validatedBody,
+      },
+    },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({
+    ids: validatedBody.rule_ids,
+    object: "promotion-rule",
+    deleted: true,
+  })
 }

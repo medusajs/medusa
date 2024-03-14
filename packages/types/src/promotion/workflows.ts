@@ -7,3 +7,11 @@ export type AddPromotionRulesWorkflowDTO = {
     rules: CreatePromotionRuleDTO[]
   }
 }
+
+export type RemovePromotionRulesWorkflowDTO = {
+  rule_type: PromotionRuleTypes
+  data: {
+    id: string
+    rule_ids: string[]
+  }
+}
