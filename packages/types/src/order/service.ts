@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -83,6 +84,18 @@ export interface IOrderModuleService extends IModuleService {
 
   delete(orderIds: string[], sharedContext?: Context): Promise<void>
   delete(orderId: string, sharedContext?: Context): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   listAddresses(
     filters?: FilterableOrderAddressProps,

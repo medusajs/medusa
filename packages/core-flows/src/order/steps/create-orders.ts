@@ -11,7 +11,7 @@ export const createOrdersStep = createStep(
   createOrdersStepId,
   async (data: CreateOrdersStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
     const created = await service.create(data.orders)
@@ -26,7 +26,7 @@ export const createOrdersStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
     await service.delete(createdIds)

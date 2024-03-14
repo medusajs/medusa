@@ -17,7 +17,7 @@ export const updateOrdersStep = createStep(
   updateOrdersStepId,
   async (data: UpdateOrdersStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
@@ -38,10 +38,10 @@ export const updateOrdersStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
-    await service.upsert(
+    await service.update(
       prevData.map((r) => ({
         ...r,
         metadata: r.metadata || undefined,

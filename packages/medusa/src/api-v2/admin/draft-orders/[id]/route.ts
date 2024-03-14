@@ -1,3 +1,4 @@
+import { UpdateOrderDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,

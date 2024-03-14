@@ -7,11 +7,11 @@ export const deleteOrdersStep = createStep(
   deleteOrdersStepId,
   async (ids: string[], { container }) => {
     const storeModule = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
-    await storeModule.softDelete(ids)
-    return new StepResponse(void 0, ids)
+    const removedKeys = await storeModule.softDelete(ids)
+    return new StepResponse(removedKeys as Record<string, string[]>, ids)
   },
   async (idsToRestore, { container }) => {
     if (!idsToRestore?.length) {
@@ -19,7 +19,7 @@ export const deleteOrdersStep = createStep(
     }
 
     const storeModule = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.STORE
+      ModuleRegistrationName.ORDER
     )
 
     await storeModule.restore(idsToRestore)
