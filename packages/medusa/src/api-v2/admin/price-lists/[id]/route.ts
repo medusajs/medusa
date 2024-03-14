@@ -46,6 +46,7 @@ export const POST = async (
 ) => {
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
+
   const { errors } = await workflow.run({
     input: { price_lists_data: [{ id, ...req.validatedBody }] },
     throwOnError: false,

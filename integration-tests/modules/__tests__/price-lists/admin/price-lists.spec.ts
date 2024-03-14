@@ -495,6 +495,112 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("POST /admin/price-lists/:id/prices", () => {
+        it("should upsert price list prices successfully", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+          ])
+
+          const data = {
+            prices: [
+              {
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+              {
+                id: "test-price-id",
+                variant_id: variant.id,
+                amount: 200,
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `admin/price-lists/${priceList.id}/prices`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list.prices.length).toEqual(2)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 400,
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 200,
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("DELETE /admin/price-lists/:id/prices", () => {
+        it("should delete price list prices", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+            },
+          ])
+
+          let response = await api.delete(
+            `/admin/price-lists/${priceList.id}/prices`,
+            { ...adminHeaders, data: { ids: ["test-price-id"] } }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            ids: ["test-price-id"],
+            object: "price_list_prices",
+            deleted: true,
+          })
+        })
+      })
     })
   },
 })

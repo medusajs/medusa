@@ -3,8 +3,10 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
 import {
+  AdminDeletePriceListsPriceListPricesReq,
   AdminGetPriceListsParams,
   AdminGetPriceListsPriceListParams,
+  AdminPostPriceListsPriceListPricesReq,
   AdminPostPriceListsPriceListReq,
   AdminPostPriceListsReq,
 } from "./validators"
@@ -44,5 +46,15 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/price-lists/:id",
     middlewares: [transformBody(AdminPostPriceListsPriceListReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/price-lists/:id/prices",
+    middlewares: [transformBody(AdminPostPriceListsPriceListPricesReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/price-lists/:id/prices",
+    middlewares: [transformBody(AdminDeletePriceListsPriceListPricesReq)],
   },
 ]
