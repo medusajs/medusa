@@ -26,9 +26,6 @@ export const registerMedusaModule = (
   const modDefinition = definition ?? ModulesDefinition[moduleKey]
 
   if (modDefinition === undefined) {
-    console.log(moduleKey, " is a custom module will register it as such")
-    console.log("moduleDeclaration", moduleDeclaration)
-    // throw new Error(`Module: ${moduleKey} is not defined.`)
     moduleResolutions[moduleKey] = getCustomModuleResolution(
       moduleKey,
       moduleDeclaration as InternalModuleDeclaration
