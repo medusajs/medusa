@@ -1,10 +1,13 @@
-import { transformQuery } from "../../../api/middlewares"
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
 import {
+  AdminDeletePricingRuleTypesRuleTypeReq,
   AdminGetPricingRuleTypesParams,
   AdminGetPricingRuleTypesRuleTypeParams,
+  AdminPostPricingRuleTypesReq,
+  AdminPostPricingRuleTypesRuleTypeReq,
 } from "./validators"
 
 export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
@@ -23,6 +26,11 @@ export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/pricing/rule-types",
+    middlewares: [transformBody(AdminPostPricingRuleTypesReq)],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/pricing/rule-types/:id",
     middlewares: [
@@ -31,5 +39,15 @@ export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/pricing/rule-types/:id",
+    middlewares: [transformBody(AdminPostPricingRuleTypesRuleTypeReq)],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/pricing/rule-types/:id",
+    middlewares: [transformBody(AdminDeletePricingRuleTypesRuleTypeReq)],
   },
 ]
