@@ -13,7 +13,7 @@ import { matchSorter } from "match-sorter"
 import {
   ComponentPropsWithoutRef,
   ForwardedRef,
-  forwardRef,
+  useCallback,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -21,6 +21,7 @@ import {
   useTransition,
 } from "react"
 import { useTranslation } from "react-i18next"
+import { genericForwardRef } from "../generic-forward-ref"
 
 type ComboboxOption = {
   value: string
@@ -36,9 +37,11 @@ interface ComboboxProps<T extends Value = Value>
   searchValue?: string
   onSearchValueChange?: (value: string) => void
   options: ComboboxOption[]
+  fetchNextPage?: () => void
+  isFetchingNextPage?: boolean
 }
 
-const ComboboxImpl = <T extends Value = Value>(
+const ComboboxImpl = <T extends Value = string>(
   {
     value: controlledValue,
     onChange,
@@ -47,6 +50,8 @@ const ComboboxImpl = <T extends Value = Value>(
     options,
     className,
     placeholder,
+    fetchNextPage,
+    isFetchingNextPage,
     ...inputProps
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -66,7 +71,9 @@ const ComboboxImpl = <T extends Value = Value>(
   const isArrayValue = Array.isArray(controlledValue)
   const emptyState = (isArrayValue ? [] : "") as T
 
-  const [uncontrolledSearchValue, setUncontrolledSearchValue] = useState("")
+  const [uncontrolledSearchValue, setUncontrolledSearchValue] = useState(
+    controlledSearchValue || ""
+  )
   const [uncontrolledValue, setUncontrolledValue] = useState<T>(emptyState)
 
   const searchValue = isSearchControlled
@@ -87,12 +94,13 @@ const ComboboxImpl = <T extends Value = Value>(
     if (onChange) {
       onChange(newValues)
     }
+
+    setUncontrolledSearchValue("")
   }
 
   const handleSearchChange = (query: string) => {
-    if (!isSearchControlled) {
-      setUncontrolledSearchValue(query)
-    }
+    setUncontrolledSearchValue(query)
+
     if (onSearchValueChange) {
       onSearchValueChange(query)
     }
@@ -132,12 +140,40 @@ const ComboboxImpl = <T extends Value = Value>(
     })
   }, [options, uncontrolledSearchValue, selectedValues, isSearchControlled])
 
+  const observer = useRef(
+    new IntersectionObserver(
+      (entries) => {
+        const first = entries[0]
+        if (first.isIntersecting) {
+          fetchNextPage?.()
+        }
+      },
+      { threshold: 1 }
+    )
+  )
+
+  const lastOptionRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isFetchingNextPage) {
+        return
+      }
+      if (observer.current) {
+        observer.current.disconnect()
+      }
+      if (node) {
+        observer.current.observe(node)
+      }
+    },
+    [isFetchingNextPage]
+  )
+
   const hasValue = selectedValues.length > 0
 
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
 
-  const showInput = !isArrayValue && !open
+  const hideInput = !isArrayValue && !open
+  const selectedLabel = options.find((o) => o.value === selectedValues)?.label
 
   const hidePlaceholder = showSelected || open
 
@@ -150,7 +186,7 @@ const ComboboxImpl = <T extends Value = Value>(
         setOpen={setOpen}
         selectedValue={selectedValues}
         setSelectedValue={(value) => handleValueChange(value as T)}
-        value={searchValue}
+        value={uncontrolledSearchValue}
         setValue={(query) => {
           startTransition(() => handleSearchChange(query))
         }}
@@ -166,7 +202,7 @@ const ComboboxImpl = <T extends Value = Value>(
               "has-[:invalid]:shadow-borders-error",
               "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
               {
-                "pl-0.5": hasValue,
+                "pl-0.5": hasValue && isArrayValue,
               },
               className
             )}
@@ -192,10 +228,20 @@ const ComboboxImpl = <T extends Value = Value>(
                   {t("general.selected")}
                 </Text>
               )}
+              {hideInput && (
+                <div className="absolute inset-y-0 left-0 flex size-full items-center overflow-hidden">
+                  <Text size="small" leading="compact" className="truncate">
+                    {selectedLabel}
+                  </Text>
+                </div>
+              )}
               <PrimitiveCombobox
                 ref={comboboxRef}
                 className={clx(
-                  "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text"
+                  "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text",
+                  {
+                    "opacity-0": hideInput,
+                  }
                 )}
                 placeholder={hidePlaceholder ? undefined : placeholder}
                 {...inputProps}
@@ -244,16 +290,23 @@ const ComboboxImpl = <T extends Value = Value>(
                   key={value}
                   value={value}
                   focusOnHover
-                  className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex items-center gap-x-2 rounded-[4px] px-2 py-1.5"
+                  setValueOnClick={false}
+                  className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
                 >
                   <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
                     <EllipseMiniSolid />
                   </PrimitiveComboboxItemCheck>
-                  <PrimitiveComboboxItemValue className="txt-compact-small group-aria-selected:txt-compact-small-plus">
+                  <PrimitiveComboboxItemValue className="txt-compact-small">
                     {label}
                   </PrimitiveComboboxItemValue>
                 </PrimitiveComboboxItem>
               ))}
+              {!!fetchNextPage && <div ref={lastOptionRef} className="w-px" />}
+              {isFetchingNextPage && (
+                <div className="transition-fg bg-ui-bg-base flex items-center rounded-[4px] px-2 py-1.5">
+                  <div className="bg-ui-bg-component size-full h-5 w-full animate-pulse rounded-[4px]" />
+                </div>
+              )}
               {!results.length && (
                 <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
                   <Text
@@ -273,5 +326,4 @@ const ComboboxImpl = <T extends Value = Value>(
   )
 }
 
-export const Combobox = forwardRef(ComboboxImpl)
-Combobox.displayName = "Combobox"
+export const Combobox = genericForwardRef(ComboboxImpl)

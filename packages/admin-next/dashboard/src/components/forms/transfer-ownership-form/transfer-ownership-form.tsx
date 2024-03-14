@@ -1,20 +1,21 @@
-import { DraftOrder, Order } from "@medusajs/medusa"
+import { Customer, DraftOrder, Order } from "@medusajs/medusa"
 import { Select, Text, clx } from "@medusajs/ui"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
-import {
-  Fragment,
-  PropsWithChildren,
-  useCallback,
-  useRef,
-  useState,
-} from "react"
-import { Control } from "react-hook-form"
+import { debounce } from "lodash"
+import { useAdminCustomer, useMedusa } from "medusa-react"
+import { PropsWithChildren, useCallback, useEffect, useState } from "react"
+import { Control, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { useMedusa } from "medusa-react"
+import { z } from "zod"
 import { getStylizedAmount } from "../../../lib/money-amount-helpers"
+import { TransferOwnershipSchema } from "../../../lib/schemas"
 import { Combobox } from "../../common/combobox"
+import { Form } from "../../common/form"
+import { Skeleton } from "../../common/skeleton"
+
+type TransferOwnerShipFieldValues = z.infer<typeof TransferOwnershipSchema>
 
 type TransferOwnerShipFormProps = {
   /**
@@ -22,13 +23,9 @@ type TransferOwnerShipFormProps = {
    */
   order: Order | DraftOrder
   /**
-   * ID of the customer that is the current owner of the order.
-   */
-  currentOwner?: string
-  /**
    * React Hook Form control object.
    */
-  control: Control<{ customer_id: string }>
+  control: Control<TransferOwnerShipFieldValues>
 }
 
 const isOrder = (order: Order | DraftOrder): order is Order => {
@@ -37,26 +34,99 @@ const isOrder = (order: Order | DraftOrder): order is Order => {
 
 export const TransferOwnerShipForm = ({
   order,
-  currentOwner,
+  control,
 }: TransferOwnerShipFormProps) => {
-  //   const {
-  //     customer: owner,
-  //     isLoading: isLoadingOwner,
-  //     isError: isOwnerError,
-  //     error: ownerError,
-  //   } = useAdminCustomer(currentOwner)
+  const { t } = useTranslation()
+
+  const [query, setQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("")
 
   const isOrderType = isOrder(order)
+  const currentOwnerId = useWatch({
+    control,
+    name: "current_owner_id",
+  })
 
-  //   if (!isOwnerError) {
-  //     throw ownerError
-  //   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedUpdate = useCallback(
+    debounce((query) => setDebouncedQuery(query), 300),
+    []
+  )
+
+  useEffect(() => {
+    debouncedUpdate(query)
+
+    return () => debouncedUpdate.cancel()
+  }, [query, debouncedUpdate])
+
+  const { client } = useMedusa()
+  const {
+    customer: owner,
+    isLoading: isLoadingOwner,
+    isError: isOwnerError,
+    error: ownerError,
+  } = useAdminCustomer(currentOwnerId)
+
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ["customers", debouncedQuery],
+    async ({ pageParam = 0 }) => {
+      const res = await client.admin.customers.list({
+        q: debouncedQuery,
+        limit: 10,
+        offset: pageParam,
+        has_account: true, // Only show customers with confirmed accounts
+      })
+      return res
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        const moreCustomersExist =
+          lastPage.count > lastPage.offset + lastPage.limit
+        return moreCustomersExist ? lastPage.offset + lastPage.limit : undefined
+      },
+      keepPreviousData: true,
+    }
+  )
+
+  const createLabel = (customer?: Customer) => {
+    if (!customer) {
+      return ""
+    }
+
+    const { first_name, last_name, email } = customer
+
+    const name = [first_name, last_name].filter(Boolean).join(" ")
+
+    if (name) {
+      return `${name} (${email})`
+    }
+
+    return email
+  }
+
+  const ownerReady = !isLoadingOwner && owner
+
+  const options =
+    data?.pages
+      .map((p) =>
+        p.customers.map((c) => ({
+          label: createLabel(c),
+          value: c.id,
+        }))
+      )
+      .flat() || []
+
+  if (isOwnerError) {
+    throw ownerError
+  }
 
   return (
     <div className="flex flex-col gap-y-8">
       <div className="flex flex-col gap-y-2">
-        <Text size="small" leading="compact">
-          {isOrderType ? "Order details" : "Draft order details"}
+        <Text size="small" leading="compact" weight="plus">
+          {isOrderType
+            ? t("transferOwnership.details.order")
+            : t("transferOwnership.details.draft")}
         </Text>
         {isOrderType ? (
           <OrderDetailsTable order={order} />
@@ -66,35 +136,51 @@ export const TransferOwnerShipForm = ({
       </div>
       <div className="flex flex-col gap-y-2">
         <div>
-          <Text size="small" leading="compact">
-            Current owner
+          <Text size="small" leading="compact" weight="plus">
+            {t("transferOwnership.currentOwner.label")}
           </Text>
           <Text size="small" className="text-ui-fg-subtle">
-            The customer currently related to this order
+            {t("transferOwnership.currentOwner.hint")}
           </Text>
         </div>
-        <Select defaultValue="kasper@medusajs.com" disabled>
-          <Select.Trigger>
-            <Select.Value />
-          </Select.Trigger>
-          <Select.Content>
-            <Select.Item value="kasper@medusajs.com">
-              Kasper Kristensen (kasper@medusajs.com)
-            </Select.Item>
-          </Select.Content>
-        </Select>
+        {ownerReady ? (
+          <Select defaultValue={owner.id} disabled>
+            <Select.Trigger>
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value={owner.id}>{createLabel(owner)}</Select.Item>
+            </Select.Content>
+          </Select>
+        ) : (
+          <Skeleton className="h-8 w-full rounded-md" />
+        )}
       </div>
-      <div className="flex flex-col gap-y-2">
-        <div>
-          <Text size="small" leading="compact">
-            New owner
-          </Text>
-          <Text size="small" className="text-ui-fg-subtle">
-            The customer currently related to this order
-          </Text>
-        </div>
-        <CustomersList />
-      </div>
+      <Form.Field
+        control={control}
+        name="new_owner_id"
+        render={({ field }) => {
+          return (
+            <Form.Item>
+              <div className="flex flex-col">
+                <Form.Label>{t("transferOwnership.newOwner.label")}</Form.Label>
+                <Form.Hint>{t("transferOwnership.newOwner.hint")}</Form.Hint>
+              </div>
+              <Form.Control>
+                <Combobox
+                  {...field}
+                  searchValue={query}
+                  onSearchValueChange={setQuery}
+                  fetchNextPage={fetchNextPage}
+                  isFetchingNextPage={isFetchingNextPage}
+                  options={options}
+                />
+              </Form.Control>
+              <Form.ErrorMessage />
+            </Form.Item>
+          )
+        }}
+      />
     </div>
   )
 }
@@ -157,116 +243,4 @@ const Row = ({ label, value }: { label: string; value: string }) => {
 
 const Table = ({ children }: PropsWithChildren) => {
   return <div className={clx("divide-y rounded-lg border")}>{children}</div>
-}
-
-function CustomersList() {
-  const [searchTerm, setSearchTerm] = useState("")
-
-  const { client } = useMedusa()
-
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery(
-    ["customers", searchTerm],
-    async ({ pageParam = 0 }) => {
-      const res = await client.admin.customers.list({
-        q: searchTerm,
-        limit: 10,
-        offset: pageParam,
-      })
-      return res
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        // Check if there are more customers to load
-        const moreCustomersExist =
-          lastPage.count > lastPage.offset + lastPage.limit
-        return moreCustomersExist ? lastPage.offset + lastPage.limit : undefined
-      },
-    }
-  )
-
-  // Search input handler
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value)
-  }
-
-  // Observer for the infinite scrolling
-  const observer = useRef(
-    new IntersectionObserver(
-      (entries) => {
-        const first = entries[0]
-        if (first.isIntersecting) {
-          fetchNextPage()
-        }
-      },
-      { threshold: 1 }
-    )
-  )
-
-  const lastCustomerRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (isFetchingNextPage) {
-        return
-      }
-      if (observer.current) {
-        observer.current.disconnect()
-      }
-      if (node) {
-        observer.current.observe(node)
-      }
-    },
-    [isFetchingNextPage]
-  )
-
-  // Render the search bar and the customer list
-  return (
-    <div>
-      <Combobox
-        searchValue={searchTerm}
-        onSearchValueChange={setSearchTerm}
-        options={
-          data?.pages
-            .map((p) =>
-              p.customers.map((c) => ({
-                label: `${c.first_name} ${c.last_name}`,
-                value: c.id,
-              }))
-            )
-            .flat() || []
-        }
-      />
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Search customers"
-      />
-      <div className="bg-ui-bg-subtle h-[400px] overflow-auto">
-        {status === "loading" && <div>Loading...</div>}
-        {status === "error" && <div>Error: {error.message}</div>}
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.customers.map((customer) => (
-              <div key={customer.id}>
-                {customer.first_name} {customer.last_name}
-              </div>
-            ))}
-          </Fragment>
-        ))}
-        <div>
-          {isFetchingNextPage ? (
-            <div>Loading more...</div>
-          ) : (
-            hasNextPage && <div ref={lastCustomerRef}>Load More</div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
 }

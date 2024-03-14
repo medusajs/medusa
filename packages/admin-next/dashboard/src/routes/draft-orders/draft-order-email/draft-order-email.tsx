@@ -3,9 +3,9 @@ import { useAdminDraftOrder } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import { TransferDraftOrderOwnershipForm } from "./components/transfer-draft-order-ownership-form"
+import { EditDraftOrderEmailForm } from "./components/edit-draft-order-email-form/edit-draft-order-email-form"
 
-export const DraftOrderTransferOwnership = () => {
+export const DraftOrderEmail = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
@@ -20,9 +20,9 @@ export const DraftOrderTransferOwnership = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("transferOwnership.header")}</Heading>
+        <Heading>{t("email.editHeader")}</Heading>
       </RouteDrawer.Header>
-      {ready && <TransferDraftOrderOwnershipForm draftOrder={draft_order} />}
+      {ready && <EditDraftOrderEmailForm draftOrder={draft_order} />}
     </RouteDrawer>
   )
 }

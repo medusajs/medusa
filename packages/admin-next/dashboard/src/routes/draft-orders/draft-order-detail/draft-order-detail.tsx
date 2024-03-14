@@ -23,12 +23,12 @@ export const DraftOrderDetail = () => {
       <div className="flex flex-col gap-y-2">
         <DraftOrderGeneralSection draftOrder={draft_order} />
         <DraftOrderSummarySection draftOrder={draft_order} />
-        <div className="flex flex-col gap-y-2 lg:hidden">
+        <div className="flex flex-col gap-y-2 xl:hidden">
           <DraftOrderCustomerSection draftOrder={draft_order} />
         </div>
         <JsonViewSection data={draft_order} />
       </div>
-      <div className="hidden flex-col gap-y-2 lg:flex">
+      <div className="hidden flex-col gap-y-2 xl:flex">
         <DraftOrderCustomerSection draftOrder={draft_order} />
       </div>
       <Outlet />

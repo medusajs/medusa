@@ -98,6 +98,27 @@ const router = createBrowserRouter([
                   crumb: (data: AdminOrdersRes) =>
                     `Order #${data.order.display_id}`,
                 },
+                children: [
+                  {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-shipping-address"),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-billing-address"),
+                  },
+                  {
+                    path: "email",
+                    lazy: () => import("../../routes/orders/order-email"),
+                  },
+                  {
+                    path: "transfer-ownership",
+                    lazy: () =>
+                      import("../../routes/orders/order-transfer-ownership"),
+                  },
+                ],
               },
             ],
           },
@@ -123,6 +144,25 @@ const router = createBrowserRouter([
                       import(
                         "../../routes/draft-orders/draft-order-transfer-ownership"
                       ),
+                  },
+                  {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-shipping-address"
+                      ),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-billing-address"
+                      ),
+                  },
+                  {
+                    path: "email",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-email"),
                   },
                 ],
               },

@@ -5,54 +5,48 @@ import { useAdminUpdateDraftOrder } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import { TransferOwnerShipForm } from "../../../../../components/forms/transfer-ownership-form"
+import { EmailForm } from "../../../../../components/forms/email-form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { TransferOwnershipSchema } from "../../../../../lib/schemas"
+import { EmailSchema } from "../../../../../lib/schemas"
 
-type TransferDraftOrderOwnershipFormProps = {
+type EditDraftOrderEmailFormProps = {
   draftOrder: DraftOrder
 }
 
-export const TransferDraftOrderOwnershipForm = ({
+export const EditDraftOrderEmailForm = ({
   draftOrder,
-}: TransferDraftOrderOwnershipFormProps) => {
+}: EditDraftOrderEmailFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<z.infer<typeof TransferOwnershipSchema>>({
+  const form = useForm<z.infer<typeof EmailSchema>>({
     defaultValues: {
-      current_owner_id: draftOrder.cart.customer_id,
-      new_owner_id: "",
+      email: draftOrder.cart.email,
     },
-    resolver: zodResolver(TransferOwnershipSchema),
+    resolver: zodResolver(EmailSchema),
   })
 
   const { mutateAsync, isLoading } = useAdminUpdateDraftOrder(draftOrder.id)
 
-  const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(
-      {
-        customer_id: values.new_owner_id,
+  const handleSumbit = form.handleSubmit(async (values) => {
+    mutateAsync(values, {
+      onSuccess: () => {
+        handleSuccess()
       },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+    })
   })
 
   return (
     <RouteDrawer.Form form={form}>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSumbit}
         className="flex size-full flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="size-full flex-1 overflow-auto">
-          <TransferOwnerShipForm order={draftOrder} control={form.control} />
+          <EmailForm control={form.control} layout="stack" />
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
