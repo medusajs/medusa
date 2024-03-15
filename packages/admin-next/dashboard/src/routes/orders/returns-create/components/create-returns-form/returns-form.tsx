@@ -1,12 +1,19 @@
-import React from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
-import { LineItem, Order } from "@medusajs/medusa"
+import {
+  AdminGetVariantsVariantInventoryRes,
+  LineItem,
+  Order,
+} from "@medusajs/medusa"
 import { Alert, Heading, Select, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
+import { LevelWithAvailability } from "@medusajs/medusa"
 
 import { ReturnItem } from "./return-item"
 import { Form } from "../../../../../components/common/form"
+
+import { medusa } from "../../../../../lib/medusa"
 
 type ReturnsFormProps = {
   form: UseFormReturn<any>
@@ -17,12 +24,69 @@ type ReturnsFormProps = {
 export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
   const { t } = useTranslation()
 
+  const [inventoryMap, setInventoryMap] = useState<
+    Record<string, LevelWithAvailability[]>
+  >({})
+
   const { shipping_options = [] } = useAdminShippingOptions({
     region_id: order.region_id,
     is_return: true,
   })
 
-  const { stock_locations = [], refetch } = useAdminStockLocations({})
+  const { stock_locations = [] } = useAdminStockLocations({})
+
+  useEffect(() => {
+    const getInventoryMap = async () => {
+      const ret: Record<string, LevelWithAvailability[]> = {}
+
+      if (!items.length) {
+        return ret
+      }
+
+      ;(
+        await Promise.all(
+          items.map(async (item) => {
+            if (!item.variant_id) {
+              return undefined
+            }
+            return await medusa.admin.variants.getInventory(item.variant_id)
+          })
+        )
+      )
+        .filter((it) => it?.variant)
+        .forEach((item) => {
+          const { variant } = item as AdminGetVariantsVariantInventoryRes
+          ret[variant.id] = variant.inventory[0]?.location_levels
+        })
+
+      return ret
+    }
+
+    getInventoryMap().then((map) => {
+      setInventoryMap(map)
+    })
+  }, [items])
+
+  const selectedLocation = form.watch("location")
+
+  const showLevelsWarning = useMemo(() => {
+    if (!selectedLocation) {
+      return false
+    }
+
+    const allItemsHaveLocation = items
+      .map((item) => {
+        if (!item?.variant_id) {
+          return true
+        }
+        return inventoryMap[item.variant_id]?.find(
+          (l) => l.location_id === selectedLocation
+        )
+      })
+      .every(Boolean)
+
+    return !allItemsHaveLocation
+  }, [items, inventoryMap, selectedLocation])
 
   const onQuantityChangeComplete = () => {}
 
@@ -110,14 +174,16 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
             />
           </div>
         </div>
-        <Alert variant="warning" dismissible className="mt-4 p-5">
-          <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
-            {t("orders.returns.noInventoryLevel")}
-          </div>
-          <Text className="text-ui-fg-subtle txt-small leading-normal">
-            {t("orders.returns.noInventoryLevelDesc")}
-          </Text>
-        </Alert>
+        {showLevelsWarning && (
+          <Alert variant="warning" dismissible className="mt-4 p-5">
+            <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+              {t("orders.returns.noInventoryLevel")}
+            </div>
+            <Text className="text-ui-fg-subtle txt-small leading-normal">
+              {t("orders.returns.noInventoryLevelDesc")}
+            </Text>
+          </Alert>
+        )}
       </div>
     </div>
   )
