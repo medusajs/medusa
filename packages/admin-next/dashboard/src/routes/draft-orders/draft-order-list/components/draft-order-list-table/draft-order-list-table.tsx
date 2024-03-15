@@ -20,7 +20,7 @@ export const DraftOrderListTable = () => {
     useAdminDraftOrders(
       {
         ...searchParams,
-        expand: "cart,cart.customer",
+        // expand: "cart,cart.customer",
       },
       {
         keepPreviousData: true,
