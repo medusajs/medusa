@@ -1,6 +1,6 @@
 import {
+  createPriceListPricesWorkflow,
   removePriceListPricesWorkflow,
-  upsertPriceListPricesWorkflow,
 } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
@@ -22,10 +22,10 @@ export const POST = async (
 ) => {
   const { prices } = req.validatedBody
   const id = req.params.id
-  const workflow = upsertPriceListPricesWorkflow(req.scope)
+  const workflow = createPriceListPricesWorkflow(req.scope)
   const { errors } = await workflow.run({
     input: {
-      price_lists_data: [{ id, prices }],
+      data: [{ id, prices }],
     },
     throwOnError: false,
   })

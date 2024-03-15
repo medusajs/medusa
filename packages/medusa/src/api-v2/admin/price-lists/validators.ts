@@ -98,7 +98,7 @@ export class AdminPostPriceListsPriceListReq {
 
   @IsOptional()
   @IsArray()
-  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+  prices: AdminPriceListPricesCreateReq[]
 
   @IsOptional()
   @IsObject()
@@ -108,7 +108,7 @@ export class AdminPostPriceListsPriceListReq {
 export class AdminPostPriceListsPriceListPricesReq {
   @IsOptional()
   @IsArray()
-  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+  prices: AdminPriceListPricesCreateReq[]
 }
 
 export class AdminDeletePriceListsPriceListPricesReq {

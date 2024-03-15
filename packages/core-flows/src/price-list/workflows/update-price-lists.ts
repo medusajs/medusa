@@ -6,8 +6,10 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import {
+  createPriceListPricesStep,
+  getExistingPriceListsPriceIdsStep,
+  removePriceListPricesStep,
   updatePriceListsStep,
-  upsertPriceListPricesStep,
   validatePriceListsStep,
   validateVariantPriceLinksStep,
 } from "../steps"
@@ -23,16 +25,27 @@ export const updatePriceListsWorkflow = createWorkflow(
       validateVariantPriceLinksStep(input.price_lists_data)
     )
 
-    const updatePricesInput = transform(
-      { priceListsMap, variantPriceMap, input },
-      (data) => ({
-        data: data.input.price_lists_data,
-        price_lists_map: data.priceListsMap,
-        variant_price_map: data.variantPriceMap,
-      })
+    const getPriceListPricesInput = transform({ priceListsMap }, (data) => ({
+      price_list_ids: Object.keys(data.priceListsMap),
+    }))
+
+    const priceListPriceIdMap = getExistingPriceListsPriceIdsStep(
+      getPriceListPricesInput
     )
 
-    upsertPriceListPricesStep(updatePricesInput)
+    const removePriceListPricesInput = transform(
+      { priceListPriceIdMap },
+      (data) => Object.values(data.priceListPriceIdMap).flat(1)
+    )
+
+    removePriceListPricesStep(removePriceListPricesInput)
+
+    const updatePricesInput = transform({ variantPriceMap, input }, (data) => ({
+      data: data.input.price_lists_data,
+      variant_price_map: data.variantPriceMap,
+    }))
+
+    createPriceListPricesStep(updatePricesInput)
 
     const updatePriceListInput = transform({ input }, (data) => {
       return data.input.price_lists_data.map((priceListData) => {
