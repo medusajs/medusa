@@ -91,9 +91,46 @@
     "defaultMessage": "An error occurred while rendering this page."
   },
   "addresses": {
-    "shippingAddress": "Shipping Address",
-    "billingAddress": "Billing Address",
-    "sameAsShipping": "Same as shipping address"
+    "shippingAddress": {
+      "header": "Shipping Address",
+      "editHeader": "Edit Shipping Address",
+      "editLabel": "Shipping address",
+      "label": "Shipping address"
+    },
+    "billingAddress": {
+      "header": "Billing Address",
+      "editHeader": "Edit Billing Address",
+      "editLabel": "Billing address",
+      "label": "Billing address",
+      "sameAsShipping": "Same as shipping address"
+    },
+    "contactHeading": "Contact",
+    "locationHeading": "Location"
+  },
+  "email": {
+    "editHeader": "Edit Email",
+    "editLabel": "Email",
+    "label": "Email"
+  },
+  "transferOwnership": {
+    "header": "Transfer Ownership",
+    "label": "Transfer ownership",
+    "details": {
+      "order": "Order details",
+      "draft": "Draft details"
+    },
+    "currentOwner": {
+      "label": "Current owner",
+      "hint": "The current owner of the order."
+    },
+    "newOwner": {
+      "label": "New owner",
+      "hint": "The new owner to transfer the order to."
+    },
+    "validation": {
+      "mustBeDifferent": "The new owner must be different from the current owner.",
+      "required": "New owner is required."
+    }
   },
   "products": {
     "domain": "Products",
@@ -257,6 +294,13 @@
   "draftOrders": {
     "domain": "Draft Orders",
     "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "paymentLinkLabel": "Payment link",
+    "cartIdLabel": "Cart ID",
+    "markAsPaid": {
+      "label": "Mark as paid",
+      "warningTitle": "Mark as Paid",
+      "warningDescription": "You are about to mark the draft order as paid. This action cannot be undone, and collecting payment will not be possible later."
+    },
     "status": {
       "open": "Open",
       "completed": "Completed"
@@ -741,7 +785,8 @@
     "summary": "Summary",
     "label": "Label",
     "rate": "Rate",
-    "requiresShipping": "Requires shipping"
+    "requiresShipping": "Requires shipping",
+    "draft": "Draft"
   },
   "dateTime": {
     "years_one": "Year",

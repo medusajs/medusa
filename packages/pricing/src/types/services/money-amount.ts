@@ -18,10 +18,10 @@ export interface UpdateMoneyAmountDTO {
 
 export interface MoneyAmountDTO {
   id: string
-  currency_code?: string
-  amount?: number
-  min_quantity?: number
-  max_quantity?: number
+  currency_code?: string | null
+  amount?: number | null
+  min_quantity?: number | null
+  max_quantity?: number | null
   price_set_money_amount?: PriceSetMoneyAmountDTO
   created_at: Date
   updated_at: Date
