@@ -1,6 +1,7 @@
 import {
   Context,
-  DAL, FilterableFulfillmentSetProps,
+  DAL,
+  FilterableFulfillmentSetProps,
   FindConfig,
   FulfillmentDTO,
   FulfillmentTypes,
@@ -265,6 +266,20 @@ export default class FulfillmentModuleService<
   ): Promise<TEntity | TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
+    if (!data_.length) {
+      return []
+    }
+
+    for (const fulfillmentSet of data_) {
+      if (fulfillmentSet.service_zones?.length) {
+        for (const serviceZone of fulfillmentSet.service_zones) {
+          if (serviceZone.geo_zones?.length) {
+            FulfillmentModuleService.validateGeoZones(serviceZone.geo_zones)
+          }
+        }
+      }
+    }
+
     const createdFulfillmentSets = await this.fulfillmentSetService_.create(
       data_,
       sharedContext
@@ -316,6 +331,14 @@ export default class FulfillmentModuleService<
 
     if (!data_.length) {
       return []
+    }
+
+    for (const serviceZone of data_) {
+      if (serviceZone.geo_zones?.length) {
+        if (serviceZone.geo_zones?.length) {
+          FulfillmentModuleService.validateGeoZones(serviceZone.geo_zones)
+        }
+      }
     }
 
     const createdServiceZones = await this.serviceZoneService_.create(
@@ -454,13 +477,14 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
-    const createdGeoZones = await this.geoZoneService_.create(
-      data,
-      sharedContext
-    )
+    const data_ = Array.isArray(data) ? data : [data]
+
+    FulfillmentModuleService.validateGeoZones(data_)
+
+    const createdGeoZones = await this.geoZoneService_.create(data_, sharedContext)
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
-      createdGeoZones,
+      Array.isArray(data) ? createdGeoZones : createdGeoZones[0],
       {
         populate: true,
       }
@@ -711,6 +735,11 @@ export default class FulfillmentModuleService<
           fulfillmentSet.service_zones = fulfillmentSet.service_zones.map(
             (serviceZone) => {
               if (!("id" in serviceZone)) {
+                if (serviceZone.geo_zones?.length) {
+                  FulfillmentModuleService.validateGeoZones(
+                    serviceZone.geo_zones
+                  )
+                }
                 return serviceZone
               }
               return serviceZonesMap.get(serviceZone.id)!
@@ -874,6 +903,7 @@ export default class FulfillmentModuleService<
 
         serviceZone.geo_zones = serviceZone.geo_zones.map((geoZone) => {
           if (!("id" in geoZone)) {
+            FulfillmentModuleService.validateGeoZones([geoZone])
             return geoZone
           }
           return geoZonesMap.get(geoZone.id)!
@@ -1072,6 +1102,14 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.UpdateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    FulfillmentModuleService.validateGeoZones(data_)
+
     const updatedGeoZones = await this.geoZoneService_.update(
       data,
       sharedContext
@@ -1303,6 +1341,38 @@ export default class FulfillmentModuleService<
           nonAlreadyExistingRules
         ).join(", ")} on shipping option ${shippingOptionUpdateData.id}`
       )
+    }
+  }
+
+  protected static validateGeoZones(
+    geoZones: (
+      | (Partial<FulfillmentTypes.CreateGeoZoneDTO> & { type: string })
+      | (Partial<FulfillmentTypes.UpdateGeoZoneDTO> & { type: string })
+    )[]
+  ) {
+    const requirePropForType = {
+      country: ["country_code"],
+      province: ["country_code", "province_code"],
+      city: ["country_code", "province_code", "city"],
+      zip: ["country_code", "province_code", "city", "postal_code"],
+    }
+
+    for (const geoZone of geoZones) {
+      if (!requirePropForType[geoZone.type]) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid geo zone type: ${geoZone.type}`
+        )
+      }
+
+      for (const prop of requirePropForType[geoZone.type]) {
+        if (!geoZone[prop]) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Missing required property ${prop} for geo zone type ${geoZone.type}`
+          )
+        }
+      }
     }
   }
 }

@@ -18,11 +18,14 @@ export interface CreateProvinceGeoZoneDTO extends CreateGeoZoneBaseDTO {
 
 export interface CreateCityGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "city"
+  province_code: string
   city: string
 }
 
 export interface CreateZipGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "zip"
+  province_code: string
+  city: string
   postal_expression: Record<string, any>
 }
 
@@ -47,12 +50,15 @@ export interface UpdateProvinceGeoZoneDTO extends UpdateGeoZoneBaseDTO {
 
 export interface UpdateCityGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "city"
-  city: string
+  province_code?: string
+  city?: string
 }
 
 export interface UpdateZipGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "zip"
-  postal_expression: Record<string, any>
+  province_code?: string
+  city?: string
+  postal_expression?: Record<string, any>
 }
 
 export type UpdateGeoZoneDTO =
