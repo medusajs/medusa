@@ -499,7 +499,7 @@ ___
 
 ### useAdminProducts
 
-This hook retrieves a list of products. The products can be filtered by fields such as `q` or `status` passed in 
+This hook retrieves a list of products. The products can be filtered by fields such as `q` or `status` passed in
 the `query` parameter. The products can also be sorted or paginated.
 
 #### Example
@@ -567,8 +567,8 @@ import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
-  const { 
-    products, 
+  const {
+    products,
     limit,
     offset,
     isLoading
@@ -619,16 +619,16 @@ type Props = {
 }
 
 const Product = ({ productId }: Props) => {
-  const { 
-    product, 
-    isLoading, 
+  const {
+    product,
+    isLoading,
   } = useAdminProduct(productId)
 
   return (
     <div>
       {isLoading && <span>Loading...</span>}
       {product && <span>{product.title}</span>}
-      
+
     </div>
   )
 }

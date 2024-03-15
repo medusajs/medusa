@@ -59,6 +59,8 @@ module.exports = {
   mdxOutput: true,
   maxLevel: 3,
   allReflectionsHaveOwnDocument: [
+    "api-key",
+    "customer",
     "inventory",
     "pricing",
     "product",
@@ -76,6 +78,140 @@ module.exports = {
     },
     internal: {
       maxLevel: 1,
+    },
+
+    // API KEY CONFIG
+    "^api_key": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+      },
+    },
+    "^api_key/IApiKeyModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the API Key Module.",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+        slug: "/references/api-key/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- API Key Module Reference",
+      },
+    },
+    "^api_key/.*IApiKeyModuleService/page\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IApiKeyModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the API Key Module.",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+        slug: "/references/api-key",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // API KEY MODELS CONFIG
+    "^api_key_models": {
+      frontmatterData: {
+        displayed_sidebar: "apiKeyModelReference",
+        slug: "/references/api-key/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the API Key Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- API Key Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/api_key_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the API Key Module",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyModelReference",
+        slug: "/references/api-key/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "API Key Module Data Models Reference",
+      },
+    },
+
+    // CUSTOMER CONFIG
+    "^customer": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+      },
+    },
+    "^customer/ICustomerModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Customer Module.",
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+        slug: "/references/customer/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Customer Module Reference",
+      },
+    },
+    "^customer/.*ICustomerModuleService/page\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ICustomerModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Customer Module.",
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+        slug: "/references/customer",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // CUSTOMER MODELS CONFIG
+    "^customer_models": {
+      frontmatterData: {
+        displayed_sidebar: "customerModelReference",
+        slug: "/references/customer/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Customer Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Customer Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/customer_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Customer Module",
+      frontmatterData: {
+        displayed_sidebar: "customerModelReference",
+        slug: "/references/customer/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Customer Module Data Models Reference",
+      },
     },
 
     // ENTITIES CONFIG
