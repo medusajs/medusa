@@ -43,8 +43,8 @@ describe("transformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
         "metadata",
-        "metadata.children",
         "metadata.parent",
+        "metadata.children",
         "metadata.product",
       ])
       expect(mockRequest.listConfig).toEqual({
@@ -152,7 +152,7 @@ describe("transformQuery", () => {
     } as unknown as Request
 
     queryConfig = {
-      defaultFields: [
+      defaults: [
         "id",
         "created_at",
         "updated_at",
@@ -262,6 +262,124 @@ describe("transformQuery", () => {
         ],
       })
     )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "+test_prop,-updated_at",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: [
+          "id",
+          "created_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id",
+          "test_prop",
+        ],
+      })
+    )
+  })
+
+  it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
+    let mockRequest = {
+      query: {
+        fields: "*product.variants,+product.id",
+      },
+    } as unknown as Request
+    const mockResponse = {} as Response
+    const nextFunction: NextFunction = jest.fn()
+
+    let queryConfig: any = {
+      defaults: [
+        "id",
+        "created_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowed: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "product",
+        "product.variants",
+      ],
+      isList: true,
+    }
+
+    let middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: [
+          "id",
+          "created_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id",
+          "product.id",
+        ],
+        relations: [
+          "metadata",
+          "metadata.parent",
+          "metadata.children",
+          "metadata.product",
+          "product",
+          "product.variants",
+        ],
+      })
+    )
+    expect(mockRequest.remoteQueryConfig).toEqual(
+      expect.objectContaining({
+        fields: [
+          "id",
+          "created_at",
+          "deleted_at",
+          "metadata.id",
+          "metadata.parent.id",
+          "metadata.children.id",
+          "metadata.product.id",
+          "product.id",
+          "product.variants.*",
+        ],
+      })
+    )
   })
 
   it("should throw when attempting to transform the input if disallowed fields are requested", async () => {
@@ -314,6 +432,8 @@ describe("transformQuery", () => {
       )
     )
 
+    //////////////////////////////
+
     mockRequest = {
       query: {
         expand: "product",
@@ -352,6 +472,136 @@ describe("transformQuery", () => {
         "metadata.parent",
         "metadata.children",
         "metadata.product",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [product] are not valid`
+      )
+    )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "*product",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowed: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [product] are not valid`
+      )
+    )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "*product.variants",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowed: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "product",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [product.variants] are not valid`
+      )
+    )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "product",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowed: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
       ],
       isList: true,
     }

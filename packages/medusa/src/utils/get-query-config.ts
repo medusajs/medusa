@@ -38,14 +38,10 @@ export function prepareListQuery<
   allowedFields = allowed.length ? allowed : allowedFields
   defaultFields = defaults.length ? defaults : defaultFields
 
-  // Fields such as *variants.options meaning that we want to select all fields
-  // from the variants.options relation without specifying them.
-  // In that case it needs to be removed from the fields and be part of the relations only
-  // TODO: It means that the remote query won't have it as part of the fields
-  // unless the properties are specified e.g variants.options.id, variants.options.name
-  // This is a limitation of the current implementation as we do not support select * from a
-  // relation. Once we add the support for it then we can update this logic
-  const starFields = new Set()
+  // e.g *product.variants meaning that we want all fields from the product.variants
+  // in that case it wont be part of the select but it will be part of the relations.
+  // For the remote query we will have to add the fields to the fields array as product.variants.*
+  const starFields: Set<string> = new Set()
 
   let allFields = new Set(defaultFields) as Set<string>
 
@@ -53,9 +49,13 @@ export function prepareListQuery<
     const customFields = fields.split(",").filter(Boolean)
     const shouldReplaceDefaultFields =
       !customFields.length ||
-      customFields.some(
-        (field) => !(field.startsWith("-") || field.startsWith("+"))
-      )
+      customFields.some((field) => {
+        return !(
+          field.startsWith("-") ||
+          field.startsWith("+") ||
+          field.startsWith("*")
+        )
+      })
     if (shouldReplaceDefaultFields) {
       allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
     } else {
@@ -64,16 +64,11 @@ export function prepareListQuery<
           allFields.add(field.replace(/^\+/, ""))
         } else if (field.startsWith("-")) {
           allFields.delete(field.replace(/^-/, ""))
+        } else {
+          allFields.add(field)
         }
       })
     }
-
-    allFields.forEach((field) => {
-      if (field.startsWith("*")) {
-        starFields.add(field.replace(/^\*/, ""))
-        allFields.delete(field)
-      }
-    })
 
     // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
     if (queryConfig.isList) {
@@ -82,12 +77,46 @@ export function prepareListQuery<
     allFields.add("id")
   }
 
-  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
-  const notAllowedFields = !allAllowedFields.size
-    ? new Set()
-    : getSetDifference(allFields, allAllowedFields)
+  allFields.forEach((field) => {
+    if (field.startsWith("*")) {
+      starFields.add(field.replace(/^\*/, ""))
+      allFields.delete(field)
+    }
+  })
 
-  if (allFields.size && notAllowedFields.size) {
+  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
+  const notAllowedFields: string[] = []
+
+  if (allowedFields.length) {
+    ;[...allFields, ...Array.from(starFields)].forEach((field) => {
+      const hasAllowedField = allowedFields.includes(field)
+
+      if (hasAllowedField) {
+        return
+      }
+
+      // Select full relation in that case it must match an allowed field fully
+      // e.g product.variants in that case we must have a product.variants in the allowedFields
+      if (starFields.has(field)) {
+        if (hasAllowedField) {
+          return
+        }
+        notAllowedFields.push(field)
+        return
+      }
+
+      const fieldStartsWithAllowedField = allowedFields.some((allowedField) =>
+        field.startsWith(allowedField)
+      )
+
+      if (!fieldStartsWithAllowedField) {
+        notAllowedFields.push(field)
+        return
+      }
+    })
+  }
+
+  if (allFields.size && notAllowedFields.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Requested fields [${Array.from(notAllowedFields).join(
@@ -162,11 +191,15 @@ export function prepareListQuery<
       order: orderBy,
     },
     remoteQueryConfig: {
-      fields: Array.from(allFields),
+      // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
+      fields: [
+        ...Array.from(allFields),
+        ...Array.from(starFields).map((f) => `${f}.*`),
+      ],
       variables: {
         skip: offset,
         take: limit ?? defaultLimit,
-        order: orderBy
+        order: orderBy,
       },
     },
   }

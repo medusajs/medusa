@@ -44,15 +44,22 @@ export function transformQuery<
       )
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
-      /**
-       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
-       */
-      req.allowedProperties = getAllowedProperties(
-        validated,
-        req.includes ?? {},
-        queryConfig
-      )
       attachListOrRetrieveConfig<TEntity>(req, queryConfig)
+      /**
+       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util and is supposed to
+       * only return the fields that are allowed to be queried either from the default of from what the user requested.
+       * The validation occurred above and the fields are already validated and should be used to filter the response.
+       */
+      const queryConfigRes = req.retrieveConfig ?? req.listConfig
+      req.allowedProperties = Array.from(
+        new Set(
+          [
+            ...(queryConfigRes.select ?? []),
+            ...(queryConfigRes.relations ?? []),
+            ...Object.keys(req.includes ?? {}),
+          ].filter(Boolean)
+        )
+      )
 
       next()
     } catch (e) {
@@ -85,15 +92,22 @@ export function transformStoreQuery<
       )
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
-      /**
-       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
-       */
-      req.allowedProperties = getStoreAllowedProperties(
-        validated,
-        req.includes ?? {},
-        queryConfig
-      )
       attachListOrRetrieveConfig<TEntity>(req, queryConfig)
+      /**
+       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util and is supposed to
+       * only return the fields that are allowed to be queried either from the default of from what the user requested.
+       * The validation occurred above and the fields are already validated and should be used to filter the response.
+       */
+      const queryConfigRes = req.retrieveConfig ?? req.listConfig
+      req.allowedProperties = Array.from(
+        new Set(
+          [
+            ...(queryConfigRes.select ?? []),
+            ...(queryConfigRes.relations ?? []),
+            ...Object.keys(req.includes ?? {}),
+          ].filter(Boolean)
+        )
+      )
 
       next()
     } catch (e) {
@@ -156,14 +170,15 @@ function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
 function getStoreAllowedProperties<TEntity extends BaseEntity>(
   validated: RequestQueryFields,
   includesOptions: Record<string, boolean>,
-  queryConfig?: QueryConfig<TEntity>
+  queryConfig: QueryConfig<TEntity> = {}
 ): string[] {
   const allowed: string[] = []
 
-  const includeKeys = Object.keys(includesOptions)
   const fields = validated.fields
     ? validated.fields?.split(",")
-    : queryConfig?.allowedFields || []
+    : queryConfig.allowed ?? queryConfig.allowedFields ?? []
+
+  const includeKeys = Object.keys(includesOptions)
   const expand =
     validated.expand || includeKeys.length
       ? [...(validated.expand?.split(",") || []), ...includeKeys]
@@ -183,32 +198,19 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
  * Build the admin allowed props based on the custom fields query params, the defaults and the includes options.
  * Since admin can access everything, it is only in order to return what the user asked for through fields and expand query params.
  * This can be used later with `cleanResponseData` in order to clean up the returned objects to the client.
- * @param queryConfig
- * @param validated
- * @param includesOptions
+ * @param req
  */
-function getAllowedProperties<TEntity extends BaseEntity>(
-  validated: RequestQueryFields,
-  includesOptions: Record<string, boolean>,
-  queryConfig?: QueryConfig<TEntity>
+function getAllowedProperties(
+  req: Request
 ): string[] {
-  const allowed: (string | keyof TEntity)[] = []
-
-  const includeKeys = Object.keys(includesOptions)
-  const fields = validated.fields
-    ? validated.fields?.split(",")
-    : queryConfig?.defaultFields || []
-  const expand =
-    validated.expand || includeKeys.length
-      ? [...(validated.expand?.split(",") || []), ...includeKeys]
-      : queryConfig?.defaultRelations ||
-        // Only to maintain backward compatibility when default relations is not defined
-        stringToSelectRelationObject(
-          (queryConfig?.defaultFields ?? []) as string[]
-        ).relations ||
-        []
-
-  allowed.push(...fields, ...objectToStringPath(buildSelects(expand)))
-
-  return allowed as string[]
+  const queryConfig = req.retrieveConfig ?? req.listConfig
+  return Array.from(
+    new Set(
+      [
+        ...(queryConfig.select ?? []),
+        ...(queryConfig.relations ?? []),
+        ...Object.keys(req.includes ?? {}),
+      ].filter(Boolean)
+    )
+  )
 }
