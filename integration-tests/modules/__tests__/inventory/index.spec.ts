@@ -388,9 +388,9 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.skip("List inventory items", () => {
-        let location1
-        let location2
+      describe("List inventory items", () => {
+        let location1 = "loc_1"
+        let location2 = "loc_2"
         beforeEach(async () => {
           await service.create([
             {
@@ -405,39 +405,23 @@ medusaIntegrationTestRunner({
               width: 150,
             },
           ])
-
-          const stockLocationService: IStockLocationService =
-            appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
-
-          location1 = await stockLocationService.create({
-            name: "location-1",
-          })
-
-          location2 = await stockLocationService.create({
-            name: "location-2",
-          })
         })
 
         it("should list the inventory items", async () => {
           const [{ id: inventoryItemId }] = await service.list({})
 
-          await api.post(
-            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+          await service.createInventoryLevels([
             {
-              location_id: location1.id,
+              inventory_item_id: inventoryItemId,
+              location_id: location1,
               stocked_quantity: 10,
             },
-            adminHeaders
-          )
-
-          await api.post(
-            `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: location2.id,
+              inventory_item_id: inventoryItemId,
+              location_id: location2,
               stocked_quantity: 5,
             },
-            adminHeaders
-          )
+          ])
 
           const response = await api.get(`/admin/inventory-items`, adminHeaders)
 
@@ -460,7 +444,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location1.id,
+                  location_id: location1,
                   stocked_quantity: 10,
                   reserved_quantity: 0,
                   incoming_quantity: 0,
@@ -470,7 +454,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   inventory_item_id: inventoryItemId,
-                  location_id: location2.id,
+                  location_id: location2,
                   stocked_quantity: 5,
                   reserved_quantity: 0,
                   incoming_quantity: 0,

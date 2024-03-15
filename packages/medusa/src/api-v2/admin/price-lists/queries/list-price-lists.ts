@@ -1,11 +1,8 @@
-import {
-  MedusaContainer,
-  PriceListRuleDTO,
-  PriceSetMoneyAmountDTO,
-  ProductVariantDTO,
-} from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  buildPriceListRules,
+  buildPriceSetPricesForCore,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -37,7 +34,7 @@ export async function listPriceLists({
 
   for (const priceList of priceLists) {
     priceList.rules = buildPriceListRules(priceList.price_list_rules || [])
-    priceList.prices = buildPriceSetPrices(
+    priceList.prices = buildPriceSetPricesForCore(
       priceList.price_set_money_amounts || []
     )
   }
@@ -47,44 +44,4 @@ export async function listPriceLists({
   )
 
   return [sanitizedPriceLists, metadata.count]
-}
-
-function buildPriceListRules(
-  priceListRules: PriceListRuleDTO[]
-): Record<string, string[]> {
-  return priceListRules.reduce((acc, curr) => {
-    const ruleAttribute = curr.rule_type.rule_attribute
-    const ruleValues = curr.price_list_rule_values || []
-
-    if (ruleAttribute) {
-      acc[ruleAttribute] = ruleValues.map((ruleValue) => ruleValue.value)
-    }
-
-    return acc
-  }, {})
-}
-
-function buildPriceSetPrices(
-  priceSetMoneyAmounts: (PriceSetMoneyAmountDTO & {
-    price_set: PriceSetMoneyAmountDTO["price_set"] & {
-      variant?: ProductVariantDTO
-    }
-  })[]
-): Record<string, any>[] {
-  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const productVariant = priceSetMoneyAmount.price_set?.variant
-    const rules = priceSetMoneyAmount.price_rules?.reduce((acc, curr) => {
-      if (curr.rule_type.rule_attribute) {
-        acc[curr.rule_type.rule_attribute] = curr.value
-      }
-
-      return acc
-    }, {})
-
-    return {
-      ...priceSetMoneyAmount.money_amount,
-      variant_id: productVariant?.id ?? null,
-      rules,
-    }
-  })
 }

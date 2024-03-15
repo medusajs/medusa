@@ -3,7 +3,9 @@ import {
   Collection,
   Entity,
   Filter,
+  Formula,
   OnInit,
+  OnLoad,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -107,6 +109,20 @@ export class InventoryItem {
     (inventoryLevel) => inventoryLevel.inventory_item
   )
   location_levels = new Collection<InventoryLevel>(this)
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(reserved_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  reserved_quantity: number
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(stocked_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  stocked_quantity: number
 
   @BeforeCreate()
   private beforeCreate(): void {
