@@ -17,7 +17,6 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 
@@ -37,7 +36,6 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<UpdateProductOptionDTO>,
   res: MedusaResponse
 ) => {
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 
@@ -60,7 +58,6 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 

@@ -34,7 +34,7 @@ export const simpleProductVariantFactory = async (
 
   const id = data.id || `simple-variant-${Math.random() * 1000}`
 
-  const toSave = manager.create(ProductVariant, {
+  const toSave = await manager.create(ProductVariant, {
     id,
     product_id: data.product_id,
     sku: data.sku,
