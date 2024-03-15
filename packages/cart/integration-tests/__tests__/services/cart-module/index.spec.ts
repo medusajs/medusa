@@ -2334,7 +2334,7 @@ describe("Cart Module Service", () => {
     })
   })
 
-  describe("retrieve with totals decoration", () => {
+  describe.only("retrieve with totals decoration", () => {
     const testSetup = async () => {
       const [createdCart] = await service.create([
         {
@@ -2396,14 +2396,31 @@ describe("Cart Module Service", () => {
     }
 
     const expectedRes = {
-      total: 784, // 600 (subtotal) + 116 (shipping) + 112 (item tax) + 16 (shipping tax) - 60 (discount)
       subtotal: 600,
-      item_total: 672,
-      shipping_total: 116,
-      discount_total: 60,
+
+      total: 784, // 600 (subtotal) + 116 (shipping) + 112 (item tax) + 16 (shipping tax) - 60 (discount)
       tax_total: 128,
+
+      item_total: 672,
+      item_subtotal: 600,
       item_tax_total: 112,
+
+      shipping_total: 116,
+      shipping_subtotal: 100,
       shipping_tax_total: 16,
+
+      discount_total: 60,
+      discount_tax_total: 12,
+
+      original_total: 800,
+      original_tax_total: 140,
+
+      original_item_total: 720,
+      original_item_tax_total: 120,
+
+      original_shipping_total: 120,
+      original_shipping_tax_total: 20,
+
       items: [
         expect.objectContaining({
           unit_price: 100,
@@ -2449,12 +2466,33 @@ describe("Cart Module Service", () => {
         const totals = pickDeep(cart, [
           "total",
           "subtotal",
-          "shipping_total",
           "tax_total",
+
           "discount_total",
-          "item_total",
-          "item_tax_total",
+          "discount_tax_total",
+
+          "gift_card_total",
+          "gift_card_tax_total",
+
+          "shipping_total",
+          "shipping_subtotal",
           "shipping_tax_total",
+
+          "item_total",
+          "item_subtotal",
+          "item_tax_total",
+
+          "original_total",
+          "original_tax_total",
+
+          "original_gift_card_total",
+          "original_gift_card_tax_total",
+
+          "original_item_total",
+          "original_item_tax_total",
+
+          "original_shipping_tax_total",
+          "original_shipping_total",
 
           "items.unit_price",
           "items.subtotal",

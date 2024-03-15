@@ -20,9 +20,13 @@ export interface GetShippingMethodTotalOutput {
   amount: BigNumber
 
   subtotal: BigNumber
+
   total: BigNumber
-  discount_total: BigNumber
   original_total: BigNumber
+
+  discount_total: BigNumber
+  discount_tax_total
+
   tax_total: BigNumber
   original_tax_total: BigNumber
 }
@@ -53,40 +57,53 @@ export function getShippingMethodTotals(
 ) {
   const amount = MathBN.convert(shippingMethod.amount)
 
+  const sumTaxRate = MathBN.sum(
+    // @ts-ignore
+    shippingMethod.tax_lines?.map((taxLine) => MathBN.convert(taxLine.rate))
+  )
   const discountTotal = calculateAdjustmentTotal({
     adjustments: shippingMethod.adjustments || [],
   })
-
-  const taxTotal = MathBN.convert(0)
-  const originalTaxTotal = MathBN.convert(0)
+  const discountTaxTotal = MathBN.mult(discountTotal, sumTaxRate)
 
   const totals: GetShippingMethodTotalOutput = {
     amount: new BigNumber(amount),
-    total: new BigNumber(amount),
-    discount_total: new BigNumber(discountTotal),
-    original_total: new BigNumber(amount),
+
     subtotal: new BigNumber(amount),
-    tax_total: new BigNumber(taxTotal),
-    original_tax_total: new BigNumber(originalTaxTotal),
+
+    total: new BigNumber(amount),
+    original_total: new BigNumber(amount),
+
+    discount_total: new BigNumber(discountTotal),
+    discount_tax_total: new BigNumber(discountTaxTotal),
+
+    tax_total: new BigNumber(0),
+    original_tax_total: new BigNumber(0),
   }
 
   const taxLines = shippingMethod.tax_lines || []
-  const taxableAmount = MathBN.sub(amount, discountTotal)
 
-  const newTaxTotal = calculateTaxTotal({
+  const taxableAmountWithDiscount = MathBN.sub(amount, discountTotal)
+  const taxableAmount = amount
+
+  const taxTotal = calculateTaxTotal({
+    taxLines,
+    includesTax: context.includeTax,
+    taxableAmount: taxableAmountWithDiscount,
+  })
+  totals.tax_total = new BigNumber(taxTotal)
+
+  const originalTaxTotal = calculateTaxTotal({
     taxLines,
     includesTax: context.includeTax,
     taxableAmount,
   })
-
-  totals.tax_total = new BigNumber(newTaxTotal)
-  // TODO: Calculate original tax total by excluding discounts
-  totals.original_tax_total = new BigNumber(newTaxTotal)
+  totals.original_tax_total = new BigNumber(originalTaxTotal)
 
   const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = MathBN.add(shippingMethod.amount, newTaxTotal)
+    const subtotal = MathBN.add(shippingMethod.amount, taxTotal)
     totals.subtotal = new BigNumber(subtotal)
   } else {
     const originalTotal = MathBN.add(
@@ -94,8 +111,9 @@ export function getShippingMethodTotals(
       totals.original_tax_total
     )
     const total = MathBN.add(shippingMethod.amount, totals.tax_total)
-    totals.original_total = new BigNumber(originalTotal)
+    
     totals.total = new BigNumber(total)
+    totals.original_total = new BigNumber(originalTotal)
   }
 
   return totals

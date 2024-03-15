@@ -139,7 +139,7 @@ export default class CartModuleService<
       "discount_total",
     ]
 
-    const shouldDecorate = config.select?.some((field) =>
+    const shouldDecorate = (config?.select || []).some((field) =>
       totalFields.includes(field)
     )
 

@@ -22,9 +22,13 @@ export interface GetItemTotalOutput {
   unit_price: BigNumber
 
   subtotal: BigNumber
+
   total: BigNumber
   original_total: BigNumber
+
   discount_total: BigNumber
+  discount_tax_total: BigNumber
+
   tax_total: BigNumber
   original_tax_total: BigNumber
 }
@@ -50,12 +54,14 @@ function getLineItemTotals(
 ) {
   const subtotal = MathBN.mult(item.unit_price, item.quantity)
 
+  const sumTaxRate = MathBN.sum(
+    // @ts-ignore
+    (item.tax_lines ?? []).map((taxLine) => taxLine.rate)
+  )
   const discountTotal = calculateAdjustmentTotal({
     adjustments: item.adjustments || [],
   })
-
-  const taxTotal = MathBN.convert(0)
-  const originalTaxTotal = MathBN.convert(0)
+  const discountTaxTotal = MathBN.mult(discountTotal, sumTaxRate)
 
   const total = MathBN.sub(subtotal, discountTotal)
 
@@ -64,24 +70,33 @@ function getLineItemTotals(
     unit_price: item.unit_price,
 
     subtotal: new BigNumber(subtotal),
+
     total: new BigNumber(total),
     original_total: new BigNumber(subtotal),
+
     discount_total: new BigNumber(discountTotal),
-    tax_total: new BigNumber(taxTotal),
-    original_tax_total: new BigNumber(originalTaxTotal),
+    discount_tax_total: new BigNumber(discountTaxTotal),
+
+    tax_total: new BigNumber(0),
+    original_tax_total: new BigNumber(0),
   }
 
-  const taxableAmount = MathBN.sub(subtotal, discountTotal)
+  const taxableAmountWithDiscount = MathBN.sub(subtotal, discountTotal)
+  const taxableAmount = subtotal
 
-  const newTaxTotal = calculateTaxTotal({
+  const taxTotal = calculateTaxTotal({
+    taxLines: item.tax_lines || [],
+    includesTax: context.includeTax,
+    taxableAmount: taxableAmountWithDiscount,
+  })
+  totals.tax_total = new BigNumber(taxTotal)
+
+  const originalTaxTotal = calculateTaxTotal({
     taxLines: item.tax_lines || [],
     includesTax: context.includeTax,
     taxableAmount,
   })
-
-  totals.tax_total = new BigNumber(newTaxTotal)
-  // TODO: Calculate original tax total by excluding discounts
-  totals.original_tax_total = new BigNumber(newTaxTotal)
+  totals.original_tax_total = new BigNumber(originalTaxTotal)
 
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 

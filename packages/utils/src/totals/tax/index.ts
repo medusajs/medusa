@@ -5,13 +5,15 @@ export function calculateTaxTotal({
   taxLines,
   includesTax,
   taxableAmount,
+  taxRate
 }: {
   taxLines: TaxLineDTO[]
   includesTax?: boolean
   taxableAmount: BigNumberInput
+  taxRate?: number
 }) {
   const taxTotal = taxLines.reduce((acc, line) => {
-    const rate = MathBN.convert(line.rate)
+    const rate = MathBN.convert(taxRate ?? line.rate)
     let taxAmount = MathBN.mult(taxableAmount, rate)
 
     if (includesTax) {
