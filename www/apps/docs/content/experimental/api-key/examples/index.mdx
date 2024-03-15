@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKey = await apiKeyModuleService.create({
       title: "Publishable API key",
       type: "publishable",
-      created_by: "user_123"
+      created_by: "user_123",
     })
 
     response.json({
@@ -50,7 +50,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKey = await apiKeyModuleService.create({
       title: "Publishable API key",
       type: "publishable",
-      created_by: "user_123"
+      created_by: "user_123",
     })
 
     return NextResponse.json({
@@ -128,7 +128,9 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
-    const revokedKey = await apiKeyModuleService.revoke(request.params.id)
+    const revokedKey = await apiKeyModuleService.revoke(
+      request.params.id
+    )
 
     response.json({
       api_key: revokedKey,
@@ -250,12 +252,14 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
-    const revokedKey = await apiKeyModuleService.revoke(request.params.id)
+    const revokedKey = await apiKeyModuleService.revoke(
+      request.params.id
+    )
 
     const newKey = await apiKeyModuleService.create({
       title: revokedKey.title,
       type: revokedKey.type,
-      created_by: revokedKey.created_by
+      created_by: revokedKey.created_by,
     })
 
     response.json({
@@ -291,7 +295,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const newKey = await apiKeyModuleService.create({
       title: revokedKey.title,
       type: revokedKey.type,
-      created_by: revokedKey.created_by
+      created_by: revokedKey.created_by,
     })
 
     return NextResponse.json({

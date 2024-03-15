@@ -21,13 +21,13 @@ Store and manage API keys in your store. You can create both publishable and sec
 const pubApiKey = await apiKeyModuleService.create({
   title: "Publishable API key",
   type: "publishable",
-  created_by: "user_123"
+  created_by: "user_123",
 })
 
 const secretApiKey = await apiKeyModuleService.create({
   title: "Authentication Key",
   type: "secret",
-  created_by: "user_123"
+  created_by: "user_123",
 })
 ```
 
@@ -64,7 +64,7 @@ const revokedKey = await apiKeyModuleService.revoke("apk_1")
 const newKey = await apiKeyModuleService.create({
   title: revokedKey.title,
   type: revokedKey.type,
-  created_by: revokedKey.created_by
+  created_by: revokedKey.created_by,
 })
 ```
 

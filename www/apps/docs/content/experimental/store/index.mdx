@@ -16,7 +16,7 @@ A store holds the main configurations of your commerce store, such as supported 
 ```ts
 const store = await storeModuleService.create({
   name: "My Store",
-  supported_currency_codes: ["usd"]
+  supported_currency_codes: ["usd"],
 })
 ```
 
@@ -27,14 +27,14 @@ You can create multiple stores, each having its own configurations.
 ```ts
 const store1 = await storeModuleService.create({
   name: "USA Store",
-  supported_currency_codes: ["usd"]
+  supported_currency_codes: ["usd"],
 })
 
 const store2 = storeModuleService.create({
   name: "Europe Store",
   supported_currency_codes: [
-    "eur"
-  ]
+    "eur",
+  ],
 })
 ```
 

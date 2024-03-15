@@ -24,7 +24,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
     const store = await storeModuleService.create({
       name: "My Store",
-      supported_currency_codes: ["usd"]
+      supported_currency_codes: ["usd"],
     })
 
     response.json({
@@ -48,7 +48,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
     const store = await storeModuleService.create({
       name: "My Store",
-      supported_currency_codes: ["usd"]
+      supported_currency_codes: ["usd"],
     })
 
     response.json({
@@ -192,7 +192,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       request.scope.resolve(ModuleRegistrationName.STORE)
 
     const store = await storeModuleService.update({
-      name: "Change Store"
+      name: "Change Store",
     })
 
     response.json({
@@ -224,7 +224,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService = await initializeStoreModule()
 
     const store = await storeModuleService.update({
-      name: "Change Store"
+      name: "Change Store",
     })
 
     return NextResponse.json({ store })

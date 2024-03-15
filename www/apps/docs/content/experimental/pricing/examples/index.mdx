@@ -177,7 +177,9 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSet = await pricingModuleService.retrieve(params.id)
+    const priceSet = await pricingModuleService.retrieve(
+      params.id
+    )
 
     return NextResponse.json({ price_set: priceSet })
   }
@@ -235,7 +237,9 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSet = await pricingModuleService.retrieve(params.id)
+    const priceSet = await pricingModuleService.retrieve(
+      params.id
+    )
 
     return NextResponse.json({ price_set: priceSet })
   }
@@ -361,12 +365,13 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService = await initializePricingModule()
     const body = await request.json()
 
-    const currencies = await pricingModuleService.createCurrencies([{
-      code: "EUR",
-      symbol: "€",
-      symbol_native: "€",
-      name: "Euro",
-    }])
+    const currencies = 
+      await pricingModuleService.createCurrencies([{
+        code: "EUR",
+        symbol: "€",
+        symbol_native: "€",
+        name: "Euro",
+      }])
 
     return NextResponse.json({ currencies })
   }
@@ -474,8 +479,8 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   ```ts
   import { NextResponse } from "next/server"
-  import { PriceListType } from "@medusajs/medusa";
-
+  import { PriceListType } from "@medusajs/medusa"
+  
   import {
     initialize as initializePricingModule,
   } from "@medusajs/pricing"
@@ -483,25 +488,26 @@ In this document, you’ll find common examples of how you can use the Pricing M
   export async function POST(request: Request) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceLists = await pricingModuleService.createPriceLists([
-      {
-        title: "My Sale",
-        description: "This is my sale",
-        type: PriceListType.SALE,
-        starts_at: Date.parse("01/10/2023").toString(),
-        ends_at: Date.parse("31/10/2023").toString(),
-        rules: {
-          region_id: ["DE", "DK"],
-        },
-        prices: [
-          {
-            amount: 400,
-            currency_code: "EUR",
-            price_set_id: "pset_124",
+    const priceLists = 
+      await pricingModuleService.createPriceLists([
+        {
+          title: "My Sale",
+          description: "This is my sale",
+          type: PriceListType.SALE,
+          starts_at: Date.parse("01/10/2023").toString(),
+          ends_at: Date.parse("31/10/2023").toString(),
+          rules: {
+            region_id: ["DE", "DK"],
           },
-        ],
-      }
-    ])
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "pset_124",
+            },
+          ],
+        },
+      ])
 
     return NextResponse.json({ price_lists: priceLists })
   }
