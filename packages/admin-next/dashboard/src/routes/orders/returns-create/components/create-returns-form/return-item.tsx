@@ -28,24 +28,24 @@ function ReturnItem({
   const { t } = useTranslation()
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl">
+    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
       <div className="flex gap-x-2 border-b p-3 text-sm">
         <div className="flex flex-grow items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
           <div className="flex flex-col">
             <div>
-              <Text as="span" weight="plus">
+              <Text className="txt-small" as="span" weight="plus">
                 {item.title}
               </Text>
               {item.variant.sku && <span>(item.variant.sku)</span>}
             </div>
-            <Text as="div" className="text-ui-fg-subtle">
+            <Text as="div" className="text-ui-fg-subtle txt-small">
               {item.variant.title}
             </Text>
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle flex flex-shrink-0">
+        <div className="text-ui-fg-subtle txt-small flex flex-shrink-0">
           <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
         </div>
 
@@ -69,18 +69,18 @@ function ReturnItem({
       <div className="block p-3 text-sm">
         <div className="flex justify-between gap-x-2">
           <div className="flex-1">
-            <Text weight="plus" className="mb-2">
+            <Text weight="plus" className="txt-small mb-2">
               {t("fields.quantity")}
             </Text>
             <Form.Field
               control={form.control}
-              name={`quantity-${item.id}`}
+              name={`quantity.${item.id}`}
               render={({ field }) => {
                 return (
                   <Form.Item>
                     <Form.Control>
                       <Input
-                        className="bg-ui-bg-base w-full rounded-lg"
+                        className="bg-ui-bg-base txt-small w-full rounded-lg"
                         defaultValue={item.quantity}
                         min={1}
                         max={item.quantity}
@@ -89,16 +89,17 @@ function ReturnItem({
                         onChange={(e) => {
                           const val = e.target.value
                           if (val === "") {
-                            form.setValue(item.id, null)
+                            form.setValue(`quantity.${item.id}`, null)
                           } else {
-                            form.setValue(item.id, Number(val))
+                            form.setValue(`quantity.${item.id}`, Number(val))
                           }
                         }}
                         onBlur={() => {
                           if (
-                            typeof form.getValues()[item.id] === "undefined"
+                            typeof form.getValues()[`quantity.${item.id}`] ===
+                            "undefined"
                           ) {
-                            form.setValue(item.id, 1)
+                            form.setValue(`quantity.${item.id}`, 1)
                           }
                           onQuantityChangeComplete(item.id)
                         }}
@@ -112,7 +113,7 @@ function ReturnItem({
           </div>
 
           <div className="flex-1">
-            <Text weight="plus" className="mb-2">
+            <Text weight="plus" className="txt-small mb-2">
               {t("fields.reason")}
             </Text>
             <Form.Field
@@ -123,7 +124,10 @@ function ReturnItem({
                   <Form.Item>
                     <Form.Control>
                       <Select onValueChange={onChange} {...field}>
-                        <Select.Trigger className="bg-ui-bg-base" ref={ref}>
+                        <Select.Trigger
+                          className="bg-ui-bg-base txt-small"
+                          ref={ref}
+                        >
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
@@ -143,7 +147,7 @@ function ReturnItem({
           </div>
 
           <div className="flex-1">
-            <Text weight="plus" className="mb-2">
+            <Text weight="plus" className="txt-small mb-2">
               {t("fields.note")}
             </Text>
             <Form.Field
@@ -153,7 +157,7 @@ function ReturnItem({
                 return (
                   <Form.Item>
                     <Form.Control>
-                      <Input className="bg-ui-bg-base" {...field} />
+                      <Input className="bg-ui-bg-base txt-small" {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>

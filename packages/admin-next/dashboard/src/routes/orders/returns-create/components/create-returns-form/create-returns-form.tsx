@@ -25,18 +25,24 @@ type StepStatus = {
 export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
 
+  const [selectedItems, setSelectedItems] = useState([])
+  const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
+
   const isSubmitting = false
   const isEditDirty = false
 
-  const form = useForm({ defaultValues: {} })
+  const selected = order.items.filter((i) => selectedItems.includes(i.id))
+
+  const form = useForm({
+    defaultValues: {
+      quantity: {},
+    },
+  })
 
   const [status, setStatus] = React.useState<StepStatus>({
     [Tab.ITEMS]: "not-started",
     [Tab.DETAILS]: "not-started",
   })
-
-  const [selectedItems, setSelectedItems] = useState([])
-  const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
 
   const onTabChange = React.useCallback(
     async (value: Tab) => {
@@ -132,11 +138,7 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
             />
           </ProgressTabs.Content>
           <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-            <ReturnsForm
-              form={form}
-              items={order.items.filter((i) => selectedItems.includes(i.id))}
-              order={order}
-            />
+            <ReturnsForm form={form} items={selected} order={order} />
           </ProgressTabs.Content>
         </RouteFocusModal.Body>
       </ProgressTabs>

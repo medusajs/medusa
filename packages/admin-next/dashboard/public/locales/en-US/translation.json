@@ -25,6 +25,7 @@
     "revoked": "Revoked",
     "admin": "Admin",
     "store": "Store",
+    "details": "Details",
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
@@ -54,6 +55,8 @@
     "revoke": "Revoke",
     "cancel": "Cancel",
     "save": "Save",
+    "next": "Next",
+    "back": "Back",
     "continue": "Continue",
     "edit": "Edit",
     "download": "Download",
@@ -221,6 +224,7 @@
       }
     },
     "returns": {
+      "chooseItems": "Choose items",
       "noInventoryLevel": "No inventory level",
       "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location."
     },
@@ -651,6 +655,8 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "reason" : "Reason",
+    "note": "Note",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "status": "Status",
