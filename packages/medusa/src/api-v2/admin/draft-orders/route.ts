@@ -1,10 +1,11 @@
+import { createOrdersWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   OrderStatus,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultAdminStoreFields } from "./query-config"
+import { defaultAdminOrderFields } from "./query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -20,7 +21,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: defaultAdminStoreFields,
+    fields: defaultAdminOrderFields,
   })
 
   const { rows: stores, metadata } = await remoteQuery(queryObject)
@@ -36,8 +37,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await createOrdersWorkflow(req.scope).run({
     input: {
-      data: {
-        ...(req.validatedBody as CreateDraftOrderDTO),
+      orders: {
+        ...(req.validatedBody as any) /* as CreateDraftOrderDTO */,
         status: OrderStatus.DRAFT,
       },
     },

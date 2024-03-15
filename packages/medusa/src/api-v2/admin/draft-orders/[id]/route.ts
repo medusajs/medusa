@@ -1,3 +1,7 @@
+import {
+  deleteOrdersWorkflow,
+  updateOrdersWorkflow,
+} from "@medusajs/core-flows"
 import { UpdateOrderDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -40,7 +44,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await deleteOrdersWorkflow(req.scope).run({
     input: {
-      selector: { id: req.params.id },
+      ids: Array.isArray(req.params.id) ? req.params.id : [req.params.id],
     },
     throwOnError: false,
   })
