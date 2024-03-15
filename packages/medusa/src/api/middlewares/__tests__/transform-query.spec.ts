@@ -220,13 +220,14 @@ describe("transformQuery", () => {
 
     mockRequest = {
       query: {
-        fields: "+test_prop,-updated_at",
+        fields: "+test_prop,-prop-test-something",
       },
     } as unknown as Request
 
     queryConfig = {
       defaultFields: [
         "id",
+        "prop-test-something",
         "created_at",
         "updated_at",
         "deleted_at",
@@ -253,6 +254,7 @@ describe("transformQuery", () => {
         select: [
           "id",
           "created_at",
+          "updated_at",
           "deleted_at",
           "metadata.id",
           "metadata.parent.id",
