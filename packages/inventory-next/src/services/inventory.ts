@@ -187,7 +187,7 @@ export default class InventoryModuleService<
     const serializedReservations = await this.baseRepository_.serialize<
       InventoryNext.ReservationItemDTO[] | InventoryNext.ReservationItemDTO
     >(created, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(input)
@@ -286,7 +286,7 @@ export default class InventoryModuleService<
     const serializedItems = await this.baseRepository_.serialize<
       InventoryNext.InventoryItemDTO | InventoryNext.InventoryItemDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(input) ? serializedItems : serializedItems[0]
@@ -338,7 +338,7 @@ export default class InventoryModuleService<
     const serialized = await this.baseRepository_.serialize<
       InventoryNext.InventoryLevelDTO[] | InventoryNext.InventoryLevelDTO
     >(created, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(input) ? serialized : serialized[0]
@@ -397,7 +397,7 @@ export default class InventoryModuleService<
     const serializedItems = await this.baseRepository_.serialize<
       InventoryNext.InventoryItemDTO | InventoryNext.InventoryItemDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(input) ? serializedItems : serializedItems[0]
@@ -511,7 +511,7 @@ export default class InventoryModuleService<
       | InventoryTypes.InventoryNext.InventoryLevelDTO
       | InventoryTypes.InventoryNext.InventoryLevelDTO[]
     >(levels, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(updates) ? updatedLevels : updatedLevels[0]
@@ -595,7 +595,7 @@ export default class InventoryModuleService<
     const serialized = await this.baseRepository_.serialize<
       InventoryNext.ReservationItemDTO | InventoryNext.ReservationItemDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(input) ? serialized : serialized[0]
@@ -803,7 +803,7 @@ export default class InventoryModuleService<
     return await this.baseRepository_.serialize<InventoryNext.InventoryLevelDTO>(
       result,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }

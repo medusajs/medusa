@@ -66,7 +66,7 @@ export class InventoryLevel {
     fieldName: "inventory_item_id",
     type: "text",
     mapToPk: true,
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   @InventoryLevelInventoryItemIdIndex.MikroORMIndex()
   inventory_item_id: string

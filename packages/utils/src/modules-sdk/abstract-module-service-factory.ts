@@ -297,7 +297,7 @@ export function abstractModuleServiceFactory<
           ].retrieve(id, config, sharedContext)
 
           return await this.baseRepository_.serialize<T>(entities, {
-            populate: true,
+            populate: "*",
           })
         }
 
@@ -315,7 +315,7 @@ export function abstractModuleServiceFactory<
           const entities = await service.list(filters, config, sharedContext)
 
           return await this.baseRepository_.serialize<T[]>(entities, {
-            populate: true,
+            populate: "*",
           })
         }
 
@@ -335,7 +335,7 @@ export function abstractModuleServiceFactory<
 
           return [
             await this.baseRepository_.serialize<T[]>(entities, {
-              populate: true,
+              populate: "*",
             }),
             count,
           ]
@@ -389,7 +389,7 @@ export function abstractModuleServiceFactory<
           const softDeletedEntities = await this.baseRepository_.serialize<T[]>(
             entities,
             {
-              populate: true,
+              populate: "*",
             }
           )
 

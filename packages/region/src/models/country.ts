@@ -38,7 +38,7 @@ export default class Country {
     entity: () => Region,
     fieldName: "region_id",
     nullable: true,
-    onDelete: "set null",
+    deleteRule: "set null",
   })
   region?: Region | null
 }

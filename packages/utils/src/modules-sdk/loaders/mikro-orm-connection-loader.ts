@@ -115,6 +115,13 @@ async function loadDefault({
     pathToMigrations
   )
 
+  if (!orm) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Could not create MikroORM connection`
+    )
+  }
+
   return orm.em.fork()
 }
 
@@ -125,6 +132,7 @@ async function loadShared({ database, container, entities, pathToMigrations }) {
       allowUnregistered: true,
     }
   )
+
   if (!sharedConnection) {
     throw new Error(
       "The module is setup to use a shared resources but no shared connection is present."

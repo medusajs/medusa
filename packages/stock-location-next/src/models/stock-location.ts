@@ -51,7 +51,7 @@ export class StockLocation {
     type: "text",
     mapToPk: true,
     nullable: true,
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   address_id: string | null
 

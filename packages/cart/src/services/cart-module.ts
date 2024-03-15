@@ -215,7 +215,7 @@ export default class CartModuleService<
     const serializedResult = await this.baseRepository_.serialize<
       CartTypes.CartDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
 
     return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
@@ -295,7 +295,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
       items,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -360,7 +360,7 @@ export default class CartModuleService<
       return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO>(
         item,
         {
-          populate: true,
+          populate: "*",
         }
       )
     }
@@ -379,7 +379,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
       items,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -532,7 +532,7 @@ export default class CartModuleService<
 
     return await this.baseRepository_.serialize<
       CartTypes.CartShippingMethodDTO[]
-    >(methods, { populate: true })
+    >(methods, { populate: "*" })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -620,7 +620,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentDTO[]
     >(addedAdjustments, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -675,7 +675,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -732,7 +732,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodAdjustmentDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -796,7 +796,7 @@ export default class CartModuleService<
       return await this.baseRepository_.serialize<CartTypes.ShippingMethodAdjustmentDTO>(
         addedAdjustments[0],
         {
-          populate: true,
+          populate: "*",
         }
       )
     }
@@ -804,7 +804,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodAdjustmentDTO[]
     >(addedAdjustments, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -856,7 +856,7 @@ export default class CartModuleService<
     const serialized = await this.baseRepository_.serialize<
       CartTypes.LineItemTaxLineDTO[]
     >(addedTaxLines, {
-      populate: true,
+      populate: "*",
     })
 
     if (isObject(cartIdOrData)) {
@@ -917,7 +917,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<CartTypes.LineItemTaxLineDTO[]>(
       result,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -971,7 +971,7 @@ export default class CartModuleService<
       await this.baseRepository_.serialize<CartTypes.ShippingMethodTaxLineDTO>(
         addedTaxLines[0],
         {
-          populate: true,
+          populate: "*",
         }
       )
 
@@ -1035,7 +1035,7 @@ export default class CartModuleService<
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodTaxLineDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 }

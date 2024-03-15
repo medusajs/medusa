@@ -86,7 +86,7 @@ export class ReservationItem {
     fieldName: "inventory_item_id",
     type: "text",
     mapToPk: true,
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   inventory_item_id: string
 

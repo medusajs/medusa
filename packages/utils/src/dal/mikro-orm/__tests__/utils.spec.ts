@@ -42,7 +42,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           InternalCircularDependencyEntity1,
         ],
         dbName: "test",
-        type: "postgresql",
+        discovery: { checkDuplicateFieldNames: true },
       })
     })
 

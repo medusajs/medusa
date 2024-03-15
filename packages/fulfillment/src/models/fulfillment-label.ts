@@ -52,7 +52,7 @@ export default class FulfillmentLabel {
     columnType: "text",
     mapToPk: true,
     fieldName: "fulfillment_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string

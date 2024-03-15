@@ -95,7 +95,7 @@ export default class Fulfillment {
     fieldName: "provider_id",
     mapToPk: true,
     nullable: true,
-    onDelete: "set null",
+    deleteRule: "set null",
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
@@ -105,7 +105,7 @@ export default class Fulfillment {
     fieldName: "shipping_option_id",
     nullable: true,
     mapToPk: true,
-    onDelete: "set null",
+    deleteRule: "set null",
   })
   @FulfillmentShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
@@ -124,7 +124,7 @@ export default class Fulfillment {
     owner: true,
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     nullable: true,
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   delivery_address!: Address
 

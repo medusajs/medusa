@@ -76,7 +76,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
       authUsers,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -99,7 +99,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     const serializedUsers = await this.baseRepository_.serialize<
       AuthTypes.AuthUserDTO[]
     >(updatedUsers, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]

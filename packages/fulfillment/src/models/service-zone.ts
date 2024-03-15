@@ -65,7 +65,7 @@ export default class ServiceZone {
     type: "text",
     mapToPk: true,
     fieldName: "fulfillment_set_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   @FulfillmentSetIdIndex.MikroORMIndex()
   fulfillment_set_id: string

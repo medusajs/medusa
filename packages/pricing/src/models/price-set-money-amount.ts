@@ -10,7 +10,6 @@ import {
   OnInit,
   OptionalProps,
   PrimaryKey,
-  PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
@@ -33,13 +32,13 @@ export default class PriceSetMoneyAmount {
   title!: string
 
   @ManyToOne(() => PriceSet, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_price_set_money_amount_price_set_id",
   })
   price_set: PriceSet
 
   @OneToOne(() => MoneyAmount, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_price_set_money_amount_money_amount_id",
   })
   money_amount: MoneyAmount
@@ -62,7 +61,7 @@ export default class PriceSetMoneyAmount {
 
   @ManyToOne(() => PriceList, {
     index: "IDX_price_rule_price_list_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
     cascade: [Cascade.REMOVE, "soft-remove"] as any,
     nullable: true,
   })
@@ -99,8 +98,6 @@ export default class PriceSetMoneyAmount {
   onInit() {
     this.id = generateEntityId(this.id, "psma")
   }
-
-  [PrimaryKeyType]?: [string, string]
 
   constructor(money_amount: MoneyAmount, price_set: PriceSet) {
     this.money_amount = money_amount

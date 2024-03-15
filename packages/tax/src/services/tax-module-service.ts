@@ -156,7 +156,7 @@ export default class TaxModuleService<
     }
 
     return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO[]>(rates, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -191,7 +191,7 @@ export default class TaxModuleService<
     )
     const serialized = await this.baseRepository_.serialize<
       TaxTypes.TaxRateDTO[]
-    >(rates, { populate: true })
+    >(rates, { populate: "*" })
     return isString(selector) ? serialized[0] : serialized
   }
 
@@ -302,7 +302,7 @@ export default class TaxModuleService<
     const result = await this.taxRateService_.upsert(data, sharedContext)
     const serialized = await this.baseRepository_.serialize<
       TaxTypes.TaxRateDTO[]
-    >(result, { populate: true })
+    >(result, { populate: "*" })
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
@@ -363,7 +363,7 @@ export default class TaxModuleService<
 
     return await this.baseRepository_.serialize<TaxTypes.TaxRegionDTO[]>(
       regions,
-      { populate: true }
+      { populate: "*" }
     )
   }
 
@@ -400,7 +400,7 @@ export default class TaxModuleService<
     return await this.baseRepository_.serialize<TaxTypes.TaxRateRuleDTO[]>(
       rules,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }

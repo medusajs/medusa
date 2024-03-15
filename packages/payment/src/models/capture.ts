@@ -31,7 +31,7 @@ export default class Capture {
   raw_amount: BigNumberRawValue
 
   @ManyToOne(() => Payment, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_capture_payment_id",
     fieldName: "payment_id",
   })

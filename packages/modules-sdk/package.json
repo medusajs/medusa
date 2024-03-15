@@ -34,7 +34,7 @@
     "@medusajs/utils": "^1.11.5",
     "awilix": "^8.0.0",
     "graphql": "^16.6.0",
-    "knex": "2.4.2",
+    "knex": "3.1.0",
     "pg": "^8.11.2",
     "resolve-cwd": "^3.0.0"
   },

@@ -17,7 +17,7 @@ export default class PriceSetMoneyAmountRules {
   id!: string
 
   @ManyToOne(() => PriceSetMoneyAmount, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_price_set_money_amount_rules_price_set_money_amount_id",
   })
   price_set_money_amount: PriceSetMoneyAmount

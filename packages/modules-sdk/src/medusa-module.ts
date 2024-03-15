@@ -302,7 +302,7 @@ export class MedusaModule {
         moduleResolutions,
         logger: logger_,
         migrationOnly,
-        loaderOnly
+        loaderOnly,
       })
     } catch (err) {
       errorLoading(err)

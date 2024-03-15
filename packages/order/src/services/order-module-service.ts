@@ -333,7 +333,7 @@ export default class OrderModuleService<
     const serializedResult = await this.baseRepository_.serialize<
       OrderTypes.OrderDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
 
     return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
@@ -417,7 +417,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<OrderTypes.OrderLineItemDTO[]>(
       items,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -511,7 +511,7 @@ export default class OrderModuleService<
       return await this.baseRepository_.serialize<OrderTypes.OrderLineItemDTO>(
         item,
         {
-          populate: true,
+          populate: "*",
         }
       )
     }
@@ -530,7 +530,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<OrderTypes.OrderLineItemDTO[]>(
       items,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -626,7 +626,7 @@ export default class OrderModuleService<
       return await this.baseRepository_.serialize<OrderTypes.OrderItemDTO>(
         item,
         {
-          populate: true,
+          populate: "*",
         }
       )
     }
@@ -645,7 +645,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<OrderTypes.OrderItemDTO[]>(
       items,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -836,7 +836,7 @@ export default class OrderModuleService<
 
     return await this.baseRepository_.serialize<
       OrderTypes.OrderShippingMethodDTO[]
-    >(methods, { populate: true })
+    >(methods, { populate: "*" })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -971,7 +971,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderLineItemAdjustmentDTO[]
     >(addedAdjustments, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1022,7 +1022,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderLineItemAdjustmentDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1118,7 +1118,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderShippingMethodAdjustmentDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1184,7 +1184,7 @@ export default class OrderModuleService<
       return await this.baseRepository_.serialize<OrderTypes.OrderShippingMethodAdjustmentDTO>(
         addedAdjustments[0],
         {
-          populate: true,
+          populate: "*",
         }
       )
     }
@@ -1192,7 +1192,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderShippingMethodAdjustmentDTO[]
     >(addedAdjustments, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1285,7 +1285,7 @@ export default class OrderModuleService<
     const serialized = await this.baseRepository_.serialize<
       OrderTypes.OrderLineItemTaxLineDTO[]
     >(addedTaxLines, {
-      populate: true,
+      populate: "*",
     })
 
     if (isObject(orderIdOrData)) {
@@ -1342,7 +1342,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderLineItemTaxLineDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1433,7 +1433,7 @@ export default class OrderModuleService<
       await this.baseRepository_.serialize<OrderTypes.OrderShippingMethodTaxLineDTO>(
         addedTaxLines[0],
         {
-          populate: true,
+          populate: "*",
         }
       )
 
@@ -1492,7 +1492,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<
       OrderTypes.OrderShippingMethodTaxLineDTO[]
     >(result, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1556,7 +1556,7 @@ export default class OrderModuleService<
     return await this.baseRepository_.serialize<OrderTypes.OrderChangeDTO>(
       Array.isArray(data) ? changes : changes[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }

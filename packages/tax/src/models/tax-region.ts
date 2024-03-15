@@ -72,7 +72,7 @@ export default class TaxRegion {
   @ManyToOne(() => TaxRegion, {
     index: "IDX_tax_region_parent_id",
     fieldName: "parent_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
     mapToPk: true,
     nullable: true,
   })

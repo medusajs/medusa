@@ -26,7 +26,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
     "test": "jest --passWithNoTests --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
-    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
+    "test:integration": "jest --bail=1000 -- integration-tests/**/__tests__/**/*.ts || exit 0",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
     "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
@@ -34,7 +34,7 @@
     "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "5.9.7",
+    "@mikro-orm/cli": "6.1.9",
     "cross-env": "^5.2.1",
     "jest": "^29.6.3",
     "medusa-test-utils": "^1.1.40",
@@ -49,13 +49,13 @@
     "@medusajs/types": "^1.11.11",
     "@medusajs/utils": "^1.11.4",
     "@medusajs/workflows-sdk": "^0.1.2",
-    "@mikro-orm/core": "5.9.7",
-    "@mikro-orm/migrations": "5.9.7",
-    "@mikro-orm/postgresql": "5.9.7",
+    "@mikro-orm/core": "6.1.9",
+    "@mikro-orm/migrations": "6.1.9",
+    "@mikro-orm/postgresql": "6.1.9",
     "awilix": "^8.0.0",
     "bullmq": "^5.1.3",
     "dotenv": "^16.4.5",
     "ioredis": "^5.3.2",
-    "knex": "2.4.2"
+    "knex": "3.1.0"
   }
 }

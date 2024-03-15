@@ -147,7 +147,7 @@ export default class PaymentModuleService<
     return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
       Array.isArray(data) ? collections : collections[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -206,7 +206,7 @@ export default class PaymentModuleService<
     return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
       Array.isArray(data) ? result : result[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -287,7 +287,7 @@ export default class PaymentModuleService<
 
     return await this.baseRepository_.serialize(
       Array.isArray(paymentCollectionId) ? updated : updated[0],
-      { populate: true }
+      { populate: "*" }
     )
   }
 
@@ -329,7 +329,7 @@ export default class PaymentModuleService<
     }
 
     return await this.baseRepository_.serialize(paymentSession, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -375,7 +375,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(updated[0], { populate: true })
+    return await this.baseRepository_.serialize(updated[0], { populate: "*" })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -425,7 +425,7 @@ export default class PaymentModuleService<
         { relations: ["payment_collection"] },
         sharedContext
       )
-      return await this.baseRepository_.serialize(payment, { populate: true })
+      return await this.baseRepository_.serialize(payment, { populate: "*" })
     }
 
     const { data, status } =
@@ -486,7 +486,7 @@ export default class PaymentModuleService<
     const result = await this.paymentService_.update(data, sharedContext)
 
     return await this.baseRepository_.serialize<PaymentDTO>(result[0], {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -729,7 +729,7 @@ export default class PaymentModuleService<
     return await this.baseRepository_.serialize<PaymentProviderDTO[]>(
       providers,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }

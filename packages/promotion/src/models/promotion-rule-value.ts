@@ -17,7 +17,7 @@ export default class PromotionRuleValue {
   id!: string
 
   @ManyToOne(() => PromotionRule, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     fieldName: "promotion_rule_id",
     index: "IDX_promotion_rule_promotion_rule_value_id",
   })

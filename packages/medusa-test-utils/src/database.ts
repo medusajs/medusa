@@ -1,8 +1,10 @@
-import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+import { Migrator, TSMigrationGenerator } from "@mikro-orm/migrations"
+import { MikroORM, SqlEntityManager } from "@mikro-orm/postgresql"
+import { createDatabase, parsePostgresUrl } from "pg-god"
 
 export function getDatabaseURL(dbName?: string): string {
   const DB_HOST = process.env.DB_HOST ?? "localhost"
-  const DB_USERNAME = process.env.DB_USERNAME ?? ""
+  const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
   const DB_PASSWORD = process.env.DB_PASSWORD
   const DB_NAME = dbName ?? process.env.DB_TEMP_NAME
 
@@ -21,18 +23,23 @@ export function getMikroOrmConfig({
   pathToMigrations?: string
   clientUrl?: string
   schema?: string
-}): Options {
+}) {
   const DB_URL = clientUrl ?? getDatabaseURL()
 
   return {
-    type: "postgresql",
     clientUrl: DB_URL,
+    extensions: [Migrator],
     entities: Object.values(mikroOrmEntities),
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
+    // TODO: Change to true once we don't use both eg. product_id and product definitions on the model.
+    discovery: {
+      checkDuplicateFieldNames: false,
+    },
     debug: false,
     migrations: {
       pathTs: pathToMigrations,
       silent: true,
+      generator: TSMigrationGenerator,
     },
   }
 }
@@ -105,17 +112,24 @@ export function getMikroOrmWrapper({
         schema: this.schema,
       })
 
-      // Initializing the ORM
-      this.orm = await MikroORM.init(OrmConfig)
-
-      this.manager = this.orm.em
-
       try {
-        await this.orm.getSchemaGenerator().ensureDatabase()
+        const credentialsFromUrl = parsePostgresUrl(OrmConfig.clientUrl)
+        await createDatabase(
+          { databaseName: credentialsFromUrl.databaseName ?? "medusa-test" },
+          {
+            user: credentialsFromUrl.userName,
+            host: credentialsFromUrl.host,
+            password: credentialsFromUrl.password,
+          }
+        )
       } catch (err) {
         console.log(err)
       }
 
+      // Initializing the ORM
+      this.orm = await MikroORM.init(OrmConfig)
+
+      this.manager = this.orm.em
       await this.manager?.execute(
         `CREATE SCHEMA IF NOT EXISTS "${this.schema ?? "public"}";`
       )

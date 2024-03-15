@@ -16,7 +16,7 @@ export default class PriceSetRuleType {
   id!: string
 
   @ManyToOne(() => PriceSet, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_price_set_rule_type_price_set_id",
   })
   price_set: PriceSet

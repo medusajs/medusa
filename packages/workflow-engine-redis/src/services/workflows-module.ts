@@ -87,7 +87,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     return await this.baseRepository_.serialize<WorkflowOrchestratorTypes.WorkflowExecutionDTO>(
       wfExecution[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -123,7 +123,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     return await this.baseRepository_.serialize<
       WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
     >(wfExecutions, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -160,7 +160,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
       await this.baseRepository_.serialize<
         WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
       >(wfExecutions, {
-        populate: true,
+        populate: "*",
       }),
       count,
     ]

@@ -113,7 +113,7 @@ export default class CustomerModuleService<
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO[]
     >(customers, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(dataOrArray) ? serialized : serialized[0]
@@ -203,7 +203,7 @@ export default class CustomerModuleService<
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO | CustomerTypes.CustomerDTO[]
     >(customers, {
-      populate: true,
+      populate: "*",
     })
 
     return isString(idsOrSelector) ? serialized[0] : serialized
@@ -234,7 +234,7 @@ export default class CustomerModuleService<
     return await this.baseRepository_.serialize<
       CustomerTypes.CustomerGroupDTO | CustomerTypes.CustomerGroupDTO[]
     >(groups, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -294,13 +294,13 @@ export default class CustomerModuleService<
     if (isString(groupIdOrSelector)) {
       return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
         groups[0],
-        { populate: true }
+        { populate: "*" }
       )
     }
 
     return await this.baseRepository_.serialize<
       CustomerTypes.CustomerGroupDTO[]
-    >(groups, { populate: true })
+    >(groups, { populate: "*" })
   }
 
   async addCustomerToGroup(
@@ -357,7 +357,7 @@ export default class CustomerModuleService<
 
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
-    >(addresses, { populate: true })
+    >(addresses, { populate: "*" })
 
     if (Array.isArray(data)) {
       return serialized
@@ -438,7 +438,7 @@ export default class CustomerModuleService<
 
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
-    >(addresses, { populate: true })
+    >(addresses, { populate: "*" })
 
     if (isString(addressIdOrSelector)) {
       return serialized[0]

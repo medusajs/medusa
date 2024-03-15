@@ -221,7 +221,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO[]
     >(shippingOptions, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -240,7 +240,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
       fulfillment,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -268,7 +268,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentDTO[]
     >(fulfillments, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -288,7 +288,7 @@ export default class FulfillmentModuleService<
       await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO[]>(
         fulfillments,
         {
-          populate: true,
+          populate: "*",
         }
       ),
       count,
@@ -318,7 +318,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
     >(createdFulfillmentSets, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -367,7 +367,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
     >(createdServiceZones, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -418,7 +418,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
     >(createdShippingOptions, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -477,7 +477,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.ShippingProfileDTO
       | FulfillmentTypes.ShippingProfileDTO[]
     >(createdShippingProfiles, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -528,7 +528,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
       createdGeoZones,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -561,7 +561,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
     >(createdShippingOptionRules, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -632,7 +632,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
       fulfillment,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -658,7 +658,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
     >(updatedFulfillmentSets, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -839,7 +839,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
     >(updatedServiceZones, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -990,7 +990,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
     >(updatedShippingOptions, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1146,7 +1146,7 @@ export default class FulfillmentModuleService<
     const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.GeoZoneDTO[]
     >(updatedGeoZones, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(data) ? serialized : serialized[0]
@@ -1180,7 +1180,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
     >(updatedShippingOptionRules, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -1222,7 +1222,7 @@ export default class FulfillmentModuleService<
       await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
         fulfillment,
         {
-          populate: true,
+          populate: "*",
         }
       )
 
@@ -1265,7 +1265,7 @@ export default class FulfillmentModuleService<
     }
 
     const result = await this.baseRepository_.serialize(fulfillment, {
-      populate: true,
+      populate: "*",
     })
 
     return Array.isArray(result) ? result[0] : result

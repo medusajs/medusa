@@ -104,7 +104,7 @@ export default class StockLocationModuleService<
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO
       | StockLocationTypes.StockLocationDTO[]
-    >(created, { populate: true })
+    >(created, { populate: "*" })
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -146,7 +146,7 @@ export default class StockLocationModuleService<
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO
       | StockLocationTypes.StockLocationDTO[]
-    >(updated, { populate: true })
+    >(updated, { populate: "*" })
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -182,7 +182,7 @@ export default class StockLocationModuleService<
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationAddressDTO
       | StockLocationTypes.StockLocationAddressDTO[]
-    >(updated, { populate: true })
+    >(updated, { populate: "*" })
 
     return Array.isArray(data) ? serialized : serialized[0]
   }

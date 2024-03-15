@@ -26,7 +26,9 @@ describe("@MikroOrmBigNumberProperty", () => {
     orm = await MikroORM.init({
       entities: [TestAmount],
       dbName: "test",
-      type: "postgresql",
+      discovery: {
+        checkDuplicateFieldNames: true,
+      },
     })
   })
 

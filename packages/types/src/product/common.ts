@@ -1003,7 +1003,7 @@ export interface CreateProductOptionDTO {
   /**
    * The ID of the associated product.
    */
-  product_id?: string
+  product_id?: string | null
 }
 
 export interface UpdateProductOptionDTO {

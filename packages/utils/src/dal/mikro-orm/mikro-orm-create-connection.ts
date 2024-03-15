@@ -1,5 +1,5 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { Migrator, TSMigrationGenerator } from "@mikro-orm/migrations"
 import { isString } from "../../common"
 
 // Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
@@ -91,7 +91,12 @@ export async function mikroOrmCreateConnection(
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
-    discovery: { disableDynamicFileAccess: true },
+    // TODO: Change checkDuplicateFileNames to true once we don't use both eg. product_id and product definitions on the model.
+    discovery: {
+      disableDynamicFileAccess: true,
+      checkDuplicateFieldNames: false,
+    },
+    extensions: [Migrator],
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
@@ -99,7 +104,6 @@ export async function mikroOrmCreateConnection(
     schema,
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
-    type: "postgresql",
     migrations: {
       path: pathToMigrations,
       generator: TSMigrationGenerator,

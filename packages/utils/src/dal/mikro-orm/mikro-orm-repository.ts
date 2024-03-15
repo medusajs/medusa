@@ -276,7 +276,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       })
 
       manager.persist(entities)
-
       return entities
     }
 
@@ -399,7 +398,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         const existingEntity = existingEntitiesMap.get(key)
         if (existingEntity) {
           const updatedType = manager.assign(existingEntity, data_)
-          updatedEntities.push(updatedType)
+          updatedEntities.push(updatedType as T)
         } else {
           const newEntity = manager.create<T>(entity, data_)
           createdEntities.push(newEntity)

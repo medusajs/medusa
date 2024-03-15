@@ -26,7 +26,7 @@ export default class Refund {
   raw_amount: BigNumberRawValue
 
   @ManyToOne(() => Payment, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_refund_payment_id",
     fieldName: "payment_id",
   })

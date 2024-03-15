@@ -68,7 +68,7 @@ export default class SalesChannelModuleService<
     return await this.baseRepository_.serialize<SalesChannelDTO[]>(
       Array.isArray(data) ? result : result[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -94,7 +94,7 @@ export default class SalesChannelModuleService<
     return await this.baseRepository_.serialize<SalesChannelDTO[]>(
       Array.isArray(data) ? result : result[0],
       {
-        populate: true,
+        populate: "*",
       }
     )
   }

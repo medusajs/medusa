@@ -36,7 +36,7 @@ export default class PriceRule {
     entity: () => PriceSet,
     fieldName: "price_set_id",
     name: "price_rule_price_set_id_unique",
-    onDelete: "cascade",
+    deleteRule: "cascade",
     index: "IDX_price_rule_price_set_id",
   })
   price_set: PriceSet
@@ -56,7 +56,7 @@ export default class PriceRule {
   priority: number
 
   @ManyToOne({
-    onDelete: "cascade",
+    deleteRule: "cascade",
     entity: () => PriceSetMoneyAmount,
     fieldName: "price_set_money_amount_id",
     name: "price_set_money_amount_id_unique",

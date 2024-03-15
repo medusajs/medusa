@@ -384,7 +384,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(productTags, { populate: true })
+    return await this.baseRepository_.serialize(productTags, { populate: "*" })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -397,7 +397,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(productTags, { populate: true })
+    return await this.baseRepository_.serialize(productTags, { populate: "*" })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -411,7 +411,7 @@ export default class ProductModuleService<
     )
 
     return await this.baseRepository_.serialize(productTypes, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -426,7 +426,7 @@ export default class ProductModuleService<
     )
 
     return await this.baseRepository_.serialize(productTypes, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -484,7 +484,7 @@ export default class ProductModuleService<
 
     const createdCollections = await this.baseRepository_.serialize<
       ProductTypes.ProductCollectionDTO[]
-    >(collections, { populate: true })
+    >(collections, { populate: "*" })
 
     await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
       collections.map(({ id }) => ({
@@ -652,7 +652,7 @@ export default class ProductModuleService<
     )
 
     return await this.baseRepository_.serialize(productCategory, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -674,7 +674,7 @@ export default class ProductModuleService<
     )
 
     return await this.baseRepository_.serialize(productCategory, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -697,7 +697,7 @@ export default class ProductModuleService<
 
     const createdProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
-    >(products, { populate: true })
+    >(products, { populate: "*" })
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
@@ -743,7 +743,7 @@ export default class ProductModuleService<
     const result = [...created, ...updated]
     const allProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[] | ProductTypes.ProductDTO
-    >(Array.isArray(data) ? result : result[0])
+    >(result, { populate: "*" })
 
     if (created.length) {
       await this.eventBusModuleService_?.emit<ProductEventData>(
@@ -803,7 +803,7 @@ export default class ProductModuleService<
 
     const updatedProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
-    >(products)
+    >(products, { populate: "*" })
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       updatedProducts.map(({ id }) => ({

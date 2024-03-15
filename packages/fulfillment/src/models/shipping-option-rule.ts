@@ -56,7 +56,7 @@ export default class ShippingOptionRule {
     type: "text",
     mapToPk: true,
     fieldName: "shipping_option_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string

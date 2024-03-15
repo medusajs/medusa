@@ -80,7 +80,7 @@ export default class FulfillmentItem {
     columnType: "text",
     mapToPk: true,
     fieldName: "fulfillment_id",
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string

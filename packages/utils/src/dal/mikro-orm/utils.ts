@@ -165,7 +165,7 @@ export const mikroOrmSerializer = async <TOutput extends object>(
   const { serialize } = await import("@mikro-orm/core")
   let result: any = serialize(forSerialization, {
     forceObject: true,
-    populate: true,
+    populate: '*',
     ...options,
   }) as TOutput[]
 

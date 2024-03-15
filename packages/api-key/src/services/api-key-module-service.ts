@@ -89,7 +89,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
     >(createdApiKeys, {
-      populate: true,
+      populate: "*",
     })
 
     // When creating we want to return the raw token, as this will be the only time the user will be able to take note of it for future use.
@@ -171,7 +171,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
         const serializedResponse = await this.baseRepository_.serialize<
           ApiKeyTypes.ApiKeyDTO[]
         >(createdApiKeys, {
-          populate: true,
+          populate: "*",
         })
 
         return serializedResponse.map(
@@ -232,7 +232,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
     >(updatedApiKeys.map(omitToken), {
-      populate: true,
+      populate: "*",
     })
 
     return isString(idOrSelector) ? serializedResponse[0] : serializedResponse
@@ -266,7 +266,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO>(
       omitToken(apiKey),
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -286,7 +286,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
       apiKeys.map(omitToken),
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -307,7 +307,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
         apiKeys.map(omitToken),
         {
-          populate: true,
+          populate: "*",
         }
       ),
       count,
@@ -340,7 +340,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
     >(revokedApiKeys.map(omitToken), {
-      populate: true,
+      populate: "*",
     })
 
     return isString(idOrSelector) ? serializedResponse[0] : serializedResponse
@@ -386,7 +386,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 
     const serialized =
       await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO>(result, {
-        populate: true,
+        populate: "*",
       })
 
     return serialized

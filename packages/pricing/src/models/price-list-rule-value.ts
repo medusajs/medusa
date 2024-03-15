@@ -16,7 +16,7 @@ export default class PriceListRuleValue {
   id!: string
 
   @ManyToOne(() => PriceListRule, {
-    onDelete: "cascade",
+    deleteRule: "cascade",
     fieldName: "price_list_rule_id",
     index: "IDX_price_list_rule_price_list_rule_value_id",
   })

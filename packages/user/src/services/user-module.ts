@@ -79,7 +79,7 @@ export default class UserModuleService<
     )
 
     return await this.baseRepository_.serialize<UserTypes.InviteDTO>(invite, {
-      populate: true,
+      populate: "*",
     })
   }
 
@@ -106,7 +106,7 @@ export default class UserModuleService<
     return await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(
       invites,
       {
-        populate: true,
+        populate: "*",
       }
     )
   }
@@ -144,7 +144,7 @@ export default class UserModuleService<
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[] | UserTypes.UserDTO
     >(users, {
-      populate: true,
+      populate: "*",
     })
 
     sharedContext.messageAggregator?.saveRawMessageData(
@@ -184,7 +184,7 @@ export default class UserModuleService<
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
     >(updatedUsers, {
-      populate: true,
+      populate: "*",
     })
 
     sharedContext.messageAggregator?.saveRawMessageData(
@@ -224,7 +224,7 @@ export default class UserModuleService<
     const serializedInvites = await this.baseRepository_.serialize<
       UserTypes.InviteDTO[] | UserTypes.InviteDTO
     >(invites, {
-      populate: true,
+      populate: "*",
     })
 
     sharedContext.messageAggregator?.saveRawMessageData(
@@ -295,7 +295,7 @@ export default class UserModuleService<
     const serializedInvites = await this.baseRepository_.serialize<
       UserTypes.InviteDTO[]
     >(updatedInvites, {
-      populate: true,
+      populate: "*",
     })
 
     sharedContext.messageAggregator?.saveRawMessageData(

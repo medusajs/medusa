@@ -77,7 +77,7 @@ export default class ApplicationMethod {
 
   @OneToOne({
     entity: () => Promotion,
-    onDelete: "cascade",
+    deleteRule: "cascade",
   })
   promotion: Promotion
 
