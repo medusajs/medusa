@@ -377,29 +377,32 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/discounts/list"),
+                lazy: () => import("../../routes/discounts/discount-list"),
               },
               {
                 path: "create",
-                lazy: () => import("../../routes/discounts/create"),
+                lazy: () => import("../../routes/discounts/discount-create"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/discounts/details"),
+                lazy: () => import("../../routes/discounts/discount-detail"),
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../routes/discounts/edit-details"),
+                    lazy: () =>
+                      import("../../routes/discounts/discount-edit-details"),
                   },
                   {
                     path: "configuration",
                     lazy: () =>
-                      import("../../routes/discounts/edit-configuration"),
+                      import(
+                        "../../routes/discounts/discount-edit-configuration"
+                      ),
                   },
                   {
                     path: "conditions",
                     lazy: () =>
-                      import("../../routes/discounts/edit-conditions"),
+                      import("../../routes/discounts/discount-edit-conditions"),
                   },
                 ],
               },

@@ -1,6 +1,5 @@
-import * as React from "react"
-import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import {
@@ -8,24 +7,24 @@ import {
   DiscountCondition,
   DiscountConditionType,
 } from "@medusajs/medusa"
-import { Button, clx, DropdownMenu, Text } from "@medusajs/ui"
+import { Button, DropdownMenu, Heading, Text } from "@medusajs/ui"
+import { adminDiscountKeys } from "medusa-react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { medusa, queryClient } from "../../../../../lib/medusa"
 
+import { ListSummary } from "../../../../../components/common/list-summary"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { ListSummary } from "../../../../../components/common/list-summary"
 
 import { SplitView } from "../../../../../components/layout/split-view"
-import { ConditionsTable } from "../../../common/components/conditions-drawer/conditions-drawer"
+import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
 import { ConditionEntities } from "../../../common/constants"
 import { ConditionsOption } from "../../../common/types"
-import { adminDiscountKeys } from "medusa-react"
 
 enum DiscountConditionOperator {
   IN = "in",
@@ -43,25 +42,39 @@ type EditDiscountFormProps = {
   discount: Discount
 }
 
-const getDefault =
-  (conditionType: ConditionEntities, labelProp: string) =>
-  (conditions: DiscountCondition[]) => {
-    return (
-      (
-        conditions.find(
-          (c) => c.type === (conditionType as unknown as DiscountConditionType)
-        )?.[conditionType] || []
-      ).map((p) => ({
-        label: p[labelProp],
-        value: p.id,
-      })) || []
+const getDefault = (conditionType: ConditionEntities, labelProp: string) => {
+  return (conditions: DiscountCondition[]) => {
+    const condition = conditions.find(
+      (c) => c.type === (conditionType as unknown as DiscountConditionType)
     )
-  }
 
-const getOperator =
-  (conditionType: ConditionEntities) => (conditions: DiscountCondition[]) => {
+    if (!condition || !condition[conditionType]) {
+      return []
+    }
+
+    return condition[conditionType].map((p) => ({
+      label: p[labelProp as keyof typeof p] as string,
+      value: p.id,
+    }))
+  }
+}
+
+const getOperator = (conditionType: ConditionEntities) => {
+  return (conditions: DiscountCondition[]) => {
     return conditions.find((c) => c.type === (conditionType as any))?.operator
   }
+}
+
+const SelectedConditionTypesSchema = zod.object({
+  [ConditionEntities.PRODUCT]: zod.boolean().optional(),
+  [ConditionEntities.PRODUCT_TAG]: zod.boolean().optional(),
+  [ConditionEntities.PRODUCT_TYPE]: zod.boolean().optional(),
+  [ConditionEntities.PRODUCT_COLLECTION]: zod.boolean().optional(),
+  [ConditionEntities.CUSTOMER_GROUP]: zod.boolean().optional(),
+})
+
+type SelectedContionTypeKey =
+  (typeof ConditionEntities)[keyof typeof ConditionEntities]
 
 const EditDiscountConditionsSchema = zod.object({
   products: zod.array(
@@ -103,14 +116,7 @@ const EditDiscountConditionsSchema = zod.object({
   customer_groups_operator: zod
     .nativeEnum(DiscountConditionOperator)
     .optional(),
-
-  selectedConditionTypes: zod.object({
-    [ConditionEntities.PRODUCT]: zod.boolean().optional(),
-    [ConditionEntities.PRODUCT_TAG]: zod.boolean().optional(),
-    [ConditionEntities.PRODUCT_TYPE]: zod.boolean().optional(),
-    [ConditionEntities.PRODUCT_COLLECTION]: zod.boolean().optional(),
-    [ConditionEntities.CUSTOMER_GROUP]: zod.boolean().optional(),
-  }),
+  selected_condition_types: SelectedConditionTypesSchema,
 })
 
 export const EditDiscountConditionsForm = ({
@@ -170,8 +176,7 @@ export const EditDiscountConditionsForm = ({
       customer_groups_operator: getOperator(ConditionEntities.CUSTOMER_GROUP)(
         discount.rule.conditions
       ),
-
-      selectedConditionTypes: {
+      selected_condition_types: {
         [ConditionEntities.CUSTOMER_GROUP]: !!conditions.find(
           (c) => c.type === (ConditionEntities.CUSTOMER_GROUP as any)
         ),
@@ -193,24 +198,46 @@ export const EditDiscountConditionsForm = ({
   })
 
   const toggleSelectedConditionTypes = (type: ConditionEntities) => {
-    const state = { ...form.getValues().selectedConditionTypes }
+    const state = { ...form.getValues().selected_condition_types }
     if (state[type]) {
       delete state[type]
     } else {
       state[type] = true
     }
 
-    form.setValue("selectedConditionTypes", state, {
+    form.setValue("selected_condition_types", state, {
       shouldDirty: true,
       shouldTouch: true,
     })
   }
 
-  const selectedConditionTypes = form.watch("selectedConditionTypes")
+  const clearAllSelectedConditions = () => {
+    form.setValue(
+      "selected_condition_types",
+      {
+        [ConditionEntities.PRODUCT]: false,
+        [ConditionEntities.PRODUCT_TAG]: false,
+        [ConditionEntities.PRODUCT_TYPE]: false,
+        [ConditionEntities.PRODUCT_COLLECTION]: false,
+        [ConditionEntities.CUSTOMER_GROUP]: false,
+      },
+      {
+        shouldDirty: true,
+        shouldTouch: true,
+      }
+    )
+  }
+
+  const selectedConditionTypes = useWatch({
+    name: "selected_condition_types",
+    control: form.control,
+  })
 
   const selectedTypes = Object.keys(selectedConditionTypes)
-    .filter((k) => selectedConditionTypes[k])
-    .sort()
+    .filter(
+      (k) => selectedConditionTypes[k as keyof typeof selectedConditionTypes]
+    )
+    .sort() as ConditionEntities[]
 
   const selectedProducts = useWatch({
     control: form.control,
@@ -240,9 +267,13 @@ export const EditDiscountConditionsForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true)
 
-    for (const selectedType in selectedConditionTypes) {
-      if (!selectedConditionTypes[selectedType]) {
-        continue
+    const handleCondition = async (selectedType: string) => {
+      if (
+        !selectedConditionTypes[
+          selectedType as keyof typeof selectedConditionTypes
+        ]
+      ) {
+        return
       }
 
       const currentCondition = conditions.find((c) => c.type === selectedType)
@@ -255,19 +286,33 @@ export const EditDiscountConditionsForm = ({
         )
       }
 
-      if (data[selectedType].length) {
+      const payload = data[selectedType as SelectedContionTypeKey]
+
+      if (payload?.length) {
         await medusa.admin.discounts.createCondition(discount.id, {
-          operator: data[`${selectedType}_operator`],
-          [selectedType]: data[selectedType].map((d) => d.value),
+          operator: data[
+            `${selectedType}_operator` as keyof typeof data
+          ] as DiscountConditionOperator,
+          [selectedType]: payload.map((d) => d.value),
         })
       }
     }
 
-    await Promise.all(
-      conditions
-        .filter((c) => !selectedConditionTypes[c.type])
-        .map((c) => medusa.admin.discounts.deleteCondition(discount.id, c.id))
-    )
+    const deleteUnselectedConditions = async () => {
+      const unselectedConditions = conditions.filter(
+        (c) => !selectedConditionTypes[c.type]
+      )
+      const deletePromises = unselectedConditions.map((c) =>
+        medusa.admin.discounts.deleteCondition(discount.id, c.id)
+      )
+      await Promise.all(deletePromises)
+    }
+
+    for (const selectedType of Object.keys(selectedConditionTypes)) {
+      await handleCondition(selectedType)
+    }
+
+    await deleteUnselectedConditions()
 
     await queryClient.invalidateQueries(adminDiscountKeys.detail(discount.id))
 
@@ -330,37 +375,46 @@ export const EditDiscountConditionsForm = ({
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden">
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
-              <div
-                className={clx(
-                  "flex h-full w-full flex-col items-center overflow-y-auto p-16"
-                )}
-              >
-                <div className="mt-6 flex h-full flex-col gap-y-4">
-                  {selectedTypes.map((t) => {
-                    if (t in selectedConditionTypes) {
-                      const field = form.getValues(t)
-                      const operator = form.getValues(`${t}_operator`)
+              <div className="flex size-full flex-col items-center px-16">
+                <div className="flex w-full max-w-[720px] flex-col gap-y-8 py-16">
+                  <div>
+                    <Heading>{t("discounts.conditions.editHeader")}</Heading>
+                    <Text
+                      size="small"
+                      className="text-ui-fg-subtle text-pretty"
+                    >
+                      {t("discounts.conditions.editHint")}
+                    </Text>
+                  </div>
+                  {selectedTypes.length > 0 && (
+                    <div className="flex flex-col items-start gap-y-4">
+                      {selectedTypes.map((t) => {
+                        if (t in selectedConditionTypes) {
+                          const field = form.getValues(t)
+                          const operator = form.getValues(`${t}_operator`)
 
-                      return field ? (
-                        <Condition
-                          key={t}
-                          type={t}
-                          labels={field.map((f) => f.label)}
-                          isInOperator={operator === "in"}
-                          onClick={(op) => handleOpenDrawer(t, op)}
-                        />
-                      ) : (
-                        <Condition
-                          key={t}
-                          type={t}
-                          isInOperator
-                          labels={[]}
-                          onClick={(op) => handleOpenDrawer(t, op)}
-                        />
-                      )
-                    }
-                  })}
-                  <div className="mt-8">
+                          return field ? (
+                            <Condition
+                              key={t}
+                              type={t}
+                              labels={field.map((f) => f.label)}
+                              isInOperator={operator === "in"}
+                              onClick={(op) => handleOpenDrawer(t, op)}
+                            />
+                          ) : (
+                            <Condition
+                              key={t}
+                              type={t}
+                              isInOperator
+                              labels={[]}
+                              onClick={(op) => handleOpenDrawer(t, op)}
+                            />
+                          )
+                        }
+                      })}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-x-2">
                     <DropdownMenu
                       open={isDropdownOpen}
                       onOpenChange={(v) => {
@@ -369,7 +423,7 @@ export const EditDiscountConditionsForm = ({
                     >
                       <DropdownMenu.Trigger asChild>
                         <Button variant="secondary" size="small">
-                          {t("discounts.conditions.manageTypes")}
+                          {t("discounts.conditions.manageTypesAction")}
                         </Button>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content
@@ -397,12 +451,23 @@ export const EditDiscountConditionsForm = ({
                         ))}
                       </DropdownMenu.Content>
                     </DropdownMenu>
+                    {selectedTypes.length > 0 && (
+                      <Button
+                        variant="transparent"
+                        size="small"
+                        type="button"
+                        onClick={clearAllSelectedConditions}
+                        className="text-ui-fg-muted hover:text-ui-fg-subtle"
+                      >
+                        {t("actions.clearAll")}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
             </SplitView.Content>
             <SplitView.Drawer>
-              <ConditionsTable
+              <ConditionsDrawer
                 product={{
                   selected: selectedProducts,
                   onSave: handleSaveConditions(ConditionEntities.PRODUCT),
@@ -445,26 +510,29 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
 
   return (
     <div className="text-center">
-      <div className="bg-ui-bg-field shadow-borders-base inline-flex items-center divide-x rounded-md">
+      <div className="bg-ui-bg-field shadow-borders-base inline-flex items-center divide-x overflow-hidden rounded-md">
         <Text
           as="span"
           size="small"
+          leading="compact"
+          weight="plus"
           className="text-ui-fg-muted shrink-0 px-2 py-1"
         >
           {t("discounts.conditions.edit.appliesTo")}
         </Text>
-        <div className="text-ui-fg-subtle max-w-[240px] shrink-0 px-2 py-1">
+        <div className="text-ui-fg-subtle max-w-[240px] shrink-0">
           <Button
             type="button"
             variant="transparent"
             size="small"
             disabled={isInButtonDisabled}
             onClick={() => onClick("in" as DiscountConditionOperator)}
+            className="txt-compact-small-plus disabled:text-ui-fg-subtle rounded-none"
           >
             {isInOperator && labels.length ? (
               <ListSummary
                 inline
-                n={2}
+                n={1}
                 className="max-w-[200px]"
                 list={labels}
               />
@@ -477,26 +545,29 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
         <Text
           as="span"
           size="small"
+          leading="compact"
+          weight="plus"
           className="text-ui-fg-muted shrink-0 px-2 py-1"
         >
           {t(`discounts.conditions.edit.except.${type}`, {
-            count: labels.length > 2 ? labels.length - 2 : labels.length,
+            count: labels.length > 1 ? labels.length - 1 : labels.length,
           })}
         </Text>
 
-        <div className="text-ui-fg-subtle max-w-[240px] shrink-0 px-2  py-1">
+        <div className="text-ui-fg-subtle max-w-[240px] shrink-0 overflow-hidden">
           <Button
             type="button"
             variant="transparent"
             size="small"
             disabled={isExButtonDisabled}
             onClick={() => onClick("not_in" as DiscountConditionOperator)}
+            className="txt-compact-small-plus rounded-none"
           >
             {!isInOperator && labels.length ? (
               <ListSummary
                 inline
-                n={2}
-                className="max-w-[200px]"
+                n={1}
+                className="txt-compact-small-plus max-w-[200px]"
                 list={labels}
               />
             ) : (

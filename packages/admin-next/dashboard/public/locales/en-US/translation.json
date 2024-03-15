@@ -299,29 +299,31 @@
     "selectRegionFirst": "Select region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
-      "manageTypes": "Manage Condition Types",
+      "editHeader": "Edit Discount Conditions",
+      "editHint": "Specify conditions for when the discount can be applied to a cart.",
+      "manageTypesAction": "Manage condition types",
       "including": {
-        "products_one": "Discount applies to <0/> product.",
-        "products_other": "Discount applies to <0/> products.",
-        "customer_groups_one": "Discount applies to <0/> customer group.",
-        "customer_groups_other": "Discount applies to <0/> customer groups.",
-        "product_tags_one": "Discount applies to <0/> tag.",
-        "product_tags_other": "Discount applies to <0/> tags.",
-        "product_collections_one": "Discount applies to <0/> product collection.",
-        "product_collections_other": "Discount applies to <0/> product collections.",
-        "product_types_one": "Discount applies to <0/> product type.",
-        "product_types_other": "Discount applies to <0/> product types."
+        "products_one": "Discount applies to <0/> product",
+        "products_other": "Discount applies to <0/> products",
+        "customer_groups_one": "Discount applies to <0/> customer group",
+        "customer_groups_other": "Discount applies to <0/> customer groups",
+        "product_tags_one": "Discount applies to <0/> tag",
+        "product_tags_other": "Discount applies to <0/> tags",
+        "product_collections_one": "Discount applies to <0/> product collection",
+        "product_collections_other": "Discount applies to <0/> product collections",
+        "product_types_one": "Discount applies to <0/> product type",
+        "product_types_other": "Discount applies to <0/> product types"
       },
       "excluding": {
-        "products": "Discount applies to <1>all</1> products except <0/>.",
-        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
-        "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
-        "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
-        "product_types": "Discount applies to <1>all</1> product types except <0/>."
+        "products": "Discount applies to <1>all</1> products except <0/>",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>",
+        "product_tags": "Discount applies to <1>all</1> product tags except <0/>",
+        "product_collections": "Discount applies to <1>all</1> product collections except <0/>",
+        "product_types": "Discount applies to <1>all</1> product types except <0/>"
       },
       "edit": {
-        "appliesTo" : "Discount applies to",
-        "except" : {
+        "appliesTo": "Discount applies to",
+        "except": {
           "products_one": "product, except",
           "products_other": "products, except",
           "product_tags_one": "product tag, except",
@@ -663,8 +665,8 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
-    "none": "None",
-    "all": "All",
+    "none": "none",
+    "all": "all",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "customer_groups": "Customer Groups",

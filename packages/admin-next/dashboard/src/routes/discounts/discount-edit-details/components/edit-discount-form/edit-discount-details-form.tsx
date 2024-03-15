@@ -1,29 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Discount } from "@medusajs/medusa"
 import {
-  CurrencyInput,
   Button,
+  CurrencyInput,
   Input,
+  Select,
   Text,
   Textarea,
-  Select,
 } from "@medusajs/ui"
 import { useAdminRegions, useAdminUpdateDiscount } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { getCurrencySymbol } from "../../../../../lib/currencies"
 import {
   getDbAmount,
   getPresentationalAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
-import { Combobox } from "../../../../../components/common/combobox"
 
 type EditDiscountFormProps = {
   discount: Discount

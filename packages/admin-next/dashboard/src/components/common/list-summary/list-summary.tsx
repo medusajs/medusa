@@ -1,6 +1,5 @@
-import { useTranslation } from "react-i18next"
-
 import { Text, Tooltip, clx } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 
 type ListSummaryProps = {
   /**
@@ -13,7 +12,7 @@ type ListSummaryProps = {
    */
   list: string[]
   /**
-   * Is hte summary displayed inline.
+   * Is the summary displayed inline.
    * Determines whether the center text is truncated if there is no space in the container
    */
   inline?: boolean
@@ -35,14 +34,15 @@ export const ListSummary = ({
 
   return (
     <div
-      className={clx("text-ui-fg-subtle gap-x-2", className, {
-        "inline-flex": inline,
-        flex: !inline,
-      })}
+      className={
+        (clx("text-ui-fg-subtle txt-compact-small", {
+          "inline-flex": inline,
+          flex: !inline,
+        }),
+        className)
+      }
     >
-      <Text as="span" leading="compact" size="small" className="truncate">
-        {list.slice(0, n).join(", ")}
-      </Text>
+      <span className="truncate">{list.slice(0, n).join(", ")}</span>
       {list.length > n && (
         <Tooltip
           content={
@@ -61,6 +61,7 @@ export const ListSummary = ({
             className="cursor-default whitespace-nowrap"
             title={title}
           >
+            {" "}
             {title}
           </Text>
         </Tooltip>
