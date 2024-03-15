@@ -27,13 +27,11 @@ function ReturnItem({
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
-  const thumbnail = item.variant.product?.thumbnail
-
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl">
       <div className="flex gap-x-2 border-b p-3 text-sm">
         <div className="flex flex-grow items-center gap-x-3">
-          <Thumbnail src={thumbnail} />
+          <Thumbnail src={item.thumbnail} />
           <div className="flex flex-col">
             <div>
               <Text as="span" weight="plus">
@@ -85,6 +83,7 @@ function ReturnItem({
                         className="bg-ui-bg-base w-full rounded-lg"
                         defaultValue={item.quantity}
                         min={1}
+                        max={item.quantity}
                         type="number"
                         {...field}
                         onChange={(e) => {

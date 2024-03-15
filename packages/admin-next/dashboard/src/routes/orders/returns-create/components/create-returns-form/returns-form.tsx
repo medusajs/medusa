@@ -1,18 +1,28 @@
 import React from "react"
 import { UseFormReturn } from "react-hook-form"
-import { LineItem } from "@medusajs/medusa"
-import { Heading, Select, Text } from "@medusajs/ui"
+import { LineItem, Order } from "@medusajs/medusa"
+import { Alert, Heading, Select, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ReturnItem } from "./return-item.tsx"
+import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
+
+import { ReturnItem } from "./return-item"
 import { Form } from "../../../../../components/common/form"
 
 type ReturnsFormProps = {
   form: UseFormReturn<any>
-  items: LineItem[]
+  items: LineItem[] // Items selected for return
+  order: Order
 }
 
-export function ReturnsForm({ form, items }: ReturnsFormProps) {
+export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
   const { t } = useTranslation()
+
+  const { shipping_options = [] } = useAdminShippingOptions({
+    region_id: order.region_id,
+    is_return: true,
+  })
+
+  const { stock_locations = [], refetch } = useAdminStockLocations({})
 
   const onQuantityChangeComplete = () => {}
 
@@ -27,8 +37,8 @@ export function ReturnsForm({ form, items }: ReturnsFormProps) {
           <ReturnItem
             item={item}
             form={form}
+            currencyCode={order.currency_code}
             onQuantityChangeComplete={onQuantityChangeComplete}
-            currencyCode="EUR"
           />
         ))}
 
@@ -54,9 +64,9 @@ export function ReturnsForm({ form, items }: ReturnsFormProps) {
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {[].map((i) => (
-                            <Select.Item key={i.id} value={i.name}>
-                              {i.name.toUpperCase()}
+                          {stock_locations.map((l) => (
+                            <Select.Item key={l.id} value={l.name}>
+                              {l.name}
                             </Select.Item>
                           ))}
                         </Select.Content>
@@ -85,9 +95,9 @@ export function ReturnsForm({ form, items }: ReturnsFormProps) {
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {[].map((i) => (
-                            <Select.Item key={i.id} value={i.name}>
-                              {i.name.toUpperCase()}
+                          {shipping_options.map((o) => (
+                            <Select.Item key={o.id} value={o.name}>
+                              {o.name}
                             </Select.Item>
                           ))}
                         </Select.Content>
@@ -100,6 +110,14 @@ export function ReturnsForm({ form, items }: ReturnsFormProps) {
             />
           </div>
         </div>
+        <Alert variant="warning" dismissible className="mt-4 p-5">
+          <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+            {t("orders.returns.noInventoryLevel")}
+          </div>
+          <Text className="text-ui-fg-subtle txt-small leading-normal">
+            {t("orders.returns.noInventoryLevelDesc")}
+          </Text>
+        </Alert>
       </div>
     </div>
   )

@@ -135,6 +135,7 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
             <ReturnsForm
               form={form}
               items={order.items.filter((i) => selectedItems.includes(i.id))}
+              order={order}
             />
           </ProgressTabs.Content>
         </RouteFocusModal.Body>
