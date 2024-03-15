@@ -49,23 +49,22 @@ medusaIntegrationTestRunner({
           name: "VIP",
         })
         region = await regionModule.create({ name: "US", currency_code: "USD" })
-        ;[product] = await productModule.create([{ title: "test product" }])
+        ;[product] = await productModule.create([
+          {
+            title: "test product",
+            variants: [
+              {
+                title: "test product variant",
+              },
+            ],
+          },
+        ])
+
+        variant = product.variants[0]
 
         await pricingModule.createRuleTypes([
           { name: "Customer Group ID", rule_attribute: "customer_group_id" },
           { name: "Region ID", rule_attribute: "region_id" },
-        ])
-
-        const [productOption] = await productModule.createOptions([
-          { title: "Test option 1", product_id: product.id },
-        ])
-
-        ;[variant] = await productModule.createVariants([
-          {
-            product_id: product.id,
-            title: "test product variant",
-            options: [{ value: "test", option_id: productOption.id }],
-          },
         ])
       })
 
