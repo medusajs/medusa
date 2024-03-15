@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: 'Medusa admin allows merchants to manage their price lists. Merchants can override prices or create sales using price lists.'
+description: 'Medusa Admin allows merchants to manage their price lists. Merchants can override prices or create sales using price lists.'
 ---
 
 # Price Lists Overview
