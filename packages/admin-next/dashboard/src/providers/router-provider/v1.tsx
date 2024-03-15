@@ -98,6 +98,12 @@ export const v1Routes: RouteObject[] = [
                   crumb: (data: AdminOrdersRes) =>
                     `Order #${data.order.display_id}`,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/orders/order-edit"),
+                  },
+                ],
               },
             ],
           },
