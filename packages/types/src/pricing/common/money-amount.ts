@@ -86,7 +86,7 @@ export interface UpdateMoneyAmountDTO {
   /**
    * The code of the currency to associate with the money amount.
    */
-  currency_code?: string
+  currency_code?: string | null
   /**
    * The price of this money amount.
    */

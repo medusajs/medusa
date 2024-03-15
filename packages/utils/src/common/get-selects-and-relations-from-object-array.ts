@@ -3,6 +3,9 @@ import { isObject } from "./is-object"
 
 export function getSelectsAndRelationsFromObjectArray(
   dataArray: object[],
+  options: { objectFields: string[] } = {
+    objectFields: [],
+  },
   prefix?: string
 ): {
   selects: string[]
@@ -13,10 +16,11 @@ export function getSelectsAndRelationsFromObjectArray(
 
   for (const data of dataArray) {
     for (const [key, value] of Object.entries(data)) {
-      if (isObject(value)) {
+      if (isObject(value) && !options.objectFields.includes(key)) {
         relations.push(setKey(key, prefix))
         const res = getSelectsAndRelationsFromObjectArray(
           [value],
+          options,
           setKey(key, prefix)
         )
         selects.push(...res.selects)
@@ -25,6 +29,7 @@ export function getSelectsAndRelationsFromObjectArray(
         relations.push(setKey(key, prefix))
         const res = getSelectsAndRelationsFromObjectArray(
           value,
+          options,
           setKey(key, prefix)
         )
         selects.push(...res.selects)
