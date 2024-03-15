@@ -1,8 +1,3 @@
-import {
-  buildSelects,
-  objectToStringPath,
-  stringToSelectRelationObject,
-} from "@medusajs/utils"
 import { ValidatorOptions } from "class-validator"
 import { NextFunction, Request, Response } from "express"
 import { omit } from "lodash"
@@ -28,10 +23,7 @@ export function transformQuery<
   TEntity extends BaseEntity
 >(
   plainToClass: ClassConstructor<T>,
-  queryConfig?: Omit<
-    QueryConfig<TEntity>,
-    "allowedRelations" | "allowedFields" | "allowed"
-  >,
+  queryConfig: QueryConfig<TEntity> = {},
   config: ValidatorOptions = {}
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -44,21 +36,38 @@ export function transformQuery<
       )
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
-      attachListOrRetrieveConfig<TEntity>(req, queryConfig)
+
+      attachListOrRetrieveConfig<TEntity>(req, {
+        ...queryConfig,
+        allowed:
+          req.allowed ?? queryConfig.allowed ?? queryConfig.allowedFields ?? [],
+      })
+
       /**
-       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util and is supposed to
-       * only return the fields that are allowed to be queried either from the default of from what the user requested.
-       * The validation occurred above and the fields are already validated and should be used to filter the response.
+       * TODO: the bellow allowedProperties should probably need to be reworked which would create breaking changes everywhere
+       * cleanResponseData is used. It is in fact, what is expected to be returned which IMO
+       * should correspond to the select/relations
+       *
+       * Kept it as it is to maintain backward compatibility
        */
-      const queryConfigRes = req.retrieveConfig ?? req.listConfig
+      const queryConfigRes = !queryConfig.isList
+        ? req.retrieveConfig
+        : req.listConfig
       const includesRelations = Object.keys(req.includes ?? {})
       req.allowedProperties = Array.from(
         new Set(
           [
-            ...(queryConfigRes.select ?? []),
-            ...(includesRelations.length
-              ? includesRelations // For backward compatibility, the includes takes precedence over the relations for the returnable fields
-              : queryConfigRes.relations ?? []),
+            ...(req.validatedQuery.fields
+              ? queryConfigRes.select ?? []
+              : req.allowed ??
+                queryConfig.allowed ??
+                queryConfig.allowedFields ??
+                (queryConfig.defaults as string[]) ??
+                queryConfig.defaultFields ??
+                []),
+            ...(req.validatedQuery.expand || includesRelations.length
+              ? [...(validated.expand?.split(",") || []), ...includesRelations] // For backward compatibility, the includes takes precedence over the relations for the returnable fields
+              : queryConfig.allowedRelations ?? queryConfigRes.relations ?? []), // For backward compatibility, the allowedRelations takes precedence over the relations for the returnable fields
           ].filter(Boolean)
         )
       )
@@ -75,6 +84,8 @@ export function transformQuery<
  * @param plainToClass
  * @param queryConfig
  * @param config
+ *
+ * @deprecated use `transformQuery` instead
  */
 export function transformStoreQuery<
   T extends RequestQueryFields,
@@ -115,19 +126,13 @@ function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
   queryConfig: QueryConfig<TEntity> = {}
 ) {
   const validated = req.validatedQuery
-  queryConfig.allowed =
-    req.allowed ?? queryConfig.allowed ?? queryConfig.allowedFields ?? []
-  queryConfig.allowedFields = queryConfig.allowed
+  const config = queryConfig.isList
+    ? prepareListQuery(validated, queryConfig)
+    : prepareRetrieveQuery(validated, queryConfig)
 
-  if (queryConfig.isList) {
-    const queryConfigRes = prepareListQuery(validated, queryConfig)
-
-    req.listConfig = queryConfigRes.listConfig as FindConfig<any>
-    req.remoteQueryConfig = queryConfigRes.remoteQueryConfig
-  } else {
-    const queryConfigRes = prepareRetrieveQuery(validated, queryConfig)
-
-    req.retrieveConfig = queryConfigRes.retrieveConfig as FindConfig<any>
-    req.remoteQueryConfig = queryConfigRes.remoteQueryConfig
-  }
+  req.listConfig = ("listConfig" in config &&
+    config.listConfig) as FindConfig<any>
+  req.retrieveConfig = ("retrieveConfig" in config &&
+    config.retrieveConfig) as FindConfig<any>
+  req.remoteQueryConfig = config.remoteQueryConfig
 }

@@ -970,9 +970,9 @@ medusaIntegrationTestRunner({
           expect(res.data.product.id).toEqual(productId)
           expect(keysInResponse).toEqual(
             expect.arrayContaining([
-              // fields
               "id",
               "created_at",
+              // fields
               "updated_at",
               "deleted_at",
               "title",

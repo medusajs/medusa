@@ -215,9 +215,12 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toHaveLength(22)
+      expect(Object.keys(response.data.order)).toHaveLength(24)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
+          "id",
+          "created_at",
+
           // fields
           "status",
           "email",

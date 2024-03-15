@@ -263,9 +263,12 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toHaveLength(10)
       expect(Object.keys(response.data.products[0])).toEqual(
         expect.arrayContaining([
+          "id",
+          "created_at",
+
           // fields
           "handle",
           // relations
