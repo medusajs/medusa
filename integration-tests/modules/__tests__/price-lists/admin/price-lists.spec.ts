@@ -549,10 +549,12 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               prices: expect.arrayContaining([
                 expect.objectContaining({
+                  id: expect.any(String),
                   currency_code: "usd",
                   amount: 400,
                 }),
                 expect.objectContaining({
+                  id: "test-price-id",
                   currency_code: "usd",
                   amount: 200,
                 }),
