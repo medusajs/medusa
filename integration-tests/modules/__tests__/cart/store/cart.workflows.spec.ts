@@ -1413,7 +1413,7 @@ medusaIntegrationTestRunner({
                 geo_zones: [
                   {
                     type: "country",
-                    country_code: "us",
+                    country_code: "dk",
                   },
                 ],
               },
@@ -1637,7 +1637,7 @@ medusaIntegrationTestRunner({
                 geo_zones: [
                   {
                     type: "country",
-                    country_code: "us",
+                    country_code: "dk",
                   },
                 ],
               },
