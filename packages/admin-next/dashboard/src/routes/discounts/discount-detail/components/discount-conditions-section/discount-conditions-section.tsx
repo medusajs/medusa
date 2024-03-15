@@ -71,7 +71,7 @@ function ConditionType({ condition }: ConditionTypeProps) {
                 inline
                 n={N}
                 list={list}
-                className="txt-compact-xsmall-plus"
+                className="!txt-compact-xsmall-plus"
               />
             </Badge>,
             <Badge size="2xsmall" key="discounts-excl" className="mx-1" />,

@@ -535,7 +535,7 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
               <ListSummary
                 inline
                 n={N}
-                className="max-w-[200px]"
+                className="txt-compact-small-plus max-w-[200px]"
                 list={labels}
               />
             ) : (
