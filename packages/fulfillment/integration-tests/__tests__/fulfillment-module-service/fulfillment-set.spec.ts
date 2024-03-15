@@ -1,4 +1,4 @@
-import {Modules} from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   CreateServiceZoneDTO,
@@ -6,8 +6,8 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import {GeoZoneType} from "@medusajs/utils"
-import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
+import { GeoZoneType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -17,123 +17,123 @@ moduleIntegrationTestRunner({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment sets with a filter", async function () {
-            const createdSet1 = await service.create({
-              name: "test",
-              type: "test-type",
-            })
-            const createdSet2 = await service.create({
-              name: "test2",
-              type: "test-type",
-              service_zones: [
-                {
-                  name: "test",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-                {
-                  name: "test2",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-                {
-                  name: "_test",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-              ],
-            })
-
-            let listedSets = await service.list(
-              {
-                type: createdSet1.type,
-              },
-              {
-                relations: ["service_zones"],
-              }
-            )
-
-            const listedSets2 = await service.list(
-              {
-                type: createdSet1.type,
-              },
-              {
-                relations: ["service_zones"],
-              }
-            )
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-
-            // Respecting order id by default
-            expect(listedSets[1].service_zones).toEqual([
-              expect.objectContaining({ name: "test" }),
-              expect.objectContaining({ name: "test2" }),
-              expect.objectContaining({ name: "_test" }),
-            ])
-
-            expect(listedSets2).toEqual(listedSets2)
-
-            listedSets = await service.list({
-              name: createdSet2.name,
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
-
-            listedSets = await service.list({
-              service_zones: { name: "test" },
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
-
-            listedSets = await service.list({
-              service_zones: { geo_zones: { country_code: "fr" } },
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
+          const createdSet1 = await service.create({
+            name: "test",
+            type: "test-type",
           })
+          const createdSet2 = await service.create({
+            name: "test2",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+              {
+                name: "test2",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+              {
+                name: "_test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+            ],
+          })
+
+          let listedSets = await service.list(
+            {
+              type: createdSet1.type,
+            },
+            {
+              relations: ["service_zones"],
+            }
+          )
+
+          const listedSets2 = await service.list(
+            {
+              type: createdSet1.type,
+            },
+            {
+              relations: ["service_zones"],
+            }
+          )
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+
+          // Respecting order id by default
+          expect(listedSets[1].service_zones).toEqual([
+            expect.objectContaining({ name: "test" }),
+            expect.objectContaining({ name: "test2" }),
+            expect.objectContaining({ name: "_test" }),
+          ])
+
+          expect(listedSets2).toEqual(listedSets2)
+
+          listedSets = await service.list({
+            name: createdSet2.name,
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+
+          listedSets = await service.list({
+            service_zones: { name: "test" },
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+
+          listedSets = await service.list({
+            service_zones: { geo_zones: { country_code: "fr" } },
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+        })
       })
 
       describe("mutations", () => {

@@ -37,20 +37,26 @@ export class RemoteJoiner {
     data: any,
     fields: string[],
     expands?: RemoteNestedExpands
-  ): Record<string, unknown> {
+  ): Record<string, unknown> | undefined {
     if (!fields || !data) {
       return data
     }
 
-    const filteredData = fields.reduce((acc: any, field: string) => {
-      const fieldValue = data?.[field]
+    let filteredData: Record<string, unknown> = {}
 
-      if (isDefined(fieldValue)) {
-        acc[field] = data?.[field]
-      }
+    if (fields.length === 1 && fields[0] === "*") {
+      filteredData = data
+    } else {
+      filteredData = fields.reduce((acc: any, field: string) => {
+        const fieldValue = data?.[field]
 
-      return acc
-    }, {})
+        if (isDefined(fieldValue)) {
+          acc[field] = data?.[field]
+        }
+
+        return acc
+      }, {})
+    }
 
     if (expands) {
       for (const key of Object.keys(expands ?? {})) {
