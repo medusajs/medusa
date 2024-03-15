@@ -29,7 +29,7 @@ function OrderEditItem({
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
-  const thumbnail = item.variant.product?.thumbnail
+  const thumbnail = item.thumbnail
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl">
@@ -41,7 +41,7 @@ function OrderEditItem({
               <Text as="span" weight="plus">
                 {item.title}
               </Text>
-              {item.variant.sku && <span>(item.variant.sku)</span>}
+              {item.variant.sku && <span>(${item.variant.sku})</span>}
             </div>
             <Text as="div" className="text-ui-fg-subtle">
               {item.variant.title}

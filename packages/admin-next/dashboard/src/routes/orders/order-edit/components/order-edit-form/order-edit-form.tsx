@@ -141,59 +141,75 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   }
 
   const onVariantsSelect = async (variantIds: string[]) => {
-    await Promise.all(
-      variantIds.map((id) =>
-        addLineItemToOrderEdit({ variant_id: id, quantity: 1 })
+    setIsLoading(true)
+    try {
+      await Promise.all(
+        variantIds.map((id) =>
+          addLineItemToOrderEdit({ variant_id: id, quantity: 1 })
+        )
       )
-    )
 
-    await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
+      await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
+    } finally {
+      setIsLoading(false)
+    }
 
     setOpen(false)
   }
 
   const onItemRemove = async (itemId: string) => {
+    setIsLoading(true)
+
     const change = orderEdit.changes.find(
       (change) =>
         change.line_item_id === itemId ||
         change.original_line_item_id === itemId
     )
+    try {
+      if (change) {
+        if (change.type === "item_add") {
+          await medusa.admin.orderEdits.deleteItemChange(
+            orderEdit.id,
+            change.id
+          )
+        }
+        if (change.type === "item_update") {
+          await medusa.admin.orderEdits.deleteItemChange(
+            orderEdit.id,
+            change.id
+          )
+          await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+        }
+      } else {
+        await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+      }
 
-    if (change) {
-      if (change.type === "item_add") {
-        await await medusa.admin.orderEdits.deleteItemChange(
-          orderEdit.id,
-          change.id
-        )
-      }
-      if (change.type === "item_update") {
-        await await medusa.admin.orderEdits.deleteItemChange(
-          orderEdit.id,
-          change.id
-        )
-        await await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
-      }
-    } else {
-      await await medusa.admin.orderEdits.removeLineItem(orderEdit.id, itemId)
+      await queryClient.invalidateQueries(
+        adminOrderEditsKeys.detail(orderEdit.id)
+      )
+    } finally {
+      setIsLoading(false)
     }
-
-    await queryClient.invalidateQueries(
-      adminOrderEditsKeys.detail(orderEdit.id)
-    )
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    if (data.note !== orderEdit?.internal_note) {
-      await updateOrderEdit({ internal_note: data.note })
-    }
+    setIsLoading(true)
 
-    await confirmOrderEdit() // TODO error notification if fails
+    try {
+      if (data.note !== orderEdit?.internal_note) {
+        await updateOrderEdit({ internal_note: data.note })
+      }
+
+      await confirmOrderEdit() // TODO error notification if fails
+    } finally {
+      setIsLoading(false)
+    }
 
     handleSuccess(`/orders/${order.id}`)
   })
 
-  // TODO pass on "cancle" close
-  const handlCancle = async () => {
+  // TODO pass on "cancel" close
+  const handlCancel = async () => {
     await cancelOrderEdit()
 
     handleSuccess(`/orders/${order.id}`)
