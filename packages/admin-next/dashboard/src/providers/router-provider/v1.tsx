@@ -396,6 +396,11 @@ export const v1Routes: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/discounts/edit-configuration"),
                   },
+                  {
+                    path: "conditions",
+                    lazy: () =>
+                      import("../../routes/discounts/edit-conditions"),
+                  },
                 ],
               },
             ],
