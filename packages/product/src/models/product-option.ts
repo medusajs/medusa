@@ -1,5 +1,9 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -23,6 +27,16 @@ type OptionalRelations =
   | DAL.SoftDeletableEntityDateColumns
 type OptionalFields = "product_id"
 
+const optionProductIdTitleIndexName = "IDX_option_product_id_title_unique"
+const optionProductIdTitleIndexStatement = createPsqlIndexStatementHelper({
+  name: optionProductIdTitleIndexName,
+  tableName: "product_option",
+  columns: ["product_id", "title"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+optionProductIdTitleIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOption {
@@ -38,14 +52,13 @@ class ProductOption {
   product_id!: string
 
   @ManyToOne(() => Product, {
-    index: "IDX_product_option_product_id",
     fieldName: "product_id",
     nullable: true,
   })
   product!: Product
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
-    cascade: [Cascade.REMOVE, "soft-remove" as any],
+    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
   })
   values = new Collection<ProductOptionValue>(this)
 

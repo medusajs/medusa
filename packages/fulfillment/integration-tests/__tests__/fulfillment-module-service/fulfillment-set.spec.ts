@@ -349,6 +349,7 @@ moduleIntegrationTestRunner({
                       {
                         type: GeoZoneType.CITY,
                         country_code: "fr",
+                        province_code: "test",
                         city: "lyon",
                       },
                     ],
@@ -399,6 +400,91 @@ moduleIntegrationTestRunner({
 
             expect(err).toBeDefined()
             expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+          })
+
+          it("should fail on creating a new fulfillment set with new service zones and new geo zones that are not valid", async function () {
+            let data: CreateFulfillmentSetDTO = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.PROVINCE,
+                      country_code: "fr",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            let err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property province_code for geo zone type province"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.CITY,
+                      country_code: "fr",
+                      province_code: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property city for geo zone type city"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.ZIP,
+                      postal_expression: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property country_code for geo zone type zip"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: "unknown",
+                      postal_expression: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(`Invalid geo zone type: unknown`)
           })
         })
 

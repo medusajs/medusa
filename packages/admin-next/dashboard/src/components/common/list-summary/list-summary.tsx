@@ -1,4 +1,4 @@
-import { Text, Tooltip, clx } from "@medusajs/ui"
+import { Tooltip, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 type ListSummaryProps = {
@@ -12,46 +12,54 @@ type ListSummaryProps = {
    */
   list: string[]
   /**
-   * Is hte summary displayed inline.
+   * Is the summary displayed inline.
    * Determines whether the center text is truncated if there is no space in the container
    */
   inline?: boolean
+
+  className?: string
 }
 
-export const ListSummary = ({ list, inline, n = 2 }: ListSummaryProps) => {
+export const ListSummary = ({
+  list,
+  className,
+  inline,
+  n = 2,
+}: ListSummaryProps) => {
   const { t } = useTranslation()
+
+  const title = t("general.plusCountMore", {
+    count: list.length - n,
+  })
+
   return (
     <div
-      className={clx("text-ui-fg-subtle gap-x-2", {
-        "inline-flex": inline,
-        flex: !inline,
-      })}
+      className={clx(
+        "text-ui-fg-subtle txt-compact-small gap-x-1 overflow-hidden",
+        {
+          "inline-flex": inline,
+          flex: !inline,
+        },
+        className
+      )}
     >
-      <Text as="span" leading="compact" size="small" className="truncate">
-        {list.slice(0, n).join(", ")}
-      </Text>
+      <div className="flex-1 truncate">
+        <span className="truncate">{list.slice(0, n).join(", ")}</span>
+      </div>
       {list.length > n && (
-        <Tooltip
-          content={
-            <ul>
-              {list.slice(n).map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          }
-        >
-          <Text
-            as="span"
-            size="small"
-            weight="plus"
-            leading="compact"
-            className="cursor-default whitespace-nowrap"
+        <div className="whitespace-nowrap">
+          <Tooltip
+            content={
+              <ul>
+                {list.slice(n).map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+            }
           >
-            {t("general.plusCountMore", {
-              count: list.length - n,
-            })}
-          </Text>
-        </Tooltip>
+            <span className="cursor-default whitespace-nowrap">{title}</span>
+          </Tooltip>
+        </div>
       )}
     </div>
   )
