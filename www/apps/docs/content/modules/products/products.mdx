@@ -82,8 +82,8 @@ Product variants are represented by the `ProductVariant` entity. The entity’s 
 - `product_id`: A string indicating which product this variant belongs to. You can also access the product through the `product` relation if it’s expanded.
 - `sku`: A string indicating the Stock Keeping Unit (SKU) of the variant. This, along with other attributes like `barcode` or `upc`  are useful to store inventory-related information.
 - `inventory_quantity`: A number indicating the available inventory of the variant. This is only useful if you have `manage_inventory` disabled.
-- `manage_inventory`: A boolean value indicating whether Medusa should handle the management of the product variant’s inventory. This would allow you to handle your inventory data more accurately across different locations. You can learn more in [the Inventory Module documentation](../multiwarehouse/inventory-module.md).
-- `inventory_items`: A relation that gives you access to the inventory items of a variant when `manage_inventory` is enabled. You can learn more in [the Inventory Module documentation](../multiwarehouse/inventory-module.md).
+- `manage_inventory`: A boolean value indicating whether Medusa should handle the management of the product variant’s inventory. This would allow you to handle your inventory data more accurately across different locations.
+- `inventory_items`: A relation that gives you access to the inventory items of a variant when `manage_inventory` is enabled.
 - `variant_rank`: a number that can be used to decide the sort order of variants in a storefront.
 
 You can also access the option values of a product variant through the `options` relation, which is an array of `ProductOptionValue` items.

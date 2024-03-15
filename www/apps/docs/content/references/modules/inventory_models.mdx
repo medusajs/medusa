@@ -1,0 +1,24 @@
+---
+displayed_sidebar: inventoryModelReference
+slug: /references/inventory/models
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# Inventory Module Data Models Reference
+
+This documentation provides a reference to the data models in the Inventory Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	InventoryLevel }|--|{ InventoryItem : inventory_item
+
+```
+
+## Classes
+
+- [InventoryItem](../inventory_models/classes/inventory_models.InventoryItem.mdx)
+- [InventoryLevel](../inventory_models/classes/inventory_models.InventoryLevel.mdx)
+- [ReservationItem](../inventory_models/classes/inventory_models.ReservationItem.mdx)

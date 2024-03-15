@@ -369,6 +369,38 @@ npx medusa develop
       },
     },
 
+    // INVENTORY MODELS CONFIG
+    "^inventory_models": {
+      frontmatterData: {
+        displayed_sidebar: "inventoryModelReference",
+        slug: "/references/inventory/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Inventory Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/inventory_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Inventory Module",
+      frontmatterData: {
+        displayed_sidebar: "inventoryModelReference",
+        slug: "/references/inventory/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Inventory Module Data Models Reference",
+      },
+    },
+
     // JS CLIENT CONFIG
     "^js_client": {
       sections: {
@@ -773,6 +805,38 @@ npx medusa develop
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // PRICING MODELS CONFIG
+    "^pricing_models": {
+      frontmatterData: {
+        displayed_sidebar: "pricingModelReference",
+        slug: "/references/pricing/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Pricing Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Pricing Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/pricing_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Pricing Module",
+      frontmatterData: {
+        displayed_sidebar: "pricingModelReference",
+        slug: "/references/pricing/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Pricing Module Data Models Reference",
       },
     },
 

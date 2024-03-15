@@ -909,97 +909,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Multi-Warehouse",
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      items: [
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/overview",
-          label: "Overview",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/install-modules",
-          label: "Install Modules",
-        },
-        {
-          type: "html",
-          value: "Architecture",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/inventory-module",
-          label: "Inventory Module",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/stock-location-module",
-          label: "Stock Location Module",
-        },
-        {
-          type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/inventory/interfaces/inventory.IInventoryService",
-          label: "Inventory Module Interface Reference",
-        },
-        {
-          type: "ref",
-          id: "references/stock_location/interfaces/stock_location.IStockLocationService",
-          label: "Stock Location Module Interface Reference",
-        },
-        {
-          type: "html",
-          value: "How-to",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/backend/create-inventory-service",
-          label: "Backend: Create Inventory Service",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/backend/create-stock-location-service",
-          label: "Backend: Create Stock Location Service",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/admin/manage-stock-locations",
-          label: "Admin: Manage Stock Locations",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/admin/manage-inventory-items",
-          label: "Admin: Manage Inventory Items",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/admin/manage-reservations",
-          label: "Admin: Manage Custom Reservations",
-        },
-        {
-          type: "doc",
-          id: "modules/multiwarehouse/admin/manage-item-allocations-in-orders",
-          label: "Admin: Manage Allocations in Orders",
-        },
-      ],
-    },
-    {
-      type: "category",
       label: "Taxes",
       collapsible: false,
       customProps: {
@@ -2820,6 +2729,66 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Inventory Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/inventory/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/inventory/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Inventory Concepts",
+          id: "experimental/inventory/concepts/index",
+        },
+        {
+          type: "doc",
+          label: "Inventory in Flows",
+          id: "experimental/inventory/inventory-in-flows/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/inventory/relations-to-other-modules",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/inventory/interfaces/inventory.IInventoryService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/inventory_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Pricing Module",
       customProps: {
         sidebar_is_group_headline: true,
@@ -2855,6 +2824,11 @@ module.exports = {
           id: "experimental/pricing/prices-calculation",
         },
         {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/pricing/relations-to-other-modules",
+        },
+        {
           type: "html",
           value: "References",
           customProps: {
@@ -2865,6 +2839,11 @@ module.exports = {
           type: "ref",
           id: "references/pricing/interfaces/pricing.IPricingModuleService",
           label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/pricing_models",
+          label: "Data Models Reference",
         },
       ],
     },
@@ -3448,6 +3427,74 @@ module.exports = {
       ],
     },
   ],
+  inventoryReference: [
+    {
+      type: "ref",
+      id: "modules/overview",
+      label: "Back to Commerce Modules",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/inventory/interfaces/inventory.IInventoryService",
+      label: "Inventory Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/inventory/IInventoryService/methods",
+        },
+      ],
+    },
+  ],
+  inventoryModelReference: [
+    {
+      type: "ref",
+      id: "modules/overview",
+      label: "Back to Commerce Modules",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/inventory_models",
+      label: "Inventory - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/inventory_models/classes",
+        },
+      ],
+    },
+  ],
   pricingReference: [
     {
       type: "ref",
@@ -3482,6 +3529,40 @@ module.exports = {
       ],
     },
   ],
+  pricingModelReference: [
+    {
+      type: "ref",
+      id: "modules/overview",
+      label: "Back to Commerce Modules",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/pricing_models",
+      label: "Pricing - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/pricing_models/classes",
+        },
+      ],
+    },
+  ],
   productReference: [
     {
       type: "ref",
@@ -3512,40 +3593,6 @@ module.exports = {
         {
           type: "autogenerated",
           dirName: "references/product/IProductModuleService/methods",
-        },
-      ],
-    },
-  ],
-  inventoryReference: [
-    {
-      type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
-      customProps: {
-        sidebar_is_back_link: true,
-        sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "references/inventory/interfaces/inventory.IInventoryService",
-      label: "Inventory Module Interface Reference",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "folder-open",
-      },
-    },
-    {
-      type: "category",
-      label: "Methods",
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "references/inventory/IInventoryService/methods",
         },
       ],
     },

@@ -1,0 +1,46 @@
+---
+displayed_sidebar: pricingModelReference
+slug: /references/pricing/models
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# Pricing Module Data Models Reference
+
+This documentation provides a reference to the data models in the Pricing Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	MoneyAmount }|--|{ PriceSet : price_sets
+	MoneyAmount ||--|| PriceSetMoneyAmount : price_set_money_amount
+	PriceList ||--|| PriceSetMoneyAmount : price_set_money_amounts
+	PriceList ||--|| PriceListRule : price_list_rules
+	PriceList }|--|{ RuleType : rule_types
+	PriceListRule }|--|{ RuleType : rule_type
+	PriceListRule ||--|| PriceListRuleValue : price_list_rule_values
+	PriceRule }|--|{ PriceSet : price_set
+	PriceRule }|--|{ RuleType : rule_type
+	PriceRule }|--|{ PriceSetMoneyAmount : price_set_money_amount
+	PriceSet ||--|| PriceSetMoneyAmount : price_set_money_amounts
+	PriceSet }|--|{ RuleType : rule_types
+	PriceSetMoneyAmount ||--|| PriceSetMoneyAmountRules : price_set_money_amount_rules
+	PriceSetMoneyAmountRules }|--|{ RuleType : rule_type
+	PriceSetRuleType }|--|{ PriceSet : price_set
+	PriceSetRuleType }|--|{ RuleType : rule_type
+
+```
+
+## Classes
+
+- [MoneyAmount](../pricing_models/classes/pricing_models.MoneyAmount.mdx)
+- [PriceListRuleValue](../pricing_models/classes/pricing_models.PriceListRuleValue.mdx)
+- [PriceListRule](../pricing_models/classes/pricing_models.PriceListRule.mdx)
+- [PriceList](../pricing_models/classes/pricing_models.PriceList.mdx)
+- [PriceRule](../pricing_models/classes/pricing_models.PriceRule.mdx)
+- [PriceSetMoneyAmountRules](../pricing_models/classes/pricing_models.PriceSetMoneyAmountRules.mdx)
+- [PriceSetMoneyAmount](../pricing_models/classes/pricing_models.PriceSetMoneyAmount.mdx)
+- [PriceSetRuleType](../pricing_models/classes/pricing_models.PriceSetRuleType.mdx)
+- [PriceSet](../pricing_models/classes/pricing_models.PriceSet.mdx)
+- [RuleType](../pricing_models/classes/pricing_models.RuleType.mdx)

@@ -1,0 +1,569 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Inventory Module
+
+In this document, you’ll find common examples of how you can use the Inventory Module in your application.
+
+## Create an Inventory Item
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryItem =
+      await inventoryModuleService.createInventoryItem({
+        sku: request.body.sku,
+        title: request.body.title,
+        requires_shipping: request.body.requires_shipping,
+      })
+
+    response.json({ inventory_item: inventoryItem })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function POST(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+    const body = await request.json()
+
+    const inventoryItem =
+      await inventoryModuleService.createInventoryItem({
+        sku: body.sku,
+        title: body.title,
+        requires_shipping: body.requires_shipping,
+      })
+
+    return NextResponse.json({ inventory_item: inventoryItem })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Inventory Items
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryItems =
+      await inventoryModuleService.listInventoryItems({})
+
+    response.json({ inventory_items: inventoryItems })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function GET(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+
+    const inventoryItems =
+      await inventoryModuleService.listInventoryItems({})
+
+    return NextResponse.json({ inventory_items: inventoryItems })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Retrieve an Inventory Item by its ID
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryItem =
+      await inventoryModuleService.retrieveInventoryItem(
+        request.params.id
+      )
+
+    response.json({ inventory_item: inventoryItem })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function GET(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+
+    const inventoryItem =
+      await inventoryModuleService.retrieveInventoryItem(
+        params.id
+      )
+
+    return NextResponse.json({ inventory_item: inventoryItem })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Create an Inventory Level
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryLevel =
+      await inventoryModuleService.createInventoryLevel({
+        inventory_item_id: request.body.inventory_item_id,
+        location_id: request.body.location_id,
+        stocked_quantity: request.body.quantity,
+      })
+
+    response.json({ inventory_level: inventoryLevel })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function POST(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+    const body = await request.json()
+
+    const inventoryLevel =
+      await inventoryModuleService.createInventoryLevel({
+        inventory_item_id: body.inventory_item_id,
+        location_id: body.location_id,
+        stocked_quantity: body.quantity,
+      })
+
+    return NextResponse.json({ inventory_level: inventoryLevel })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Adjust Inventory in Location
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryLevel =
+      await inventoryModuleService.adjustInventory(
+        request.body.inventory_item_id,
+        request.body.location_id,
+        request.body.new_quantity
+      )
+
+    response.json({ inventory_level: inventoryLevel })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function POST(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+    const body = await request.json()
+
+    const inventoryLevel =
+      await inventoryModuleService.adjustInventory(
+        body.inventory_item_id,
+        body.location_id,
+        body.new_quantity
+      )
+
+    return NextResponse.json({ inventory_level: inventoryLevel })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Confirm Inventory Item Availability
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    response.json({
+      is_available: await inventoryModuleService.confirmInventory(
+        request.body.inventory_item_id,
+        request.body.location_id,
+        request.body.required_quantity
+      ),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function POST(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+    const body = await request.json()
+
+    return NextResponse.json({
+      is_available: await inventoryModuleService.confirmInventory(
+        body.inventory_item_id,
+        body.location_id,
+        body.required_quantity
+      ),
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Create Reservation Item
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const reservationItem =
+      await inventoryModuleService.createReservationItem({
+        inventory_item_id: request.body.inventory_item_id,
+        location_id: request.body.location_id,
+        quantity: request.body.reserved_quantity,
+      })
+
+    response.json({ reservation_item: reservationItem })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  export async function POST(request: Request) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+    const body = await request.json()
+
+    const reservationItem =
+      await inventoryModuleService.createReservationItem({
+        inventory_item_id: body.inventory_item_id,
+        location_id: body.location_id,
+        quantity: body.reserved_quantity,
+      })
+
+    return NextResponse.json({
+      reservation_item: reservationItem,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Retrieve Quantity Details
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    const reservedQuantity =
+      await inventoryModuleService.retrieveReservedQuantity(
+        request.params.inventory_item_id,
+        [request.params.location_id]
+      )
+    const stockedQuantity =
+      await inventoryModuleService.retrieveStockedQuantity(
+        request.params.inventory_item_id,
+        [request.params.location_id]
+      )
+    const availableQuantity =
+      await inventoryModuleService.retrieveAvailableQuantity(
+        request.params.inventory_item_id,
+        [request.params.location_id]
+      )
+
+    response.json({
+      reserved_quantity: reservedQuantity,
+      stocked_quantity: stockedQuantity,
+      available_quantity: availableQuantity,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  type ContextType = {
+    params: {
+      inventory_item_id: string
+      location_id: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+
+    const reservedQuantity =
+      await inventoryModuleService.retrieveReservedQuantity(
+        params.inventory_item_id,
+        [params.location_id]
+      )
+    const stockedQuantity =
+      await inventoryModuleService.retrieveStockedQuantity(
+        params.inventory_item_id,
+        [params.location_id]
+      )
+    const availableQuantity =
+      await inventoryModuleService.retrieveAvailableQuantity(
+        params.inventory_item_id,
+        [params.location_id]
+      )
+
+    return NextResponse.json({
+      reserved_quantity: reservedQuantity,
+      stocked_quantity: stockedQuantity,
+      available_quantity: availableQuantity,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Delete a Reservation
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="medusa" value="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    await inventoryModuleService.deleteReservationItem([
+      request.params.reservation_id,
+    ])
+
+    response.status(200)
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="nextjs" value="Next.js App Router">
+
+  ```ts
+  import {
+    initialize as initializeInventoryModule,
+  } from "@medusajs/inventory"
+
+  type ContextType = {
+    params: {
+      reservation_id: string
+    }
+  }
+
+  export async function DELETE(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const inventoryModuleService =
+      await initializeInventoryModule({})
+
+    await inventoryModuleService.deleteReservationItem([
+      params.reservation_id,
+    ])
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [module interface reference](/commerce-modules/inventory/reference) provides a reference to all the methods available for use with examples for each.
