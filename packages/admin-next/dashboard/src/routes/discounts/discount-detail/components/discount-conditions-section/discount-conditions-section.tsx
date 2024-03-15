@@ -66,7 +66,11 @@ function ConditionType({ condition }: ConditionTypeProps) {
           }
           i18nKey={`discounts.conditions.${operator}.${entity}`}
           components={[
-            <Badge size="2xsmall" key="discounts-incl" className="mx-1">
+            <Badge
+              size="2xsmall"
+              key="discounts-incl"
+              className="mx-1 max-w-[120px]"
+            >
               <ListSummary
                 inline
                 n={N}
