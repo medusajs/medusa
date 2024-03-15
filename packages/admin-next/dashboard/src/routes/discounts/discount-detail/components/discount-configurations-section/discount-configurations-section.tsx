@@ -1,6 +1,6 @@
-import { parse } from "iso8601-duration"
-import { format, formatDuration } from "date-fns"
 import { PencilSquare } from "@medusajs/icons"
+import { format, formatDuration } from "date-fns"
+import { parse } from "iso8601-duration"
 import { useMemo } from "react"
 
 import { Discount } from "@medusajs/medusa"
@@ -13,9 +13,9 @@ type DiscountConfigurationsSection = {
   discount: Discount
 }
 
-function formatTime(dateTime?: string) {
+function formatTime(dateTime?: string | Date | null) {
   if (!dateTime) {
-    return
+    return "-"
   }
   return format(new Date(dateTime), "dd MMM, yyyy, HH:mm:ss")
 }
@@ -57,7 +57,7 @@ export const DiscountConfigurationSection = ({
           {t("discounts.startDate")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {formatTime(discount.starts_at as unknown as string)}
+          {formatTime(discount.starts_at)}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -65,7 +65,7 @@ export const DiscountConfigurationSection = ({
           {t("discounts.endDate")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {formatTime(discount.ends_at as unknown as string)}
+          {formatTime(discount.ends_at)}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">

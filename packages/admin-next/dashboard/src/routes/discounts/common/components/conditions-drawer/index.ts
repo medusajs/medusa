@@ -1,1 +1,1 @@
-export { ConditionsTable as default } from "./conditions-drawer"
+export * from "./conditions-drawer"

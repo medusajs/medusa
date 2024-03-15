@@ -1,27 +1,64 @@
-import type { Discount, DiscountCondition } from "@medusajs/medusa"
-import { Container, Heading } from "@medusajs/ui"
-import { Trans, useTranslation } from "react-i18next"
 import { PencilSquare } from "@medusajs/icons"
+import type {
+  CustomerGroup,
+  Discount,
+  DiscountCondition,
+  Product,
+  ProductCollection,
+  ProductTag,
+  ProductType,
+} from "@medusajs/medusa"
+import { Badge, Container, Heading } from "@medusajs/ui"
 import { useMemo } from "react"
+import { Trans, useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { ListSummary } from "../../../../../components/common/list-summary"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { ListSummary } from "../../../../../components/common/list-summary"
 
 type ConditionTypeProps = {
   condition: DiscountCondition
 }
 
-const N = 2
+const N = 1
+
+const hasTitle = (p: unknown): p is Product | ProductCollection => {
+  return (p as { title: string }).title !== undefined
+}
+
+const hasName = (p: unknown): p is CustomerGroup => {
+  return (p as { name: string }).name !== undefined
+}
+
+const hasValue = (p: unknown): p is ProductTag | ProductType => {
+  return (p as { value: string }).value !== undefined
+}
 
 function ConditionType({ condition }: ConditionTypeProps) {
+  const { t } = useTranslation()
+
   const operator = condition.operator === "in" ? "including" : "excluding"
   const entity = condition.type
 
+  const list = condition[entity].map((p) => {
+    if (hasTitle(p)) {
+      return p.title
+    }
+
+    if (hasName(p)) {
+      return p.name
+    }
+
+    if (hasValue(p)) {
+      return p.value
+    }
+  }) as string[]
+
   return (
-    <div className="bg-ui-bg-subtle shadow-borders-base flex flex-row justify-around rounded-md p-2">
-      <span className="text-ui-fg-subtle txt-small">
+    <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2">
+      <span className="text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap">
         <Trans
+          t={t}
           count={
             condition[entity].length > N
               ? N - condition[entity].length
@@ -29,22 +66,19 @@ function ConditionType({ condition }: ConditionTypeProps) {
           }
           i18nKey={`discounts.conditions.${operator}.${entity}`}
           components={[
-            <span
+            <Badge
+              size="2xsmall"
               key="discounts-incl"
-              className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1"
+              className="mx-1 max-w-[120px]"
             >
               <ListSummary
                 inline
                 n={N}
-                list={condition[entity].map(
-                  (p) => p.title || p.name || p.value
-                )}
+                list={list}
+                className="!txt-compact-xsmall-plus"
               />
-            </span>,
-            <span
-              key="discounts-excl"
-              className="bg-ui-tag-neutral-bg mx-1 rounded-md border p-1"
-            />,
+            </Badge>,
+            <Badge size="2xsmall" key="discounts-excl" className="mx-1" />,
           ]}
         />
       </span>
@@ -88,12 +122,7 @@ export const DiscountConditionsSection = ({
         />
       </div>
       <div className="text-ui-fg-subtle flex flex-col gap-2 px-6 pb-4 pt-2">
-        {!conditions.length && (
-          <NoRecords
-            className="h-[180px]"
-            action={{ label: t("discounts.editConditions"), to: "conditions" }}
-          />
-        )}
+        {!conditions.length && <NoRecords className="h-[180px]" />}
         {conditions.map((condition) => (
           <ConditionType key={condition.id} condition={condition} />
         ))}

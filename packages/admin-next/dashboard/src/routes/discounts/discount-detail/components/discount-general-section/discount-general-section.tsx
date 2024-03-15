@@ -60,7 +60,7 @@ export const DiscountGeneralSection = ({
     [PromotionStatus.EXPIRED]: ["red", t("discounts.discountStatus.expired")],
   }[getDiscountStatus(discount)] as [
     "grey" | "orange" | "green" | "red",
-    string
+    string,
   ]
 
   return (
@@ -101,7 +101,7 @@ export const DiscountGeneralSection = ({
           {t("fields.description")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {discount.rule.description}
+          {discount.rule.description || "-"}
         </Text>
       </div>
     </Container>

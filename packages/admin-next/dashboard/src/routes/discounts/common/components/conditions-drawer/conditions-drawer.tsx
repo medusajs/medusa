@@ -8,11 +8,11 @@ import {
 import { Button } from "@medusajs/ui"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import {
+  useAdminCollections,
+  useAdminCustomerGroups,
+  useAdminProductTags,
   useAdminProductTypes,
   useAdminProducts,
-  useAdminCustomerGroups,
-  useAdminCollections,
-  useAdminProductTags,
 } from "medusa-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -23,24 +23,24 @@ import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
-import { useProductConditionsTableColumns } from "../../hooks/columns/use-product-conditions-table-columns"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
+import { useProductConditionsTableColumns } from "../../hooks/columns/use-product-conditions-table-columns"
 
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useCustomerGroupConditionsTableColumns } from "../../hooks/columns/use-customer-group-conditions-table-columns"
 import { useCustomerGroupConditionsTableFilters } from "../../hooks/filters/use-customer-group-conditions-table-filters"
 
-import { useProductTypeConditionsTableQuery } from "../../hooks/query/use-product-type-conditions-table-query"
 import { useProductTypeConditionsTableColumns } from "../../hooks/columns/use-product-type-conditions-table-columns"
 import { useProductTypeConditionsTableFilters } from "../../hooks/filters/use-product-type-conditions-table-filters"
+import { useProductTypeConditionsTableQuery } from "../../hooks/query/use-product-type-conditions-table-query"
 
-import { useProductCollectionConditionsTableQuery } from "../../hooks/query/use-product-collection-conditions-table-query"
 import { useProductCollectionConditionsTableColumns } from "../../hooks/columns/use-product-collection-conditions-table-columns"
 import { useProductCollectionConditionsTableFilters } from "../../hooks/filters/use-product-collection-conditions-table-filters"
+import { useProductCollectionConditionsTableQuery } from "../../hooks/query/use-product-collection-conditions-table-query"
 
-import { useProductTagConditionsTableQuery } from "../../hooks/query/use-product-tag-conditions-table-query"
-import { useProductTagConditionsTableFilters } from "../../hooks/filters/use-product-tag-conditions-table-filters"
 import { useProductTagConditionsTableColumns } from "../../hooks/columns/use-product-tag-conditions-table-columns"
+import { useProductTagConditionsTableFilters } from "../../hooks/filters/use-product-tag-conditions-table-filters"
+import { useProductTagConditionsTableQuery } from "../../hooks/query/use-product-tag-conditions-table-query"
 
 import { ConditionEntities } from "../../constants"
 import { ConditionsOption } from "../../types"
@@ -639,7 +639,7 @@ type ConditionsTableProps = {
   selected: ConditionEntities | null
 }
 
-export const ConditionsTable = ({
+export const ConditionsDrawer = ({
   product,
   productType,
   customerGroup,
