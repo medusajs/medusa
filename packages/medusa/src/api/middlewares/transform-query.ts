@@ -30,7 +30,7 @@ export function transformQuery<
   plainToClass: ClassConstructor<T>,
   queryConfig?: Omit<
     QueryConfig<TEntity>,
-    "allowedRelations" | "allowedFields"
+    "allowedRelations" | "allowedFields" | "allowed"
   >,
   config: ValidatorOptions = {}
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
@@ -82,38 +82,7 @@ export function transformStoreQuery<
   queryConfig?: QueryConfig<TEntity>,
   config: ValidatorOptions = {}
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      normalizeQuery()(req, res, () => void 0)
-      const validated: T = await validator<T, Record<string, unknown>>(
-        plainToClass,
-        req.query,
-        config
-      )
-      req.validatedQuery = validated
-      req.filterableFields = getFilterableFields(validated)
-      attachListOrRetrieveConfig<TEntity>(req, queryConfig)
-      /**
-       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util and is supposed to
-       * only return the fields that are allowed to be queried either from the default of from what the user requested.
-       * The validation occurred above and the fields are already validated and should be used to filter the response.
-       */
-      const queryConfigRes = req.retrieveConfig ?? req.listConfig
-      req.allowedProperties = Array.from(
-        new Set(
-          [
-            ...(queryConfigRes.select ?? []),
-            ...(queryConfigRes.relations ?? []),
-            ...Object.keys(req.includes ?? {}),
-          ].filter(Boolean)
-        )
-      )
-
-      next()
-    } catch (e) {
-      next(e)
-    }
-  }
+  return transformQuery(plainToClass, queryConfig, config)
 }
 
 /**
