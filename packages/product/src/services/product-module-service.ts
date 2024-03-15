@@ -693,7 +693,6 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[] | ProductTypes.ProductDTO> {
     const input = Array.isArray(data) ? data : [data]
-
     const products = await this.create_(input, sharedContext)
 
     const createdProducts = await this.baseRepository_.serialize<
