@@ -51,5 +51,13 @@ export interface FilterableShippingOptionProps
 
 export interface FilterableShippingOptionForContextProps
   extends FilterableShippingOptionProps {
-  context: Record<string, any>
+  fulfillment_set_id?: string | string[] | OperatorMap<string | string[]>
+  fulfillment_set_type?: string | string[] | OperatorMap<string | string[]>
+  address?: {
+    country_code?: string
+    province_code?: string
+    city?: string
+    postal_expression?: string
+  }
+  context?: Record<string, any>
 }

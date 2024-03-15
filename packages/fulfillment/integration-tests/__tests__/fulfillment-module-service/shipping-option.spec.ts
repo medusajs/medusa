@@ -8,6 +8,7 @@ import { generateCreateShippingOptionsData } from "../../__fixtures__"
 import { resolve } from "path"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
+import { GeoZoneType } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
@@ -203,6 +204,122 @@ moduleIntegrationTestRunner({
           })
 
           expect(listedOptions).toHaveLength(0)
+        })
+
+        it(`should list the shipping options for a context with a specific address`, async function () {
+          const fulfillmentSet = await service.create({
+            name: "test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.ZIP,
+                    country_code: "fr",
+                    province_code: "rhone",
+                    city: "paris",
+                    postal_expression: "75006",
+                  },
+                ],
+              },
+            ],
+          })
+
+          const shippingProfile = await service.createShippingProfiles({
+            name: "test",
+            type: "default",
+          })
+
+          const [shippingOption1, , shippingOption3] =
+            await service.createShippingOptions([
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test"],
+                  },
+                ],
+              }),
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test-test"],
+                  },
+                ],
+              }),
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "eq",
+                    value: "test",
+                  },
+                  {
+                    attribute: "test-attribute2.options",
+                    operator: "in",
+                    value: ["test", "test2"],
+                  },
+                ],
+              }),
+            ])
+
+          let shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              province_code: "rhone",
+              city: "paris",
+              postal_expression: "75006",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              province_code: "rhone",
+              city: "paris",
+              postal_expression: "75001",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(0)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              province_code: "rhone",
+              city: "paris",
+              postal_expression: "75006",
+            },
+            context: {
+              "test-attribute": "test",
+              "test-attribute2": {
+                options: "test2",
+              },
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(2)
+          expect(shippingOptions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: shippingOption1.id }),
+              expect.objectContaining({ id: shippingOption3.id }),
+            ])
+          )
         })
       })
 

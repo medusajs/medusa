@@ -135,16 +135,18 @@ export default class FulfillmentModuleService<
     config: FindConfig<ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
-    const { context, ...restFilters } = filters
-
-    config.relations = Array.from(
-      new Set(["rules", ...(config.relations ?? [])])
+    const {
+      context,
+      config: normalizedConfig,
+      filters: normalizedFilters,
+    } = FulfillmentModuleService.normalizeListShippingOptionsForContextParams(
+      filters,
+      config
     )
-    config.take ??= null
 
     let shippingOptions = await this.shippingOptionService_.list(
-      restFilters,
-      config,
+      normalizedFilters,
+      normalizedConfig,
       sharedContext
     )
 
@@ -481,7 +483,10 @@ export default class FulfillmentModuleService<
 
     FulfillmentModuleService.validateGeoZones(data_)
 
-    const createdGeoZones = await this.geoZoneService_.create(data_, sharedContext)
+    const createdGeoZones = await this.geoZoneService_.create(
+      data_,
+      sharedContext
+    )
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
       Array.isArray(data) ? createdGeoZones : createdGeoZones[0],
@@ -1354,7 +1359,7 @@ export default class FulfillmentModuleService<
       country: ["country_code"],
       province: ["country_code", "province_code"],
       city: ["country_code", "province_code", "city"],
-      zip: ["country_code", "province_code", "city", "postal_code"],
+      zip: ["country_code", "province_code", "city", "postal_expression"],
     }
 
     for (const geoZone of geoZones) {
@@ -1374,5 +1379,182 @@ export default class FulfillmentModuleService<
         }
       }
     }
+  }
+
+  protected static normalizeListShippingOptionsForContextParams(
+    filters: FulfillmentTypes.FilterableShippingOptionForContextProps,
+    config: FindConfig<ShippingOptionDTO> = {}
+  ) {
+    let {
+      fulfillment_set_id,
+      fulfillment_set_type,
+      address,
+      context,
+      ...where
+    } = filters
+
+    const normalizedConfig = { ...config }
+    normalizedConfig.relations = [
+      "rules",
+      "type",
+      "shipping_profile",
+      "provider",
+      ...(normalizedConfig.relations ?? []),
+    ]
+
+    normalizedConfig.take =
+      normalizedConfig.take ?? (context ? null : undefined)
+
+    let normalizedFilters = { ...where }
+
+    if (fulfillment_set_id || fulfillment_set_type) {
+      const fulfillmentSetConstraints = {}
+
+      if (fulfillment_set_id) {
+        fulfillmentSetConstraints["id"] = fulfillment_set_id
+      }
+
+      if (fulfillment_set_type) {
+        fulfillmentSetConstraints["type"] = fulfillment_set_type
+      }
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          ...(normalizedFilters.service_zone ?? {}),
+          fulfillment_set: {
+            ...(normalizedFilters.service_zone?.fulfillment_set ?? {}),
+            ...fulfillmentSetConstraints,
+          },
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.fulfillment_set")
+    }
+
+    if (address) {
+      const geoZoneConstraints =
+        FulfillmentModuleService.buildGeoZoneConstraintsFromAddress(address)
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          ...(normalizedFilters.service_zone ?? {}),
+          geo_zones: {
+            $or: geoZoneConstraints.map((geoZoneConstraint) => ({
+              // Apply eventually provided constraints on the geo zone along side the address constraints
+              ...(normalizedFilters.service_zone?.geo_zones ?? {}),
+              ...geoZoneConstraint,
+            })),
+          },
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.geo_zones")
+    }
+
+    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
+
+    return {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    }
+  }
+
+  /**
+   * Build the constraints for the geo zones based on the address properties
+   * available and the hierarchy of required properties.
+   * We build a OR constraint from the narrowest to the broadest
+   * e.g. if we have a postal expression we build a constraint for the postal expression require props of type zip
+   * and a constraint for the city required props of type city
+   * and a constraint for the province code required props of type province
+   * and a constraint for the country code required props of type country
+   * example:
+   * {
+   *    $or: [
+   *      {
+   *        type: "zip",
+   *        country_code: "SE",
+   *        province_code: "AB",
+   *        city: "Stockholm",
+   *        postal_expression: "12345"
+   *      },
+   *      {
+   *        type: "city",
+   *        country_code: "SE",
+   *        province_code: "AB",
+   *        city: "Stockholm"
+   *      },
+   *      {
+   *        type: "province",
+   *        country_code: "SE",
+   *        province_code: "AB"
+   *      },
+   *      {
+   *        type: "country",
+   *        country_code: "SE"
+   *      }
+   *    ]
+   *  }
+   */
+  private static buildGeoZoneConstraintsFromAddress(
+    address: FulfillmentTypes.FilterableShippingOptionForContextProps["address"]
+  ) {
+    /**
+     * Define the hierarchy of required properties for the geo zones.
+     */
+    const geoZoneRequirePropertyHierarchy = {
+      postal_expression: [
+        "country_code",
+        "province_code",
+        "city",
+        "postal_expression",
+      ],
+      city: ["country_code", "province_code", "city"],
+      province_code: ["country_code", "province_code"],
+      country_code: ["country_code"],
+    }
+
+    /**
+     * Validate that the address has the required properties for the geo zones
+     * constraints to build after. We are going from the narrowest to the broadest
+     */
+    Object.entries(geoZoneRequirePropertyHierarchy).forEach(
+      ([prop, requiredProps]) => {
+        if (address![prop]) {
+          for (const requiredProp of requiredProps) {
+            if (!address![requiredProp]) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Missing required property ${requiredProp} for address when property ${prop} is set`
+              )
+            }
+          }
+        }
+      }
+    )
+
+    const geoZoneConstraints = Object.entries(geoZoneRequirePropertyHierarchy)
+      .map(([prop, requiredProps]) => {
+        if (address![prop]) {
+          return requiredProps.reduce((geoZoneConstraint, prop) => {
+            geoZoneConstraint.type =
+              prop === "postal_expression"
+                ? "zip"
+                : prop === "city"
+                ? "city"
+                : prop === "province_code"
+                ? "province"
+                : "country"
+            geoZoneConstraint[prop] = address![prop]
+            return geoZoneConstraint
+          }, {} as Record<string, string | undefined>)
+        }
+        return null
+      })
+      .filter((v): v is Record<string, any> => !!v)
+
+    return geoZoneConstraints
   }
 }
