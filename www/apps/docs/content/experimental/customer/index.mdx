@@ -44,9 +44,11 @@ You can use the Customer Module's main service by resolving from the dependency 
 For example:
 
 <Tabs groupId="resource-type" isCodeTabs={true}>
-  <TabItem label="API Route" value="api-route">
+  <TabItem label="API Route" value="api-route" attributes={{
+    title: "src/api/store/custom/route.ts"
+  }}>
 
-  ```ts title="src/api/store/custom/route.ts"
+  ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -65,9 +67,11 @@ For example:
   ```
 
   </TabItem>
-  <TabItem label="Subscriber" value="subscribers">
+  <TabItem label="Subscriber" value="subscribers" attributes={{
+    title: "src/subscribers/custom-handler.ts"
+  }}>
 
-  ```ts title="src/subscribers/custom-handler.ts"
+  ```ts
   import { SubscriberArgs } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -83,9 +87,11 @@ For example:
   ```
 
   </TabItem>
-  <TabItem label="Workflow Step" value="workflow-step">
+  <TabItem label="Workflow Step" value="workflow-step" attributes={{
+    title: "src/workflows/hello-world/step1.ts"
+  }}>
 
-  ```ts title="src/workflows/hello-world/step1.ts"
+  ```ts
   import { createStep } from "@medusajs/workflows-sdk"
   import { ICustomerModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"

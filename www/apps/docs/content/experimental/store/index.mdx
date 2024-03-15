@@ -1,0 +1,112 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Store Module
+
+The Store Module is the `@medusajs/store` NPM package that provides store-related features in your Medusa and Node.js applications.
+
+---
+
+## Features
+
+### Store Management
+
+A store holds the main configurations of your commerce store, such as supported currencies, default region and sales channel, and more.
+
+```ts
+const store = await storeModuleService.create({
+  name: "My Store",
+  supported_currency_codes: ["usd"]
+})
+```
+
+### Multi-Tenancy Support
+
+You can create multiple stores, each having its own configurations.
+
+```ts
+const store1 = await storeModuleService.create({
+  name: "USA Store",
+  supported_currency_codes: ["usd"]
+})
+
+const store2 = storeModuleService.create({
+  name: "Europe Store",
+  supported_currency_codes: [
+    "eur"
+  ]
+})
+```
+
+---
+
+## How to Use Store Module's Service
+
+You can use the Store Module's main service by resolving from the dependency container the resource `ModuleRegistrationName.STORE` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<Tabs groupId="resource-type" isCodeTabs={true}>
+  <TabItem label="API Route" value="api-route" attributes={{
+    title: "src/api/store/custom/route.ts"
+  }}>
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    response.json({
+      stores: await storeModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Subscriber" value="subscribers" attributes={{
+    title: "src/subscribers/custom-handler.ts"
+  }}>
+
+  ```ts
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs<Record<string, string>>) {
+    const storeModuleService: IStoreModuleService =
+      container.resolve(ModuleRegistrationName.STORE)
+
+    const stores = await storeModuleService.list()
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Workflow Step" value="workflow-step" attributes={{
+    title: "src/workflows/hello-world/step1.ts"
+  }}>
+
+  ```ts
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep("step-1", async (_, context) => {
+    const storeModuleService: IStoreModuleService =
+      context.container.resolve(
+        ModuleRegistrationName.STORE
+      )
+    const stores = await storeModuleService.list()
+  })
+  ```
+
+  </TabItem>
+</Tabs>

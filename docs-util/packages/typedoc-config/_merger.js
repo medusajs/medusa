@@ -64,7 +64,10 @@ module.exports = {
     "inventory",
     "pricing",
     "product",
+    "promotion",
+    "sales-channel",
     "stock-location",
+    "store",
     "workflows",
   ],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
@@ -101,7 +104,7 @@ module.exports = {
         suffix: "- API Key Module Reference",
       },
     },
-    "^api_key/.*IApiKeyModuleService/page\\.md": {
+    "^api_key/.*IApiKeyModuleService\\.md": {
       reflectionDescription:
         "This section of the documentation provides a reference to the `IApiKeyModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the API Key Module.",
       frontmatterData: {
@@ -168,7 +171,7 @@ module.exports = {
         suffix: "- Customer Module Reference",
       },
     },
-    "^customer/.*ICustomerModuleService/page\\.md": {
+    "^customer/.*ICustomerModuleService\\.md": {
       reflectionDescription:
         "This section of the documentation provides a reference to the `ICustomerModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Customer Module.",
       frontmatterData: {
@@ -777,10 +780,6 @@ npx medusa develop
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
       frontmatterData: {
         displayed_sidebar: "pricingReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/pricing/{{alias}}",
         sidebar_label: "{{alias}}",
       },
@@ -795,10 +794,6 @@ npx medusa develop
         "This section of the documentation provides a reference to the `IPricingModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Pricing Module.",
       frontmatterData: {
         displayed_sidebar: "pricingReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/pricing",
       },
       reflectionTitle: {
@@ -852,10 +847,6 @@ npx medusa develop
         "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
       frontmatterData: {
         displayed_sidebar: "productReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/product/{{alias}}",
         sidebar_label: "{{alias}}",
       },
@@ -870,16 +861,176 @@ npx medusa develop
         "This section of the documentation provides a reference to the `IProductModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Product Module.",
       frontmatterData: {
         displayed_sidebar: "productReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/product",
       },
       reflectionTitle: {
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // PRODUCT MODELS CONFIG
+    "^product_models": {
+      frontmatterData: {
+        slug: "/references/product/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Product Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/product_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Product Module",
+      frontmatterData: {
+        slug: "/references/product/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Product Module Data Models Reference",
+      },
+    },
+
+    // PROMOTION CONFIG
+    "^promotion": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+      },
+    },
+    "^promotion/IPromotionModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Promotion Module.",
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+        slug: "/references/promotion/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Promotion Module Reference",
+      },
+    },
+    "^promotion/.*IPromotionModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IPromotionModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Promotion Module.",
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+        slug: "/references/promotion",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // PROMOTION MODELS CONFIG
+    "^promotion_models": {
+      frontmatterData: {
+        displayed_sidebar: "promotionModelReference",
+        slug: "/references/promotion/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Promotion Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Promotion Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/promotion_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Promotion Module",
+      frontmatterData: {
+        displayed_sidebar: "promotionModelReference",
+        slug: "/references/promotion/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Promotion Module Data Models Reference",
+      },
+    },
+
+    // SALES CHANNEL CONFIG
+    "^sales_channel": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+      },
+    },
+    "^sales_channel/ISalesChannelModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Sales Channel Module.",
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+        slug: "/commerce-modules/sales-channel/reference/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Sales Channel Module Reference",
+      },
+    },
+    "^sales_channel/.*ISalesChannelModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ISalesChannelModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Sales Channel Module.",
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+        slug: "/commerce-modules/sales-channel/reference",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // SALES CHANNEL MODELS CONFIG
+    "^sales_channel_models": {
+      frontmatterData: {
+        slug: "/commerce-modules/sales-channel/reference/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+        displayed_sidebar: "salesChannelModelReference",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Sales Channel Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Sales Channel Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/sales_channel_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Sales Channel Module",
+      frontmatterData: {
+        slug: "/commerce-modules/sales-channel/reference/models",
+        displayed_sidebar: "salesChannelModelReference",
+      },
+      reflectionTitle: {
+        fullReplacement: "Sales Channel Module Data Models Reference",
       },
     },
 
@@ -979,6 +1130,103 @@ npx medusa develop
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // STOCK LOCATION MODELS CONFIG
+    "^stock_location_models": {
+      frontmatterData: {
+        displayed_sidebar: "stockLocationModelReference",
+        slug: "/references/stock-location/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Stock Location Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/stock_location_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Stock Location Module",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationModelReference",
+        slug: "/references/stock-location/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Stock Location Module Data Models Reference",
+      },
+    },
+
+    // STORE CONFIG
+    "^store": {
+      ...modulesOptions,
+      displayed_sidebar: "storeReference",
+    },
+    "^store/IStoreModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Store Module.",
+      frontmatterData: {
+        displayed_sidebar: "storeReference",
+        slug: "/references/store/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Store Module Reference",
+      },
+    },
+    "^store/.*IStoreModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IStoreModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Store Module.",
+      frontmatterData: {
+        displayed_sidebar: "storeReference",
+        slug: "/references/store",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // STORE MODELS CONFIG
+    "^store_models": {
+      frontmatterData: {
+        displayed_sidebar: "storeModelReference",
+        slug: "/references/store/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Store Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Store Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/store_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Store Module",
+      frontmatterData: {
+        displayed_sidebar: "storeModelReference",
+        slug: "/references/store/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Store Module Data Models Reference",
       },
     },
 

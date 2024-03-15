@@ -2651,7 +2651,7 @@ module.exports = {
         {
           type: "doc",
           label: "Relations to Other Modules",
-          id: "experimental/api-key/relations-to-other-modules",
+          id: "experimental/api-key/relations-to-other-modules/index",
         },
         {
           type: "html",
@@ -2706,7 +2706,7 @@ module.exports = {
         {
           type: "doc",
           label: "Relations to Other Modules",
-          id: "experimental/customer/relations-to-other-modules",
+          id: "experimental/customer/relations-to-other-modules/index",
         },
         {
           type: "html",
@@ -2766,7 +2766,7 @@ module.exports = {
         {
           type: "doc",
           label: "Relations to Other Modules",
-          id: "experimental/inventory/relations-to-other-modules",
+          id: "experimental/inventory/relations-to-other-modules/index",
         },
         {
           type: "html",
@@ -2799,12 +2799,12 @@ module.exports = {
         {
           type: "doc",
           label: "Overview",
-          id: "experimental/pricing/overview",
+          id: "experimental/pricing/index",
         },
         {
           type: "doc",
           label: "Examples",
-          id: "experimental/pricing/examples",
+          id: "experimental/pricing/examples/index",
         },
         {
           type: "html",
@@ -2816,17 +2816,17 @@ module.exports = {
         {
           type: "doc",
           label: "Pricing Concepts",
-          id: "experimental/pricing/concepts",
+          id: "experimental/pricing/concepts/index",
         },
         {
           type: "doc",
           label: "Prices Calculation",
-          id: "experimental/pricing/prices-calculation",
+          id: "experimental/pricing/price-calculation/index",
         },
         {
           type: "doc",
           label: "Relations to Other Modules",
-          id: "experimental/pricing/relations-to-other-modules",
+          id: "experimental/pricing/relations-to-other-modules/index",
         },
         {
           type: "html",
@@ -2859,12 +2859,29 @@ module.exports = {
         {
           type: "doc",
           label: "Overview",
-          id: "experimental/product/overview",
+          id: "experimental/product/index",
         },
         {
           type: "doc",
           label: "Examples",
-          id: "experimental/product/examples",
+          id: "experimental/product/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/product/relations-to-other-modules/index",
+        },
+        {
+          type: "ref",
+          id: "references/product/interfaces/product.IProductModuleService",
+          label: "Interface Reference",
         },
         {
           type: "html",
@@ -2875,8 +2892,216 @@ module.exports = {
         },
         {
           type: "ref",
-          id: "references/product/interfaces/product.IProductModuleService",
+          id: "references/modules/product_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Promotion Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/promotion/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/promotion/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Promotion Concepts",
+          id: "experimental/promotion/concepts/index",
+        },
+        {
+          type: "doc",
+          label: "Promotion Actions",
+          id: "experimental/promotion/actions/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/promotion/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/promotion/interfaces/promotion.IPromotionModuleService",
           label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/promotion_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Sales Channel Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/sales-channel/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/sales-channel/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Publishable API Key",
+          id: "experimental/sales-channel/publishable-api-keys/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/sales-channel/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/sales_channel/interfaces/sales_channel.ISalesChannelModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/sales_channel_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Stock Location Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/stock-location/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/stock-location/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Stock Location Concepts",
+          id: "experimental/stock-location/concepts/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/stock-location/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/stock_location/interfaces/stock_location.IStockLocationService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/stock_location_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Store Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/store/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/store/examples/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/store/interfaces/store.IStoreModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/store_models",
+          label: "Data Models Reference",
         },
       ],
     },
@@ -3430,8 +3655,8 @@ module.exports = {
   inventoryReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3464,8 +3689,8 @@ module.exports = {
   inventoryModelReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3482,7 +3707,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Methods",
+      label: "Data Models",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
@@ -3532,8 +3757,8 @@ module.exports = {
   pricingModelReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3550,7 +3775,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Methods",
+      label: "Data Models",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
@@ -3597,11 +3822,182 @@ module.exports = {
       ],
     },
   ],
+  productModelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/product_models",
+      label: "Product - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Data Models",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/product_models/classes",
+        },
+      ],
+    },
+  ],
+  promotionReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/promotion/interfaces/promotion.IPromotionModuleService",
+      label: "Promotion Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/promotion/IPromotionModuleService/methods",
+        },
+      ],
+    },
+  ],
+  promotionModelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/promotion_models",
+      label: "Promotion - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Data Models",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/promotion_models/classes",
+        },
+      ],
+    },
+  ],
+  salesChannelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/sales_channel/interfaces/sales_channel.ISalesChannelModuleService",
+      label: "Sales Channel Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName:
+            "references/sales_channel/ISalesChannelModuleService/methods",
+        },
+      ],
+    },
+  ],
+  salesChannelModelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/sales_channel_models",
+      label: "Sales Channel - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Data Models",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/sales_channel_models/classes",
+        },
+      ],
+    },
+  ],
   stockLocationReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3627,6 +4023,108 @@ module.exports = {
         {
           type: "autogenerated",
           dirName: "references/stock_location/IStockLocationService/methods",
+        },
+      ],
+    },
+  ],
+  stockLocationModelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/stock_location_models",
+      label: "Stock Location - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Data Models",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/stock_location_models/classes",
+        },
+      ],
+    },
+  ],
+  storeReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/store/interfaces/store.IStoreModuleService",
+      label: "Store Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/store/IStoreModuleService/methods",
+        },
+      ],
+    },
+  ],
+  storeModelReference: [
+    {
+      type: "ref",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/store_models",
+      label: "Store - Data Models Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Data Models",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/store_models/classes",
         },
       ],
     },

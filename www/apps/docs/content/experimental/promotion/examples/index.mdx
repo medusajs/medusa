@@ -1,0 +1,274 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Promotion Module
+
+In this document, you’ll find common examples of how you can use the Promotion Module in your application.
+
+## Create a Promotion
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService =
+      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+
+    const promotion = await promotionModuleService.create({
+      code: "10%OFF",
+      type: "standard",
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: "10",
+      },
+    })
+
+    response.json({ promotion })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePromotionModule,
+  } from "@medusajs/promotion"
+
+  export async function POST(request: Request) {
+    const promotionModuleService =
+      await initializePromotionModule()
+    const body = await request.json()
+
+    const promotion = await promotionModuleService.create({
+      code: "10%OFF",
+      type: "standard",
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: "10",
+      },
+    })
+
+    return NextResponse.json({ promotion })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Create a Campaign
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService =
+      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+
+    const campaign = await promotionModuleService.createCampaigns(
+      {
+        name: "Summer Discounts",
+        campaign_identifier: "G-123445",
+        starts_at: new Date("2024-05-02"),
+        ends_at: new Date("2024-07-20"),
+        promotions: [
+          {
+            id: "promo_123",
+          },
+        ],
+      }
+    )
+
+    response.json({ campaign })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePromotionModule,
+  } from "@medusajs/promotion"
+
+  export async function POST(request: Request) {
+    const promotionModuleService =
+      await initializePromotionModule()
+    const body = await request.json()
+
+    const campaign = await promotionModuleService.createCampaigns(
+      {
+        name: "Summer Discounts",
+        campaign_identifier: "G-123445",
+        starts_at: new Date("2024-05-02"),
+        ends_at: new Date("2024-07-20"),
+        promotions: [
+          {
+            id: "promo_123",
+          },
+        ],
+      }
+    )
+
+    return NextResponse.json({ campaign })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Create a Promotion with Flexible Rules
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService =
+      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+
+    const promotion = await promotionModuleService.create({
+      code: "10%OFF",
+      type: "standard",
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: "10",
+      },
+      rules: [
+        {
+          attribute: "customer_group_id",
+          operator: "eq",
+          values: ["VIP"],
+        },
+      ],
+    })
+
+    response.json({ promotion })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePromotionModule,
+  } from "@medusajs/promotion"
+
+  export async function POST(request: Request) {
+    const promotionModuleService =
+      await initializePromotionModule()
+
+    const promotion = await promotionModuleService.create({
+      code: "10%OFF",
+      type: "standard",
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: "10",
+      },
+      rules: [
+        {
+          attribute: "customer_group_id",
+          operator: "eq",
+          values: ["VIP"],
+        },
+      ],
+    })
+
+    return NextResponse.json({ promotion })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Promotions
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService =
+      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+
+    response.json({
+      promotions: await promotionModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePromotionModule,
+  } from "@medusajs/promotion"
+
+  export async function POST(request: Request) {
+    const promotionModuleService =
+      await initializePromotionModule()
+
+    return NextResponse.json({
+      promotions: await promotionModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [module interface reference](../../../references/promotion/interfaces/promotion.IPromotionModuleService.mdx) provides a reference to all the methods available for use with examples for each.

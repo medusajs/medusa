@@ -1,0 +1,40 @@
+---
+slug: /references/product/models
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# Product Module Data Models Reference
+
+This documentation provides a reference to the data models in the Product Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	Product ||--|| ProductOption : options
+	Product ||--|| ProductVariant : variants
+	Product }|--|{ ProductCollection : collection
+	Product }|--|{ ProductType : type
+	Product }|--|{ ProductTag : tags
+	Product }|--|{ Image : images
+	Product }|--|{ ProductCategory : categories
+	ProductCategory }|--|{ ProductCategory : parent_category
+	ProductVariant ||--|| ProductVariantOption : options
+	ProductOption ||--|| ProductOptionValue : values
+	ProductOptionValue ||--|| ProductVariantOption : variant_options
+
+```
+
+## Classes
+
+- [ProductCategory](../product_models/classes/product_models.ProductCategory.mdx)
+- [ProductCollection](../product_models/classes/product_models.ProductCollection.mdx)
+- [Image](../product_models/classes/product_models.Image.mdx)
+- [ProductOptionValue](../product_models/classes/product_models.ProductOptionValue.mdx)
+- [ProductOption](../product_models/classes/product_models.ProductOption.mdx)
+- [ProductTag](../product_models/classes/product_models.ProductTag.mdx)
+- [ProductType](../product_models/classes/product_models.ProductType.mdx)
+- [ProductVariantOption](../product_models/classes/product_models.ProductVariantOption.mdx)
+- [ProductVariant](../product_models/classes/product_models.ProductVariant.mdx)
+- [Product](../product_models/classes/product_models.Product.mdx)

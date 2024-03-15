@@ -1,0 +1,254 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Stock Location Module
+
+In this document, you’ll find common examples of how you can use the Stock Location Module in your application.
+
+## Create a Stock Location
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const stockLocationModuleService: IStockLocationService =
+      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+    const stockLocation = await stockLocationModuleService.create(
+      {
+        name: request.body.name,
+      }
+    )
+
+    response.json({
+      stock_location: stockLocation,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStockLocationModule,
+  } from "@medusajs/stock-location"
+
+  export async function POST(request: Request) {
+    const stockLocationModuleService =
+      await initializeStockLocationModule({})
+    const body = await request.json()
+
+    const stockLocation = await stockLocationModuleService.create(
+      {
+        name: body.name,
+      }
+    )
+
+    return NextResponse.json({ stock_location: stockLocation })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Stock Locations
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const stockLocationModuleService: IStockLocationService =
+      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+    response.json({
+      stock_locations: await stockLocationModuleService.list({}),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStockLocationModule,
+  } from "@medusajs/stock-location"
+
+  export async function GET(request: Request) {
+    const stockLocationModuleService =
+      await initializeStockLocationModule({})
+
+    return NextResponse.json({
+      stock_locations: await stockLocationModuleService.list({}),
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Address to Stock Location
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const stockLocationModuleService: IStockLocationService =
+      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+    const stockLocation = await stockLocationModuleService.update(
+      request.params.id,
+      {
+        address: {
+          country_code: request.body.country_code,
+          city: request.body.city,
+          address_1: request.body.address_1,
+          postal_code: request.body.postal_code,
+        },
+      }
+    )
+
+    response.json({
+      stock_location: stockLocation,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStockLocationModule,
+  } from "@medusajs/stock-location"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const stockLocationModuleService =
+      await initializeStockLocationModule({})
+    const body = await request.json()
+
+    const stockLocation = await stockLocationModuleService.update(
+      params.id,
+      {
+        address: {
+          country_code: body.country_code,
+          city: body.city,
+          address_1: body.address_1,
+          postal_code: body.postal_code,
+        },
+      }
+    )
+
+    return NextResponse.json({
+      stock_location: stockLocation,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Delete a Stock Location
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const stockLocationModuleService: IStockLocationService =
+      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+
+    await stockLocationModuleService.delete(request.params.id)
+
+    response.status(200)
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStockLocationModule,
+  } from "@medusajs/stock-location"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function DELETE(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const stockLocationModuleService =
+      await initializeStockLocationModule({})
+
+    await stockLocationModuleService.delete(params.id)
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [module interface reference](../../../references/stock_location/interfaces/stock_location.IStockLocationService.mdx) provides a reference to all the methods available for use with examples for each.

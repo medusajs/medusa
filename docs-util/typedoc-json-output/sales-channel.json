@@ -1,0 +1,6098 @@
+{
+	"id": 0,
+	"name": "sales-channel",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 92,
+			"name": "FindConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an "
+					},
+					{
+						"kind": "code",
+						"text": "`Entity`"
+					},
+					{
+						"kind": "text",
+						"text": " class,\nwhich provides correct typing of field names in its properties."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 93,
+					"name": "select",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being attribute names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "intrinsic",
+									"name": "string"
+								},
+								{
+									"type": "typeOperator",
+									"operator": "keyof",
+									"target": {
+										"type": "reference",
+										"target": 103,
+										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
+										"refersToTypeParameter": true
+									}
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 94,
+					"name": "skip",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to skip before retrieving the results."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 95,
+					"name": "take",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to return in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 96,
+					"name": "relations",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being relation names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 97,
+					"name": "order",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be "
+							},
+							{
+								"kind": "code",
+								"text": "`ASC`"
+							},
+							{
+								"kind": "text",
+								"text": "\nto sort retrieved records in an ascending order, or "
+							},
+							{
+								"kind": "code",
+								"text": "`DESC`"
+							},
+							{
+								"kind": "text",
+								"text": " to sort retrieved records in a descending order."
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 98,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 99,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 100,
+										"name": "K",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "literal",
+											"value": "ASC"
+										},
+										{
+											"type": "literal",
+											"value": "DESC"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": 101,
+					"name": "withDeleted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n"
+							},
+							{
+								"kind": "code",
+								"text": "`SoftDeletableEntity`"
+							},
+							{
+								"kind": "text",
+								"text": " class."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 102,
+					"name": "filters",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Enable ORM specific defined filters"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						93,
+						94,
+						95,
+						96,
+						97,
+						101,
+						102
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 103,
+					"name": "Entity",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			]
+		},
+		{
+			"id": 161,
+			"name": "BaseFilterable",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object used to allow specifying flexible queries with and/or conditions."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 162,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 161,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 164,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 164,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 163,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 161,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 164,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 164,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						162,
+						163
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 164,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			],
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 104,
+					"name": "FilterableSalesChannelProps"
+				}
+			]
+		},
+		{
+			"id": 110,
+			"name": "SoftDeleteReturn",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 111,
+					"name": "returnLinkableKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being the ID attribute names of the entity's relations."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 112,
+							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
+							"refersToTypeParameter": true
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						111
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 112,
+					"name": "TReturnableLinkableKeys",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			]
+		},
+		{
+			"id": 113,
+			"name": "RestoreReturn",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to specify an entity's related entities that should be restored when the main entity is restored."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 114,
+					"name": "returnLinkableKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being the ID attribute names of the entity's relations."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 115,
+							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
+							"refersToTypeParameter": true
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						114
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 115,
+					"name": "TReturnableLinkableKeys",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			]
+		},
+		{
+			"id": 219,
+			"name": "MessageBody",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 228,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 220,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 221,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 222,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 223,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 224,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 225,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 226,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												223,
+												224,
+												225,
+												226
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 227,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 228,
+								"name": "T",
+								"package": "@medusajs/types",
+								"refersToTypeParameter": true
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								221,
+								227
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 183,
+			"name": "Message",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 188,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 184,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 185,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 186,
+							"name": "body",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 219,
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 188,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "MessageBody",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 187,
+							"name": "options",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								185,
+								186,
+								187
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 195,
+			"name": "MessageFormat",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 205,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 196,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 197,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 198,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 199,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 200,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 201,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 202,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 203,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												200,
+												201,
+												202,
+												203
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 204,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": 205,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 205,
+											"name": "T",
+											"package": "@medusajs/types",
+											"refersToTypeParameter": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								197,
+								198,
+								204
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 209,
+			"name": "JoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 210,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 211,
+							"name": "alias",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 212,
+							"name": "foreignKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 213,
+							"name": "primaryKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 214,
+							"name": "serviceName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 215,
+							"name": "isInternalService",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "If true, the relationship is an internal service from the medusa core\nTODO: Remove when there are no more \"internal\" services"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 216,
+							"name": "inverse",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 217,
+							"name": "isList",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Force the relationship to return a list"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 218,
+							"name": "args",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Extra arguments to pass to the remoteFetchData callback"
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								211,
+								212,
+								213,
+								214,
+								215,
+								216,
+								217,
+								218
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 206,
+			"name": "JoinerServiceConfigAlias",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 207,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 208,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						207,
+						208
+					]
+				}
+			]
+		},
+		{
+			"id": 165,
+			"name": "JoinerServiceConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 166,
+					"name": "serviceName",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 167,
+					"name": "alias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Property name to use as entrypoint to the service"
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"target": 206,
+								"name": "JoinerServiceConfigAlias",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 206,
+									"name": "JoinerServiceConfigAlias",
+									"package": "@medusajs/types"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 168,
+					"name": "fieldAlias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reflection",
+										"declaration": {
+											"id": 169,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 170,
+													"name": "path",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 171,
+													"name": "forwardArgumentsOnPath",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														170,
+														171
+													]
+												}
+											]
+										}
+									}
+								]
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 172,
+					"name": "primaryKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 173,
+					"name": "relationships",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 209,
+							"name": "JoinerRelationship",
+							"package": "@medusajs/types"
+						}
+					}
+				},
+				{
+					"id": 174,
+					"name": "extends",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reflection",
+							"declaration": {
+								"id": 175,
+								"name": "__type",
+								"variant": "declaration",
+								"kind": 65536,
+								"flags": {},
+								"children": [
+									{
+										"id": 176,
+										"name": "serviceName",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									},
+									{
+										"id": 177,
+										"name": "relationship",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "reference",
+											"target": 209,
+											"name": "JoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"groups": [
+									{
+										"title": "Properties",
+										"children": [
+											176,
+											177
+										]
+									}
+								]
+							}
+						}
+					}
+				},
+				{
+					"id": 178,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						166,
+						167,
+						168,
+						172,
+						173,
+						174,
+						178
+					]
+				}
+			]
+		},
+		{
+			"id": 116,
+			"name": "ModuleJoinerConfig",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Omit"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 165,
+								"name": "JoinerServiceConfig",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "serviceName"
+									},
+									{
+										"type": "literal",
+										"value": "primaryKeys"
+									},
+									{
+										"type": "literal",
+										"value": "relationships"
+									},
+									{
+										"type": "literal",
+										"value": "extends"
+									}
+								]
+							}
+						],
+						"name": "Omit",
+						"package": "typescript"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 117,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 118,
+									"name": "schema",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "GraphQL schema for the all module's available entities and fields"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 119,
+									"name": "relationships",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 179,
+											"name": "ModuleJoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 120,
+									"name": "extends",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reflection",
+											"declaration": {
+												"id": 121,
+												"name": "__type",
+												"variant": "declaration",
+												"kind": 65536,
+												"flags": {},
+												"children": [
+													{
+														"id": 122,
+														"name": "serviceName",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													},
+													{
+														"id": 123,
+														"name": "fieldAlias",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {
+															"isOptional": true
+														},
+														"type": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																"qualifiedName": "Record"
+															},
+															"typeArguments": [
+																{
+																	"type": "intrinsic",
+																	"name": "string"
+																},
+																{
+																	"type": "union",
+																	"types": [
+																		{
+																			"type": "intrinsic",
+																			"name": "string"
+																		},
+																		{
+																			"type": "reflection",
+																			"declaration": {
+																				"id": 124,
+																				"name": "__type",
+																				"variant": "declaration",
+																				"kind": 65536,
+																				"flags": {},
+																				"children": [
+																					{
+																						"id": 125,
+																						"name": "path",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "string"
+																						}
+																					},
+																					{
+																						"id": 126,
+																						"name": "forwardArgumentsOnPath",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"type": {
+																							"type": "array",
+																							"elementType": {
+																								"type": "intrinsic",
+																								"name": "string"
+																							}
+																						}
+																					}
+																				],
+																				"groups": [
+																					{
+																						"title": "Properties",
+																						"children": [
+																							125,
+																							126
+																						]
+																					}
+																				]
+																			}
+																		}
+																	]
+																}
+															],
+															"name": "Record",
+															"package": "typescript"
+														}
+													},
+													{
+														"id": 127,
+														"name": "relationship",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "reference",
+															"target": 179,
+															"name": "ModuleJoinerRelationship",
+															"package": "@medusajs/types"
+														}
+													}
+												],
+												"groups": [
+													{
+														"title": "Properties",
+														"children": [
+															122,
+															123,
+															127
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								{
+									"id": 128,
+									"name": "serviceName",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 129,
+									"name": "primaryKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 130,
+									"name": "isLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If the module is a link module"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 131,
+									"name": "linkableKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Keys that can be used to link to other modules. e.g { product_id: \"Product\" } \"Product\" being the entity it refers to"
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 132,
+									"name": "isReadOnlyLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true it expands a RemoteQuery property but doesn't create a pivot table"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 133,
+									"name": "databaseConfig",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 134,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 135,
+													"name": "tableName",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Name of the pivot table. If not provided it is auto generated"
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 136,
+													"name": "idPrefix",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Prefix for the id column. If not provided it is \"link\""
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 137,
+													"name": "extraFields",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Record"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "reflection",
+																"declaration": {
+																	"id": 138,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 139,
+																			"name": "type",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {},
+																			"type": {
+																				"type": "union",
+																				"types": [
+																					{
+																						"type": "literal",
+																						"value": "date"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "time"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "datetime"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "bigint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "blob"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uint8array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enumArray"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enum"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "json"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "integer"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "smallint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "tinyint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "mediumint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "float"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "double"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "boolean"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "decimal"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "string"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uuid"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "text"
+																					}
+																				]
+																			}
+																		},
+																		{
+																			"id": 140,
+																			"name": "defaultValue",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "string"
+																			}
+																		},
+																		{
+																			"id": 141,
+																			"name": "nullable",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "boolean"
+																			}
+																		},
+																		{
+																			"id": 142,
+																			"name": "options",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Mikro-orm options for the column"
+																					}
+																				]
+																			},
+																			"type": {
+																				"type": "reference",
+																				"target": {
+																					"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																					"qualifiedName": "Record"
+																				},
+																				"typeArguments": [
+																					{
+																						"type": "intrinsic",
+																						"name": "string"
+																					},
+																					{
+																						"type": "intrinsic",
+																						"name": "unknown"
+																					}
+																				],
+																				"name": "Record",
+																				"package": "typescript"
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				139,
+																				140,
+																				141,
+																				142
+																			]
+																		}
+																	]
+																}
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														135,
+														136,
+														137
+													]
+												}
+											]
+										}
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										118,
+										119,
+										120,
+										128,
+										129,
+										130,
+										131,
+										132,
+										133
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 179,
+			"name": "ModuleJoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": 209,
+						"name": "JoinerRelationship",
+						"package": "@medusajs/types"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 180,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 181,
+									"name": "isInternalService",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 182,
+									"name": "deleteCascade",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the link joiner will cascade deleting the relationship"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										181,
+										182
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 57,
+			"name": "IModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 1,
+					"name": "ISalesChannelModuleService"
+				}
+			]
+		},
+		{
+			"id": 157,
+			"name": "SalesChannelLocationDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The sales channel location details."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 158,
+					"name": "sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated sales channel's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 159,
+					"name": "location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated location's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 160,
+					"name": "sales_channel",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 80,
+						"name": "SalesChannelDTO",
+						"package": "@medusajs/types"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						158,
+						159,
+						160
+					]
+				}
+			]
+		},
+		{
+			"id": 80,
+			"name": "SalesChannelDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The sales channel details."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 81,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 82,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 83,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The description of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 84,
+					"name": "is_disabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the sales channel is disabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 85,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 86,
+					"name": "locations",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The locations of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 157,
+							"name": "SalesChannelLocationDTO",
+							"package": "@medusajs/types"
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						81,
+						82,
+						83,
+						84,
+						85,
+						86
+					]
+				}
+			]
+		},
+		{
+			"id": 104,
+			"name": "FilterableSalesChannelProps",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The filters to apply on the retrieved sales channel."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 108,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 104,
+									"name": "FilterableSalesChannelProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 161,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 104,
+											"name": "FilterableSalesChannelProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 162,
+						"name": "BaseFilterable.$and"
+					}
+				},
+				{
+					"id": 109,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 104,
+									"name": "FilterableSalesChannelProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 161,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 104,
+											"name": "FilterableSalesChannelProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 163,
+						"name": "BaseFilterable.$or"
+					}
+				},
+				{
+					"id": 105,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the sales channel by."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 106,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter sales channels by their names."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 107,
+					"name": "is_disabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter sales channels by whether they're disabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						108,
+						109,
+						105,
+						106,
+						107
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 161,
+					"typeArguments": [
+						{
+							"type": "reference",
+							"target": 104,
+							"name": "FilterableSalesChannelProps",
+							"package": "@medusajs/types"
+						}
+					],
+					"name": "BaseFilterable",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 65,
+			"name": "CreateSalesChannelDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The sales channel to be created."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 66,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 67,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The description of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 68,
+					"name": "is_disabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the sales channel is disabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						66,
+						67,
+						68
+					]
+				}
+			]
+		},
+		{
+			"id": 87,
+			"name": "UpdateSalesChannelDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes to update in the sales channel."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 88,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 89,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 90,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The description of the sales channel."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 91,
+					"name": "is_disabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the sales channel is disabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						88,
+						89,
+						90,
+						91
+					]
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "ISalesChannelModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The main service interface for the sales channel module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 2,
+					"name": "create",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates sales channels."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created sales channels."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{\n  example - code\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 4,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The sales channel to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 65,
+											"name": "CreateSalesChannelDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 5,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 80,
+											"name": "SalesChannelDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 6,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates a sales channel."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created a sales channel."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 7,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The sales channel to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 65,
+										"name": "CreateSalesChannelDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 8,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 80,
+										"name": "SalesChannelDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 9,
+					"name": "update",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing sales channels."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated sales channels."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in each sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 87,
+											"name": "UpdateSalesChannelDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 12,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 80,
+											"name": "SalesChannelDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 13,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates an existing sales channel."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated sales channel."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 14,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 87,
+										"name": "UpdateSalesChannelDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 15,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 80,
+										"name": "SalesChannelDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 16,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 17,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes sales channels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the sales channels are deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 18,
+									"name": "ids",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of IDs of sales channels to delete."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 19,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 20,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes a sales channel by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the sales channel is deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 21,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 22,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 23,
+					"name": "retrieve",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 24,
+							"name": "retrieve",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a sales channel by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrieved sales channels."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A simple example that retrieves a {type name} by its ID:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 25,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the retrieve."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 26,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the sales channel is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 92,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 80,
+												"name": "SalesChannelDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 27,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 80,
+										"name": "SalesChannelDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 28,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 29,
+							"name": "list",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of sales channels based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of sales channels."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`{default limit}`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 30,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 104,
+										"name": "FilterableSalesChannelProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 31,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the sales channel is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 92,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 80,
+												"name": "SalesChannelDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 32,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 80,
+											"name": "SalesChannelDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 33,
+					"name": "listAndCount",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 34,
+							"name": "listAndCount",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of sales channels along with the total count of available sales channels satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of sales channels along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`{default limit}`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 35,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 104,
+										"name": "FilterableSalesChannelProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 36,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the sales channel is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a sales channel."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 92,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 80,
+												"name": "SalesChannelDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 37,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 80,
+													"name": "SalesChannelDTO",
+													"package": "@medusajs/types"
+												}
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 38,
+					"name": "softDelete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 39,
+							"name": "softDelete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method soft deletes sales channels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the sales channels are soft deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 40,
+									"name": "TReturnableLinkableKeys",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"default": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 41,
+									"name": "salesChannelIds",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of IDs of sales channels to soft delete."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 42,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 110,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 40,
+												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										],
+										"name": "SoftDeleteReturn",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 43,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "void"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 44,
+					"name": "restore",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 45,
+							"name": "restore",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method restores soft deleted sales channels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were restored.\nThe object's keys are the ID attribute names of the sales channels entity's relations,\nand its value is an array of strings, each being the ID of the record associated with the sales channel through this relation."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n{example-code}\n```"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 46,
+									"name": "TReturnableLinkableKeys",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"default": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 47,
+									"name": "salesChannelIds",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of IDs of sales channels to restore."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 48,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configurations determining which relations to restore along with each of the sales channels. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the sales channels's relation attribute names."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 113,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 46,
+												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										],
+										"name": "RestoreReturn",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 49,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 69,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "void"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						2,
+						9,
+						16,
+						23,
+						28,
+						33,
+						38,
+						44
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 57,
+					"name": "IModuleService",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 189,
+			"name": "MessageAggregatorFormat",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 190,
+					"name": "groupBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 191,
+					"name": "sortBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 192,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 193,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 194,
+										"name": "key",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "array",
+											"elementType": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"type": "intrinsic",
+											"name": "string"
+										},
+										{
+											"type": "intrinsic",
+											"name": "number"
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						190,
+						191
+					]
+				}
+			]
+		},
+		{
+			"id": 143,
+			"name": "IMessageAggregator",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 144,
+					"name": "save",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 145,
+							"name": "save",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 146,
+									"name": "msg",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 183,
+												"name": "Message",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 183,
+													"name": "Message",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 147,
+					"name": "getMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 148,
+							"name": "getMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 149,
+									"name": "format",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": 189,
+										"name": "MessageAggregatorFormat",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 183,
+											"name": "Message",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 150,
+					"name": "clearMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 151,
+							"name": "clearMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 152,
+					"name": "saveRawMessageData",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 153,
+							"name": "saveRawMessageData",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"typeParameter": [
+								{
+									"id": 154,
+									"name": "T",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 155,
+									"name": "messageData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 195,
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 154,
+														"name": "T",
+														"package": "@medusajs/types",
+														"refersToTypeParameter": true
+													}
+												],
+												"name": "MessageFormat",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 195,
+													"typeArguments": [
+														{
+															"type": "reference",
+															"target": 154,
+															"name": "T",
+															"package": "@medusajs/types",
+															"refersToTypeParameter": true
+														}
+													],
+													"name": "MessageFormat",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								},
+								{
+									"id": 156,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						144,
+						147,
+						150,
+						152
+					]
+				}
+			]
+		},
+		{
+			"id": 69,
+			"name": "Context",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A context used to share resources, such as transaction manager, between the application and the module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 70,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "literal",
+						"value": "MedusaContext"
+					}
+				},
+				{
+					"id": 71,
+					"name": "transactionManager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a transaction manager of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`transactionManager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 79,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 72,
+					"name": "manager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a manager, typically an entity manager, of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`manager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 79,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 73,
+					"name": "isolationLevel",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the isolation level of the context. Possible values are "
+							},
+							{
+								"kind": "code",
+								"text": "`READ UNCOMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`READ COMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`REPEATABLE READ`"
+							},
+							{
+								"kind": "text",
+								"text": ", or "
+							},
+							{
+								"kind": "code",
+								"text": "`SERIALIZABLE`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 74,
+					"name": "enableNestedTransactions",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean value indicating whether nested transactions are enabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 75,
+					"name": "eventGroupId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the group to aggregate the events to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 76,
+					"name": "transactionId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current transaction."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 77,
+					"name": "messageAggregator",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 143,
+						"name": "IMessageAggregator",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 78,
+					"name": "requestId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current request."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						70,
+						71,
+						72,
+						73,
+						74,
+						75,
+						76,
+						77,
+						78
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 79,
+					"name": "TManager",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				92,
+				161,
+				110,
+				113,
+				206,
+				165,
+				57,
+				157,
+				80,
+				104,
+				65,
+				87,
+				1,
+				189,
+				143,
+				69
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				219,
+				183,
+				195,
+				209,
+				116,
+				179
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService"
+		},
+		"2": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.create"
+		},
+		"3": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.create"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "data"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.create"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "data"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.update"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.update"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "data"
+		},
+		"12": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"13": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.update"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "data"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.delete"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.delete"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ids"
+		},
+		"19": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"20": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.delete"
+		},
+		"21": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "id"
+		},
+		"22": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"23": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.retrieve"
+		},
+		"24": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.retrieve"
+		},
+		"25": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "id"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "config"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"28": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.list"
+		},
+		"29": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.list"
+		},
+		"30": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "filters"
+		},
+		"31": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "config"
+		},
+		"32": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"33": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.listAndCount"
+		},
+		"34": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.listAndCount"
+		},
+		"35": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "filters"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "config"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.softDelete"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.softDelete"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "salesChannelIds"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "config"
+		},
+		"43": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"44": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.restore"
+		},
+		"45": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "ISalesChannelModuleService.restore"
+		},
+		"46": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"47": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "salesChannelIds"
+		},
+		"48": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "config"
+		},
+		"49": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"57": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService"
+		},
+		"65": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "CreateSalesChannelDTO"
+		},
+		"66": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "CreateSalesChannelDTO.name"
+		},
+		"67": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "CreateSalesChannelDTO.description"
+		},
+		"68": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "CreateSalesChannelDTO.is_disabled"
+		},
+		"69": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "Context"
+		},
+		"70": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__type"
+		},
+		"71": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionManager"
+		},
+		"72": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.manager"
+		},
+		"73": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.isolationLevel"
+		},
+		"74": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.enableNestedTransactions"
+		},
+		"75": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"76": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionId"
+		},
+		"77": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.messageAggregator"
+		},
+		"78": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.requestId"
+		},
+		"79": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "TManager"
+		},
+		"80": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO"
+		},
+		"81": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.id"
+		},
+		"82": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.name"
+		},
+		"83": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.description"
+		},
+		"84": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.is_disabled"
+		},
+		"85": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.metadata"
+		},
+		"86": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelDTO.locations"
+		},
+		"87": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "UpdateSalesChannelDTO"
+		},
+		"88": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "UpdateSalesChannelDTO.id"
+		},
+		"89": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "UpdateSalesChannelDTO.name"
+		},
+		"90": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "UpdateSalesChannelDTO.description"
+		},
+		"91": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/mutations.ts",
+			"qualifiedName": "UpdateSalesChannelDTO.is_disabled"
+		},
+		"92": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig"
+		},
+		"93": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.select"
+		},
+		"94": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.skip"
+		},
+		"95": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.take"
+		},
+		"96": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.relations"
+		},
+		"97": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.order"
+		},
+		"98": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type"
+		},
+		"99": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"101": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.withDeleted"
+		},
+		"102": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.filters"
+		},
+		"103": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.Entity"
+		},
+		"104": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "FilterableSalesChannelProps"
+		},
+		"105": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "FilterableSalesChannelProps.id"
+		},
+		"106": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "FilterableSalesChannelProps.name"
+		},
+		"107": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "FilterableSalesChannelProps.is_disabled"
+		},
+		"108": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"109": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"110": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "SoftDeleteReturn"
+		},
+		"111": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "__type.returnLinkableKeys"
+		},
+		"112": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"113": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "RestoreReturn"
+		},
+		"114": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "__type.returnLinkableKeys"
+		},
+		"115": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"116": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerConfig"
+		},
+		"117": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"118": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.schema"
+		},
+		"119": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationships"
+		},
+		"120": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extends"
+		},
+		"121": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"122": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"123": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.fieldAlias"
+		},
+		"124": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"125": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"126": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"127": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"128": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"129": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
+		"130": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
+		},
+		"131": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
+		},
+		"132": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
+		},
+		"133": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
+		},
+		"134": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"135": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
+		},
+		"136": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
+		},
+		"137": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
+		},
+		"138": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"139": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
+		},
+		"140": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
+		},
+		"141": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
+		},
+		"142": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"143": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator"
+		},
+		"144": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"145": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"146": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "msg"
+		},
+		"147": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"148": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"149": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "format"
+		},
+		"150": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"151": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"152": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"153": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"154": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "T"
+		},
+		"155": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "messageData"
+		},
+		"156": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "options"
+		},
+		"157": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelLocationDTO"
+		},
+		"158": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelLocationDTO.sales_channel_id"
+		},
+		"159": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelLocationDTO.location_id"
+		},
+		"160": {
+			"sourceFileName": "../../../packages/types/src/sales-channel/common.ts",
+			"qualifiedName": "SalesChannelLocationDTO.sales_channel"
+		},
+		"161": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable"
+		},
+		"162": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"163": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"164": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.T"
+		},
+		"165": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig"
+		},
+		"166": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.serviceName"
+		},
+		"167": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.alias"
+		},
+		"168": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+		},
+		"169": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"170": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"171": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"172": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+		},
+		"173": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.relationships"
+		},
+		"174": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.extends"
+		},
+		"175": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"176": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"177": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"178": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.args"
+		},
+		"179": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"180": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"181": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"182": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"183": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "Message"
+		},
+		"184": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"185": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"186": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.body"
+		},
+		"187": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.options"
+		},
+		"188": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"189": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat"
+		},
+		"190": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.groupBy"
+		},
+		"191": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.sortBy"
+		},
+		"192": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type"
+		},
+		"193": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"195": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageFormat"
+		},
+		"196": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"197": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"198": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"199": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"200": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"201": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"202": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"203": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"204": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"205": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"206": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"207": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"208": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"209": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"210": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"211": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"212": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"213": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"214": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"215": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"216": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"217": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"218": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
+		},
+		"219": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageBody"
+		},
+		"220": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"221": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"222": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"223": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"224": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"225": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"226": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"227": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"228": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		}
+	}
+}

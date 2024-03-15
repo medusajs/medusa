@@ -1,3 +1,6 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
 # API Key Module
 
 The API Key Module is the `@medusajs/api-key` NPM package that provides API-key-related features in your Medusa and Node.js applications.
@@ -73,10 +76,12 @@ You can use the API Key Module's main service by resolving from the dependency c
 
 For example:
 
-<CodeTabs group="resource-type">
-  <CodeTab label="API Route" value="api-route">
+<Tabs groupId="resource-type" isCodeTabs={true}>
+  <TabItem label="API Route" value="api-route" attributes={{
+    title: "src/api/store/custom/route.ts"
+  }}>
 
-  ```ts title="src/api/store/custom/route.ts"
+  ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -94,10 +99,12 @@ For example:
   }
   ```
 
-  </CodeTab>
-  <CodeTab label="Subscriber" value="subscribers">
+  </TabItem>
+  <TabItem label="Subscriber" value="subscribers" attributes={{
+    title: "src/subscribers/custom-handler.ts"
+  }}>
 
-  ```ts title="src/subscribers/custom-handler.ts"
+  ```ts
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -112,10 +119,12 @@ For example:
   }
   ```
 
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
+  </TabItem>
+  <TabItem label="Workflow Step" value="workflow-step" attributes={{
+    title: "src/workflows/hello-world/step1.ts"
+  }}>
 
-  ```ts title="src/workflows/hello-world/step1.ts"
+  ```ts
   import { createStep } from "@medusajs/workflows-sdk"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -129,5 +138,5 @@ For example:
   })
   ```
 
-  </CodeTab>
-</CodeTabs>
+  </TabItem>
+</Tabs>

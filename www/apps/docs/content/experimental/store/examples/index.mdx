@@ -1,0 +1,296 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Store Module
+
+In this guide, you’ll find common examples of how you can use the Store Module in your application.
+
+## Create a Store
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    const store = await storeModuleService.create({
+      name: "My Store",
+      supported_currency_codes: ["usd"]
+    })
+
+    response.json({
+      store,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStoreModule,
+  } from "@medusajs/store"
+
+  export async function POST(request: Request) {
+    const storeModuleService = await initializeStoreModule()
+
+    const store = await storeModuleService.create({
+      name: "My Store",
+      supported_currency_codes: ["usd"]
+    })
+
+    response.json({
+      store,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Stores
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    response.json({
+      stores: await storeModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStoreModule,
+  } from "@medusajs/store"
+
+  export async function GET(request: Request) {
+    const storeModuleService = await initializeStoreModule()
+
+    const salesChannels = await storeModuleService.list()
+
+    return NextResponse.json({
+      stores: await storeModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Retrieve a Store by its ID
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    const store = await storeModuleService.retrieve(
+      request.params.id
+    )
+
+    response.json({
+      store,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStoreModule,
+  } from "@medusajs/store"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function GET(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const storeModuleService = await initializeStoreModule()
+    const body = await request.json()
+
+    const store = await storeModuleService.retrieve(
+      params.id
+    )
+
+    return NextResponse.json({ store })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Update a Store
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    const store = await storeModuleService.update({
+      name: "Change Store"
+    })
+
+    response.json({
+      store,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStoreModule,
+  } from "@medusajs/store"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const storeModuleService = await initializeStoreModule()
+
+    const store = await storeModuleService.update({
+      name: "Change Store"
+    })
+
+    return NextResponse.json({ store })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Delete a Store
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStoreModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    request: MedusaRequest,
+    response: MedusaResponse
+  ): Promise<void> {
+    const storeModuleService: IStoreModuleService =
+      request.scope.resolve(ModuleRegistrationName.STORE)
+
+    await storeModuleService.delete(request.params.id)
+
+    response.status(200)
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeStoreModule,
+  } from "@medusajs/store"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function DELETE(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const storeModuleService = await initializeStoreModule()
+
+    await storeModuleService.delete(params.id)
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [Store Module interface reference](../../../references/store/interfaces/store.IStoreModuleService.mdx) provides a reference to all the methods available for use with examples for each.
+

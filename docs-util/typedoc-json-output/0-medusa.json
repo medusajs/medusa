@@ -100914,7 +100914,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 5403,
+			"id": 5400,
 			"name": "HTTP_METHODS",
 			"variant": "declaration",
 			"kind": 32,
@@ -100984,7 +100984,7 @@
 					"type": "query",
 					"queryType": {
 						"type": "reference",
-						"target": 5403,
+						"target": 5400,
 						"name": "HTTP_METHODS",
 						"package": "@medusajs/medusa"
 					}
@@ -110421,7 +110421,7 @@
 					},
 					{
 						"type": "reference",
-						"target": 5341,
+						"target": 5338,
 						"name": "TaxedPricing",
 						"package": "@medusajs/medusa"
 					}
@@ -110429,7 +110429,7 @@
 			}
 		},
 		{
-			"id": 5341,
+			"id": 5338,
 			"name": "TaxedPricing",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -110445,14 +110445,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5342,
+					"id": 5339,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5343,
+							"id": 5340,
 							"name": "original_price_incl_tax",
 							"variant": "declaration",
 							"kind": 1024,
@@ -110480,7 +110480,7 @@
 							}
 						},
 						{
-							"id": 5344,
+							"id": 5341,
 							"name": "calculated_price_incl_tax",
 							"variant": "declaration",
 							"kind": 1024,
@@ -110508,7 +110508,7 @@
 							}
 						},
 						{
-							"id": 5345,
+							"id": 5342,
 							"name": "original_tax",
 							"variant": "declaration",
 							"kind": 1024,
@@ -110536,7 +110536,7 @@
 							}
 						},
 						{
-							"id": 5346,
+							"id": 5343,
 							"name": "calculated_tax",
 							"variant": "declaration",
 							"kind": 1024,
@@ -110564,7 +110564,7 @@
 							}
 						},
 						{
-							"id": 5347,
+							"id": 5344,
 							"name": "tax_rates",
 							"variant": "declaration",
 							"kind": 1024,
@@ -110601,11 +110601,11 @@
 						{
 							"title": "Properties",
 							"children": [
+								5340,
+								5341,
+								5342,
 								5343,
-								5344,
-								5345,
-								5346,
-								5347
+								5344
 							]
 						}
 					]
@@ -113605,7 +113605,7 @@
 			},
 			"type": {
 				"type": "reference",
-				"target": 5337,
+				"target": 5334,
 				"name": "sdkModulesResponse",
 				"package": "@medusajs/types",
 				"qualifiedName": "ModulesResponse"
@@ -117389,7 +117389,7 @@
 			}
 		},
 		{
-			"id": 5361,
+			"id": 5358,
 			"name": "SessionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -117412,7 +117412,7 @@
 			},
 			"children": [
 				{
-					"id": 5362,
+					"id": 5359,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117441,7 +117441,7 @@
 					}
 				},
 				{
-					"id": 5363,
+					"id": 5360,
 					"name": "resave",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117470,7 +117470,7 @@
 					}
 				},
 				{
-					"id": 5364,
+					"id": 5361,
 					"name": "rolling",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117499,7 +117499,7 @@
 					}
 				},
 				{
-					"id": 5365,
+					"id": 5362,
 					"name": "saveUninitialized",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117528,7 +117528,7 @@
 					}
 				},
 				{
-					"id": 5366,
+					"id": 5363,
 					"name": "secret",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117557,7 +117557,7 @@
 					}
 				},
 				{
-					"id": 5367,
+					"id": 5364,
 					"name": "ttl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117606,18 +117606,18 @@
 				{
 					"title": "Properties",
 					"children": [
+						5359,
+						5360,
+						5361,
 						5362,
 						5363,
-						5364,
-						5365,
-						5366,
-						5367
+						5364
 					]
 				}
 			]
 		},
 		{
-			"id": 5368,
+			"id": 5365,
 			"name": "HttpCompressionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -117632,7 +117632,7 @@
 			},
 			"children": [
 				{
-					"id": 5369,
+					"id": 5366,
 					"name": "enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117661,7 +117661,7 @@
 					}
 				},
 				{
-					"id": 5370,
+					"id": 5367,
 					"name": "level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117690,7 +117690,7 @@
 					}
 				},
 				{
-					"id": 5371,
+					"id": 5368,
 					"name": "memLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117719,7 +117719,7 @@
 					}
 				},
 				{
-					"id": 5372,
+					"id": 5369,
 					"name": "threshold",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117761,10 +117761,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						5369,
-						5370,
-						5371,
-						5372
+						5366,
+						5367,
+						5368,
+						5369
 					]
 				}
 			]
@@ -118733,7 +118733,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5361,
+						"target": 5358,
 						"name": "SessionOptions",
 						"package": "@medusajs/types"
 					}
@@ -118775,7 +118775,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5368,
+						"target": 5365,
 						"name": "HttpCompressionOptions",
 						"package": "@medusajs/types"
 					}
@@ -121013,7 +121013,7 @@
 			}
 		},
 		{
-			"id": 5351,
+			"id": 5348,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -121021,14 +121021,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5352,
+					"id": 5349,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5353,
+							"id": 5350,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121039,7 +121039,7 @@
 							}
 						},
 						{
-							"id": 5354,
+							"id": 5351,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121050,7 +121050,7 @@
 							}
 						},
 						{
-							"id": 5355,
+							"id": 5352,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121061,7 +121061,7 @@
 							}
 						},
 						{
-							"id": 5356,
+							"id": 5353,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121072,7 +121072,7 @@
 							}
 						},
 						{
-							"id": 5357,
+							"id": 5354,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121093,7 +121093,7 @@
 							}
 						},
 						{
-							"id": 5358,
+							"id": 5355,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121114,7 +121114,7 @@
 							}
 						},
 						{
-							"id": 5359,
+							"id": 5356,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121135,7 +121135,7 @@
 							}
 						},
 						{
-							"id": 5360,
+							"id": 5357,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -121175,14 +121175,14 @@
 						{
 							"title": "Properties",
 							"children": [
+								5350,
+								5351,
+								5352,
 								5353,
 								5354,
 								5355,
 								5356,
-								5357,
-								5358,
-								5359,
-								5360
+								5357
 							]
 						}
 					]
@@ -121190,14 +121190,14 @@
 			}
 		},
 		{
-			"id": 5348,
+			"id": 5345,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 5349,
+					"id": 5346,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121220,7 +121220,7 @@
 					}
 				},
 				{
-					"id": 5350,
+					"id": 5347,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121260,8 +121260,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						5349,
-						5350
+						5346,
+						5347
 					]
 				}
 			]
@@ -121305,7 +121305,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 5348,
+								"target": 5345,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -121313,7 +121313,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 5348,
+									"target": 5345,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -121434,7 +121434,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5351,
+							"target": 5348,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
@@ -121478,7 +121478,7 @@
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 5351,
+											"target": 5348,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -121550,14 +121550,14 @@
 			]
 		},
 		{
-			"id": 5461,
+			"id": 5464,
 			"name": "Logger",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 5462,
+					"id": 5465,
 					"name": "panic",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121565,21 +121565,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5463,
+							"id": 5466,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5464,
+									"id": 5467,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5465,
+											"id": 5468,
 											"name": "data",
 											"variant": "param",
 											"kind": 32768,
@@ -121600,7 +121600,7 @@
 					}
 				},
 				{
-					"id": 5466,
+					"id": 5469,
 					"name": "shouldLog",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121608,21 +121608,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5467,
+							"id": 5470,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5468,
+									"id": 5471,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5469,
+											"id": 5472,
 											"name": "level",
 											"variant": "param",
 											"kind": 32768,
@@ -121643,7 +121643,7 @@
 					}
 				},
 				{
-					"id": 5470,
+					"id": 5473,
 					"name": "setLogLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121651,21 +121651,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5471,
+							"id": 5474,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5472,
+									"id": 5475,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5473,
+											"id": 5476,
 											"name": "level",
 											"variant": "param",
 											"kind": 32768,
@@ -121676,36 +121676,6 @@
 											}
 										}
 									],
-									"type": {
-										"type": "intrinsic",
-										"name": "void"
-									}
-								}
-							]
-						}
-					}
-				},
-				{
-					"id": 5474,
-					"name": "unsetLogLevel",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reflection",
-						"declaration": {
-							"id": 5475,
-							"name": "__type",
-							"variant": "declaration",
-							"kind": 65536,
-							"flags": {},
-							"signatures": [
-								{
-									"id": 5476,
-									"name": "__type",
-									"variant": "signature",
-									"kind": 4096,
-									"flags": {},
 									"type": {
 										"type": "intrinsic",
 										"name": "void"
@@ -121717,7 +121687,7 @@
 				},
 				{
 					"id": 5477,
-					"name": "activity",
+					"name": "unsetLogLevel",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -121736,9 +121706,39 @@
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 5480,
+					"name": "activity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 5481,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"signatures": [
+								{
+									"id": 5482,
+									"name": "__type",
+									"variant": "signature",
+									"kind": 4096,
+									"flags": {},
 									"parameters": [
 										{
-											"id": 5480,
+											"id": 5483,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -121749,7 +121749,7 @@
 											}
 										},
 										{
-											"id": 5481,
+											"id": 5484,
 											"name": "config",
 											"variant": "param",
 											"kind": 32768,
@@ -121772,7 +121772,7 @@
 					}
 				},
 				{
-					"id": 5482,
+					"id": 5485,
 					"name": "progress",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121780,21 +121780,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5483,
+							"id": 5486,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5484,
+									"id": 5487,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5485,
+											"id": 5488,
 											"name": "activityId",
 											"variant": "param",
 											"kind": 32768,
@@ -121805,7 +121805,7 @@
 											}
 										},
 										{
-											"id": 5486,
+											"id": 5489,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -121826,7 +121826,7 @@
 					}
 				},
 				{
-					"id": 5487,
+					"id": 5490,
 					"name": "error",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121834,21 +121834,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5488,
+							"id": 5491,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5489,
+									"id": 5492,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5490,
+											"id": 5493,
 											"name": "messageOrError",
 											"variant": "param",
 											"kind": 32768,
@@ -121859,7 +121859,7 @@
 											}
 										},
 										{
-											"id": 5491,
+											"id": 5494,
 											"name": "error",
 											"variant": "param",
 											"kind": 32768,
@@ -121882,7 +121882,7 @@
 					}
 				},
 				{
-					"id": 5492,
+					"id": 5495,
 					"name": "failure",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121890,21 +121890,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5493,
+							"id": 5496,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5494,
+									"id": 5497,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5495,
+											"id": 5498,
 											"name": "activityId",
 											"variant": "param",
 											"kind": 32768,
@@ -121915,7 +121915,7 @@
 											}
 										},
 										{
-											"id": 5496,
+											"id": 5499,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -121936,7 +121936,7 @@
 					}
 				},
 				{
-					"id": 5497,
+					"id": 5500,
 					"name": "success",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121944,21 +121944,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5498,
+							"id": 5501,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5499,
+									"id": 5502,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5500,
+											"id": 5503,
 											"name": "activityId",
 											"variant": "param",
 											"kind": 32768,
@@ -121969,7 +121969,7 @@
 											}
 										},
 										{
-											"id": 5501,
+											"id": 5504,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -121990,7 +121990,7 @@
 					}
 				},
 				{
-					"id": 5502,
+					"id": 5505,
 					"name": "debug",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121998,21 +121998,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5503,
+							"id": 5506,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5504,
+									"id": 5507,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5505,
+											"id": 5508,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -122033,7 +122033,7 @@
 					}
 				},
 				{
-					"id": 5506,
+					"id": 5509,
 					"name": "info",
 					"variant": "declaration",
 					"kind": 1024,
@@ -122041,21 +122041,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5507,
+							"id": 5510,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5508,
+									"id": 5511,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5509,
+											"id": 5512,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -122076,7 +122076,7 @@
 					}
 				},
 				{
-					"id": 5510,
+					"id": 5513,
 					"name": "warn",
 					"variant": "declaration",
 					"kind": 1024,
@@ -122084,21 +122084,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5511,
+							"id": 5514,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5512,
+									"id": 5515,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5513,
+											"id": 5516,
 											"name": "message",
 											"variant": "param",
 											"kind": 32768,
@@ -122119,7 +122119,7 @@
 					}
 				},
 				{
-					"id": 5514,
+					"id": 5517,
 					"name": "log",
 					"variant": "declaration",
 					"kind": 1024,
@@ -122127,21 +122127,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 5515,
+							"id": 5518,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 5516,
+									"id": 5519,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5517,
+											"id": 5520,
 											"name": "args",
 											"variant": "param",
 											"kind": 32768,
@@ -122171,19 +122171,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						5462,
-						5466,
-						5470,
-						5474,
+						5465,
+						5469,
+						5473,
 						5477,
-						5482,
-						5487,
-						5492,
-						5497,
-						5502,
-						5506,
-						5510,
-						5514
+						5480,
+						5485,
+						5490,
+						5495,
+						5500,
+						5505,
+						5509,
+						5513,
+						5517
 					]
 				}
 			]
@@ -122249,7 +122249,7 @@
 			}
 		},
 		{
-			"id": 5373,
+			"id": 5370,
 			"name": "INTERNAL",
 			"variant": "declaration",
 			"kind": 16,
@@ -122260,7 +122260,7 @@
 			}
 		},
 		{
-			"id": 5402,
+			"id": 5399,
 			"name": "EXTERNAL",
 			"variant": "declaration",
 			"kind": 16,
@@ -122271,14 +122271,14 @@
 			}
 		},
 		{
-			"id": 5374,
+			"id": 5371,
 			"name": "MODULE_RESOURCE_TYPE",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 5375,
+					"id": 5372,
 					"name": "SHARED",
 					"variant": "declaration",
 					"kind": 16,
@@ -122289,7 +122289,7 @@
 					}
 				},
 				{
-					"id": 5376,
+					"id": 5373,
 					"name": "ISOLATED",
 					"variant": "declaration",
 					"kind": 16,
@@ -122304,8 +122304,8 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						5375,
-						5376
+						5372,
+						5373
 					]
 				}
 			]
@@ -122333,7 +122333,7 @@
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 5373,
+								"target": 5370,
 								"name": "MODULE_SCOPE.INTERNAL",
 								"package": "@medusajs/types"
 							}
@@ -122346,7 +122346,7 @@
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 5374,
+								"target": 5371,
 								"name": "MODULE_RESOURCE_TYPE",
 								"package": "@medusajs/types"
 							}
@@ -122384,7 +122384,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5377,
+										"target": 5374,
 										"name": "ModuleDefinition",
 										"package": "@medusajs/types"
 									}
@@ -122410,7 +122410,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 5388,
+										"target": 5385,
 										"name": "ModuleExports",
 										"package": "@medusajs/types"
 									}
@@ -122529,7 +122529,7 @@
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 5402,
+								"target": 5399,
 								"name": "MODULE_SCOPE.EXTERNAL",
 								"package": "@medusajs/types"
 							}
@@ -122551,7 +122551,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 5377,
+										"target": 5374,
 										"name": "ModuleDefinition",
 										"package": "@medusajs/types"
 									}
@@ -122712,7 +122712,7 @@
 			}
 		},
 		{
-			"id": 5377,
+			"id": 5374,
 			"name": "ModuleDefinition",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -122720,14 +122720,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5378,
+					"id": 5375,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5379,
+							"id": 5376,
 							"name": "key",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122738,7 +122738,7 @@
 							}
 						},
 						{
-							"id": 5380,
+							"id": 5377,
 							"name": "registrationName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122749,7 +122749,7 @@
 							}
 						},
 						{
-							"id": 5381,
+							"id": 5378,
 							"name": "defaultPackage",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122769,7 +122769,7 @@
 							}
 						},
 						{
-							"id": 5382,
+							"id": 5379,
 							"name": "label",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122780,7 +122780,7 @@
 							}
 						},
 						{
-							"id": 5383,
+							"id": 5380,
 							"name": "isRequired",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122793,7 +122793,7 @@
 							}
 						},
 						{
-							"id": 5384,
+							"id": 5381,
 							"name": "isQueryable",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122806,7 +122806,7 @@
 							}
 						},
 						{
-							"id": 5385,
+							"id": 5382,
 							"name": "isLegacy",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122819,7 +122819,7 @@
 							}
 						},
 						{
-							"id": 5386,
+							"id": 5383,
 							"name": "dependencies",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122835,7 +122835,7 @@
 							}
 						},
 						{
-							"id": 5387,
+							"id": 5384,
 							"name": "defaultModuleDeclaration",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122863,15 +122863,15 @@
 						{
 							"title": "Properties",
 							"children": [
+								5376,
+								5377,
+								5378,
 								5379,
 								5380,
 								5381,
 								5382,
 								5383,
-								5384,
-								5385,
-								5386,
-								5387
+								5384
 							]
 						}
 					]
@@ -122879,14 +122879,14 @@
 			}
 		},
 		{
-			"id": 5455,
+			"id": 5458,
 			"name": "LoaderOptions",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 5460,
+					"id": 5463,
 					"name": "TOptions",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -122915,14 +122915,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5456,
+					"id": 5459,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5457,
+							"id": 5460,
 							"name": "container",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122935,7 +122935,7 @@
 							}
 						},
 						{
-							"id": 5458,
+							"id": 5461,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122944,14 +122944,14 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 5460,
+								"target": 5463,
 								"name": "TOptions",
 								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 5459,
+							"id": 5462,
 							"name": "logger",
 							"variant": "declaration",
 							"kind": 1024,
@@ -122960,7 +122960,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 5461,
+								"target": 5464,
 								"name": "Logger",
 								"package": "@medusajs/types"
 							}
@@ -122970,9 +122970,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								5457,
-								5458,
-								5459
+								5460,
+								5461,
+								5462
 							]
 						}
 					]
@@ -122980,7 +122980,7 @@
 			}
 		},
 		{
-			"id": 5450,
+			"id": 5453,
 			"name": "ModuleLoaderFunction",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -122988,34 +122988,34 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5451,
+					"id": 5454,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 5452,
+							"id": 5455,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 5453,
+									"id": 5456,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 5455,
+										"target": 5458,
 										"name": "LoaderOptions",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 5454,
+									"id": 5457,
 									"name": "moduleDeclaration",
 									"variant": "param",
 									"kind": 32768,
@@ -123051,7 +123051,7 @@
 			}
 		},
 		{
-			"id": 5337,
+			"id": 5334,
 			"name": "ModulesResponse",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -123061,14 +123061,14 @@
 				"elementType": {
 					"type": "reflection",
 					"declaration": {
-						"id": 5338,
+						"id": 5335,
 						"name": "__type",
 						"variant": "declaration",
 						"kind": 65536,
 						"flags": {},
 						"children": [
 							{
-								"id": 5339,
+								"id": 5336,
 								"name": "module",
 								"variant": "declaration",
 								"kind": 1024,
@@ -123079,7 +123079,7 @@
 								}
 							},
 							{
-								"id": 5340,
+								"id": 5337,
 								"name": "resolution",
 								"variant": "declaration",
 								"kind": 1024,
@@ -123103,8 +123103,8 @@
 							{
 								"title": "Properties",
 								"children": [
-									5339,
-									5340
+									5336,
+									5337
 								]
 							}
 						]
@@ -123762,7 +123762,7 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 5351,
+						"target": 5348,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
@@ -123833,7 +123833,7 @@
 			}
 		},
 		{
-			"id": 5388,
+			"id": 5385,
 			"name": "ModuleExports",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -123841,14 +123841,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 5389,
+					"id": 5386,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 5390,
+							"id": 5387,
 							"name": "service",
 							"variant": "declaration",
 							"kind": 1024,
@@ -123867,7 +123867,7 @@
 							}
 						},
 						{
-							"id": 5391,
+							"id": 5388,
 							"name": "loaders",
 							"variant": "declaration",
 							"kind": 1024,
@@ -123878,14 +123878,14 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 5450,
+									"target": 5453,
 									"name": "ModuleLoaderFunction",
 									"package": "@medusajs/types"
 								}
 							}
 						},
 						{
-							"id": 5392,
+							"id": 5389,
 							"name": "migrations",
 							"variant": "declaration",
 							"kind": 1024,
@@ -123915,7 +123915,7 @@
 							}
 						},
 						{
-							"id": 5393,
+							"id": 5390,
 							"name": "models",
 							"variant": "declaration",
 							"kind": 1024,
@@ -123953,7 +123953,7 @@
 							}
 						},
 						{
-							"id": 5394,
+							"id": 5391,
 							"name": "runMigrations",
 							"variant": "declaration",
 							"kind": 2048,
@@ -123962,21 +123962,21 @@
 							},
 							"signatures": [
 								{
-									"id": 5395,
+									"id": 5392,
 									"name": "runMigrations",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5396,
+											"id": 5393,
 											"name": "options",
 											"variant": "param",
 											"kind": 32768,
 											"flags": {},
 											"type": {
 												"type": "reference",
-												"target": 5455,
+												"target": 5458,
 												"typeArguments": [
 													{
 														"type": "intrinsic",
@@ -123988,7 +123988,7 @@
 											}
 										},
 										{
-											"id": 5397,
+											"id": 5394,
 											"name": "moduleDeclaration",
 											"variant": "param",
 											"kind": 32768,
@@ -124022,7 +124022,7 @@
 							]
 						},
 						{
-							"id": 5398,
+							"id": 5395,
 							"name": "revertMigration",
 							"variant": "declaration",
 							"kind": 2048,
@@ -124031,21 +124031,21 @@
 							},
 							"signatures": [
 								{
-									"id": 5399,
+									"id": 5396,
 									"name": "revertMigration",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 5400,
+											"id": 5397,
 											"name": "options",
 											"variant": "param",
 											"kind": 32768,
 											"flags": {},
 											"type": {
 												"type": "reference",
-												"target": 5455,
+												"target": 5458,
 												"typeArguments": [
 													{
 														"type": "intrinsic",
@@ -124057,7 +124057,7 @@
 											}
 										},
 										{
-											"id": 5401,
+											"id": 5398,
 											"name": "moduleDeclaration",
 											"variant": "param",
 											"kind": 32768,
@@ -124095,17 +124095,17 @@
 						{
 							"title": "Properties",
 							"children": [
-								5390,
-								5391,
-								5392,
-								5393
+								5387,
+								5388,
+								5389,
+								5390
 							]
 						},
 						{
 							"title": "Methods",
 							"children": [
-								5394,
-								5398
+								5391,
+								5395
 							]
 						}
 					]
@@ -124113,14 +124113,14 @@
 			}
 		},
 		{
-			"id": 5411,
+			"id": 5407,
 			"name": "ProductStatus",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 5412,
+					"id": 5408,
 					"name": "DRAFT",
 					"variant": "declaration",
 					"kind": 16,
@@ -124131,7 +124131,7 @@
 					}
 				},
 				{
-					"id": 5413,
+					"id": 5409,
 					"name": "PROPOSED",
 					"variant": "declaration",
 					"kind": 16,
@@ -124142,7 +124142,7 @@
 					}
 				},
 				{
-					"id": 5414,
+					"id": 5410,
 					"name": "PUBLISHED",
 					"variant": "declaration",
 					"kind": 16,
@@ -124153,7 +124153,7 @@
 					}
 				},
 				{
-					"id": 5415,
+					"id": 5411,
 					"name": "REJECTED",
 					"variant": "declaration",
 					"kind": 16,
@@ -124168,16 +124168,16 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						5412,
-						5413,
-						5414,
-						5415
+						5408,
+						5409,
+						5410,
+						5411
 					]
 				}
 			]
 		},
 		{
-			"id": 5307,
+			"id": 5304,
 			"name": "ProductDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -124192,7 +124192,7 @@
 			},
 			"children": [
 				{
-					"id": 5308,
+					"id": 5305,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124211,7 +124211,7 @@
 					}
 				},
 				{
-					"id": 5309,
+					"id": 5306,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124230,7 +124230,7 @@
 					}
 				},
 				{
-					"id": 5310,
+					"id": 5307,
 					"name": "handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124260,7 +124260,7 @@
 					}
 				},
 				{
-					"id": 5311,
+					"id": 5308,
 					"name": "subtitle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124290,7 +124290,7 @@
 					}
 				},
 				{
-					"id": 5312,
+					"id": 5309,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124320,7 +124320,7 @@
 					}
 				},
 				{
-					"id": 5313,
+					"id": 5310,
 					"name": "is_giftcard",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124339,7 +124339,7 @@
 					}
 				},
 				{
-					"id": 5314,
+					"id": 5311,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124354,13 +124354,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5411,
+						"target": 5407,
 						"name": "ProductStatus",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5315,
+					"id": 5312,
 					"name": "thumbnail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124390,7 +124390,7 @@
 					}
 				},
 				{
-					"id": 5316,
+					"id": 5313,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124420,7 +124420,7 @@
 					}
 				},
 				{
-					"id": 5317,
+					"id": 5314,
 					"name": "weight",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124450,7 +124450,7 @@
 					}
 				},
 				{
-					"id": 5318,
+					"id": 5315,
 					"name": "length",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124480,7 +124480,7 @@
 					}
 				},
 				{
-					"id": 5319,
+					"id": 5316,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124510,7 +124510,7 @@
 					}
 				},
 				{
-					"id": 5320,
+					"id": 5317,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124540,7 +124540,7 @@
 					}
 				},
 				{
-					"id": 5321,
+					"id": 5318,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124570,7 +124570,7 @@
 					}
 				},
 				{
-					"id": 5322,
+					"id": 5319,
 					"name": "mid_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124600,7 +124600,7 @@
 					}
 				},
 				{
-					"id": 5323,
+					"id": 5320,
 					"name": "material",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124630,7 +124630,7 @@
 					}
 				},
 				{
-					"id": 5324,
+					"id": 5321,
 					"name": "collection",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124648,13 +124648,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5416,
+						"target": 5412,
 						"name": "ProductCollectionDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5325,
+					"id": 5322,
 					"name": "categories",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124683,7 +124683,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 5423,
+									"target": 5419,
 									"name": "ProductCategoryDTO",
 									"package": "@medusajs/types"
 								}
@@ -124692,7 +124692,7 @@
 					}
 				},
 				{
-					"id": 5326,
+					"id": 5323,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124710,13 +124710,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5435,
+						"target": 5431,
 						"name": "ProductTypeDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5327,
+					"id": 5324,
 					"name": "tags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124736,14 +124736,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5440,
+							"target": 5436,
 							"name": "ProductTagDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 5328,
+					"id": 5325,
 					"name": "variants",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124770,7 +124770,7 @@
 					}
 				},
 				{
-					"id": 5329,
+					"id": 5326,
 					"name": "options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124790,14 +124790,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5404,
+							"target": 5441,
 							"name": "ProductOptionDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 5330,
+					"id": 5327,
 					"name": "images",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124817,14 +124817,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5445,
+							"target": 5448,
 							"name": "ProductImageDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 5331,
+					"id": 5328,
 					"name": "discountable",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124845,7 +124845,7 @@
 					}
 				},
 				{
-					"id": 5332,
+					"id": 5329,
 					"name": "external_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124875,7 +124875,7 @@
 					}
 				},
 				{
-					"id": 5333,
+					"id": 5330,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124910,7 +124910,7 @@
 					}
 				},
 				{
-					"id": 5334,
+					"id": 5331,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124945,7 +124945,7 @@
 					}
 				},
 				{
-					"id": 5335,
+					"id": 5332,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124980,7 +124980,7 @@
 					}
 				},
 				{
-					"id": 5336,
+					"id": 5333,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125020,6 +125020,9 @@
 				{
 					"title": "Properties",
 					"children": [
+						5305,
+						5306,
+						5307,
 						5308,
 						5309,
 						5310,
@@ -125045,10 +125048,7 @@
 						5330,
 						5331,
 						5332,
-						5333,
-						5334,
-						5335,
-						5336
+						5333
 					]
 				}
 			]
@@ -125549,7 +125549,7 @@
 						"elementType": {
 							"type": "reference",
 							"target": 5300,
-							"name": "ProductOptionValueDTO",
+							"name": "ProductVariantOptionDTO",
 							"package": "@medusajs/types"
 						}
 					}
@@ -125618,7 +125618,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5307,
+						"target": 5304,
 						"name": "ProductDTO",
 						"package": "@medusajs/types"
 					}
@@ -125806,7 +125806,7 @@
 			]
 		},
 		{
-			"id": 5423,
+			"id": 5419,
 			"name": "ProductCategoryDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -125821,7 +125821,7 @@
 			},
 			"children": [
 				{
-					"id": 5424,
+					"id": 5420,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125840,7 +125840,7 @@
 					}
 				},
 				{
-					"id": 5425,
+					"id": 5421,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125859,7 +125859,7 @@
 					}
 				},
 				{
-					"id": 5426,
+					"id": 5422,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125880,7 +125880,7 @@
 					}
 				},
 				{
-					"id": 5427,
+					"id": 5423,
 					"name": "handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125901,7 +125901,7 @@
 					}
 				},
 				{
-					"id": 5428,
+					"id": 5424,
 					"name": "is_active",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125922,7 +125922,7 @@
 					}
 				},
 				{
-					"id": 5429,
+					"id": 5425,
 					"name": "is_internal",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125943,7 +125943,7 @@
 					}
 				},
 				{
-					"id": 5430,
+					"id": 5426,
 					"name": "rank",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125964,7 +125964,7 @@
 					}
 				},
 				{
-					"id": 5431,
+					"id": 5427,
 					"name": "parent_category",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125984,13 +125984,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5423,
+						"target": 5419,
 						"name": "ProductCategoryDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5432,
+					"id": 5428,
 					"name": "category_children",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126010,14 +126010,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5423,
+							"target": 5419,
 							"name": "ProductCategoryDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 5433,
+					"id": 5429,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126050,7 +126050,7 @@
 					}
 				},
 				{
-					"id": 5434,
+					"id": 5430,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126087,23 +126087,23 @@
 				{
 					"title": "Properties",
 					"children": [
+						5420,
+						5421,
+						5422,
+						5423,
 						5424,
 						5425,
 						5426,
 						5427,
 						5428,
 						5429,
-						5430,
-						5431,
-						5432,
-						5433,
-						5434
+						5430
 					]
 				}
 			]
 		},
 		{
-			"id": 5440,
+			"id": 5436,
 			"name": "ProductTagDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126118,7 +126118,7 @@
 			},
 			"children": [
 				{
-					"id": 5441,
+					"id": 5437,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126137,7 +126137,7 @@
 					}
 				},
 				{
-					"id": 5442,
+					"id": 5438,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126156,7 +126156,7 @@
 					}
 				},
 				{
-					"id": 5443,
+					"id": 5439,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126201,7 +126201,7 @@
 					}
 				},
 				{
-					"id": 5444,
+					"id": 5440,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126223,7 +126223,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5307,
+							"target": 5304,
 							"name": "ProductDTO",
 							"package": "@medusajs/types"
 						}
@@ -126234,16 +126234,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						5441,
-						5442,
-						5443,
-						5444
+						5437,
+						5438,
+						5439,
+						5440
 					]
 				}
 			]
 		},
 		{
-			"id": 5416,
+			"id": 5412,
 			"name": "ProductCollectionDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126258,7 +126258,7 @@
 			},
 			"children": [
 				{
-					"id": 5417,
+					"id": 5413,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126277,7 +126277,7 @@
 					}
 				},
 				{
-					"id": 5418,
+					"id": 5414,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126296,7 +126296,7 @@
 					}
 				},
 				{
-					"id": 5419,
+					"id": 5415,
 					"name": "handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126315,7 +126315,7 @@
 					}
 				},
 				{
-					"id": 5420,
+					"id": 5416,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126360,7 +126360,7 @@
 					}
 				},
 				{
-					"id": 5421,
+					"id": 5417,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126395,7 +126395,7 @@
 					}
 				},
 				{
-					"id": 5422,
+					"id": 5418,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126417,7 +126417,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5307,
+							"target": 5304,
 							"name": "ProductDTO",
 							"package": "@medusajs/types"
 						}
@@ -126428,18 +126428,18 @@
 				{
 					"title": "Properties",
 					"children": [
+						5413,
+						5414,
+						5415,
+						5416,
 						5417,
-						5418,
-						5419,
-						5420,
-						5421,
-						5422
+						5418
 					]
 				}
 			]
 		},
 		{
-			"id": 5435,
+			"id": 5431,
 			"name": "ProductTypeDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126454,7 +126454,7 @@
 			},
 			"children": [
 				{
-					"id": 5436,
+					"id": 5432,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126473,7 +126473,7 @@
 					}
 				},
 				{
-					"id": 5437,
+					"id": 5433,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126492,7 +126492,7 @@
 					}
 				},
 				{
-					"id": 5438,
+					"id": 5434,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126537,7 +126537,7 @@
 					}
 				},
 				{
-					"id": 5439,
+					"id": 5435,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126576,16 +126576,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						5436,
-						5437,
-						5438,
-						5439
+						5432,
+						5433,
+						5434,
+						5435
 					]
 				}
 			]
 		},
 		{
-			"id": 5404,
+			"id": 5441,
 			"name": "ProductOptionDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126600,7 +126600,7 @@
 			},
 			"children": [
 				{
-					"id": 5405,
+					"id": 5442,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126619,7 +126619,7 @@
 					}
 				},
 				{
-					"id": 5406,
+					"id": 5443,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126638,7 +126638,7 @@
 					}
 				},
 				{
-					"id": 5407,
+					"id": 5444,
 					"name": "product",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126656,13 +126656,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5307,
+						"target": 5304,
 						"name": "ProductDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5408,
+					"id": 5445,
 					"name": "values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126682,14 +126682,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 5300,
+							"target": 5401,
 							"name": "ProductOptionValueDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 5409,
+					"id": 5446,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126734,7 +126734,7 @@
 					}
 				},
 				{
-					"id": 5410,
+					"id": 5447,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126773,18 +126773,104 @@
 				{
 					"title": "Properties",
 					"children": [
-						5405,
-						5406,
-						5407,
-						5408,
-						5409,
-						5410
+						5442,
+						5443,
+						5444,
+						5445,
+						5446,
+						5447
 					]
 				}
 			]
 		},
 		{
-			"id": 5445,
+			"id": 5300,
+			"name": "ProductVariantOptionDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 5301,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the product variant option."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 5302,
+					"name": "option_value",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The value of the product variant option."
+							}
+						],
+						"modifierTags": [
+							"@expandable"
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 5401,
+						"name": "ProductOptionValueDTO",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 5303,
+					"name": "variant",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated product variant."
+							}
+						],
+						"modifierTags": [
+							"@expandable"
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 5133,
+						"name": "ProductVariantDTO",
+						"package": "@medusajs/types"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						5301,
+						5302,
+						5303
+					]
+				}
+			]
+		},
+		{
+			"id": 5448,
 			"name": "ProductImageDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126799,7 +126885,7 @@
 			},
 			"children": [
 				{
-					"id": 5446,
+					"id": 5449,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126818,7 +126904,7 @@
 					}
 				},
 				{
-					"id": 5447,
+					"id": 5450,
 					"name": "url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126837,7 +126923,7 @@
 					}
 				},
 				{
-					"id": 5448,
+					"id": 5451,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126882,7 +126968,7 @@
 					}
 				},
 				{
-					"id": 5449,
+					"id": 5452,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126921,16 +127007,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						5446,
-						5447,
-						5448,
-						5449
+						5449,
+						5450,
+						5451,
+						5452
 					]
 				}
 			]
 		},
 		{
-			"id": 5300,
+			"id": 5401,
 			"name": "ProductOptionValueDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -126945,7 +127031,7 @@
 			},
 			"children": [
 				{
-					"id": 5301,
+					"id": 5402,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126964,7 +127050,7 @@
 					}
 				},
 				{
-					"id": 5302,
+					"id": 5403,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -126983,7 +127069,7 @@
 					}
 				},
 				{
-					"id": 5303,
+					"id": 5404,
 					"name": "option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127006,42 +127092,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 5404,
+						"target": 5441,
 						"name": "ProductOptionDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 5304,
-					"name": "variant",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The associated product variant. It may only be available if the "
-							},
-							{
-								"kind": "code",
-								"text": "`variant`"
-							},
-							{
-								"kind": "text",
-								"text": " relation is expanded."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": 5133,
-						"name": "ProductVariantDTO",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 5305,
+					"id": 5405,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127086,7 +127143,7 @@
 					}
 				},
 				{
-					"id": 5306,
+					"id": 5406,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127125,12 +127182,11 @@
 				{
 					"title": "Properties",
 					"children": [
-						5301,
-						5302,
-						5303,
-						5304,
-						5305,
-						5306
+						5402,
+						5403,
+						5404,
+						5405,
+						5406
 					]
 				}
 			]
@@ -128112,8 +128168,8 @@
 				4193,
 				4922,
 				4396,
-				5374,
-				5411,
+				5371,
+				5407,
 				4936,
 				4696,
 				4699
@@ -128123,8 +128179,8 @@
 			"title": "Enumeration Members",
 			"children": [
 				5042,
-				5373,
-				5402
+				5370,
+				5399
 			]
 		},
 		{
@@ -128511,8 +128567,8 @@
 				5126,
 				5109,
 				4579,
-				5361,
-				5368,
+				5358,
+				5365,
 				5251,
 				5092,
 				4919,
@@ -128520,18 +128576,19 @@
 				5025,
 				5014,
 				5016,
-				5348,
+				5345,
 				5233,
-				5461,
-				5307,
+				5464,
+				5304,
 				5133,
-				5423,
-				5440,
-				5416,
-				5435,
-				5404,
-				5445,
+				5419,
+				5436,
+				5412,
+				5431,
+				5441,
 				5300,
+				5448,
+				5401,
 				5033
 			]
 		},
@@ -128748,7 +128805,7 @@
 				4256,
 				4264,
 				5198,
-				5341,
+				5338,
 				5206,
 				4966,
 				4926,
@@ -128775,17 +128832,17 @@
 				4547,
 				4844,
 				4567,
-				5351,
+				5348,
 				5128,
 				5273,
 				5283,
-				5377,
-				5455,
-				5450,
-				5337,
+				5374,
+				5458,
+				5453,
+				5334,
 				5052,
 				5247,
-				5388,
+				5385,
 				5178,
 				4873,
 				4888
@@ -128905,7 +128962,7 @@
 				2703,
 				3749,
 				3924,
-				5403
+				5400
 			]
 		},
 		{
@@ -147365,671 +147422,671 @@
 		},
 		"5300": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO"
+			"qualifiedName": "ProductVariantOptionDTO"
 		},
 		"5301": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.id"
+			"qualifiedName": "ProductVariantOptionDTO.id"
 		},
 		"5302": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.value"
+			"qualifiedName": "ProductVariantOptionDTO.option_value"
 		},
 		"5303": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.option"
+			"qualifiedName": "ProductVariantOptionDTO.variant"
 		},
 		"5304": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.variant"
+			"qualifiedName": "ProductDTO"
 		},
 		"5305": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.metadata"
+			"qualifiedName": "ProductDTO.id"
 		},
 		"5306": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionValueDTO.deleted_at"
+			"qualifiedName": "ProductDTO.title"
 		},
 		"5307": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO"
+			"qualifiedName": "ProductDTO.handle"
 		},
 		"5308": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.id"
+			"qualifiedName": "ProductDTO.subtitle"
 		},
 		"5309": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.title"
+			"qualifiedName": "ProductDTO.description"
 		},
 		"5310": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.handle"
+			"qualifiedName": "ProductDTO.is_giftcard"
 		},
 		"5311": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.subtitle"
+			"qualifiedName": "ProductDTO.status"
 		},
 		"5312": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.description"
+			"qualifiedName": "ProductDTO.thumbnail"
 		},
 		"5313": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.is_giftcard"
+			"qualifiedName": "ProductDTO.width"
 		},
 		"5314": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.status"
+			"qualifiedName": "ProductDTO.weight"
 		},
 		"5315": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.thumbnail"
+			"qualifiedName": "ProductDTO.length"
 		},
 		"5316": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.width"
+			"qualifiedName": "ProductDTO.height"
 		},
 		"5317": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.weight"
+			"qualifiedName": "ProductDTO.origin_country"
 		},
 		"5318": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.length"
+			"qualifiedName": "ProductDTO.hs_code"
 		},
 		"5319": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.height"
+			"qualifiedName": "ProductDTO.mid_code"
 		},
 		"5320": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.origin_country"
+			"qualifiedName": "ProductDTO.material"
 		},
 		"5321": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.hs_code"
+			"qualifiedName": "ProductDTO.collection"
 		},
 		"5322": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.mid_code"
+			"qualifiedName": "ProductDTO.categories"
 		},
 		"5323": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.material"
+			"qualifiedName": "ProductDTO.type"
 		},
 		"5324": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.collection"
+			"qualifiedName": "ProductDTO.tags"
 		},
 		"5325": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.categories"
+			"qualifiedName": "ProductDTO.variants"
 		},
 		"5326": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.type"
+			"qualifiedName": "ProductDTO.options"
 		},
 		"5327": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.tags"
+			"qualifiedName": "ProductDTO.images"
 		},
 		"5328": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.variants"
+			"qualifiedName": "ProductDTO.discountable"
 		},
 		"5329": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.options"
+			"qualifiedName": "ProductDTO.external_id"
 		},
 		"5330": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.images"
+			"qualifiedName": "ProductDTO.created_at"
 		},
 		"5331": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.discountable"
+			"qualifiedName": "ProductDTO.updated_at"
 		},
 		"5332": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.external_id"
+			"qualifiedName": "ProductDTO.deleted_at"
 		},
 		"5333": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.created_at"
-		},
-		"5334": {
-			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.updated_at"
-		},
-		"5335": {
-			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductDTO.deleted_at"
-		},
-		"5336": {
-			"sourceFileName": "../../../packages/types/src/product/common.ts",
 			"qualifiedName": "ProductDTO.metadata"
 		},
-		"5337": {
+		"5334": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModulesResponse"
 		},
-		"5338": {
+		"5335": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"5339": {
+		"5336": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.module"
 		},
-		"5340": {
+		"5337": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.resolution"
 		},
-		"5341": {
+		"5338": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "TaxedPricing"
 		},
-		"5342": {
+		"5339": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type"
 		},
-		"5343": {
+		"5340": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type.original_price_incl_tax"
 		},
-		"5344": {
+		"5341": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type.calculated_price_incl_tax"
 		},
-		"5345": {
+		"5342": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type.original_tax"
 		},
-		"5346": {
+		"5343": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type.calculated_tax"
 		},
-		"5347": {
+		"5344": {
 			"sourceFileName": "../../../packages/medusa/src/types/pricing.ts",
 			"qualifiedName": "__type.tax_rates"
 		},
-		"5348": {
+		"5345": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias"
 		},
-		"5349": {
+		"5346": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias.name"
 		},
-		"5350": {
+		"5347": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias.args"
 		},
-		"5351": {
+		"5348": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerRelationship"
 		},
-		"5352": {
+		"5349": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
-		"5353": {
+		"5350": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.alias"
 		},
-		"5354": {
+		"5351": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.foreignKey"
 		},
-		"5355": {
+		"5352": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.primaryKey"
 		},
-		"5356": {
+		"5353": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"5357": {
+		"5354": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isInternalService"
 		},
-		"5358": {
+		"5355": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.inverse"
 		},
-		"5359": {
+		"5356": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isList"
 		},
-		"5360": {
+		"5357": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
 		},
-		"5361": {
+		"5358": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "SessionOptions"
 		},
-		"5362": {
+		"5359": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.name"
 		},
-		"5363": {
+		"5360": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.resave"
 		},
-		"5364": {
+		"5361": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.rolling"
 		},
-		"5365": {
+		"5362": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.saveUninitialized"
 		},
-		"5366": {
+		"5363": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.secret"
 		},
-		"5367": {
+		"5364": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.ttl"
 		},
-		"5368": {
+		"5365": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "HttpCompressionOptions"
 		},
-		"5369": {
+		"5366": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.enabled"
 		},
-		"5370": {
+		"5367": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.level"
 		},
-		"5371": {
+		"5368": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.memLevel"
 		},
-		"5372": {
+		"5369": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.threshold"
 		},
-		"5373": {
+		"5370": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "MODULE_SCOPE.INTERNAL"
 		},
-		"5374": {
+		"5371": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "MODULE_RESOURCE_TYPE"
 		},
-		"5375": {
+		"5372": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "MODULE_RESOURCE_TYPE.SHARED"
 		},
-		"5376": {
+		"5373": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "MODULE_RESOURCE_TYPE.ISOLATED"
 		},
-		"5377": {
+		"5374": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModuleDefinition"
 		},
-		"5378": {
+		"5375": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"5379": {
+		"5376": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.key"
 		},
-		"5380": {
+		"5377": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.registrationName"
 		},
-		"5381": {
+		"5378": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.defaultPackage"
 		},
-		"5382": {
+		"5379": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.label"
 		},
-		"5383": {
+		"5380": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isRequired"
 		},
-		"5384": {
+		"5381": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isQueryable"
 		},
-		"5385": {
+		"5382": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isLegacy"
 		},
-		"5386": {
+		"5383": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.dependencies"
 		},
-		"5387": {
+		"5384": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.defaultModuleDeclaration"
 		},
-		"5388": {
+		"5385": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModuleExports"
 		},
-		"5389": {
+		"5386": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"5390": {
+		"5387": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.service"
 		},
-		"5391": {
+		"5388": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.loaders"
 		},
-		"5392": {
+		"5389": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.migrations"
 		},
-		"5393": {
+		"5390": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.models"
 		},
-		"5394": {
+		"5391": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.runMigrations"
+		},
+		"5392": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.runMigrations"
+		},
+		"5393": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "options"
+		},
+		"5394": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "moduleDeclaration"
 		},
 		"5395": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.runMigrations"
+			"qualifiedName": "__type.revertMigration"
 		},
 		"5396": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "__type.revertMigration"
 		},
 		"5397": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "moduleDeclaration"
+			"qualifiedName": "options"
 		},
 		"5398": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.revertMigration"
+			"qualifiedName": "moduleDeclaration"
 		},
 		"5399": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.revertMigration"
-		},
-		"5400": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "options"
-		},
-		"5401": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "moduleDeclaration"
-		},
-		"5402": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "MODULE_SCOPE.EXTERNAL"
 		},
-		"5403": {
+		"5400": {
 			"sourceFileName": "../../../packages/medusa/src/loaders/helpers/routing/types.ts",
 			"qualifiedName": "HTTP_METHODS"
 		},
+		"5401": {
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductOptionValueDTO"
+		},
+		"5402": {
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductOptionValueDTO.id"
+		},
+		"5403": {
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductOptionValueDTO.value"
+		},
 		"5404": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO"
+			"qualifiedName": "ProductOptionValueDTO.option"
 		},
 		"5405": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.id"
+			"qualifiedName": "ProductOptionValueDTO.metadata"
 		},
 		"5406": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.title"
+			"qualifiedName": "ProductOptionValueDTO.deleted_at"
 		},
 		"5407": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.product"
+			"qualifiedName": "ProductStatus"
 		},
 		"5408": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.values"
+			"qualifiedName": "ProductStatus.DRAFT"
 		},
 		"5409": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.metadata"
+			"qualifiedName": "ProductStatus.PROPOSED"
 		},
 		"5410": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductOptionDTO.deleted_at"
+			"qualifiedName": "ProductStatus.PUBLISHED"
 		},
 		"5411": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductStatus"
+			"qualifiedName": "ProductStatus.REJECTED"
 		},
 		"5412": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductStatus.DRAFT"
+			"qualifiedName": "ProductCollectionDTO"
 		},
 		"5413": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductStatus.PROPOSED"
+			"qualifiedName": "ProductCollectionDTO.id"
 		},
 		"5414": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductStatus.PUBLISHED"
+			"qualifiedName": "ProductCollectionDTO.title"
 		},
 		"5415": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductStatus.REJECTED"
+			"qualifiedName": "ProductCollectionDTO.handle"
 		},
 		"5416": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO"
+			"qualifiedName": "ProductCollectionDTO.metadata"
 		},
 		"5417": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.id"
+			"qualifiedName": "ProductCollectionDTO.deleted_at"
 		},
 		"5418": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.title"
+			"qualifiedName": "ProductCollectionDTO.products"
 		},
 		"5419": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.handle"
+			"qualifiedName": "ProductCategoryDTO"
 		},
 		"5420": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.metadata"
+			"qualifiedName": "ProductCategoryDTO.id"
 		},
 		"5421": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.deleted_at"
+			"qualifiedName": "ProductCategoryDTO.name"
 		},
 		"5422": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCollectionDTO.products"
+			"qualifiedName": "ProductCategoryDTO.description"
 		},
 		"5423": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO"
+			"qualifiedName": "ProductCategoryDTO.handle"
 		},
 		"5424": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.id"
+			"qualifiedName": "ProductCategoryDTO.is_active"
 		},
 		"5425": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.name"
+			"qualifiedName": "ProductCategoryDTO.is_internal"
 		},
 		"5426": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.description"
+			"qualifiedName": "ProductCategoryDTO.rank"
 		},
 		"5427": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.handle"
+			"qualifiedName": "ProductCategoryDTO.parent_category"
 		},
 		"5428": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.is_active"
+			"qualifiedName": "ProductCategoryDTO.category_children"
 		},
 		"5429": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.is_internal"
+			"qualifiedName": "ProductCategoryDTO.created_at"
 		},
 		"5430": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.rank"
+			"qualifiedName": "ProductCategoryDTO.updated_at"
 		},
 		"5431": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.parent_category"
+			"qualifiedName": "ProductTypeDTO"
 		},
 		"5432": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.category_children"
+			"qualifiedName": "ProductTypeDTO.id"
 		},
 		"5433": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.created_at"
+			"qualifiedName": "ProductTypeDTO.value"
 		},
 		"5434": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductCategoryDTO.updated_at"
+			"qualifiedName": "ProductTypeDTO.metadata"
 		},
 		"5435": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTypeDTO"
+			"qualifiedName": "ProductTypeDTO.deleted_at"
 		},
 		"5436": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTypeDTO.id"
+			"qualifiedName": "ProductTagDTO"
 		},
 		"5437": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTypeDTO.value"
+			"qualifiedName": "ProductTagDTO.id"
 		},
 		"5438": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTypeDTO.metadata"
+			"qualifiedName": "ProductTagDTO.value"
 		},
 		"5439": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTypeDTO.deleted_at"
+			"qualifiedName": "ProductTagDTO.metadata"
 		},
 		"5440": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTagDTO"
+			"qualifiedName": "ProductTagDTO.products"
 		},
 		"5441": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTagDTO.id"
+			"qualifiedName": "ProductOptionDTO"
 		},
 		"5442": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTagDTO.value"
+			"qualifiedName": "ProductOptionDTO.id"
 		},
 		"5443": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTagDTO.metadata"
+			"qualifiedName": "ProductOptionDTO.title"
 		},
 		"5444": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductTagDTO.products"
+			"qualifiedName": "ProductOptionDTO.product"
 		},
 		"5445": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductImageDTO"
+			"qualifiedName": "ProductOptionDTO.values"
 		},
 		"5446": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductImageDTO.id"
+			"qualifiedName": "ProductOptionDTO.metadata"
 		},
 		"5447": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductImageDTO.url"
+			"qualifiedName": "ProductOptionDTO.deleted_at"
 		},
 		"5448": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductImageDTO.metadata"
+			"qualifiedName": "ProductImageDTO"
 		},
 		"5449": {
 			"sourceFileName": "../../../packages/types/src/product/common.ts",
-			"qualifiedName": "ProductImageDTO.deleted_at"
+			"qualifiedName": "ProductImageDTO.id"
 		},
 		"5450": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleLoaderFunction"
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductImageDTO.url"
 		},
 		"5451": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductImageDTO.metadata"
 		},
 		"5452": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/product/common.ts",
+			"qualifiedName": "ProductImageDTO.deleted_at"
 		},
 		"5453": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "options"
+			"qualifiedName": "ModuleLoaderFunction"
 		},
 		"5454": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "moduleDeclaration"
+			"qualifiedName": "__type"
 		},
 		"5455": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "LoaderOptions"
+			"qualifiedName": "__type"
 		},
 		"5456": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "options"
 		},
 		"5457": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.container"
+			"qualifiedName": "moduleDeclaration"
 		},
 		"5458": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.options"
+			"qualifiedName": "LoaderOptions"
 		},
 		"5459": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.logger"
+			"qualifiedName": "__type"
 		},
 		"5460": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "TOptions"
+			"qualifiedName": "__type.container"
 		},
 		"5461": {
-			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
 		},
 		"5462": {
-			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.panic"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.logger"
 		},
 		"5463": {
-			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "TOptions"
 		},
 		"5464": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "Logger"
 		},
 		"5465": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "Logger.panic"
 		},
 		"5466": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.shouldLog"
+			"qualifiedName": "__type"
 		},
 		"5467": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148037,15 +148094,15 @@
 		},
 		"5468": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "data"
 		},
 		"5469": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "level"
+			"qualifiedName": "Logger.shouldLog"
 		},
 		"5470": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.setLogLevel"
+			"qualifiedName": "__type"
 		},
 		"5471": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148053,15 +148110,15 @@
 		},
 		"5472": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "level"
 		},
 		"5473": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "level"
+			"qualifiedName": "Logger.setLogLevel"
 		},
 		"5474": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.unsetLogLevel"
+			"qualifiedName": "__type"
 		},
 		"5475": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148069,11 +148126,11 @@
 		},
 		"5476": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "level"
 		},
 		"5477": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.activity"
+			"qualifiedName": "Logger.unsetLogLevel"
 		},
 		"5478": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148085,111 +148142,111 @@
 		},
 		"5480": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "Logger.activity"
 		},
 		"5481": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "__type"
 		},
 		"5482": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.progress"
+			"qualifiedName": "__type"
 		},
 		"5483": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5484": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "config"
 		},
 		"5485": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "activityId"
+			"qualifiedName": "Logger.progress"
 		},
 		"5486": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "__type"
 		},
 		"5487": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.error"
+			"qualifiedName": "__type"
 		},
 		"5488": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "activityId"
 		},
 		"5489": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5490": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "messageOrError"
+			"qualifiedName": "Logger.error"
 		},
 		"5491": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "__type"
 		},
 		"5492": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.failure"
+			"qualifiedName": "__type"
 		},
 		"5493": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "messageOrError"
 		},
 		"5494": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "error"
 		},
 		"5495": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "activityId"
+			"qualifiedName": "Logger.failure"
 		},
 		"5496": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "__type"
 		},
 		"5497": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.success"
+			"qualifiedName": "__type"
 		},
 		"5498": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "activityId"
 		},
 		"5499": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5500": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "activityId"
+			"qualifiedName": "Logger.success"
 		},
 		"5501": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "__type"
 		},
 		"5502": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.debug"
+			"qualifiedName": "__type"
 		},
 		"5503": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "activityId"
 		},
 		"5504": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5505": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "Logger.debug"
 		},
 		"5506": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.info"
+			"qualifiedName": "__type"
 		},
 		"5507": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148197,15 +148254,15 @@
 		},
 		"5508": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5509": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "Logger.info"
 		},
 		"5510": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.warn"
+			"qualifiedName": "__type"
 		},
 		"5511": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148213,15 +148270,15 @@
 		},
 		"5512": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5513": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "message"
+			"qualifiedName": "Logger.warn"
 		},
 		"5514": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "Logger.log"
+			"qualifiedName": "__type"
 		},
 		"5515": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
@@ -148229,9 +148286,21 @@
 		},
 		"5516": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "message"
 		},
 		"5517": {
+			"sourceFileName": "../../../packages/types/src/logger/index.ts",
+			"qualifiedName": "Logger.log"
+		},
+		"5518": {
+			"sourceFileName": "../../../packages/types/src/logger/index.ts",
+			"qualifiedName": "__type"
+		},
+		"5519": {
+			"sourceFileName": "../../../packages/types/src/logger/index.ts",
+			"qualifiedName": "__type"
+		},
+		"5520": {
 			"sourceFileName": "../../../packages/types/src/logger/index.ts",
 			"qualifiedName": "args"
 		}
