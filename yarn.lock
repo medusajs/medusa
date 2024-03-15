@@ -8166,7 +8166,7 @@ __metadata:
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     match-sorter: ^6.3.4
-    medusa-react: "workspace:^"
+    medusa-react: latest
     postcss: ^8.4.33
     prettier: ^3.1.1
     react: 18.2.0
@@ -38261,7 +38261,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.13, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.13, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
@@ -38299,6 +38299,20 @@ __metadata:
     react-dom: ^16.8 || ^17.0 || ^18.0
   languageName: unknown
   linkType: soft
+
+"medusa-react@npm:latest":
+  version: 9.0.15
+  resolution: "medusa-react@npm:9.0.15"
+  dependencies:
+    "@medusajs/medusa-js": "*"
+  peerDependencies:
+    "@medusajs/medusa": ^1.17.2
+    "@tanstack/react-query": ^4.22.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 28bfc56b6b7b149bd0c3ebd17af7ce95bac8a9c51571a299d9b0e7fa5d40838ed9dceb5c8a13e15385ade8cc57b93da51bdc5ab72e67e268d748eef3c6026c79
+  languageName: node
+  linkType: hard
 
 "medusa-source-shopify@workspace:packages/medusa-source-shopify":
   version: 0.0.0-use.local
