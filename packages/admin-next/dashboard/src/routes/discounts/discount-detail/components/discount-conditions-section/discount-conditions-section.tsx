@@ -35,6 +35,8 @@ const hasValue = (p: unknown): p is ProductTag | ProductType => {
 }
 
 function ConditionType({ condition }: ConditionTypeProps) {
+  const { t } = useTranslation()
+
   const operator = condition.operator === "in" ? "including" : "excluding"
   const entity = condition.type
 
@@ -56,6 +58,7 @@ function ConditionType({ condition }: ConditionTypeProps) {
     <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2">
       <span className="text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap">
         <Trans
+          t={t}
           count={
             condition[entity].length > N
               ? N - condition[entity].length

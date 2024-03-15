@@ -2,16 +2,16 @@ import { useAdminDiscount } from "medusa-react"
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { DiscountGeneralSection } from "./components/discounts-general-section"
-import { DiscountConfigurationSection } from "./components/discounts-configurations-section"
+import { DiscountConfigurationSection } from "./components/discount-configurations-section"
+import { DiscountGeneralSection } from "./components/discount-general-section"
 
-import { discountLoader, expand } from "./loader"
-import { RedemptionsSection } from "./components/redemptions-section"
 import { DetailsSection } from "./components/details-section"
-import { DiscountConditionsSection } from "./components/discounts-conditions-section"
+import { DiscountConditionsSection } from "./components/discount-conditions-section"
+import { RedemptionsSection } from "./components/discount-redemptions-section"
+import { discountLoader, expand } from "./loader"
 
-import before from "medusa-admin:widgets/discount/details/before"
 import after from "medusa-admin:widgets/discount/details/after"
+import before from "medusa-admin:widgets/discount/details/before"
 
 export const DiscountDetail = () => {
   const initialData = useLoaderData() as Awaited<

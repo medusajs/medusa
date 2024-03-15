@@ -561,7 +561,7 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
             size="small"
             disabled={isExButtonDisabled}
             onClick={() => onClick("not_in" as DiscountConditionOperator)}
-            className="txt-compact-small-plus rounded-none"
+            className="txt-compact-small-plus disabled:text-ui-fg-subtle rounded-none"
           >
             {!isInOperator && labels.length ? (
               <ListSummary
