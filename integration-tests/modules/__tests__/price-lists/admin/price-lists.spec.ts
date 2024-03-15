@@ -519,7 +519,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/price-lists/:id/prices", () => {
+      describe("POST /admin/price-lists/:id/prices/batch/add", () => {
         it("should add price list prices successfully", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
@@ -555,7 +555,7 @@ medusaIntegrationTestRunner({
           }
 
           const response = await api.post(
-            `admin/price-lists/${priceList.id}/prices`,
+            `admin/price-lists/${priceList.id}/prices/batch/add`,
             data,
             adminHeaders
           )
@@ -582,8 +582,8 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/price-lists/:id/prices", () => {
-        it("should delete price list prices", async () => {
+      describe("POST /admin/price-lists/:id/prices/batch/remove", () => {
+        it("should remove price list prices successfully", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -596,7 +596,6 @@ medusaIntegrationTestRunner({
               description: "test",
               prices: [
                 {
-                  id: "test-price-id",
                   amount: 5000,
                   currency_code: "usd",
                   price_set_id: priceSet.id,
@@ -608,17 +607,21 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let response = await api.delete(
-            `/admin/price-lists/${priceList.id}/prices`,
-            { ...adminHeaders, data: { ids: ["test-price-id"] } }
+          const psmaIdToDelete = priceList.price_set_money_amounts![0].id
+
+          const response = await api.post(
+            `/admin/price-lists/${priceList.id}/prices/batch/remove`,
+            { ids: [psmaIdToDelete] },
+            adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
-            ids: ["test-price-id"],
-            object: "price_list_prices",
-            deleted: true,
-          })
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: [],
+            })
+          )
         })
       })
     })
