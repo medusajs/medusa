@@ -74,8 +74,8 @@ export function prepareListQuery<
     // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
     if (queryConfig.isList) {
       allFields.add("created_at")
-      allFields.add("id")
     }
+    allFields.add("id")
   }
 
   allFields.forEach((field) => {
