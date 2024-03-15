@@ -2,6 +2,7 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminDraftOrdersRes,
   AdminDiscountsRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
@@ -99,6 +100,27 @@ export const v1Routes: RouteObject[] = [
                   crumb: (data: AdminOrdersRes) =>
                     `Order #${data.order.display_id}`,
                 },
+                children: [
+                  {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-shipping-address"),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-billing-address"),
+                  },
+                  {
+                    path: "email",
+                    lazy: () => import("../../routes/orders/order-email"),
+                  },
+                  {
+                    path: "transfer-ownership",
+                    lazy: () =>
+                      import("../../routes/orders/order-transfer-ownership"),
+                  },
+                ],
               },
             ],
           },
@@ -109,7 +131,7 @@ export const v1Routes: RouteObject[] = [
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-list"),
               },
@@ -117,6 +139,38 @@ export const v1Routes: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-detail"),
+                handle: {
+                  crumb: (data: AdminDraftOrdersRes) =>
+                    `Draft #${data.draft_order.display_id}`,
+                },
+                children: [
+                  {
+                    path: "transfer-ownership",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-transfer-ownership"
+                      ),
+                  },
+                  {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-shipping-address"
+                      ),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-billing-address"
+                      ),
+                  },
+                  {
+                    path: "email",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-email"),
+                  },
+                ],
               },
             ],
           },
