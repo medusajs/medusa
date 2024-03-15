@@ -324,7 +324,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should should throw error when required attributes are not provided", async () => {
+        it("should throw error when required attributes are not provided", async () => {
           const data = {
             prices: [
               {
