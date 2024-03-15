@@ -1,11 +1,11 @@
+import { CreatePromotionDTO, IPromotionModuleService } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { CreatePromotionDTO, IPromotionModuleService } from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createPromotionsWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

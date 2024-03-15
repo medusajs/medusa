@@ -46,6 +46,7 @@ export interface InventoryLevelDTO {
   stocked_quantity: number
   reserved_quantity: number
   incoming_quantity: number
+  available_quantity: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
