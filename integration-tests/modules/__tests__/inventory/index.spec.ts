@@ -146,76 +146,6 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it.skip("should retrieve the inventory item", async () => {
-        const inventoryItemId = inventoryItems[0].id
-
-        await api.post(
-          `/admin/inventory-items/${inventoryItemId}/location-levels`,
-          {
-            location_id: locationId,
-            stocked_quantity: 15,
-            incoming_quantity: 5,
-          },
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/inventory-items/${inventoryItemId}/location-levels`,
-          {
-            location_id: location2Id,
-            stocked_quantity: 7,
-            incoming_quantity: 0,
-          },
-          adminHeaders
-        )
-
-        const response = await api.get(
-          `/admin/inventory-items/${inventoryItemId}`,
-          adminHeaders
-        )
-
-        expect(response.data).toEqual({
-          inventory_item: expect.objectContaining({
-            height: 200,
-            hs_code: "hs001",
-            id: inventoryItemId,
-            length: 100,
-            location_levels: [
-              expect.objectContaining({
-                available_quantity: 15,
-                deleted_at: null,
-                id: expect.any(String),
-                incoming_quantity: 5,
-                inventory_item_id: inventoryItemId,
-                location_id: locationId,
-                metadata: null,
-                reserved_quantity: 0,
-                stocked_quantity: 15,
-              }),
-              expect.objectContaining({
-                available_quantity: 7,
-                deleted_at: null,
-                id: expect.any(String),
-                incoming_quantity: 0,
-                inventory_item_id: inventoryItemId,
-                location_id: location2Id,
-                metadata: null,
-                reserved_quantity: 0,
-                stocked_quantity: 7,
-              }),
-            ],
-            material: "material",
-            metadata: null,
-            mid_code: "mids",
-            origin_country: "UK",
-            requires_shipping: true,
-            sku: "MY_SKU",
-            weight: 300,
-            width: 150,
-          }),
-        })
-      })
-
       it.skip("should create the inventory item using the api", async () => {
         const product = await simpleProductFactory(dbConnection, {})
 
@@ -297,6 +227,103 @@ medusaIntegrationTestRunner({
             stocked_quantity: 10,
           })
         )
+      })
+
+      describe("Retrieve inventory item", () => {
+        let location1 = "loc_1"
+        let location2 = "loc_2"
+        beforeEach(async () => {
+          await service.create([
+            {
+              sku: "MY_SKU",
+              origin_country: "UK",
+              hs_code: "hs001",
+              mid_code: "mids",
+              material: "material",
+              weight: 300,
+              length: 100,
+              height: 200,
+              width: 150,
+            },
+          ])
+        })
+
+        it("should retrieve the inventory item", async () => {
+          const [{ id: inventoryItemId }] = await service.list({})
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItemId,
+              location_id: location1,
+              stocked_quantity: 15,
+              incoming_quantity: 5,
+            },
+            {
+              inventory_item_id: inventoryItemId,
+              location_id: location2,
+              stocked_quantity: 7,
+              incoming_quantity: 0,
+              reserved_quantity: 1,
+            },
+          ])
+
+          const response = await api.get(
+            `/admin/inventory-items/${inventoryItemId}`,
+            adminHeaders
+          )
+
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              id: inventoryItemId,
+              sku: "MY_SKU",
+              origin_country: "UK",
+              hs_code: "hs001",
+              material: "material",
+              mid_code: "mids",
+              requires_shipping: true,
+              weight: 300,
+              length: 100,
+              height: 200,
+              width: 150,
+              stocked_quantity: 22,
+              reserved_quantity: 1,
+              location_levels: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  inventory_item_id: inventoryItemId,
+                  location_id: location1,
+                  stocked_quantity: 15,
+                  reserved_quantity: 0,
+                  incoming_quantity: 5,
+                  available_quantity: 15,
+                  metadata: null,
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  inventory_item_id: inventoryItemId,
+                  location_id: location2,
+                  stocked_quantity: 7,
+                  reserved_quantity: 1,
+                  incoming_quantity: 0,
+                  available_quantity: 6,
+                  metadata: null,
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should throw if inventory item doesn't exist", async () => {
+          const error = await api
+            .get(`/admin/inventory-items/does-not-exist`, adminHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: "Inventory item with id: does-not-exist was not found",
+          })
+        })
       })
 
       describe("Create inventory item level", () => {
