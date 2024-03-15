@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { BigNumberValue } from "../totals"
 
 export interface AdjustmentLineDTO {
   /**
@@ -468,35 +469,34 @@ export interface CartDTO {
    */
   updated_at?: string | Date
 
-  original_item_total: number
-  original_item_subtotal: number
-  original_item_tax_total: number
+  total: BigNumberValue
+  subtotal: BigNumberValue
+  tax_total: BigNumberValue
+  discount_total: BigNumberValue
+  shipping_total: BigNumberValue
+  gift_card_total: BigNumberValue
+  item_total: BigNumberValue
 
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
+  discount_tax_total: BigNumberValue
+  gift_card_tax_total: BigNumberValue
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+  shipping_subtotal: BigNumberValue
+  shipping_tax_total: BigNumberValue
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  raw_discount_total: any
-  discount_tax_total: number
+  item_subtotal: BigNumberValue
+  item_tax_total: BigNumberValue
 
-  gift_card_total: number
-  gift_card_tax_total: number
+  original_item_total: BigNumberValue
+  original_item_subtotal: BigNumberValue
+  original_item_tax_total: BigNumberValue
 
-  shipping_total: number
-  shipping_subtotal: number
-  shipping_tax_total: number
+  original_total: BigNumberValue
+  original_subtotal: BigNumberValue
+  original_tax_total: BigNumberValue
 
-  original_shipping_total: number
-  original_shipping_subtotal: number
-  original_shipping_tax_total: number
+  original_shipping_tax_total: BigNumberValue
+  original_shipping_total: BigNumberValue
+  original_shipping_subtotal: BigNumberValue
 }
 
 export interface FilterableCartProps

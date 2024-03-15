@@ -64,10 +64,12 @@ export default class LineItemAdjustment extends AdjustmentLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "caliadj")
+    this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "caliadj")
+    this.item_id ??= this.item?.id
   }
 }

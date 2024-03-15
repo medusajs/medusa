@@ -60,10 +60,12 @@ export default class ShippingMethodAdjustment extends AdjustmentLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "casmadj")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "casmadj")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 }

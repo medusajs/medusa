@@ -1,4 +1,5 @@
-import { TaxLineDTO } from "@medusajs/types"
+import { AdjustmentLineDTO, TaxLineDTO } from "@medusajs/types"
+import { calculateAdjustmentTotal } from "../adjustment"
 import { BigNumber } from "../big-number"
 import { MathBN } from "../math"
 import { calculateTaxTotal } from "../tax"
@@ -12,6 +13,7 @@ export interface GetShippingMethodTotalInput {
   amount: BigNumber
   is_tax_inclusive?: boolean
   tax_lines?: TaxLineDTO[]
+  adjustments?: AdjustmentLineDTO[]
 }
 
 export interface GetShippingMethodTotalOutput {
@@ -19,6 +21,7 @@ export interface GetShippingMethodTotalOutput {
 
   subtotal: BigNumber
   total: BigNumber
+  discount_total: BigNumber
   original_total: BigNumber
   tax_total: BigNumber
   original_tax_total: BigNumber
@@ -50,12 +53,17 @@ export function getShippingMethodTotals(
 ) {
   const amount = MathBN.convert(shippingMethod.amount)
 
+  const discountTotal = calculateAdjustmentTotal({
+    adjustments: shippingMethod.adjustments || [],
+  })
+
   const taxTotal = MathBN.convert(0)
   const originalTaxTotal = MathBN.convert(0)
 
   const totals: GetShippingMethodTotalOutput = {
     amount: new BigNumber(amount),
     total: new BigNumber(amount),
+    discount_total: new BigNumber(discountTotal),
     original_total: new BigNumber(amount),
     subtotal: new BigNumber(amount),
     tax_total: new BigNumber(taxTotal),
@@ -63,7 +71,7 @@ export function getShippingMethodTotals(
   }
 
   const taxLines = shippingMethod.tax_lines || []
-  const taxableAmount = amount // TODO: Substract discount amount
+  const taxableAmount = MathBN.sub(amount, discountTotal)
 
   const newTaxTotal = calculateTaxTotal({
     taxLines,
@@ -78,11 +86,14 @@ export function getShippingMethodTotals(
   const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = MathBN.add(shippingMethod.amount, taxTotal)
+    const subtotal = MathBN.add(shippingMethod.amount, newTaxTotal)
     totals.subtotal = new BigNumber(subtotal)
   } else {
-    const originalTotal = MathBN.add(shippingMethod.amount, originalTaxTotal)
-    const total = MathBN.add(shippingMethod.amount, taxTotal)
+    const originalTotal = MathBN.add(
+      shippingMethod.amount,
+      totals.original_tax_total
+    )
+    const total = MathBN.add(shippingMethod.amount, totals.tax_total)
     totals.original_total = new BigNumber(originalTotal)
     totals.total = new BigNumber(total)
   }

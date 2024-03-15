@@ -2,6 +2,7 @@ import {
   CartDTO,
   CartLineItemDTO,
   CartShippingMethodDTO,
+  RegionDTO,
 } from "@medusajs/types"
 import { BigNumber } from "../big-number"
 import { GetItemTotalInput, getLineItemsTotals } from "../line-item"
@@ -19,6 +20,7 @@ interface TotalsConfig {
 export interface DecorateCartTotalsInputDTO {
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
+  region?: RegionDTO
 }
 
 export function decorateCartTotals(
@@ -27,42 +29,44 @@ export function decorateCartTotals(
 ): CartDTO {
   transformPropertiesToBigNumber(cartLike)
 
-  const includeTax = config?.includeTaxes
-
-  const cartItems = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
-  const cartShippingMethods = (cartLike.shipping_methods ??
+  const items = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
+  const shippingMethods = (cartLike.shipping_methods ??
     []) as unknown as GetShippingMethodTotalInput[]
 
-  const itemsTotals = getLineItemsTotals(cartItems, {
+  const includeTax = config?.includeTaxes || cartLike.region?.automatic_taxes
+
+  const itemsTotals = getLineItemsTotals(items, {
     includeTax,
   })
 
-  const shippingMethodsTotals = getShippingMethodsTotals(cartShippingMethods, {
+  const shippingMethodsTotals = getShippingMethodsTotals(shippingMethods, {
     includeTax,
   })
 
   let subtotal = MathBN.convert(0)
   let discountTotal = MathBN.convert(0)
+  let itemsTotal = MathBN.convert(0)
   let itemsTaxTotal = MathBN.convert(0)
   let shippingTotal = MathBN.convert(0)
   let shippingTaxTotal = MathBN.convert(0)
 
-  // @ts-ignore
-  cartLike.items = cartItems.map((item) => {
+  const cartItems = items.map((item) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id] ?? {})
 
+    const itemTotal = MathBN.convert(itemTotals.total)
     const itemSubtotal = MathBN.convert(itemTotals.subtotal)
     const itemDiscountTotal = MathBN.convert(itemTotals.discount_total)
     const itemTaxTotal = MathBN.convert(itemTotals.tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
     discountTotal = MathBN.add(discountTotal, itemDiscountTotal)
+    itemsTotal = MathBN.add(itemsTotal, itemTotal)
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
 
     return itemTotals
   })
 
-  cartLike.shipping_methods = cartShippingMethods.map((shippingMethod) => {
+  const cartShippingMethods = shippingMethods.map((shippingMethod) => {
     const methodTotals = Object.assign(
       shippingMethod,
       shippingMethodsTotals[shippingMethod.id] ?? {}
@@ -70,8 +74,10 @@ export function decorateCartTotals(
 
     const total = MathBN.convert(methodTotals.total)
     const methodTaxTotal = MathBN.convert(methodTotals.tax_total)
+    const methodDiscountTotal = MathBN.convert(methodTotals.discount_total)
 
     shippingTotal = MathBN.add(shippingTotal, total)
+    discountTotal = MathBN.add(discountTotal, methodDiscountTotal)
     shippingTaxTotal = MathBN.add(shippingTaxTotal, methodTaxTotal)
 
     return methodTotals
@@ -79,22 +85,26 @@ export function decorateCartTotals(
 
   const taxTotal = MathBN.add(itemsTaxTotal, shippingTaxTotal)
 
-  // TODO: Discount + Gift Card calculations
+  // TODO: Gift Card calculations
 
-  // TODO: subtract (cart.gift_card_total + cart.discount_total + cart.gift_card_tax_total)
-  const total = MathBN.add(subtotal, shippingTotal, taxTotal)
+  const tempTotal = MathBN.add(subtotal, shippingTotal, taxTotal)
+  // TODO: subtract (cart.gift_card_total + cart.gift_card_tax_total)
+  const total = MathBN.sub(tempTotal, discountTotal)
 
-  const cart = { ...cartLike } as CartDTO
+  const cart = { ...cartLike } as unknown as CartDTO
 
-  cart.total = new BigNumber(total).numeric
-  cart.subtotal = new BigNumber(subtotal).numeric
-  cart.discount_total = new BigNumber(discountTotal).numeric
-  cart.item_tax_total = new BigNumber(itemsTaxTotal).numeric
-  cart.shipping_total = new BigNumber(shippingTotal).numeric
-  cart.shipping_tax_total = new BigNumber(shippingTaxTotal).numeric
-  cart.tax_total = new BigNumber(taxTotal).numeric
+  cart.items = cartItems
+  cart.shipping_methods = cartShippingMethods
 
-  // cart.discount_total = Math.round(cart.discount_total)
+  cart.total = new BigNumber(total) as unknown as number
+  cart.subtotal = new BigNumber(subtotal) as unknown as number
+  cart.discount_total = new BigNumber(discountTotal) as unknown as number
+  cart.item_total = new BigNumber(itemsTotal) as unknown as number
+  cart.item_tax_total = new BigNumber(itemsTaxTotal) as unknown as number
+  cart.shipping_total = new BigNumber(shippingTotal) as unknown as number
+  cart.shipping_tax_total = new BigNumber(shippingTaxTotal) as unknown as number
+  cart.tax_total = new BigNumber(taxTotal) as unknown as number
+
   // cart.gift_card_total = giftCardTotal.total || 0
   // cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 

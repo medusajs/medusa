@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
+import { pickDeep } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../../../utils"
@@ -2333,8 +2334,8 @@ describe("Cart Module Service", () => {
     })
   })
 
-  describe("retrieve", () => {
-    it("should decorate cart with totals if fields are requested", async () => {
+  describe("retrieve with totals decoration", () => {
+    const testSetup = async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -2350,6 +2351,12 @@ describe("Cart Module Service", () => {
             {
               rate: 0.2,
               code: "TX",
+            },
+          ],
+          adjustments: [
+            {
+              amount: 40,
+              code: "20%",
             },
           ],
         },
@@ -2376,23 +2383,96 @@ describe("Cart Module Service", () => {
               code: "TX",
             },
           ],
+          adjustments: [
+            {
+              amount: 20,
+              code: "20%",
+            },
+          ],
         },
       ])
 
-      const cart = await service.retrieve(createdCart.id, {
-        select: ["total"],
-      })
+      return createdCart
+    }
 
-      expect(cart).toEqual(
+    const expectedRes = {
+      total: 784, // 600 (subtotal) + 116 (shipping) + 112 (item tax) + 16 (shipping tax) - 60 (discount)
+      subtotal: 600,
+      item_total: 672,
+      shipping_total: 116,
+      discount_total: 60,
+      tax_total: 128,
+      item_tax_total: 112,
+      shipping_tax_total: 16,
+      items: [
         expect.objectContaining({
-          total: 840,
-          subtotal: 600,
-          shipping_total: 100,
-          tax_total: 140,
-          item_tax_total: 120,
-          shipping_tax_total: 20,
+          unit_price: 100,
+          subtotal: 200,
+          total: 192, // (subtotal + tax - discount)
+          discount_total: 40,
+          tax_total: 32, // 20% of 160 (subtotal - discount)
+        }),
+        expect.objectContaining({
+          unit_price: 200,
+          subtotal: 400,
+          total: 480,
+          discount_total: 0,
+          tax_total: 80,
+        }),
+      ],
+      shipping_methods: [
+        expect.objectContaining({
+          amount: 100,
+          subtotal: 100,
+          total: 116, // (subtotal + tax - discount)
+          discount_total: 20,
+          tax_total: 16, // 20% of 80 (subtotal - discount)
+        }),
+      ],
+    }
+
+    test.each([
+      ["total", expectedRes],
+      ["subtotal", expectedRes],
+      ["shipping_total", expectedRes],
+      ["discount_total", expectedRes],
+      ["tax_total", expectedRes],
+    ])(
+      `should calculate totals when field %p is requested`,
+      async (field, expectedRes) => {
+        const createdCart = await testSetup()
+
+        let cart = await service.retrieve(createdCart.id, {
+          select: [field],
         })
-      )
-    })
+
+        const totals = pickDeep(cart, [
+          "total",
+          "subtotal",
+          "shipping_total",
+          "tax_total",
+          "discount_total",
+          "item_total",
+          "item_tax_total",
+          "shipping_tax_total",
+
+          "items.unit_price",
+          "items.subtotal",
+          "items.total",
+          "items.discount_total",
+          "items.tax_total",
+
+          "shipping_methods.amount",
+          "shipping_methods.subtotal",
+          "shipping_methods.total",
+          "shipping_methods.discount_total",
+          "shipping_methods.tax_total",
+        ])
+
+        expect(JSON.parse(JSON.stringify(totals))).toEqual(
+          expect.objectContaining(expectedRes)
+        )
+      }
+    )
   })
 })

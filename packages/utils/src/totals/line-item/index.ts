@@ -1,4 +1,5 @@
-import { TaxLineDTO } from "@medusajs/types"
+import { AdjustmentLineDTO, TaxLineDTO } from "@medusajs/types"
+import { calculateAdjustmentTotal } from "../adjustment"
 import { BigNumber } from "../big-number"
 import { MathBN } from "../math"
 import { calculateTaxTotal } from "../tax"
@@ -13,6 +14,7 @@ export interface GetItemTotalInput {
   quantity: number
   is_tax_inclusive?: boolean
   tax_lines?: TaxLineDTO[]
+  adjustments?: AdjustmentLineDTO[]
 }
 
 export interface GetItemTotalOutput {
@@ -30,8 +32,8 @@ export interface GetItemTotalOutput {
 export function getLineItemsTotals(
   items: GetItemTotalInput[],
   context: GetLineItemsTotalsContext
-): { [itemId: string]: GetItemTotalOutput } {
-  const itemsTotals: { [itemId: string]: GetItemTotalOutput } = {}
+) {
+  const itemsTotals = {}
 
   for (const item of items) {
     itemsTotals[item.id] = getLineItemTotals(item, {
@@ -48,8 +50,9 @@ function getLineItemTotals(
 ) {
   const subtotal = MathBN.mult(item.unit_price, item.quantity)
 
-  // TODO: Account for discount
-  const discountTotal = MathBN.convert(0)
+  const discountTotal = calculateAdjustmentTotal({
+    adjustments: item.adjustments || [],
+  })
 
   const taxTotal = MathBN.convert(0)
   const originalTaxTotal = MathBN.convert(0)
@@ -68,11 +71,10 @@ function getLineItemTotals(
     original_tax_total: new BigNumber(originalTaxTotal),
   }
 
-  const taxLines = item.tax_lines || []
-  const taxableAmount = subtotal // TODO: Substract discount amount
+  const taxableAmount = MathBN.sub(subtotal, discountTotal)
 
   const newTaxTotal = calculateTaxTotal({
-    taxLines,
+    taxLines: item.tax_lines || [],
     includesTax: context.includeTax,
     taxableAmount,
   })
@@ -94,8 +96,8 @@ function getLineItemTotals(
     totals.total = subtotalBn
     totals.original_total = subtotalBn
   } else {
-    const newTotal = MathBN.add(total, taxTotal)
-    const originalTotal = MathBN.add(subtotal, originalTaxTotal)
+    const newTotal = MathBN.add(total, totals.tax_total)
+    const originalTotal = MathBN.add(subtotal, totals.original_tax_total)
     totals.total = new BigNumber(newTotal)
     totals.original_total = new BigNumber(originalTotal)
   }
