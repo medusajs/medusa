@@ -738,7 +738,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("GET /store/carts", () => {
-        it.only("should get cart", async () => {
+        it("should get cart", async () => {
           const region = await regionModule.create({
             name: "US",
             currency_code: "usd",

@@ -1613,7 +1613,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it.only("lists orders with specific fields and relations", async () => {
+    it("lists orders with specific fields and relations", async () => {
       const api = useApi()
 
       const response = await api.get(
