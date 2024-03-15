@@ -1,10 +1,10 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -240,7 +240,7 @@ moduleIntegrationTestRunner({
           ])
 
           await service.setPriceListRules({
-            priceListId: "price-list-1",
+            price_list_id: "price-list-1",
             rules: {
               sales_channel: "sc-1",
             },
@@ -280,7 +280,7 @@ moduleIntegrationTestRunner({
           ])
 
           await service.setPriceListRules({
-            priceListId: "price-list-1",
+            price_list_id: "price-list-1",
             rules: {
               sales_channel: ["sc-1", "sc-2"],
             },
@@ -315,7 +315,7 @@ moduleIntegrationTestRunner({
       describe("removePriceListRules", () => {
         it("should remove a priceListRule from a priceList", async () => {
           await service.removePriceListRules({
-            priceListId: "price-list-1",
+            price_list_id: "price-list-1",
             rules: ["currency_code"],
           })
 
