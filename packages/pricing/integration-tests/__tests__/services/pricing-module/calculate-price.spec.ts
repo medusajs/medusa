@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
@@ -5,9 +6,8 @@ import {
   PricingTypes,
 } from "@medusajs/types"
 import { PriceListType } from "@medusajs/utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -16,7 +16,7 @@ const defaultRules = {
   region_id: ["DE", "DK"],
 }
 
-const defaultPriceListPrices: PricingTypes.PriceListPriceDTO[] = [
+const defaultPriceListPrices: PricingTypes.CreatePriceListPriceDTO[] = [
   {
     amount: 232,
     currency_code: "PLN",

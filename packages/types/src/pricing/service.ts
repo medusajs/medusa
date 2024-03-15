@@ -33,6 +33,7 @@ import {
   SetPriceListRulesDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceListDTO,
+  UpdatePriceListPricesDTO,
   UpdatePriceListRuleDTO,
   UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
@@ -3397,6 +3398,11 @@ export interface IPricingModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PriceListDTO[]>
 
+  updatePriceListPrices(
+    data: UpdatePriceListPricesDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
   /**
    * This method is used to set the rules of a price list.
    *
@@ -3454,4 +3460,6 @@ export interface IPricingModuleService extends IModuleService {
     data: RemovePriceListRulesDTO,
     sharedContext?: Context
   ): Promise<PriceListDTO>
+
+  removePrices(ids: string[], sharedContext?: Context): Promise<void>
 }

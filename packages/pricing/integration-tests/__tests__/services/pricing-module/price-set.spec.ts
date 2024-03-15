@@ -5,10 +5,10 @@ import {
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceSetRuleType } from "../../../../src"
-import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { PriceSetRuleType } from "../../../../src"
+import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
 
