@@ -5,7 +5,9 @@ import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminPostPromotionsPromotionReq,
-  AdminPostPromotionsPromotionRulesReq,
+  AdminPostPromotionsPromotionRulesBatchAddReq,
+  AdminPostPromotionsPromotionRulesBatchRemoveReq,
+  AdminPostPromotionsPromotionRulesBatchUpdateReq,
   AdminPostPromotionsReq,
 } from "./validators"
 
@@ -49,17 +51,45 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/rules",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+    matcher: "/admin/promotions/:id/rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/target-rules",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+    matcher: "/admin/promotions/:id/target-rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/buy-rules",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesReq)],
+    matcher: "/admin/promotions/:id/buy-rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/update",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchUpdateReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/target-rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/buy-rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
   },
 ]

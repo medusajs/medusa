@@ -2,27 +2,42 @@ import {
   deletePromotionsWorkflow,
   updatePromotionsWorkflow,
 } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
-import { AdminPostPromotionsPromotionReq } from "../validators"
+import {
+  AdminGetPromotionsParams,
+  AdminPostPromotionsPromotionReq,
+} from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetPromotionsParams>,
   res: MedusaResponse
 ) => {
+  const idOrCode = req.params.id
   const promotionModuleService: IPromotionModuleService = req.scope.resolve(
     ModuleRegistrationName.PROMOTION
   )
 
-  const promotion = await promotionModuleService.retrieve(req.params.id, {
-    select: req.retrieveConfig.select,
-    relations: req.retrieveConfig.relations,
-  })
+  const [promotion] = await promotionModuleService.list(
+    { $or: [{ id: idOrCode }, { code: idOrCode }] },
+    {
+      select: req.retrieveConfig.select,
+      relations: req.retrieveConfig.relations,
+      take: 1,
+    }
+  )
+
+  if (!promotion) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Promotion with id or code: does-not-exist was not found`
+    )
+  }
 
   res.status(200).json({ promotion })
 }

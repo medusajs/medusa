@@ -457,6 +457,7 @@
         "adminOnly": "Admin only",
         "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
       },
+      "taxInclusiveHint": "When enabled, the shipping option's price will be tax inclusive.",
       "requirements": {
         "label": "Requirements",
         "hint": "Specify the requirements for the shipping option."
