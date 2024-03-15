@@ -1,26 +1,41 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
   ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ProductOption, ProductVariant } from "./index"
+import { ProductOption, ProductVariant, ProductVariantOption } from "./index"
 
 type OptionalFields =
   | "allow_backorder"
   | "manage_inventory"
   | "option_id"
-  | "variant_id"
   | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "product" | "option" | "variant"
 
+const optionValueOptionIdIndexName = "IDX_option_value_option_id_unique"
+const optionValueOptionIdIndexStatement = createPsqlIndexStatementHelper({
+  name: optionValueOptionIdIndexName,
+  tableName: "product_option_value",
+  columns: ["option_id", "value"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+optionValueOptionIdIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option_value" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
@@ -41,15 +56,8 @@ class ProductOptionValue {
   })
   option: ProductOption
 
-  @Property({ columnType: "text", nullable: true })
-  variant_id!: string
-
-  @ManyToOne(() => ProductVariant, {
-    onDelete: "cascade",
-    index: "IDX_product_option_value_variant_id",
-    fieldName: "variant_id",
-  })
-  variant: ProductVariant
+  @OneToMany(() => ProductVariantOption, (value) => value.option_value, {})
+  variant_options = new Collection<ProductVariantOption>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
