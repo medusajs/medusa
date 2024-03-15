@@ -3,12 +3,13 @@ import { Select, Text, clx } from "@medusajs/ui"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { debounce } from "lodash"
-import { useAdminCustomer, useMedusa } from "medusa-react"
+import { useAdminCustomer } from "medusa-react"
 import { PropsWithChildren, useCallback, useEffect, useState } from "react"
 import { Control, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { z } from "zod"
+import { medusa } from "../../../lib/medusa"
 import { getStylizedAmount } from "../../../lib/money-amount-helpers"
 import {
   getOrderFulfillmentStatus,
@@ -63,7 +64,6 @@ export const TransferOwnerShipForm = ({
     return () => debouncedUpdate.cancel()
   }, [query, debouncedUpdate])
 
-  const { client } = useMedusa()
   const {
     customer: owner,
     isLoading: isLoadingOwner,
@@ -74,7 +74,7 @@ export const TransferOwnerShipForm = ({
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ["customers", debouncedQuery],
     async ({ pageParam = 0 }) => {
-      const res = await client.admin.customers.list({
+      const res = await medusa.admin.customers.list({
         q: debouncedQuery,
         limit: 10,
         offset: pageParam,
