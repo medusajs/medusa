@@ -1,23 +1,25 @@
-import { useEffect, useMemo } from "react"
 import {
   Checkbox,
+  CurrencyInput,
   DatePicker,
   Heading,
   Input,
+  RadioGroup,
   Select,
   Switch,
   Text,
   Textarea,
-  RadioGroup,
-  CurrencyInput,
 } from "@medusajs/ui"
-import { Trans, useTranslation } from "react-i18next"
 import { useAdminRegions } from "medusa-react"
+import { useEffect, useMemo } from "react"
+import { Trans, useTranslation } from "react-i18next"
 
-import { Form } from "../../../../../components/common/form"
-import { CreateDiscountFormReturn } from "./create-discount-form"
+import { useWatch } from "react-hook-form"
 import { Combobox } from "../../../../../components/common/combobox"
+import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { CreateDiscountFormReturn } from "./create-discount-form"
 import { DiscountRuleType } from "./types"
 
 type CreateDiscountPropsProps = {
@@ -29,8 +31,14 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
 
   const { regions } = useAdminRegions()
 
-  const watchType = form.watch("type")
-  const watchRegion = form.watch("regions")
+  const watchType = useWatch({
+    control: form.control,
+    name: "type",
+  })
+  const watchRegion = useWatch({
+    name: "regions",
+    control: form.control,
+  })
 
   const isFixedDiscount = watchType === DiscountRuleType.FIXED
   const isFreeShipping = watchType === DiscountRuleType.FREE_SHIPPING
@@ -43,10 +51,12 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
     return regions.find((r) => r.id === watchRegion[0])
   }, [regions, watchRegion])
 
+  const { setValue } = form
+
   useEffect(() => {
-    form.setValue("regions", [])
-    form.setValue("value", undefined)
-  }, [watchType])
+    setValue("regions", [])
+    setValue("value", undefined)
+  }, [watchType, setValue])
 
   return (
     <div className="flex size-full flex-col items-center overflow-auto p-16">
@@ -197,9 +207,8 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                               <Input key="placeholder" disabled />
                             )
                           ) : (
-                            <Input
+                            <PercentageInput
                               key="amount"
-                              type="number"
                               min={0}
                               max={100}
                               {...field}
@@ -268,7 +277,7 @@ export const CreateDiscountDetails = ({ form }: CreateDiscountPropsProps) => {
                         {t("discounts.isTemplateDiscount")}
                       </Form.Label>
                     </div>
-                    {/*<Form.ErrorMessage />*/}
+                    {/* <Form.ErrorMessage />*/}
                   </Form.Item>
                 )
               }}

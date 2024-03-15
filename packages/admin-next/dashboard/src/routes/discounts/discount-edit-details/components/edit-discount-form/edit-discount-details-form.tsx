@@ -15,6 +15,7 @@ import * as zod from "zod"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
 import {
   RouteDrawer,
   useRouteModal,
@@ -186,9 +187,8 @@ export const EditDiscountDetailsForm = ({
                             {...field}
                           />
                         ) : (
-                          <Input
+                          <PercentageInput
                             onChange={onChange}
-                            type="number"
                             min={0}
                             max={100}
                             {...field}
