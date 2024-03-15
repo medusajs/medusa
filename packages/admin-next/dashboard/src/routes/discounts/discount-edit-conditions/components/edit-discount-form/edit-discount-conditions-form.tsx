@@ -42,6 +42,8 @@ type EditDiscountFormProps = {
   discount: Discount
 }
 
+const N = 2
+
 const getDefault = (conditionType: ConditionEntities, labelProp: string) => {
   return (conditions: DiscountCondition[]) => {
     const condition = conditions.find(
@@ -532,7 +534,7 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
             {isInOperator && labels.length ? (
               <ListSummary
                 inline
-                n={1}
+                n={N}
                 className="max-w-[200px]"
                 list={labels}
               />
@@ -554,7 +556,7 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
           })}
         </Text>
 
-        <div className="text-ui-fg-subtle max-w-[240px] shrink-0 overflow-hidden">
+        <div className="text-ui-fg-subtle shrink-0 overflow-hidden">
           <Button
             type="button"
             variant="transparent"
@@ -566,7 +568,7 @@ function Condition({ labels, isInOperator, type, onClick }: ConditionProps) {
             {!isInOperator && labels.length ? (
               <ListSummary
                 inline
-                n={1}
+                n={N}
                 className="txt-compact-small-plus max-w-[200px]"
                 list={labels}
               />

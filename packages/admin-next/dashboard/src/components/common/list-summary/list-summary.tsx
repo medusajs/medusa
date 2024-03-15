@@ -34,37 +34,42 @@ export const ListSummary = ({
 
   return (
     <div
-      className={
-        (clx("text-ui-fg-subtle txt-compact-small", {
+      className={clx(
+        "text-ui-fg-subtle gap-x-1 overflow-hidden",
+        {
           "inline-flex": inline,
           flex: !inline,
-        }),
-        className)
-      }
+        },
+        className
+      )}
     >
-      <span className="truncate">{list.slice(0, n).join(", ")}</span>
+      <div className="flex-1 truncate">
+        <Text as="span" leading="compact" size="small" className="truncate">
+          {list.slice(0, n).join(", ")}
+        </Text>
+      </div>
       {list.length > n && (
-        <Tooltip
-          content={
-            <ul>
-              {list.slice(n).map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          }
-        >
-          <Text
-            as="span"
-            size="small"
-            weight="plus"
-            leading="compact"
-            className="cursor-default whitespace-nowrap"
-            title={title}
+        <div className="whitespace-nowrap">
+          <Tooltip
+            content={
+              <ul>
+                {list.slice(n).map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+            }
           >
-            {" "}
-            {title}
-          </Text>
-        </Tooltip>
+            <Text
+              as="span"
+              size="small"
+              weight="plus"
+              leading="compact"
+              className="cursor-default whitespace-nowrap"
+            >
+              {title}
+            </Text>
+          </Tooltip>
+        </div>
       )}
     </div>
   )
