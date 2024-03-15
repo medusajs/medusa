@@ -59,8 +59,6 @@ export default function CodeBlockString({
   })
   const showLineNumbers = showLineNumbersProp ?? containsLineNumbers(metastring)
 
-  console.log("here1")
-
   return (
     <Container
       as="div"
