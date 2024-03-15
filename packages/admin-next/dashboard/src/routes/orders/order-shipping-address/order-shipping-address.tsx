@@ -11,7 +11,7 @@ export const OrderShippingAddress = () => {
 
   const { order, isLoading, isError, error } = useAdminOrder(id!)
 
-  const regionId = order?.cart?.region_id
+  const regionId = order?.region_id
 
   const {
     region,
