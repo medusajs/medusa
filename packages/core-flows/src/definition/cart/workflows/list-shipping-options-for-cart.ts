@@ -32,16 +32,11 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
 
         return {
           context: {
-            service_zone: {
-              fulfillment_set: {
-                id: { $in: fulfillmentSetIds },
-              },
-              geo_zones: {
-                // TODO or [country, country + province, country + provence + city, country + province + city + postal_code]
-                city: data.input.shipping_address?.city,
-                country_code: data.input.shipping_address?.country_code,
-                province_code: data.input.shipping_address?.province,
-              },
+            fulfillment_set_id: fulfillmentSetIds,
+            address: {
+              city: data.input.shipping_address?.city,
+              country_code: data.input.shipping_address?.country_code,
+              province_code: data.input.shipping_address?.province,
             },
           },
           config: {

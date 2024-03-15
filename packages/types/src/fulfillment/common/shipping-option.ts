@@ -53,6 +53,11 @@ export interface FilterableShippingOptionForContextProps
   extends FilterableShippingOptionProps {
   fulfillment_set_id?: string | string[] | OperatorMap<string | string[]>
   fulfillment_set_type?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * The address is a shortcut to filter through geo_zones
+   * and build opinionated validation and filtering around the geo_zones.
+   * For custom filtering you can go through the service_zone.geo_zones directly.
+   */
   address?: {
     country_code?: string
     province_code?: string
