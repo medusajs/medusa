@@ -11,13 +11,12 @@ import {
   extendedFindParamsMixin,
 } from "../../../../types/common"
 
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Request } from "express"
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
-import { IsType, listProducts } from "../../../../utils"
+import { IsType } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -228,10 +227,6 @@ import { IsType, listProducts } from "../../../../utils"
 export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  let products
-  let count
-
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
@@ -240,19 +235,11 @@ export default async (req: Request, res) => {
     price_list_id: [id],
   }
 
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    ;[products, count] = await listProducts(
-      req.scope,
-      filterableFields,
-      req.listConfig
-    )
-  } else {
-    ;[products, count] = await priceListService.listProducts(
-      id,
-      filterableFields,
-      req.listConfig
-    )
-  }
+  const [products, count] = await priceListService.listProducts(
+    id,
+    filterableFields,
+    req.listConfig
+  )
 
   res.json({
     products,
