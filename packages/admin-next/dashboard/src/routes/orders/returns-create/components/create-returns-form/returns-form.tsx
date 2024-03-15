@@ -24,6 +24,7 @@ import { Form } from "../../../../../components/common/form"
 import { medusa } from "../../../../../lib/medusa"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { getCurrencySymbol } from "../../../../../lib/currencies.ts"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
 
 type ReturnsFormProps = {
   form: UseFormReturn<any>
@@ -102,9 +103,17 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
     return !allItemsHaveLocation
   }, [items, inventoryMap, selectedLocation])
 
-  const shippingPrice = 0
-
   const { quantity } = useWatch()
+
+  const shippingPrice = useMemo(() => {
+    // TODO: do we return custom shipping price here if set
+
+    const method = shipping_options?.find(
+      (o) => form.watch("shipping") === o.id
+    )
+
+    return method?.price_incl_tax || 0
+  }, [form.watch("shipping")])
 
   const refundable = useMemo(() => {
     const itemTotal = items.reduce((acc: number, curr: LineItem): number => {
@@ -147,7 +156,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
               {t("fields.location")}
             </Text>
             <Text className="text-ui-fg-subtle txt-small mb-1">
-              {t("order.refunds.locationDescription")}
+              {t("orders.returns.locationDescription")}
             </Text>
             <Form.Field
               control={form.control}
@@ -180,7 +189,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
               {t("fields.shipping")}
             </Text>
             <Text className="text-ui-fg-subtle txt-small mb-1">
-              {t("order.refunds.shippingDescription")}
+              {t("orders.returns.shippingDescription")}
             </Text>
             <Form.Field
               control={form.control}
@@ -195,7 +204,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
                         </Select.Trigger>
                         <Select.Content>
                           {shipping_options.map((o) => (
-                            <Select.Item key={o.id} value={o.name}>
+                            <Select.Item key={o.id} value={o.id}>
                               {o.name}
                             </Select.Item>
                           ))}
@@ -222,7 +231,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
 
         <div className="text-ui-fg-base my-10 flex w-full justify-between border-b border-t border-dashed py-8">
           <Text weight="plus" className="txt-small flex-1">
-            {t("fields.refundedAmount")}
+            {t("orders.returns.refundAmount")}
           </Text>
           <div className="txt-small block flex-1">
             <MoneyAmountCell
@@ -294,7 +303,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
             <div className="w-[50%] pr-2">
               <Form.Field
                 control={form.control}
-                name="refund"
+                name="custom_refund"
                 render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>

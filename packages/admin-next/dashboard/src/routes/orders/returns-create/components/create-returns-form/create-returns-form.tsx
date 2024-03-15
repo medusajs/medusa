@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form"
 import { Order } from "@medusajs/medusa"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import * as zod from "zod"
 
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import { ItemsTable } from "../items-table"
-import { ReturnsForm } from "./returns-form.tsx"
+import { ReturnsForm } from "./returns-form"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -22,6 +23,19 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
+const CreateReturnSchema = zod.object({
+  quantity: zod.record<string, number>(zod.string(), zod.number()),
+  location: zod.string(),
+  shipping: zod.string(),
+  send_notification: zod.boolean().optional(),
+
+  enable_custom_refund: zod.boolean().optional(),
+  enable_custom_shipping_price: zod.boolean().optional(),
+
+  custom_refund: zod.number().optional(),
+  custom_shipping_price: zod.number().optional(),
+})
+
 export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
 
@@ -33,7 +47,7 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
 
   const selected = order.items.filter((i) => selectedItems.includes(i.id))
 
-  const form = useForm({
+  const form = useForm<typeof CreateReturnSchema>({
     defaultValues: {
       quantity: {},
     },
