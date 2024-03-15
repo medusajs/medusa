@@ -15,10 +15,10 @@ import {
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
   partitionArray,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
@@ -100,7 +100,7 @@ export default class InventoryModuleService<
       { location_id: string; inventory_item_id: string }[]
     ]
 
-    const inventoryLevels = await this.inventoryLevelService_.list(
+    const inventoryLevels = await this.listInventoryLevels(
       {
         $or: [
           { id: idData.filter(({ id }) => !!id).map((e) => e.id) },
