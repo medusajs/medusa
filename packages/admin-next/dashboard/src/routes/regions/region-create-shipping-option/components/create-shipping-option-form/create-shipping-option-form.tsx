@@ -325,7 +325,9 @@ export const CreateShippingOptionForm = ({
                             />
                           </Form.Control>
                         </div>
-                        <Form.Hint>{t("regions.taxInclusiveHint")}</Form.Hint>
+                        <Form.Hint>
+                          {t("regions.shippingOption.taxInclusiveHint")}
+                        </Form.Hint>
                         <Form.ErrorMessage />
                       </div>
                     </Form.Item>
