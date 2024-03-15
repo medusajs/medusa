@@ -54,7 +54,7 @@ export const GET = async (
     entryPoint: "product",
     variables: {
       filters: filterableFields,
-      ...req.remoteQueryConfig.variables,
+      ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,
   })

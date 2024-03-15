@@ -27,7 +27,14 @@ declare global {
       /**
        * An object containing fields and variables to be used with the remoteQuery
        */
-      remoteQueryConfig: { fields: string[]; variables: Record<string, any> }
+      remoteQueryConfig: {
+        fields: string[]
+        pagination: {
+          order?: Record<string, string>
+          skip?: number
+          take?: number
+        }
+      }
       /**
        * An object containing the fields that are filterable e.g `{ id: Any<String> }`
        */

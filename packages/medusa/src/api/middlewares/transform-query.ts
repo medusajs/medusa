@@ -51,12 +51,14 @@ export function transformQuery<
        * The validation occurred above and the fields are already validated and should be used to filter the response.
        */
       const queryConfigRes = req.retrieveConfig ?? req.listConfig
+      const includesRelations = Object.keys(req.includes ?? {})
       req.allowedProperties = Array.from(
         new Set(
           [
             ...(queryConfigRes.select ?? []),
-            ...(queryConfigRes.relations ?? []),
-            ...Object.keys(req.includes ?? {}),
+            ...(includesRelations.length
+              ? includesRelations // For backward compatibility, the includes takes precedence over the relations for the returnable fields
+              : queryConfigRes.relations ?? []),
           ].filter(Boolean)
         )
       )

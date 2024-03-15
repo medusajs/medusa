@@ -33,6 +33,7 @@ export function prepareListQuery<
     allowedFields = [],
     allowedRelations = [],
     defaultRelations = [],
+    isList,
   } = queryConfig
 
   allowedFields = allowed.length ? allowed : allowedFields
@@ -196,11 +197,13 @@ export function prepareListQuery<
         ...Array.from(allFields),
         ...Array.from(starFields).map((f) => `${f}.*`),
       ],
-      variables: {
-        skip: offset,
-        take: limit ?? defaultLimit,
-        order: orderBy,
-      },
+      pagination: isList
+        ? {
+            skip: offset,
+            take: limit ?? defaultLimit,
+            order: orderBy,
+          }
+        : {},
     },
   }
 }
@@ -221,7 +224,7 @@ export function prepareRetrieveQuery<
     },
     remoteQueryConfig: {
       fields: remoteQueryConfig.fields,
-      variables: {},
+      pagination: {},
     },
   }
 }
