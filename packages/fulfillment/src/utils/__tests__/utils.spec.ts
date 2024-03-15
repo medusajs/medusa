@@ -1,4 +1,5 @@
-import { isContextValid, RuleOperator } from "../utils"
+import { RuleOperator } from "@medusajs/utils"
+import { isContextValid } from "../utils"
 
 describe("isContextValidForRules", () => {
   const context = {

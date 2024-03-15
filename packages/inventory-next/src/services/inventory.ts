@@ -1,29 +1,29 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
+  DAL,
   IInventoryServiceNext,
+  InventoryNext,
   InventoryTypes,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  InventoryNext,
   ReservationItemDTO,
 } from "@medusajs/types"
 import {
+  CommonEvents,
   EmitEvents,
+  InjectManager,
+  InjectTransactionManager,
+  InventoryEvents,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  partitionArray,
 } from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
-import { DAL } from "@medusajs/types"
-import { InjectTransactionManager } from "@medusajs/utils"
-import { InjectManager } from "@medusajs/utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import InventoryLevelService from "./inventory-level"
-import { partitionArray } from "@medusajs/utils"
-import { InventoryEvents } from "@medusajs/utils"
-import { CommonEvents } from "@medusajs/utils"
-import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -100,7 +100,7 @@ export default class InventoryModuleService<
       { location_id: string; inventory_item_id: string }[]
     ]
 
-    const inventoryLevels = await this.inventoryLevelService_.list(
+    const inventoryLevels = await this.listInventoryLevels(
       {
         $or: [
           { id: idData.filter(({ id }) => !!id).map((e) => e.id) },
