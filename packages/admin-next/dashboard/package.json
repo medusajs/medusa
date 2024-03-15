@@ -61,5 +61,8 @@
     "typescript": "5.2.2",
     "vite": "5.0.10"
   },
+  "resolutions": {
+    "@tanstack/react-query": "4.22.0"
+  },
   "packageManager": "yarn@3.2.1"
 }
