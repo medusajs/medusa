@@ -79,7 +79,7 @@ describe("transformQuery", () => {
           "metadata.children.id",
           "metadata.product.id",
         ],
-        variables: {
+        pagination: {
           order: transformedOrder,
           skip: offset,
           take: limit,
