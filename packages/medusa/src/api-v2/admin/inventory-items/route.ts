@@ -19,10 +19,8 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostInventoryItemsReq>,
   res: MedusaResponse
 ) => {
-  const { variant_id, ...inventoryItemInput } = req.validatedBody
-
   const { result } = await createInventoryItemsWorkflow(req.scope).run({
-    input: { items: [{ ...inventoryItemInput, tag: variant_id }] },
+    input: { items: [req.validatedBody] },
   })
 
   const inventory_item = result[0]

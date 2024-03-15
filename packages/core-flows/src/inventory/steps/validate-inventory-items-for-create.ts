@@ -1,6 +1,5 @@
 import {
   ContainerRegistrationKeys,
-  ManyToManyInventoryFeatureFlag,
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -12,19 +11,16 @@ export const validateInventoryItemsForCreateStepId =
   "validate-inventory-items-for-create-step"
 export const validateInventoryItemsForCreate = createStep(
   validateInventoryItemsForCreateStepId,
-  async (input: InventoryNext.TaggedInventoryItem[], { container }) => {
-    const featureFlagRouter = container.resolve(
-      ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-    )
+  async (
+    input: {
+      inventoryItem: InventoryNext.CreateInventoryItemInput
+      tag?: string
+    }[],
+    { container }
+  ) => {
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
-
-    if (
-      featureFlagRouter.isFeatureEnabled(ManyToManyInventoryFeatureFlag.key)
-    ) {
-      return
-    }
 
     const query = remoteQueryObjectFromString({
       entryPoint: "product_variant_inventory_item",

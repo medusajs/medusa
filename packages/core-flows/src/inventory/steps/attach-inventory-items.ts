@@ -1,9 +1,6 @@
-import {
-  ContainerRegistrationKeys,
-  ManyToManyInventoryFeatureFlag,
-} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { InventoryItemDTO } from "@medusajs/types"
 
 export const attachInventoryItemToVariantsStepId =

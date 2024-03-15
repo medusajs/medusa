@@ -371,31 +371,10 @@ medusaIntegrationTestRunner({
 
       describe("Create inventory items", () => {
         it("should create inventory items", async () => {
-          const createResult = await api.post(
-            `/admin/products`,
-            {
-              title: "Test Product",
-              variants: [
-                {
-                  title: "Test Variant w. inventory 2",
-                  sku: "MY_SKU1",
-                  material: "material",
-                  prices: [],
-                },
-              ],
-            },
-            adminHeaders
-          )
-
-          const inventoryItems = await service.list({})
-
-          expect(inventoryItems).toHaveLength(0)
-
           const response = await api.post(
             `/admin/inventory-items`,
             {
               sku: "test-sku",
-              variant_id: createResult.data.product.variants[0].id,
             },
             adminHeaders
           )
@@ -405,56 +384,6 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               sku: "test-sku",
             })
-          )
-        })
-
-        it("should attach inventory items on creation", async () => {
-          const createResult = await api.post(
-            `/admin/products`,
-            {
-              title: "Test Product",
-              variants: [
-                {
-                  title: "Test Variant w. inventory 2",
-                  sku: "MY_SKU1",
-                  material: "material",
-                  prices: [],
-                },
-              ],
-            },
-            adminHeaders
-          )
-
-          const inventoryItems = await service.list({})
-
-          expect(inventoryItems).toHaveLength(0)
-
-          await api.post(
-            `/admin/inventory-items`,
-            {
-              sku: "test-sku",
-              variant_id: createResult.data.product.variants[0].id,
-            },
-            adminHeaders
-          )
-
-          const remoteQuery = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_QUERY
-          )
-
-          const query = remoteQueryObjectFromString({
-            entryPoint: "product_variant_inventory_item",
-            variables: {
-              variant_id: createResult.data.product.variants[0].id,
-            },
-            fields: ["inventory_item_id", "variant_id"],
-          })
-
-          const existingItems = await remoteQuery(query)
-
-          expect(existingItems).toHaveLength(1)
-          expect(existingItems[0].variant_id).toEqual(
-            createResult.data.product.variants[0].id
           )
         })
       })
