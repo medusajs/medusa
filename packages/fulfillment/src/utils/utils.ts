@@ -1,4 +1,9 @@
-import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
+import {
+  isString,
+  MedusaError,
+  pickValueFromObject,
+  RuleOperator,
+} from "@medusajs/utils"
 
 /**
  * The rule engine here is kept inside the module as of now, but it could be moved
@@ -12,17 +17,6 @@ export type Rule = {
   attribute: string
   operator: Lowercase<keyof typeof RuleOperator>
   value: string | string[] | null
-}
-
-export enum RuleOperator {
-  IN = "in",
-  EQ = "eq",
-  NE = "ne",
-  GT = "gt",
-  GTE = "gte",
-  LT = "lt",
-  LTE = "lte",
-  NIN = "nin",
 }
 
 export const availableOperators = Object.values(RuleOperator)
