@@ -51,6 +51,8 @@ const Header = () => {
   )
 }
 
+const CustomItem = () => {}
+
 const Item = ({
   item,
   currencyCode,
@@ -129,9 +131,15 @@ const ItemBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
     throw error
   }
 
+  const variantBasedItems = draftOrder.cart.items.filter(
+    (i) => i.variant_id !== null
+  )
+
+  const customItems = draftOrder.cart.items.filter((i) => i.variant_id === null)
+
   return (
     <div>
-      {draftOrder.cart.items.map((item) => {
+      {variantBasedItems.map((item) => {
         const reservation = reservations
           ? reservations.find((r) => r.line_item_id === item.id)
           : null

@@ -15,12 +15,13 @@ export const AddressPayload = z.object({
 
 export const ExistingItemSchema = z.object({
   product_title: z.string().optional(),
+  thumbnail: z.string().optional(),
   variant_title: z.string().optional(),
   variant_id: z.string().min(1),
   sku: z.string().optional(),
   quantity: z.number().min(1),
   unit_price: z.number().min(0),
-  custom_unit_price: z.number().optional(),
+  custom_unit_price: z.union([z.number(), z.string()]).optional(),
 })
 
 export const CustomItemSchema = z.object({

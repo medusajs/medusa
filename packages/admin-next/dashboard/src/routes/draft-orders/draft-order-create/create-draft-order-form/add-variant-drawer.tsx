@@ -65,10 +65,10 @@ export const AddVariantDrawer = ({
     const newVariants: ExistingItem[] = addedVariants.map((v) => ({
       variant_id: v.id!,
       variant_title: v.title!,
-      unit_price: v.calculated_price_incl_tax!,
-      custom_unit_price: v.calculated_price_incl_tax!,
+      unit_price: v.original_price!,
       sku: v.sku ?? undefined,
       product_title: v.product?.title,
+      thumbnail: v.product?.thumbnail ?? undefined,
       quantity: 1,
     }))
 
@@ -208,10 +208,10 @@ const useVariantTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("calculated_price_incl_tax", {
+      columnHelper.accessor("original_price", {
         header: () => (
           <div className="flex size-full items-center justify-end overflow-hidden text-right">
-            <span className="truncate">{t("fields.price")}</span>
+            <span className="truncate">{t("fields.unitPrice")}</span>
           </div>
         ),
         cell: ({ getValue, table }) => {

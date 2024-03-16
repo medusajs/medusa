@@ -2,8 +2,8 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
-  AdminDraftOrdersRes,
   AdminDiscountsRes,
+  AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
@@ -134,6 +134,13 @@ export const v1Routes: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-create"),
+                  },
+                ],
               },
               {
                 path: ":id",

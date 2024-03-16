@@ -318,10 +318,11 @@
       "noCustomItemsAddedLabel": "No custom items added yet",
       "noExistingItemsAddedLabel": "No existing items added yet",
       "chooseRegionTooltip": "Choose a region first",
-      "findExistingCustomerLabel": "Find existing customer",
+      "useExistingCustomerLabel": "Use existing customer",
       "shippingMethodsLabel": "Shipping methods",
       "shippingMethodsHint": "Choose the shipping methods for the draft order.",
-      "addShippingMethodsAction": "Add shipping methods"
+      "addShippingMethodsAction": "Add shipping methods",
+      "unitPriceOverrideLabel": "Unit price override"
     }
   },
   "discounts": {
@@ -826,7 +827,7 @@
     "label": "Label",
     "rate": "Rate",
     "requiresShipping": "Requires shipping",
-    "unitPrice": "Unit Price",
+    "unitPrice": "Unit price",
     "draft": "Draft"
   },
   "dateTime": {

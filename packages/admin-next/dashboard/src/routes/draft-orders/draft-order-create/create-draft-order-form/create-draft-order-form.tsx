@@ -1,35 +1,47 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Region } from "@medusajs/medusa"
+import { Customer, Region } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
+  CurrencyInput,
   Heading,
   Input,
   Label,
   Select,
   Text,
-  clx,
 } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
+import { useInfiniteQuery } from "@tanstack/react-query"
+import { debounce } from "lodash"
 import {
   useAdminCreateDraftOrder,
-  useAdminCustomers,
+  useAdminCustomer,
   useAdminRegions,
-  useMedusa,
+  useAdminStore,
 } from "medusa-react"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Control, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import { z } from "zod"
 
+import { Trash } from "@medusajs/icons"
+import { ActionMenu } from "../../../../components/common/action-menu"
+import { Combobox } from "../../../../components/common/combobox"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
 import { Form } from "../../../../components/common/form"
+import { Thumbnail } from "../../../../components/common/thumbnail"
 import { SplitView } from "../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../components/route-modal"
+import { medusa } from "../../../../lib/medusa"
+import {
+  getDbAmount,
+  getStylizedAmount,
+} from "../../../../lib/money-amount-helpers"
+import { AddCustomItemDrawer } from "./add-custom-item-drawer"
 import { AddShippingMethodDrawer } from "./add-shipping-method-drawer"
 import { AddVariantDrawer } from "./add-variant-drawer"
 import {
@@ -51,15 +63,17 @@ const CreateDraftOrderSchema = z.object({
   shipping_methods: z.array(ShippingMethodSchema).optional(),
 })
 
-type View = "existing_items" | "shipping_methods"
+type View = "existing_items" | "shipping_methods" | "custom_items"
 
 export const CreateDraftOrderForm = () => {
   const [open, setOpen] = useState(false)
   const [view, setView] = useState<View | null>(null)
   const [sameAsShipping, setSameAsShipping] = useState(true)
+  const [useExistingCustomer, setUseExistingCustomer] = useState(true)
+  const [query, setQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("")
 
   const { t } = useTranslation()
-  const { client } = useMedusa()
   const [, setSearchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
 
@@ -97,6 +111,7 @@ export const CreateDraftOrderForm = () => {
   } = useFieldArray({
     control: form.control,
     name: "custom_items",
+    keyName: "ci_id",
   })
 
   const {
@@ -106,6 +121,7 @@ export const CreateDraftOrderForm = () => {
   } = useFieldArray({
     control: form.control,
     name: "existing_items",
+    keyName: "ei_id",
   })
 
   const {
@@ -115,17 +131,94 @@ export const CreateDraftOrderForm = () => {
   } = useFieldArray({
     control: form.control,
     name: "shipping_methods",
+    keyName: "sh_id",
   })
 
   const { regions, isLoading: isLoadingRegions } = useAdminRegions({
     limit: 1000,
-    fields: "id,name,currency_code",
+    fields: "id,name,currency_code,includes_tax",
   })
 
-  const { customers, isLoading: isLoadingCustomers } = useAdminCustomers()
+  const { store } = useAdminStore()
 
-  const { currency_code, currency } =
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedUpdate = useCallback(
+    debounce((query) => setDebouncedQuery(query), 300),
+    []
+  )
+
+  useEffect(() => {
+    debouncedUpdate(query)
+
+    return () => debouncedUpdate.cancel()
+  }, [query, debouncedUpdate])
+
+  const { customer, isError, error } = useAdminCustomer(watchedCustomerId!, {
+    enabled: !!watchedCustomerId,
+  })
+
+  useEffect(() => {
+    if (customer) {
+      form.setValue("email", customer.email)
+    }
+  }, [customer, form])
+
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ["customers", debouncedQuery],
+    async ({ pageParam = 0 }) => {
+      const res = await medusa.admin.customers.list({
+        q: debouncedQuery,
+        limit: 10,
+        offset: pageParam,
+        has_account: true, // Only show customers with confirmed accounts
+      })
+      return res
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        const moreCustomersExist =
+          lastPage.count > lastPage.offset + lastPage.limit
+        return moreCustomersExist ? lastPage.offset + lastPage.limit : undefined
+      },
+      keepPreviousData: true,
+    }
+  )
+
+  const createLabel = (customer?: Customer) => {
+    if (!customer) {
+      return ""
+    }
+
+    const { first_name, last_name, email } = customer
+
+    const name = [first_name, last_name].filter(Boolean).join(" ")
+
+    if (name) {
+      return `${name} (${email})`
+    }
+
+    return email
+  }
+
+  const options =
+    data?.pages.flatMap((page) =>
+      page.customers.map((c) => ({ label: createLabel(c), value: c.id }))
+    ) ?? []
+
+  const { currency_code, currency, includes_tax } =
     regions?.find((r) => r.id === watchedRegionId) ?? {}
+
+  const includesTax =
+    includes_tax ||
+    store?.currencies?.find((c) => c.code === currency_code)?.includes_tax ||
+    false
+
+  console.log(
+    includesTax,
+    includes_tax,
+    watchedRegionId,
+    regions?.find((r) => r.id === watchedRegionId)
+  )
 
   const { mutateAsync, isLoading } = useAdminCreateDraftOrder()
 
@@ -135,19 +228,73 @@ export const CreateDraftOrderForm = () => {
       billing_address,
       existing_items,
       custom_items,
+      shipping_methods,
+      email,
       ...rest
     } = values
+
+    const emailValue = email || customer?.email
+
+    if (!emailValue) {
+      form.setError("email", {
+        type: "manual",
+        message: "Email is required",
+      })
+
+      form.setError("customer_id", {
+        type: "manual",
+        message: "Customer is required",
+      })
+
+      return
+    }
 
     if (!billing_address) {
       billing_address = shipping_address
     }
 
+    const preparedExistingItems =
+      existing_items?.map((item) => {
+        const { custom_unit_price, variant_id, quantity } = item
+
+        const customUnitPriceCast = Number(custom_unit_price)
+        const customUnitPriceValue = !isNaN(customUnitPriceCast)
+          ? getDbAmount(customUnitPriceCast, currency_code!)
+          : undefined
+
+        return {
+          variant_id,
+          quantity,
+          unit_price: customUnitPriceValue,
+        }
+      }) || []
+
+    const preparedCustomItems =
+      custom_items?.map((item) => {
+        const { unit_price, quantity, title } = item
+
+        const unitPriceCast = Number(unit_price)
+        const unitPriceValue = !isNaN(unitPriceCast)
+          ? getDbAmount(unitPriceCast, currency_code!)
+          : undefined
+
+        return {
+          title,
+          quantity,
+          unit_price: unitPriceValue,
+        }
+      }) || []
+
+    const items = [...preparedExistingItems, ...preparedCustomItems]
+
     await mutateAsync(
       {
         ...rest,
+        email: emailValue,
         shipping_address,
         billing_address,
-        items: [],
+        items: items,
+        shipping_methods: [],
       },
       {
         onSuccess: ({ draft_order }) => {
@@ -194,6 +341,10 @@ export const CreateDraftOrderForm = () => {
     }
 
     setOpen(open)
+  }
+
+  if (isError) {
+    throw error
   }
 
   return (
@@ -268,24 +419,63 @@ export const CreateDraftOrderForm = () => {
                   <div className="bg-ui-border-base h-px w-full" />
                   <div className="flex flex-col gap-y-4">
                     <Heading level="h2">{t("fields.customer")}</Heading>
-                    <fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <Form.Field
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => {
-                          return (
-                            <Form.Item>
-                              <Form.Label className="text-ui-fg-subtle !font-normal">
-                                {t("fields.email")}
-                              </Form.Label>
-                              <Form.Control>
-                                <Input {...field} />
-                              </Form.Control>
-                              <Form.ErrorMessage />
-                            </Form.Item>
-                          )
-                        }}
-                      />
+                    <fieldset className="grid grid-cols-1 gap-4">
+                      {useExistingCustomer ? (
+                        <Form.Field
+                          control={form.control}
+                          name="customer_id"
+                          render={({ field }) => {
+                            return (
+                              <Form.Item>
+                                <Form.Label className="text-ui-fg-subtle !font-normal">
+                                  {t("fields.customer")}
+                                </Form.Label>
+                                <Form.Control>
+                                  <Combobox
+                                    {...field}
+                                    searchValue={query}
+                                    onSearchValueChange={setQuery}
+                                    fetchNextPage={fetchNextPage}
+                                    isFetchingNextPage={isFetchingNextPage}
+                                    options={options}
+                                    autoComplete="false"
+                                  />
+                                </Form.Control>
+                                <Form.ErrorMessage />
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      ) : (
+                        <Form.Field
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => {
+                            return (
+                              <Form.Item>
+                                <Form.Label className="text-ui-fg-subtle !font-normal">
+                                  {t("fields.email")}
+                                </Form.Label>
+                                <Form.Control>
+                                  <Input {...field} />
+                                </Form.Control>
+                                <Form.ErrorMessage />
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      )}
+                      <Label className="flex items-center gap-x-2">
+                        <Checkbox
+                          checked={useExistingCustomer}
+                          onCheckedChange={(val) =>
+                            setUseExistingCustomer(!!val)
+                          }
+                        />
+                        <span>
+                          {t("draftOrders.create.useExistingCustomerLabel")}
+                        </span>
+                      </Label>
                     </fieldset>
                   </div>
                   <div className="bg-ui-border-base h-px w-full" />
@@ -307,56 +497,147 @@ export const CreateDraftOrderForm = () => {
                                     {t("draftOrders.create.existingItemsHint")}
                                   </Form.Hint>
                                 </Form.Item>
-                                <div className="overflow-hidden rounded-lg border">
-                                  <div className="bg-ui-bg-field [&>div]:txt-compact-small-plus grid grid-cols-5 items-start [&>div:last-of-type]:border-r-0 [&>div]:size-full [&>div]:border-b [&>div]:border-r [&>div]:px-2 [&>div]:py-1.5">
-                                    <div>{t("fields.product")}</div>
-                                    <div>{t("fields.sku")}</div>
-                                    <div>{t("fields.variant")}</div>
-                                    <div>{t("fields.quantity")}</div>
-                                    <div>{t("fields.unitPrice")}</div>
-                                  </div>
-                                  {existingItems.length > 0 ? (
-                                    existingItems.map((item) => {
-                                      return (
-                                        <div
-                                          key={item.id}
-                                          className={clx(
-                                            "bg-ui-bg-base grid grid-cols-5 items-center",
-                                            "[&>div]:txt-compact-small [&>div]:text-ui-fg-subtle [&>div]:size-full [&>div]:text-pretty [&>div]:border-b [&>div]:border-r [&>div]:px-2 [&>div]:py-1.5",
-                                            "[&:last-of-type>div]:border-b-0 [&>div:last-of-type]:border-r-0"
-                                          )}
-                                        >
-                                          <div>{item.product_title}</div>
-                                          <div>{item.sku ?? "-"}</div>
-                                          <div>{item.variant_title}</div>
-                                          <div>{item.quantity}</div>
-                                          <div className="relative flex size-full">
+                                {existingItems.length > 0 ? (
+                                  existingItems.map((item, index) => {
+                                    return (
+                                      <div
+                                        key={item.ei_id}
+                                        className="bg-ui-bg-component shadow-elevation-card-rest divide-y rounded-xl"
+                                      >
+                                        <div className="flex items-center justify-between p-3">
+                                          <div className="flex items-center gap-x-2">
+                                            <div className="shadow-borders-base size-fit overflow-hidden rounded-[4px]">
+                                              <Thumbnail src={item.thumbnail} />
+                                            </div>
+                                            <div>
+                                              <div className="flex items-center gap-x-1">
+                                                <Text
+                                                  size="small"
+                                                  leading="compact"
+                                                  weight="plus"
+                                                >
+                                                  {item.product_title}
+                                                </Text>
+                                                {item.sku && (
+                                                  <Text
+                                                    size="small"
+                                                    leading="compact"
+                                                    className="text-ui-fg-subtle"
+                                                  >
+                                                    ({item.sku})
+                                                  </Text>
+                                                )}
+                                              </div>
+                                              <Text
+                                                size="small"
+                                                leading="compact"
+                                                className="text-ui-fg-subtle"
+                                              >
+                                                {item.variant_title}
+                                              </Text>
+                                            </div>
+                                          </div>
+                                          <div className="flex items-center gap-x-3">
                                             <Text
-                                              className="text-ui-fg-muted absolute left-2"
                                               size="small"
                                               leading="compact"
+                                              className="text-ui-fg-subtle"
                                             >
-                                              {currency?.symbol_native}
+                                              {getStylizedAmount(
+                                                item.unit_price,
+                                                currency_code!
+                                              )}
                                             </Text>
-                                            <input className="w-full" />
+                                            <ActionMenu
+                                              groups={[
+                                                {
+                                                  actions: [
+                                                    {
+                                                      label:
+                                                        t("actions.remove"),
+                                                      onClick: () =>
+                                                        deleteExistingItem(
+                                                          index
+                                                        ),
+                                                      icon: <Trash />,
+                                                    },
+                                                  ],
+                                                },
+                                              ]}
+                                            />
                                           </div>
                                         </div>
-                                      )
-                                    })
-                                  ) : (
-                                    <div className="flex items-center justify-center px-2 py-3">
-                                      <Text
-                                        size="small"
-                                        leading="compact"
-                                        className="text-ui-fg-muted"
-                                      >
-                                        {t(
-                                          "draftOrders.create.noExistingItemsAddedLabel"
-                                        )}
-                                      </Text>
-                                    </div>
-                                  )}
-                                </div>
+                                        <div className="flex flex-col gap-y-3 p-3">
+                                          <Form.Field
+                                            control={form.control}
+                                            name={`existing_items.${index}.quantity`}
+                                            render={({
+                                              field: { onChange, ...field },
+                                            }) => {
+                                              return (
+                                                <Form.Item>
+                                                  <Form.Label>
+                                                    {t("fields.quantity")}
+                                                  </Form.Label>
+                                                  <Form.Control>
+                                                    <Input
+                                                      className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
+                                                      type="number"
+                                                      onChange={(e) =>
+                                                        onChange(
+                                                          Number(e.target.value)
+                                                        )
+                                                      }
+                                                      {...field}
+                                                    />
+                                                  </Form.Control>
+                                                </Form.Item>
+                                              )
+                                            }}
+                                          />
+                                          <Form.Field
+                                            control={form.control}
+                                            name={`existing_items.${index}.custom_unit_price`}
+                                            render={({ field }) => {
+                                              return (
+                                                <Form.Item>
+                                                  <Form.Label optional>
+                                                    {t(
+                                                      "draftOrders.create.unitPriceOverrideLabel"
+                                                    )}
+                                                  </Form.Label>
+                                                  <Form.Control>
+                                                    <CurrencyInput
+                                                      className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
+                                                      code={currency_code!}
+                                                      symbol={
+                                                        currency?.symbol_native!
+                                                      }
+                                                      {...field}
+                                                    />
+                                                  </Form.Control>
+                                                  <Form.ErrorMessage />
+                                                </Form.Item>
+                                              )
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                ) : (
+                                  <div className="flex items-center justify-center px-2 py-3">
+                                    <Text
+                                      size="small"
+                                      leading="compact"
+                                      className="text-ui-fg-muted"
+                                    >
+                                      {t(
+                                        "draftOrders.create.noExistingItemsAddedLabel"
+                                      )}
+                                    </Text>
+                                  </div>
+                                )}
                               </div>
                             )
                           }}
@@ -395,54 +676,107 @@ export const CreateDraftOrderForm = () => {
                                     {t("draftOrders.create.customItemsHint")}
                                   </Form.Hint>
                                 </Form.Item>
-                                <div className="overflow-hidden rounded-lg border">
-                                  <div className="bg-ui-bg-field [&>div]:txt-compact-small-plus grid grid-cols-3 items-center [&>div:last-of-type]:border-r-0 [&>div]:border-b [&>div]:border-r [&>div]:px-2 [&>div]:py-1.5">
-                                    <div>{t("fields.title")}</div>
-                                    <div>{t("fields.quantity")}</div>
-                                    <div>
-                                      {t("fields.unitPrice")}{" "}
-                                      {currency_code?.toUpperCase()}
-                                    </div>
-                                  </div>
-                                  {customItems.length > 0 ? (
-                                    customItems.map((item) => {
-                                      return (
-                                        <div
-                                          key={item.id}
-                                          className="bg-ui-bg-field [&>div]:txt-compact-small-plus grid grid-cols-3 items-center [&>div:last-of-type]:border-r-0 [&>div]:border-b [&>div]:border-r [&>div]:px-2 [&>div]:py-1.5"
-                                        >
+                                {customItems.length > 0 ? (
+                                  customItems.map((item, index) => {
+                                    return (
+                                      <div
+                                        key={item.ci_id}
+                                        className="bg-ui-bg-component shadow-elevation-card-rest divide-y rounded-xl"
+                                      >
+                                        <div className="flex items-center justify-between p-3">
                                           <div>
-                                            <Text size="small">
-                                              {item.title}
-                                            </Text>
+                                            <div className="flex items-center gap-x-1">
+                                              <Text
+                                                size="small"
+                                                leading="compact"
+                                                weight="plus"
+                                              >
+                                                {item.title}
+                                              </Text>
+                                            </div>
                                           </div>
-                                          <div>
-                                            <Text size="small">
-                                              {item.quantity}
-                                            </Text>
-                                          </div>
-                                          <div>
-                                            <Text size="small">
-                                              {item.unit_price}
-                                            </Text>
+
+                                          <div className="flex items-center">
+                                            <ActionMenu
+                                              groups={[
+                                                {
+                                                  actions: [
+                                                    {
+                                                      label:
+                                                        t("actions.remove"),
+                                                      onClick: () =>
+                                                        deleteExistingItem(
+                                                          index
+                                                        ),
+                                                      icon: <Trash />,
+                                                    },
+                                                  ],
+                                                },
+                                              ]}
+                                            />
                                           </div>
                                         </div>
-                                      )
-                                    })
-                                  ) : (
-                                    <div className="flex items-center justify-center px-2 py-3">
-                                      <Text
-                                        size="small"
-                                        leading="compact"
-                                        className="text-ui-fg-muted"
-                                      >
-                                        {t(
-                                          "draftOrders.create.noCustomItemsAddedLabel"
-                                        )}
-                                      </Text>
-                                    </div>
-                                  )}
-                                </div>
+                                        <div className="flex flex-col gap-y-3 p-3">
+                                          <Form.Field
+                                            control={form.control}
+                                            name={`custom_items.${index}.quantity`}
+                                            render={({ field }) => {
+                                              return (
+                                                <Form.Item>
+                                                  <Form.Label>
+                                                    {t("fields.quantity")}
+                                                  </Form.Label>
+                                                  <Form.Control>
+                                                    <Input
+                                                      className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
+                                                      type="number"
+                                                      {...field}
+                                                    />
+                                                  </Form.Control>
+                                                </Form.Item>
+                                              )
+                                            }}
+                                          />
+                                          <Form.Field
+                                            control={form.control}
+                                            name={`custom_items.${index}.unit_price`}
+                                            render={({ field }) => {
+                                              return (
+                                                <Form.Item>
+                                                  <Form.Label optional>
+                                                    Custom price
+                                                  </Form.Label>
+                                                  <Form.Control>
+                                                    <CurrencyInput
+                                                      className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
+                                                      code={currency_code!}
+                                                      symbol={
+                                                        currency?.symbol_native!
+                                                      }
+                                                      {...field}
+                                                    />
+                                                  </Form.Control>
+                                                </Form.Item>
+                                              )
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                ) : (
+                                  <div className="flex items-center justify-center px-2 py-3">
+                                    <Text
+                                      size="small"
+                                      leading="compact"
+                                      className="text-ui-fg-muted"
+                                    >
+                                      {t(
+                                        "draftOrders.create.noCustomItemsAddedLabel"
+                                      )}
+                                    </Text>
+                                  </div>
+                                )}
                               </div>
                             )
                           }}
@@ -459,7 +793,7 @@ export const CreateDraftOrderForm = () => {
                               size="small"
                               type="button"
                               disabled={!watchedRegionId}
-                              onClick={() => handleOpenDrawer("existing_items")}
+                              onClick={() => handleOpenDrawer("custom_items")}
                             >
                               {t("draftOrders.create.addCustomItemAction")}
                             </Button>
@@ -531,7 +865,7 @@ export const CreateDraftOrderForm = () => {
                   <div className="flex flex-col gap-y-4">
                     <Heading level="h2">{t("fields.address")}</Heading>
                     <Text size="small" leading="compact" weight="plus">
-                      {t("addresses.shippingAddress")}
+                      {t("addresses.shippingAddress.label")}
                     </Text>
                     <AddressFieldset
                       field="shipping_address"
@@ -542,7 +876,7 @@ export const CreateDraftOrderForm = () => {
                   <div className="flex flex-col gap-y-4">
                     <div className="flex flex-col gap-y-2">
                       <Text size="small" leading="compact" weight="plus">
-                        {t("addresses.billingAddress")}
+                        {t("addresses.billingAddress.label")}
                       </Text>
                       <Label className="flex cursor-pointer items-center gap-x-2">
                         <Checkbox
@@ -551,7 +885,7 @@ export const CreateDraftOrderForm = () => {
                             setSameAsShipping(checked === true)
                           }
                         />
-                        {t("addresses.sameAsShipping")}
+                        {t("addresses.billingAddress.sameAsShipping")}
                       </Label>
                     </div>
                     <Collapsible.Root open={!sameAsShipping}>
@@ -570,24 +904,27 @@ export const CreateDraftOrderForm = () => {
               </div>
             </SplitView.Content>
             <SplitView.Drawer>
-              <Drawer
-                view={view}
-                variants={{
-                  onSave: handleUpdateExistingItems,
-                  items: existingItems,
-                  customerId: watchedCustomerId,
-                  regionId: watchedRegionId,
-                  currencyCode: currency_code,
-                }}
-                custom={{
-                  onSave: createCustomItem,
-                  currencyCode: currency_code,
-                }}
-                shippingMethods={{
-                  regionId: watchedRegionId,
-                  onSave: handleUpdateShippingMethods,
-                }}
-              />
+              {currency && (
+                <Drawer
+                  view={view}
+                  variants={{
+                    onSave: handleUpdateExistingItems,
+                    items: existingItems,
+                    customerId: watchedCustomerId,
+                    regionId: watchedRegionId,
+                    currencyCode: currency.code,
+                  }}
+                  custom={{
+                    onSave: createCustomItem,
+                    currencyCode: currency.code,
+                    nativeSymbol: currency.symbol_native,
+                  }}
+                  shippingMethods={{
+                    regionId: watchedRegionId,
+                    onSave: handleUpdateShippingMethods,
+                  }}
+                />
+              )}
             </SplitView.Drawer>
           </SplitView>
         </RouteFocusModal.Body>
@@ -599,19 +936,21 @@ export const CreateDraftOrderForm = () => {
 const Drawer = ({
   view,
   variants,
+  custom,
   shippingMethods,
 }: {
   view: View | null
   variants: {
     regionId?: string
     customerId?: string
-    currencyCode?: string
+    currencyCode: string
     items?: ExistingItem[]
     onSave: (items: ExistingItem[]) => void
   }
   custom: {
     onSave: (item: CustomItem) => void
-    currencyCode?: string
+    currencyCode: string
+    nativeSymbol: string
   }
   shippingMethods: {
     regionId?: string
@@ -624,6 +963,10 @@ const Drawer = ({
 
   if (view === "shipping_methods") {
     return <AddShippingMethodDrawer {...shippingMethods} />
+  }
+
+  if (view === "custom_items") {
+    return <AddCustomItemDrawer {...custom} />
   }
 
   return null
