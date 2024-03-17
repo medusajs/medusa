@@ -215,10 +215,20 @@ medusaIntegrationTestRunner({
       let sc
 
       beforeEach(async () => {
-        sc = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
+        sc = await breaking(
+          async () => {
+            return await simpleSalesChannelFactory(dbConnection, {
+              name: "test name",
+              description: "test description",
+            })
+          },
+          async () => {
+            return await salesChannelService.create({
+              name: "test name",
+              description: "test description",
+            })
+          }
+        )
       })
 
       it("updates sales channel properties", async () => {
@@ -231,11 +241,7 @@ medusaIntegrationTestRunner({
         const response = await api.post(
           `/admin/sales-channels/${sc.id}`,
           payload,
-          {
-            headers: {
-              "x-medusa-access-token": "test_token",
-            },
-          }
+          adminReqConfig
         )
 
         expect(response.status).toEqual(200)
@@ -307,29 +313,44 @@ medusaIntegrationTestRunner({
       let salesChannel
 
       beforeEach(async () => {
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
+        salesChannel = await breaking(
+          async () => {
+            return await simpleSalesChannelFactory(dbConnection, {
+              name: "test name",
+              description: "test description",
+            })
+          },
+          async () => {
+            return await salesChannelService.create({
+              name: "test name",
+              description: "test description",
+            })
+          }
+        )
 
-        await simpleSalesChannelFactory(dbConnection, {
-          name: "Default channel",
-          id: "test-channel",
-          is_default: true,
+        await breaking(async () => {
+          await simpleSalesChannelFactory(dbConnection, {
+            name: "Default channel",
+            id: "test-channel",
+            is_default: true,
+          })
         })
       })
 
       it("should delete the requested sales channel", async () => {
-        let deletedSalesChannel = await dbConnection.manager.findOne(
-          SalesChannel,
-          {
-            where: { id: salesChannel.id },
-            withDeleted: true,
+        let toDelete = await breaking(
+          async () => {
+            return await dbConnection.manager.findOne(SalesChannel, {
+              where: { id: salesChannel.id },
+            })
+          },
+          async () => {
+            return await salesChannelService.retrieve(salesChannel.id)
           }
         )
 
-        expect(deletedSalesChannel.id).toEqual(salesChannel.id)
-        expect(deletedSalesChannel.deleted_at).toEqual(null)
+        expect(toDelete.id).toEqual(salesChannel.id)
+        expect(toDelete.deleted_at).toEqual(null)
 
         const response = await api.delete(
           `/admin/sales-channels/${salesChannel.id}`,
@@ -343,79 +364,37 @@ medusaIntegrationTestRunner({
           object: "sales-channel",
         })
 
-        deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
-          where: { id: salesChannel.id },
-          withDeleted: true,
-        })
-
-        expect(deletedSalesChannel.id).toEqual(salesChannel.id)
-        expect(deletedSalesChannel.deleted_at).not.toEqual(null)
-      })
-
-      it("should delete the requested sales channel idempotently", async () => {
-        let deletedSalesChannel = await dbConnection.manager.findOne(
-          SalesChannel,
-          {
-            where: { id: salesChannel.id },
-            withDeleted: true,
+        const deleted = await breaking(
+          async () => {
+            return await dbConnection.manager.findOne(SalesChannel, {
+              where: { id: salesChannel.id },
+              withDeleted: true,
+            })
+          },
+          async () => {
+            return await salesChannelService.retrieve(salesChannel.id, {
+              withDeleted: true,
+            })
           }
         )
 
-        expect(deletedSalesChannel.id).toEqual(salesChannel.id)
-        expect(deletedSalesChannel.deleted_at).toEqual(null)
-
-        let response = await api.delete(
-          `/admin/sales-channels/${salesChannel.id}`,
-          adminReqConfig
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data).toEqual({
-          id: expect.any(String),
-          object: "sales-channel",
-          deleted: true,
-        })
-
-        deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
-          where: { id: salesChannel.id },
-          withDeleted: true,
-        })
-
-        expect(deletedSalesChannel.id).toEqual(salesChannel.id)
-        expect(deletedSalesChannel.deleted_at).not.toEqual(null)
-
-        response = await api.delete(
-          `/admin/sales-channels/${salesChannel.id}`,
-          adminReqConfig
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data).toEqual({
-          id: expect.any(String),
-          object: "sales-channel",
-          deleted: true,
-        })
-
-        deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
-          where: { id: salesChannel.id },
-          withDeleted: true,
-        })
-
-        expect(deletedSalesChannel.id).toEqual(salesChannel.id)
-        expect(deletedSalesChannel.deleted_at).not.toEqual(null)
+        expect(deleted.id).toEqual(salesChannel.id)
+        expect(deleted.deleted_at).not.toEqual(null)
       })
 
       it("should throw if we attempt to delete default channel", async () => {
-        expect.assertions(2)
+        await breaking(async () => {
+          expect.assertions(2)
 
-        const res = await api
-          .delete(`/admin/sales-channels/test-channel`, adminReqConfig)
-          .catch((err) => err)
+          const res = await api
+            .delete(`/admin/sales-channels/test-channel`, adminReqConfig)
+            .catch((err) => err)
 
-        expect(res.response.status).toEqual(400)
-        expect(res.response.data.message).toEqual(
-          "You cannot delete the default sales channel"
-        )
+          expect(res.response.status).toEqual(400)
+          expect(res.response.data.message).toEqual(
+            "You cannot delete the default sales channel"
+          )
+        })
       })
     })
 

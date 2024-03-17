@@ -1,6 +1,12 @@
 import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
@@ -56,4 +62,41 @@ export class AdminGetSalesChannelsParams extends extendedFindParamsMixin({
   @ValidateNested({ each: true })
   @Type(() => AdminGetSalesChannelsParams)
   $or?: AdminGetSalesChannelsParams[]
+}
+
+export class AdminPostSalesChannelsReq {
+  @IsString()
+  name: string
+
+  @IsString()
+  @IsOptional()
+  description: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_disabled?: boolean
+
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  metadata?: Record<string, unknown>
+}
+
+export class AdminPostSalesChannelsSalesChannelReq {
+  @IsOptional()
+  @IsString()
+  name?: string
+
+  @IsOptional()
+  @IsString()
+  description?: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_disabled?: boolean
+
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }

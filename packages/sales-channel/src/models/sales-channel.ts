@@ -38,6 +38,9 @@ export default class SalesChannel {
   })
   created_at: Date
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
