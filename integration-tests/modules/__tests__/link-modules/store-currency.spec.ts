@@ -40,7 +40,7 @@ medusaIntegrationTestRunner({
           },
         })
 
-        expect(store).toEqual(
+        expect(stores).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               id: store.id,
