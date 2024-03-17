@@ -1,4 +1,4 @@
-import { Currency, type Store } from "@medusajs/medusa"
+import { Currency } from "@medusajs/medusa"
 import {
   Badge,
   Button,
@@ -17,7 +17,12 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
+import {
+  adminCurrenciesKeys,
+  adminStoreKeys,
+  useAdminCustomPost,
+  useAdminCustomQuery,
+} from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -32,9 +37,10 @@ import {
 } from "../../../../../components/route-modal"
 import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { StoreDTO } from "@medusajs/types"
 
 type AddCurrenciesFormProps = {
-  store: Store
+  store: StoreDTO
 }
 
 const AddCurrenciesSchema = zod.object({
@@ -80,18 +86,27 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
   }, [rowSelection, setValue])
 
   const params = useQueryParams(["order"])
-  const { currencies, count, isError, error } = useAdminCurrencies({
-    limit: PAGE_SIZE,
-    offset: pageIndex * PAGE_SIZE,
-    ...params,
-  })
+  // @ts-ignore
+  const { data, count, isError, error } = useAdminCustomQuery(
+    "/admin/currencies",
+    adminCurrenciesKeys.list({
+      limit: PAGE_SIZE,
+      offset: pageIndex * PAGE_SIZE,
+      ...params,
+    }),
+    {
+      limit: PAGE_SIZE,
+      offset: pageIndex * PAGE_SIZE,
+      ...params,
+    }
+  )
 
-  const preSelectedRows = store.currencies.map((c) => c.code)
+  const preSelectedRows = store.supported_currency_codes.map((c) => c)
 
   const columns = useColumns()
 
   const table = useReactTable({
-    data: currencies ?? [],
+    data: data?.currencies ?? [],
     columns,
     pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
     state: {
@@ -106,7 +121,10 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     manualPagination: true,
   })
 
-  const { mutateAsync, isLoading: isMutating } = useAdminUpdateStore()
+  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
+    `/admin/stores/${store.id}`,
+    adminStoreKeys.details()
+  )
 
   const { handleScroll, isScrolled, tableContainerRef } = useHandleTableScroll()
 
@@ -117,7 +135,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
 
     await mutateAsync(
       {
-        currencies,
+        supported_currency_codes: currencies,
       },
       {
         onSuccess: () => {

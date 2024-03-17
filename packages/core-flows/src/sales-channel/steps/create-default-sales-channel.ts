@@ -17,16 +17,19 @@ export const createDefaultSalesChannelStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
+    let shouldDelete = false
     let [salesChannel] = await salesChannelService.list()
 
     if (!salesChannel) {
       salesChannel = await salesChannelService.create(input.data)
+
+      shouldDelete = true
     }
 
-    return new StepResponse(salesChannel, salesChannel.id)
+    return new StepResponse(salesChannel, { id: salesChannel.id, shouldDelete })
   },
-  async (createdId, { container }) => {
-    if (!createdId) {
+  async (data, { container }) => {
+    if (!data?.id || !data.shouldDelete) {
       return
     }
 
@@ -34,6 +37,6 @@ export const createDefaultSalesChannelStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    await service.delete(createdId)
+    await service.delete(data.id)
   }
 )

@@ -91,11 +91,11 @@ export const v2Routes: RouteObject[] = [
                 path: "edit",
                 lazy: () => import("../../v2-routes/store/store-edit"),
               },
-              // {
-              //   path: "add-currencies",
-              //   lazy: () =>
-              //     import("../../v2-routes/store/store-add-currencies"),
-              // },
+              {
+                path: "add-currencies",
+                lazy: () =>
+                  import("../../v2-routes/store/store-add-currencies"),
+              },
             ],
           },
         ],

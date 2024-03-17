@@ -12,18 +12,3 @@ export const useV2Store = ({ initialData }: { initialData?: any }) => {
 
   return { store, isLoading, isError, error }
 }
-
-export const useV2StoreCurrencies = ({
-  currencyCodes,
-}: {
-  currencyCodes: string[]
-}) => {
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    `/admin/currencies?code=${currencyCodes.join(",")}`,
-    adminStoreKeys.details()
-  )
-
-  const currencies = data?.currencies
-
-  return { currencies, isLoading, isError, error }
-}

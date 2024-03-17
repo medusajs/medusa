@@ -1,9 +1,9 @@
-import { useAdminStore } from "medusa-react"
 import { RouteFocusModal } from "../../../components/route-modal"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
+import { useV2Store } from "../../../lib/api-v2"
 
 export const StoreAddCurrencies = () => {
-  const { store, isLoading, isError, error } = useAdminStore()
+  const { store, isLoading, isError, error } = useV2Store({})
 
   if (isError) {
     throw error

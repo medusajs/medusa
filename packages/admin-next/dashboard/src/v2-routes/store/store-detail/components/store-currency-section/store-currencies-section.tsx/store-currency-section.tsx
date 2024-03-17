@@ -1,5 +1,5 @@
 import { Trash } from "@medusajs/icons"
-import { Currency, Store } from "@medusajs/medusa"
+import { Currency } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
@@ -19,14 +19,17 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminUpdateStore } from "medusa-react"
+import {
+  adminStoreKeys,
+  useAdminCustomQuery,
+  useAdminUpdateStore,
+} from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../../components/common/action-menu"
 import { LocalizedTablePagination } from "../../../../../../components/localization/localized-table-pagination"
 import { StoreDTO } from "@medusajs/types"
-import { useV2StoreCurrencies } from "../../../../../../lib/api-v2"
 
 type StoreCurrencySectionProps = {
   store: StoreDTO
@@ -36,14 +39,15 @@ const PAGE_SIZE = 20
 
 export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-  const { currencies } = useV2StoreCurrencies({
-    currencyCodes: store.supported_currency_codes,
-  })
+  const { data } = useAdminCustomQuery(
+    `/admin/currencies?code=${store.supported_currency_codes.join(",")}`,
+    adminStoreKeys.details()
+  )
 
   const columns = useColumns()
 
   const table = useReactTable({
-    data: currencies ?? [],
+    data: data?.currencies ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
