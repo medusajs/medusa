@@ -15,28 +15,28 @@ import { adminReturnKeys } from "./queries"
 
 /**
  * This hook marks a return as received. This also updates the status of associated order, claim, or swap accordingly.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminReceiveReturn } from "medusa-react"
- * 
+ *
  * type ReceiveReturnData = {
  *   items: {
  *     item_id: string
  *     quantity: number
  *   }[]
  * }
- * 
+ *
  * type Props = {
  *   returnId: string
  * }
- * 
+ *
  * const Return = ({ returnId }: Props) => {
  *   const receiveReturn = useAdminReceiveReturn(
  *     returnId
  *   )
  *   // ...
- * 
+ *
  *   const handleReceive = (data: ReceiveReturnData) => {
  *     receiveReturn.mutate(data, {
  *       onSuccess: ({ return: dataReturn }) => {
@@ -44,12 +44,12 @@ import { adminReturnKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Return
- * 
+ *
  * @customNamespace Hooks.Admin.Returns
  * @category Mutations
  */
@@ -67,33 +67,33 @@ export const useAdminReceiveReturn = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload) => client.admin.returns.receive(id, payload),
-    buildOptions(
+  return useMutation({
+    mutationFn: (payload) => client.admin.returns.receive(id, payload),
+    ...buildOptions(
       queryClient,
       [adminReturnKeys.detail(id), adminReturnKeys.list()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook registers a return as canceled. The return can be associated with an order, claim, or swap.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCancelReturn } from "medusa-react"
- * 
+ *
  * type Props = {
  *   returnId: string
  * }
- * 
+ *
  * const Return = ({ returnId }: Props) => {
  *   const cancelReturn = useAdminCancelReturn(
  *     returnId
  *   )
  *   // ...
- * 
+ *
  *   const handleCancel = () => {
  *     cancelReturn.mutate(void 0, {
  *       onSuccess: ({ order }) => {
@@ -101,12 +101,12 @@ export const useAdminReceiveReturn = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Return
- * 
+ *
  * @customNamespace Hooks.Admin.Returns
  * @category Mutations
  */
@@ -120,12 +120,12 @@ export const useAdminCancelReturn = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.returns.cancel(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.returns.cancel(id),
+    ...buildOptions(
       queryClient,
       [adminReturnKeys.detail(id), adminReturnKeys.list()],
       options
-    )
-  )
+    ),
+  })
 }

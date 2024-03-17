@@ -4,11 +4,11 @@ import { useMedusa } from "../../../contexts"
 
 /**
  * This hook creates a return for an order. If a return shipping method is specified, the return is automatically fulfilled.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCreateReturn } from "medusa-react"
- * 
+ *
  * type CreateReturnData = {
  *   items: {
  *     item_id: string,
@@ -18,15 +18,15 @@ import { useMedusa } from "../../../contexts"
  *     option_id: string
  *   }
  * }
- * 
+ *
  * type Props = {
  *   orderId: string
  * }
- * 
+ *
  * const CreateReturn = ({ orderId }: Props) => {
  *   const createReturn = useCreateReturn()
  *   // ...
- * 
+ *
  *   const handleCreate = (data: CreateReturnData) => {
  *     createReturn.mutate({
  *       ...data,
@@ -37,12 +37,12 @@ import { useMedusa } from "../../../contexts"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateReturn
- * 
+ *
  * @customNamespace Hooks.Store.Returns
  * @category Mutations
  */
@@ -50,8 +50,8 @@ export const useCreateReturn = (
   options?: UseMutationOptions<StoreReturnsRes, Error, StorePostReturnsReq>
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostReturnsReq) => client.returns.create(data),
-    options
-  )
+  return useMutation({
+    mutationFn: (data: StorePostReturnsReq) => client.returns.create(data),
+    ...options,
+  })
 }

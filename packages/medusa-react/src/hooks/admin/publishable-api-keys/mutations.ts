@@ -20,15 +20,15 @@ import { adminPublishableApiKeysKeys } from "./queries"
 
 /**
  * This hook creates a publishable API key.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreatePublishableApiKey } from "medusa-react"
- * 
+ *
  * const CreatePublishableApiKey = () => {
  *   const createKey = useAdminCreatePublishableApiKey()
  *   // ...
- * 
+ *
  *   const handleCreate = (title: string) => {
  *     createKey.mutate({
  *       title,
@@ -38,12 +38,12 @@ import { adminPublishableApiKeysKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreatePublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -56,24 +56,28 @@ export const useAdminCreatePublishableApiKey = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostPublishableApiKeysReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPublishableApiKeysReq) =>
       client.admin.publishableApiKeys.create(payload),
-    buildOptions(queryClient, [adminPublishableApiKeysKeys.lists()], options)
-  )
+    ...buildOptions(
+      queryClient,
+      [adminPublishableApiKeysKeys.lists()],
+      options
+    ),
+  })
 }
 
 /**
  * This hook updates a publishable API key's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdatePublishableApiKey } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
@@ -81,7 +85,7 @@ export const useAdminCreatePublishableApiKey = (
  *     publishableApiKeyId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (title: string) => {
  *     updateKey.mutate({
  *       title,
@@ -91,12 +95,12 @@ export const useAdminCreatePublishableApiKey = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -114,10 +118,10 @@ export const useAdminUpdatePublishableApiKey = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostPublishableApiKeysPublishableApiKeyReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPublishableApiKeysPublishableApiKeyReq) =>
       client.admin.publishableApiKeys.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminPublishableApiKeysKeys.lists(),
@@ -125,21 +129,21 @@ export const useAdminUpdatePublishableApiKey = (
         adminPublishableApiKeysKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a publishable API key. Associated resources, such as sales channels, are not deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeletePublishableApiKey } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
@@ -147,7 +151,7 @@ export const useAdminUpdatePublishableApiKey = (
  *     publishableApiKeyId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteKey.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -155,12 +159,12 @@ export const useAdminUpdatePublishableApiKey = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -178,30 +182,30 @@ export const useAdminDeletePublishableApiKey = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.publishableApiKeys.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.publishableApiKeys.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminPublishableApiKeysKeys.detail(id),
         adminPublishableApiKeysKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook revokes a publishable API key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminRevokePublishableApiKey } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
@@ -209,7 +213,7 @@ export const useAdminDeletePublishableApiKey = (
  *     publishableApiKeyId
  *   )
  *   // ...
- * 
+ *
  *   const handleRevoke = () => {
  *     revokeKey.mutate(void 0, {
  *       onSuccess: ({ publishable_api_key }) => {
@@ -217,12 +221,12 @@ export const useAdminDeletePublishableApiKey = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -236,41 +240,41 @@ export const useAdminRevokePublishableApiKey = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.publishableApiKeys.revoke(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.publishableApiKeys.revoke(id),
+    ...buildOptions(
       queryClient,
       [
         adminPublishableApiKeysKeys.lists(),
         adminPublishableApiKeysKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds a list of sales channels to a publishable API key.
- * 
+ *
  * @example
  * import React from "react"
  * import {
  *   useAdminAddPublishableKeySalesChannelsBatch,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
- *   const addSalesChannels = 
+ *   const addSalesChannels =
  *     useAdminAddPublishableKeySalesChannelsBatch(
  *       publishableApiKeyId
  *     )
  *   // ...
- * 
+ *
  *   const handleAdd = (salesChannelId: string) => {
  *     addSalesChannels.mutate({
  *       sales_channel_ids: [
@@ -284,12 +288,12 @@ export const useAdminRevokePublishableApiKey = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -307,40 +311,40 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostPublishableApiKeySalesChannelsBatchReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPublishableApiKeySalesChannelsBatchReq) =>
       client.admin.publishableApiKeys.addSalesChannelsBatch(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminPublishableApiKeysKeys.detailSalesChannels(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes a list of sales channels from a publishable API key. This doesn't delete the sales channels and only 
+ * This hook removes a list of sales channels from a publishable API key. This doesn't delete the sales channels and only
  * removes the association between them and the publishable API key.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRemovePublishableKeySalesChannelsBatch,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
- *   const deleteSalesChannels = 
+ *   const deleteSalesChannels =
  *     useAdminRemovePublishableKeySalesChannelsBatch(
  *       publishableApiKeyId
  *     )
  *   // ...
- * 
+ *
  *   const handleDelete = (salesChannelId: string) => {
  *     deleteSalesChannels.mutate({
  *       sales_channel_ids: [
@@ -354,12 +358,12 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
@@ -377,13 +381,13 @@ export const useAdminRemovePublishableKeySalesChannelsBatch = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeletePublishableApiKeySalesChannelsBatchReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeletePublishableApiKeySalesChannelsBatchReq) =>
       client.admin.publishableApiKeys.deleteSalesChannelsBatch(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminPublishableApiKeysKeys.detailSalesChannels(id)],
       options
-    )
-  )
+    ),
+  })
 }

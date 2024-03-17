@@ -16,17 +16,17 @@ import { adminGiftCardKeys } from "./queries"
 
 /**
  * This hook creates a gift card that can redeemed by its unique code. The Gift Card is only valid within one region.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateGiftCard } from "medusa-react"
- * 
+ *
  * const CreateCustomGiftCards = () => {
  *   const createGiftCard = useAdminCreateGiftCard()
  *   // ...
- *   
+ *
  *   const handleCreate = (
- *     regionId: string, 
+ *     regionId: string,
  *     value: number
  *   ) => {
  *     createGiftCard.mutate({
@@ -38,12 +38,12 @@ import { adminGiftCardKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateCustomGiftCards
- * 
+ *
  * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
@@ -56,29 +56,30 @@ export const useAdminCreateGiftCard = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostGiftCardsReq) => client.admin.giftCards.create(payload),
-    buildOptions(queryClient, adminGiftCardKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostGiftCardsReq) =>
+      client.admin.giftCards.create(payload),
+    ...buildOptions(queryClient, adminGiftCardKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a gift card's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateGiftCard } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customGiftCardId: string
  * }
- * 
+ *
  * const CustomGiftCard = ({ customGiftCardId }: Props) => {
  *   const updateGiftCard = useAdminUpdateGiftCard(
  *     customGiftCardId
  *   )
  *   // ...
- *   
+ *
  *   const handleUpdate = (regionId: string) => {
  *     updateGiftCard.mutate({
  *       region_id: regionId,
@@ -88,12 +89,12 @@ export const useAdminCreateGiftCard = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomGiftCard
- * 
+ *
  * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
@@ -111,34 +112,34 @@ export const useAdminUpdateGiftCard = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostGiftCardsGiftCardReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostGiftCardsGiftCardReq) =>
       client.admin.giftCards.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminGiftCardKeys.lists(), adminGiftCardKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a gift card. Once deleted, it can't be used by customers.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteGiftCard } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customGiftCardId: string
  * }
- * 
+ *
  * const CustomGiftCard = ({ customGiftCardId }: Props) => {
  *   const deleteGiftCard = useAdminDeleteGiftCard(
  *     customGiftCardId
  *   )
  *   // ...
- *   
+ *
  *   const handleDelete = () => {
  *     deleteGiftCard.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted}) => {
@@ -146,12 +147,12 @@ export const useAdminUpdateGiftCard = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomGiftCard
- * 
+ *
  * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
@@ -164,12 +165,12 @@ export const useAdminDeleteGiftCard = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    () => client.admin.giftCards.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.giftCards.delete(id),
+    ...buildOptions(
       queryClient,
       [adminGiftCardKeys.lists(), adminGiftCardKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

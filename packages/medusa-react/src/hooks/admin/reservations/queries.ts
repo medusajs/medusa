@@ -18,19 +18,19 @@ export const adminReservationsKeys = queryKeysFactory(
 type ReservationsQueryKeys = typeof adminReservationsKeys
 
 /**
- * This hook retrieves a list of reservations. The reservations can be filtered by fields such as `location_id` or `quantity` 
+ * This hook retrieves a list of reservations. The reservations can be filtered by fields such as `location_id` or `quantity`
  * passed in the `query` parameter. The reservations can also be paginated.
- * 
+ *
  * @example
  * To list reservations:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminReservations } from "medusa-react"
- * 
+ *
  * const Reservations = () => {
  *   const { reservations, isLoading } = useAdminReservations()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -47,24 +47,24 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Reservations
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the reservations:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminReservations } from "medusa-react"
- * 
+ *
  * const Reservations = () => {
- *   const { 
- *     reservations, 
+ *   const {
+ *     reservations,
  *     isLoading
  *   } = useAdminReservations({
  *     expand: "location"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -81,28 +81,28 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Reservations
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminReservations } from "medusa-react"
- * 
+ *
  * const Reservations = () => {
- *   const { 
+ *   const {
  *     reservations,
  *     limit,
- *     offset, 
+ *     offset,
  *     isLoading
  *   } = useAdminReservations({
  *     expand: "location",
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -119,10 +119,10 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Reservations
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Reservations
  * @category Queries
  */
@@ -139,31 +139,31 @@ export const useAdminReservations = (
 ) => {
   const { client } = useMedusa()
 
-  const { data, ...rest } = useQuery(
-    adminReservationsKeys.list(query),
-    () => client.admin.reservations.list(query),
-    { ...options }
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminReservationsKeys.list(query),
+    queryFn: () => client.admin.reservations.list(query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a reservation's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminReservation } from "medusa-react"
- * 
+ *
  * type Props = {
  *   reservationId: string
  * }
- * 
+ *
  * const Reservation = ({ reservationId }: Props) => {
  *   const { reservation, isLoading } = useAdminReservation(
  *     reservationId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -173,9 +173,9 @@ export const useAdminReservations = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Reservation
- * 
+ *
  * @customNamespace Hooks.Admin.Reservations
  * @category Queries
  */
@@ -192,11 +192,11 @@ export const useAdminReservation = (
 ) => {
   const { client } = useMedusa()
 
-  const { data, ...rest } = useQuery(
-    adminReservationsKeys.detail(id),
-    () => client.admin.reservations.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminReservationsKeys.detail(id),
+    queryFn: () => client.admin.reservations.retrieve(id),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

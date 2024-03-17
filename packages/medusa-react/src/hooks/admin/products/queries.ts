@@ -140,11 +140,11 @@ export const useAdminProducts = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductKeys.list(query),
-    () => client.admin.products.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductKeys.list(query),
+    queryFn: () => client.admin.products.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -195,11 +195,11 @@ export const useAdminProduct = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductKeys.detail(id),
-    () => client.admin.products.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductKeys.detail(id),
+    queryFn: () => client.admin.products.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -219,11 +219,11 @@ export const useAdminProductVariants = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductKeys.detailVariants(id, query),
-    () => client.admin.products.listVariants(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductKeys.detailVariants(id, query),
+    queryFn: () => client.admin.products.listVariants(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -265,10 +265,10 @@ export const useAdminProductTagUsage = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductKeys.detail("tags"),
-    () => client.admin.products.listTags(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductKeys.detail("tags"),
+    queryFn: () => client.admin.products.listTags(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

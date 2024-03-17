@@ -25,7 +25,7 @@
   "devDependencies": {
     "@medusajs/admin": "^7.1.10",
     "@medusajs/medusa": "^1.19.1",
-    "@tanstack/react-table": "^8.7.9",
+    "@tanstack/react-table": "^8.13.2",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",

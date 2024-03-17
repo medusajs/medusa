@@ -5,7 +5,7 @@ import {
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
   AdminPostInventoryItemsReq,
-  AdminPostInventoryItemsParams
+  AdminPostInventoryItemsParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import {
@@ -19,15 +19,15 @@ import { adminInventoryItemsKeys } from "./queries"
 
 /**
  * This hook creates an Inventory Item for a product variant.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateInventoryItem } from "medusa-react"
- * 
+ *
  * const CreateInventoryItem = () => {
  *   const createInventoryItem = useAdminCreateInventoryItem()
  *   // ...
- * 
+ *
  *   const handleCreate = (variantId: string) => {
  *     createInventoryItem.mutate({
  *       variant_id: variantId,
@@ -37,12 +37,12 @@ import { adminInventoryItemsKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateInventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -56,35 +56,32 @@ export const useAdminCreateInventoryItem = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostInventoryItemsReq, query?: AdminPostInventoryItemsParams) =>
-      client.admin.inventoryItems.create(payload, query),
-    buildOptions(
-      queryClient,
-      [adminInventoryItemsKeys.lists()],
-      options
-    )
-  )
+  return useMutation({
+    mutationFn: (
+      payload: AdminPostInventoryItemsReq,
+      query?: AdminPostInventoryItemsParams
+    ) => client.admin.inventoryItems.create(payload, query),
+    ...buildOptions(queryClient, [adminInventoryItemsKeys.lists()], options),
+  })
 }
-
 
 /**
  * This hook updates an Inventory Item's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateInventoryItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
  *   const updateInventoryItem = useAdminUpdateInventoryItem(
  *     inventoryItemId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (origin_country: string) => {
  *     updateInventoryItem.mutate({
  *       origin_country,
@@ -94,12 +91,12 @@ export const useAdminCreateInventoryItem = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -117,43 +114,46 @@ export const useAdminUpdateInventoryItem = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostInventoryItemsInventoryItemReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostInventoryItemsInventoryItemReq) =>
       client.admin.inventoryItems.update(inventoryItemId, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
-      [adminInventoryItemsKeys.lists(), adminInventoryItemsKeys.detail(inventoryItemId)],
+      [
+        adminInventoryItemsKeys.lists(),
+        adminInventoryItemsKeys.detail(inventoryItemId),
+      ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes an Inventory Item. This does not delete the associated product variant.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteInventoryItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
  *   const deleteInventoryItem = useAdminDeleteInventoryItem(
  *     inventoryItemId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteInventoryItem.mutate()
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -171,40 +171,44 @@ export const useAdminDeleteInventoryItem = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.inventoryItems.delete(inventoryItemId),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.inventoryItems.delete(inventoryItemId),
+    ...buildOptions(
       queryClient,
-      [adminInventoryItemsKeys.lists(), adminInventoryItemsKeys.detail(inventoryItemId)],
+      [
+        adminInventoryItemsKeys.lists(),
+        adminInventoryItemsKeys.detail(inventoryItemId),
+      ],
       options
-    )
-  )
+    ),
+  })
 }
 
-export type AdminUpdateLocationLevelReq = AdminPostInventoryItemsItemLocationLevelsLevelReq & {
-  /**
-   * The ID of the location level to update.
-   */
-  stockLocationId: string
-}
+export type AdminUpdateLocationLevelReq =
+  AdminPostInventoryItemsItemLocationLevelsLevelReq & {
+    /**
+     * The ID of the location level to update.
+     */
+    stockLocationId: string
+  }
 
 /**
  * This hook updates a location level's details for a given inventory item.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateLocationLevel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
  *   const updateLocationLevel = useAdminUpdateLocationLevel(
  *     inventoryItemId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     stockLocationId: string,
  *     stockedQuantity: number
@@ -218,12 +222,12 @@ export type AdminUpdateLocationLevelReq = AdminPostInventoryItemsItemLocationLev
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -241,10 +245,8 @@ export const useAdminUpdateLocationLevel = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (
-      payload: AdminUpdateLocationLevelReq
-    ) =>
+  return useMutation({
+    mutationFn: (payload: AdminUpdateLocationLevelReq) =>
       client.admin.inventoryItems.updateLocationLevel(
         inventoryItemId,
         payload.stockLocationId,
@@ -253,47 +255,47 @@ export const useAdminUpdateLocationLevel = (
           stocked_quantity: payload.stocked_quantity,
         }
       ),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminInventoryItemsKeys.detail(inventoryItemId),
         adminInventoryItemsKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a location level of an Inventory Item.
- * 
+ *
  * @typeParamDefinition string - The ID of the location level to delete.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteLocationLevel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
  *   const deleteLocationLevel = useAdminDeleteLocationLevel(
  *     inventoryItemId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = (
  *     locationId: string
  *   ) => {
  *     deleteLocationLevel.mutate(locationId)
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -307,40 +309,40 @@ export const useAdminDeleteLocationLevel = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (stockLocationId: string) =>
+  return useMutation({
+    mutationFn: (stockLocationId: string) =>
       client.admin.inventoryItems.deleteLocationLevel(
         inventoryItemId,
         stockLocationId
       ),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminInventoryItemsKeys.detail(inventoryItemId),
         adminInventoryItemsKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook creates a Location Level for a given Inventory Item.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateLocationLevel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
  *   const createLocationLevel = useAdminCreateLocationLevel(
  *     inventoryItemId
  *   )
  *   // ...
- * 
+ *
  *   const handleCreateLocationLevel = (
  *     locationId: string,
  *     stockedQuantity: number
@@ -354,12 +356,12 @@ export const useAdminDeleteLocationLevel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
@@ -377,16 +379,16 @@ export const useAdminCreateLocationLevel = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostInventoryItemsItemLocationLevelsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostInventoryItemsItemLocationLevelsReq) =>
       client.admin.inventoryItems.createLocationLevel(inventoryItemId, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminInventoryItemsKeys.detail(inventoryItemId),
         adminInventoryItemsKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }

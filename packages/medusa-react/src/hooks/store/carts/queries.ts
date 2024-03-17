@@ -12,18 +12,18 @@ type CartQueryKey = typeof cartKeys
 
 /**
  * This hook retrieves a Cart's details. This includes recalculating its totals.
- * 
+ *
  * @example
  * import React from "react"
  * import { useGetCart } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const { cart, isLoading } = useGetCart(cartId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -40,9 +40,9 @@ type CartQueryKey = typeof cartKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Queries
  */
@@ -58,10 +58,10 @@ export const useGetCart = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    cartKeys.detail(id),
-    () => client.carts.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: cartKeys.detail(id),
+    queryFn: () => client.carts.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

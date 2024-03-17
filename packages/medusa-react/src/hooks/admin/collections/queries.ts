@@ -18,17 +18,17 @@ type CollectionsQueryKey = typeof adminCollectionKeys
 /**
  * This hook retrieves a list of product collections. The product collections can be filtered by fields such as `handle` or `title`.
  * The collections can also be sorted or paginated.
- * 
+ *
  * @example
  * To list product collections:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCollections } from "medusa-react"
- * 
+ *
  * const Collections = () => {
  *   const { collections, isLoading } = useAdminCollections()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -45,22 +45,22 @@ type CollectionsQueryKey = typeof adminCollectionKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Collections
  * ```
- * 
+ *
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCollections } from "medusa-react"
- * 
+ *
  * const Collections = () => {
  *   const { collections, limit, offset, isLoading } = useAdminCollections({
  *     limit: 15,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -77,10 +77,10 @@ type CollectionsQueryKey = typeof adminCollectionKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Collections
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Queries
  */
@@ -96,28 +96,28 @@ export const useAdminCollections = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCollectionKeys.list(query),
-    () => client.admin.collections.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCollectionKeys.list(query),
+    queryFn: () => client.admin.collections.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a product collection by its ID. The products associated with it are expanded and returned as well.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   collectionId: string
  * }
- * 
+ *
  * const Collection = ({ collectionId }: Props) => {
  *   const { collection, isLoading } = useAdminCollection(collectionId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -125,9 +125,9 @@ export const useAdminCollections = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Collection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Queries
  */
@@ -143,10 +143,10 @@ export const useAdminCollection = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCollectionKeys.detail(id),
-    () => client.admin.collections.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCollectionKeys.detail(id),
+    queryFn: () => client.admin.collections.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

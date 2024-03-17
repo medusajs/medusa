@@ -18,22 +18,22 @@ export const storeProductCategoryKeys = queryKeysFactory(
 type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
 
 /**
- * This hook retrieves a list of product categories. The product categories can be filtered by fields such as `handle` or `q` passed in the `query` parameter. 
+ * This hook retrieves a list of product categories. The product categories can be filtered by fields such as `handle` or `q` passed in the `query` parameter.
  * The product categories can also be paginated. This hook can also be used to retrieve a product category by its handle.
- * 
+ *
  * @example
  * To list product categories:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductCategories } from "medusa-react"
- * 
+ *
  * function Categories() {
- *   const { 
- *     product_categories, 
+ *   const {
+ *     product_categories,
  *     isLoading,
  *   } = useProductCategories()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -52,26 +52,26 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * To retrieve a product category by its handle:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductCategories } from "medusa-react"
- * 
+ *
  * function Categories(
  *   handle: string
  * ) {
- *   const { 
- *     product_categories, 
+ *   const {
+ *     product_categories,
  *     isLoading,
  *   } = useProductCategories({
  *     handle
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -90,27 +90,27 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the product categories:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductCategories } from "medusa-react"
- * 
+ *
  * function Categories(
  *   handle: string
  * ) {
- *   const { 
- *     product_categories, 
+ *   const {
+ *     product_categories,
  *     isLoading,
  *   } = useProductCategories({
  *     handle,
  *     expand: "products"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -129,22 +129,22 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import { useProductCategories } from "medusa-react"
- * 
+ *
  * function Categories(
  *   handle: string
  * ) {
- *   const { 
+ *   const {
  *     product_categories,
  *     limit,
- *     offset, 
+ *     offset,
  *     isLoading,
  *   } = useProductCategories({
  *     handle,
@@ -152,7 +152,7 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  *     limit: 50,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -171,10 +171,10 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * @customNamespace Hooks.Store.Product Categories
  * @category Queries
  */
@@ -190,33 +190,33 @@ export const useProductCategories = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    storeProductCategoryKeys.list(query),
-    () => client.productCategories.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: storeProductCategoryKeys.list(query),
+    queryFn: () => client.productCategories.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a Product Category's details.
- * 
+ *
  * @example
  * A simple example that retrieves a product category by its ID:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   categoryId: string
  * }
- * 
+ *
  * const Category = ({ categoryId }: Props) => {
  *   const { product_category, isLoading } = useProductCategory(
  *     categoryId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -224,20 +224,20 @@ export const useProductCategories = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Category
  * ```
- * 
+ *
  * To specify relations that should be retrieved:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   categoryId: string
  * }
- * 
+ *
  * const Category = ({ categoryId }: Props) => {
  *   const { product_category, isLoading } = useProductCategory(
  *     categoryId,
@@ -245,7 +245,7 @@ export const useProductCategories = (
  *       expand: "products"
  *     }
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -253,10 +253,10 @@ export const useProductCategories = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Category
  * ```
- * 
+ *
  * @customNamespace Hooks.Store.Product Categories
  * @category Queries
  */
@@ -276,11 +276,11 @@ export const useProductCategory = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    storeProductCategoryKeys.detail(id),
-    () => client.productCategories.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: storeProductCategoryKeys.detail(id),
+    queryFn: () => client.productCategories.retrieve(id, query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

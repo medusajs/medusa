@@ -17,24 +17,24 @@ type StoreQueryKeys = typeof adminStoreKeys
 
 /**
  * This hook retrieves a list of available payment providers in a store.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminStorePaymentProviders } from "medusa-react"
- * 
+ *
  * const PaymentProviders = () => {
- *   const { 
+ *   const {
  *     payment_providers,
  *     isLoading
  *   } = useAdminStorePaymentProviders()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {payment_providers && !payment_providers.length && (
  *         <span>No Payment Providers</span>
  *       )}
- *       {payment_providers && 
+ *       {payment_providers &&
  *         payment_providers.length > 0 &&(
  *           <ul>
  *             {payment_providers.map((provider) => (
@@ -45,9 +45,9 @@ type StoreQueryKeys = typeof adminStoreKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PaymentProviders
- * 
+ *
  * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
@@ -59,34 +59,34 @@ export const useAdminStorePaymentProviders = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminStoreKeys.detail("payment_providers"),
-    () => client.admin.store.listPaymentProviders(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminStoreKeys.detail("payment_providers"),
+    queryFn: () => client.admin.store.listPaymentProviders(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a list of available tax providers in a store.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminStoreTaxProviders } from "medusa-react"
- * 
+ *
  * const TaxProviders = () => {
- *   const { 
+ *   const {
  *     tax_providers,
  *     isLoading
  *   } = useAdminStoreTaxProviders()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {tax_providers && !tax_providers.length && (
  *         <span>No Tax Providers</span>
  *       )}
- *       {tax_providers && 
+ *       {tax_providers &&
  *         tax_providers.length > 0 &&(
  *           <ul>
  *             {tax_providers.map((provider) => (
@@ -97,9 +97,9 @@ export const useAdminStorePaymentProviders = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxProviders
- * 
+ *
  * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
@@ -111,27 +111,27 @@ export const useAdminStoreTaxProviders = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminStoreKeys.detail("tax_providers"),
-    () => client.admin.store.listTaxProviders(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminStoreKeys.detail("tax_providers"),
+    queryFn: () => client.admin.store.listTaxProviders(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves the store's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminStore } from "medusa-react"
- * 
+ *
  * const Store = () => {
- *   const { 
+ *   const {
  *     store,
  *     isLoading
  *   } = useAdminStore()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -139,9 +139,9 @@ export const useAdminStoreTaxProviders = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Store
- * 
+ *
  * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
@@ -153,10 +153,10 @@ export const useAdminStore = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminStoreKeys.details(),
-    () => client.admin.store.retrieve(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminStoreKeys.details(),
+    queryFn: () => client.admin.store.retrieve(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

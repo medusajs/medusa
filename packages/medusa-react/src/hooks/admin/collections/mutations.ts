@@ -9,8 +9,8 @@ import {
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import {
-  UseMutationOptions,
   useMutation,
+  UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
@@ -19,15 +19,15 @@ import { adminCollectionKeys } from "./queries"
 
 /**
  * This hook creates a product collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateCollection } from "medusa-react"
- * 
+ *
  * const CreateCollection = () => {
  *   const createCollection = useAdminCreateCollection()
  *   // ...
- * 
+ *
  *   const handleCreate = (title: string) => {
  *     createCollection.mutate({
  *       title
@@ -37,46 +37,46 @@ import { adminCollectionKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateCollection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminCreateCollection = (
   options?: UseMutationOptions<
-    Response<AdminCollectionsRes>, 
+    Response<AdminCollectionsRes>,
     Error,
     AdminPostCollectionsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostCollectionsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCollectionsReq) =>
       client.admin.collections.create(payload),
-    buildOptions(queryClient, adminCollectionKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminCollectionKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a product collection's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   collectionId: string
  * }
- * 
+ *
  * const Collection = ({ collectionId }: Props) => {
  *   const updateCollection = useAdminUpdateCollection(collectionId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (title: string) => {
  *     updateCollection.mutate({
  *       title
@@ -86,12 +86,12 @@ export const useAdminCreateCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Collection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
@@ -108,32 +108,32 @@ export const useAdminUpdateCollection = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostCollectionsCollectionReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCollectionsCollectionReq) =>
       client.admin.collections.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a product collection. This does not delete associated products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   collectionId: string
  * }
- * 
+ *
  * const Collection = ({ collectionId }: Props) => {
  *   const deleteCollection = useAdminDeleteCollection(collectionId)
  *   // ...
- * 
+ *
  *   const handleDelete = (title: string) => {
  *     deleteCollection.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -141,12 +141,12 @@ export const useAdminUpdateCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Collection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
@@ -159,31 +159,31 @@ export const useAdminDeleteCollection = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    () => client.admin.collections.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.collections.delete(id),
+    ...buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds products to a collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminAddProductsToCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   collectionId: string
  * }
- * 
+ *
  * const Collection = ({ collectionId }: Props) => {
  *   const addProducts = useAdminAddProductsToCollection(collectionId)
  *   // ...
- * 
+ *
  *   const handleAddProducts = (productIds: string[]) => {
  *     addProducts.mutate({
  *       product_ids: productIds
@@ -193,12 +193,12 @@ export const useAdminDeleteCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Collection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
@@ -216,33 +216,33 @@ export const useAdminAddProductsToCollection = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostProductsToCollectionReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostProductsToCollectionReq) =>
       client.admin.collections.addProducts(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes a list of products from a collection. This would not delete the product, 
+ * This hook removes a list of products from a collection. This would not delete the product,
  * only the association between the product and the collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminRemoveProductsFromCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   collectionId: string
  * }
- * 
+ *
  * const Collection = ({ collectionId }: Props) => {
  *   const removeProducts = useAdminRemoveProductsFromCollection(collectionId)
  *   // ...
- * 
+ *
  *   const handleRemoveProducts = (productIds: string[]) => {
  *     removeProducts.mutate({
  *       product_ids: productIds
@@ -252,12 +252,12 @@ export const useAdminAddProductsToCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Collection
- * 
+ *
  * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
@@ -275,13 +275,13 @@ export const useAdminRemoveProductsFromCollection = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteProductsFromCollectionReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeleteProductsFromCollectionReq) =>
       client.admin.collections.removeProducts(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

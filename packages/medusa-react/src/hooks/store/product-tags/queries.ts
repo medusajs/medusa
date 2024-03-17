@@ -15,22 +15,22 @@ export const productTagKeys = queryKeysFactory(PRODUCT_TAGS_QUERY_KEY)
 type ProductTypesQueryKeys = typeof productTagKeys
 
 /**
- * This hook retrieves a list of product tags. The product tags can be filtered by fields such as `id` or `q` 
+ * This hook retrieves a list of product tags. The product tags can be filtered by fields such as `id` or `q`
  * passed in the `query` parameter. The product tags can also be sorted or paginated.
- * 
+ *
  * @example
  * To list product tags:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductTags } from "medusa-react"
- * 
+ *
  * function Tags() {
- *   const { 
- *     product_tags, 
+ *   const {
+ *     product_tags,
  *     isLoading,
  *   } = useProductTags()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -49,19 +49,19 @@ type ProductTypesQueryKeys = typeof productTagKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Tags
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductTags } from "medusa-react"
- * 
+ *
  * function Tags() {
- *   const { 
- *     product_tags, 
+ *   const {
+ *     product_tags,
  *     limit,
  *     offset,
  *     isLoading,
@@ -69,7 +69,7 @@ type ProductTypesQueryKeys = typeof productTagKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -88,10 +88,10 @@ type ProductTypesQueryKeys = typeof productTagKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Tags
  * ```
- * 
+ *
  * @customNamespace Hooks.Store.Product Tags
  * @category Queries
  */
@@ -107,10 +107,10 @@ export const useProductTags = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    productTagKeys.list(query),
-    () => client.productTags.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: productTagKeys.list(query),
+    queryFn: () => client.productTags.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

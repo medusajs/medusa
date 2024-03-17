@@ -24,15 +24,15 @@ import { adminPriceListKeys } from "./queries"
 
 /**
  * This hook creates a price list.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
- *   PriceListStatus, 
- *   PriceListType, 
+ * import {
+ *   PriceListStatus,
+ *   PriceListType,
  * } from "@medusajs/medusa"
  * import { useAdminCreatePriceList } from "medusa-react"
- * 
+ *
  * type CreateData = {
  *   name: string
  *   description: string
@@ -45,11 +45,11 @@ import { adminPriceListKeys } from "./queries"
  *     max_quantity: number
  *   }[]
  * }
- * 
+ *
  * const CreatePriceList = () => {
  *   const createPriceList = useAdminCreatePriceList()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     data: CreateData
  *   ) => {
@@ -59,12 +59,12 @@ import { adminPriceListKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreatePriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -77,30 +77,30 @@ export const useAdminCreatePriceList = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostPriceListsPriceListReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPriceListsPriceListReq) =>
       client.admin.priceLists.create(payload),
-    buildOptions(queryClient, [adminPriceListKeys.lists()], options)
-  )
+    ...buildOptions(queryClient, [adminPriceListKeys.lists()], options),
+  })
 }
 
 /**
  * This hook updates a price list's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdatePriceList } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
  *   const updatePriceList = useAdminUpdatePriceList(priceListId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     endsAt: Date
  *   ) => {
@@ -112,12 +112,12 @@ export const useAdminCreatePriceList = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -135,10 +135,10 @@ export const useAdminUpdatePriceList = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostPriceListsPriceListPriceListReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPriceListsPriceListPriceListReq) =>
       client.admin.priceLists.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminPriceListKeys.detail(id),
@@ -146,27 +146,27 @@ export const useAdminUpdatePriceList = (
         adminPriceListKeys.detailProducts(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a price list and its associated prices.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeletePriceList } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
  *   const deletePriceList = useAdminDeletePriceList(priceListId)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deletePriceList.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -174,12 +174,12 @@ export const useAdminUpdatePriceList = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -193,39 +193,39 @@ export const useAdminDeletePriceList = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.priceLists.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.priceLists.delete(id),
+    ...buildOptions(
       queryClient,
       [adminPriceListKeys.detail(id), adminPriceListKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds or updates a list of prices in a price list.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreatePriceListPrices } from "medusa-react"
- * 
+ *
  * type PriceData = {
  *   amount: number
  *   variant_id: string
  *   currency_code: string
  * }
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
  *   const addPrices = useAdminCreatePriceListPrices(priceListId)
  *   // ...
- * 
+ *
  *   const handleAddPrices = (prices: PriceData[]) => {
  *     addPrices.mutate({
  *       prices
@@ -235,12 +235,12 @@ export const useAdminDeletePriceList = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -257,10 +257,10 @@ export const useAdminCreatePriceListPrices = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostPriceListPricesPricesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostPriceListPricesPricesReq) =>
       client.admin.priceLists.addPrices(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminPriceListKeys.detail(id),
@@ -268,27 +268,27 @@ export const useAdminCreatePriceListPrices = (
         adminPriceListKeys.detailProducts(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a list of prices in a price list.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeletePriceListPrices } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
  *   const deletePrices = useAdminDeletePriceListPrices(priceListId)
  *   // ...
- * 
+ *
  *   const handleDeletePrices = (priceIds: string[]) => {
  *     deletePrices.mutate({
  *       price_ids: priceIds
@@ -298,12 +298,12 @@ export const useAdminCreatePriceListPrices = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -321,10 +321,10 @@ export const useAdminDeletePriceListPrices = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeletePriceListPricesPricesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeletePriceListPricesPricesReq) =>
       client.admin.priceLists.deletePrices(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminPriceListKeys.detail(id),
@@ -332,21 +332,21 @@ export const useAdminDeletePriceListPrices = (
         adminPriceListKeys.detailProducts(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes all the prices associated with multiple products in a price list.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeletePriceListProductsPrices } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
@@ -354,7 +354,7 @@ export const useAdminDeletePriceListPrices = (
  *     priceListId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteProductsPrices = (productIds: string[]) => {
  *     deleteProductsPrices.mutate({
  *       product_ids: productIds
@@ -364,12 +364,12 @@ export const useAdminDeletePriceListPrices = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -387,31 +387,32 @@ export const useAdminDeletePriceListProductsPrices = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeletePriceListsPriceListProductsPricesBatchReq) =>
-      client.admin.priceLists.deleteProductsPrices(id, payload),
-    buildOptions(
+  return useMutation({
+    mutationFn: (
+      payload: AdminDeletePriceListsPriceListProductsPricesBatchReq
+    ) => client.admin.priceLists.deleteProductsPrices(id, payload),
+    ...buildOptions(
       queryClient,
       [adminPriceListKeys.detail(id), adminPriceListKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes all the prices related to a specific product in a price list.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminDeletePriceListProductPrices
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  *   productId: string
  * }
- * 
+ *
  * const PriceListProduct = ({
  *   priceListId,
  *   productId
@@ -421,7 +422,7 @@ export const useAdminDeletePriceListProductsPrices = (
  *     productId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteProductPrices = () => {
  *     deleteProductPrices.mutate(void 0, {
  *       onSuccess: ({ ids, deleted, object }) => {
@@ -429,12 +430,12 @@ export const useAdminDeletePriceListProductsPrices = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceListProduct
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -455,9 +456,10 @@ export const useAdminDeletePriceListProductPrices = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.priceLists.deleteProductPrices(id, productId),
-    buildOptions(
+  return useMutation({
+    mutationFn: () =>
+      client.admin.priceLists.deleteProductPrices(id, productId),
+    ...buildOptions(
       queryClient,
       [
         adminPriceListKeys.detail(id),
@@ -465,24 +467,24 @@ export const useAdminDeletePriceListProductPrices = (
         adminProductKeys.detail(productId),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes all the prices related to a specific product variant in a price list.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminDeletePriceListVariantPrices
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  *   variantId: string
  * }
- * 
+ *
  * const PriceListVariant = ({
  *   priceListId,
  *   variantId
@@ -492,7 +494,7 @@ export const useAdminDeletePriceListProductPrices = (
  *     variantId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteVariantPrices = () => {
  *     deleteVariantPrices.mutate(void 0, {
  *       onSuccess: ({ ids, deleted, object }) => {
@@ -500,12 +502,12 @@ export const useAdminDeletePriceListProductPrices = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PriceListVariant
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
@@ -526,9 +528,10 @@ export const useAdminDeletePriceListVariantPrices = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.priceLists.deleteVariantPrices(id, variantId),
-    buildOptions(
+  return useMutation({
+    mutationFn: () =>
+      client.admin.priceLists.deleteVariantPrices(id, variantId),
+    ...buildOptions(
       queryClient,
       [
         adminPriceListKeys.detail(id),
@@ -536,6 +539,6 @@ export const useAdminDeletePriceListVariantPrices = (
         adminVariantKeys.detail(variantId),
       ],
       options
-    )
-  )
+    ),
+  })
 }

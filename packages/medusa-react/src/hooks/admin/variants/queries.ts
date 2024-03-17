@@ -18,19 +18,19 @@ export const adminVariantKeys = queryKeysFactory(ADMIN_VARIANT_QUERY_KEY)
 type VariantQueryKeys = typeof adminVariantKeys
 
 /**
- * This hook retrieves a list of product variants. The product variant can be filtered by fields such as `id` or `title` 
+ * This hook retrieves a list of product variants. The product variant can be filtered by fields such as `id` or `title`
  * passed in the `query` parameter. The product variant can also be paginated.
- * 
+ *
  * @example
  * To list product variants:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminVariants } from "medusa-react"
- * 
+ *
  * const Variants = () => {
  *   const { variants, isLoading } = useAdminVariants()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -47,21 +47,21 @@ type VariantQueryKeys = typeof adminVariantKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Variants
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the product variants:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminVariants } from "medusa-react"
- * 
+ *
  * const Variants = () => {
  *   const { variants, isLoading } = useAdminVariants({
  *     expand: "options"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -78,19 +78,19 @@ type VariantQueryKeys = typeof adminVariantKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Variants
  * ```
- * 
+ *
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminVariants } from "medusa-react"
- * 
+ *
  * const Variants = () => {
- *   const { 
- *     variants, 
+ *   const {
+ *     variants,
  *     limit,
  *     offset,
  *     isLoading
@@ -99,7 +99,7 @@ type VariantQueryKeys = typeof adminVariantKeys
  *     limit: 50,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -116,10 +116,10 @@ type VariantQueryKeys = typeof adminVariantKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Variants
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
@@ -135,33 +135,33 @@ export const useAdminVariants = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminVariantKeys.list(query),
-    () => client.admin.variants.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminVariantKeys.list(query),
+    queryFn: () => client.admin.variants.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a product variant's details.
- * 
+ *
  * @example
  * A simple example that retrieves a product variant by its ID:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminVariant } from "medusa-react"
- * 
+ *
  * type Props = {
  *   variantId: string
  * }
- * 
+ *
  * const Variant = ({ variantId }: Props) => {
  *   const { variant, isLoading } = useAdminVariant(
  *     variantId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -169,27 +169,27 @@ export const useAdminVariants = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Variant
  * ```
- * 
+ *
  * To specify relations that should be retrieved:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminVariant } from "medusa-react"
- * 
+ *
  * type Props = {
  *   variantId: string
  * }
- * 
+ *
  * const Variant = ({ variantId }: Props) => {
  *   const { variant, isLoading } = useAdminVariant(
  *     variantId, {
  *       expand: "options"
  *     }
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -197,10 +197,10 @@ export const useAdminVariants = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Variant
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
@@ -220,30 +220,30 @@ export const useAdminVariant = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminVariantKeys.detail(id),
-    () => client.admin.variants.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminVariantKeys.detail(id),
+    queryFn: () => client.admin.variants.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves the available inventory of a product variant.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminVariantsInventory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   variantId: string
  * }
- * 
+ *
  * const VariantInventory = ({ variantId }: Props) => {
  *   const { variant, isLoading } = useAdminVariantsInventory(
  *     variantId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -260,9 +260,9 @@ export const useAdminVariant = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default VariantInventory
- * 
+ *
  * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
@@ -278,10 +278,10 @@ export const useAdminVariantsInventory = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminVariantKeys.detail(id),
-    () => client.admin.variants.getInventory(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminVariantKeys.detail(id),
+    queryFn: () => client.admin.variants.getInventory(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

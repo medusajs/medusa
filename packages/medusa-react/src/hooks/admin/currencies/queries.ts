@@ -15,19 +15,19 @@ export const adminCurrenciesKeys = queryKeysFactory(ADMIN_CURRENCIES_QUERY_KEY)
 type CurrenciesQueryKey = typeof adminCurrenciesKeys
 
 /**
- * This hook retrieves a list of currencies. The currencies can be filtered by fields such as `code`. 
+ * This hook retrieves a list of currencies. The currencies can be filtered by fields such as `code`.
  * The currencies can also be sorted or paginated.
- * 
+ *
  * @example
  * To list currencies:
- * 
+ *
  * ```ts
  * import React from "react"
  * import { useAdminCurrencies } from "medusa-react"
- * 
+ *
  * const Currencies = () => {
  *   const { currencies, isLoading } = useAdminCurrencies()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -44,22 +44,22 @@ type CurrenciesQueryKey = typeof adminCurrenciesKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Currencies
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```ts
  * import React from "react"
  * import { useAdminCurrencies } from "medusa-react"
- * 
+ *
  * const Currencies = () => {
  *   const { currencies, limit, offset, isLoading } = useAdminCurrencies({
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -76,10 +76,10 @@ type CurrenciesQueryKey = typeof adminCurrenciesKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Currencies
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Currencies
  * @category Queries
  */
@@ -95,10 +95,10 @@ export const useAdminCurrencies = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCurrenciesKeys.list(query),
-    () => client.admin.currencies.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCurrenciesKeys.list(query),
+    queryFn: () => client.admin.currencies.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

@@ -17,19 +17,19 @@ export const adminRegionKeys = queryKeysFactory(ADMIN_REGIONS_QUERY_KEY)
 type RegionQueryKeys = typeof adminRegionKeys
 
 /**
- * This hook retrieves a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter. 
+ * This hook retrieves a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter.
  * The regions can also be paginated.
- * 
+ *
  * @example
  * To list regions:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminRegions } from "medusa-react"
- * 
+ *
  * const Regions = () => {
  *   const { regions, isLoading } = useAdminRegions()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -44,19 +44,19 @@ type RegionQueryKeys = typeof adminRegionKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Regions
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminRegions } from "medusa-react"
- * 
+ *
  * const Regions = () => {
- *   const { 
- *     regions, 
+ *   const {
+ *     regions,
  *     limit,
  *     offset,
  *     isLoading
@@ -64,7 +64,7 @@ type RegionQueryKeys = typeof adminRegionKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -79,10 +79,10 @@ type RegionQueryKeys = typeof adminRegionKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Regions
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
@@ -98,32 +98,32 @@ export const useAdminRegions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminRegionKeys.list(query),
-    () => client.admin.regions.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminRegionKeys.list(query),
+    queryFn: () => client.admin.regions.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a region's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
  *   const { region, isLoading } = useAdminRegion(
  *     regionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -131,9 +131,9 @@ export const useAdminRegions = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
@@ -149,44 +149,44 @@ export const useAdminRegion = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminRegionKeys.detail(id),
-    () => client.admin.regions.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminRegionKeys.detail(id),
+    queryFn: () => client.admin.regions.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a list of fulfillment options available in a region.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRegionFulfillmentOptions
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
- *   const { 
- *     fulfillment_options, 
+ *   const {
+ *     fulfillment_options,
  *     isLoading
  *   } = useAdminRegionFulfillmentOptions(
  *     regionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {fulfillment_options && !fulfillment_options.length && (
  *         <span>No Regions</span>
  *       )}
- *       {fulfillment_options && 
+ *       {fulfillment_options &&
  *         fulfillment_options.length > 0 && (
  *         <ul>
  *           {fulfillment_options.map((option) => (
@@ -199,9 +199,9 @@ export const useAdminRegion = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
@@ -217,10 +217,10 @@ export const useAdminRegionFulfillmentOptions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminRegionKeys.detail(`${regionId}_fullfillment-options`),
-    () => client.admin.regions.retrieveFulfillmentOptions(regionId),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminRegionKeys.detail(`${regionId}_fullfillment-options`),
+    queryFn: () => client.admin.regions.retrieveFulfillmentOptions(regionId),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

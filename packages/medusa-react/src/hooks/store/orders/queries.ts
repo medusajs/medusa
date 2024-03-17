@@ -18,32 +18,32 @@ type OrderQueryKey = typeof orderKeys
 
 /**
  * This hook retrieves an Order's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useOrder } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string
  * }
- * 
+ *
  * const Order = ({ orderId }: Props) => {
- *   const { 
- *     order, 
- *     isLoading, 
+ *   const {
+ *     order,
+ *     isLoading,
  *   } = useOrder(orderId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {order && <span>{order.display_id}</span>}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Order
- * 
+ *
  * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
@@ -59,43 +59,43 @@ export const useOrder = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    orderKeys.detail(id),
-    () => client.orders.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: orderKeys.detail(id),
+    queryFn: () => client.orders.retrieve(id),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves an order's details by the ID of the cart that was used to create the order.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCartOrder } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Order = ({ cartId }: Props) => {
- *   const { 
- *     order, 
- *     isLoading, 
+ *   const {
+ *     order,
+ *     isLoading,
  *   } = useCartOrder(cartId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {order && <span>{order.display_id}</span>}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Order
- * 
+ *
  * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
@@ -111,50 +111,50 @@ export const useCartOrder = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    orderKeys.cart(cartId),
-    () => client.orders.retrieveByCartId(cartId),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: orderKeys.cart(cartId),
+    queryFn: () => client.orders.retrieveByCartId(cartId),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook looks up an order using filters. If the filters don't narrow down the results to a single order, a `404` response is returned with no orders.
- * 
+ *
  * @example
  * import React from "react"
  * import { useOrders } from "medusa-react"
- * 
+ *
  * type Props = {
  *   displayId: number
  *   email: string
  * }
- * 
+ *
  * const Order = ({
  *   displayId,
  *   email
  * }: Props) => {
- *   const { 
- *     order, 
- *     isLoading, 
+ *   const {
+ *     order,
+ *     isLoading,
  *   } = useOrders({
  *     display_id: displayId,
  *     email,
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {order && <span>{order.display_id}</span>}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Order
- * 
+ *
  * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
@@ -170,11 +170,11 @@ export const useOrders = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    orderKeys.list(query),
-    () => client.orders.lookupOrder(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: orderKeys.list(query),
+    queryFn: () => client.orders.lookupOrder(query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

@@ -6,7 +6,7 @@ import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils"
 
 const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const
 
@@ -19,21 +19,21 @@ type ShippingOptionQueryKey = typeof shippingOptionKey
 
 /**
  * This hook retrieves a list of shipping options. The shipping options can be filtered using the `query` parameter.
- * 
+ *
  * @example
  * import React from "react"
  * import { useShippingOptions } from "medusa-react"
- * 
+ *
  * const ShippingOptions = () => {
- *   const { 
- *     shipping_options, 
- *     isLoading, 
+ *   const {
+ *     shipping_options,
+ *     isLoading,
  *   } = useShippingOptions()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
- *       {shipping_options?.length && 
+ *       {shipping_options?.length &&
  *         shipping_options?.length > 0 && (
  *         <ul>
  *           {shipping_options?.map((shipping_option) => (
@@ -46,9 +46,9 @@ type ShippingOptionQueryKey = typeof shippingOptionKey
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingOptions
- * 
+ *
  * @customNamespace Hooks.Store.Shipping Options
  * @category Queries
  */
@@ -64,29 +64,29 @@ export const useShippingOptions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    shippingOptionKey.list(query),
-    async () => client.shippingOptions.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: shippingOptionKey.list(query),
+    queryFn: () => client.shippingOptions.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a list of shipping options available for a cart.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCartShippingOptions } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const ShippingOptions = ({ cartId }: Props) => {
  *   const { shipping_options, isLoading } =
  *     useCartShippingOptions(cartId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -107,9 +107,9 @@ export const useShippingOptions = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingOptions
- * 
+ *
  * @customNamespace Hooks.Store.Shipping Options
  * @category Queries
  */
@@ -125,10 +125,10 @@ export const useCartShippingOptions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    shippingOptionKey.cart(cartId),
-    async () => client.shippingOptions.listCartOptions(cartId),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: shippingOptionKey.cart(cartId),
+    queryFn: () => client.shippingOptions.listCartOptions(cartId),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

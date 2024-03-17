@@ -18,21 +18,21 @@ export const adminProductCategoryKeys = queryKeysFactory(
 type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
 
 /**
- * This hook 
- * 
+ * This hook
+ *
  * @example
  * To list product categories:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
- * 
+ *
  * function Categories() {
- *   const { 
+ *   const {
  *     product_categories,
- *     isLoading 
+ *     isLoading
  *   } = useAdminProductCategories()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -51,24 +51,24 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the product category:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
- * 
+ *
  * function Categories() {
- *   const { 
+ *   const {
  *     product_categories,
- *     isLoading 
+ *     isLoading
  *   } = useAdminProductCategories({
  *     expand: "category_children"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -87,28 +87,28 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
- * 
+ *
  * function Categories() {
- *   const { 
+ *   const {
  *     product_categories,
  *     limit,
  *     offset,
- *     isLoading 
+ *     isLoading
  *   } = useAdminProductCategories({
  *     expand: "category_children",
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -127,10 +127,10 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Categories
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Queries
  */
@@ -146,84 +146,84 @@ export const useAdminProductCategories = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductCategoryKeys.list(query),
-    () => client.admin.productCategories.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductCategoryKeys.list(query),
+    queryFn: () => client.admin.productCategories.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a product category's details.
- * 
+ *
  * @example
  * A simple example that retrieves an order by its ID:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
- *   const { 
- *     product_category, 
- *     isLoading, 
+ *   const {
+ *     product_category,
+ *     isLoading,
  *   } = useAdminProductCategory(productCategoryId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {product_category && (
  *         <span>{product_category.name}</span>
  *       )}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Category
  * ```
- * 
+ *
  * To specify relations that should be retrieved:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
- *   const { 
- *     product_category, 
- *     isLoading, 
+ *   const {
+ *     product_category,
+ *     isLoading,
  *   } = useAdminProductCategory(productCategoryId, {
  *     expand: "category_children"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {product_category && (
  *         <span>{product_category.name}</span>
  *       )}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Category
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Queries
  */
@@ -243,11 +243,11 @@ export const useAdminProductCategory = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductCategoryKeys.detail(id),
-    () => client.admin.productCategories.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductCategoryKeys.detail(id),
+    queryFn: () => client.admin.productCategories.retrieve(id, query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

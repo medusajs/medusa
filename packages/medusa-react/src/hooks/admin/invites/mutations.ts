@@ -13,17 +13,17 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminInviteKeys } from "./queries"
 
 /**
- * This hook accepts an Invite. This will also delete the invite and create a new user that can log in and perform admin functionalities. 
+ * This hook accepts an Invite. This will also delete the invite and create a new user that can log in and perform admin functionalities.
  * The user will have the email associated with the invite, and the password provided in the mutation function's parameter.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminAcceptInvite } from "medusa-react"
- * 
+ *
  * const AcceptInvite = () => {
  *   const acceptInvite = useAdminAcceptInvite()
  *   // ...
- * 
+ *
  *   const handleAccept = (
  *     token: string,
  *     firstName: string,
@@ -43,12 +43,12 @@ import { adminInviteKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default AcceptInvite
- * 
+ *
  * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
@@ -62,30 +62,30 @@ export const useAdminAcceptInvite = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostInvitesInviteAcceptReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostInvitesInviteAcceptReq) =>
       client.admin.invites.accept(payload),
-    buildOptions(queryClient, adminInviteKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminInviteKeys.lists(), options),
+  })
 }
 
 /**
- * This hook resends an invite. This renews the expiry date by seven days and generates a new token for the invite. It also triggers the `invite.created` event, 
- * so if you have a Notification Provider installed that handles this event, a notification should be sent to the email associated with the 
+ * This hook resends an invite. This renews the expiry date by seven days and generates a new token for the invite. It also triggers the `invite.created` event,
+ * so if you have a Notification Provider installed that handles this event, a notification should be sent to the email associated with the
  * invite to allow them to accept the invite.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminResendInvite } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inviteId: string
  * }
- * 
+ *
  * const ResendInvite = ({ inviteId }: Props) => {
  *   const resendInvite = useAdminResendInvite(inviteId)
  *   // ...
- * 
+ *
  *   const handleResend = () => {
  *     resendInvite.mutate(void 0, {
  *       onSuccess: () => {
@@ -93,12 +93,12 @@ export const useAdminAcceptInvite = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ResendInvite
- * 
+ *
  * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
@@ -110,7 +110,10 @@ export const useAdminResendInvite = (
   options?: UseMutationOptions
 ) => {
   const { client } = useMedusa()
-  return useMutation(() => client.admin.invites.resend(id), options)
+  return useMutation({
+    mutationFn: () => client.admin.invites.resend(id),
+    ...options,
+  })
 }
 
 export const useAdminCreateInvite = (
@@ -119,27 +122,28 @@ export const useAdminCreateInvite = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostInvitesPayload) => client.admin.invites.create(payload),
-    buildOptions(queryClient, adminInviteKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostInvitesPayload) =>
+      client.admin.invites.create(payload),
+    ...buildOptions(queryClient, adminInviteKeys.lists(), options),
+  })
 }
 
 /**
  * This hook deletes an invite. Only invites that weren't accepted can be deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteInvite } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inviteId: string
  * }
- * 
+ *
  * const DeleteInvite = ({ inviteId }: Props) => {
  *   const deleteInvite = useAdminDeleteInvite(inviteId)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteInvite.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -147,12 +151,12 @@ export const useAdminCreateInvite = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Invite
- * 
+ *
  * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
@@ -166,12 +170,12 @@ export const useAdminDeleteInvite = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.invites.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.invites.delete(id),
+    ...buildOptions(
       queryClient,
       [adminInviteKeys.lists(), adminInviteKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

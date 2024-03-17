@@ -22,19 +22,19 @@ import { adminTaxRateKeys } from "./queries"
 
 /**
  * This hook creates a tax rate.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateTaxRate } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const CreateTaxRate = ({ regionId }: Props) => {
  *   const createTaxRate = useAdminCreateTaxRate()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     code: string,
  *     name: string,
@@ -51,12 +51,12 @@ import { adminTaxRateKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateTaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -69,27 +69,28 @@ export const useAdminCreateTaxRate = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostTaxRatesReq) => client.admin.taxRates.create(payload),
-    buildOptions(queryClient, adminTaxRateKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostTaxRatesReq) =>
+      client.admin.taxRates.create(payload),
+    ...buildOptions(queryClient, adminTaxRateKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a tax rate's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateTaxRate } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string
  *   ) => {
@@ -101,12 +102,12 @@ export const useAdminCreateTaxRate = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -124,32 +125,32 @@ export const useAdminUpdateTaxRate = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostTaxRatesTaxRateReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostTaxRatesTaxRateReq) =>
       client.admin.taxRates.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteTaxRate } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const deleteTaxRate = useAdminDeleteTaxRate(taxRateId)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteTaxRate.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -157,12 +158,12 @@ export const useAdminUpdateTaxRate = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -176,31 +177,31 @@ export const useAdminDeleteTaxRate = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.taxRates.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.taxRates.delete(id),
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds products to a tax rate.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateProductTaxRates } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const addProduct = useAdminCreateProductTaxRates(taxRateId)
  *   // ...
- * 
+ *
  *   const handleAddProduct = (productIds: string[]) => {
  *     addProduct.mutate({
  *       products: productIds,
@@ -210,12 +211,12 @@ export const useAdminDeleteTaxRate = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -233,32 +234,32 @@ export const useAdminCreateProductTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostTaxRatesTaxRateProductsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostTaxRatesTaxRateProductsReq) =>
       client.admin.taxRates.addProducts(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook removes products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteProductTaxRates } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
  *   // ...
- * 
+ *
  *   const handleRemoveProduct = (productIds: string[]) => {
  *     removeProduct.mutate({
  *       products: productIds,
@@ -268,12 +269,12 @@ export const useAdminCreateProductTaxRates = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -291,36 +292,36 @@ export const useAdminDeleteProductTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteTaxRatesTaxRateProductsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeleteTaxRatesTaxRateProductsReq) =>
       client.admin.taxRates.removeProducts(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds product types to a tax rate.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminCreateProductTypeTaxRates,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const addProductTypes = useAdminCreateProductTypeTaxRates(
  *     taxRateId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddProductTypes = (productTypeIds: string[]) => {
  *     addProductTypes.mutate({
  *       product_types: productTypeIds,
@@ -330,12 +331,12 @@ export const useAdminDeleteProductTaxRates = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -353,37 +354,37 @@ export const useAdminCreateProductTypeTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostTaxRatesTaxRateProductTypesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostTaxRatesTaxRateProductTypesReq) =>
       client.admin.taxRates.addProductTypes(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes product types from a tax rate. This only removes the association between the 
+ * This hook removes product types from a tax rate. This only removes the association between the
  * product types and the tax rate. It does not delete the product types.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminDeleteProductTypeTaxRates,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const removeProductTypes = useAdminDeleteProductTypeTaxRates(
  *     taxRateId
  *   )
  *   // ...
- * 
+ *
  *   const handleRemoveProductTypes = (
  *     productTypeIds: string[]
  *   ) => {
@@ -395,12 +396,12 @@ export const useAdminCreateProductTypeTaxRates = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -418,34 +419,34 @@ export const useAdminDeleteProductTypeTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteTaxRatesTaxRateProductTypesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeleteTaxRatesTaxRateProductTypesReq) =>
       client.admin.taxRates.removeProductTypes(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds shipping options to a tax rate.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateShippingTaxRates } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const addShippingOption = useAdminCreateShippingTaxRates(
  *     taxRateId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddShippingOptions = (
  *     shippingOptionIds: string[]
  *   ) => {
@@ -457,12 +458,12 @@ export const useAdminDeleteProductTypeTaxRates = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -480,35 +481,35 @@ export const useAdminCreateShippingTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostTaxRatesTaxRateShippingOptionsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostTaxRatesTaxRateShippingOptionsReq) =>
       client.admin.taxRates.addShippingOptions(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes shipping options from a tax rate. This only removes the association between 
+ * This hook removes shipping options from a tax rate. This only removes the association between
  * the shipping options and the tax rate. It does not delete the shipping options.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteShippingTaxRates } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const removeShippingOptions = useAdminDeleteShippingTaxRates(
  *     taxRateId
  *   )
  *   // ...
- * 
+ *
  *   const handleRemoveShippingOptions = (
  *     shippingOptionIds: string[]
  *   ) => {
@@ -520,12 +521,12 @@ export const useAdminCreateShippingTaxRates = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default TaxRate
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
@@ -543,13 +544,13 @@ export const useAdminDeleteShippingTaxRates = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteTaxRatesTaxRateShippingOptionsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeleteTaxRatesTaxRateShippingOptionsReq) =>
       client.admin.taxRates.removeShippingOptions(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

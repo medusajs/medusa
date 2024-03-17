@@ -24,20 +24,20 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
 /**
  * This hook retrieves a list of inventory items. The inventory items can be filtered by fields such as `q` or `location_id` passed in the `query` parameter.
  * The inventory items can also be paginated.
- * 
+ *
  * @example
  * To list inventory items:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminInventoryItems } from "medusa-react"
- * 
+ *
  * function InventoryItems() {
- *   const { 
+ *   const {
  *     inventory_items,
- *     isLoading 
+ *     isLoading
  *   } = useAdminInventoryItems()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -56,18 +56,18 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default InventoryItems
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminInventoryItems } from "medusa-react"
- * 
+ *
  * function InventoryItems() {
- *   const { 
+ *   const {
  *     inventory_items,
  *     limit,
  *     offset,
@@ -76,7 +76,7 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -95,10 +95,10 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default InventoryItems
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
@@ -115,32 +115,32 @@ export const useAdminInventoryItems = (
 ) => {
   const { client } = useMedusa()
 
-  const { data, ...rest } = useQuery(
-    adminInventoryItemsKeys.list(query),
-    () => client.admin.inventoryItems.list(query),
-    { ...options }
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminInventoryItemsKeys.list(query),
+    queryFn: () => client.admin.inventoryItems.list(query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves an Inventory Item's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminInventoryItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
- *   const { 
+ *   const {
  *     inventory_item,
  *     isLoading
  *   } = useAdminInventoryItem(inventoryItemId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -150,9 +150,9 @@ export const useAdminInventoryItems = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
@@ -173,35 +173,35 @@ export const useAdminInventoryItem = (
 ) => {
   const { client } = useMedusa()
 
-  const { data, ...rest } = useQuery(
-    adminInventoryItemsKeys.detail(inventoryItemId),
-    () => client.admin.inventoryItems.retrieve(inventoryItemId, query),
-    { ...options }
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminInventoryItemsKeys.detail(inventoryItemId),
+    queryFn: () => client.admin.inventoryItems.retrieve(inventoryItemId, query),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of inventory levels of an inventory item. The inventory levels can be filtered by fields 
+ * This hook retrieves a list of inventory levels of an inventory item. The inventory levels can be filtered by fields
  * such as `location_id` passed in the `query` parameter.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminInventoryItemLocationLevels,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   inventoryItemId: string
  * }
- * 
+ *
  * const InventoryItem = ({ inventoryItemId }: Props) => {
- *   const { 
+ *   const {
  *     inventory_item,
- *     isLoading, 
+ *     isLoading,
  *   } = useAdminInventoryItemLocationLevels(inventoryItemId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -215,9 +215,9 @@ export const useAdminInventoryItem = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default InventoryItem
- * 
+ *
  * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
@@ -238,12 +238,12 @@ export const useAdminInventoryItemLocationLevels = (
 ) => {
   const { client } = useMedusa()
 
-  const { data, ...rest } = useQuery(
-    adminInventoryItemsKeys.detail(inventoryItemId),
-    () =>
+  const { data, ...rest } = useQuery({
+    queryKey: adminInventoryItemsKeys.detail(inventoryItemId),
+    queryFn: () =>
       client.admin.inventoryItems.listLocationLevels(inventoryItemId, query),
-    { ...options }
-  )
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

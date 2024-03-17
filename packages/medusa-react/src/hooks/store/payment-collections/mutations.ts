@@ -19,25 +19,25 @@ import { paymentCollectionQueryKeys } from "./queries"
 
 /**
  * This hook creates, updates, or deletes a list of payment sessions of a Payment Collections. If a payment session is not provided in the `sessions` array, it's deleted.
- * 
+ *
  * @example
  * To add two new payment sessions:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useManageMultiplePaymentSessions } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
  *   const managePaymentSessions = useManageMultiplePaymentSessions(
  *     paymentCollectionId
  *   )
- * 
+ *
  *   const handleManagePaymentSessions = () => {
  *     managePaymentSessions.mutate({
  *       // Total amount = 10000
@@ -57,30 +57,30 @@ import { paymentCollectionQueryKeys } from "./queries"
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
  * ```
- * 
+ *
  * To update a payment session and another one by not including it in the payload:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useManageMultiplePaymentSessions } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
  *   const managePaymentSessions = useManageMultiplePaymentSessions(
  *     paymentCollectionId
  *   )
- * 
+ *
  *   const handleManagePaymentSessions = () => {
  *     managePaymentSessions.mutate({
  *       // Total amount = 10000
@@ -97,13 +97,13 @@ import { paymentCollectionQueryKeys } from "./queries"
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
  * ```
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
@@ -121,38 +121,38 @@ export const useManageMultiplePaymentSessions = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: StorePostPaymentCollectionsBatchSessionsReq) =>
+  return useMutation({
+    mutationFn: (payload: StorePostPaymentCollectionsBatchSessionsReq) =>
       client.paymentCollections.managePaymentSessionsBatch(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook creates a Payment Session for a payment provider in a Payment Collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useManagePaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
  *   const managePaymentSession = useManagePaymentSession(
  *     paymentCollectionId
  *   )
- * 
+ *
  *   const handleManagePaymentSession = (
  *     providerId: string
  *   ) => {
@@ -164,12 +164,12 @@ export const useManageMultiplePaymentSessions = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
@@ -187,33 +187,33 @@ export const useManagePaymentSession = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: StorePaymentCollectionSessionsReq) =>
+  return useMutation({
+    mutationFn: (payload: StorePaymentCollectionSessionsReq) =>
       client.paymentCollections.managePaymentSession(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook authorizes a Payment Session of a Payment Collection.
- * 
+ *
  * @typeParamDefinition string - The payment session's ID.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAuthorizePaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
@@ -221,7 +221,7 @@ export const useManagePaymentSession = (
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleAuthorizePayment = (paymentSessionId: string) => {
  *     authorizePaymentSession.mutate(paymentSessionId, {
  *       onSuccess: ({ payment_collection }) => {
@@ -229,12 +229,12 @@ export const useManagePaymentSession = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
@@ -255,31 +255,31 @@ export const useAuthorizePaymentSession = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (session_id: string) =>
+  return useMutation({
+    mutationFn: (session_id: string) =>
       client.paymentCollections.authorizePaymentSession(id, session_id),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook authorize the Payment Sessions of a Payment Collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAuthorizePaymentSessionsBatch } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
@@ -287,7 +287,7 @@ export const useAuthorizePaymentSession = (
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleAuthorizePayments = (paymentSessionIds: string[]) => {
  *     authorizePaymentSessions.mutate({
  *       session_ids: paymentSessionIds
@@ -297,12 +297,12 @@ export const useAuthorizePaymentSession = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
@@ -320,33 +320,33 @@ export const useAuthorizePaymentSessionsBatch = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload) =>
+  return useMutation({
+    mutationFn: (payload) =>
       client.paymentCollections.authorizePaymentSessionsBatch(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook refreshes a Payment Session's data to ensure that it is in sync with the Payment Collection.
- * 
+ *
  * @typeParamDefinition string - The payment session's ID.
- * 
+ *
  * @example
  * import React from "react"
  * import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
@@ -354,7 +354,7 @@ export const useAuthorizePaymentSessionsBatch = (
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleRefreshPaymentSession = (paymentSessionId: string) => {
  *     refreshPaymentSession.mutate(paymentSessionId, {
  *       onSuccess: ({ payment_session }) => {
@@ -362,12 +362,12 @@ export const useAuthorizePaymentSessionsBatch = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
@@ -388,16 +388,16 @@ export const usePaymentCollectionRefreshPaymentSession = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (session_id: string) =>
+  return useMutation({
+    mutationFn: (session_id: string) =>
       client.paymentCollections.refreshPaymentSession(id, session_id),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }

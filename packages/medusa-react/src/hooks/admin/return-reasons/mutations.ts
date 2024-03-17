@@ -15,15 +15,15 @@ import { adminReturnReasonKeys } from "./queries"
 
 /**
  * This hook creates a return reason.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateReturnReason } from "medusa-react"
- * 
+ *
  * const CreateReturnReason = () => {
  *   const createReturnReason = useAdminCreateReturnReason()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     label: string,
  *     value: string
@@ -37,12 +37,12 @@ import { adminReturnReasonKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateReturnReason
- * 
+ *
  * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
@@ -56,30 +56,30 @@ export const useAdminCreateReturnReason = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostReturnReasonsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostReturnReasonsReq) =>
       client.admin.returnReasons.create(payload),
-    buildOptions(queryClient, adminReturnReasonKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminReturnReasonKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a return reason's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateReturnReason } from "medusa-react"
- * 
+ *
  * type Props = {
  *   returnReasonId: string
  * }
- * 
+ *
  * const ReturnReason = ({ returnReasonId }: Props) => {
  *   const updateReturnReason = useAdminUpdateReturnReason(
  *     returnReasonId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     label: string
  *   ) => {
@@ -91,12 +91,12 @@ export const useAdminCreateReturnReason = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ReturnReason
- * 
+ *
  * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
@@ -114,34 +114,34 @@ export const useAdminUpdateReturnReason = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostReturnReasonsReasonReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostReturnReasonsReasonReq) =>
       client.admin.returnReasons.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminReturnReasonKeys.detail(id), adminReturnReasonKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a return reason.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteReturnReason } from "medusa-react"
- * 
+ *
  * type Props = {
  *   returnReasonId: string
  * }
- * 
+ *
  * const ReturnReason = ({ returnReasonId }: Props) => {
  *   const deleteReturnReason = useAdminDeleteReturnReason(
  *     returnReasonId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteReturnReason.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -149,12 +149,12 @@ export const useAdminUpdateReturnReason = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ReturnReason
- * 
+ *
  * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
@@ -168,12 +168,12 @@ export const useAdminDeleteReturnReason = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.returnReasons.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.returnReasons.delete(id),
+    ...buildOptions(
       queryClient,
       [adminReturnReasonKeys.detail(id), adminReturnReasonKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }

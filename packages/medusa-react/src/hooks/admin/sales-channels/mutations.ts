@@ -21,15 +21,15 @@ import { adminSalesChannelsKeys } from "./queries"
 
 /**
  * This hook creates a sales channel.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateSalesChannel } from "medusa-react"
- * 
+ *
  * const CreateSalesChannel = () => {
  *   const createSalesChannel = useAdminCreateSalesChannel()
  *   // ...
- * 
+ *
  *   const handleCreate = (name: string, description: string) => {
  *     createSalesChannel.mutate({
  *       name,
@@ -40,12 +40,12 @@ import { adminSalesChannelsKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateSalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -59,30 +59,30 @@ export const useAdminCreateSalesChannel = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostSalesChannelsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostSalesChannelsReq) =>
       client.admin.salesChannels.create(payload),
-    buildOptions(queryClient, [adminSalesChannelsKeys.list()], options)
-  )
+    ...buildOptions(queryClient, [adminSalesChannelsKeys.list()], options),
+  })
 }
 
 /**
  * This hook updates a sales channel's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateSalesChannel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const updateSalesChannel = useAdminUpdateSalesChannel(
  *     salesChannelId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     is_disabled: boolean
  *   ) => {
@@ -94,12 +94,12 @@ export const useAdminCreateSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -116,34 +116,34 @@ export const useAdminUpdateSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostSalesChannelsSalesChannelReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostSalesChannelsSalesChannelReq) =>
       client.admin.salesChannels.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a sales channel. Associated products, stock locations, and other resources are not deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteSalesChannel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const deleteSalesChannel = useAdminDeleteSalesChannel(
  *     salesChannelId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteSalesChannel.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -151,12 +151,12 @@ export const useAdminUpdateSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -173,36 +173,36 @@ export const useAdminDeleteSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    () => client.admin.salesChannels.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.salesChannels.delete(id),
+    ...buildOptions(
       queryClient,
       [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes a list of products from a sales channel. This doesn't delete the product. It only removes the 
+ * This hook removes a list of products from a sales channel. This doesn't delete the product. It only removes the
  * association between the product and the sales channel.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
- *   useAdminDeleteProductsFromSalesChannel, 
+ * import {
+ *   useAdminDeleteProductsFromSalesChannel,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const deleteProducts = useAdminDeleteProductsFromSalesChannel(
  *     salesChannelId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteProducts = (productId: string) => {
  *     deleteProducts.mutate({
  *       product_ids: [
@@ -216,12 +216,12 @@ export const useAdminDeleteSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -238,11 +238,11 @@ export const useAdminDeleteProductsFromSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
+  return useMutation({
+    mutationFn: (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
       return client.admin.salesChannels.removeProducts(id, payload)
     },
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminSalesChannelsKeys.lists(),
@@ -250,27 +250,27 @@ export const useAdminDeleteProductsFromSalesChannel = (
         adminProductKeys.list({ sales_channel_id: [id] }),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds a list of products to a sales channel.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminAddProductsToSalesChannel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const addProducts = useAdminAddProductsToSalesChannel(
  *     salesChannelId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddProducts = (productId: string) => {
  *     addProducts.mutate({
  *       product_ids: [
@@ -284,12 +284,12 @@ export const useAdminDeleteProductsFromSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -306,11 +306,11 @@ export const useAdminAddProductsToSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostSalesChannelsChannelProductsBatchReq) => {
+  return useMutation({
+    mutationFn: (payload: AdminPostSalesChannelsChannelProductsBatchReq) => {
       return client.admin.salesChannels.addProducts(id, payload)
     },
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminSalesChannelsKeys.lists(),
@@ -318,29 +318,29 @@ export const useAdminAddProductsToSalesChannel = (
         adminProductKeys.list({ sales_channel_id: [id] }),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook associates a stock location with a sales channel. It requires the 
+ * This hook associates a stock location with a sales channel. It requires the
  * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
  * your Medusa backend.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminAddLocationToSalesChannel
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const addLocation = useAdminAddLocationToSalesChannel()
  *   // ...
- * 
+ *
  *   const handleAddLocation = (locationId: string) => {
  *     addLocation.mutate({
  *       sales_channel_id: salesChannelId,
@@ -351,12 +351,12 @@ export const useAdminAddProductsToSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -378,42 +378,44 @@ export const useAdminAddLocationToSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(({ sales_channel_id, location_id }) => {
-    return client.admin.salesChannels.addLocation(sales_channel_id, {
-      location_id,
-    })
-  }, buildOptions(
-    queryClient, 
-    [
-      adminSalesChannelsKeys.lists(), 
-      adminSalesChannelsKeys.details(), 
-      adminStockLocationsKeys.all
-    ], 
-    options
-    )
-  )
+  return useMutation({
+    mutationFn: ({ sales_channel_id, location_id }) => {
+      return client.admin.salesChannels.addLocation(sales_channel_id, {
+        location_id,
+      })
+    },
+    ...buildOptions(
+      queryClient,
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.details(),
+        adminStockLocationsKeys.all,
+      ],
+      options
+    ),
+  })
 }
 
 /**
- * This hook removes a stock location from a sales channel. This only removes the association between the stock 
- * location and the sales channel. It does not delete the stock location. This hook requires the 
+ * This hook removes a stock location from a sales channel. This only removes the association between the stock
+ * location and the sales channel. It does not delete the stock location. This hook requires the
  * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
  * your Medusa backend.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRemoveLocationFromSalesChannel
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
  *   const removeLocation = useAdminRemoveLocationFromSalesChannel()
  *   // ...
- * 
+ *
  *   const handleRemoveLocation = (locationId: string) => {
  *     removeLocation.mutate({
  *       sales_channel_id: salesChannelId,
@@ -424,12 +426,12 @@ export const useAdminAddLocationToSalesChannel = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
@@ -451,18 +453,20 @@ export const useAdminRemoveLocationFromSalesChannel = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(({ sales_channel_id, location_id }) => {
-    return client.admin.salesChannels.removeLocation(sales_channel_id, {
-      location_id,
-    })
-  }, buildOptions(
-    queryClient, 
-    [
-      adminSalesChannelsKeys.lists(), 
-      adminSalesChannelsKeys.details(), 
-      adminStockLocationsKeys.all
-    ], 
-    options
-    )
-  )
+  return useMutation({
+    mutationFn: ({ sales_channel_id, location_id }) => {
+      return client.admin.salesChannels.removeLocation(sales_channel_id, {
+        location_id,
+      })
+    },
+    ...buildOptions(
+      queryClient,
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.details(),
+        adminStockLocationsKeys.all,
+      ],
+      options
+    ),
+  })
 }

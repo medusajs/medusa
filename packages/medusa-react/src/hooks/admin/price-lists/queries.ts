@@ -27,19 +27,19 @@ export const adminPriceListKeys = {
 type PriceListQueryKeys = typeof adminPriceListKeys
 
 /**
- * This hook retrieves a list of price lists. The price lists can be filtered by fields such as `q` or `status` passed 
+ * This hook retrieves a list of price lists. The price lists can be filtered by fields such as `q` or `status` passed
  * in the `query` parameter. The price lists can also be sorted or paginated.
- * 
+ *
  * @example
  * To list price lists:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
- * 
+ *
  * const PriceLists = () => {
  *   const { price_lists, isLoading } = useAdminPriceLists()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -56,21 +56,21 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceLists
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the price lists:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
- * 
+ *
  * const PriceLists = () => {
  *   const { price_lists, isLoading } = useAdminPriceLists({
  *     expand: "prices"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -87,19 +87,19 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceLists
  * ```
- * 
+ *
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
- * 
+ *
  * const PriceLists = () => {
- *   const { 
- *     price_lists, 
+ *   const {
+ *     price_lists,
  *     limit,
  *     offset,
  *     isLoading
@@ -108,7 +108,7 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -125,10 +125,10 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceLists
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
@@ -144,36 +144,36 @@ export const useAdminPriceLists = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPriceListKeys.list(query),
-    () => client.admin.priceLists.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPriceListKeys.list(query),
+    queryFn: () => client.admin.priceLists.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a price list's products. The products can be filtered by fields such as `q` or `status` 
+ * This hook retrieves a price list's products. The products can be filtered by fields such as `q` or `status`
  * passed in the `query` parameter. The products can also be sorted or paginated.
- * 
+ *
  * @example
  * To list products in a price list:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceListProducts = ({
  *   priceListId
  * }: Props) => {
  *   const { products, isLoading } = useAdminPriceListProducts(
  *     priceListId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -190,20 +190,20 @@ export const useAdminPriceLists = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceListProducts
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the products:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceListProducts = ({
  *   priceListId
  * }: Props) => {
@@ -213,7 +213,7 @@ export const useAdminPriceLists = (
  *       expand: "variants"
  *     }
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -230,24 +230,24 @@ export const useAdminPriceLists = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceListProducts
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceListProducts = ({
  *   priceListId
  * }: Props) => {
- *   const { 
+ *   const {
  *     products,
  *     limit,
  *     offset,
@@ -260,7 +260,7 @@ export const useAdminPriceLists = (
  *       offset: 0
  *     }
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -277,10 +277,10 @@ export const useAdminPriceLists = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceListProducts
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
@@ -300,33 +300,33 @@ export const useAdminPriceListProducts = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPriceListKeys.detailProducts(id, query),
-    () => client.admin.priceLists.listProducts(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPriceListKeys.detailProducts(id, query),
+    queryFn: () => client.admin.priceLists.listProducts(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a price list's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminPriceList } from "medusa-react"
- * 
+ *
  * type Props = {
  *   priceListId: string
  * }
- * 
+ *
  * const PriceList = ({
  *   priceListId
  * }: Props) => {
- *   const { 
- *     price_list, 
- *     isLoading, 
+ *   const {
+ *     price_list,
+ *     isLoading,
  *   } = useAdminPriceList(priceListId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -334,9 +334,9 @@ export const useAdminPriceListProducts = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PriceList
- * 
+ *
  * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
@@ -352,10 +352,10 @@ export const useAdminPriceList = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPriceListKeys.detail(id),
-    () => client.admin.priceLists.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPriceListKeys.detail(id),
+    queryFn: () => client.admin.priceLists.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

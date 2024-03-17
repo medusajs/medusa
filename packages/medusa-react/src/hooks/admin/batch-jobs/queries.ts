@@ -17,23 +17,23 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
 
 /**
  * This hook retrieves a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated.
- * 
+ *
  * @example
  * To list batch jobs:
- * 
+ *
  * ```ts
  * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
- * 
+ *
  * const BatchJobs = () => {
- *   const { 
- *     batch_jobs, 
+ *   const {
+ *     batch_jobs,
  *     limit,
  *     offset,
  *     count,
  *     isLoading
  *   } = useAdminBatchJobs()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -49,19 +49,19 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default BatchJobs
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the batch jobs:
- * 
+ *
  * ```ts
  * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
- * 
+ *
  * const BatchJobs = () => {
- *   const { 
- *     batch_jobs, 
+ *   const {
+ *     batch_jobs,
  *     limit,
  *     offset,
  *     count,
@@ -71,7 +71,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -87,19 +87,19 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default BatchJobs
  * ```
- * 
+ *
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```ts
  * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
- * 
+ *
  * const BatchJobs = () => {
- *   const { 
- *     batch_jobs, 
+ *   const {
+ *     batch_jobs,
  *     limit,
  *     offset,
  *     count,
@@ -109,7 +109,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -125,10 +125,10 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default BatchJobs
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Batch Jobs
  * @category Queries
  */
@@ -144,28 +144,28 @@ export const useAdminBatchJobs = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminBatchJobsKeys.list(query),
-    () => client.admin.batchJobs.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminBatchJobsKeys.list(query),
+    queryFn: () => client.admin.batchJobs.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves the details of a batch job.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminBatchJob } from "medusa-react"
- * 
+ *
  * type Props = {
  *   batchJobId: string
  * }
- * 
+ *
  * const BatchJob = ({ batchJobId }: Props) => {
  *   const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -173,9 +173,9 @@ export const useAdminBatchJobs = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default BatchJob
- * 
+ *
  * @customNamespace Hooks.Admin.Batch Jobs
  * @category Queries
  */
@@ -191,10 +191,10 @@ export const useAdminBatchJob = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminBatchJobsKeys.detail(id),
-    () => client.admin.batchJobs.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminBatchJobsKeys.detail(id),
+    queryFn: () => client.admin.batchJobs.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

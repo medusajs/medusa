@@ -15,25 +15,25 @@ type PaymentCollectionKey = typeof paymentCollectionQueryKeys
 
 /**
  * This hook retrieves a Payment Collection's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { usePaymentCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({
  *   paymentCollectionId
  * }: Props) => {
- *   const { 
- *     payment_collection, 
+ *   const {
+ *     payment_collection,
  *     isLoading
  *   } = usePaymentCollection(
  *     paymentCollectionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -43,9 +43,9 @@ type PaymentCollectionKey = typeof paymentCollectionQueryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Store.Payment Collections
  * @category Queries
  */
@@ -61,11 +61,11 @@ export const usePaymentCollection = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    paymentCollectionQueryKeys.detail(id),
-    () => client.paymentCollections.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: paymentCollectionQueryKeys.detail(id),
+    queryFn: () => client.paymentCollections.retrieve(id),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

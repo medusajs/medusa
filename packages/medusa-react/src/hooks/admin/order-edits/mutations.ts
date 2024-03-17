@@ -22,14 +22,14 @@ import { adminOrderEditsKeys } from "./queries"
 
 /**
  * This hook creates an order edit.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateOrderEdit } from "medusa-react"
- * 
+ *
  * const CreateOrderEdit = () => {
  *   const createOrderEdit = useAdminCreateOrderEdit()
- * 
+ *
  *   const handleCreateOrderEdit = (orderId: string) => {
  *     createOrderEdit.mutate({
  *       order_id: orderId,
@@ -39,12 +39,12 @@ import { adminOrderEditsKeys } from "./queries"
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateOrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -57,33 +57,33 @@ export const useAdminCreateOrderEdit = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostOrderEditsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostOrderEditsReq) =>
       client.admin.orderEdits.create(payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes an order edit. Only order edits that have the status `created` can be deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
  *   const deleteOrderEdit = useAdminDeleteOrderEdit(
  *     orderEditId
  *   )
- *   
+ *
  *   const handleDelete = () => {
  *     deleteOrderEdit.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -91,12 +91,12 @@ export const useAdminCreateOrderEdit = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -110,9 +110,9 @@ export const useAdminDeleteOrderEdit = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.orderEdits.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminOrderEditsKeys.detail(id),
@@ -120,31 +120,31 @@ export const useAdminDeleteOrderEdit = (
         adminOrderKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a line item change that indicates the addition, deletion, or update of a line item in the original order.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteOrderEditItemChange } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  *   itemChangeId: string
  * }
- * 
+ *
  * const OrderEditItemChange = ({
  *   orderEditId,
  *   itemChangeId
  * }: Props) => {
  *   const deleteItemChange = useAdminDeleteOrderEditItemChange(
- *     orderEditId, 
+ *     orderEditId,
  *     itemChangeId
  *   )
- *   
+ *
  *   const handleDeleteItemChange = () => {
  *     deleteItemChange.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -152,12 +152,12 @@ export const useAdminDeleteOrderEdit = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEditItemChange
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -179,38 +179,39 @@ export const useAdminDeleteOrderEditItemChange = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.deleteItemChange(orderEditId, itemChangeId),
-    buildOptions(
+  return useMutation({
+    mutationFn: () =>
+      client.admin.orderEdits.deleteItemChange(orderEditId, itemChangeId),
+    ...buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook creates or updates a line item change in the order edit that indicates addition, deletion, or update of a line item 
+ * This hook creates or updates a line item change in the order edit that indicates addition, deletion, or update of a line item
  * into an original order. Line item changes are only reflected on the original order after the order edit is confirmed.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminOrderEditUpdateLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  *   itemId: string
  * }
- * 
+ *
  * const OrderEditItemChange = ({
  *   orderEditId,
  *   itemId
  * }: Props) => {
  *   const updateLineItem = useAdminOrderEditUpdateLineItem(
- *     orderEditId, 
+ *     orderEditId,
  *     itemId
  *   )
- *   
+ *
  *   const handleUpdateLineItem = (quantity: number) => {
  *     updateLineItem.mutate({
  *       quantity,
@@ -220,12 +221,12 @@ export const useAdminDeleteOrderEditItemChange = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEditItemChange
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -247,39 +248,39 @@ export const useAdminOrderEditUpdateLineItem = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostOrderEditsEditLineItemsLineItemReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostOrderEditsEditLineItemsLineItemReq) =>
       client.admin.orderEdits.updateLineItem(orderEditId, itemId, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook creates a line item change in the order edit that indicates deleting an item in the original order. 
+ * This hook creates a line item change in the order edit that indicates deleting an item in the original order.
  * The item in the original order will not be deleted until the order edit is confirmed.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminOrderEditDeleteLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  *   itemId: string
  * }
- * 
+ *
  * const OrderEditLineItem = ({
  *   orderEditId,
  *   itemId
  * }: Props) => {
  *   const removeLineItem = useAdminOrderEditDeleteLineItem(
- *     orderEditId, 
+ *     orderEditId,
  *     itemId
  *   )
- *   
+ *
  *   const handleRemoveLineItem = () => {
  *     removeLineItem.mutate(void 0, {
  *       onSuccess: ({ order_edit }) => {
@@ -287,12 +288,12 @@ export const useAdminOrderEditUpdateLineItem = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEditLineItem
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -310,32 +311,33 @@ export const useAdminOrderEditDeleteLineItem = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.removeLineItem(orderEditId, itemId),
-    buildOptions(
+  return useMutation({
+    mutationFn: () =>
+      client.admin.orderEdits.removeLineItem(orderEditId, itemId),
+    ...buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook updates an Order Edit's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
  *   const updateOrderEdit = useAdminUpdateOrderEdit(
- *     orderEditId, 
+ *     orderEditId,
  *   )
- *   
+ *
  *   const handleUpdate = (
  *     internalNote: string
  *   ) => {
@@ -347,12 +349,12 @@ export const useAdminOrderEditDeleteLineItem = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -370,10 +372,10 @@ export const useAdminUpdateOrderEdit = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostOrderEditsOrderEditReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostOrderEditsOrderEditReq) =>
       client.admin.orderEdits.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminOrderEditsKeys.lists(),
@@ -381,28 +383,28 @@ export const useAdminUpdateOrderEdit = (
         adminOrderKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook creates a line item change in the order edit that indicates adding an item in the original order. 
+ * This hook creates a line item change in the order edit that indicates adding an item in the original order.
  * The item will not be added to the original order until the order edit is confirmed.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminOrderEditAddLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
  *   const addLineItem = useAdminOrderEditAddLineItem(
  *     orderEditId
  *   )
- * 
- *   const handleAddLineItem = 
+ *
+ *   const handleAddLineItem =
  *     (quantity: number, variantId: string) => {
  *       addLineItem.mutate({
  *         quantity,
@@ -413,12 +415,12 @@ export const useAdminUpdateOrderEdit = (
  *         }
  *       })
  *     }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -435,53 +437,53 @@ export const useAdminOrderEditAddLineItem = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostOrderEditsEditLineItemsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostOrderEditsEditLineItemsReq) =>
       client.admin.orderEdits.addLineItem(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook requests customer confirmation of an order edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
  * a notification to the customer about the order edit.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRequestOrderEditConfirmation,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
- *   const requestOrderConfirmation = 
+ *   const requestOrderConfirmation =
  *     useAdminRequestOrderEditConfirmation(
  *       orderEditId
  *     )
- *   
+ *
  *   const handleRequestConfirmation = () => {
  *     requestOrderConfirmation.mutate(void 0, {
  *       onSuccess: ({ order_edit }) => {
  *         console.log(
- *           order_edit.requested_at, 
+ *           order_edit.requested_at,
  *           order_edit.requested_by
  *         )
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -495,9 +497,9 @@ export const useAdminRequestOrderEditConfirmation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.requestConfirmation(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.orderEdits.requestConfirmation(id),
+    ...buildOptions(
       queryClient,
       [
         adminOrderEditsKeys.lists(),
@@ -505,29 +507,29 @@ export const useAdminRequestOrderEditConfirmation = (
         adminOrderKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook cancels an order edit.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminCancelOrderEdit,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
- *   const cancelOrderEdit = 
+ *   const cancelOrderEdit =
  *     useAdminCancelOrderEdit(
  *       orderEditId
  *     )
- *   
+ *
  *   const handleCancel = () => {
  *     cancelOrderEdit.mutate(void 0, {
  *       onSuccess: ({ order_edit }) => {
@@ -537,12 +539,12 @@ export const useAdminRequestOrderEditConfirmation = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -556,9 +558,9 @@ export const useAdminCancelOrderEdit = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.cancel(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.orderEdits.cancel(id),
+    ...buildOptions(
       queryClient,
       [
         adminOrderEditsKeys.lists(),
@@ -566,26 +568,26 @@ export const useAdminCancelOrderEdit = (
         adminOrderKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook confirms an order edit. This will reflect the changes in the order edit on the associated order.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminConfirmOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
  *   const confirmOrderEdit = useAdminConfirmOrderEdit(
  *     orderEditId
  *   )
- *   
+ *
  *   const handleConfirmOrderEdit = () => {
  *     confirmOrderEdit.mutate(void 0, {
  *       onSuccess: ({ order_edit }) => {
@@ -596,12 +598,12 @@ export const useAdminCancelOrderEdit = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
@@ -615,9 +617,9 @@ export const useAdminConfirmOrderEdit = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.orderEdits.confirm(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.orderEdits.confirm(id),
+    ...buildOptions(
       queryClient,
       [
         adminOrderEditsKeys.lists(),
@@ -625,6 +627,6 @@ export const useAdminConfirmOrderEdit = (
         adminOrderKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }

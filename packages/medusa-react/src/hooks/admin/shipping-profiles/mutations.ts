@@ -16,16 +16,16 @@ import { adminShippingProfileKeys } from "./queries"
 
 /**
  * This hook creates a shipping profile.
- * 
+ *
  * @example
  * import React from "react"
  * import { ShippingProfileType } from "@medusajs/medusa"
  * import { useAdminCreateShippingProfile } from "medusa-react"
- * 
+ *
  * const CreateShippingProfile = () => {
  *   const createShippingProfile = useAdminCreateShippingProfile()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     name: string,
  *     type: ShippingProfileType
@@ -39,12 +39,12 @@ import { adminShippingProfileKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateShippingProfile
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
@@ -57,31 +57,31 @@ export const useAdminCreateShippingProfile = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostShippingProfilesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostShippingProfilesReq) =>
       client.admin.shippingProfiles.create(payload),
-    buildOptions(queryClient, adminShippingProfileKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminShippingProfileKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a shipping profile's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { ShippingProfileType } from "@medusajs/medusa"
  * import { useAdminUpdateShippingProfile } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingProfileId: string
  * }
- * 
+ *
  * const ShippingProfile = ({ shippingProfileId }: Props) => {
  *   const updateShippingProfile = useAdminUpdateShippingProfile(
  *     shippingProfileId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string,
  *     type: ShippingProfileType
@@ -95,12 +95,12 @@ export const useAdminCreateShippingProfile = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ShippingProfile
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
@@ -118,34 +118,34 @@ export const useAdminUpdateShippingProfile = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostShippingProfilesProfileReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostShippingProfilesProfileReq) =>
       client.admin.shippingProfiles.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminShippingProfileKeys.lists(), adminShippingProfileKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a shipping profile. Associated shipping options are deleted as well.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteShippingProfile } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingProfileId: string
  * }
- * 
+ *
  * const ShippingProfile = ({ shippingProfileId }: Props) => {
  *   const deleteShippingProfile = useAdminDeleteShippingProfile(
  *     shippingProfileId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteShippingProfile.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -153,12 +153,12 @@ export const useAdminUpdateShippingProfile = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ShippingProfile
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
@@ -176,12 +176,12 @@ export const useAdminDeleteShippingProfile = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.shippingProfiles.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.shippingProfiles.delete(id),
+    ...buildOptions(
       queryClient,
       [adminShippingProfileKeys.lists(), adminShippingProfileKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

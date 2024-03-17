@@ -16,22 +16,22 @@ export const adminTaxRateKeys = queryKeysFactory(ADMIN_TAX_RATES_QUERY_KEY)
 type TaxRateQueryKeys = typeof adminTaxRateKeys
 
 /**
- * This hook retrieves a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate` 
+ * This hook retrieves a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate`
  * passed in the `query` parameter. The tax rates can also be paginated.
- * 
+ *
  * @example
  * To list tax rates:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
- * 
+ *
  * const TaxRates = () => {
- *   const { 
- *     tax_rates, 
+ *   const {
+ *     tax_rates,
  *     isLoading
  *   } = useAdminTaxRates()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -48,24 +48,24 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxRates
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the tax rates:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
- * 
+ *
  * const TaxRates = () => {
- *   const { 
- *     tax_rates, 
+ *   const {
+ *     tax_rates,
  *     isLoading
  *   } = useAdminTaxRates({
  *     expand: ["shipping_options"]
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -82,19 +82,19 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxRates
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
- * 
+ *
  * const TaxRates = () => {
- *   const { 
- *     tax_rates, 
+ *   const {
+ *     tax_rates,
  *     limit,
  *     offset,
  *     isLoading
@@ -103,7 +103,7 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -120,10 +120,10 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxRates
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Queries
  */
@@ -139,31 +139,31 @@ export const useAdminTaxRates = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminTaxRateKeys.list(query),
-    () => client.admin.taxRates.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminTaxRateKeys.list(query),
+    queryFn: () => client.admin.taxRates.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a tax rate's details.
- * 
+ *
  * @example
  * A simple example that retrieves a tax rate by its ID:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminTaxRate } from "medusa-react"
- * 
+ *
  * type Props = {
  *   taxRateId: string
  * }
- * 
+ *
  * const TaxRate = ({ taxRateId }: Props) => {
  *   const { tax_rate, isLoading } = useAdminTaxRate(taxRateId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -171,21 +171,21 @@ export const useAdminTaxRates = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxRate
  * ```
- * 
+ *
  * To specify relations that should be retrieved:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminTaxRate } from "medusa-react"
- * 
+ *
  * const TaxRate = (taxRateId: string) => {
  *   const { tax_rate, isLoading } = useAdminTaxRate(taxRateId, {
  *     expand: ["shipping_options"]
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -193,10 +193,10 @@ export const useAdminTaxRates = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default TaxRate
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Tax Rates
  * @category Queries
  */
@@ -216,10 +216,10 @@ export const useAdminTaxRate = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminTaxRateKeys.detail(id),
-    () => client.admin.taxRates.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminTaxRateKeys.detail(id),
+    queryFn: () => client.admin.taxRates.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

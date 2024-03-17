@@ -93,11 +93,11 @@ export const useAdminUsers = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminUserKeys.list(query),
-    () => client.admin.users.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminUserKeys.list(query),
+    queryFn: () => client.admin.users.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -142,10 +142,10 @@ export const useAdminUser = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminUserKeys.detail(id),
-    () => client.admin.users.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminUserKeys.detail(id),
+    queryFn: () => client.admin.users.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

@@ -18,22 +18,22 @@ export type CreateCartReq = StorePostCartReq | undefined
 /**
  * This hook creates a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
  * the products that can be added to the cart respectively.
- * 
+ *
  * So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
- * 
+ *
  * If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCreateCart } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Cart = ({ regionId }: Props) => {
  *   const createCart = useCreateCart()
- * 
+ *
  *   const handleCreate = () => {
  *     createCart.mutate({
  *       region_id: regionId
@@ -44,12 +44,12 @@ export type CreateCartReq = StorePostCartReq | undefined
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -61,27 +61,28 @@ export const useCreateCart = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data?: StorePostCartReq | undefined) => client.carts.create(data),
-    options
-  )
+  return useMutation({
+    mutationFn: (data?: StorePostCartReq | undefined) =>
+      client.carts.create(data),
+    ...options,
+  })
 }
 
 /**
- * This hook updates a Cart's details. If the cart has payment sessions and the region was not changed, 
+ * This hook updates a Cart's details. If the cart has payment sessions and the region was not changed,
  * the payment sessions are updated. The cart's totals are also recalculated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useUpdateCart } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const updateCart = useUpdateCart(cartId)
- * 
+ *
  *   const handleUpdate = (
  *     email: string
  *   ) => {
@@ -93,12 +94,12 @@ export const useCreateCart = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -110,10 +111,11 @@ export const useUpdateCart = (
   options?: UseMutationOptions<StoreCartsRes, Error, StorePostCartsCartReq>
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostCartsCartReq) => client.carts.update(cartId, data),
-    options
-  )
+  return useMutation({
+    mutationFn: (data: StorePostCartsCartReq) =>
+      client.carts.update(cartId, data),
+    ...options,
+  })
 }
 
 /**
@@ -122,18 +124,18 @@ export const useUpdateCart = (
  * An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
  * the response. If an error occurs during cart completion or the request is interrupted for any reason, the cart completion can be retried by passing the idempotency
  * key in the `Idempotency-Key` header.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCompleteCart } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const completeCart = useCompleteCart(cartId)
- * 
+ *
  *   const handleComplete = () => {
  *     completeCart.mutate(void 0, {
  *       onSuccess: ({ data, type }) => {
@@ -141,12 +143,12 @@ export const useUpdateCart = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -158,24 +160,27 @@ export const useCompleteCart = (
   options?: UseMutationOptions<StoreCompleteCartRes, Error>
 ) => {
   const { client } = useMedusa()
-  return useMutation(() => client.carts.complete(cartId), options)
+  return useMutation({
+    mutationFn: () => client.carts.complete(cartId),
+    ...options,
+  })
 }
 
 /**
  * This hook creates Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
  * it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCreatePaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const createPaymentSession = useCreatePaymentSession(cartId)
- * 
+ *
  *   const handleComplete = () => {
  *     createPaymentSession.mutate(void 0, {
  *       onSuccess: ({ cart }) => {
@@ -183,12 +188,12 @@ export const useCompleteCart = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -200,34 +205,38 @@ export const useCreatePaymentSession = (
   options?: UseMutationOptions<StoreCartsRes, Error>
 ) => {
   const { client } = useMedusa()
-  return useMutation(() => client.carts.createPaymentSessions(cartId), options)
+  return useMutation({
+    mutationFn: () => client.carts.createPaymentSessions(cartId),
+    ...options,
+  })
 }
 
 /**
  * The details of the payment session to update.
  */
-export type UpdatePaymentSessionReq = StorePostCartsCartPaymentSessionUpdateReq & {
-  /**
-   * The payment provider's identifier.
-   */
-  provider_id: string
-}
+export type UpdatePaymentSessionReq =
+  StorePostCartsCartPaymentSessionUpdateReq & {
+    /**
+     * The payment provider's identifier.
+     */
+    provider_id: string
+  }
 
 /**
  * This hook updates a Payment Session with additional data. This can be useful depending on the payment provider used.
  * All payment sessions are updated and cart totals are recalculated afterwards.
- * 
+ *
  * @example
  * import React from "react"
  * import { useUpdatePaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const updatePaymentSession = useUpdatePaymentSession(cartId)
- * 
+ *
  *   const handleUpdate = (
  *     providerId: string,
  *     data: Record<string, unknown>
@@ -241,12 +250,12 @@ export type UpdatePaymentSessionReq = StorePostCartsCartPaymentSessionUpdateReq 
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -255,18 +264,14 @@ export const useUpdatePaymentSession = (
    * The cart's ID.
    */
   cartId: string,
-  options?: UseMutationOptions<
-    StoreCartsRes,
-    Error,
-    UpdatePaymentSessionReq
-  >
+  options?: UseMutationOptions<StoreCartsRes, Error, UpdatePaymentSessionReq>
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    ({ data, provider_id }: UpdatePaymentSessionReq) =>
+  return useMutation({
+    mutationFn: ({ data, provider_id }: UpdatePaymentSessionReq) =>
       client.carts.updatePaymentSession(cartId, provider_id, { data }),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
@@ -281,18 +286,18 @@ export type RefreshPaymentSessionMutationData = {
 
 /**
  * This hook refreshes a Payment Session to ensure that it is in sync with the Cart. This is usually not necessary, but is provided for edge cases.
- * 
+ *
  * @example
  * import React from "react"
  * import { useRefreshPaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const refreshPaymentSession = useRefreshPaymentSession(cartId)
- * 
+ *
  *   const handleRefresh = (
  *     providerId: string
  *   ) => {
@@ -304,12 +309,12 @@ export type RefreshPaymentSessionMutationData = {
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -325,28 +330,28 @@ export const useRefreshPaymentSession = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    ({ provider_id }: RefreshPaymentSessionMutationData) =>
+  return useMutation({
+    mutationFn: ({ provider_id }: RefreshPaymentSessionMutationData) =>
       client.carts.refreshPaymentSession(cartId, provider_id),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
  * This hook selects the Payment Session that will be used to complete the cart. This is typically used when the customer chooses their preferred payment method during checkout.
  * The totals of the cart will be recalculated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useSetPaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const setPaymentSession = useSetPaymentSession(cartId)
- * 
+ *
  *   const handleSetPaymentSession = (
  *     providerId: string
  *   ) => {
@@ -358,12 +363,12 @@ export const useRefreshPaymentSession = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -379,27 +384,27 @@ export const useSetPaymentSession = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostCartsCartPaymentSessionReq) =>
+  return useMutation({
+    mutationFn: (data: StorePostCartsCartPaymentSessionReq) =>
       client.carts.setPaymentSession(cartId, data),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
  * This hook adds a shipping method to the cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAddShippingMethodToCart } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const addShippingMethod = useAddShippingMethodToCart(cartId)
- * 
+ *
  *   const handleAddShippingMethod = (
  *     optionId: string
  *   ) => {
@@ -411,12 +416,12 @@ export const useSetPaymentSession = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -432,11 +437,11 @@ export const useAddShippingMethodToCart = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostCartsCartShippingMethodReq) =>
+  return useMutation({
+    mutationFn: (data: StorePostCartsCartShippingMethodReq) =>
       client.carts.addShippingMethod(cartId, data),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
@@ -451,18 +456,18 @@ export type DeletePaymentSessionMutationData = {
 
 /**
  * This hook deletes a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useDeletePaymentSession } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const deletePaymentSession = useDeletePaymentSession(cartId)
- * 
+ *
  *   const handleDeletePaymentSession = (
  *     providerId: string
  *   ) => {
@@ -474,12 +479,12 @@ export type DeletePaymentSessionMutationData = {
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -495,28 +500,28 @@ export const useDeletePaymentSession = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    ({ provider_id }: DeletePaymentSessionMutationData) =>
+  return useMutation({
+    mutationFn: ({ provider_id }: DeletePaymentSessionMutationData) =>
       client.carts.deletePaymentSession(cartId, provider_id),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
  * This hook allows you to create a cart and set its payment session as a preparation for checkout.
  * It performs the same actions as the {@link useCreateCart} and {@link useCreatePaymentSession} hooks.
- * 
+ *
  * @example
  * import React from "react"
  * import { useStartCheckout } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Checkout = ({ regionId }: Props) => {
  *   const startCheckout = useStartCheckout()
- * 
+ *
  *   const handleCheckout = () => {
  *     startCheckout.mutate({
  *       region_id: regionId,
@@ -526,12 +531,12 @@ export const useDeletePaymentSession = (
  *       }
  *     })
  *   }
- *   
+ *
  *   // ...
  * }
- * 
+ *
  * export default Checkout
- * 
+ *
  * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
@@ -539,11 +544,14 @@ export const useStartCheckout = (
   options?: UseMutationOptions<StoreCartsRes["cart"], Error, StorePostCartReq>
 ) => {
   const { client } = useMedusa()
-  const mutation = useMutation(async (data?: StorePostCartReq) => {
-    const { cart } = await client.carts.create(data)
-    const res = await client.carts.createPaymentSessions(cart.id)
-    return res.cart
-  }, options)
+  const mutation = useMutation({
+    mutationFn: async (data?: StorePostCartReq) => {
+      const { cart } = await client.carts.create(data)
+      const res = await client.carts.createPaymentSessions(cart.id)
+      return res.cart
+    },
+    ...options,
+  })
 
   return mutation
 }

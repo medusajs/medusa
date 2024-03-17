@@ -18,14 +18,14 @@ type ReturnReasonQueryKeys = typeof adminReturnReasonKeys
 
 /**
  * This hook retrieves a list of return reasons.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminReturnReasons } from "medusa-react"
- * 
+ *
  * const ReturnReasons = () => {
  *   const { return_reasons, isLoading } = useAdminReturnReasons()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -44,9 +44,9 @@ type ReturnReasonQueryKeys = typeof adminReturnReasonKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ReturnReasons
- * 
+ *
  * @customNamespace Hooks.Admin.Return Reasons
  * @category Queries
  */
@@ -58,30 +58,30 @@ export const useAdminReturnReasons = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminReturnReasonKeys.lists(),
-    () => client.admin.returnReasons.list(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminReturnReasonKeys.lists(),
+    queryFn: () => client.admin.returnReasons.list(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a return reason's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminReturnReason } from "medusa-react"
- * 
+ *
  * type Props = {
  *   returnReasonId: string
  * }
- * 
+ *
  * const ReturnReason = ({ returnReasonId }: Props) => {
  *   const { return_reason, isLoading } = useAdminReturnReason(
  *     returnReasonId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -89,9 +89,9 @@ export const useAdminReturnReasons = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ReturnReason
- * 
+ *
  * @customNamespace Hooks.Admin.Return Reasons
  * @category Queries
  */
@@ -107,10 +107,10 @@ export const useAdminReturnReason = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminReturnReasonKeys.detail(id),
-    () => client.admin.returnReasons.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminReturnReasonKeys.detail(id),
+    queryFn: () => client.admin.returnReasons.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

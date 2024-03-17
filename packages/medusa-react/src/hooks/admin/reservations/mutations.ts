@@ -19,15 +19,15 @@ import { adminReservationsKeys } from "./queries"
 
 /**
  * This hook creates a reservation which can be associated with any resource, such as an order's line item.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateReservation } from "medusa-react"
- * 
+ *
  * const CreateReservation = () => {
  *   const createReservation = useAdminCreateReservation()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     locationId: string,
  *     inventoryItemId: string,
@@ -43,12 +43,12 @@ import { adminReservationsKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateReservation
- * 
+ *
  * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
@@ -62,34 +62,34 @@ export const useAdminCreateReservation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostReservationsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostReservationsReq) =>
       client.admin.reservations.create(payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminReservationsKeys.lists(), adminVariantKeys.all],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook updates a reservation's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateReservation } from "medusa-react"
- * 
+ *
  * type Props = {
  *   reservationId: string
  * }
- * 
+ *
  * const Reservation = ({ reservationId }: Props) => {
  *   const updateReservation = useAdminUpdateReservation(
  *     reservationId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     quantity: number
  *   ) => {
@@ -97,12 +97,12 @@ export const useAdminCreateReservation = (
  *       quantity,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Reservation
- * 
+ *
  * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
@@ -120,39 +120,39 @@ export const useAdminUpdateReservation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostReservationsReservationReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostReservationsReservationReq) =>
       client.admin.reservations.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminReservationsKeys.lists(),
         adminReservationsKeys.detail(id),
         adminVariantKeys.all,
-        adminInventoryItemsKeys.details()
+        adminInventoryItemsKeys.details(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a reservation. Associated resources, such as the line item, will not be deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteReservation } from "medusa-react"
- * 
+ *
  * type Props = {
  *   reservationId: string
  * }
- * 
+ *
  * const Reservation = ({ reservationId }: Props) => {
  *   const deleteReservation = useAdminDeleteReservation(
  *     reservationId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteReservation.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -160,12 +160,12 @@ export const useAdminUpdateReservation = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Reservation
- * 
+ *
  * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
@@ -183,9 +183,9 @@ export const useAdminDeleteReservation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.reservations.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.reservations.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminReservationsKeys.lists(),
@@ -193,6 +193,6 @@ export const useAdminDeleteReservation = (
         adminVariantKeys.all,
       ],
       options
-    )
-  )
+    ),
+  })
 }

@@ -13,14 +13,14 @@ type ReturnQueryKeys = typeof adminReturnKeys
 
 /**
  * This hook retrieves a list of Returns. The returns can be paginated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminReturns } from "medusa-react"
- * 
+ *
  * const Returns = () => {
  *   const { returns, isLoading } = useAdminReturns()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -39,9 +39,9 @@ type ReturnQueryKeys = typeof adminReturnKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Returns
- * 
+ *
  * @customNamespace Hooks.Admin.Returns
  * @category Queries
  */
@@ -53,10 +53,10 @@ export const useAdminReturns = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminReturnKeys.lists(),
-    () => client.admin.returns.list(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminReturnKeys.lists(),
+    queryFn: () => client.admin.returns.list(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

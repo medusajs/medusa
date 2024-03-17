@@ -10,9 +10,9 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminAuthKeys } from "./queries"
 
 /**
- * This hook is used to log a User in using their credentials. If the user is authenticated successfully, 
+ * This hook is used to log a User in using their credentials. If the user is authenticated successfully,
  * the cookie is automatically attached to subsequent requests sent with other hooks.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminLogin } from "medusa-react"
@@ -36,7 +36,7 @@ import { adminAuthKeys } from "./queries"
  * }
  *
  * export default Login
- * 
+ *
  * @customNamespace Hooks.Admin.Auth
  * @category Mutations
  */
@@ -46,26 +46,27 @@ export const useAdminLogin = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostAuthReq) => client.admin.auth.createSession(payload),
-    buildOptions(queryClient, adminAuthKeys.details(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostAuthReq) =>
+      client.admin.auth.createSession(payload),
+    ...buildOptions(queryClient, adminAuthKeys.details(), options),
+  })
 }
 
 /**
  * This hook is used to Log out the user and remove their authentication session. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
  * the user is still authorized to perform admin functionalities in other API Routes.
- * 
+ *
  * This hook requires {@link Hooks.Admin.Auth.useAdminLogin | user authentication}.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteSession } from "medusa-react"
- * 
+ *
  * const Logout = () => {
  *   const adminLogout = useAdminDeleteSession()
  *   // ...
- * 
+ *
  *   const handleLogout = () => {
  *     adminLogout.mutate(undefined, {
  *       onSuccess: () => {
@@ -73,12 +74,12 @@ export const useAdminLogin = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Logout
- * 
+ *
  * @customNamespace Hooks.Admin.Auth
  * @category Mutations
  */
@@ -88,8 +89,8 @@ export const useAdminDeleteSession = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.auth.deleteSession(),
-    buildOptions(queryClient, adminAuthKeys.details(), options)
-  )
+  return useMutation({
+    mutationFn: () => client.admin.auth.deleteSession(),
+    ...buildOptions(queryClient, adminAuthKeys.details(), options),
+  })
 }

@@ -30,26 +30,26 @@ type PublishableApiKeyQueryKeys = typeof adminPublishableApiKeysKeys
 
 /**
  * This hook retrieves a publishable API key's details.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminPublishableApiKey,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const PublishableApiKey = ({
  *   publishableApiKeyId
  * }: Props) => {
- *   const { publishable_api_key, isLoading } = 
+ *   const { publishable_api_key, isLoading } =
  *     useAdminPublishableApiKey(
  *       publishableApiKeyId
  *     )
- *  
- *     
+ *
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -57,9 +57,9 @@ type PublishableApiKeyQueryKeys = typeof adminPublishableApiKeysKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PublishableApiKey
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
@@ -75,37 +75,37 @@ export const useAdminPublishableApiKey = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPublishableApiKeysKeys.detail(id),
-    () => client.admin.publishableApiKeys.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPublishableApiKeysKeys.detail(id),
+    queryFn: () => client.admin.publishableApiKeys.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of publishable API keys. The publishable API keys can be filtered by fields such as `q` passed in `query`. 
+ * This hook retrieves a list of publishable API keys. The publishable API keys can be filtered by fields such as `q` passed in `query`.
  * The publishable API keys can also be paginated.
- * 
+ *
  * @example
  * To list publishable API keys:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { PublishableApiKey } from "@medusajs/medusa"
  * import { useAdminPublishableApiKeys } from "medusa-react"
- * 
+ *
  * const PublishableApiKeys = () => {
- *   const { publishable_api_keys, isLoading } = 
+ *   const { publishable_api_keys, isLoading } =
  *     useAdminPublishableApiKeys()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {publishable_api_keys && !publishable_api_keys.length && (
  *         <span>No Publishable API Keys</span>
  *       )}
- *       {publishable_api_keys && 
+ *       {publishable_api_keys &&
  *         publishable_api_keys.length > 0 && (
  *         <ul>
  *           {publishable_api_keys.map(
@@ -120,36 +120,36 @@ export const useAdminPublishableApiKey = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PublishableApiKeys
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { PublishableApiKey } from "@medusajs/medusa"
  * import { useAdminPublishableApiKeys } from "medusa-react"
- * 
+ *
  * const PublishableApiKeys = () => {
- *   const { 
- *     publishable_api_keys, 
+ *   const {
+ *     publishable_api_keys,
  *     limit,
  *     offset,
  *     isLoading
- *   } = 
+ *   } =
  *     useAdminPublishableApiKeys({
  *       limit: 50,
  *       offset: 0
  *     })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {publishable_api_keys && !publishable_api_keys.length && (
  *         <span>No Publishable API Keys</span>
  *       )}
- *       {publishable_api_keys && 
+ *       {publishable_api_keys &&
  *         publishable_api_keys.length > 0 && (
  *         <ul>
  *           {publishable_api_keys.map(
@@ -164,10 +164,10 @@ export const useAdminPublishableApiKey = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default PublishableApiKeys
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
@@ -183,36 +183,36 @@ export const useAdminPublishableApiKeys = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPublishableApiKeysKeys.list(query),
-    () => client.admin.publishableApiKeys.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPublishableApiKeysKeys.list(query),
+    queryFn: () => client.admin.publishableApiKeys.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook lists the sales channels associated with a publishable API key. The sales channels can be 
+ * This hook lists the sales channels associated with a publishable API key. The sales channels can be
  * filtered by fields such as `q` passed in the `query` parameter.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminPublishableApiKeySalesChannels,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   publishableApiKeyId: string
  * }
- * 
+ *
  * const SalesChannels = ({
  *   publishableApiKeyId
  * }: Props) => {
- *   const { sales_channels, isLoading } = 
+ *   const { sales_channels, isLoading } =
  *     useAdminPublishableApiKeySalesChannels(
  *       publishableApiKeyId
  *     )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -229,9 +229,9 @@ export const useAdminPublishableApiKeys = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default SalesChannels
- * 
+ *
  * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
@@ -251,10 +251,10 @@ export const useAdminPublishableApiKeySalesChannels = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminPublishableApiKeysKeys.detailSalesChannels(id, query),
-    () => client.admin.publishableApiKeys.listSalesChannels(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminPublishableApiKeysKeys.detailSalesChannels(id, query),
+    queryFn: () => client.admin.publishableApiKeys.listSalesChannels(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

@@ -17,21 +17,21 @@ import { adminPaymentCollectionQueryKeys } from "./queries"
 
 /**
  * This hook deletes a payment collection. Only payment collections with the statuses `canceled` or `not_paid` can be deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeletePaymentCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({ paymentCollectionId }: Props) => {
  *   const deleteCollection = useAdminDeletePaymentCollection(
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteCollection.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -39,12 +39,12 @@ import { adminPaymentCollectionQueryKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
@@ -62,36 +62,36 @@ export const useAdminDeletePaymentCollection = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.paymentCollections.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.paymentCollections.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook updates a payment collection's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdatePaymentCollection } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({ paymentCollectionId }: Props) => {
  *   const updateCollection = useAdminUpdatePaymentCollection(
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     description: string
  *   ) => {
@@ -103,12 +103,12 @@ export const useAdminDeletePaymentCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
@@ -126,37 +126,37 @@ export const useAdminUpdatePaymentCollection = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminUpdatePaymentCollectionsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminUpdatePaymentCollectionsReq) =>
       client.admin.paymentCollections.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook sets the status of a payment collection as `authorized`. This will also change the `authorized_amount` of the payment collection.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminMarkPaymentCollectionAsAuthorized } from "medusa-react"
- * 
+ *
  * type Props = {
  *   paymentCollectionId: string
  * }
- * 
+ *
  * const PaymentCollection = ({ paymentCollectionId }: Props) => {
  *   const markAsAuthorized = useAdminMarkPaymentCollectionAsAuthorized(
  *     paymentCollectionId
  *   )
  *   // ...
- * 
+ *
  *   const handleAuthorization = () => {
  *     markAsAuthorized.mutate(void 0, {
  *       onSuccess: ({ payment_collection }) => {
@@ -164,12 +164,12 @@ export const useAdminUpdatePaymentCollection = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default PaymentCollection
- * 
+ *
  * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
@@ -187,15 +187,15 @@ export const useAdminMarkPaymentCollectionAsAuthorized = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.paymentCollections.markAsAuthorized(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.paymentCollections.markAsAuthorized(id),
+    ...buildOptions(
       queryClient,
       [
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }

@@ -19,17 +19,17 @@ type NotificationQueryKeys = typeof adminNotificationKeys
 /**
  * This hook retrieves a list of notifications. The notifications can be filtered by fields such as `event_name` or `resource_type` passed in the `query` parameter.
  * The notifications can also be paginated.
- * 
+ *
  * @example
  * To list notifications:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
- * 
+ *
  * const Notifications = () => {
  *   const { notifications, isLoading } = useAdminNotifications()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -46,21 +46,21 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Notifications
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the notifications:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
- * 
+ *
  * const Notifications = () => {
  *   const { notifications, isLoading } = useAdminNotifications({
  *     expand: "provider"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -77,19 +77,19 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Notifications
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
- * 
+ *
  * const Notifications = () => {
- *   const { 
- *     notifications, 
+ *   const {
+ *     notifications,
  *     limit,
  *     offset,
  *     isLoading
@@ -98,7 +98,7 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -115,10 +115,10 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Notifications
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Notifications
  * @category Queries
  */
@@ -134,10 +134,10 @@ export const useAdminNotifications = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminNotificationKeys.list(query),
-    () => client.admin.notifications.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminNotificationKeys.list(query),
+    queryFn: () => client.admin.notifications.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

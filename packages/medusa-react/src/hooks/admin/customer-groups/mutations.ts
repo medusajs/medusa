@@ -19,26 +19,26 @@ import { adminCustomerGroupKeys } from "./queries"
 
 /**
  * This hook creates a customer group.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateCustomerGroup } from "medusa-react"
- * 
+ *
  * const CreateCustomerGroup = () => {
  *   const createCustomerGroup = useAdminCreateCustomerGroup()
  *   // ...
- * 
+ *
  *   const handleCreate = (name: string) => {
  *     createCustomerGroup.mutate({
  *       name,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateCustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
@@ -52,41 +52,41 @@ export const useAdminCreateCustomerGroup = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostCustomerGroupsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCustomerGroupsReq) =>
       client.admin.customerGroups.create(payload),
-    buildOptions(queryClient, adminCustomerGroupKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminCustomerGroupKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a customer group's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateCustomerGroup } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
  *   const updateCustomerGroup = useAdminUpdateCustomerGroup(
  *     customerGroupId
  *   )
  *   // ..
- * 
+ *
  *   const handleUpdate = (name: string) => {
  *     updateCustomerGroup.mutate({
  *       name,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
@@ -104,15 +104,15 @@ export const useAdminUpdateCustomerGroup = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostCustomerGroupsGroupReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCustomerGroupsGroupReq) =>
       client.admin.customerGroups.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
@@ -121,26 +121,26 @@ export const useAdminUpdateCustomerGroup = (
  * @example
  * import React from "react"
  * import { useAdminDeleteCustomerGroup } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
  *   const deleteCustomerGroup = useAdminDeleteCustomerGroup(
  *     customerGroupId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteCustomerGroup = () => {
  *     deleteCustomerGroup.mutate()
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
@@ -158,14 +158,14 @@ export const useAdminDeleteCustomerGroup = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.customerGroups.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.customerGroups.delete(id),
+    ...buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
@@ -173,20 +173,20 @@ export const useAdminDeleteCustomerGroup = (
  *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminAddCustomersToCustomerGroup,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
  *   const addCustomers = useAdminAddCustomersToCustomerGroup(
  *     customerGroupId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddCustomers= (customerId: string) => {
  *     addCustomers.mutate({
  *       customer_ids: [
@@ -196,12 +196,12 @@ export const useAdminDeleteCustomerGroup = (
  *       ],
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
@@ -219,41 +219,41 @@ export const useAdminAddCustomersToCustomerGroup = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostCustomerGroupsGroupCustomersBatchReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCustomerGroupsGroupCustomersBatchReq) =>
       client.admin.customerGroups.addCustomers(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detailCustomer(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook removes a list of customers from a customer group. This doesn't delete the customer, 
+ * This hook removes a list of customers from a customer group. This doesn't delete the customer,
  * only the association between the customer and the customer group.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRemoveCustomersFromCustomerGroup,
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
- *   const removeCustomers = 
+ *   const removeCustomers =
  *     useAdminRemoveCustomersFromCustomerGroup(
  *       customerGroupId
  *     )
  *   // ...
- * 
+ *
  *   const handleRemoveCustomer = (customerId: string) => {
  *     removeCustomers.mutate({
  *       customer_ids: [
@@ -263,12 +263,12 @@ export const useAdminAddCustomersToCustomerGroup = (
  *       ],
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
@@ -286,16 +286,16 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq) =>
       client.admin.customerGroups.removeCustomers(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detailCustomer(id),
       ],
       options
-    )
-  )
+    ),
+  })
 }

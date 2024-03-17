@@ -13,20 +13,20 @@ type GiftCardQueryKey = typeof giftCardKeys
 
 /**
  * This hook retrieves a Gift Card's details by its associated unique code.
- * 
+ *
  * @example
  * import React from "react"
  * import { useGiftCard } from "medusa-react"
- * 
+ *
  * type Props = {
  *   giftCardCode: string
  * }
- * 
+ *
  * const GiftCard = ({ giftCardCode }: Props) => {
  *   const { gift_card, isLoading, isError } = useGiftCard(
  *     giftCardCode
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -35,9 +35,9 @@ type GiftCardQueryKey = typeof giftCardKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default GiftCard
- * 
+ *
  * @customNamespace Hooks.Store.Gift Cards
  * @category Queries
  */
@@ -53,10 +53,10 @@ export const useGiftCard = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    giftCardKeys.detail(id),
-    () => client.giftCards.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: giftCardKeys.detail(id),
+    queryFn: () => client.giftCards.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

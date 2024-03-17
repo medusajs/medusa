@@ -8,18 +8,18 @@ import { useMedusa } from "../../../contexts"
 
 /**
  * This hook generates a Line Item with a given Product Variant and adds it to the Cart.
- * 
+ *
  * @example
  * import React from "react"
  * import { useCreateLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const createLineItem = useCreateLineItem(cartId)
- * 
+ *
  *   const handleAddItem = (
  *     variantId: string,
  *     quantity: number
@@ -33,12 +33,12 @@ import { useMedusa } from "../../../contexts"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
@@ -54,14 +54,14 @@ export const useCreateLineItem = (
   >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostCartsCartLineItemsReq) =>
+  return useMutation({
+    mutationFn: (data: StorePostCartsCartLineItemsReq) =>
       client.carts.lineItems.create(cartId, data),
-    options
-  )
+    ...options,
+  })
 }
 
-export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & { 
+export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & {
   /**
    * The line item's ID.
    */
@@ -70,18 +70,18 @@ export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & {
 
 /**
  * This hook updates a line item's data.
- * 
+ *
  * @example
  * import React from "react"
  * import { useUpdateLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const updateLineItem = useUpdateLineItem(cartId)
- * 
+ *
  *   const handleUpdateItem = (
  *     lineItemId: string,
  *     quantity: number
@@ -95,12 +95,12 @@ export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & {
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
@@ -109,37 +109,30 @@ export const useUpdateLineItem = (
    * The cart's ID.
    */
   cartId: string,
-  options?: UseMutationOptions<
-    StoreCartsRes,
-    Error,
-    UpdateLineItemReq
-  >
+  options?: UseMutationOptions<StoreCartsRes, Error, UpdateLineItemReq>
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    ({
-      lineId,
-      ...data
-    }: UpdateLineItemReq) =>
+  return useMutation({
+    mutationFn: ({ lineId, ...data }: UpdateLineItemReq) =>
       client.carts.lineItems.update(cartId, lineId, data),
-    options
-  )
+    ...options,
+  })
 }
 
 /**
  * This hook deletes a line item from a cart. The payment sessions will be updated and the totals will be recalculated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useDeleteLineItem } from "medusa-react"
- * 
+ *
  * type Props = {
  *   cartId: string
  * }
- * 
+ *
  * const Cart = ({ cartId }: Props) => {
  *   const deleteLineItem = useDeleteLineItem(cartId)
- * 
+ *
  *   const handleDeleteItem = (
  *     lineItemId: string
  *   ) => {
@@ -151,12 +144,12 @@ export const useUpdateLineItem = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Cart
- * 
+ *
  * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
@@ -165,17 +158,21 @@ export const useDeleteLineItem = (
    * The cart's ID.
    */
   cartId: string,
-  options?: UseMutationOptions<StoreCartsRes, Error, { 
-    /**
-     * The line item's ID.
-     */
-    lineId: string
-  }>
+  options?: UseMutationOptions<
+    StoreCartsRes,
+    Error,
+    {
+      /**
+       * The line item's ID.
+       */
+      lineId: string
+    }
+  >
 ) => {
   const { client } = useMedusa()
-  return useMutation(
-    ({ lineId }: { lineId: string }) =>
+  return useMutation({
+    mutationFn: ({ lineId }: { lineId: string }) =>
       client.carts.lineItems.delete(cartId, lineId),
-    options
-  )
+    ...options,
+  })
 }

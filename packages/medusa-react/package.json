@@ -40,7 +40,7 @@
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
     "@storybook/react": "^6.3.12",
-    "@tanstack/react-query": "4.22.0",
+    "@tanstack/react-query": "5.28.4",
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^27.0.3",

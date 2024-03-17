@@ -18,19 +18,19 @@ export const adminShippingOptionKeys = queryKeysFactory(
 type ShippingOptionQueryKeys = typeof adminShippingOptionKeys
 
 /**
- * This hook retrieves a list of shipping options. The shipping options can be filtered by fields such as `region_id` 
+ * This hook retrieves a list of shipping options. The shipping options can be filtered by fields such as `region_id`
  * or `is_return` passed in the `query` parameter.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminShippingOptions } from "medusa-react"
- * 
+ *
  * const ShippingOptions = () => {
  *   const {
- *     shipping_options, 
+ *     shipping_options,
  *     isLoading
  *   } = useAdminShippingOptions()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -47,9 +47,9 @@ type ShippingOptionQueryKeys = typeof adminShippingOptionKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingOptions
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Options
  * @category Queries
  */
@@ -65,33 +65,33 @@ export const useAdminShippingOptions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminShippingOptionKeys.list(query),
-    () => client.admin.shippingOptions.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminShippingOptionKeys.list(query),
+    queryFn: () => client.admin.shippingOptions.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a shipping option's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminShippingOption } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingOptionId: string
  * }
- * 
+ *
  * const ShippingOption = ({ shippingOptionId }: Props) => {
  *   const {
- *     shipping_option, 
+ *     shipping_option,
  *     isLoading
  *   } = useAdminShippingOption(
  *     shippingOptionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -99,9 +99,9 @@ export const useAdminShippingOptions = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingOption
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Options
  * @category Queries
  */
@@ -117,10 +117,10 @@ export const useAdminShippingOption = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminShippingOptionKeys.detail(id),
-    () => client.admin.shippingOptions.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminShippingOptionKeys.detail(id),
+    queryFn: () => client.admin.shippingOptions.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

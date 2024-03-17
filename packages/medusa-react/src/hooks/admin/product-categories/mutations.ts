@@ -20,15 +20,15 @@ import { adminProductKeys } from "../products"
 
 /**
  * This hook creates a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateProductCategory } from "medusa-react"
- * 
+ *
  * const CreateCategory = () => {
  *   const createCategory = useAdminCreateProductCategory()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     name: string
  *   ) => {
@@ -40,12 +40,12 @@ import { adminProductKeys } from "../products"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateCategory
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -59,28 +59,28 @@ export const useAdminCreateProductCategory = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostProductCategoriesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostProductCategoriesReq) =>
       client.admin.productCategories.create(payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminProductCategoryKeys.list(), adminProductKeys.details()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook updates a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -88,7 +88,7 @@ export const useAdminCreateProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string
  *   ) => {
@@ -100,12 +100,12 @@ export const useAdminCreateProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -122,32 +122,32 @@ export const useAdminUpdateProductCategory = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostProductCategoriesCategoryReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostProductCategoriesCategoryReq) =>
       client.admin.productCategories.update(id, payload),
-      buildOptions(
-        queryClient,
-        [
-          adminProductCategoryKeys.lists(),
-          adminProductCategoryKeys.detail(id),
-          adminProductKeys.details(),
-        ],
-        options
-      )
-    )
+    ...buildOptions(
+      queryClient,
+      [
+        adminProductCategoryKeys.lists(),
+        adminProductCategoryKeys.detail(id),
+        adminProductKeys.details(),
+      ],
+      options
+    ),
+  })
 }
 
 /**
  * This hook deletes a product category. This does not delete associated products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -155,7 +155,7 @@ export const useAdminUpdateProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteCategory.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -163,12 +163,12 @@ export const useAdminUpdateProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -186,35 +186,35 @@ export const useAdminDeleteProductCategory = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.productCategories.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.productCategories.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminProductCategoryKeys.lists(),
         adminProductCategoryKeys.detail(id),
-        adminProductKeys.all
+        adminProductKeys.all,
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds a list of products to a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminAddProductsToCategory } from "medusa-react"
- * 
+ *
  * type ProductsData = {
  *   id: string
  * }
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -222,7 +222,7 @@ export const useAdminDeleteProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddProducts = (
  *     productIds: ProductsData[]
  *   ) => {
@@ -234,12 +234,12 @@ export const useAdminDeleteProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -256,11 +256,13 @@ export const useAdminAddProductsToCategory = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostProductCategoriesCategoryProductsBatchReq) => {
+  return useMutation({
+    mutationFn: (
+      payload: AdminPostProductCategoriesCategoryProductsBatchReq
+    ) => {
       return client.admin.productCategories.addProducts(id, payload)
     },
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminProductCategoryKeys.lists(),
@@ -268,25 +270,25 @@ export const useAdminAddProductsToCategory = (
         adminProductKeys.list({ product_category_id: [id] }),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook removes a list of products from a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteProductsFromCategory } from "medusa-react"
- * 
+ *
  * type ProductsData = {
  *   id: string
  * }
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -294,7 +296,7 @@ export const useAdminAddProductsToCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteProducts = (
  *     productIds: ProductsData[]
  *   ) => {
@@ -306,12 +308,12 @@ export const useAdminAddProductsToCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -328,11 +330,13 @@ export const useAdminDeleteProductsFromCategory = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminDeleteProductCategoriesCategoryProductsBatchReq) => {
+  return useMutation({
+    mutationFn: (
+      payload: AdminDeleteProductCategoriesCategoryProductsBatchReq
+    ) => {
       return client.admin.productCategories.removeProducts(id, payload)
     },
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminProductCategoryKeys.lists(),
@@ -340,6 +344,6 @@ export const useAdminDeleteProductsFromCategory = (
         adminProductKeys.list({ product_category_id: [id] }),
       ],
       options
-    )
-  )
+    ),
+  })
 }

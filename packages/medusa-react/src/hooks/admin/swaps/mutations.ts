@@ -17,19 +17,19 @@ import { adminSwapKeys } from "./queries"
 
 /**
  * This hook creates a swap for an order. This includes creating a return that is associated with the swap.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateSwap } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string
  * }
- * 
+ *
  * const CreateSwap = ({ orderId }: Props) => {
  *   const createSwap = useAdminCreateSwap(orderId)
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     returnItems: {
  *       item_id: string,
@@ -44,12 +44,12 @@ import { adminSwapKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateSwap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -66,31 +66,31 @@ export const useAdminCreateSwap = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostOrdersOrderSwapsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostOrdersOrderSwapsReq) =>
       client.admin.orders.createSwap(orderId, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook cancels a swap and change its status.
- * 
+ *
  * @typeParamDefinition string - The swap's ID.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCancelSwap } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string,
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({
  *   orderId,
  *   swapId
@@ -99,7 +99,7 @@ export const useAdminCreateSwap = (
  *     orderId
  *   )
  *   // ...
- * 
+ *
  *   const handleCancel = () => {
  *     cancelSwap.mutate(swapId, {
  *       onSuccess: ({ order }) => {
@@ -107,12 +107,12 @@ export const useAdminCreateSwap = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -126,36 +126,38 @@ export const useAdminCancelSwap = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (swapId: string) => client.admin.orders.cancelSwap(orderId, swapId),
-    buildOptions(
+  return useMutation({
+    mutationFn: (swapId: string) =>
+      client.admin.orders.cancelSwap(orderId, swapId),
+    ...buildOptions(
       queryClient,
       [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
-export type AdminFulfillSwapReq = AdminPostOrdersOrderSwapsSwapFulfillmentsReq & { 
-  /**
-   * The swap's ID.
-   */
-  swap_id: string
-}
+export type AdminFulfillSwapReq =
+  AdminPostOrdersOrderSwapsSwapFulfillmentsReq & {
+    /**
+     * The swap's ID.
+     */
+    swap_id: string
+  }
 
 /**
  * This hook creates a Fulfillment for a Swap and change its fulfillment status to `fulfilled`. If it requires any additional actions,
  * its fulfillment status may change to `requires_action`.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminFulfillSwap } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string,
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({
  *   orderId,
  *   swapId
@@ -164,7 +166,7 @@ export type AdminFulfillSwapReq = AdminPostOrdersOrderSwapsSwapFulfillmentsReq &
  *     orderId
  *   )
  *   // ...
- * 
+ *
  *   const handleFulfill = () => {
  *     fulfillSwap.mutate({
  *       swap_id: swapId,
@@ -174,12 +176,12 @@ export type AdminFulfillSwapReq = AdminPostOrdersOrderSwapsSwapFulfillmentsReq &
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -197,13 +199,10 @@ export const useAdminFulfillSwap = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    ({
-      swap_id,
-      ...payload
-    }: AdminFulfillSwapReq) =>
+  return useMutation({
+    mutationFn: ({ swap_id, ...payload }: AdminFulfillSwapReq) =>
       client.admin.orders.fulfillSwap(orderId, swap_id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [
         adminOrderKeys.detail(orderId),
@@ -212,30 +211,31 @@ export const useAdminFulfillSwap = (
         adminProductKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }
 
-export type AdminCreateSwapShipmentReq = AdminPostOrdersOrderSwapsSwapShipmentsReq & { 
-  /**
-   * The swap's ID.
-   */
-  swap_id: string
-}
+export type AdminCreateSwapShipmentReq =
+  AdminPostOrdersOrderSwapsSwapShipmentsReq & {
+    /**
+     * The swap's ID.
+     */
+    swap_id: string
+  }
 
 /**
  * This hook creates a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status
  * to either `shipped` or `partially_shipped`, depending on whether all the items were shipped.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateSwapShipment } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string,
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({
  *   orderId,
  *   swapId
@@ -244,7 +244,7 @@ export type AdminCreateSwapShipmentReq = AdminPostOrdersOrderSwapsSwapShipmentsR
  *     orderId
  *   )
  *   // ...
- * 
+ *
  *   const handleCreateShipment = (
  *     fulfillmentId: string
  *   ) => {
@@ -257,12 +257,12 @@ export type AdminCreateSwapShipmentReq = AdminPostOrdersOrderSwapsSwapShipmentsR
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -280,31 +280,28 @@ export const useAdminCreateSwapShipment = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    ({
-      swap_id,
-      ...payload
-    }: AdminCreateSwapShipmentReq) =>
+  return useMutation({
+    mutationFn: ({ swap_id, ...payload }: AdminCreateSwapShipmentReq) =>
       client.admin.orders.createSwapShipment(orderId, swap_id, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
-  )
+    ...buildOptions(queryClient, adminOrderKeys.detail(orderId), options),
+  })
 }
 
 /**
- * This hook process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` 
+ * This hook process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due`
  * of the swap. If `difference_due` is negative, the amount is refunded. If `difference_due` is positive, the amount is captured.
- * 
+ *
  * @typeParamDefinition string - The swap's ID.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminProcessSwapPayment } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string,
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({
  *   orderId,
  *   swapId
@@ -313,7 +310,7 @@ export const useAdminCreateSwapShipment = (
  *     orderId
  *   )
  *   // ...
- * 
+ *
  *   const handleProcessPayment = () => {
  *     processPayment.mutate(swapId, {
  *       onSuccess: ({ order }) => {
@@ -321,12 +318,12 @@ export const useAdminCreateSwapShipment = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -340,20 +337,21 @@ export const useAdminProcessSwapPayment = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (swapId: string) => client.admin.orders.processSwapPayment(orderId, swapId),
-    buildOptions(
+  return useMutation({
+    mutationFn: (swapId: string) =>
+      client.admin.orders.processSwapPayment(orderId, swapId),
+    ...buildOptions(
       queryClient,
       [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * The details of the swap's fulfillment to cancel.
  */
-export type AdminCancelSwapFulfillmentReq = { 
+export type AdminCancelSwapFulfillmentReq = {
   /**
    * The swap's ID.
    */
@@ -366,16 +364,16 @@ export type AdminCancelSwapFulfillmentReq = {
 
 /**
  * This hook cancels a swap's fulfillment and change its fulfillment status to `canceled`.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCancelSwapFulfillment } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderId: string,
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({
  *   orderId,
  *   swapId
@@ -384,7 +382,7 @@ export type AdminCancelSwapFulfillmentReq = {
  *     orderId
  *   )
  *   // ...
- * 
+ *
  *   const handleCancelFulfillment = (
  *     fulfillmentId: string
  *   ) => {
@@ -393,12 +391,12 @@ export type AdminCancelSwapFulfillmentReq = {
  *       fulfillment_id: fulfillmentId,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
@@ -416,8 +414,8 @@ export const useAdminCancelSwapFulfillment = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    ({
+  return useMutation({
+    mutationFn: ({
       swap_id,
       fulfillment_id,
     }: {
@@ -429,10 +427,10 @@ export const useAdminCancelSwapFulfillment = (
         swap_id,
         fulfillment_id
       ),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }

@@ -15,11 +15,11 @@ import { adminShippingOptionKeys } from "./queries"
 
 /**
  * This hook creates a shipping option.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateShippingOption } from "medusa-react"
- * 
+ *
  * type CreateShippingOption = {
  *   name: string
  *   provider_id: string
@@ -27,15 +27,15 @@ import { adminShippingOptionKeys } from "./queries"
  *   price_type: string
  *   amount: number
  * }
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({ regionId }: Props) => {
  *   const createShippingOption = useAdminCreateShippingOption()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     data: CreateShippingOption
  *   ) => {
@@ -48,12 +48,12 @@ import { adminShippingOptionKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
@@ -67,30 +67,30 @@ export const useAdminCreateShippingOption = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostShippingOptionsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostShippingOptionsReq) =>
       client.admin.shippingOptions.create(payload),
-    buildOptions(queryClient, adminShippingOptionKeys.lists(), options)
-  )
+    ...buildOptions(queryClient, adminShippingOptionKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a shipping option's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateShippingOption } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingOptionId: string
  * }
- * 
+ *
  * const ShippingOption = ({ shippingOptionId }: Props) => {
  *   const updateShippingOption = useAdminUpdateShippingOption(
  *     shippingOptionId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string,
  *     requirements: {
@@ -108,12 +108,12 @@ export const useAdminCreateShippingOption = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ShippingOption
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
@@ -131,34 +131,34 @@ export const useAdminUpdateShippingOption = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostShippingOptionsOptionReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostShippingOptionsOptionReq) =>
       client.admin.shippingOptions.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a shipping option. Once deleted, it can't be used when creating orders or returns.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteShippingOption } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingOptionId: string
  * }
- * 
+ *
  * const ShippingOption = ({ shippingOptionId }: Props) => {
  *   const deleteShippingOption = useAdminDeleteShippingOption(
  *     shippingOptionId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteShippingOption.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -166,12 +166,12 @@ export const useAdminUpdateShippingOption = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default ShippingOption
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
@@ -185,12 +185,12 @@ export const useAdminDeleteShippingOption = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.shippingOptions.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.shippingOptions.delete(id),
+    ...buildOptions(
       queryClient,
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }

@@ -16,19 +16,19 @@ export const adminCustomerKeys = queryKeysFactory(ADMIN_CUSTOMERS_QUERY_KEY)
 type CustomerQueryKeys = typeof adminCustomerKeys
 
 /**
- * This hook retrieves a list of Customers. The customers can be filtered by fields such as 
+ * This hook retrieves a list of Customers. The customers can be filtered by fields such as
  * `q` or `groups`. The customers can also be paginated.
- * 
+ *
  * @example
  * To list customers:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCustomers } from "medusa-react"
- * 
+ *
  * const Customers = () => {
  *   const { customers, isLoading } = useAdminCustomers()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -45,20 +45,20 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Customers
  * ```
- * 
- * You can specify relations to be retrieved within each customer. In addition, by default, only the first `50` records are retrieved. 
+ *
+ * You can specify relations to be retrieved within each customer. In addition, by default, only the first `50` records are retrieved.
  * You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCustomers } from "medusa-react"
- * 
+ *
  * const Customers = () => {
- *   const { 
- *     customers, 
+ *   const {
+ *     customers,
  *     limit,
  *     offset,
  *     isLoading
@@ -67,7 +67,7 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -84,10 +84,10 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Customers
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Customers
  * @category Queries
  */
@@ -103,30 +103,30 @@ export const useAdminCustomers = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCustomerKeys.list(query),
-    () => client.admin.customers.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCustomerKeys.list(query),
+    queryFn: () => client.admin.customers.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves the details of a customer.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomer } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerId: string
  * }
- * 
+ *
  * const Customer = ({ customerId }: Props) => {
  *   const { customer, isLoading } = useAdminCustomer(
  *     customerId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -134,9 +134,9 @@ export const useAdminCustomers = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Customer
- * 
+ *
  * @customNamespace Hooks.Admin.Customers
  * @category Queries
  */
@@ -152,10 +152,10 @@ export const useAdminCustomer = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCustomerKeys.detail(id),
-    () => client.admin.customers.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCustomerKeys.detail(id),
+    queryFn: () => client.admin.customers.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

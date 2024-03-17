@@ -17,17 +17,17 @@ type SwapsQueryKey = typeof adminSwapKeys
 
 /**
  * This hook retrieves a list of swaps. The swaps can be paginated.
- * 
+ *
  * @example
  * To list swaps:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminSwaps } from "medusa-react"
- * 
+ *
  * const Swaps = () => {
  *   const { swaps, isLoading } = useAdminSwaps()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -42,19 +42,19 @@ type SwapsQueryKey = typeof adminSwapKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Swaps
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminSwaps } from "medusa-react"
- * 
+ *
  * const Swaps = () => {
- *   const { 
- *     swaps, 
+ *   const {
+ *     swaps,
  *     limit,
  *     offset,
  *     isLoading
@@ -62,7 +62,7 @@ type SwapsQueryKey = typeof adminSwapKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -77,10 +77,10 @@ type SwapsQueryKey = typeof adminSwapKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Swaps
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Queries
  */
@@ -96,28 +96,28 @@ export const useAdminSwaps = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminSwapKeys.list(query),
-    () => client.admin.swaps.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminSwapKeys.list(query),
+    queryFn: () => client.admin.swaps.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a swap's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminSwap } from "medusa-react"
- * 
+ *
  * type Props = {
  *   swapId: string
  * }
- * 
+ *
  * const Swap = ({ swapId }: Props) => {
  *   const { swap, isLoading } = useAdminSwap(swapId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -125,9 +125,9 @@ export const useAdminSwaps = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Swap
- * 
+ *
  * @customNamespace Hooks.Admin.Swaps
  * @category Queries
  */
@@ -143,10 +143,10 @@ export const useAdminSwap = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminSwapKeys.detail(id),
-    () => client.admin.swaps.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminSwapKeys.detail(id),
+    queryFn: () => client.admin.swaps.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

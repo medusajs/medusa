@@ -14,19 +14,19 @@ import { adminCurrenciesKeys } from "./queries"
 
 /**
  * This hook updates a currency's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateCurrency } from "medusa-react"
- * 
+ *
  * type Props = {
  *   currencyCode: string
  * }
- * 
+ *
  * const Currency = ({ currencyCode }: Props) => {
  *   const updateCurrency = useAdminUpdateCurrency(currencyCode)
  *   // ...
- * 
+ *
  *   const handleUpdate = (includes_tax: boolean) => {
  *     updateCurrency.mutate({
  *       includes_tax,
@@ -36,12 +36,12 @@ import { adminCurrenciesKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Currency
- * 
+ *
  * @customNamespace Hooks.Admin.Currencies
  * @category Mutations
  */
@@ -58,13 +58,13 @@ export const useAdminUpdateCurrency = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostCurrenciesCurrencyReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostCurrenciesCurrencyReq) =>
       client.admin.currencies.update(code, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminCurrenciesKeys.lists(), adminCurrenciesKeys.detail(code)],
       options
-    )
-  )
+    ),
+  })
 }

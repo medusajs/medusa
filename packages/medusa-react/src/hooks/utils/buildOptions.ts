@@ -17,7 +17,7 @@ export const buildOptions = <
 ): UseMutationOptions<TData, TError, TVariables, TContext> => {
   return {
     ...options,
-    onSuccess: (...args) => {
+    onSuccess: (...args): unknown => {
       if (options?.onSuccess) {
         return options.onSuccess(...args)
       }
@@ -27,6 +27,7 @@ export const buildOptions = <
           queryClient.invalidateQueries({ queryKey: key as QueryKey })
         })
       }
+      return undefined
     },
   }
 }

@@ -19,20 +19,20 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
 /**
  * This hook retrieves a list of product types. The product types can be filtered by fields such as `q` or `value` passed in the `query` parameter.
  * The product types can also be sorted or paginated.
- * 
+ *
  * @example
  * To list product types:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductTypes } from "medusa-react"
- * 
+ *
  * function ProductTypes() {
- *   const { 
+ *   const {
  *     product_types,
- *     isLoading 
+ *     isLoading
  *   } = useAdminProductTypes()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -51,27 +51,27 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ProductTypes
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProductTypes } from "medusa-react"
- * 
+ *
  * function ProductTypes() {
- *   const { 
+ *   const {
  *     product_types,
  *     limit,
  *     offset,
- *     isLoading 
+ *     isLoading
  *   } = useAdminProductTypes({
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -90,10 +90,10 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ProductTypes
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Product Types
  * @category Queries
  */
@@ -109,10 +109,10 @@ export const useAdminProductTypes = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductTypeKeys.list(query),
-    () => client.admin.productTypes.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminProductTypeKeys.list(query),
+    queryFn: () => client.admin.productTypes.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

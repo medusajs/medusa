@@ -21,23 +21,23 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminDiscountKeys } from "./queries"
 
 /**
- * This hook adds a batch of resources to a discount condition. The type of resource depends on the type of discount condition. 
+ * This hook adds a batch of resources to a discount condition. The type of resource depends on the type of discount condition.
  * For example, if the discount condition's type is `products`, the resources being added should be products.
- * 
+ *
  * @example
  * To add resources to a discount condition:
- * 
+ *
  * ```tsx
  * import React from "react"
- * import { 
+ * import {
  *   useAdminAddDiscountConditionResourceBatch
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  *   conditionId: string
  * }
- * 
+ *
  * const DiscountCondition = ({
  *   discountId,
  *   conditionId
@@ -47,7 +47,7 @@ import { adminDiscountKeys } from "./queries"
  *     conditionId
  *   )
  *   // ...
- * 
+ *
  *   const handleAdd = (itemId: string) => {
  *     addConditionResources.mutate({
  *       resources: [
@@ -61,26 +61,26 @@ import { adminDiscountKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default DiscountCondition
  * ```
- * 
+ *
  * To specify relations to include in the returned discount:
- * 
+ *
  * ```tsx
  * import React from "react"
- * import { 
+ * import {
  *   useAdminAddDiscountConditionResourceBatch
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  *   conditionId: string
  * }
- * 
+ *
  * const DiscountCondition = ({
  *   discountId,
  *   conditionId
@@ -93,7 +93,7 @@ import { adminDiscountKeys } from "./queries"
  *     }
  *   )
  *   // ...
- * 
+ *
  *   const handleAdd = (itemId: string) => {
  *     addConditionResources.mutate({
  *       resources: [
@@ -107,13 +107,13 @@ import { adminDiscountKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default DiscountCondition
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -138,33 +138,35 @@ export const useAdminAddDiscountConditionResourceBatch = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsDiscountConditionsConditionBatchReq) =>
+  return useMutation({
+    mutationFn: (
+      payload: AdminPostDiscountsDiscountConditionsConditionBatchReq
+    ) =>
       client.admin.discounts.addConditionResourceBatch(
         discountId,
         conditionId,
         payload,
         query
       ),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
-  )
+    ...buildOptions(queryClient, adminDiscountKeys.detail(discountId), options),
+  })
 }
 
 /**
- * This hook remove a batch of resources from a discount condition. This will only remove the association between the resource and 
+ * This hook remove a batch of resources from a discount condition. This will only remove the association between the resource and
  * the discount condition, not the resource itself.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminDeleteDiscountConditionResourceBatch
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  *   conditionId: string
  * }
- * 
+ *
  * const DiscountCondition = ({
  *   discountId,
  *   conditionId
@@ -174,7 +176,7 @@ export const useAdminAddDiscountConditionResourceBatch = (
  *     conditionId,
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = (itemId: string) => {
  *     deleteConditionResource.mutate({
  *       resources: [
@@ -188,12 +190,12 @@ export const useAdminAddDiscountConditionResourceBatch = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default DiscountCondition
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -215,34 +217,40 @@ export const useAdminDeleteDiscountConditionResourceBatch = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminDeleteDiscountsDiscountConditionsConditionBatchReq) =>
+  return useMutation({
+    mutationFn: (
+      payload: AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+    ) =>
       client.admin.discounts.deleteConditionResourceBatch(
         discountId,
         conditionId,
         payload
       ),
-    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
-  )
+    ...buildOptions(
+      queryClient,
+      [adminDiscountKeys.detail(discountId)],
+      options
+    ),
+  })
 }
 
 /**
  * This hook creates a discount with a given set of rules that defines how the discount is applied.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminCreateDiscount,
  * } from "medusa-react"
- * import { 
- *   AllocationType, 
+ * import {
+ *   AllocationType,
  *   DiscountRuleType,
  * } from "@medusajs/medusa"
- * 
+ *
  * const CreateDiscount = () => {
  *   const createDiscount = useAdminCreateDiscount()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     currencyCode: string,
  *     regionId: string
@@ -262,12 +270,12 @@ export const useAdminDeleteDiscountConditionResourceBatch = (
  *       is_disabled: false,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateDiscount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -280,38 +288,39 @@ export const useAdminCreateDiscount = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsReq) => client.admin.discounts.create(payload),
-    buildOptions(queryClient, adminDiscountKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostDiscountsReq) =>
+      client.admin.discounts.create(payload),
+    ...buildOptions(queryClient, adminDiscountKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a discount with a given set of rules that define how the discount is applied.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateDiscount } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const updateDiscount = useAdminUpdateDiscount(discountId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (isDisabled: boolean) => {
  *     updateDiscount.mutate({
  *       is_disabled: isDisabled,
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -328,33 +337,33 @@ export const useAdminUpdateDiscount = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsDiscountReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostDiscountsDiscountReq) =>
       client.admin.discounts.update(id, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminDiscountKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook deletes a discount. Deleting the discount will make it unavailable for customers to use.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteDiscount } from "medusa-react"
- * 
+ *
  * const Discount = () => {
  *   const deleteDiscount = useAdminDeleteDiscount(discount_id)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteDiscount.mutate()
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -367,29 +376,29 @@ export const useAdminDeleteDiscount = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    () => client.admin.discounts.delete(id),
-    buildOptions(queryClient, adminDiscountKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: () => client.admin.discounts.delete(id),
+    ...buildOptions(queryClient, adminDiscountKeys.lists(), options),
+  })
 }
 
 /**
  * This hook adds a Region to the list of Regions a Discount can be used in.
- * 
+ *
  * @typeParamDefinition string - The ID of the region to add.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDiscountAddRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const addRegion = useAdminDiscountAddRegion(discountId)
  *   // ...
- * 
+ *
  *   const handleAdd = (regionId: string) => {
  *     addRegion.mutate(regionId, {
  *       onSuccess: ({ discount }) => {
@@ -397,12 +406,12 @@ export const useAdminDeleteDiscount = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -415,30 +424,31 @@ export const useAdminDiscountAddRegion = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (regionId: string) => client.admin.discounts.addRegion(id, regionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
-  )
+  return useMutation({
+    mutationFn: (regionId: string) =>
+      client.admin.discounts.addRegion(id, regionId),
+    ...buildOptions(queryClient, adminDiscountKeys.detail(id), options),
+  })
 }
 
 /**
- * This hook removes a Region from the list of Regions that a Discount can be used in. 
+ * This hook removes a Region from the list of Regions that a Discount can be used in.
  * This does not delete a region, only the association between it and the discount.
- * 
+ *
  * @typeParamDefinition string - The ID of the region to remove.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDiscountRemoveRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const deleteRegion = useAdminDiscountRemoveRegion(discountId)
  *   // ...
- * 
+ *
  *   const handleDelete = (regionId: string) => {
  *     deleteRegion.mutate(regionId, {
  *       onSuccess: ({ discount }) => {
@@ -446,12 +456,12 @@ export const useAdminDiscountAddRegion = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -464,28 +474,29 @@ export const useAdminDiscountRemoveRegion = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (regionId: string) => client.admin.discounts.removeRegion(id, regionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
-  )
+  return useMutation({
+    mutationFn: (regionId: string) =>
+      client.admin.discounts.removeRegion(id, regionId),
+    ...buildOptions(queryClient, adminDiscountKeys.detail(id), options),
+  })
 }
 
 /**
- * This hook creates a dynamic unique code that can map to a parent discount. This is useful if you want to 
+ * This hook creates a dynamic unique code that can map to a parent discount. This is useful if you want to
  * automatically generate codes with the same rules and conditions.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateDynamicDiscountCode } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const createDynamicDiscount = useAdminCreateDynamicDiscountCode(discountId)
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     code: string,
  *     usageLimit: number
@@ -499,12 +510,12 @@ export const useAdminDiscountRemoveRegion = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -521,34 +532,34 @@ export const useAdminCreateDynamicDiscountCode = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsDiscountDynamicCodesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostDiscountsDiscountDynamicCodesReq) =>
       client.admin.discounts.createDynamicCode(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminDiscountKeys.lists(), adminDiscountKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a dynamic code from a discount.
- * 
+ *
  * @typeParamDefinition string - The code of the dynamic discount to delete.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteDynamicDiscountCode } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const deleteDynamicDiscount = useAdminDeleteDynamicDiscountCode(discountId)
  *   // ...
- * 
+ *
  *   const handleDelete = (code: string) => {
  *     deleteDynamicDiscount.mutate(code, {
  *       onSuccess: ({ discount }) => {
@@ -556,12 +567,12 @@ export const useAdminCreateDynamicDiscountCode = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -574,34 +585,35 @@ export const useAdminDeleteDynamicDiscountCode = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (code: string) => client.admin.discounts.deleteDynamicCode(id, code),
-    buildOptions(
+  return useMutation({
+    mutationFn: (code: string) =>
+      client.admin.discounts.deleteDynamicCode(id, code),
+    ...buildOptions(
       queryClient,
       [adminDiscountKeys.lists(), adminDiscountKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
- * This hook creates a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` 
- * should be provided in the `payload` parameter, based on the type of discount condition. For example, if the discount condition's type is `products`, 
+ * This hook creates a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups`
+ * should be provided in the `payload` parameter, based on the type of discount condition. For example, if the discount condition's type is `products`,
  * the `products` field should be provided in the `payload` parameter.
- * 
+ *
  * @example
  * import React from "react"
  * import { DiscountConditionOperator } from "@medusajs/medusa"
  * import { useAdminDiscountCreateCondition } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const createCondition = useAdminDiscountCreateCondition(discountId)
  *   // ...
- * 
+ *
  *   const handleCreateCondition = (
  *     operator: DiscountConditionOperator,
  *     products: string[]
@@ -615,12 +627,12 @@ export const useAdminDeleteDynamicDiscountCode = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -637,27 +649,27 @@ export const useAdminDiscountCreateCondition = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsDiscountConditions) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostDiscountsDiscountConditions) =>
       client.admin.discounts.createCondition(discountId, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
-  )
+    ...buildOptions(queryClient, adminDiscountKeys.detail(discountId), options),
+  })
 }
 
 /**
- * Update a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` 
- * should be provided in the `payload` parameter, based on the type of discount condition. For example, if the discount condition's 
+ * Update a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups`
+ * should be provided in the `payload` parameter, based on the type of discount condition. For example, if the discount condition's
  * type is `products`, the `products` field should be provided in the `payload` parameter.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDiscountUpdateCondition } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  *   conditionId: string
  * }
- * 
+ *
  * const DiscountCondition = ({
  *   discountId,
  *   conditionId
@@ -667,7 +679,7 @@ export const useAdminDiscountCreateCondition = (
  *     conditionId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     products: string[]
  *   ) => {
@@ -679,12 +691,12 @@ export const useAdminDiscountCreateCondition = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default DiscountCondition
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -705,32 +717,32 @@ export const useAdminDiscountUpdateCondition = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostDiscountsDiscountConditionsCondition) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostDiscountsDiscountConditionsCondition) =>
       client.admin.discounts.updateCondition(discountId, conditionId, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
-  )
+    ...buildOptions(queryClient, adminDiscountKeys.detail(discountId), options),
+  })
 }
 
 /**
  * This hook deletes a discount condition. This doesn't delete resources associated to the discount condition.
- * 
+ *
  * @typeParamDefinition string - The ID of the condition to delete.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDiscountRemoveCondition } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const deleteCondition = useAdminDiscountRemoveCondition(
  *     discountId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = (
  *     conditionId: string
  *   ) => {
@@ -740,12 +752,12 @@ export const useAdminDiscountUpdateCondition = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
@@ -758,9 +770,9 @@ export const useAdminDiscountRemoveCondition = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (conditionId: string) =>
+  return useMutation({
+    mutationFn: (conditionId: string) =>
       client.admin.discounts.deleteCondition(discountId, conditionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
-  )
+    ...buildOptions(queryClient, adminDiscountKeys.detail(discountId), options),
+  })
 }

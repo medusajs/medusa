@@ -17,24 +17,24 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
 
 /**
  * This hook retrieves an order edit's details.
- * 
+ *
  * @example
  * A simple example that retrieves an order edit by its ID:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
- *   const { 
- *     order_edit, 
- *     isLoading, 
+ *   const {
+ *     order_edit,
+ *     isLoading,
  *   } = useAdminOrderEdit(orderEditId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -42,31 +42,31 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdit
  * ```
- * 
+ *
  * To specify relations that should be retrieved:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
- *   const { 
- *     order_edit, 
- *     isLoading, 
+ *   const {
+ *     order_edit,
+ *     isLoading,
  *   } = useAdminOrderEdit(
  *     orderEditId,
  *     {
  *       expand: "order"
  *     }
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -74,10 +74,10 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdit
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Queries
  */
@@ -97,28 +97,28 @@ export const useAdminOrderEdit = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminOrderEditsKeys.detail(id),
-    () => client.admin.orderEdits.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminOrderEditsKeys.detail(id),
+    queryFn: () => client.admin.orderEdits.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter. 
+ * This hook retrieves a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter.
  * The order edits can also be paginated.
- * 
+ *
  * @example
  * To list order edits:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
- * 
+ *
  * const OrderEdits = () => {
  *   const { order_edits, isLoading } = useAdminOrderEdits()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -137,21 +137,21 @@ export const useAdminOrderEdit = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdits
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the order edits:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
- * 
+ *
  * const OrderEdits = () => {
  *   const { order_edits, isLoading } = useAdminOrderEdits({
  *     expand: "order"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -170,18 +170,18 @@ export const useAdminOrderEdit = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdits
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
- * 
+ *
  * const OrderEdits = () => {
- *   const { 
+ *   const {
  *     order_edits,
  *     limit,
  *     offset,
@@ -191,7 +191,7 @@ export const useAdminOrderEdit = (
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -210,10 +210,10 @@ export const useAdminOrderEdit = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdits
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Order Edits
  * @category Queries
  */
@@ -229,10 +229,10 @@ export const useAdminOrderEdits = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminOrderEditsKeys.list(query),
-    () => client.admin.orderEdits.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminOrderEditsKeys.list(query),
+    queryFn: () => client.admin.orderEdits.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

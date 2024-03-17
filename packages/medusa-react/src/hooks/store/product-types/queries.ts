@@ -15,22 +15,22 @@ export const productTypeKeys = queryKeysFactory(PRODUCT_TYPES_QUERY_KEY)
 type ProductTypesQueryKeys = typeof productTypeKeys
 
 /**
- * This hook retrieves a list of product types. The product types can be filtered by fields such as `value` or `q` passed 
+ * This hook retrieves a list of product types. The product types can be filtered by fields such as `value` or `q` passed
  * in the `query` parameter. The product types can also be sorted or paginated.
- * 
+ *
  * @example
  * To list product types:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductTypes } from "medusa-react"
- * 
+ *
  * function Types() {
- *   const { 
- *     product_types, 
+ *   const {
+ *     product_types,
  *     isLoading,
  *   } = useProductTypes()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -49,27 +49,27 @@ type ProductTypesQueryKeys = typeof productTypeKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Types
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useProductTypes } from "medusa-react"
- * 
+ *
  * function Types() {
- *   const { 
+ *   const {
  *     product_types,
  *     limit,
- *     offset, 
+ *     offset,
  *     isLoading,
  *   } = useProductTypes({
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -88,10 +88,10 @@ type ProductTypesQueryKeys = typeof productTypeKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Types
  * ```
- * 
+ *
  * @customNamespace Hooks.Store.Product Types
  * @category Queries
  */
@@ -107,10 +107,10 @@ export const useProductTypes = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    productTypeKeys.list(query),
-    () => client.productTypes.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.productTypes.list(query),
+    queryKey: productTypeKeys.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

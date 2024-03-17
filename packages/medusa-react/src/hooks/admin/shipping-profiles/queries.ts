@@ -18,17 +18,17 @@ type ShippingProfileQueryKeys = typeof adminShippingProfileKeys
 
 /**
  * This hook retrieves a list of shipping profiles.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminShippingProfiles } from "medusa-react"
- * 
+ *
  * const ShippingProfiles = () => {
- *   const { 
- *     shipping_profiles, 
+ *   const {
+ *     shipping_profiles,
  *     isLoading
  *   } = useAdminShippingProfiles()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -45,9 +45,9 @@ type ShippingProfileQueryKeys = typeof adminShippingProfileKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingProfiles
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Queries
  */
@@ -59,33 +59,33 @@ export const useAdminShippingProfiles = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminShippingProfileKeys.lists(),
-    () => client.admin.shippingProfiles.list(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminShippingProfileKeys.lists(),
+    queryFn: () => client.admin.shippingProfiles.list(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a shipping profile's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminShippingProfile } from "medusa-react"
- * 
+ *
  * type Props = {
  *   shippingProfileId: string
  * }
- * 
+ *
  * const ShippingProfile = ({ shippingProfileId }: Props) => {
- *   const { 
- *     shipping_profile, 
+ *   const {
+ *     shipping_profile,
  *     isLoading
  *   } = useAdminShippingProfile(
  *     shippingProfileId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -95,9 +95,9 @@ export const useAdminShippingProfiles = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ShippingProfile
- * 
+ *
  * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Queries
  */
@@ -113,10 +113,10 @@ export const useAdminShippingProfile = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminShippingProfileKeys.detail(id),
-    () => client.admin.shippingProfiles.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminShippingProfileKeys.detail(id),
+    queryFn: () => client.admin.shippingProfiles.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

@@ -18,15 +18,15 @@ import { adminStockLocationsKeys } from "./queries"
 
 /**
  * This hook creates a stock location.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateStockLocation } from "medusa-react"
- * 
+ *
  * const CreateStockLocation = () => {
  *   const createStockLocation = useAdminCreateStockLocation()
  *   // ...
- * 
+ *
  *   const handleCreate = (name: string) => {
  *     createStockLocation.mutate({
  *       name,
@@ -36,12 +36,12 @@ import { adminStockLocationsKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateStockLocation
- * 
+ *
  * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
@@ -55,30 +55,30 @@ export const useAdminCreateStockLocation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostStockLocationsReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostStockLocationsReq) =>
       client.admin.stockLocations.create(payload),
-    buildOptions(queryClient, [adminStockLocationsKeys.lists()], options)
-  )
+    ...buildOptions(queryClient, [adminStockLocationsKeys.lists()], options),
+  })
 }
 
 /**
  * This hook updates a stock location's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateStockLocation } from "medusa-react"
- * 
+ *
  * type Props = {
  *   stockLocationId: string
  * }
- * 
+ *
  * const StockLocation = ({ stockLocationId }: Props) => {
  *   const updateLocation = useAdminUpdateStockLocation(
  *     stockLocationId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string
  *   ) => {
@@ -91,9 +91,9 @@ export const useAdminCreateStockLocation = (
  *     })
  *   }
  * }
- * 
+ *
  * export default StockLocation
- * 
+ *
  * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
@@ -111,34 +111,34 @@ export const useAdminUpdateStockLocation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostStockLocationsLocationReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostStockLocationsLocationReq) =>
       client.admin.stockLocations.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminStockLocationsKeys.lists(), adminStockLocationsKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a stock location.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteStockLocation } from "medusa-react"
- * 
+ *
  * type Props = {
  *   stockLocationId: string
  * }
- * 
+ *
  * const StockLocation = ({ stockLocationId }: Props) => {
  *   const deleteLocation = useAdminDeleteStockLocation(
  *     stockLocationId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteLocation.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -147,9 +147,9 @@ export const useAdminUpdateStockLocation = (
  *     })
  *   }
  * }
- * 
+ *
  * export default StockLocation
- * 
+ *
  * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
@@ -167,9 +167,9 @@ export const useAdminDeleteStockLocation = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.stockLocations.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.stockLocations.delete(id),
+    ...buildOptions(
       queryClient,
       [
         adminStockLocationsKeys.lists(),
@@ -178,6 +178,6 @@ export const useAdminDeleteStockLocation = (
         adminProductKeys.lists(),
       ],
       options
-    )
-  )
+    ),
+  })
 }

@@ -16,15 +16,15 @@ import { adminNoteKeys } from "./queries"
 
 /**
  * This hook creates a Note which can be associated with any resource.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateNote } from "medusa-react"
- * 
+ *
  * const CreateNote = () => {
  *   const createNote = useAdminCreateNote()
  *   // ...
- * 
+ *
  *   const handleCreate = () => {
  *     createNote.mutate({
  *       resource_id: "order_123",
@@ -36,12 +36,12 @@ import { adminNoteKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateNote
- * 
+ *
  * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
@@ -54,27 +54,28 @@ export const useAdminCreateNote = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostNotesReq) => client.admin.notes.create(payload),
-    buildOptions(queryClient, adminNoteKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostNotesReq) =>
+      client.admin.notes.create(payload),
+    ...buildOptions(queryClient, adminNoteKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a Note's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateNote } from "medusa-react"
- * 
+ *
  * type Props = {
  *   noteId: string
  * }
- * 
+ *
  * const Note = ({ noteId }: Props) => {
  *   const updateNote = useAdminUpdateNote(noteId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     value: string
  *   ) => {
@@ -86,12 +87,12 @@ export const useAdminCreateNote = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Note
- * 
+ *
  * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
@@ -109,40 +110,41 @@ export const useAdminUpdateNote = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostNotesNoteReq) => client.admin.notes.update(id, payload),
-    buildOptions(
+  return useMutation({
+    mutationFn: (payload: AdminPostNotesNoteReq) =>
+      client.admin.notes.update(id, payload),
+    ...buildOptions(
       queryClient,
       [adminNoteKeys.detail(id), adminNoteKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a Note.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteNote } from "medusa-react"
- * 
+ *
  * type Props = {
  *   noteId: string
  * }
- * 
+ *
  * const Note = ({ noteId }: Props) => {
  *   const deleteNote = useAdminDeleteNote(noteId)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteNote.mutate()
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Note
- * 
+ *
  * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
@@ -156,12 +158,12 @@ export const useAdminDeleteNote = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.notes.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.notes.delete(id),
+    ...buildOptions(
       queryClient,
       [adminNoteKeys.detail(id), adminNoteKeys.lists()],
       options
-    )
-  )
+    ),
+  })
 }

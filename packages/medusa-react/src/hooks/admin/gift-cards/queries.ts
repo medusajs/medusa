@@ -16,19 +16,19 @@ export const adminGiftCardKeys = queryKeysFactory(ADMIN_GIFT_CARDS_QUERY_KEY)
 type GiftCardQueryKeys = typeof adminGiftCardKeys
 
 /**
- * This hook retrieves a list of gift cards. The gift cards can be filtered by fields such as `q` passed in the `query` 
+ * This hook retrieves a list of gift cards. The gift cards can be filtered by fields such as `q` passed in the `query`
  * parameter. The gift cards can also paginated.
- * 
+ *
  * @example
  * To list gift cards:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminGiftCards } from "medusa-react"
- * 
+ *
  * const CustomGiftCards = () => {
  *   const { gift_cards, isLoading } = useAdminGiftCards()
- *   
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -45,19 +45,19 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomGiftCards
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminGiftCards } from "medusa-react"
- * 
+ *
  * const CustomGiftCards = () => {
- *   const { 
- *     gift_cards, 
+ *   const {
+ *     gift_cards,
  *     limit,
  *     offset,
  *     isLoading
@@ -65,7 +65,7 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  *     limit: 20,
  *     offset: 0
  *   })
- *   
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -82,10 +82,10 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomGiftCards
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Gift Cards
  * @category Queries
  */
@@ -101,28 +101,28 @@ export const useAdminGiftCards = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminGiftCardKeys.list(query),
-    () => client.admin.giftCards.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminGiftCardKeys.list(query),
+    queryFn: () => client.admin.giftCards.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a gift card's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminGiftCard } from "medusa-react"
- * 
+ *
  * type Props = {
  *   giftCardId: string
  * }
- * 
+ *
  * const CustomGiftCard = ({ giftCardId }: Props) => {
  *   const { gift_card, isLoading } = useAdminGiftCard(giftCardId)
- *   
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -130,9 +130,9 @@ export const useAdminGiftCards = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomGiftCard
- * 
+ *
  * @customNamespace Hooks.Admin.Gift Cards
  * @category Queries
  */
@@ -148,10 +148,10 @@ export const useAdminGiftCard = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminGiftCardKeys.detail(id),
-    () => client.admin.giftCards.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminGiftCardKeys.detail(id),
+    queryFn: () => client.admin.giftCards.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

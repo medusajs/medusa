@@ -34,25 +34,25 @@ const invalidateRelatedDomain = (
 ) => {
   switch (domain) {
     case "product":
-      queryClient.invalidateQueries(adminProductKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminProductKeys.all })
       break
     case "customer":
-      queryClient.invalidateQueries(adminCustomerKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminCustomerKeys.all })
       break
     case "customer_group":
-      queryClient.invalidateQueries(adminCustomerGroupKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminCustomerGroupKeys.all })
       break
     case "order":
-      queryClient.invalidateQueries(adminOrderKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminOrderKeys.all })
       break
     case "discount":
-      queryClient.invalidateQueries(adminDiscountKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminDiscountKeys.all })
       break
     case "gift_card":
-      queryClient.invalidateQueries(adminGiftCardKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminGiftCardKeys.all })
       break
     case "price_list":
-      queryClient.invalidateQueries(adminPriceListKeys.all)
+      queryClient.invalidateQueries({ queryKey: adminPriceListKeys.all })
       break
   }
 }
@@ -93,33 +93,33 @@ export const buildCustomOptions = <
 
 /**
  * This hook sends a `POST` request to a custom API Route.
- * 
+ *
  * @typeParam TPayload - The type of accepted body parameters which defaults to `Record<string, any>`.
  * @typeParam TResponse - The type of response, which defaults to `any`.
  * @typeParamDefinition TResponse - The response based on the specified type for `TResponse`.
  * @typeParamDefinition TPayload - The payload based on the specified type for `TPayload`.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomPost } from "medusa-react"
  * import Post from "./models/Post"
- * 
+ *
  * type PostRequest = {
  *   title: string
  * }
  * type PostResponse = {
  *   post: Post
  * }
- * 
+ *
  * const Custom = () => {
  *   const customPost = useAdminCustomPost
  *   <PostRequest, PostResponse>(
  *     "/blog/posts",
  *     ["posts"]
  *   )
- * 
+ *
  *   // ...
- * 
+ *
  *   const handleAction = (title: string) => {
  *     customPost.mutate({
  *       title
@@ -129,12 +129,12 @@ export const buildCustomOptions = <
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Custom
- * 
+ *
  * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */
@@ -160,35 +160,35 @@ export const useAdminCustomPost = <
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: TPayload) =>
+  return useMutation({
+    mutationFn: (payload: TPayload) =>
       client.admin.custom.post<TPayload, TResponse>(path, payload),
-    buildCustomOptions(queryClient, queryKey, options, relatedDomains)
-  )
+    ...buildCustomOptions(queryClient, queryKey, options, relatedDomains),
+  })
 }
 
 /**
  * This hook sends a `DELETE` request to a custom API Route.
- * 
+ *
  * @typeParam TResponse - The response's type which defaults to `any`.
  * @typeParamDefinition TResponse - The response based on the type provided for `TResponse`.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomDelete } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customId: string
  * }
- * 
+ *
  * const Custom = ({ customId }: Props) => {
  *   const customDelete = useAdminCustomDelete(
  *     `/blog/posts/${customId}`,
  *     ["posts"]
  *   )
- * 
+ *
  *   // ...
- * 
+ *
  *   const handleAction = (title: string) => {
  *     customDelete.mutate(void 0, {
  *       onSuccess: () => {
@@ -196,12 +196,12 @@ export const useAdminCustomPost = <
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Custom
- * 
+ *
  * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */
@@ -224,8 +224,8 @@ export const useAdminCustomDelete = <TResponse>(
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.custom.delete<TResponse>(path),
-    buildCustomOptions(queryClient, queryKey, options, relatedDomains)
-  )
+  return useMutation({
+    mutationFn: () => client.admin.custom.delete<TResponse>(path),
+    ...buildCustomOptions(queryClient, queryKey, options, relatedDomains),
+  })
 }

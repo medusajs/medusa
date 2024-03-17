@@ -15,18 +15,18 @@ type OrderQueryKey = typeof orderEditQueryKeys
 
 /**
  * This hook retrieves an Order Edit's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useOrderEdit } from "medusa-react"
- * 
+ *
  * type Props = {
  *   orderEditId: string
  * }
- * 
+ *
  * const OrderEdit = ({ orderEditId }: Props) => {
  *   const { order_edit, isLoading } = useOrderEdit(orderEditId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -40,9 +40,9 @@ type OrderQueryKey = typeof orderEditQueryKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default OrderEdit
- * 
+ *
  * @customNamespace Hooks.Store.Order Edits
  * @category Queries
  */
@@ -58,11 +58,11 @@ export const useOrderEdit = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    orderEditQueryKeys.detail(id),
-    () => client.orderEdits.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: orderEditQueryKeys.detail(id),
+    queryFn: () => client.orderEdits.retrieve(id),
+    ...options,
+  })
 
   return { ...data, ...rest } as const
 }

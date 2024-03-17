@@ -19,11 +19,11 @@ import { adminRegionKeys } from "./queries"
 
 /**
  * This hook creates a region.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateRegion } from "medusa-react"
- * 
+ *
  * type CreateData = {
  *   name: string
  *   currency_code: string
@@ -32,11 +32,11 @@ import { adminRegionKeys } from "./queries"
  *   fulfillment_providers: string[]
  *   countries: string[]
  * }
- * 
+ *
  * const CreateRegion = () => {
  *   const createRegion = useAdminCreateRegion()
  *   // ...
- * 
+ *
  *   const handleCreate = (regionData: CreateData) => {
  *     createRegion.mutate(regionData, {
  *       onSuccess: ({ region }) => {
@@ -44,12 +44,12 @@ import { adminRegionKeys } from "./queries"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateRegion
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -63,29 +63,30 @@ export const useAdminCreateRegion = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostRegionsReq) => client.admin.regions.create(payload),
-    buildOptions(queryClient, adminRegionKeys.lists(), options)
-  )
+  return useMutation({
+    mutationFn: (payload: AdminPostRegionsReq) =>
+      client.admin.regions.create(payload),
+    ...buildOptions(queryClient, adminRegionKeys.lists(), options),
+  })
 }
 
 /**
  * This hook updates a region's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
  *   const updateRegion = useAdminUpdateRegion(regionId)
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     countries: string[]
  *   ) => {
@@ -97,12 +98,12 @@ export const useAdminCreateRegion = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -120,34 +121,34 @@ export const useAdminUpdateRegion = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostRegionsRegionReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostRegionsRegionReq) =>
       client.admin.regions.update(id, payload),
-    buildOptions(
+    ...buildOptions(
       queryClient,
       [adminRegionKeys.lists(), adminRegionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook deletes a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
  *   const deleteRegion = useAdminDeleteRegion(regionId)
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteRegion.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -155,12 +156,12 @@ export const useAdminUpdateRegion = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -174,33 +175,33 @@ export const useAdminDeleteRegion = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    () => client.admin.regions.delete(id),
-    buildOptions(
+  return useMutation({
+    mutationFn: () => client.admin.regions.delete(id),
+    ...buildOptions(
       queryClient,
       [adminRegionKeys.lists(), adminRegionKeys.detail(id)],
       options
-    )
-  )
+    ),
+  })
 }
 
 /**
  * This hook adds a country to the list of countries in a region.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminRegionAddCountry } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
  *   const addCountry = useAdminRegionAddCountry(regionId)
  *   // ...
- * 
+ *
  *   const handleAddCountry = (
  *     countryCode: string
  *   ) => {
@@ -212,12 +213,12 @@ export const useAdminDeleteRegion = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -235,32 +236,32 @@ export const useAdminRegionAddCountry = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostRegionsRegionCountriesReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostRegionsRegionCountriesReq) =>
       client.admin.regions.addCountry(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook deletes a country from the list of countries in a region. The country will still be available in the system, and it can be used in other regions.
- * 
+ *
  * @typeParamDefinition string - The code of the country to delete from the region.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminRegionRemoveCountry } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
  *   const removeCountry = useAdminRegionRemoveCountry(regionId)
  *   // ...
- * 
+ *
  *   const handleRemoveCountry = (
  *     countryCode: string
  *   ) => {
@@ -270,12 +271,12 @@ export const useAdminRegionAddCountry = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -289,33 +290,33 @@ export const useAdminRegionRemoveCountry = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (country_code: string) =>
+  return useMutation({
+    mutationFn: (country_code: string) =>
       client.admin.regions.deleteCountry(id, country_code),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook adds a fulfillment provider to the list of fulfullment providers in a region.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRegionAddFulfillmentProvider
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
- *   const addFulfillmentProvider = 
+ *   const addFulfillmentProvider =
  *     useAdminRegionAddFulfillmentProvider(regionId)
  *   // ...
- * 
+ *
  *   const handleAddFulfillmentProvider = (
  *     providerId: string
  *   ) => {
@@ -327,12 +328,12 @@ export const useAdminRegionRemoveCountry = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -350,35 +351,35 @@ export const useAdminRegionAddFulfillmentProvider = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostRegionsRegionFulfillmentProvidersReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostRegionsRegionFulfillmentProvidersReq) =>
       client.admin.regions.addFulfillmentProvider(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook deletes a fulfillment provider from a region. The fulfillment provider will still be available for usage in other regions.
- * 
+ *
  * @typeParamDefinition string - The fulfillment provider's ID to delete from the region.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRegionDeleteFulfillmentProvider
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
- *   const removeFulfillmentProvider = 
+ *   const removeFulfillmentProvider =
  *     useAdminRegionDeleteFulfillmentProvider(regionId)
  *   // ...
- * 
+ *
  *   const handleRemoveFulfillmentProvider = (
  *     providerId: string
  *   ) => {
@@ -388,12 +389,12 @@ export const useAdminRegionAddFulfillmentProvider = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -407,33 +408,33 @@ export const useAdminRegionDeleteFulfillmentProvider = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (provider_id: string) =>
+  return useMutation({
+    mutationFn: (provider_id: string) =>
       client.admin.regions.deleteFulfillmentProvider(id, provider_id),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook adds a payment provider to the list of payment providers in a region.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRegionAddPaymentProvider
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
- *   const addPaymentProvider = 
+ *   const addPaymentProvider =
  *     useAdminRegionAddPaymentProvider(regionId)
  *   // ...
- * 
+ *
  *   const handleAddPaymentProvider = (
  *     providerId: string
  *   ) => {
@@ -445,12 +446,12 @@ export const useAdminRegionDeleteFulfillmentProvider = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -468,35 +469,35 @@ export const useAdminRegionAddPaymentProvider = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: AdminPostRegionsRegionPaymentProvidersReq) =>
+  return useMutation({
+    mutationFn: (payload: AdminPostRegionsRegionPaymentProvidersReq) =>
       client.admin.regions.addPaymentProvider(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }
 
 /**
  * This hook deletes a payment provider from a region. The payment provider will still be available for usage in other regions.
- * 
+ *
  * @typeParamDefinition string - The ID of the payment provider to delete from the region.
- * 
+ *
  * @example
  * import React from "react"
- * import { 
+ * import {
  *   useAdminRegionDeletePaymentProvider
  * } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({
  *   regionId
  * }: Props) => {
- *   const removePaymentProvider = 
+ *   const removePaymentProvider =
  *     useAdminRegionDeletePaymentProvider(regionId)
  *   // ...
- * 
+ *
  *   const handleRemovePaymentProvider = (
  *     providerId: string
  *   ) => {
@@ -506,12 +507,12 @@ export const useAdminRegionAddPaymentProvider = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
@@ -525,9 +526,9 @@ export const useAdminRegionDeletePaymentProvider = (
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation(
-    (provider_id: string) =>
+  return useMutation({
+    mutationFn: (provider_id: string) =>
       client.admin.regions.deletePaymentProvider(id, provider_id),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
+    ...buildOptions(queryClient, adminRegionKeys.detail(id), options),
+  })
 }

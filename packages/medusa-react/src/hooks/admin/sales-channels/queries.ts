@@ -19,21 +19,21 @@ type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
 /**
  * This hook retrieves a sales channel's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminSalesChannel } from "medusa-react"
- * 
+ *
  * type Props = {
  *   salesChannelId: string
  * }
- * 
+ *
  * const SalesChannel = ({ salesChannelId }: Props) => {
- *   const { 
- *     sales_channel, 
- *     isLoading, 
+ *   const {
+ *     sales_channel,
+ *     isLoading,
  *   } = useAdminSalesChannel(salesChannelId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -41,9 +41,9 @@ type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default SalesChannel
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Queries
  */
@@ -59,28 +59,28 @@ export const useAdminSalesChannel = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminSalesChannelsKeys.detail(id),
-    () => client.admin.salesChannels.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminSalesChannelsKeys.detail(id),
+    queryFn: () => client.admin.salesChannels.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of sales channels. The sales channels can be filtered by fields such as `q` or `name` 
+ * This hook retrieves a list of sales channels. The sales channels can be filtered by fields such as `q` or `name`
  * passed in the `query` parameter. The sales channels can also be sorted or paginated.
- * 
+ *
  * @example
  * To list sales channels:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
- * 
+ *
  * const SalesChannels = () => {
  *   const { sales_channels, isLoading } = useAdminSalesChannels()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -97,24 +97,24 @@ export const useAdminSalesChannel = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default SalesChannels
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the sales channels:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
- * 
+ *
  * const SalesChannels = () => {
- *   const { 
- *     sales_channels, 
+ *   const {
+ *     sales_channels,
  *     isLoading
  *   } = useAdminSalesChannels({
  *     expand: "locations"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -131,19 +131,19 @@ export const useAdminSalesChannel = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default SalesChannels
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
- * 
+ *
  * const SalesChannels = () => {
- *   const { 
- *     sales_channels, 
+ *   const {
+ *     sales_channels,
  *     limit,
  *     offset,
  *     isLoading
@@ -152,7 +152,7 @@ export const useAdminSalesChannel = (
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -169,10 +169,10 @@ export const useAdminSalesChannel = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default SalesChannels
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Sales Channels
  * @category Queries
  */
@@ -188,10 +188,10 @@ export const useAdminSalesChannels = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminSalesChannelsKeys.list(query),
-    () => client.admin.salesChannels.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminSalesChannelsKeys.list(query),
+    queryFn: () => client.admin.salesChannels.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

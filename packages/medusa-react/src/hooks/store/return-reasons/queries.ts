@@ -6,7 +6,7 @@ import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils"
 
 const RETURNS_REASONS_QUERY_KEY = `return_reasons` as const
 
@@ -16,17 +16,17 @@ type ReturnReasonsQueryKey = typeof returnReasonsKey
 
 /**
  * This hook retrieves a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
- * 
+ *
  * @example
  * import React from "react"
  * import { useReturnReasons } from "medusa-react"
- * 
+ *
  * const ReturnReasons = () => {
- *   const { 
- *     return_reasons, 
+ *   const {
+ *     return_reasons,
  *     isLoading
  *   } = useReturnReasons()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -42,9 +42,9 @@ type ReturnReasonsQueryKey = typeof returnReasonsKey
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ReturnReasons
- * 
+ *
  * @customNamespace Hooks.Store.Return Reasons
  * @category Queries
  */
@@ -56,33 +56,33 @@ export const useReturnReasons = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    returnReasonsKey.lists(),
-    () => client.returnReasons.list(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: returnReasonsKey.lists(),
+    queryFn: () => client.returnReasons.list(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a Return Reason's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useReturnReason } from "medusa-react"
- * 
+ *
  * type Props = {
  *   returnReasonId: string
  * }
- * 
+ *
  * const ReturnReason = ({ returnReasonId }: Props) => {
- *   const { 
- *     return_reason, 
+ *   const {
+ *     return_reason,
  *     isLoading
  *   } = useReturnReason(
  *     returnReasonId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -90,9 +90,9 @@ export const useReturnReasons = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ReturnReason
- * 
+ *
  * @customNamespace Hooks.Store.Return Reasons
  * @category Queries
  */
@@ -108,10 +108,10 @@ export const useReturnReason = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    returnReasonsKey.detail(id),
-    () => client.returnReasons.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: returnReasonsKey.detail(id),
+    queryFn: () => client.returnReasons.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

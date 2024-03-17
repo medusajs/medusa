@@ -145,11 +145,11 @@ export const useAdminDiscounts = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminDiscountKeys.list(query),
-    () => client.admin.discounts.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminDiscountKeys.list(query),
+    queryFn: () => client.admin.discounts.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -198,11 +198,11 @@ export const useAdminDiscount = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminDiscountKeys.detail(id),
-    () => client.admin.discounts.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminDiscountKeys.detail(id),
+    queryFn: () => client.admin.discounts.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -248,11 +248,11 @@ export const useAdminGetDiscountByCode = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminDiscountKeys.detail(code),
-    () => client.admin.discounts.retrieveByCode(code),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminDiscountKeys.detail(code),
+    queryFn: () => client.admin.discounts.retrieveByCode(code),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
@@ -315,10 +315,10 @@ export const useAdminGetDiscountCondition = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminDiscountKeys.detailCondition(conditionId),
-    () => client.admin.discounts.getCondition(id, conditionId, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminDiscountKeys.detailCondition(id, conditionId),
+    queryFn: () => client.admin.discounts.getCondition(id, conditionId, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

@@ -28,22 +28,22 @@ export const adminCustomerGroupKeys = {
 type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
 
 /**
- * This hook retrieves a customer group by its ID. You can expand the customer group's relations or 
+ * This hook retrieves a customer group by its ID. You can expand the customer group's relations or
  * select the fields that should be returned.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomerGroup } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
  *   const { customer_group, isLoading } = useAdminCustomerGroup(
  *     customerGroupId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -51,9 +51,9 @@ type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
@@ -73,31 +73,31 @@ export const useAdminCustomerGroup = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCustomerGroupKeys.detail(id),
-    () => client.admin.customerGroups.retrieve(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCustomerGroupKeys.detail(id),
+    queryFn: () => client.admin.customerGroups.retrieve(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of customer groups. The customer groups can be filtered by fields such as `name` or `id`. 
+ * This hook retrieves a list of customer groups. The customer groups can be filtered by fields such as `name` or `id`.
  * The customer groups can also be sorted or paginated.
- * 
+ *
  * @example
  * To list customer groups:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
- * 
+ *
  * const CustomerGroups = () => {
- *   const { 
+ *   const {
  *     customer_groups,
  *     isLoading,
  *   } = useAdminCustomerGroups()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -118,24 +118,24 @@ export const useAdminCustomerGroup = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomerGroups
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the customer groups:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
- * 
+ *
  * const CustomerGroups = () => {
- *   const { 
+ *   const {
  *     customer_groups,
  *     isLoading,
  *   } = useAdminCustomerGroups({
  *     expand: "customers"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -156,18 +156,18 @@ export const useAdminCustomerGroup = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomerGroups
  * ```
- * 
+ *
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
- * 
+ *
  * const CustomerGroups = () => {
- *   const { 
+ *   const {
  *     customer_groups,
  *     limit,
  *     offset,
@@ -177,7 +177,7 @@ export const useAdminCustomerGroup = (
  *     limit: 15,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -198,10 +198,10 @@ export const useAdminCustomerGroup = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomerGroups
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
@@ -217,34 +217,34 @@ export const useAdminCustomerGroups = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCustomerGroupKeys.list(query),
-    () => client.admin.customerGroups.list(query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCustomerGroupKeys.list(query),
+    queryFn: () => client.admin.customerGroups.list(query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
- * This hook retrieves a list of customers in a customer group. The customers can be filtered 
+ * This hook retrieves a list of customers in a customer group. The customers can be filtered
  * by the `query` field. The customers can also be paginated.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomerGroupCustomers } from "medusa-react"
- * 
+ *
  * type Props = {
  *   customerGroupId: string
  * }
- * 
+ *
  * const CustomerGroup = ({ customerGroupId }: Props) => {
- *   const { 
- *     customers, 
+ *   const {
+ *     customers,
  *     isLoading,
  *   } = useAdminCustomerGroupCustomers(
  *     customerGroupId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -261,9 +261,9 @@ export const useAdminCustomerGroups = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default CustomerGroup
- * 
+ *
  * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
@@ -283,10 +283,10 @@ export const useAdminCustomerGroupCustomers = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminCustomerGroupKeys.detailCustomer(id, query),
-    () => client.admin.customerGroups.listCustomers(id, query),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: adminCustomerGroupKeys.detailCustomer(id, query),
+    queryFn: () => client.admin.customerGroups.listCustomers(id, query),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }

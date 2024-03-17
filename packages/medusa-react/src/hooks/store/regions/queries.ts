@@ -13,14 +13,14 @@ type RegionQueryType = typeof regionsKey
 
 /**
  * This hook retrieves a list of regions. This hook is useful to show the customer all available regions to choose from.
- * 
+ *
  * @example
  * import React from "react"
  * import { useRegions } from "medusa-react"
- * 
+ *
  * const Regions = () => {
  *   const { regions, isLoading } = useRegions()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -36,9 +36,9 @@ type RegionQueryType = typeof regionsKey
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Regions
- * 
+ *
  * @customNamespace Hooks.Store.Regions
  * @category Queries
  */
@@ -50,30 +50,30 @@ export const useRegions = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    regionsKey.lists(),
-    () => client.regions.list(),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: regionsKey.lists(),
+    queryFn: () => client.regions.list(),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
 
 /**
  * This hook retrieves a Region's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useRegion } from "medusa-react"
- * 
+ *
  * type Props = {
  *   regionId: string
  * }
- * 
+ *
  * const Region = ({ regionId }: Props) => {
  *   const { region, isLoading } = useRegion(
  *     regionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -81,9 +81,9 @@ export const useRegions = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Region
- * 
+ *
  * @customNamespace Hooks.Store.Regions
  * @category Queries
  */
@@ -99,10 +99,10 @@ export const useRegion = (
   >
 ) => {
   const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    regionsKey.detail(id),
-    () => client.regions.retrieve(id),
-    options
-  )
+  const { data, ...rest } = useQuery({
+    queryKey: regionsKey.detail(id),
+    queryFn: () => client.regions.retrieve(id),
+    ...options,
+  })
   return { ...data, ...rest } as const
 }
