@@ -87,10 +87,10 @@ export const v2Routes: RouteObject[] = [
               crumb: () => "Store",
             },
             children: [
-              // {
-              //   path: "edit",
-              //   lazy: () => import("../../v2-routes/store/store-edit"),
-              // },
+              {
+                path: "edit",
+                lazy: () => import("../../v2-routes/store/store-edit"),
+              },
               // {
               //   path: "add-currencies",
               //   lazy: () =>

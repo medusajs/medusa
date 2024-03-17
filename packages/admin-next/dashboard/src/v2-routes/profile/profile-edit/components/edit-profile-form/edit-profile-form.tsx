@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Select, Switch } from "@medusajs/ui"
-import { adminAuthKeys, adminUserKeys } from "medusa-react"
+import { adminUserKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -13,7 +13,6 @@ import {
 import { languages } from "../../../../../i18n/config"
 import { queryClient } from "../../../../../lib/medusa"
 import { UserDTO } from "@medusajs/types"
-import { useV2AdminUpdateUser } from "../../../../../lib/api-v2"
 
 type EditProfileProps = {
   user: Partial<Omit<UserDTO, "password_hash">>
@@ -49,7 +48,10 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
     a.display_name.localeCompare(b.display_name)
   )
 
-  const { mutateAsync, isLoading } = useV2AdminUpdateUser(user.id)
+  const { mutateAsync, isLoading } = useAdminCustomPost(
+    `/admin/users/${user.id}`,
+    [...adminUserKeys.lists(), ...adminUserKeys.detail(user.id!)]
+  )
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(

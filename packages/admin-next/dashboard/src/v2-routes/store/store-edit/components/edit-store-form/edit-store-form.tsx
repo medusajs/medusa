@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Store } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateStore } from "medusa-react"
+import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -39,15 +39,18 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
     resolver: zodResolver(EditStoreSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateStore()
+  const { mutateAsync, isLoading } = useAdminCustomPost(
+    `/admin/stores/${store.id}`,
+    adminStoreKeys.details()
+  )
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(
       {
         name: values.name,
-        invite_link_template: values.invite_link_template || undefined,
-        swap_link_template: values.swap_link_template || undefined,
-        payment_link_template: values.payment_link_template || undefined,
+        // invite_link_template: values.invite_link_template || undefined,
+        // swap_link_template: values.swap_link_template || undefined,
+        // payment_link_template: values.payment_link_template || undefined,
       },
       {
         onSuccess: () => {
