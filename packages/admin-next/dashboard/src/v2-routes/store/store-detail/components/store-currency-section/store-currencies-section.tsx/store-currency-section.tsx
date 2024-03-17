@@ -21,6 +21,7 @@ import {
 } from "@tanstack/react-table"
 import {
   adminStoreKeys,
+  useAdminCustomPost,
   useAdminCustomQuery,
   useAdminUpdateStore,
 } from "medusa-react"
@@ -40,7 +41,7 @@ const PAGE_SIZE = 20
 export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { data } = useAdminCustomQuery(
-    `/admin/currencies?code=${store.supported_currency_codes.join(",")}`,
+    `/admin/currencies?code[]=${store.supported_currency_codes.join(",")}`,
     adminStoreKeys.details()
   )
 
@@ -62,7 +63,10 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     },
   })
 
-  const { mutateAsync } = useAdminUpdateStore()
+  const { mutateAsync } = useAdminCustomPost(
+    `/admin/stores/${store.id}`,
+    adminStoreKeys.details()
+  )
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -84,7 +88,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
     await mutateAsync(
       {
-        currencies: store.supported_currency_codes.filter(
+        supported_currency_codes: store.supported_currency_codes.filter(
           (c) => !ids.includes(c)
         ),
       },

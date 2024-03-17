@@ -86,19 +86,16 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
   }, [rowSelection, setValue])
 
   const params = useQueryParams(["order"])
+  const filter = {
+    limit: PAGE_SIZE,
+    offset: pageIndex * PAGE_SIZE,
+    ...params,
+  }
   // @ts-ignore
   const { data, count, isError, error } = useAdminCustomQuery(
     "/admin/currencies",
-    adminCurrenciesKeys.list({
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-      ...params,
-    }),
-    {
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-      ...params,
-    }
+    adminCurrenciesKeys.list(filter),
+    filter
   )
 
   const preSelectedRows = store.supported_currency_codes.map((c) => c)
