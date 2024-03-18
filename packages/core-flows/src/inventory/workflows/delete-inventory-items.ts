@@ -1,5 +1,5 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { deAttachInventoryItemStep, deleteInventoryItemStep } from "../steps"
+import { deatachInventoryItemStep, deleteInventoryItemStep } from "../steps"
 
 export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 export const deleteInventoryItemWorkflow = createWorkflow(
@@ -7,7 +7,7 @@ export const deleteInventoryItemWorkflow = createWorkflow(
   (input: WorkflowData<string[]>): WorkflowData<string[]> => {
     deleteInventoryItemStep(input)
 
-    deAttachInventoryItemStep(input)
+    deatachInventoryItemStep(input)
     return input
   }
 )

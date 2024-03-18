@@ -3,7 +3,6 @@ import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import e from "express"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
@@ -626,7 +625,9 @@ medusaIntegrationTestRunner({
         })
 
         it("should remove associated levels and reservations when deleting an inventory item", async () => {
-          const inventoryService = appContainer.resolve("inventoryService")
+          const inventoryService = appContainer.resolve(
+            ModuleRegistrationName.INVENTORY
+          )
 
           locationId = "location1"
 
@@ -663,9 +664,7 @@ medusaIntegrationTestRunner({
 
           expect(res.status).toEqual(200)
 
-          const a = await service.list({ id: invItem.id })
-
-          const [arr, reservationCountPostDelete] =
+          const [, reservationCountPostDelete] =
             await inventoryService.listAndCountReservationItems({
               location_id: locationId,
             })
@@ -715,7 +714,6 @@ medusaIntegrationTestRunner({
               entryPoint: "product_variant_inventory_item",
               variables: {
                 filter: { variant_id: [variantId, secondVariantId] },
-                take: 2,
               },
               fields: ["variant_id", "inventory_item_id"],
             })
@@ -742,7 +740,6 @@ medusaIntegrationTestRunner({
               entryPoint: "product_variant_inventory_item",
               variables: {
                 filter: { variant_id: [variantId, secondVariantId] },
-                take: 2,
               },
               fields: ["variant_id", "inventory_item_id"],
             })

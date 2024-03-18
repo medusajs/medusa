@@ -13,6 +13,10 @@ export const deleteInventoryItemStep = createStep(
     return new StepResponse(void 0, ids)
   },
   async (prevInventoryItemIds, { container }) => {
+    if (!prevInventoryItemIds?.length) {
+      return
+    }
+
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
     await inventoryService.restore(prevInventoryItemIds)
