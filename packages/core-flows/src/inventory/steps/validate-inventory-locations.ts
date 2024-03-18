@@ -24,11 +24,11 @@ export const validateInventoryLocationsStep = createStep(
       fields: ["id"],
     })
 
-    const stock_location = await remoteQuery(locationQuery)
+    const stockLocations = await remoteQuery(locationQuery)
 
     const diff = arrayDifference(
       data.map((d) => d.location_id),
-      stock_location.map((l) => l.id)
+      stockLocations.map((l) => l.id)
     )
     if (diff.length > 0) {
       throw new MedusaError(
