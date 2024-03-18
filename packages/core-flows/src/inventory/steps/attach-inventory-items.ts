@@ -9,7 +9,7 @@ export const attachInventoryItemToVariants = createStep(
   attachInventoryItemToVariantsStepId,
   async (
     input: {
-      inventoryItem: InventoryItemDTO
+      inventoryItemId: string
       tag?: string
     }[],
     { container }
@@ -18,12 +18,12 @@ export const attachInventoryItemToVariants = createStep(
 
     const linkDefinitions = input
       .filter(({ tag }) => !!tag)
-      .map(({ inventoryItem, tag }) => ({
+      .map(({ inventoryItemId, tag }) => ({
         productService: {
           variant_id: tag,
         },
         inventoryService: {
-          inventory_item_id: inventoryItem.id,
+          inventory_item_id: inventoryItemId,
         },
       }))
 

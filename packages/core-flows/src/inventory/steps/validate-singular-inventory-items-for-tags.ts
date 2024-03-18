@@ -6,6 +6,7 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { InventoryNext } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
 
 export const validateInventoryItemsForCreateStepId =
   "validate-inventory-items-for-create-step"
@@ -13,24 +14,23 @@ export const validateInventoryItemsForCreate = createStep(
   validateInventoryItemsForCreateStepId,
   async (
     input: {
-      inventoryItem: InventoryNext.CreateInventoryItemInput
       tag?: string
     }[],
     { container }
   ) => {
-    const remoteQuery = container.resolve(
-      ContainerRegistrationKeys.REMOTE_QUERY
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+
+    const linkService = remoteLink.getLinkModule(
+      Modules.PRODUCT,
+      "variant_id",
+      Modules.INVENTORY,
+      "inventory_item_id"
     )
 
-    const query = remoteQueryObjectFromString({
-      entryPoint: "product_variant_inventory_item",
-      variables: {
-        variant_id: input.map((i) => i.tag),
-      },
-      fields: ["inventory_item_id", "variant_id"],
-    })
-
-    const existingItems = await remoteQuery(query)
+    const existingItems = await linkService.list(
+      { variant_id: input.map((i) => i.tag) },
+      { select: ["variant_id", "inventory_item_id"] }
+    )
 
     if (existingItems.length) {
       throw new MedusaError(
