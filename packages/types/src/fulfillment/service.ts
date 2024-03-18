@@ -3,6 +3,7 @@ import {
   FilterableFulfillmentSetProps,
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
+  FilterableShippingOptionForContextProps,
   FilterableShippingOptionProps,
   FilterableShippingOptionRuleProps,
   FilterableShippingOptionTypeProps,
@@ -326,13 +327,24 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
   /**
-   * List and count shipping options
+   * List shipping options and eventually filter the result based on the context and their rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionsForContext(
+    filters: FilterableShippingOptionForContextProps,
+    config?: FindConfig<ShippingOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
+  /**
+   * List and count shipping options without taking into account the context
    * @param filters
    * @param config
    * @param sharedContext
    */
   listAndCountShippingOptions(
-    filters?: FilterableShippingOptionProps,
+    filters?: Omit<FilterableShippingOptionProps, "context">,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<[ShippingOptionDTO[], number]>
@@ -664,4 +676,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   retrieveFulfillmentOptions(
     providerId: string
   ): Promise<Record<string, unknown>[]>
+
+  /**
+   * Validate the given shipping option fulfillment option from the provided data
+   */
+  validateFulfillmentOption(
+    providerId: string,
+    data: Record<string, unknown>
+  ): Promise<boolean>
+
+  /**
+   * Validate if the given shipping option is valid for a given context
+   */
+  validateShippingOption(
+    shippingOptionId: string,
+    context: Record<string, unknown>
+  ): Promise<boolean>
 }
