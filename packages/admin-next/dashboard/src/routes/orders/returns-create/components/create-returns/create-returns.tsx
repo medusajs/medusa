@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { AdminPostOrdersOrderReturnsReq, Order } from "@medusajs/medusa"
@@ -6,10 +6,15 @@ import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { RouteFocusModal } from "../../../../../components/route-modal"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { ItemsTable } from "../items-table"
 import { ReturnsForm } from "./returns-form"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
+import { getErrorMessage } from "@medusajs/admin-ui/ui/src/utils/error-messages.ts"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -41,11 +46,22 @@ const CreateReturnSchema = zod.object({
 
 export function CreateReturns({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const [selectedItems, setSelectedItems] = useState([])
   const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const { mutateAsync: requestReturnOrder } = useAdminRequestReturn(order.id)
+
+  const { shipping_options = [] } = useAdminShippingOptions({
+    region_id: order.region_id,
+    is_return: true,
+  })
+
+  const refundableAmount = useRef(0)
+
+  // TODO: should we filter fullfilled items only here
   const selected = order.items.filter((i) => selectedItems.includes(i.id))
 
   const form = useForm<zod.infer<typeof CreateReturnSchema>>({
@@ -67,7 +83,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     },
   })
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     setIsSubmitting(true)
 
     const items = selected.map((item) => {
@@ -87,10 +103,12 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       return ret
     })
 
-    let refund
+    let refund = refundableAmount.current
 
     if (data.enable_custom_refund && data.custom_refund) {
-      refund = getDbAmount(data.custom_refund, order.currency_code)
+      const customRefund =
+        data.custom_refund === "" ? 0 : Number(data.custom_refund)
+      refund = getDbAmount(customRefund, order.currency_code)
     }
 
     const payload: AdminPostOrdersOrderReturnsReq = {
@@ -99,9 +117,42 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       refund,
     }
 
-    console.log("Submitting", data, payload)
+    if (data.location) {
+      payload["location_id"] = data.location
+    }
 
-    setIsSubmitting(false)
+    if (data.shipping) {
+      const option = shipping_options.find((o) => o.id === data.shipping)!
+
+      const taxRate = option?.tax_rates.reduce((acc, curr) => {
+        return acc + curr.rate / 100
+      }, 0)
+
+      let price = option.price_incl_tax
+        ? Math.round(option.price_incl_tax / (1 + taxRate))
+        : 0
+
+      if (data.enable_custom_shipping_price) {
+        const customShipping =
+          data.custom_shipping_price === ""
+            ? 0
+            : Number(data.custom_shipping_price)
+        price = getDbAmount(customShipping, order.currency_code)
+      }
+
+      // TODO: do we send shipping if custom refund is set?
+      payload["return_shipping"] = {
+        option_id: data.shipping,
+        price,
+      }
+    }
+
+    try {
+      await requestReturnOrder(payload)
+      handleSuccess(`/orders/${order.id}`)
+    } finally {
+      setIsSubmitting(false)
+    }
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
@@ -130,7 +181,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     switch (tab) {
       case Tab.ITEMS: {
         selected.forEach((item) => {
-          form.setValue(`quantity.${item.id}`, item.id)
+          form.setValue(`quantity.${item.id}`, item.quantity)
           form.setValue(`reason.${item.id}`, "")
           form.setValue(`note.${item.id}`, "")
         })
@@ -151,6 +202,10 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       state[Tab.ITEMS] = "in-progress"
       setStatus(state)
     }
+  }
+
+  const onRefundableAmountChange = (amount: number) => {
+    refundableAmount.current = amount
   }
 
   useEffect(() => {
@@ -222,7 +277,12 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
             />
           </ProgressTabs.Content>
           <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-            <ReturnsForm form={form} items={selected} order={order} />
+            <ReturnsForm
+              form={form}
+              items={selected}
+              order={order}
+              onRefundableAmountChange={onRefundableAmountChange}
+            />
           </ProgressTabs.Content>
         </RouteFocusModal.Body>
       </ProgressTabs>

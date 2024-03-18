@@ -269,6 +269,7 @@
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer of created return.",
       "customRefund": "Custom refund",
+      "shippingPriceTooltip": "Shipping needs to be selected",
       "customRefundHint": "If you want to refund something else instead of the total refund.",
       "customShippingPrice": "Custom shipping",
       "customShippingPriceHint": "Custom shipping cost.",

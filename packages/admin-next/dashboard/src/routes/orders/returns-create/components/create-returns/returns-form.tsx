@@ -29,9 +29,15 @@ type ReturnsFormProps = {
   form: UseFormReturn<any>
   items: LineItem[] // Items selected for return
   order: Order
+  onRefundableAmountChange: (amount: number) => void
 }
 
-export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
+export function ReturnsForm({
+  form,
+  items,
+  order,
+  onRefundableAmountChange,
+}: ReturnsFormProps) {
   const { t } = useTranslation()
 
   const [inventoryMap, setInventoryMap] = useState<
@@ -74,10 +80,6 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
 
     getInventoryMap().then((map) => {
       setInventoryMap(map)
-    })
-
-    items.forEach((i) => {
-      form.setValue(`quantity.${i.id}`, i.quantity)
     })
   }, [items])
 
@@ -129,8 +131,16 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
       return acc + unitRefundable * quantity[curr.id]
     }, 0)
 
-    return itemTotal - (shippingPrice || 0)
+    const amount = itemTotal - (shippingPrice || 0)
+    onRefundableAmountChange(amount)
+
+    return amount
   }, [items, quantity, shippingPrice])
+
+  useEffect(() => {
+    form.setValue("enable_custom_shipping_price", false)
+    form.setValue("custom_shipping_price", 0)
+  }, [form.watch("enable_custom_refund")])
 
   return (
     <div className="flex size-full flex-col items-center overflow-auto p-16">
@@ -175,7 +185,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
                         </Select.Trigger>
                         <Select.Content>
                           {stock_locations.map((l) => (
-                            <Select.Item key={l.id} value={l.name}>
+                            <Select.Item key={l.id} value={l.id}>
                               {l.name}
                             </Select.Item>
                           ))}
@@ -237,12 +247,16 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
           <Text weight="plus" className="txt-small flex-1">
             {t("orders.returns.refundAmount")}
           </Text>
-          <div className="txt-small block flex-1">
-            <MoneyAmountCell
-              align="right"
-              amount={refundable}
-              currencyCode={order.currency_code}
-            />
+          <div className="txt-small block flex-1 text-right">
+            {form.watch("enable_custom_refund") ? (
+              <span className="text-right">-</span>
+            ) : (
+              <MoneyAmountCell
+                align="right"
+                amount={refundable}
+                currencyCode={order.currency_code}
+              />
+            )}
           </div>
         </div>
 
@@ -308,7 +322,6 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
               <Form.Field
                 control={form.control}
                 name="custom_refund"
-                rules={{ min: 0, max: order.refundable_amount }}
                 render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
@@ -339,12 +352,18 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
               return (
                 <Form.Item>
                   <div className="flex items-center justify-between">
-                    <Form.Label>
+                    <Form.Label
+                      tooltip={t("orders.returns.shippingPriceTooltip")}
+                    >
                       {t("orders.returns.customShippingPrice")}
                     </Form.Label>
                     <Form.Control>
                       <Form.Control>
                         <Switch
+                          disabled={
+                            form.watch("enable_custom_refund") ||
+                            !form.watch("shipping")
+                          }
                           checked={!!field.value}
                           onCheckedChange={field.onChange}
                         />

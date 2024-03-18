@@ -1,7 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-import { Trash } from "@medusajs/icons"
 import { Input, Select, Text } from "@medusajs/ui"
 import { LineItem } from "@medusajs/medusa"
 import { UseFormReturn } from "react-hook-form"
