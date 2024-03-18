@@ -2,20 +2,15 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AddPriceListPricesDTO,
   CreatePriceListPriceDTO,
+  CreatePriceListPricesWorkflowStepDTO,
   IPricingModuleService,
-  UpdatePriceListWorkflowInputDTO,
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-
-type WorkflowStepInput = {
-  data: Pick<UpdatePriceListWorkflowInputDTO, "id" | "prices">[]
-  variant_price_map: Record<string, string>
-}
 
 export const createPriceListPricesStepId = "create-price-list-prices"
 export const createPriceListPricesStep = createStep(
   createPriceListPricesStepId,
-  async (stepInput: WorkflowStepInput, { container }) => {
+  async (stepInput: CreatePriceListPricesWorkflowStepDTO, { container }) => {
     const { data, variant_price_map: variantPriceSetMap } = stepInput
     const priceListPricesToCreate: AddPriceListPricesDTO[] = []
     const pricingModule = container.resolve<IPricingModuleService>(

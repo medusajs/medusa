@@ -10,14 +10,14 @@ import {
   validateVariantPriceLinksStep,
 } from "../steps"
 
-type WorkflowInput = {
-  data: CreatePriceListPricesWorkflowDTO[]
-}
-
 export const createPriceListPricesWorkflowId = "create-price-list-prices"
 export const createPriceListPricesWorkflow = createWorkflow(
   createPriceListPricesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (
+    input: WorkflowData<{
+      data: CreatePriceListPricesWorkflowDTO[]
+    }>
+  ): WorkflowData<void> => {
     const [_, variantPriceMap] = parallelize(
       validatePriceListsStep(input.data),
       validateVariantPriceLinksStep(input.data)
