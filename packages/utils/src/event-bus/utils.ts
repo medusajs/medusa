@@ -70,25 +70,18 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
     const kebabCaseName = lowerCaseFirst(kebabCase(name))
 
     if (i === 0) {
-      events[`created`] = `${kebabCaseName}.${CommonEvents.CREATED}`
-      events[`updated`] = `${kebabCaseName}.${CommonEvents.UPDATED}`
-      events[`deleted`] = `${kebabCaseName}.${CommonEvents.DELETED}`
-      events[`restored`] = `${kebabCaseName}.${CommonEvents.RESTORED}`
+      for (const event of Object.values(CommonEvents) as string[]) {
+        events[event] = `${kebabCaseName}.${event}`
+      }
       continue
     }
 
-    events[
-      `${snakedCaseName}_created`
-    ] = `${kebabCaseName}.${CommonEvents.CREATED}`
-    events[
-      `${snakedCaseName}_updated`
-    ] = `${kebabCaseName}.${CommonEvents.UPDATED}`
-    events[
-      `${snakedCaseName}_deleted`
-    ] = `${kebabCaseName}.${CommonEvents.DELETED}`
-    events[
-      `${snakedCaseName}_restored`
-    ] = `${kebabCaseName}.${CommonEvents.RESTORED}`
+    for (const event of Object.values(CommonEvents) as string[]) {
+      events[`${snakedCaseName}_${event}`] =
+        `${kebabCaseName}.${event}` as `${KebabCase<
+          typeof name
+        >}.${typeof event}`
+    }
   }
 
   return events as ReturnType<TNames>
