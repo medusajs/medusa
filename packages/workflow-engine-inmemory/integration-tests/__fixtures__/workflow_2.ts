@@ -15,7 +15,6 @@ const step_1 = createStep(
       return
     }
 
-    console.log("reverted", compensateInput.compensate)
     return new StepResponse({
       reverted: true,
     })
@@ -23,8 +22,6 @@ const step_1 = createStep(
 )
 
 export const workflow2Step2Invoke = jest.fn((input, context) => {
-  console.log("triggered async request", context.metadata.idempotency_key)
-
   if (input) {
     return new StepResponse({ notAsyncResponse: input.hey })
   }
@@ -48,10 +45,7 @@ export const workflow2Step3Invoke = jest.fn((res) => {
     },
   })
 })
-const step_3 = createStep(
-  "step_3",
-  workflow2Step3Invoke
-)
+const step_3 = createStep("step_3", workflow2Step3Invoke)
 
 createWorkflow(
   {
