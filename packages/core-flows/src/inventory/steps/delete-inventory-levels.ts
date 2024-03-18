@@ -3,7 +3,7 @@ import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-export const deleteInventoryLevelsStepId = "delete-customers"
+export const deleteInventoryLevelsStepId = "delete-inventory-levels-step"
 export const deleteLevelsStep = createStep(
   deleteInventoryLevelsStepId,
   async (ids: string[], { container }) => {
