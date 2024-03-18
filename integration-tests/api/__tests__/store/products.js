@@ -112,8 +112,9 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
 
-      expect(testProductIndex).toBe(3)
-      expect(testProduct1Index).toBe(4)
+      // Since they have the same variant titles for rank 2, the order is not guaranteed
+      expect([3, 4]).toContain(testProductIndex)
+      expect([3, 4]).toContain(testProduct1Index)
     })
 
     it("returns a list of ordered products by variants title ASC", async () => {
@@ -262,9 +263,12 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toHaveLength(10)
       expect(Object.keys(response.data.products[0])).toEqual(
         expect.arrayContaining([
+          "id",
+          "created_at",
+
           // fields
           "handle",
           // relations

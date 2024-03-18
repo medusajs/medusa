@@ -12,7 +12,7 @@ In this document, you’ll get an overview of the orders listing page and everyt
 
 When customers buy one or more products, their order appears on the Orders page. You can view an order’s information, capture payment, create shipments and fulfillments, register returns or exchanges of the order, and more.
 
-The Orders domain also contains draft orders. Draft orders are orders that you create from the Medusa admin. After you fill out the order and mark it paid, it’s transformed into an order that appears as part of the Orders list.
+The Orders domain also contains draft orders. Draft orders are orders that you create from the Medusa Admin. After you fill out the order and mark it paid, it’s transformed into an order that appears as part of the Orders list.
 
 ---
 

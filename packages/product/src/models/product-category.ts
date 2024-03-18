@@ -95,7 +95,7 @@ class ProductCategory {
   async onCreate(args: EventArgs<ProductCategory>) {
     this.id = generateEntityId(this.id, "pcat")
 
-    if (!this.handle) {
+    if (!this.handle && this.name) {
       this.handle = kebabCase(this.name)
     }
 

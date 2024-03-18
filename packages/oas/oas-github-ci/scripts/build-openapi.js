@@ -10,7 +10,8 @@ const withFullFile = process.argv.indexOf("--with-full-file") !== -1
 const v2 = process.argv.indexOf("--v2") !== -1
 const basePath = path.resolve(__dirname, `../`)
 const repoRootPath = path.resolve(basePath, `../../../`)
-const docsApiPath = path.resolve(repoRootPath, "www/apps/api-reference/specs")
+const docsApiPath = v2 ? path.resolve(repoRootPath, "www/apps/api-reference/specs-v2") : 
+  path.resolve(repoRootPath, "www/apps/api-reference/specs")
 
 const run = async () => {
   const oasOutDir = isDryRun ? await getTmpDirectory() : docsApiPath

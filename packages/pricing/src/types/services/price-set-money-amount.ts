@@ -11,6 +11,7 @@ export interface UpdatePriceSetMoneyAmountDTO {
   title?: string
   price_set?: PriceSetDTO
   money_amount?: MoneyAmountDTO
+  rules_count?: number
 }
 
 export interface CreatePriceSetMoneyAmountDTO {
