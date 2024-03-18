@@ -14,11 +14,7 @@ import {
   Text,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import {
-  useAdminReturnReasons,
-  useAdminShippingOptions,
-  useAdminStockLocations,
-} from "medusa-react"
+import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
 import { LevelWithAvailability } from "@medusajs/medusa"
 
 import { ReturnItem } from "./return-item"
@@ -128,8 +124,6 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
     return itemTotal - (shippingPrice || 0)
   }, [items, quantity, shippingPrice])
 
-  const onQuantityChangeComplete = () => {}
-
   return (
     <div className="flex size-full flex-col items-center overflow-auto p-16">
       <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
@@ -141,10 +135,10 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
         </Heading>
         {items.map((item) => (
           <ReturnItem
+            key={item.id}
             item={item}
             form={form}
             currencyCode={order.currency_code}
-            onQuantityChangeComplete={onQuantityChangeComplete}
           />
         ))}
 
@@ -312,6 +306,7 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
                       <Form.Control>
                         <CurrencyInput
                           min={0}
+                          // max={order.refundable_amount}
                           onValueChange={onChange}
                           code={order.currency_code}
                           symbol={getCurrencySymbol(order.currency_code)}

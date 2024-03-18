@@ -9,6 +9,7 @@ import * as zod from "zod"
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import { ItemsTable } from "../items-table"
 import { ReturnsForm } from "./returns-form"
+import form from "@medusajs/admin-ui/ui/src/domain/orders/new/form"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -49,20 +50,12 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   const selected = order.items.filter((i) => selectedItems.includes(i.id))
 
-  const form = useForm<typeof CreateReturnSchema>({
+  const form = useForm<zod.infer<typeof CreateReturnSchema>>({
     defaultValues: {
-      quantity: selected.reduce((acc, item) => {
-        acc[item.id] = item.quantity
-        return acc
-      }, {} as Record<string, number>),
-      reason: selected.reduce((acc, item) => {
-        acc[item.id] = ""
-        return acc
-      }, {} as Record<string, string>),
-      note: selected.reduce((acc, item) => {
-        acc[item.id] = ""
-        return acc
-      }, {} as Record<string, string>),
+      // Items not selected so we don't know defaults yet
+      quantity: {},
+      reason: {},
+      note: {},
 
       location: "",
       shipping: "",
@@ -71,9 +64,13 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       enable_custom_refund: false,
       enable_custom_shipping_price: false,
 
-      custom_refund: "",
-      custom_shipping_price: "",
+      custom_refund: 0,
+      custom_shipping_price: 0,
     },
+  })
+
+  const onSubmit = form.handleSubmit((data) => {
+    console.log("Submitting", data)
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
@@ -83,38 +80,37 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   const onTabChange = React.useCallback(
     async (value: Tab) => {
-      if (tab === Tab.DETAILS) {
-        // await onExitProductPrices(value)
-        return
-      }
-
       setTab(value)
     },
     [tab]
   )
 
-  const onBack = React.useCallback(async () => {
-    switch (tab) {
-      case Tab.ITEMS:
-        // onModalStateChange(false)
-        break
-      case Tab.DETAILS:
-        setTab(Tab.ITEMS)
-        break
-    }
-  }, [tab])
+  // const onBack = React.useCallback(async () => {
+  //   switch (tab) {
+  //     case Tab.ITEMS:
+  //       break
+  //     case Tab.DETAILS:
+  //       setTab(Tab.ITEMS)
+  //       break
+  //   }
+  // }, [tab])
 
   const onNext = React.useCallback(async () => {
     switch (tab) {
-      case Tab.ITEMS:
-        // onValidateProducts()
+      case Tab.ITEMS: {
+        selected.forEach((item) => {
+          form.setValue(`quantity.${item.id}`, item.id)
+          form.setValue(`reason.${item.id}`, "")
+          form.setValue(`note.${item.id}`, "")
+        })
         setTab(Tab.DETAILS)
         break
+      }
       case Tab.DETAILS:
-        // await onSubmit()
+        await onSubmit()
         break
     }
-  }, [tab])
+  }, [tab, selected])
 
   const onSelectionChange = (ids: string[]) => {
     setSelectedItems(ids)
@@ -130,9 +126,17 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     if (tab === Tab.DETAILS) {
       const state = { ...status }
       state[Tab.ITEMS] = "completed"
-      setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "in-progress" })
+      setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "not-started" })
     }
   }, [tab])
+
+  useEffect(() => {
+    if (form.formState.isDirty) {
+      const state = { ...status }
+      state[Tab.ITEMS] = "completed"
+      setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "in-progress" })
+    }
+  }, [form.formState.isDirty])
 
   const canMoveToDetails = selectedItems.length
 
@@ -148,6 +152,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
               value={Tab.ITEMS}
               className="w-full max-w-[200px]"
               status={status[Tab.ITEMS]}
+              disabled={tab === Tab.DETAILS}
             >
               <span className="w-full cursor-auto overflow-hidden text-ellipsis whitespace-nowrap">
                 {t("orders.returns.chooseItems")}
@@ -166,11 +171,11 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
           </ProgressTabs.List>
           <div className="flex flex-1 items-center justify-end gap-x-2">
             <Button
-              type="button"
               className="whitespace-nowrap"
               isLoading={isSubmitting}
               onClick={onNext}
               disabled={!canMoveToDetails}
+              type={tab === Tab.DETAILS ? "submit" : "button"}
             >
               {t(tab === Tab.DETAILS ? "actions.save" : "actions.next")}
             </Button>

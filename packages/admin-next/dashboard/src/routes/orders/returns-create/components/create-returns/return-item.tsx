@@ -17,15 +17,9 @@ type OrderEditItemProps = {
   currencyCode: string
 
   form: UseFormReturn<any>
-  onQuantityChangeComplete: (id: string) => void
 }
 
-function ReturnItem({
-  item,
-  currencyCode,
-  form,
-  onQuantityChangeComplete,
-}: OrderEditItemProps) {
+function ReturnItem({ item, currencyCode, form }: OrderEditItemProps) {
   const { t } = useTranslation()
 
   const { return_reasons = [] } = useAdminReturnReasons()
@@ -84,27 +78,13 @@ function ReturnItem({
                     <Form.Control>
                       <Input
                         className="bg-ui-bg-base txt-small w-full rounded-lg"
-                        defaultValue={item.quantity}
                         min={1}
                         max={item.quantity}
                         type="number"
                         {...field}
                         onChange={(e) => {
                           const val = e.target.value
-                          if (val === "") {
-                            form.setValue(`quantity.${item.id}`, null)
-                          } else {
-                            form.setValue(`quantity.${item.id}`, Number(val))
-                          }
-                        }}
-                        onBlur={() => {
-                          if (
-                            typeof form.getValues()[`quantity.${item.id}`] ===
-                            "undefined"
-                          ) {
-                            form.setValue(`quantity.${item.id}`, 1)
-                          }
-                          onQuantityChangeComplete(item.id)
+                          field.onChange(val === "" ? null : Number(val))
                         }}
                       />
                     </Form.Control>
@@ -121,7 +101,7 @@ function ReturnItem({
             </Text>
             <Form.Field
               control={form.control}
-              name={`reason-${item.id}`}
+              name={`reason.${item.id}`}
               render={({ field: { onChange, ref, ...field } }) => {
                 return (
                   <Form.Item>
@@ -155,7 +135,7 @@ function ReturnItem({
             </Text>
             <Form.Field
               control={form.control}
-              name={`note-${item.id}`}
+              name={`note.${item.id}`}
               render={({ field }) => {
                 return (
                   <Form.Item>
