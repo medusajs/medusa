@@ -1,3 +1,5 @@
+import { siteConfig } from "../config/site"
+
 export function absoluteUrl(path = "") {
-  return `${process.env.NEXT_PUBLIC_BASE_URL}${path}`
+  return `${siteConfig.baseUrl}${path}`
 }

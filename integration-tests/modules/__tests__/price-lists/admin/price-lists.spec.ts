@@ -259,7 +259,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/price-lists", () => {
-        it("should create price list and money amounts", async () => {
+        it("should create price list and prices successfully", async () => {
           await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -422,7 +422,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should update price lists successfully", async () => {
+        it("should update price lists and set prices successfully", async () => {
           await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -456,7 +456,7 @@ medusaIntegrationTestRunner({
             ],
           }
 
-          const response = await api.post(
+          let response = await api.post(
             `admin/price-lists/${priceList.id}`,
             data,
             adminHeaders
@@ -466,14 +466,8 @@ medusaIntegrationTestRunner({
           expect(response.data.price_list).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
               title: "new price list name",
               description: "new price list description",
-              type: "override",
-              status: "active",
-              starts_at: expect.any(String),
-              ends_at: expect.any(String),
               rules: {
                 customer_group_id: [customerGroup.id],
               },
@@ -492,11 +486,41 @@ medusaIntegrationTestRunner({
               ],
             })
           )
+
+          // Updating prices should remove existing prices and create new ones
+          response = await api.post(
+            `admin/price-lists/${priceList.id}`,
+            {
+              prices: [
+                {
+                  amount: 600,
+                  variant_id: variant.id,
+                  currency_code: "usd",
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              prices: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 600,
+                  variant_id: variant.id,
+                  rules: { region_id: region.id },
+                }),
+              ],
+            })
+          )
         })
       })
 
-      describe("POST /admin/price-lists/:id/prices", () => {
-        it("should upsert price list prices successfully", async () => {
+      describe("POST /admin/price-lists/:id/prices/batch/add", () => {
+        it("should add price list prices successfully", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -527,16 +551,11 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 rules: { region_id: region.id },
               },
-              {
-                id: "test-price-id",
-                variant_id: variant.id,
-                amount: 200,
-              },
             ],
           }
 
           const response = await api.post(
-            `admin/price-lists/${priceList.id}/prices`,
+            `admin/price-lists/${priceList.id}/prices/batch/add`,
             data,
             adminHeaders
           )
@@ -555,7 +574,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   id: "test-price-id",
                   currency_code: "usd",
-                  amount: 200,
+                  amount: 5000,
                 }),
               ]),
             })
@@ -563,8 +582,8 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/price-lists/:id/prices", () => {
-        it("should delete price list prices", async () => {
+      describe("POST /admin/price-lists/:id/prices/batch/remove", () => {
+        it("should remove price list prices successfully", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -577,7 +596,6 @@ medusaIntegrationTestRunner({
               description: "test",
               prices: [
                 {
-                  id: "test-price-id",
                   amount: 5000,
                   currency_code: "usd",
                   price_set_id: priceSet.id,
@@ -589,17 +607,21 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let response = await api.delete(
-            `/admin/price-lists/${priceList.id}/prices`,
-            { ...adminHeaders, data: { ids: ["test-price-id"] } }
+          const psmaIdToDelete = priceList.price_set_money_amounts![0].id
+
+          const response = await api.post(
+            `/admin/price-lists/${priceList.id}/prices/batch/remove`,
+            { ids: [psmaIdToDelete] },
+            adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
-            ids: ["test-price-id"],
-            object: "price_list_prices",
-            deleted: true,
-          })
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: [],
+            })
+          )
         })
       })
     })

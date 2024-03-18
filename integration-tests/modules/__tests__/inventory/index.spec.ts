@@ -326,7 +326,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.skip("Create inventory item level", () => {
+      describe("Create inventory item level", () => {
         let location1
         let location2
 
@@ -357,7 +357,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("should list the inventory items", async () => {
+        it("should create location levels for an inventory item", async () => {
           const [{ id: inventoryItemId }] = await service.list({})
 
           await api.post(
@@ -393,6 +393,115 @@ medusaIntegrationTestRunner({
               stocked_quantity: 5,
             }),
           ])
+        })
+
+        it("should fail to create a location level for an inventory item", async () => {
+          const [{ id: inventoryItemId }] = await service.list({})
+
+          const error = await api
+            .post(
+              `/admin/inventory-items/${inventoryItemId}/location-levels`,
+              {
+                location_id: "{location1.id}",
+                stocked_quantity: 10,
+              },
+              adminHeaders
+            )
+            .catch((error) => error)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: "Stock locations with ids: {location1.id} was not found",
+          })
+        })
+      })
+
+      describe.skip("Create inventory items", () => {
+        it("should create inventory items", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list()
+
+          expect(inventoryItems).toHaveLength(0)
+
+          const response = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku",
+            })
+          )
+        })
+
+        it("should attach inventory items on creation", async () => {
+          const createResult = await api.post(
+            `/admin/products`,
+            {
+              title: "Test Product",
+              variants: [
+                {
+                  title: "Test Variant w. inventory 2",
+                  sku: "MY_SKU1",
+                  material: "material",
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const inventoryItems = await service.list()
+
+          expect(inventoryItems).toHaveLength(0)
+
+          await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            adminHeaders
+          )
+
+          const remoteQuery = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_QUERY
+          )
+
+          const query = remoteQueryObjectFromString({
+            entryPoint: "product_variant_inventory_item",
+            variables: {
+              variant_id: createResult.data.product.variants[0].id,
+            },
+            fields: ["inventory_item_id", "variant_id"],
+          })
+
+          const existingItems = await remoteQuery(query)
+
+          expect(existingItems).toHaveLength(1)
+          expect(existingItems[0].variant_id).toEqual(
+            createResult.data.product.variants[0].id
+          )
         })
       })
 

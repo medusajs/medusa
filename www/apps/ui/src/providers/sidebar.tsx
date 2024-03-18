@@ -15,6 +15,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       initialItems={docsConfig.sidebar}
       shouldHandlePathChange={true}
       scrollableElement={scrollableElement}
+      disableActiveTransition={true}
     >
       {children}
     </UiSidebarProvider>
