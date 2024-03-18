@@ -125,9 +125,8 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
               value={Tab.ITEMS}
               className="w-full max-w-[200px]"
               status={status[Tab.ITEMS]}
-              onClick={() => setTab(Tab.ITEMS)}
             >
-              <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="w-full cursor-auto overflow-hidden text-ellipsis whitespace-nowrap">
                 {t("orders.returns.chooseItems")}
               </span>
             </ProgressTabs.Trigger>
@@ -143,13 +142,6 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
             </ProgressTabs.Trigger>
           </ProgressTabs.List>
           <div className="flex flex-1 items-center justify-end gap-x-2">
-            <Button
-              disabled={isSubmitting}
-              variant="secondary"
-              onClick={onBack}
-            >
-              {t("actions.back")}
-            </Button>
             <Button
               type="button"
               className="whitespace-nowrap"
