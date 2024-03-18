@@ -10,7 +10,9 @@ const VersionNote = () => {
     <>
       {version === "2" && (
         <Note type="warning" title="Production Warning">
-Medusa v2.0 is in development and not suitable for production environments. As such, the API reference is incomplete and subject to change, so please use it with caution. 
+          Medusa v2.0 is in development and not suitable for production
+          environments. As such, the API reference is incomplete and subject to
+          change, so please use it with caution.
         </Note>
       )}
     </>
