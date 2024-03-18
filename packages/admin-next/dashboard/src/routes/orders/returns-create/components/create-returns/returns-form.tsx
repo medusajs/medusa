@@ -23,6 +23,7 @@ import { Form } from "../../../../../components/common/form"
 import { medusa } from "../../../../../lib/medusa"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { getCurrencySymbol } from "../../../../../lib/currencies.ts"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
 
 type ReturnsFormProps = {
   form: UseFormReturn<any>
@@ -101,17 +102,24 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
     return !allItemsHaveLocation
   }, [items, inventoryMap, selectedLocation])
 
-  const { quantity } = useWatch()
+  const {
+    quantity,
+    shipping,
+    custom_shipping_price,
+    enable_custom_shipping_price,
+  } = useWatch()
 
   const shippingPrice = useMemo(() => {
-    // TODO: do we return custom shipping price here if set
+    if (enable_custom_shipping_price && custom_shipping_price) {
+      return getDbAmount(custom_shipping_price, order.currency_code)
+    }
 
     const method = shipping_options?.find(
       (o) => form.watch("shipping") === o.id
     )
 
     return method?.price_incl_tax || 0
-  }, [form.watch("shipping")])
+  }, [shipping, custom_shipping_price, enable_custom_shipping_price])
 
   const refundable = useMemo(() => {
     const itemTotal = items.reduce((acc: number, curr: LineItem): number => {
@@ -300,13 +308,14 @@ export function ReturnsForm({ form, items, order }: ReturnsFormProps) {
               <Form.Field
                 control={form.control}
                 name="custom_refund"
+                rules={{ min: 0, max: order.refundable_amount }}
                 render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
                       <Form.Control>
                         <CurrencyInput
                           min={0}
-                          // max={order.refundable_amount}
+                          max={order.refundable_amount}
                           onValueChange={onChange}
                           code={order.currency_code}
                           symbol={getCurrencySymbol(order.currency_code)}

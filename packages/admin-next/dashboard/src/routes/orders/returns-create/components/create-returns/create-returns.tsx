@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Order } from "@medusajs/medusa"
+import { AdminPostOrdersOrderReturnsReq, Order } from "@medusajs/medusa"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -9,7 +9,7 @@ import * as zod from "zod"
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import { ItemsTable } from "../items-table"
 import { ReturnsForm } from "./returns-form"
-import form from "@medusajs/admin-ui/ui/src/domain/orders/new/form"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -26,8 +26,8 @@ type StepStatus = {
 
 const CreateReturnSchema = zod.object({
   quantity: zod.record(zod.string(), zod.number()),
-  reason: zod.record(zod.string(), zod.string()),
-  note: zod.record(zod.string(), zod.string()),
+  reason: zod.record(zod.string(), zod.string().optional()),
+  note: zod.record(zod.string(), zod.string().optional()),
   location: zod.string(),
   shipping: zod.string(),
   send_notification: zod.boolean().optional(),
@@ -44,9 +44,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   const [selectedItems, setSelectedItems] = useState([])
   const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
-
-  const isSubmitting = false
-  const isEditDirty = false
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const selected = order.items.filter((i) => selectedItems.includes(i.id))
 
@@ -59,7 +57,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
       location: "",
       shipping: "",
-      send_notification: false,
+      send_notification: !order.no_notification,
 
       enable_custom_refund: false,
       enable_custom_shipping_price: false,
@@ -70,7 +68,40 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
   })
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log("Submitting", data)
+    setIsSubmitting(true)
+
+    const items = selected.map((item) => {
+      const ret = {
+        item_id: item.id,
+        quantity: data.quantity[item.id],
+      }
+
+      if (data.reason[item.id]) {
+        ret["reson_id"] = data.reason[item.id]
+      }
+
+      if (data.note[item.id]) {
+        ret["note"] = data.note[item.id]
+      }
+
+      return ret
+    })
+
+    let refund
+
+    if (data.enable_custom_refund && data.custom_refund) {
+      refund = getDbAmount(data.custom_refund, order.currency_code)
+    }
+
+    const payload: AdminPostOrdersOrderReturnsReq = {
+      items,
+      no_notification: !data.send_notification,
+      refund,
+    }
+
+    console.log("Submitting", data, payload)
+
+    setIsSubmitting(false)
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
@@ -144,6 +175,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     <RouteFocusModal.Form form={form}>
       <ProgressTabs
         value={tab}
+        className="h-full"
         onValueChange={(tab) => onTabChange(tab as Tab)}
       >
         <RouteFocusModal.Header className="flex w-full items-center justify-between">
@@ -181,7 +213,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto">
+        <RouteFocusModal.Body className="flex h-[calc(100%-56px)] w-full flex-col items-center overflow-y-auto">
           <ProgressTabs.Content value={Tab.ITEMS} className="h-full w-full">
             <ItemsTable
               items={order.items}

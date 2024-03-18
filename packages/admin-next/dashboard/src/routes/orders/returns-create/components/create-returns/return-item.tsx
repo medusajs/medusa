@@ -47,19 +47,19 @@ function ReturnItem({ item, currencyCode, form }: OrderEditItemProps) {
         </div>
 
         <div className="flex items-center">
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.remove"),
-                    icon: <Trash />,
-                    // onClick: () => onRemove(item.id),
-                  },
-                ],
-              },
-            ]}
-          />
+          {/*<ActionMenu*/}
+          {/*  groups={[*/}
+          {/*    {*/}
+          {/*      actions: [*/}
+          {/*        {*/}
+          {/*          label: t("actions.remove"),*/}
+          {/*          icon: <Trash />,*/}
+          {/*          // onClick: () => onRemove(item.id),*/}
+          {/*        },*/}
+          {/*      ],*/}
+          {/*    },*/}
+          {/*  ]}*/}
+          {/*/>*/}
         </div>
       </div>
 
