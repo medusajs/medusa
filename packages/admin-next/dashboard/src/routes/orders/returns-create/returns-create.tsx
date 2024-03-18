@@ -1,7 +1,7 @@
 import { useAdminOrder } from "medusa-react"
 import { useParams } from "react-router-dom"
 
-import { CreateReturnsForm } from "./components/create-returns-form"
+import { CreateReturns } from "./components/create-returns"
 import { RouteFocusModal } from "../../../components/route-modal"
 
 export function ReturnsCreate() {
@@ -21,7 +21,7 @@ export function ReturnsCreate() {
 
   return (
     <RouteFocusModal>
-      <CreateReturnsForm order={order} />
+      <CreateReturns order={order} />
     </RouteFocusModal>
   )
 }

@@ -120,6 +120,10 @@ export const v1Routes: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/orders/order-transfer-ownership"),
                   },
+                  {
+                    path: "returns",
+                    lazy: () => import("../../routes/orders/returns-create"),
+                  },
                 ],
               },
             ],

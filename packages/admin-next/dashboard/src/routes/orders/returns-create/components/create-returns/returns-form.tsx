@@ -24,7 +24,6 @@ import { Form } from "../../../../../components/common/form"
 import { medusa } from "../../../../../lib/medusa"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { getCurrencySymbol } from "../../../../../lib/currencies.ts"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
 
 type ReturnsFormProps = {
   form: UseFormReturn<any>

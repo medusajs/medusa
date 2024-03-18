@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Order } from "@medusajs/medusa"
@@ -24,7 +24,7 @@ type StepStatus = {
 }
 
 const CreateReturnSchema = zod.object({
-  quantity: zod.record<string, number>(zod.string(), zod.number()),
+  quantity: zod.record(zod.string(), zod.number()),
   location: zod.string(),
   shipping: zod.string(),
   send_notification: zod.boolean().optional(),
@@ -36,7 +36,7 @@ const CreateReturnSchema = zod.object({
   custom_shipping_price: zod.number().optional(),
 })
 
-export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
+export function CreateReturns({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
 
   const [selectedItems, setSelectedItems] = useState([])
@@ -95,7 +95,23 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
 
   const onSelectionChange = (ids: string[]) => {
     setSelectedItems(ids)
+
+    if (ids.length) {
+      const state = { ...status }
+      state[Tab.ITEMS] = "in-progress"
+      setStatus(state)
+    }
   }
+
+  useEffect(() => {
+    if (tab === Tab.DETAILS) {
+      const state = { ...status }
+      state[Tab.ITEMS] = "completed"
+      setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "in-progress" })
+    }
+  }, [tab])
+
+  const canMoveToDetails = selectedItems.length
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -109,16 +125,17 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
               value={Tab.ITEMS}
               className="w-full max-w-[200px]"
               status={status[Tab.ITEMS]}
+              onClick={() => setTab(Tab.ITEMS)}
             >
               <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                 {t("orders.returns.chooseItems")}
               </span>
             </ProgressTabs.Trigger>
             <ProgressTabs.Trigger
-              // disabled={status[Tab.DETAILS] !== "completed"}
               value={Tab.DETAILS}
               className="w-full max-w-[200px]"
               status={status[Tab.DETAILS]}
+              disabled={!canMoveToDetails}
             >
               <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                 {t("orders.returns.details")}
@@ -138,6 +155,7 @@ export function CreateReturnsForm({ order }: CreateReturnsFormProps) {
               className="whitespace-nowrap"
               isLoading={isSubmitting}
               onClick={onNext}
+              disabled={!canMoveToDetails}
             >
               {t(tab === Tab.DETAILS ? "actions.save" : "actions.next")}
             </Button>
