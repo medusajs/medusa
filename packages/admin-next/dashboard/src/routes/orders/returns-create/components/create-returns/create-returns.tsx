@@ -25,6 +25,8 @@ type StepStatus = {
 
 const CreateReturnSchema = zod.object({
   quantity: zod.record(zod.string(), zod.number()),
+  reason: zod.record(zod.string(), zod.string()),
+  note: zod.record(zod.string(), zod.string()),
   location: zod.string(),
   shipping: zod.string(),
   send_notification: zod.boolean().optional(),
@@ -49,7 +51,28 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   const form = useForm<typeof CreateReturnSchema>({
     defaultValues: {
-      quantity: {},
+      quantity: selected.reduce((acc, item) => {
+        acc[item.id] = item.quantity
+        return acc
+      }, {} as Record<string, number>),
+      reason: selected.reduce((acc, item) => {
+        acc[item.id] = ""
+        return acc
+      }, {} as Record<string, string>),
+      note: selected.reduce((acc, item) => {
+        acc[item.id] = ""
+        return acc
+      }, {} as Record<string, string>),
+
+      location: "",
+      shipping: "",
+      send_notification: false,
+
+      enable_custom_refund: false,
+      enable_custom_shipping_price: false,
+
+      custom_refund: "",
+      custom_shipping_price: "",
     },
   })
 

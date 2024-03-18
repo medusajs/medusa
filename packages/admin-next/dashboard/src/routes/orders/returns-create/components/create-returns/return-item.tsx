@@ -5,6 +5,7 @@ import { Trash } from "@medusajs/icons"
 import { Input, Select, Text } from "@medusajs/ui"
 import { LineItem } from "@medusajs/medusa"
 import { UseFormReturn } from "react-hook-form"
+import { useAdminReturnReasons } from "medusa-react"
 
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -26,6 +27,8 @@ function ReturnItem({
   onQuantityChangeComplete,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
+
+  const { return_reasons = [] } = useAdminReturnReasons()
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
@@ -131,9 +134,9 @@ function ReturnItem({
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {[].map((i) => (
-                            <Select.Item key={i.id} value={i.name}>
-                              {i.name.toUpperCase()}
+                          {return_reasons.map((i) => (
+                            <Select.Item key={i.id} value={i.id}>
+                              {i.label}
                             </Select.Item>
                           ))}
                         </Select.Content>
