@@ -217,5 +217,13 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     checkVariables: boolean
+    /**
+     * Whether to generate a Mermaid.js class diagram for data models in the reference.
+     */
+    generateModelsDiagram: boolean
+    /**
+     * The file to add the mermaid diagram to. The diagram is added as a package comment.
+     */
+    diagramAddToFile: string
   }
 }

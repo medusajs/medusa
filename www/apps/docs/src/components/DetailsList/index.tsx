@@ -1,7 +1,7 @@
 import React from "react"
 import Details from "../../theme/Details"
 import clsx from "clsx"
-import { MarkdownContent } from "docs-ui"
+import MDXContent from "@theme/MDXContent"
 
 type TroubleshootingSection = {
   title: string
@@ -23,7 +23,7 @@ const DetailsList: React.FC<DetailsListProps> = ({ sections }) => {
         >
           {React.isValidElement(content) && content}
           {!React.isValidElement(content) && typeof content === "string" && (
-            <MarkdownContent>content</MarkdownContent>
+            <MDXContent>{content}</MDXContent>
           )}
         </Details>
       ))}
