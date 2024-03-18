@@ -531,3 +531,17 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}y`
       | `${infer R}o`
   ? `${Singular}es`
   : `${Singular}s`
+
+export type SnakeCase<S extends string> =
+  S extends `${infer T}${infer U}${infer V}`
+    ? U extends Uppercase<U>
+      ? `${Lowercase<T>}_${SnakeCase<`${Lowercase<U>}${V}`>}`
+      : `${T}${SnakeCase<`${U}${V}`>}`
+    : S
+
+export type KebabCase<S extends string> =
+  S extends `${infer T}${infer U}${infer V}`
+    ? U extends Uppercase<U>
+      ? `${Lowercase<T>}-${KebabCase<`${Lowercase<U>}${V}`>}`
+      : `${T}${KebabCase<`${U}${V}`>}`
+    : S
