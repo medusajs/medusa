@@ -8,13 +8,13 @@ import {
 import { useAdminVariants } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { SplitView } from "../../../../components/layout/split-view"
-import { DataTable } from "../../../../components/table/data-table"
-import { MoneyAmountCell } from "../../../../components/table/table-cells/common/money-amount-cell"
-import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
-import { ProductCell } from "../../../../components/table/table-cells/product/product-cell"
-import { useDataTable } from "../../../../hooks/use-data-table"
-import { ExistingItem } from "./types"
+import { SplitView } from "../../../../../../components/layout/split-view"
+import { DataTable } from "../../../../../../components/table/data-table"
+import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
+import { PlaceholderCell } from "../../../../../../components/table/table-cells/common/placeholder-cell"
+import { ProductCell } from "../../../../../../components/table/table-cells/product/product-cell"
+import { useDataTable } from "../../../../../../hooks/use-data-table"
+import { ExistingItem } from "../types"
 
 type AddVariantDrawerProps = {
   onSave: (items: ExistingItem[]) => void

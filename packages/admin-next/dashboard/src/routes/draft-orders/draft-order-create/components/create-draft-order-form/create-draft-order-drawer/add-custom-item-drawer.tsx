@@ -2,9 +2,9 @@ import { Button, CurrencyInput, Hint, Input, Label } from "@medusajs/ui"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import { SplitView } from "../../../../components/layout/split-view"
-import { CustomItemSchema } from "./constants"
-import { CustomItem } from "./types"
+import { SplitView } from "../../../../../../components/layout/split-view"
+import { CustomItemSchema } from "../constants"
+import { CustomItem } from "../types"
 
 type AddCustomItemDrawerProps = {
   onSave: (item: CustomItem) => void

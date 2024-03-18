@@ -36,3 +36,20 @@ export const ShippingMethodSchema = z.object({
   price: z.number(),
   custom_price: z.number().optional(),
 })
+
+export const CreateDraftOrderSchema = z.object({
+  email: z.string().email(),
+  region_id: z.string().min(1),
+  customer_id: z.string().optional(),
+  shipping_address: AddressPayload,
+  billing_address: AddressPayload.nullable(),
+  existing_items: z.array(ExistingItemSchema).optional(),
+  custom_items: z.array(CustomItemSchema).optional(),
+  shipping_methods: z.array(ShippingMethodSchema).optional(),
+})
+
+export enum View {
+  EXISTING_ITEMS = "existing_items",
+  CUSTOM_ITEMS = "custom_items",
+  SHIPPING_METHODS = "shipping_methods",
+}
