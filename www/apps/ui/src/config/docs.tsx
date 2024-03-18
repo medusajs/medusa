@@ -1,5 +1,7 @@
 import { ArrowUpRightOnBox } from "@medusajs/icons"
-import { NavbarLinkProps, SidebarSectionItemsType } from "docs-ui"
+import { NavbarLinkProps, getNavbarItems, mobileSidebarItems } from "docs-ui"
+import { SidebarSectionItemsType } from "types"
+import { siteConfig } from "./site"
 
 type DocsConfig = {
   mainNav: NavbarLinkProps[]
@@ -7,39 +9,10 @@ type DocsConfig = {
 }
 
 export const docsConfig: DocsConfig = {
-  mainNav: [
-    {
-      label: "Docs",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `${process.env.NEXT_PUBLIC_DOCS_URL}`,
-    },
-    {
-      label: "User Guide",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `${process.env.NEXT_PUBLIC_DOCS_URL}/user-guide`,
-    },
-    {
-      label: "Store API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/store`,
-    },
-    {
-      label: "Admin API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/admin`,
-    },
-    {
-      label: "UI",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `${process.env.NEXT_PUBLIC_DOCS_URL}/ui`,
-      activeValuePattern: new RegExp("/ui"),
-    },
-  ],
+  mainNav: getNavbarItems({
+    basePath: siteConfig.baseUrl,
+    activePath: process.env.NEXT_PUBLIC_BASE_PATH || "/ui",
+  }),
   sidebar: {
     top: [
       {
@@ -311,32 +284,6 @@ export const docsConfig: DocsConfig = {
         ],
       },
     ],
-    mobile: [
-      {
-        title: "Docs",
-        path: `${process.env.NEXT_PUBLIC_DOCS_URL}`,
-        isPathHref: true,
-      },
-      {
-        title: "User Guide",
-        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/user-guide`,
-        isPathHref: true,
-      },
-      {
-        title: "Store API",
-        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/store`,
-        isPathHref: true,
-      },
-      {
-        title: "Admin API",
-        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/admin`,
-        isPathHref: true,
-      },
-      {
-        title: "UI",
-        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/ui`,
-        isPathHref: true,
-      },
-    ],
+    mobile: mobileSidebarItems,
   },
 }

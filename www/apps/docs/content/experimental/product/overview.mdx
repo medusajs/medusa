@@ -3,13 +3,13 @@ import Icons from '@theme/Icon'
 
 # Product Module Overview
 
-The Product module is the `@medusajs/product` NPM package that provides product-related features in your Medusa and Node.js applications. It can be used to store products with variants, organize them into categories and collections, and more.
+the Product Module is the `@medusajs/product` NPM package that provides product-related features in your Medusa and Node.js applications. It can be used to store products with variants, organize them into categories and collections, and more.
 
 ## Features
 
 ### Products Management
 
-With the Product module, you can store products and manage them through the main interface methods. Products can have custom options, such as color or size, and each variant in the product sets the value for these options.
+With the Product Module, you can store products and manage them through the main interface methods. Products can have custom options, such as color or size, and each variant in the product sets the value for these options.
 
 ```ts
 const products = await productService.create([
@@ -36,7 +36,7 @@ const products = await productService.create([
 
 ### Product Organizations
 
-The Product module provides different entities that can be used to organize products, including categories, collections, tags, and more.
+the Product Module provides different entities that can be used to organize products, including categories, collections, tags, and more.
 
 ```ts
 const category = await productService.createCategory({
@@ -61,7 +61,7 @@ const products = await productService.update([
 
 The Product Module can be used in many use cases, including:
 
-- Medusa Backend: The Medusa backend uses the product module to implement some product features. However, it's guarded by the [experimental feature flag](../index.md#enabling-experimental-features). If you want to use the product module in your backend's customizations, follow [this installation guide](./install-medusa.mdx).
+- Medusa Backend: The Medusa backend uses the Product Module to implement some product features. However, it's guarded by the [experimental feature flag](../index.md#enabling-experimental-features). If you want to use the Product Module in your backend's customizations, follow [this installation guide](./install-medusa.mdx).
 - Serverless Application: Use the Product Module in a serverless application, such as a Next.js application, without having to manage a fully-fledged ecommerce system. You can use it by [installing it in your Node.js project as an NPM package](./install-nodejs.md).
 - Node.js Application: Use the Product Module in any Node.js application. Follow [this guide](./install-nodejs.md) to learn how to install it.
 
