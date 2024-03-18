@@ -105,14 +105,13 @@ export class AdminPostPriceListsPriceListReq {
   rules?: Record<string, string[]>
 }
 
-export class AdminPostPriceListsPriceListPricesReq {
+export class AdminPostPriceListsPriceListPricesBatchAddReq {
   @IsOptional()
   @IsArray()
   prices: AdminPriceListPricesCreateReq[]
 }
 
-export class AdminDeletePriceListsPriceListPricesReq {
-  @IsOptional()
+export class AdminPostPriceListsPriceListPricesBatchRemoveReq {
   @IsArray()
   @IsString({ each: true })
   ids: string[]
