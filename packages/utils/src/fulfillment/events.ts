@@ -12,10 +12,10 @@ const eventBaseNames: [
   "fulfillmentSet",
   "serviceZone",
   "geoZone",
-  `shippingOption`,
-  `shippingProfile`,
-  `shippingOptionRule`,
-  `fulfillment`,
+  "shippingOption",
+  "shippingProfile",
+  "shippingOptionRule",
+  "fulfillment",
 ]
 
 export const FulfillmentEvents = buildEventNamesFromEntityName(eventBaseNames)
