@@ -84,6 +84,10 @@ export const CreateDraftOrderCustomerDetails = () => {
       throw json({ message: "Customer not found" }, 400)
     }
 
+    form.setValue("email", customer.email, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
     setCustomer(customer)
   }
 

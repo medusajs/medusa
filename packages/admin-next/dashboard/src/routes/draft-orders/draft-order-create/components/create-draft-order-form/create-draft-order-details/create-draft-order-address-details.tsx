@@ -16,7 +16,7 @@ export const CreateDraftOrderAddressDetails = () => {
     useCreateDraftOrder()
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-8">
       <div className="flex flex-col gap-y-4">
         <Heading level="h2">{t("fields.address")}</Heading>
         <Text size="small" leading="compact" weight="plus">

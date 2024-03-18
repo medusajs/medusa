@@ -8,23 +8,19 @@ import {
 import { useAdminVariants } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+
 import { SplitView } from "../../../../../../components/layout/split-view"
 import { DataTable } from "../../../../../../components/table/data-table"
 import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
 import { PlaceholderCell } from "../../../../../../components/table/table-cells/common/placeholder-cell"
 import { ProductCell } from "../../../../../../components/table/table-cells/product/product-cell"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
+import { useProductVariantTableQuery } from "../../../../../products/product-detail/components/product-variant-section/use-variant-table-query"
+import { useCreateDraftOrder } from "../hooks"
 import { ExistingItem } from "../types"
 
-type AddVariantDrawerProps = {
-  onSave: (items: ExistingItem[]) => void
-  items?: ExistingItem[]
-  regionId?: string
-  customerId?: string
-  currencyCode?: string
-}
-
 const PAGE_SIZE = 50
+const PREFIX = "av"
 
 const initRowState = (items: ExistingItem[]): RowSelectionState => {
   return items.reduce((acc, curr) => {
@@ -33,23 +29,27 @@ const initRowState = (items: ExistingItem[]): RowSelectionState => {
   }, {} as RowSelectionState)
 }
 
-export const AddVariantDrawer = ({
-  onSave,
-  items = [],
-  regionId,
-  customerId,
-  currencyCode,
-}: AddVariantDrawerProps) => {
+export const AddVariantDrawer = () => {
+  const { region, customer, variants: existing } = useCreateDraftOrder()
+  const { currency_code } = region || {}
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
-    initRowState(items)
+    initRowState(existing.items)
   )
-  const [intermediate, setIntermediate] = useState<ExistingItem[]>(items)
+  const [intermediate, setIntermediate] = useState<ExistingItem[]>(
+    existing.items
+  )
 
   const { t } = useTranslation()
 
+  const { searchParams, raw } = useProductVariantTableQuery({
+    pageSize: PAGE_SIZE,
+    prefix: PREFIX,
+  })
   const { variants, count, isLoading, isError, error } = useAdminVariants({
-    region_id: regionId,
-    customer_id: customerId,
+    region_id: region?.id,
+    customer_id: customer?.id,
+    ...searchParams,
   })
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
@@ -85,7 +85,7 @@ export const AddVariantDrawer = ({
   }
 
   const handleSave = () => {
-    onSave(intermediate)
+    existing.update(intermediate)
   }
 
   const columns = useVariantTableColumns()
@@ -103,8 +103,9 @@ export const AddVariantDrawer = ({
       updater,
     },
     meta: {
-      currencyCode,
+      currencyCode: currency_code,
     },
+    prefix: PREFIX,
   })
 
   if (isError) {
@@ -118,11 +119,12 @@ export const AddVariantDrawer = ({
         columns={columns}
         count={count}
         isLoading={isLoading}
-        queryObject={{}}
+        queryObject={raw}
         pageSize={PAGE_SIZE}
         pagination
         search
         layout="fill"
+        prefix={PREFIX}
       />
       <div className="flex items-center justify-end gap-x-2 border-t p-4">
         <SplitView.Close type="button" asChild>
@@ -131,7 +133,7 @@ export const AddVariantDrawer = ({
           </Button>
         </SplitView.Close>
         <Button size="small" type="button" onClick={handleSave}>
-          {t("actions.save")}
+          {t("actions.add")}
         </Button>
       </div>
     </div>

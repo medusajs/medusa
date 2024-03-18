@@ -99,7 +99,7 @@ export const CreateDraftOrderItemsDetails = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex flex-col gap-y-3 p-3">
+                        <fieldset className="grid grid-cols-1 gap-3 p-3 md:grid-cols-2">
                           <Form.Field
                             control={form.control}
                             name={`${name}.${index}.quantity`}
@@ -147,7 +147,7 @@ export const CreateDraftOrderItemsDetails = () => {
                               )
                             }}
                           />
-                        </div>
+                        </fieldset>
                       </div>
                     )
                   })
@@ -183,7 +183,7 @@ export const CreateDraftOrderItemsDetails = () => {
           </ConditionalTooltip>
         </div>
       </fieldset>
-      <fieldset className="flex flex-col gap-y-4">
+      <div className="md:grid-grid-cols-2 grid grid-cols-1 gap-3 p-3">
         <Form.Field
           control={form.control}
           name="custom_items"
@@ -234,7 +234,7 @@ export const CreateDraftOrderItemsDetails = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex flex-col gap-y-3 p-3">
+                        <fieldset className="grid grid-cols-1 gap-3 p-3 md:grid-cols-2">
                           <Form.Field
                             control={form.control}
                             name={`${name}.${index}.quantity`}
@@ -276,7 +276,7 @@ export const CreateDraftOrderItemsDetails = () => {
                               )
                             }}
                           />
-                        </div>
+                        </fieldset>
                       </div>
                     )
                   })
@@ -311,7 +311,7 @@ export const CreateDraftOrderItemsDetails = () => {
             </Button>
           </ConditionalTooltip>
         </div>
-      </fieldset>
+      </div>
     </div>
   )
 }

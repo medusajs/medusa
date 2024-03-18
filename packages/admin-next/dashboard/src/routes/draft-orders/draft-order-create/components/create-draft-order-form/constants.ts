@@ -33,8 +33,8 @@ export const CustomItemSchema = z.object({
 export const ShippingMethodSchema = z.object({
   option_id: z.string().min(1),
   option_title: z.string(),
-  price: z.number(),
-  custom_price: z.number().optional(),
+  amount: z.union([z.number(), z.string()]).optional(),
+  custom_amount: z.union([z.number(), z.string()]).optional(),
 })
 
 export const CreateDraftOrderSchema = z.object({
@@ -45,11 +45,11 @@ export const CreateDraftOrderSchema = z.object({
   billing_address: AddressPayload.nullable(),
   existing_items: z.array(ExistingItemSchema).optional(),
   custom_items: z.array(CustomItemSchema).optional(),
-  shipping_methods: z.array(ShippingMethodSchema).optional(),
+  shipping_method: ShippingMethodSchema,
+  notification_order: z.boolean().optional(),
 })
 
 export enum View {
   EXISTING_ITEMS = "existing_items",
   CUSTOM_ITEMS = "custom_items",
-  SHIPPING_METHODS = "shipping_methods",
 }

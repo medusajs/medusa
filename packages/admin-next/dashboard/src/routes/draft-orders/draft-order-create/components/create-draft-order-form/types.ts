@@ -29,6 +29,7 @@ export type CreateDraftOrderContextValue = {
       "ei_id"
     >[]
     remove: (index: number) => void
+    update: (items: ExistingItem[]) => void
   }
   custom: {
     items: FieldArrayWithId<
@@ -37,6 +38,7 @@ export type CreateDraftOrderContextValue = {
       "ci_id"
     >[]
     remove: (index: number) => void
+    update: (items: CustomItem) => void
   }
   onOpenDrawer: (view: View) => void
 }

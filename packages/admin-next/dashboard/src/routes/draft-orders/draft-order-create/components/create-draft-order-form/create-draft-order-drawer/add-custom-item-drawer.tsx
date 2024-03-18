@@ -4,19 +4,16 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { SplitView } from "../../../../../../components/layout/split-view"
 import { CustomItemSchema } from "../constants"
+import { useCreateDraftOrder } from "../hooks"
 import { CustomItem } from "../types"
 
-type AddCustomItemDrawerProps = {
-  onSave: (item: CustomItem) => void
-  currencyCode: string
-  nativeSymbol: string
-}
+export const AddCustomItemDrawer = () => {
+  const { region, custom } = useCreateDraftOrder()
+  const { currency } = region || {}
 
-export const AddCustomItemDrawer = ({
-  onSave,
-  currencyCode,
-  nativeSymbol,
-}: AddCustomItemDrawerProps) => {
+  const currencyCode = currency?.code || ""
+  const nativeSymbol = currency?.symbol_native || ""
+
   const { t } = useTranslation()
 
   const [item, setItem] = useState<Partial<CustomItem>>({
@@ -37,7 +34,7 @@ export const AddCustomItemDrawer = ({
       return
     }
 
-    onSave(parsed.data)
+    custom.update(parsed.data)
   }
 
   return (
@@ -99,7 +96,7 @@ export const AddCustomItemDrawer = ({
           </Button>
         </SplitView.Close>
         <Button size="small" type="button" onClick={handleSave}>
-          {t("actions.save")}
+          {t("actions.add")}
         </Button>
       </div>
     </div>

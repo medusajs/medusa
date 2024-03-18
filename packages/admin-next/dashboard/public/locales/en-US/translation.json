@@ -58,7 +58,8 @@
     "edit": "Edit",
     "download": "Download",
     "clearAll": "Clear all",
-    "apply": "Apply"
+    "apply": "Apply",
+    "add": "Add"
   },
   "filters": {
     "date": {
@@ -319,10 +320,12 @@
       "noExistingItemsAddedLabel": "No existing items added yet",
       "chooseRegionTooltip": "Choose a region first",
       "useExistingCustomerLabel": "Use existing customer",
-      "shippingMethodsLabel": "Shipping methods",
-      "shippingMethodsHint": "Choose the shipping methods for the draft order.",
       "addShippingMethodsAction": "Add shipping methods",
-      "unitPriceOverrideLabel": "Unit price override"
+      "unitPriceOverrideLabel": "Unit price override",
+      "shippingOptionLabel": "Shipping option",
+      "shippingOptionHint": "Choose the shipping option for the draft order.",
+      "shippingPriceOverrideLabel": "Shipping price override",
+      "shippingPriceOverrideHint": "Override the shipping price for the draft order."
     }
   },
   "discounts": {
@@ -824,6 +827,7 @@
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
+    "details": "Details",
     "label": "Label",
     "rate": "Rate",
     "requiresShipping": "Requires shipping",
