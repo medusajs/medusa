@@ -38,7 +38,13 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/sales-channels",
-    middlewares: [transformBody(AdminPostSalesChannelsReq)],
+    middlewares: [
+      transformBody(AdminPostSalesChannelsReq),
+      transformQuery(
+        AdminGetSalesChannelsSalesChannelParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],

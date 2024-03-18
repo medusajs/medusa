@@ -9,7 +9,7 @@ export const defaultAdminSalesChannelFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminSalesChannelFields,
+  defaults: defaultAdminSalesChannelFields,
   isList: false,
 }
 

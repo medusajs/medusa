@@ -8,7 +8,6 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { defaultAdminSalesChannelFields } from "./query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -18,15 +17,13 @@ export const GET = async (
 
   const variables = {
     filters: req.filterableFields,
-    order: req.listConfig.order,
-    skip: req.listConfig.skip,
-    take: req.listConfig.take,
+    ...req.remoteQueryConfig.pagination,
   }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "sales_channels",
     variables,
-    fields: defaultAdminSalesChannelFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: sales_channels, metadata } = await remoteQuery(queryObject)
@@ -59,7 +56,7 @@ export const POST = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "sales_channels",
     variables: { id: req.params.id },
-    fields: defaultAdminSalesChannelFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [sales_channel] = await remoteQuery(queryObject)
