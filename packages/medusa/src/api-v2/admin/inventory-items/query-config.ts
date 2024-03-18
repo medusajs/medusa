@@ -4,19 +4,18 @@ export const defaultAdminInventoryItemRelations = []
 export const allowedAdminInventoryItemRelations = []
 
 // eslint-disable-next-line max-len
-export const defaultAdminLocationLevelFields: (keyof InventoryNext.InventoryLevelDTO)[] =
-  [
-    "id",
-    "inventory_item_id",
-    "location_id",
-    "stocked_quantity",
-    "reserved_quantity",
-    "incoming_quantity",
-    "available_quantity",
-    "metadata",
-    "created_at",
-    "updated_at",
-  ]
+export const defaultAdminLocationLevelFields = [
+  "id",
+  "inventory_item_id",
+  "location_id",
+  "stocked_quantity",
+  "reserved_quantity",
+  "incoming_quantity",
+  "available_quantity",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
 
 export const defaultAdminInventoryItemFields = [
   "id",
