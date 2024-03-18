@@ -239,6 +239,7 @@
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "summary": {
+      "requestReturn": "Request return",
       "allocateItems": "Allocate items",
       "editItems": "Edit items"
     },
