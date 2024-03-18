@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # TotalsService
 
@@ -14,13 +14,13 @@ A service that calculates total and subtotals for orders, carts etc..
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`TotalsServiceProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new TotalsService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`TotalsServiceProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new TotalsService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="TotalsService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="TotalsService"/>
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -40,21 +40,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -64,15 +64,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### getTotal
 
@@ -80,11 +80,11 @@ Calculates total of a given cart or order.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"object to calculate total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`GetTotalsOptions`","description":"options to calculate by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"object to calculate total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`GetTotalsOptions`","description":"options to calculate by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getTotal"/>
 
 ### getPaidTotal
 
@@ -92,11 +92,11 @@ Gets the total payments made on an order
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to calculate paid amount for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaidTotal"/>
+<TypeList types={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to calculate paid amount for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaidTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total paid amount","expandable":false,"children":[]}]}  sectionTitle="getPaidTotal"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total paid amount","expandable":false,"children":[]}]}  sectionTitle="getPaidTotal"/>
 
 ### getSwapTotal
 
@@ -105,11 +105,11 @@ difference.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to calculate swap total for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getSwapTotal"/>
+<TypeList types={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to calculate swap total for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getSwapTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the swap total","expandable":false,"children":[]}]}  sectionTitle="getSwapTotal"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the swap total","expandable":false,"children":[]}]}  sectionTitle="getSwapTotal"/>
 
 ### getShippingMethodTotals
 
@@ -118,11 +118,11 @@ already provided.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to get totals breakdown for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the breakdown","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`GetShippingMethodTotalsOptions`","description":"options for what should be included","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
+<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to get totals breakdown for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the breakdown","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`GetShippingMethodTotalsOptions`","description":"options for what should be included","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"An object that breaks down the totals for the shipping method","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"An object that breaks down the totals for the shipping method","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
 
 ### getSubtotal
 
@@ -130,11 +130,11 @@ Calculates subtotal of a given cart or order.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`SubtotalOptions`","description":"options","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getSubtotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`SubtotalOptions`","description":"options","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getSubtotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getSubtotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getSubtotal"/>
 
 ### getShippingTotal
 
@@ -142,11 +142,11 @@ Calculates shipping total
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"shipping total","expandable":false,"children":[]}]}  sectionTitle="getShippingTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"shipping total","expandable":false,"children":[]}]}  sectionTitle="getShippingTotal"/>
 
 ### getTaxTotal
 
@@ -155,11 +155,11 @@ Currently based on the Danish tax system
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate tax total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"forceTaxes","type":"`boolean`","description":"whether taxes should be calculated regardless\n  of region settings","optional":false,"defaultValue":"false","expandable":false,"children":[]}]}  sectionTitle="getTaxTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"cart or order to calculate tax total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"forceTaxes","type":"`boolean`","description":"whether taxes should be calculated regardless\n  of region settings","optional":false,"defaultValue":"false","expandable":false,"children":[]}]}  sectionTitle="getTaxTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| number&#62;","optional":false,"defaultValue":"","description":"tax total","expandable":false,"children":[]}]}  sectionTitle="getTaxTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;null \\| number&#62;","optional":false,"defaultValue":"","description":"tax total","expandable":false,"children":[]}]}  sectionTitle="getTaxTotal"/>
 
 ### getAllocationMap
 
@@ -169,11 +169,11 @@ applies to a specific line item.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"orderOrCart","type":"`object`","description":"the order or cart to get an allocation map for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`AllocationMapOptions`","description":"controls what should be included in allocation map","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"orderOrCart.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.swaps","type":"[Swap](../../entities/classes/entities.Swap.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.claims","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
+<TypeList types={[{"name":"orderOrCart","type":"`object`","description":"the order or cart to get an allocation map for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`AllocationMapOptions`","description":"controls what should be included in allocation map","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"orderOrCart.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.swaps","type":"[Swap](../../entities/classes/entities.Swap.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"orderOrCart.claims","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;","optional":false,"defaultValue":"","description":"the allocation map for the line items in the cart or order.","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;","optional":false,"defaultValue":"","description":"the allocation map for the line items in the cart or order.","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
 
 ### getRefundedTotal
 
@@ -181,11 +181,11 @@ Gets the total refund amount for an order.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to get total refund amount for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getRefundedTotal"/>
+<TypeList types={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"the order to get total refund amount for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getRefundedTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total refunded amount for an order.","expandable":false,"children":[]}]}  sectionTitle="getRefundedTotal"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total refunded amount for an order.","expandable":false,"children":[]}]}  sectionTitle="getRefundedTotal"/>
 
 ### getLineItemRefund
 
@@ -193,11 +193,11 @@ The amount that can be refunded for a given line item.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate the refund amount for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
+<TypeList types={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate the refund amount for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item refund amount.","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item refund amount.","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
 
 ### getRefundTotal
 
@@ -207,11 +207,11 @@ apply the discount again before refunding them.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the line items to calculate refund total for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getRefundTotal"/>
+<TypeList types={[{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"cart or order to calculate subtotal for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the line items to calculate refund total for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getRefundTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getRefundTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]}  sectionTitle="getRefundTotal"/>
 
 ### calculateDiscount\_
 
@@ -219,11 +219,11 @@ Calculates either fixed or percentage discount of a variant
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"id of line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant","type":"`string`","description":"id of variant in line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variantPrice","type":"`number`","description":"price of the variant based on region","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"discount value","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountType","type":"[DiscountRuleType](../../entities/enums/entities.DiscountRuleType.mdx)","description":"the type of discount (fixed or percentage)","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="calculateDiscount_"/>
+<TypeList types={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"id of line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant","type":"`string`","description":"id of variant in line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variantPrice","type":"`number`","description":"price of the variant based on region","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"discount value","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountType","type":"[DiscountRuleType](../../entities/enums/entities.DiscountRuleType.mdx)","description":"the type of discount (fixed or percentage)","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="calculateDiscount_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"LineDiscount","type":"`LineDiscount`","optional":false,"defaultValue":"","description":"triples of lineitem, variant and applied discount","expandable":false,"children":[]}]}  sectionTitle="calculateDiscount_"/>
+<TypeList types={[{"name":"LineDiscount","type":"`LineDiscount`","optional":false,"defaultValue":"","description":"triples of lineitem, variant and applied discount","expandable":false,"children":[]}]}  sectionTitle="calculateDiscount_"/>
 
 #### Deprecated
 
@@ -239,31 +239,31 @@ alongside the variant on which the discount was applied.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"the discount to which we do the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to calculate discounts for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getAllocationItemDiscounts"/>
+<TypeList types={[{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"the discount to which we do the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to calculate discounts for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getAllocationItemDiscounts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"LineDiscount[]","type":"`LineDiscount`[]","optional":false,"defaultValue":"","description":"array of triples of lineitem, variant and applied discount","expandable":false,"children":[]}]}  sectionTitle="getAllocationItemDiscounts"/>
+<TypeList types={[{"name":"LineDiscount[]","type":"`LineDiscount`[]","optional":false,"defaultValue":"","description":"array of triples of lineitem, variant and applied discount","expandable":false,"children":[]}]}  sectionTitle="getAllocationItemDiscounts"/>
 
 ### getLineItemDiscountAdjustment
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemDiscountAdjustment"/>
+<TypeList types={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemDiscountAdjustment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemDiscountAdjustment"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemDiscountAdjustment"/>
 
 ### getLineItemAdjustmentsTotal
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemAdjustmentsTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemAdjustmentsTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemAdjustmentsTotal"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemAdjustmentsTotal"/>
 
 ### getLineDiscounts
 
@@ -271,11 +271,11 @@ Returns the discount amount allocated to the line items of an order.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"`object`","description":"the cart or order to get line discount allocations for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.swaps","type":"[Swap](../../entities/classes/entities.Swap.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.claims","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"the discount to use as context for the calculation","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineDiscounts"/>
+<TypeList types={[{"name":"cartOrOrder","type":"`object`","description":"the cart or order to get line discount allocations for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.swaps","type":"[Swap](../../entities/classes/entities.Swap.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder.claims","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discount","type":"[Discount](../../entities/classes/entities.Discount.mdx)","description":"the discount to use as context for the calculation","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineDiscounts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"LineDiscountAmount[]","type":"`LineDiscountAmount`[]","optional":false,"defaultValue":"","description":"the allocations that the discount has on the items in the cart or\n  order","expandable":false,"children":[]}]}  sectionTitle="getLineDiscounts"/>
+<TypeList types={[{"name":"LineDiscountAmount[]","type":"`LineDiscountAmount`[]","optional":false,"defaultValue":"","description":"the allocations that the discount has on the items in the cart or\n  order","expandable":false,"children":[]}]}  sectionTitle="getLineDiscounts"/>
 
 ### getLineItemTotals
 
@@ -285,11 +285,11 @@ applied to a line item and the amount of tax applied to a line item.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate totals for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`LineItemTotalsOptions`","description":"the options to evaluate the line item totals for","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
+<TypeList types={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate totals for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`LineItemTotalsOptions`","description":"the options to evaluate the line item totals for","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"the breakdown of the line item totals","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"the breakdown of the line item totals","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
 
 ### getLineItemTotal
 
@@ -298,11 +298,11 @@ taxes into account. This can be controlled through the options.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate a total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`GetLineItemTotalOptions`","description":"the options to use for the calculation","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotal"/>
+<TypeList types={[{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to calculate a total for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to use as context for the calculation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`GetLineItemTotalOptions`","description":"the options to use for the calculation","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item total","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item total","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotal"/>
 
 ### getGiftCardableAmount
 
@@ -311,11 +311,11 @@ cards are taxable this amount should exclude taxes.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to get gift card amount for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to get gift card amount for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
 
 ### getGiftCardTotal
 
@@ -323,11 +323,11 @@ Gets the gift card amount on a cart or order.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to get gift card amount for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"opts.gift_cardable","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to get gift card amount for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"opts","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"opts.gift_cardable","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotal"/>
 
 ### getDiscountTotal
 
@@ -336,11 +336,11 @@ discount types. If discounts aren't present or invalid returns 0.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to calculate discounts for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getDiscountTotal"/>
+<TypeList types={[{"name":"cartOrOrder","type":"[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or order to calculate discounts for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getDiscountTotal"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the total discounts amount","expandable":false,"children":[]}]}  sectionTitle="getDiscountTotal"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the total discounts amount","expandable":false,"children":[]}]}  sectionTitle="getDiscountTotal"/>
 
 ### getCalculationContext
 
@@ -348,11 +348,11 @@ Prepares the calculation context for a tax total calculation.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"calculationContextData","type":"`CalculationContextData`","description":"the calculationContextData to get the calculation context for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`CalculationContextOptions`","description":"options to gather context by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
+<TypeList types={[{"name":"calculationContextData","type":"`CalculationContextData`","description":"the calculationContextData to get the calculation context for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`CalculationContextOptions`","description":"options to gather context by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;","optional":false,"defaultValue":"","description":"the tax calculation context","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;","optional":false,"defaultValue":"","description":"the tax calculation context","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
 
 ### rounded
 
@@ -360,8 +360,8 @@ Rounds a number using Math.round.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"value","type":"`number`","description":"the value to round","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="rounded"/>
+<TypeList types={[{"name":"value","type":"`number`","description":"the value to round","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="rounded"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the rounded value","expandable":false,"children":[]}]}  sectionTitle="rounded"/>
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the rounded value","expandable":false,"children":[]}]}  sectionTitle="rounded"/>
