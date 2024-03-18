@@ -1,3 +1,5 @@
+import { DAL } from "@medusajs/types"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,25 +11,16 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-
 import PriceSet from "./price-set"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
-type OptionalFields =
-  | "id"
-  | "is_dynamic"
-  | "priority"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
-type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceRule {
-  [OptionalProps]: OptionalFields | OptionalRelations
+  [OptionalProps]?: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -53,7 +46,7 @@ export default class PriceRule {
   value: string
 
   @Property({ columnType: "integer", default: 0 })
-  priority: number
+  priority: number = 0
 
   @ManyToOne({
     onDelete: "cascade",
@@ -81,7 +74,7 @@ export default class PriceRule {
 
   @Index({ name: "IDX_price_rule_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   beforeCreate() {

@@ -21,7 +21,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "amount": {
@@ -30,7 +30,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "decimal"
         },
         "min_quantity": {
@@ -273,11 +273,52 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_set",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_deleted_at",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "price_set_pkey",
           "columnNames": [
@@ -477,7 +518,8 @@
             "id"
           ],
           "referencedTableName": "public.price_list",
-          "deleteRule": "cascade"
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
         }
       }
     },
@@ -541,6 +583,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "rule_type",
@@ -552,6 +604,15 @@
           ],
           "composite": false,
           "keyName": "IDX_rule_type_rule_attribute",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_rule_type_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -596,6 +657,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_set_rule_type",
@@ -616,6 +709,24 @@
           ],
           "composite": false,
           "keyName": "IDX_price_set_rule_type_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_rule_type_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_price_set_rule_type_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
           "primary": false,
           "unique": false
         },
@@ -695,6 +806,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_set_money_amount_rules",
@@ -715,6 +858,15 @@
           ],
           "composite": false,
           "keyName": "IDX_price_set_money_amount_rules_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_rules_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -958,6 +1110,38 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
         "rule_type_id": {
           "name": "rule_type_id",
           "type": "text",
@@ -982,10 +1166,28 @@
         },
         {
           "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_list_rule_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "rule_type_id"
           ],
           "composite": false,
           "keyName": "IDX_price_list_rule_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_price_list_rule_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
           "primary": false,
           "unique": false
         },
@@ -1065,6 +1267,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_list_rule_value",
@@ -1076,6 +1310,15 @@
           ],
           "composite": false,
           "keyName": "IDX_price_list_rule_price_list_rule_value_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_list_rule_value_deleted_at",
           "primary": false,
           "unique": false
         },

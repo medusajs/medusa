@@ -251,7 +251,11 @@ export default class PricingModuleService<
     const dbPriceSets = await this.list(
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
-        relations: ["rule_types", "money_amounts", "price_rules"],
+        relations: [
+          "rule_types",
+          "price_set_money_amounts.money_amount",
+          "price_rules",
+        ],
       },
       sharedContext
     )
@@ -530,7 +534,7 @@ export default class PricingModuleService<
 
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["money_amounts"] },
+      { relations: ["price_set_money_amounts"] },
       sharedContext
     )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
   }

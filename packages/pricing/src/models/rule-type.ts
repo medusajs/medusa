@@ -1,8 +1,10 @@
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
+  Index,
   ManyToMany,
   OnInit,
   OptionalProps,
@@ -14,6 +16,7 @@ import PriceSet from "./price-set"
 type OptionalFields = "default_priority"
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class RuleType {
   [OptionalProps]?: OptionalFields
 
@@ -46,6 +49,10 @@ class RuleType {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Index({ name: "IDX_rule_type_deleted_at" })
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -3,8 +3,13 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20231101232834 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table "price_list_rule_value" ("id" text not null, "value" text not null, "price_list_rule_id" text not null, constraint "price_list_rule_value_pkey" primary key ("id"));'
+      'create table "price_list_rule_value" ("id" text not null, "value" text not null, "price_list_rule_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_list_rule_value_pkey" primary key ("id"));'
     )
+
+    this.addSql(
+      'create index "IDX_price_list_rule_value_deleted_at" on "price_list_rule_value" ("deleted_at");'
+    )
+
     this.addSql(
       'create index "IDX_price_list_rule_price_list_rule_value_id" on "price_list_rule_value" ("price_list_rule_id");'
     )
@@ -16,14 +21,6 @@ export class Migration20231101232834 extends Migration {
     this.addSql(
       `ALTER TABLE price_list
           ADD COLUMN IF NOT EXISTS rules_count integer not null default 0`
-    )
-
-    this.addSql(
-      'alter table "price_set_money_amount" drop constraint "price_set_money_amount_price_list_id_foreign";'
-    )
-
-    this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
@@ -63,6 +60,8 @@ export class Migration20231101232834 extends Migration {
   }
 
   async down(): Promise<void> {
+    this.addSql('drop index if exists "IDX_price_list_rule_value_deleted_at";')
+
     this.addSql('drop table if exists "price_list_rule_value" cascade;')
 
     this.addSql(`ALTER TABLE price_list DROP COLUMN IF EXISTS rules_count`)
@@ -72,14 +71,6 @@ export class Migration20231101232834 extends Migration {
     this.addSql('alter table "price_list" drop column if exists "description";')
 
     this.addSql('alter table "price_list" drop column if exists "type";')
-
-    this.addSql(
-      'alter table "price_set_money_amount" drop constraint "price_set_money_amount_price_list_id_foreign";'
-    )
-
-    this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete set null;'
-    )
 
     this.addSql('drop index if exists "IDX_price_list_deleted_at";')
 

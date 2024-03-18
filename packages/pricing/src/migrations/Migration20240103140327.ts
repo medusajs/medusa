@@ -3,15 +3,9 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20240103140327 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'alter table "price_set_money_amount" drop constraint "price_set_money_amount_price_list_id_foreign";'
-    )
-
-    this.addSql(
       'alter table "price_set_money_amount" add column "created_at" timestamptz not null default now(), add column "updated_at" timestamptz not null default now(), add column "deleted_at" timestamptz null;'
     )
-    this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on delete cascade;'
-    )
+
     this.addSql(
       'create index "IDX_price_set_money_amount_deleted_at" on "price_set_money_amount" ("deleted_at");'
     )
@@ -26,10 +20,6 @@ export class Migration20240103140327 extends Migration {
   }
 
   async down(): Promise<void> {
-    this.addSql(
-      'alter table "price_set_money_amount" drop constraint "price_set_money_amount_price_list_id_foreign";'
-    )
-
     this.addSql('drop index "IDX_price_set_money_amount_deleted_at";')
     this.addSql(
       'alter table "price_set_money_amount" drop column "created_at";'
@@ -40,10 +30,6 @@ export class Migration20240103140327 extends Migration {
     this.addSql(
       'alter table "price_set_money_amount" drop column "deleted_at";'
     )
-    this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete cascade;'
-    )
-
     this.addSql(
       'alter table "price_rule" add column "is_dynamic" boolean not null default false;'
     )
