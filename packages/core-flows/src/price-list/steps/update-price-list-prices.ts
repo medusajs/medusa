@@ -15,6 +15,7 @@ export const updatePriceListPricesStep = createStep(
   async (stepInput: UpdatePriceListPriceWorkflowStepDTO, { container }) => {
     const { data = [], variant_price_map: variantPriceSetMap } = stepInput
     const priceListPricesToUpdate: UpdatePriceListPricesDTO[] = []
+    const priceIds: string[] = []
     const pricingModule = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )
@@ -28,6 +29,10 @@ export const updatePriceListPricesStep = createStep(
           ...price,
           price_set_id: variantPriceSetMap[price.variant_id!],
         })
+
+        if (price.id) {
+          priceIds.push(price.id)
+        }
       }
 
       priceListPricesToUpdate.push({
@@ -35,11 +40,6 @@ export const updatePriceListPricesStep = createStep(
         prices: pricesToUpdate,
       })
     }
-
-    const priceIds = priceListPricesToUpdate
-      .map((priceListData) => priceListData.prices.map((price) => price.id))
-      .flat(1)
-      .filter(Boolean)
 
     const existingPrices = priceIds.length
       ? await pricingModule.listPriceSetMoneyAmounts(
