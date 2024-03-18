@@ -56,6 +56,7 @@ export function getShippingMethodTotals(
   context: GetShippingMethodsTotalsContext
 ) {
   const amount = MathBN.convert(shippingMethod.amount)
+  const subtotal = MathBN.convert(shippingMethod.amount)
 
   const sumTaxRate = MathBN.sum(
     // @ts-ignore
@@ -66,12 +67,14 @@ export function getShippingMethodTotals(
   })
   const discountTaxTotal = MathBN.mult(discountTotal, sumTaxRate)
 
+  const total = MathBN.sub(amount, discountTotal)
+
   const totals: GetShippingMethodTotalOutput = {
     amount: new BigNumber(amount),
 
-    subtotal: new BigNumber(amount),
+    subtotal: new BigNumber(subtotal),
 
-    total: new BigNumber(amount),
+    total: new BigNumber(total),
     original_total: new BigNumber(amount),
 
     discount_total: new BigNumber(discountTotal),
@@ -83,9 +86,9 @@ export function getShippingMethodTotals(
 
   const taxLines = shippingMethod.tax_lines || []
 
-  const taxableAmountWithDiscount = MathBN.sub(amount, discountTotal)
-  const taxableAmount = amount
-
+  const taxableAmountWithDiscount = MathBN.sub(subtotal, discountTotal)
+  const taxableAmount = subtotal
+  
   const taxTotal = calculateTaxTotal({
     taxLines,
     includesTax: context.includeTax,
@@ -110,7 +113,7 @@ export function getShippingMethodTotals(
       shippingMethod.amount,
       totals.original_tax_total
     )
-    const total = MathBN.add(shippingMethod.amount, totals.tax_total)
+    const total = MathBN.add(totals.total, totals.tax_total)
     
     totals.total = new BigNumber(total)
     totals.original_total = new BigNumber(originalTotal)

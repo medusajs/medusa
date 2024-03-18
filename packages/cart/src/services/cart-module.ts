@@ -143,7 +143,6 @@ export default class CartModuleService<
       totalFields.includes(field)
     )
 
-    // If no total fields are requested, we return early
     if (shouldDecorate) {
       config = {
         ...config,
@@ -154,6 +153,8 @@ export default class CartModuleService<
           "shipping_methods.tax_lines",
           "shipping_methods.adjustments",
         ]),
+        // Remove total fields from select
+        select: config.select?.filter((field) => !totalFields.includes(field)),
       }
     }
 

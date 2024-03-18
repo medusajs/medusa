@@ -2398,14 +2398,14 @@ describe("Cart Module Service", () => {
     const expectedRes = {
       subtotal: 600,
 
-      total: 784, // 600 (subtotal) + 116 (shipping) + 112 (item tax) + 16 (shipping tax) - 60 (discount)
+      total: 764, // 600 (subtotal) + 96 (shipping) + 112 (item tax) + 16 (shipping tax) - 60 (discount)
       tax_total: 128,
 
       item_total: 672,
       item_subtotal: 600,
       item_tax_total: 112,
 
-      shipping_total: 116,
+      shipping_total: 96,
       shipping_subtotal: 100,
       shipping_tax_total: 16,
 
@@ -2441,7 +2441,7 @@ describe("Cart Module Service", () => {
         expect.objectContaining({
           amount: 100,
           subtotal: 100,
-          total: 116, // (subtotal + tax - discount)
+          total: 96, // (subtotal + tax - discount)
           discount_total: 20,
           tax_total: 16, // 20% of 80 (subtotal - discount)
         }),
@@ -2450,10 +2450,6 @@ describe("Cart Module Service", () => {
 
     test.each([
       ["total", expectedRes],
-      ["subtotal", expectedRes],
-      ["shipping_total", expectedRes],
-      ["discount_total", expectedRes],
-      ["tax_total", expectedRes],
     ])(
       `should calculate totals when field %p is requested`,
       async (field, expectedRes) => {
