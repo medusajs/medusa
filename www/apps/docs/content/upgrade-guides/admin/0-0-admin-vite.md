@@ -40,7 +40,7 @@ Previously, the Medusa Admin used the environment variables `GATSBY_MEDUSA_BACKE
 
 After the update to Vite, the environment variable name changed to `MEDUSA_BACKEND_URL`.
 
-The Medusa admin remains backward compatible, which means you can still use the same environment variables. However, it is advised to make the change to the new variable.
+The Medusa Admin remains backward compatible, which means you can still use the same environment variables. However, it is advised to make the change to the new variable.
 
 ### Actions Required
 
@@ -56,18 +56,18 @@ MEDUSA_BACKEND_URL=<YOUR_BACKEND_URL>
 
 Previously, the build output of the Medusa Admin was placed in the `dist` directory. After this update, the build output is placed in the `public` directory.
 
-For local usage and development, this shouldn’t have an effect. However, this is a breaking change if you deployed Medusa admin.
+For local usage and development, this shouldn’t have an effect. However, this is a breaking change if you deployed Medusa Admin.
 
 ### Actions Required
 
-If you deployed your Medusa admin, you must change the Publish directory in your hosting.
+If you deployed your Medusa Admin, you must change the Publish directory in your hosting.
 
 For Netlify, you can do that by following these steps:
 
-1. On your Medusa admin dashboard, click on “Site settings”.
+1. On your Medusa Admin dashboard, click on “Site settings”.
 2. From the sidebar, choose “Build & deploy”.
 3. Find the “Build settings” section and click on the “Edit settings” button.
 4. Change the “Publish directory” field to `public`.
 5. Click on the Save button.
 
-This should trigger a new deployment of your Medusa admin. If not, you must redeploy it manually for changes to take effect.
+This should trigger a new deployment of your Medusa Admin. If not, you must redeploy it manually for changes to take effect.

@@ -3,7 +3,7 @@ import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { Fragment } from "react"
-import { NextLink, type InlineCodeProps, capitalize } from "docs-ui"
+import { Link, type InlineCodeProps, capitalize } from "docs-ui"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => (await import("docs-ui")).InlineCode
@@ -122,9 +122,9 @@ const TagOperationParametersDescription = ({
       {schema.externalDocs && (
         <>
           Related guide:{" "}
-          <NextLink href={schema.externalDocs.url} target="_blank">
+          <Link href={schema.externalDocs.url} target="_blank">
             {schema.externalDocs.description || "Read More"}
-          </NextLink>
+          </Link>
         </>
       )}
     </div>

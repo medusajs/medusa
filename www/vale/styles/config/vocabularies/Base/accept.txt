@@ -1,4 +1,3 @@
-(?i)Medusa
 (?i)Qovery
 (?i)Netlify
 (?i)s3

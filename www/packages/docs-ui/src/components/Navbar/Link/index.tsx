@@ -1,35 +1,25 @@
 "use client"
 
-import React, { useMemo } from "react"
+import React from "react"
 import clsx from "clsx"
-import { useNavbar } from "@/providers"
-import { NextLink, NextLinkProps } from "@/components"
+import { Link, LinkProps } from "@/components"
 
 export type NavbarLinkProps = {
   href: string
   label: string
   className?: string
   activeValuePattern?: RegExp
-} & NextLinkProps
+  isActive?: boolean
+} & LinkProps
 
 export const NavbarLink = ({
   href,
   label,
   className,
-  activeValuePattern,
+  isActive,
 }: NavbarLinkProps) => {
-  const { activeItem } = useNavbar()
-
-  const isActive = useMemo(() => {
-    return activeItem
-      ? activeValuePattern
-        ? activeValuePattern.test(activeItem)
-        : href === activeItem
-      : false
-  }, [activeItem, href, activeValuePattern])
-
   return (
-    <NextLink
+    <Link
       href={href}
       className={clsx(
         isActive && "!text-medusa-fg-base",
@@ -40,6 +30,6 @@ export const NavbarLink = ({
       )}
     >
       {label}
-    </NextLink>
+    </Link>
   )
 }

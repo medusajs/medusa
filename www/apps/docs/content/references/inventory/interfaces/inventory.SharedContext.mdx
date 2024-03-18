@@ -2,7 +2,7 @@
 displayed_sidebar: inventoryReference
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # SharedContext
 
@@ -12,4 +12,4 @@ use `Context` instead
 
 A context used to share resources, such as transaction manager, between the application and the module.
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SharedContext"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SharedContext"/>

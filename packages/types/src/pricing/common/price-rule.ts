@@ -1,6 +1,5 @@
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
 
 /**
@@ -74,17 +73,9 @@ export interface CreatePriceRuleDTO {
    */
   price_set_id?: string
   /**
-   * The ID or object of the associated price set.
-   */
-  price_set?: string | PriceSetDTO
-  /**
    * The ID of the associated rule type.
    */
   rule_type_id?: string
-  /**
-   * The ID of the associated rule type.
-   */
-  rule_type?: string | RuleTypeDTO
   /**
    * The value of the price rule.
    */
@@ -97,10 +88,6 @@ export interface CreatePriceRuleDTO {
    * The ID of the associated price set money amount.
    */
   price_set_money_amount_id?: string
-  /**
-   * The ID or object of the associated price set money amount.
-   */
-  price_set_money_amount?: string | PriceSetMoneyAmountDTO
 }
 
 /**

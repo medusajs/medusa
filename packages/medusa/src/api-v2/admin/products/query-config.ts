@@ -22,7 +22,9 @@ export const defaultAdminProductsVariantFields = [
   "ean",
   "upc",
   "barcode",
-  "options",
+  "options.id",
+  "options.option_value.value",
+  "options.option_value.option.title",
 ]
 
 export const retrieveVariantConfig = {
@@ -42,8 +44,6 @@ export const defaultAdminProductsOptionFields = ["id", "title"]
 
 export const retrieveOptionConfig = {
   defaultFields: defaultAdminProductsOptionFields,
-  defaultRelations: [],
-  allowedRelations: [],
   isList: false,
 }
 
@@ -53,37 +53,34 @@ export const listOptionConfig = {
   isList: true,
 }
 
-export const allowedAdminProductRelations = [
+/* export const allowedAdminProductRelations = [
   "variants",
   // TODO: Add in next iteration
   // "variants.prices",
-  // TODO: See how this should be handled
-  // "variants.options",
+  "variants.options",
   "images",
   // TODO: What is this?
   // "profiles",
-  "options",
-  // TODO: See how this should be handled
-  // "options.values",
-  // TODO: Handle in next iteration
-  "tags",
-  "type",
-  "collection",
-]
-
-// TODO: This is what we had in the v1 list. Do we still want to expand that much by default? Also this doesn't work in v2 it seems.
-export const defaultAdminProductRelations = [
-  "variants",
-  "variants.prices",
-  "variants.options",
-  "profiles",
-  "images",
   "options",
   "options.values",
   "tags",
   "type",
   "collection",
-]
+]*/
+
+// TODO: This is what we had in the v1 list. Do we still want to expand that much by default? Also this doesn't work in v2 it seems.
+/* export const defaultAdminProductRelations = [
+  "variants",
+  // "variants.prices",
+  // "variants.options",
+  // "profiles",
+  "images",
+  "options",
+  // "options.values",
+  "tags",
+  "type",
+  "collection",
+]*/
 
 export const defaultAdminProductFields = [
   "id",
@@ -121,6 +118,14 @@ export const defaultAdminProductFields = [
   "collection.handle",
   "collection.created_at",
   "collection.updated_at",
+  "options.id",
+  "options.product_id",
+  "options.title",
+  "options.values.id",
+  "options.values.value",
+  "options.created_at",
+  "options.updated_at",
+  "options.deleted_at",
   "tags.id",
   "tags.value",
   "tags.created_at",
@@ -136,9 +141,7 @@ export const defaultAdminProductFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminProductFields,
-  defaultRelations: defaultAdminProductRelations,
-  allowedRelations: allowedAdminProductRelations,
+  defaults: defaultAdminProductFields,
   isList: false,
 }
 

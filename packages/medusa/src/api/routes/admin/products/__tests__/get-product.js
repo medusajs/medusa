@@ -26,6 +26,9 @@ describe("GET /admin/products/:id", () => {
 
     it("calls get product from productService", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        ProductServiceMock.retrieve.mock.calls[0][1].relations
+      ).toHaveLength(11)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("product1"),
         {
@@ -55,7 +58,7 @@ describe("GET /admin/products/:id", () => {
             "deleted_at",
             "metadata",
           ],
-          relations: [
+          relations: expect.arrayContaining([
             "collection",
             "images",
             "options",
@@ -67,7 +70,7 @@ describe("GET /admin/products/:id", () => {
             "variants",
             "variants.options",
             "variants.prices",
-          ],
+          ]),
         }
       )
     })

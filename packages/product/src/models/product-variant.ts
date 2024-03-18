@@ -20,7 +20,7 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import { Product } from "@models"
-import ProductOptionValue from "./product-option-value"
+import ProductVariantOption from "./product-variant-option"
 
 type OptionalFields =
   | "allow_backorder"
@@ -122,6 +122,14 @@ class ProductVariant {
   @Property({ columnType: "text", nullable: true })
   product_id!: string
 
+  @ManyToOne(() => Product, {
+    onDelete: "cascade",
+    index: "IDX_product_variant_product_id",
+    fieldName: "product_id",
+    nullable: true,
+  })
+  product!: Product
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
@@ -141,17 +149,14 @@ class ProductVariant {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
-  @ManyToOne(() => Product, {
-    onDelete: "cascade",
-    index: "IDX_product_variant_product_id",
-    fieldName: "product_id",
-  })
-  product!: Product
-
-  @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
-  })
-  options = new Collection<ProductOptionValue>(this)
+  @OneToMany(
+    () => ProductVariantOption,
+    (variantOption) => variantOption.variant,
+    {
+      cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
+    }
+  )
+  options = new Collection<ProductVariantOption>(this)
 
   @OnInit()
   onInit() {

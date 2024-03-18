@@ -6,7 +6,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
   serviceName: LINKS.SalesChannelLocation,
   isLink: true,
   databaseConfig: {
-    tableName: "sales_channel_locations",
+    tableName: "sales_channel_stock_location",
     idPrefix: "scloc",
   },
   alias: [

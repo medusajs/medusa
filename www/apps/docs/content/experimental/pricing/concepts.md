@@ -1,6 +1,6 @@
 # Pricing Concepts
 
-In this document, you’ll learn about the main concepts in the Pricing module, and how data is stored and related.
+In this document, you’ll learn about the main concepts in the Pricing Module, and how data is stored and related.
 
 ## Money Amount
 
@@ -74,10 +74,10 @@ Each rule of a price list can have more than one value, representing its values 
 
 ## Use Case Example: Pricing and Product Modules
 
-In a real use case, you would use the pricing module with your custom logic or other Medusa Commerce Modules, such as the Product Module.
+In a real use case, you would use the Pricing Module with your custom logic or other Medusa Commerce Modules, such as the Product Module.
 
 When used with the Product Module, a product variant’s prices are stored as money amounts belonging to a price set. A relation is formed between the `ProductVariant` and the `PriceSet` when the modules are linked.
 
-![A diagram showcasing an example of how resources from the Pricing and Product module are linked. The PriceSet is linked to the ProductVariant of the Product module.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574189/Medusa%20Docs/Diagrams/pricing-product_jcsjt0.jpg)
+![A diagram showcasing an example of how resources from the Pricing and Product module are linked. The PriceSet is linked to the ProductVariant of the Pricing Module.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574189/Medusa%20Docs/Diagrams/pricing-product_jcsjt0.jpg)
 
 So, when you want to add prices for a product variant, you create a price set and add the prices as money amounts to it. You can then benefit from adding rules to prices or using the `calculatePrices` method to retrieve the price of a product variant within a specified context.

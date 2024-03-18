@@ -8,6 +8,7 @@ import {
 } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -213,4 +214,48 @@ export class AdminPostPromotionsPromotionReq {
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
   rules?: PromotionRule[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchAddReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  rules: PromotionRule[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchRemoveReq {
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  rule_ids: string[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchUpdateReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UpdatePromotionRule)
+  rules: UpdatePromotionRule[]
+}
+
+export class UpdatePromotionRule {
+  @IsNotEmpty()
+  @IsString()
+  id: string
+
+  @IsOptional()
+  @IsEnum(PromotionRuleOperator)
+  operator?: PromotionRuleOperator
+
+  @IsOptional()
+  @IsString()
+  description?: string | null
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  attribute: string
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  values: string[]
 }
