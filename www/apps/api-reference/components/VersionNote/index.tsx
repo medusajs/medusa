@@ -10,10 +10,9 @@ const VersionNote = () => {
     <>
       {version === "2" && (
         <Note type="warning" title="Production Warning">
-          Medusa V2 is still in development, so, the API Routes are highly
-          experimental and are subject to change. The reference is also
-          incomplete. We strongly advise against using it for production, at the
-          moment.
+          Medusa v2.0 is in development and not suitable for production
+          environments. As such, the API reference is incomplete and subject to
+          change, so please use it with caution.
         </Note>
       )}
     </>
