@@ -9,7 +9,7 @@ import MDXDetails from "./Details"
 import DocCard from "@theme/DocCard"
 import DocCardList from "@theme/DocCardList"
 
-export default {
+const components = {
   // Re-use the default mapping
   ...MDXComponents,
   code: MDXCode,
@@ -23,3 +23,5 @@ export default {
   DocCard,
   DocCardList,
 }
+
+export default components

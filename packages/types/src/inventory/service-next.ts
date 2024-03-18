@@ -790,6 +790,11 @@ export interface IInventoryServiceNext extends IModuleService {
     context?: Context
   ): Promise<void>
 
+  deleteInventoryLevels(
+    inventoryLevelIds: string | string[],
+    context?: Context
+  ): Promise<void>
+
   /**
    * This method is used to adjust the inventory level's stocked quantity. The inventory level is identified by the IDs of its associated inventory item and location.
    *
