@@ -103,6 +103,11 @@ export async function mikroOrmCreateConnection(
     migrations: {
       path: pathToMigrations,
       generator: TSMigrationGenerator,
+      silent: !(
+        database.debug ??
+        process.env.NODE_ENV?.startsWith("dev") ??
+        false
+      ),
     },
     pool: database.pool as any,
   })
