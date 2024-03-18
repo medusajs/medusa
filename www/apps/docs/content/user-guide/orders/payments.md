@@ -12,7 +12,7 @@ In this document, you’ll learn how to manage an order’s payment, including c
 
 When a customer places an order, using the payment provider they choose during checkout, they authorize the payment.
 
-The payment isn’t automatically captured. You must capture it manually from the Medusa admin.
+The payment isn’t automatically captured. You must capture it manually from the Medusa Admin.
 
 ---
 

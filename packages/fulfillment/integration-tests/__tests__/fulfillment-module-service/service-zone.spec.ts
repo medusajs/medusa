@@ -16,56 +16,56 @@ moduleIntegrationTestRunner({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
-            const fulfillmentSet = await service.create({
-              name: "test",
-              type: "test-type",
-            })
-
-            const createdZone1 = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
-            const createdZone2 = await service.createServiceZones({
-              name: "test2",
-              fulfillment_set_id: fulfillmentSet.id,
-              geo_zones: [
-                {
-                  type: GeoZoneType.COUNTRY,
-                  country_code: "fr",
-                },
-              ],
-            })
-
-            let listedZones = await service.listServiceZones({
-              name: createdZone2.name,
-            })
-
-            expect(listedZones).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdZone2.id }),
-              ])
-            )
-            expect(listedZones).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdZone1.id }),
-              ])
-            )
-
-            listedZones = await service.listServiceZones({
-              geo_zones: { country_code: "fr" },
-            })
-
-            expect(listedZones).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdZone2.id }),
-              ])
-            )
-            expect(listedZones).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdZone1.id }),
-              ])
-            )
+          const fulfillmentSet = await service.create({
+            name: "test",
+            type: "test-type",
           })
+
+          const createdZone1 = await service.createServiceZones({
+            name: "test",
+            fulfillment_set_id: fulfillmentSet.id,
+          })
+          const createdZone2 = await service.createServiceZones({
+            name: "test2",
+            fulfillment_set_id: fulfillmentSet.id,
+            geo_zones: [
+              {
+                type: GeoZoneType.COUNTRY,
+                country_code: "fr",
+              },
+            ],
+          })
+
+          let listedZones = await service.listServiceZones({
+            name: createdZone2.name,
+          })
+
+          expect(listedZones).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdZone2.id }),
+            ])
+          )
+          expect(listedZones).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdZone1.id }),
+            ])
+          )
+
+          listedZones = await service.listServiceZones({
+            geo_zones: { country_code: "fr" },
+          })
+
+          expect(listedZones).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdZone2.id }),
+            ])
+          )
+          expect(listedZones).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdZone1.id }),
+            ])
+          )
+        })
       })
 
       describe("mutations", () => {
@@ -188,6 +188,76 @@ moduleIntegrationTestRunner({
 
             expect(err).toBeDefined()
             expect(err.constraint).toBe("IDX_service_zone_name_unique")
+          })
+
+          it("should fail on creating a service zone and new geo zones that are not valid", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+
+            let data: CreateServiceZoneDTO = {
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+              geo_zones: [
+                {
+                  type: GeoZoneType.PROVINCE,
+                  country_code: "fr",
+                } as any,
+              ],
+            }
+
+            let err = await service.createServiceZones(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property province_code for geo zone type province"
+            )
+
+            data = {
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+              geo_zones: [
+                {
+                  type: GeoZoneType.CITY,
+                  country_code: "fr",
+                  province_code: "test",
+                } as any,
+              ],
+            }
+
+            err = await service.createServiceZones(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property city for geo zone type city"
+            )
+
+            data = {
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+              geo_zones: [
+                {
+                  type: GeoZoneType.ZIP,
+                  postal_expression: "test",
+                } as any,
+              ],
+            }
+
+            err = await service.createServiceZones(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property country_code for geo zone type zip"
+            )
+
+            data = {
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+              geo_zones: [
+                {
+                  type: "unknown",
+                  postal_expression: "test",
+                } as any,
+              ],
+            }
+
+            err = await service.createServiceZones(data).catch((e) => e)
+            expect(err.message).toBe(`Invalid geo zone type: unknown`)
           })
         })
 

@@ -1157,7 +1157,7 @@ describe("/admin/product-categories", () => {
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
-        message: "Relations [products] are not valid",
+        message: "Requested fields [products] are not valid",
         type: "invalid_data",
       })
     })
@@ -1291,7 +1291,7 @@ describe("/admin/product-categories", () => {
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
-        message: "Relations [products] are not valid",
+        message: "Requested fields [products] are not valid",
         type: "invalid_data",
       })
     })

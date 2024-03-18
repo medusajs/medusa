@@ -1,10 +1,11 @@
-import { ProductCategory } from "@medusajs/medusa"
+import {ProductCategory} from "@medusajs/medusa"
 import path from "path"
 
-import startServerWithEnvironment from "../../../environment-helpers/start-server-with-environment"
-import { useApi } from "../../../environment-helpers/use-api"
-import { useDb } from "../../../environment-helpers/use-db"
-import { simpleProductCategoryFactory } from "../../../factories"
+import startServerWithEnvironment
+  from "../../../environment-helpers/start-server-with-environment"
+import {useApi} from "../../../environment-helpers/use-api"
+import {useDb} from "../../../environment-helpers/use-db"
+import {simpleProductCategoryFactory} from "../../../factories"
 
 jest.setTimeout(30000)
 
@@ -138,7 +139,7 @@ describe("/store/product-categories", () => {
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
       expect(error.response.data.message).toEqual(
-        "Fields [mpath] are not valid"
+        "Requested fields [mpath] are not valid"
       )
     })
 
