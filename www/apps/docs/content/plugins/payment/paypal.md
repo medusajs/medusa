@@ -87,13 +87,13 @@ The PayPal plugin also accepts the following optional configurations:
 
 ## Admin Setup
 
-This section will guide you through adding PayPal as a payment processor in a region using your Medusa admin dashboard.
+This section will guide you through adding PayPal as a payment processor in a region using your Medusa Admin dashboard.
 
 This step is required for you to be able to use PayPal as a payment processor in your storefront.
 
 ### Admin Prerequisites
 
-If you don’t have a Medusa admin installed, make sure to follow along with [the guide on how to install it](../../admin/quickstart.mdx) before continuing with this section.
+If you don’t have a Medusa Admin installed, make sure to follow along with [the guide on how to install it](../../admin/quickstart.mdx) before continuing with this section.
 
 ### Add PayPal to Regions
 

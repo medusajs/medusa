@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
-description: "Multi-warehouse allows you to define multiple locations that your stock items are available in. In the Medusa admin, you can manage the store's inventory and location."
+description: "Multi-warehouse allows you to define multiple locations that your stock items are available in. In the Medusa Admin, you can manage the store's inventory and location."
 ---
 
 # Multi-Warehouse Overview
 
-In this document, you’ll get an overview of the multi-warehouse setup and how you can use it in the Medusa admin.
+In this document, you’ll get an overview of the multi-warehouse setup and how you can use it in the Medusa Admin.
 
 :::note
 
