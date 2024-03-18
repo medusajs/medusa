@@ -12,7 +12,6 @@ import {
   OneToOne,
   OptionalProps,
   PrimaryKey,
-  PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
 import MoneyAmount from "./money-amount"
@@ -31,8 +30,8 @@ export default class PriceSetMoneyAmount {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text" })
-  title!: string
+  @Property({ columnType: "text", nullable: true })
+  title: string | null = null
 
   @ManyToOne(() => PriceSet, {
     onDelete: "cascade",
@@ -99,12 +98,5 @@ export default class PriceSetMoneyAmount {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "psma")
-  }
-
-  [PrimaryKeyType]?: [string, string]
-
-  constructor(money_amount: MoneyAmount, price_set: PriceSet) {
-    this.money_amount = money_amount
-    this.price_set = price_set
   }
 }

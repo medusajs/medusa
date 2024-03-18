@@ -19,7 +19,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_set_money_amount" ("id" text not null, "title" text not null, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, constraint "price_set_money_amount_pkey" primary key ("id"));'
+      'create table "price_set_money_amount" ("id" text not null, "title" text, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, constraint "price_set_money_amount_pkey" primary key ("id"));'
     )
 
     this.addSql(
