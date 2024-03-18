@@ -3,17 +3,12 @@ description: "Taxes are additional costs or fees imposed by a government for goo
 ---
 
 import DocCardList from '@theme/DocCardList';
+import DocCard from "@theme/DocCard"
 import Icons from '@theme/Icon';
 
 # Taxes
 
 Taxes are additional costs or fees imposed by a government for goods or services. This overview introduces the available features related to taxes.
-
-:::note
-
-Not a developer? Check out the [Taxes user guide](../../user-guide/taxes/index.md).
-
-:::
 
 ## Features
 
@@ -58,7 +53,7 @@ Customers can view calculated taxes during their checkout process.
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: '/user-guide/taxes/manage',
+    href: '/user-guide/settings/taxes/manage',
     label: 'User Guide: Manage Taxes',
     customProps: {
       icon: Icons['users-solid'],
@@ -82,7 +77,7 @@ Admins can create additional tax rates aside from the default tax rate. They can
 
 Customers can review order edit requests and authorize additional payments if necessary.
 
-<DocCardList colSize={4} items={[
+<DocCardList colSize={6} items={[
   {
     type: 'link',
     href: '/modules/taxes/admin/manage-tax-rates',
@@ -94,17 +89,8 @@ Customers can review order edit requests and authorize additional payments if ne
   },
   {
     type: 'link',
-    href: '/user-guide/taxes/tax-rates',
+    href: '/user-guide/settings/taxes/tax-rates',
     label: 'User Guide: Tax Rates',
-    customProps: {
-      icon: Icons['users-solid'],
-      description: 'Learn how to manage tax rates using Medusa Admin.'
-    }
-  },
-  {
-    type: 'link',
-    href: '/user-guide/taxes/tax-overrides',
-    label: 'User Guide: Tax Overrides',
     customProps: {
       icon: Icons['users-solid'],
       description: 'Learn how to manage tax rates using Medusa Admin.'
@@ -116,26 +102,15 @@ Customers can review order edit requests and authorize additional payments if ne
 
 Admins can enable tax-inclusive pricing for a region or currency. This would automatically calculate the taxes applied on a product for that region or currency.
 
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '/modules/taxes/inclusive-pricing',
-    label: 'Architecture: Tax-Inclusive Pricing',
-    customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn how tax-inclusive pricing works and its relation to other modules.'
-    }
-  },
-  {
-    type: 'link',
-    href: '/user-guide/taxes/tax-inclusive',
-    label: 'User Guide: Tax-Inclusive Pricing',
-    customProps: {
-      icon: Icons['users-solid'],
-      description: 'Learn how to manage tax-inclusive pricing using Medusa Admin.'
-    }
-  },
-]} />
+<DocCard item={{
+  type: 'link',
+  href: '/modules/taxes/inclusive-pricing',
+  label: 'Architecture: Tax-Inclusive Pricing',
+  customProps: {
+    icon: Icons['circle-stack-solid'],
+    description: 'Learn how tax-inclusive pricing works and its relation to other modules.'
+  }
+}} />
 
 ---
 

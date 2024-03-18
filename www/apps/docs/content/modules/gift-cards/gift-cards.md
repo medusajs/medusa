@@ -24,11 +24,11 @@ Once the customer purchases a gift card product, it is transformed into a usable
 
 ---
 
-## Custom Gift Cards
+## Customer Gift Cards
 
 Aside from the gift card product, merchants can create usable gift cards and send directly to customers. These can be used as a reward sent to the customer or another form of discount.
 
-As custom gift cards can be used once they’re created, they’re also represented by the [GiftCard entity](#giftcard-entity-overview).
+As customer gift cards can be used once they’re created, they’re also represented by the [GiftCard entity](#giftcard-entity-overview).
 
 ---
 
@@ -37,7 +37,7 @@ As custom gift cards can be used once they’re created, they’re also represen
 Some of the [GiftCard](../../references/entities/classes/entities.GiftCard.mdx) entity’s attributes are:
 
 - `code`: a unique string of random characters. This is the code that the customer can use during their checkout to redeem the gift card.
-- `value`: The amount of the gift card. This is the amount the customer purchased, or was gifted in the case of custom gift cards.
+- `value`: The amount of the gift card. This is the amount the customer purchased, or was gifted in the case of customer gift cards.
 - `balance`: The remaining amount of the gift card. If the customer uses the gift card on an order, and the order’s total does not exceed the amount available in the gift card, the remaining balance would be stored in this attribute. When the gift card is first created, `balance` and `value` have the same value.
 - `is_disabled`: A boolean value indicating whether a gift card is disabled or not.
 - `ends_at`: The expiry date and time of the gift card.
@@ -54,7 +54,7 @@ Some of the [GiftCard](../../references/entities/classes/entities.GiftCard.mdx) 
 
 A gift card must belong to a region. When a customer purchases the gift card, the region they use to purchase the order is associated with the gift card.
 
-For custom gift cards, the merchant specifies the region manually.
+For customer gift cards, the merchant specifies the region manually.
 
 The ID of the region is stored in the attribute `region_id`. You can access the region by expanding the `region` relation and accessing `gift_card.region`.
 
