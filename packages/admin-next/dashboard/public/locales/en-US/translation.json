@@ -91,9 +91,46 @@
     "defaultMessage": "An error occurred while rendering this page."
   },
   "addresses": {
-    "shippingAddress": "Shipping Address",
-    "billingAddress": "Billing Address",
-    "sameAsShipping": "Same as shipping address"
+    "shippingAddress": {
+      "header": "Shipping Address",
+      "editHeader": "Edit Shipping Address",
+      "editLabel": "Shipping address",
+      "label": "Shipping address"
+    },
+    "billingAddress": {
+      "header": "Billing Address",
+      "editHeader": "Edit Billing Address",
+      "editLabel": "Billing address",
+      "label": "Billing address",
+      "sameAsShipping": "Same as shipping address"
+    },
+    "contactHeading": "Contact",
+    "locationHeading": "Location"
+  },
+  "email": {
+    "editHeader": "Edit Email",
+    "editLabel": "Email",
+    "label": "Email"
+  },
+  "transferOwnership": {
+    "header": "Transfer Ownership",
+    "label": "Transfer ownership",
+    "details": {
+      "order": "Order details",
+      "draft": "Draft details"
+    },
+    "currentOwner": {
+      "label": "Current owner",
+      "hint": "The current owner of the order."
+    },
+    "newOwner": {
+      "label": "New owner",
+      "hint": "The new owner to transfer the order to."
+    },
+    "validation": {
+      "mustBeDifferent": "The new owner must be different from the current owner.",
+      "required": "New owner is required."
+    }
   },
   "products": {
     "domain": "Products",
@@ -257,6 +294,13 @@
   "draftOrders": {
     "domain": "Draft Orders",
     "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "paymentLinkLabel": "Payment link",
+    "cartIdLabel": "Cart ID",
+    "markAsPaid": {
+      "label": "Mark as paid",
+      "warningTitle": "Mark as Paid",
+      "warningDescription": "You are about to mark the draft order as paid. This action cannot be undone, and collecting payment will not be possible later."
+    },
     "status": {
       "open": "Open",
       "completed": "Completed"
@@ -265,7 +309,7 @@
   "discounts": {
     "domain": "Discounts",
     "startDate": "Start date",
-    "createDiscountTitle": "Create discount",
+    "createDiscountTitle": "Create Discount",
     "validDuration": "Duration of the discount",
     "redemptionsLimit": "Redemptions limit",
     "endDate": "End date",
@@ -276,8 +320,8 @@
     "fixedAmount": "Fixed amount",
     "validRegions": "Valid regions",
     "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
-    "editDiscountDetails": "Edit discount details",
-    "editDiscountConfiguration": "Edit discount configuration",
+    "editDiscountDetails": "Edit Discount Details",
+    "editDiscountConfiguration": "Edit Discount Configuration",
     "hasStartDate": "Discount has a start date",
     "hasEndDate": "Discount has an expiry date",
     "startDateHint": "Schedule the discount to activate in the future.",
@@ -285,38 +329,54 @@
     "codeHint": "Discount code applies from when you hit the publish button and forever if left untouched.",
     "hasUsageLimit": "Limit the number of redemptions?",
     "usageLimitHint": "Limit applies across all customers, not per customer.",
-    "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
+    "titleHint": "The code your customers will enter during checkout. This will appear on your customer's invoice.\nUppercase letters and numbers only.",
     "hasDurationLimit": "Availability duration",
     "durationHint": "Set the duration of the discount",
     "chooseValidRegions": "Choose valid regions",
-    "noConditions": "No conditions are defined for this discount.",
-    "editConditions": "Edit conditions",
     "conditionsHint": "Create conditions to apply on the discount",
     "isTemplateDiscount": "Is this a template discount?",
     "percentageDescription": "Discount applied in %",
     "fixedDescription": "Amount discount",
     "shippingDescription": "Override delivery amount",
-    "selectRegionFirst": "Select region first",
+    "selectRegionFirst": "Select a region first",
     "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
+      "editHeader": "Edit Discount Conditions",
+      "editHint": "Specify conditions for when the discount can be applied to a cart.",
+      "manageTypesAction": "Manage condition types",
       "including": {
-        "products_one": "Discount applies to <0/> product.",
-        "products_other": "Discount applies to <0/> products.",
-        "customer_groups_one": "Discount applies to <0/> customer group.",
-        "customer_groups_other": "Discount applies to <0/> customer groups.",
-        "product_tags_one": "Discount applies to <0/> tag.",
-        "product_tags_other": "Discount applies to <0/> tags.",
-        "product_collections_one": "Discount applies to <0/> product collection.",
-        "product_collections_other": "Discount applies to <0/> product collections.",
-        "product_types_one": "Discount applies to <0/> product type.",
-        "product_types_other": "Discount applies to <0/> product types."
+        "products_one": "Discount applies to <0/> product",
+        "products_other": "Discount applies to <0/> products",
+        "customer_groups_one": "Discount applies to <0/> customer group",
+        "customer_groups_other": "Discount applies to <0/> customer groups",
+        "product_tags_one": "Discount applies to <0/> tag",
+        "product_tags_other": "Discount applies to <0/> tags",
+        "product_collections_one": "Discount applies to <0/> product collection",
+        "product_collections_other": "Discount applies to <0/> product collections",
+        "product_types_one": "Discount applies to <0/> product type",
+        "product_types_other": "Discount applies to <0/> product types"
       },
       "excluding": {
-        "products": "Discount applies to <1>all</1> products except <0/>.",
-        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
-        "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
-        "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
-        "product_types": "Discount applies to <1>all</1> product types except <0/>."
+        "products": "Discount applies to <1>all</1> products except <0/>",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>",
+        "product_tags": "Discount applies to <1>all</1> product tags except <0/>",
+        "product_collections": "Discount applies to <1>all</1> product collections except <0/>",
+        "product_types": "Discount applies to <1>all</1> product types except <0/>"
+      },
+      "edit": {
+        "appliesTo": "Discount applies to",
+        "except": {
+          "products_one": "product, except",
+          "products_other": "products, except",
+          "product_tags_one": "product tag, except",
+          "product_tags_other": "product tags, except",
+          "product_types_one": "product type, except",
+          "product_types_other": "product types, except",
+          "product_collections_one": "product collection, except",
+          "product_collections_other": "product collections, except",
+          "customer_groups_one": "customer group, except",
+          "customer_groups_other": "customer groups, except"
+        }
       }
     },
     "discountStatus": {
@@ -446,6 +506,7 @@
         "adminOnly": "Admin only",
         "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
       },
+      "taxInclusiveHint": "When enabled, the shipping option's price will be tax inclusive.",
       "requirements": {
         "label": "Requirements",
         "hint": "Specify the requirements for the shipping option."
@@ -647,8 +708,14 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "none": "none",
+    "all": "all",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
+    "customer_groups": "Customer Groups",
+    "product_tags": "Product Tags",
+    "product_types": "Product Types",
+    "product_collections": "Product Collections",
     "status": "Status",
     "code": "Code",
     "value": "Value",
@@ -740,7 +807,8 @@
     "summary": "Summary",
     "label": "Label",
     "rate": "Rate",
-    "requiresShipping": "Requires shipping"
+    "requiresShipping": "Requires shipping",
+    "draft": "Draft"
   },
   "dateTime": {
     "years_one": "Year",

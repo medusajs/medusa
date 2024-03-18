@@ -27,6 +27,10 @@ export interface CreatePromotionRuleDTO {
 
 export interface UpdatePromotionRuleDTO {
   id: string
+  description?: string | null
+  attribute?: string
+  operator?: PromotionRuleOperatorValues
+  values?: string[] | string
 }
 
 export interface RemovePromotionRuleDTO {
@@ -36,5 +40,6 @@ export interface RemovePromotionRuleDTO {
 export interface FilterablePromotionRuleProps
   extends BaseFilterable<FilterablePromotionRuleProps> {
   id?: string[]
-  code?: string[]
 }
+
+export type PromotionRuleTypes = "buy_rules" | "target_rules" | "rules"

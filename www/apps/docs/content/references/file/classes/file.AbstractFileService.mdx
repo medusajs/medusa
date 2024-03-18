@@ -3,7 +3,7 @@ displayed_sidebar: core
 slug: /development/file-service/create-file-service
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # How to Create a File Service
 
@@ -124,7 +124,7 @@ class LocalFileService extends AbstractFileService {
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"`Record<string, unknown>`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this file service is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractFileService"/>
+<TypeList types={[{"name":"container","type":"`Record<string, unknown>`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this file service is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractFileService"/>
 
 ___
 
@@ -162,11 +162,11 @@ This example does not account for duplicate names to maintain simplicity in this
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"fileData","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="upload"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upload"/>
 
 ### uploadProtected
 
@@ -202,11 +202,11 @@ This example does not account for duplicate names to maintain simplicity in this
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="uploadProtected"/>
+<TypeList types={[{"name":"fileData","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="uploadProtected"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="uploadProtected"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="uploadProtected"/>
 
 ### delete
 
@@ -229,11 +229,11 @@ class LocalFileService extends AbstractFileService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"[DeleteFileType](../../medusa/interfaces/medusa.DeleteFileType.mdx)","description":"The details of the file to remove.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key. When uploading a file, the\nreturned key is used here.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"fileData","type":"[DeleteFileType](../../medusa/interfaces/medusa.DeleteFileType.mdx)","description":"The details of the file to remove.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key. When uploading a file, the\nreturned key is used here.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### getUploadStreamDescriptor
 
@@ -275,11 +275,11 @@ class LocalFileService extends AbstractFileService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"[UploadStreamDescriptorType](../../medusa/interfaces/medusa.UploadStreamDescriptorType.mdx)","description":"The details of the file being uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ext","type":"`string`","description":"The extension of the file.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file should be uploaded to a private bucket or location. By convention, the default value of this property is `true`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
+<TypeList types={[{"name":"fileData","type":"[UploadStreamDescriptorType](../../medusa/interfaces/medusa.UploadStreamDescriptorType.mdx)","description":"The details of the file being uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ext","type":"`string`","description":"The extension of the file.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file should be uploaded to a private bucket or location. By convention, the default value of this property is `true`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of the file-stream upload.","expandable":false,"children":[{"name":"FileServiceGetUploadStreamResult","type":"[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)","optional":false,"defaultValue":"","description":"The relevant details to upload a file through a stream.","expandable":false,"children":[{"name":"writeStream","type":"`PassThrough`","description":"A [PassThrough](https://nodejs.org/api/stream.html#class-streampassthrough) write stream object to be used to write the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"promise","type":"Promise&#60;any&#62;","description":"A promise that should resolved when the writing process is done to finish the upload.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the file once it’s uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fileKey","type":"`string`","description":"The identifier of the file in the storage. For example, for a local file service, this can be the file's name.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of the file-stream upload.","expandable":false,"children":[{"name":"FileServiceGetUploadStreamResult","type":"[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)","optional":false,"defaultValue":"","description":"The relevant details to upload a file through a stream.","expandable":false,"children":[{"name":"writeStream","type":"`PassThrough`","description":"A [PassThrough](https://nodejs.org/api/stream.html#class-streampassthrough) write stream object to be used to write the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"promise","type":"Promise&#60;any&#62;","description":"A promise that should resolved when the writing process is done to finish the upload.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the file once it’s uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fileKey","type":"`string`","description":"The identifier of the file in the storage. For example, for a local file service, this can be the file's name.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
 
 ### getDownloadStream
 
@@ -309,11 +309,11 @@ class LocalFileService extends AbstractFileService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
+<TypeList types={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;ReadableStream&#62;","optional":false,"defaultValue":"","description":"The [read stream](https://nodejs.org/api/webstreams.html#class-readablestream) to read and download the file.","expandable":false,"children":[{"name":"ReadableStream","type":"`ReadableStream`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ReadableStream&#62;","optional":false,"defaultValue":"","description":"The [read stream](https://nodejs.org/api/webstreams.html#class-readablestream) to read and download the file.","expandable":false,"children":[{"name":"ReadableStream","type":"`ReadableStream`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
 
 ### getPresignedDownloadUrl
 
@@ -347,11 +347,11 @@ class LocalFileService extends AbstractFileService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The presigned URL to download the file","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The presigned URL to download the file","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 ---
 

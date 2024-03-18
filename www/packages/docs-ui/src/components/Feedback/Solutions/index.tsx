@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { request } from "@octokit/request"
-import { Link } from "@/components/Link"
+import { LegacyLink } from "@/components"
 
 export type SolutionsProps = {
   feedback: boolean
@@ -69,9 +69,14 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
           <ul>
             {possibleSolutions.map((solution) => (
               <li key={solution.url} className="mb-docs_0.5 last:mb-0">
-                <Link href={solution.html_url} target="_blank" rel="noreferrer">
+                {/* TODO replace with Link once we move away from Docusaurus */}
+                <LegacyLink
+                  href={solution.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {solution.title}
-                </Link>
+                </LegacyLink>
               </li>
             ))}
           </ul>
