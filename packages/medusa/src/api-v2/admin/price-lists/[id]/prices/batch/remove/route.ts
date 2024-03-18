@@ -3,7 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { listPriceLists } from "../../../../queries"
+import { getPriceList } from "../../../../queries"
 import {
   adminPriceListRemoteQueryFields,
   defaultAdminPriceListFields,
@@ -26,11 +26,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const [[priceList]] = await listPriceLists({
+  const priceList = await getPriceList({
+    id,
     container: req.scope,
     remoteQueryFields: adminPriceListRemoteQueryFields,
     apiFields: defaultAdminPriceListFields,
-    variables: { filters: { id }, skip: 0, take: 1 },
   })
 
   res.status(200).json({ price_list: priceList })
