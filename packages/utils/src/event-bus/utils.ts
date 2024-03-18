@@ -35,8 +35,6 @@ type ReturnType<TNames extends string[]> = TNames extends [
     }
   : {}
 
-/* */
-
 /**
  * From the given strings it will produce the event names accordingly.
  * the result will look like:

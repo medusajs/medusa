@@ -4,10 +4,10 @@ const eventBaseNames: [
   "fulfillmentSet",
   "serviceZone",
   "geoZone",
-  `shippingOption`,
-  `shippingProfile`,
-  `shippingOptionRule`,
-  `fulfillment`
+  "shippingOption",
+  "shippingProfile",
+  "shippingOptionRule",
+  "fulfillment"
 ] = [
   "fulfillmentSet",
   "serviceZone",
