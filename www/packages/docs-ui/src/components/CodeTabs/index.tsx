@@ -1,35 +1,82 @@
 "use client"
 
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import React, { Children, useCallback, useEffect, useMemo, useRef } from "react"
+import {
+  BaseTabType,
+  CodeBlockProps,
+  CodeBlockStyle,
+  useColorMode,
+  useTabs,
+} from "../.."
 import clsx from "clsx"
-import { CodeBlock, CodeBlockProps } from "@/components"
-import { useTabs, BaseTabType, useScrollPositionBlocker } from "@/hooks"
+import { CodeBlockHeader } from "../CodeBlock/Header"
 
-export type TabType = {
-  code?: CodeBlockProps
-  codeBlock?: React.ReactNode
-} & BaseTabType
+type CodeTab = BaseTabType & {
+  codeProps: CodeBlockProps
+  codeBlock: React.ReactNode
+}
 
-export type CodeTabsProps = {
-  tabs: TabType[]
+type CodeTabProps = {
+  children: React.ReactNode
   className?: string
   group?: string
+  title?: string
+  blockStyle?: CodeBlockStyle
 }
 
 export const CodeTabs = ({
-  tabs,
+  children,
   className,
   group = "client",
-}: CodeTabsProps) => {
-  const { selectedTab, changeSelectedTab } = useTabs<TabType>({
+  title,
+  blockStyle = "loud",
+}: CodeTabProps) => {
+  const { colorMode } = useColorMode()
+  const tabs: CodeTab[] = useMemo(() => {
+    const tempTabs: CodeTab[] = []
+    Children.forEach(children, (child) => {
+      if (
+        !React.isValidElement(child) ||
+        !child.props.label ||
+        !child.props.value ||
+        !React.isValidElement(child.props.children)
+      ) {
+        return
+      }
+
+      // extract child code block
+      const codeBlock =
+        child.props.children.type === "pre" &&
+        React.isValidElement(child.props.children.props.children)
+          ? child.props.children.props.children
+          : child.props.children
+
+      tempTabs.push({
+        label: child.props.label,
+        value: child.props.value,
+        codeProps: codeBlock.props,
+        codeBlock: {
+          ...codeBlock,
+          props: {
+            ...codeBlock.props,
+            title: undefined,
+            className: clsx("!mt-0 !rounded-t-none", codeBlock.props.className),
+          },
+        },
+      })
+    })
+
+    return tempTabs
+  }, [children])
+
+  const { selectedTab, changeSelectedTab } = useTabs<CodeTab>({
     tabs,
     group,
   })
+
   const tabRefs: (HTMLButtonElement | null)[] = useMemo(() => [], [])
   const codeTabSelectorRef = useRef<HTMLSpanElement | null>(null)
   const codeTabsWrapperRef = useRef<HTMLDivElement | null>(null)
-  const { blockElementScrollPositionUntilNextRender } =
-    useScrollPositionBlocker()
 
   const changeTabSelectorCoordinates = useCallback(
     (selectedTabElm: HTMLElement) => {
@@ -71,59 +118,54 @@ export const CodeTabs = ({
     >
       <span
         className={clsx(
-          "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
-          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:rounded-full"
+          "xs:absolute xs:border xs:border-solid",
+          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:rounded-full",
+          blockStyle === "loud" && [
+            colorMode === "light" &&
+              "xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
+            colorMode === "dark" &&
+              "xs:border-medusa-border-base xs:bg-medusa-bg-component",
+          ],
+          blockStyle === "subtle" && [
+            colorMode === "light" &&
+              "xs:border-medusa-border-base xs:bg-medusa-bg-base",
+            colorMode === "dark" &&
+              "xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
+          ]
         )}
         ref={codeTabSelectorRef}
       ></span>
-      <ul
-        className={clsx(
-          "bg-medusa-code-bg-header py-docs_0.75 flex !list-none rounded-t-docs_DEFAULT px-docs_1",
-          "border-medusa-code-border border border-b-0",
-          "gap-docs_0.25 mb-0"
-        )}
-      >
-        {tabs.map((tab, index) => (
-          <li key={index}>
-            <button
-              className={clsx(
-                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative rounded-full border",
-                (!selectedTab || selectedTab.value !== tab.value) && [
-                  "text-medusa-code-text-subtle border-transparent",
-                  "hover:bg-medusa-code-bg-base",
-                ],
-                selectedTab?.value === tab.value && [
-                  "text-medusa-code-text-base bg-medusa-code-bg-base xs:!bg-transparent",
-                  "xs:!bg-transparent",
-                ]
-              )}
-              ref={(tabControl) => tabRefs.push(tabControl)}
-              onClick={(e) => {
-                blockElementScrollPositionUntilNextRender(
-                  e.target as HTMLButtonElement
-                )
-                changeSelectedTab(tab)
-              }}
-              aria-selected={selectedTab?.value === tab.value}
-              role="tab"
-            >
-              {tab.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <>
-        {selectedTab?.code && (
-          <CodeBlock
-            {...selectedTab?.code}
-            className={clsx(
-              "!mt-0 !rounded-t-none",
-              selectedTab.code.className
-            )}
-          />
-        )}
-        {selectedTab?.codeBlock && <>{selectedTab.codeBlock}</>}
-      </>
+      <CodeBlockHeader title={selectedTab?.codeProps?.title || title}>
+        <ul
+          className={clsx(
+            "!list-none flex gap-docs_0.25 items-center",
+            "p-0 mb-0"
+          )}
+        >
+          {Children.map(children, (child, index) => {
+            if (!React.isValidElement(child)) {
+              return <></>
+            }
+
+            return (
+              <child.type
+                {...child.props}
+                changeSelectedTab={changeSelectedTab}
+                pushRef={(tabButton: HTMLButtonElement | null) =>
+                  tabRefs.push(tabButton)
+                }
+                blockStyle={blockStyle}
+                isSelected={
+                  !selectedTab
+                    ? index === 0
+                    : selectedTab.value === child.props.value
+                }
+              />
+            )
+          })}
+        </ul>
+      </CodeBlockHeader>
+      {selectedTab?.codeBlock}
     </div>
   )
 }
