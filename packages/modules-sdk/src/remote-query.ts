@@ -90,6 +90,10 @@ export class RemoteQuery {
     let relations: string[] = []
 
     data.fields?.forEach((field: string) => {
+      if (field === "*") {
+        // Select all, so we don't specify any field and rely on relation only
+        return
+      }
       fields.add(prefix ? `${prefix}.${field}` : field)
     })
     args[prefix] = data.args

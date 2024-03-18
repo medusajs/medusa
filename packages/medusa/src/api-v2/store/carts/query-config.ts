@@ -75,38 +75,10 @@ export const defaultStoreCartFields = [
   "payment_collection.payment_sessions",
 ]
 
-export const defaultStoreCartRelations = [
-  "items",
-  "items.tax_lines",
-  "items.adjustments",
-  "region",
-  "customer",
-  "customer.groups",
-  "shipping_address",
-  "billing_address",
-  "shipping_methods",
-  "shipping_methods.tax_lines",
-  "shipping_methods.adjustments",
-]
-
-export const allowedRelations = [
-  "items",
-  "items.tax_lines",
-  "items.adjustments",
-  "region",
-  "customer",
-  "customer.groups",
-  "shipping_address",
-  "billing_address",
-  "shipping_methods",
-  "shipping_methods.tax_lines",
-  "shipping_methods.adjustments",
-  "sales_channel",
-]
+const allowedFields = [...defaultStoreCartFields]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreCartFields,
-  defaultRelations: defaultStoreCartRelations,
-  allowedRelations: defaultStoreCartRelations,
+  defaults: defaultStoreCartFields,
+  allowed: allowedFields,
   isList: false,
 }
