@@ -7,7 +7,7 @@ import { ModalHeader } from "./Header"
 import { ModalFooter } from "./Footer"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { ButtonProps } from "@/components"
-import { Ref } from "@/types"
+import { Ref } from "types"
 
 export type ModalProps = {
   className?: string

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: 'This user guide explains how to manage user profile on the Medusa admin. Learn how to edit a user profile and reset user password.'
+description: 'This user guide explains how to manage user profile on the Medusa Admin. Learn how to edit a user profile and reset user password.'
 addHowToData: true
 ---
 
@@ -38,7 +38,7 @@ To edit your profile details:
 
 ## Change Admin Language
 
-The Medusa admin supports multiple languages, and you can change the default language from your profile settings.
+The Medusa Admin supports multiple languages, and you can change the default language from your profile settings.
 
 :::note
 

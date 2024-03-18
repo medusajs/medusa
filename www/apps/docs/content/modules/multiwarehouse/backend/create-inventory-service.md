@@ -19,7 +19,7 @@ This guide will only explain what is required to create in your custom inventory
 
 :::note
 
-It should be noted that the Medusa backend expects the inventory module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
+It should be noted that the Medusa backend expects the Inventory Module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
 
 :::
 

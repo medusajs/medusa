@@ -23,9 +23,9 @@ describe("Get region by id", () => {
         {
           relations: [
             "countries",
-            "currency",
-            "fulfillment_providers",
             "payment_providers",
+            "fulfillment_providers",
+            "currency",
           ],
           select: [
             "id",
