@@ -25,9 +25,10 @@ export const updateProductVariantsStep = createStep(
       relations,
     })
 
-    // TODO: We need to update the module's signature
-    // const productVariants = await service.updateVariants(data.selector, data.update)
-    const productVariants = []
+    const productVariants = await service.updateVariants(
+      data.selector,
+      data.update
+    )
     return new StepResponse(productVariants, prevData)
   },
   async (prevData, { container }) => {
@@ -39,11 +40,10 @@ export const updateProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    // TODO: We need to update the module's signature
-    // await service.upsertVariants(
-    //   prevData.map((r) => ({
-    //     ...r,
-    //   }))
-    // )
+    await service.upsertVariants(
+      prevData.map((r) => ({
+        ...r,
+      }))
+    )
   }
 )
