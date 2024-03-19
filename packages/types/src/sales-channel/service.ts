@@ -1,9 +1,9 @@
-import { IModuleService } from "../modules-sdk"
-import { FilterableSalesChannelProps, SalesChannelDTO } from "./common"
 import { FindConfig } from "../common"
-import { Context } from "../shared-context"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "./mutations"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
+import { FilterableSalesChannelProps, SalesChannelDTO } from "./common"
+import { CreateSalesChannelDTO, UpdateSalesChannelDTO, UpsertSalesChannelDTO } from "./mutations"
 
 /**
  * The main service interface for the sales channel module.
@@ -39,35 +39,25 @@ export interface ISalesChannelModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
 
-  /**
-   * This method updates existing sales channels.
-   *
-   * @param {UpdateSalesChannelDTO[]} data - The attributes to update in each sales channel.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<SalesChannelDTO[]>} The updated sales channels.
-   *
-   * @example
-   * {example-code}
-   */
   update(
-    data: UpdateSalesChannelDTO[],
-    sharedContext?: Context
-  ): Promise<SalesChannelDTO[]>
-
-  /**
-   * This method updates an existing sales channel.
-   *
-   * @param {UpdateSalesChannelDTO} data - The attributes to update in the sales channel.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<SalesChannelDTO>} The updated sales channel.
-   *
-   * @example
-   * {example-code}
-   */
-  update(
+    channelId: string,
     data: UpdateSalesChannelDTO,
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
+  update(
+    selector: FilterableSalesChannelProps,
+    data: UpdateSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO[]>
+
+  upsert(
+    data: UpsertSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO>
+  upsert(
+    data: UpsertSalesChannelDTO[],
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO[]>
 
   /**
    * This method deletes sales channels by their IDs.
