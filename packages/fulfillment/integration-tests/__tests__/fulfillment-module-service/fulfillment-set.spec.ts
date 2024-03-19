@@ -9,6 +9,7 @@ import {
 import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { MockEventBusService } from "medusa-test-utils/dist"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
@@ -166,19 +167,12 @@ moduleIntegrationTestRunner({
             )
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              {
-                body: {
-                  data: { id: fulfillmentSet.id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "fulfillment_set",
-                    service: "fulfillment",
-                  },
-                },
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.created,
-                options: undefined,
-              },
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
             ])
           })
 
@@ -210,19 +204,12 @@ moduleIntegrationTestRunner({
 
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
-                  {
-                    body: {
-                      data: { id: fulfillmentSets[i].id },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "fulfillment_set",
-                        service: "fulfillment",
-                      },
-                    },
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.created,
-                    options: undefined,
-                  },
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
                 ])
               )
 
@@ -258,32 +245,18 @@ moduleIntegrationTestRunner({
             )
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              {
-                body: {
-                  data: { id: fulfillmentSet.id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "fulfillment_set",
-                    service: "fulfillment",
-                  },
-                },
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.created,
-                options: undefined,
-              },
-              {
-                body: {
-                  data: { id: fulfillmentSet.service_zones[0].id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "service_zone",
-                    service: "fulfillment",
-                  },
-                },
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.service_zone_created,
-                options: undefined,
-              },
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
             ])
           })
 
@@ -340,32 +313,18 @@ moduleIntegrationTestRunner({
 
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
-                  {
-                    body: {
-                      data: { id: fulfillmentSets[i].id },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "fulfillment_set",
-                        service: "fulfillment",
-                      },
-                    },
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.created,
-                    options: undefined,
-                  },
-                  {
-                    body: {
-                      data: { id: fulfillmentSets[i].service_zones[0].id },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "service_zone",
-                        service: "fulfillment",
-                      },
-                    },
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.service_zone_created,
-                    options: undefined,
-                  },
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
                 ])
               )
 
@@ -414,45 +373,24 @@ moduleIntegrationTestRunner({
             )
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              {
-                body: {
-                  data: { id: fulfillmentSet.id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "fulfillment_set",
-                    service: "fulfillment",
-                  },
-                },
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.created,
-                options: undefined,
-              },
-              {
-                body: {
-                  data: { id: fulfillmentSet.service_zones[0].id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "service_zone",
-                    service: "fulfillment",
-                  },
-                },
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.service_zone_created,
-                options: undefined,
-              },
-              {
-                body: {
-                  data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
-                  metadata: {
-                    action: "created",
-                    eventGroupId: undefined,
-                    object: "geo_zone",
-                    service: "fulfillment",
-                  },
-                },
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
+              buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.geo_zone_created,
-                options: undefined,
-              },
+                action: "created",
+                object: "geo_zone",
+                data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
+              }),
             ])
           })
 
@@ -537,47 +475,26 @@ moduleIntegrationTestRunner({
 
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
-                  {
-                    body: {
-                      data: { id: fulfillmentSets[0].id },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "fulfillment_set",
-                        service: "fulfillment",
-                      },
-                    },
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.created,
-                    options: undefined,
-                  },
-                  {
-                    body: {
-                      data: { id: fulfillmentSets[0].service_zones[0].id },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "service_zone",
-                        service: "fulfillment",
-                      },
-                    },
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.service_zone_created,
-                    options: undefined,
-                  },
-                  {
-                    body: {
-                      data: {
-                        id: fulfillmentSets[0].service_zones[0].geo_zones[0].id,
-                      },
-                      metadata: {
-                        action: "created",
-                        eventGroupId: undefined,
-                        object: "geo_zone",
-                        service: "fulfillment",
-                      },
-                    },
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
+                  buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.geo_zone_created,
-                    options: undefined,
-                  },
+                    action: "created",
+                    object: "geo_zone",
+                    data: {
+                      id: fulfillmentSets[i].service_zones[0].geo_zones[0].id,
+                    },
+                  }),
                 ])
               )
 
