@@ -9,7 +9,6 @@ export const createProductVariantsStep = createStep(
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )
-
     const created = await service.createVariants(data)
     return new StepResponse(
       created,
