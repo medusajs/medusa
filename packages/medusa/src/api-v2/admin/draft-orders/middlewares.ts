@@ -5,10 +5,10 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
-  AdminPostOrdersOrderReq,
+  AdminPostDraftOrdersReq,
 } from "./validators"
 
-export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
+export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/draft-orders*",
@@ -36,12 +36,17 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/draft-orders",
+    middlewares: [transformBody(AdminPostDraftOrdersReq)],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/draft-orders/:id",
-    middlewares: [transformBody(AdminPostOrdersOrderReq)],
+    middlewares: [transformBody(AdminPostDraftOrdersReq)],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/draft-orders/:id",
-    middlewares: [transformBody(AdminPostOrdersOrderReq)],
+    middlewares: [transformBody(AdminPostDraftOrdersReq)],
   },
 ]

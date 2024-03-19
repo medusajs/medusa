@@ -1,11 +1,17 @@
 import { createOrdersWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
   OrderStatus,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 import { defaultAdminOrderFields } from "./query-config"
+import { AdminPostDraftOrdersReq } from "./validators"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -34,13 +40,32 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostDraftOrdersReq>,
+  res: MedusaResponse
+) => {
+  const input = req.validatedBody
+  const workflowInput = {
+    ...input,
+    no_notification: !!input.no_notification_order,
+    status: OrderStatus.DRAFT,
+  }
+
+  if (!input.currency_code) {
+    const regionService = req.scope.resolve(ModuleRegistrationName.REGION)
+    const region = await regionService.retrieve(input.region_id)
+    input.currency_code = region.currency_code
+  }
+
+  if (!input.email) {
+    const customerService = req.scope.resolve(ModuleRegistrationName.CUSTOMER)
+    const customer = await customerService.retrieve(input.customer_id)
+    input.email = customer.email
+  }
+
   const { result, errors } = await createOrdersWorkflow(req.scope).run({
     input: {
-      orders: {
-        ...(req.validatedBody as any) /* as CreateDraftOrderDTO */,
-        status: OrderStatus.DRAFT,
-      },
+      order: workflowInput,
     },
     throwOnError: false,
   })

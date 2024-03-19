@@ -1,12 +1,23 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
+  ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import {
+  AddressPayload,
+  FindParams,
+  extendedFindParamsMixin,
+} from "../../../types/common"
+import { IsType } from "../../../utils/validators/is-type"
 
 export class AdminGetOrdersOrderParams extends FindParams {}
 /**
@@ -42,34 +53,108 @@ export class AdminGetOrdersParams extends extendedFindParamsMixin({
   $or?: AdminGetOrdersParams[]
 }
 
-export class AdminPostOrdersOrderReq {
+enum Status {
+  completed = "completed",
+}
+
+export class AdminPostDraftOrdersReq {
+  @IsEnum(Status)
   @IsOptional()
+  status?: string
+
+  @IsEmail()
+  @ValidateIf((o) => !o.customer_id)
+  email: string
+
   @IsString()
-  name?: string
+  @IsOptional()
+  sales_channel_id?: string
 
   @IsOptional()
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
+
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
+
   @IsArray()
-  supported_currency_codes?: string[]
-
+  @Type(() => Item)
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
   @IsOptional()
-  @IsString()
-  default_currency_code?: string
+  items?: Item[]
 
-  @IsOptional()
   @IsString()
-  default_sales_channel_id?: string
+  region_id: string
 
+  @IsArray()
   @IsOptional()
-  @IsString()
-  default_region_id?: string
+  @Type(() => Discount)
+  @ValidateNested({ each: true })
+  discounts?: Discount[]
 
-  @IsOptional()
   @IsString()
-  default_location_id?: string
+  @IsOptional()
+  currency_code?: string
+
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.email)
+  customer_id?: string
+
+  @IsBoolean()
+  @IsOptional()
+  no_notification_order?: boolean
+
+  @IsArray()
+  @Type(() => ShippingMethod)
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  shipping_methods: ShippingMethod[]
 
   @IsObject()
   @IsOptional()
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> = {}
+}
+
+class ShippingMethod {
+  @IsString()
+  option_id: string
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown> = {}
+
+  @IsNumber()
+  @IsOptional()
+  price?: number
+}
+
+class Discount {
+  @IsString()
+  code: string
+}
+
+class Item {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsNumber()
+  @IsOptional()
+  unit_price?: number
+
+  @IsString()
+  @IsOptional()
+  variant_id?: string
+
+  @IsNumber()
+  quantity: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown> = {}
 }
 
 export class AdminDeleteOrdersOrderReq {}
