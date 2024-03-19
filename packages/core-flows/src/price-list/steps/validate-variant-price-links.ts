@@ -6,12 +6,13 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type WorkflowStepInput = Pick<UpdatePriceListWorkflowInputDTO, "prices">[]
-
 export const validateVariantPriceLinksStepId = "validate-variant-price-links"
 export const validateVariantPriceLinksStep = createStep(
   validateVariantPriceLinksStepId,
-  async (data: WorkflowStepInput, { container }) => {
+  async (
+    data: Pick<UpdatePriceListWorkflowInputDTO, "prices">[],
+    { container }
+  ) => {
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
