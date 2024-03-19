@@ -46,10 +46,10 @@ export const deatachInventoryItemStep = createStep(
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
     const linkDefinitions = input.map(({ inventory_item_id, variant_id }) => ({
-      productService: {
+      [Modules.PRODUCT]: {
         variant_id,
       },
-      inventoryService: {
+      [Modules.INVENTORY]: {
         inventory_item_id,
       },
     }))
