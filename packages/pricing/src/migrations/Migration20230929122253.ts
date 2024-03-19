@@ -7,19 +7,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index if not exists "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
-    )
-
-    this.addSql(
-      'create index if not exists "IDX_money_amount_currency_code" on "money_amount" ("currency_code");'
-    )
-
-    this.addSql(
       'create table "price_set" ("id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_set_pkey" primary key ("id"));'
-    )
-
-    this.addSql(
-      'create index if not exists "IDX_price_set_deleted_at" on "price_set" ("deleted_at");'
     )
 
     this.addSql(
@@ -31,25 +19,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index "IDX_price_set_money_amount_deleted_at" on "price_set_money_amount" ("deleted_at");'
-    )
-    this.addSql(
-      'create index "IDX_price_set_money_amount_price_set_id" on "price_set_money_amount" ("price_set_id");'
-    )
-    this.addSql(
-      'create index "IDX_price_set_money_amount_money_amount_id" on "price_set_money_amount" ("money_amount_id");'
-    )
-
-    this.addSql(
       'create table "rule_type" ("id" text not null, "name" text not null, "rule_attribute" text not null, "default_priority" integer not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "rule_type_pkey" primary key ("id"));'
-    )
-
-    this.addSql(
-      'create index "IDX_rule_type_rule_attribute" on "rule_type" ("rule_attribute");'
-    )
-
-    this.addSql(
-      'create index if not exists "IDX_rule_type_deleted_at" on "rule_type" ("deleted_at");'
     )
 
     this.addSql(
@@ -57,49 +27,11 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index if not exists "IDX_price_set_rule_type_deleted_at" on "price_set_rule_type" ("deleted_at");'
-    )
-
-    this.addSql(
-      'create index "IDX_price_set_rule_type_price_set_id" on "price_set_rule_type" ("price_set_id");'
-    )
-    this.addSql(
-      'create index "IDX_price_set_rule_type_rule_type_id" on "price_set_rule_type" ("rule_type_id");'
-    )
-
-    this.addSql(
       'create table "price_set_money_amount_rules" ("id" text not null, "price_set_money_amount_id" text not null, "rule_type_id" text not null, "value" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_set_money_amount_rules_pkey" primary key ("id"));'
     )
 
     this.addSql(
-      'create index if not exists "IDX_price_set_money_amount_rules_deleted_at" on "price_set_money_amount_rules" ("deleted_at");'
-    )
-
-    this.addSql(
-      'create index "IDX_price_set_money_amount_rules_price_set_money_amount_id" on "price_set_money_amount_rules" ("price_set_money_amount_id");'
-    )
-
-    this.addSql(
-      'create index "IDX_price_set_money_amount_rules_rule_type_id" on "price_set_money_amount_rules" ("rule_type_id");'
-    )
-
-    this.addSql(
       'create table "price_rule" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, "value" text not null, "priority" integer not null default 0, "price_set_money_amount_id" text not null, "price_list_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_rule_pkey" primary key ("id"));'
-    )
-    this.addSql(
-      'create index "IDX_price_rule_price_set_id" on "price_rule" ("price_set_id");'
-    )
-
-    this.addSql(
-      'create index "IDX_price_rule_rule_type_id" on "price_rule" ("rule_type_id");'
-    )
-
-    this.addSql(
-      'create index "IDX_price_rule_deleted_at" on "price_rule" ("deleted_at");'
-    )
-
-    this.addSql(
-      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_rule_price_set_money_amount_id_unique" ON "price_rule" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL;'
     )
 
     this.addSql(
@@ -142,18 +74,6 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index "IDX_price_list_rule_deleted_at" on "price_list_rule" ("deleted_at");'
-    )
-
-    this.addSql(
-      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_list_rule_rule_type_id_unique" ON "price_list_rule" (rule_type_id) WHERE deleted_at IS NOT NULL;'
-    )
-
-    this.addSql(
-      'create index "IDX_price_list_rule_price_list_id" on "price_list_rule" ("price_list_id");'
-    )
-
-    this.addSql(
       'alter table "price_list_rule" add constraint "price_list_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
     )
     this.addSql(
@@ -164,22 +84,10 @@ export class Migration20230929122253 extends Migration {
       'alter table "price_set_money_amount" add column "price_list_id" text null;'
     )
 
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_list_id" ON "price_set_money_amount" (price_list_id) WHERE deleted_at IS NOT NULL;'
-    )
-
     this.addSql('alter table "price_rule" drop column "price_list_id";')
 
     this.addSql(
       'create table "price_list_rule_value" ("id" text not null, "value" text not null, "price_list_rule_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_list_rule_value_pkey" primary key ("id"));'
-    )
-
-    this.addSql(
-      'create index "IDX_price_list_rule_value_deleted_at" on "price_list_rule_value" ("deleted_at");'
-    )
-
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_price_list_rule_id" ON "price_list_rule_value" (price_list_rule_id) WHERE deleted_at IS NOT NULL;'
     )
 
     this.addSql(
@@ -203,7 +111,87 @@ export class Migration20230929122253 extends Migration {
     this.addSql(`alter table "price_list" alter column "title" set not null `)
 
     this.addSql(
-      'create index if not exists "IDX_price_list_deleted_at" on "price_list" ("deleted_at");'
+      'CREATE INDEX IF NOT EXISTS "IDX_money_amount_currency_code" ON "money_amount" (currency_code) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_money_amount_deleted_at" ON "money_amount" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_deleted_at" ON "price_list" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_deleted_at" ON "price_set" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_set_id" ON "price_set_money_amount" (price_set_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_money_amount_id" ON "price_set_money_amount" (money_amount_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_list_id" ON "price_set_money_amount" (price_list_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_deleted_at" ON "price_set_money_amount" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_rule_type_rule_attribute" ON "rule_type" (rule_attribute) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_rule_type_deleted_at" ON "rule_type" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_rule_type_price_set_id" ON "price_set_rule_type" (price_set_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_rule_type_rule_type_id" ON "price_set_rule_type" (rule_type_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_rule_type_deleted_at" ON "price_set_rule_type" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_price_set_money_amount_id" ON "price_set_money_amount_rules" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_rule_type_id" ON "price_set_money_amount_rules" (rule_type_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_deleted_at" ON "price_set_money_amount_rules" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_rule_price_set_id" ON "price_rule" (price_set_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_rule_rule_type_id" ON "price_rule" (rule_type_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_rule_price_set_money_amount_id_unique" ON "price_rule" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_rule_deleted_at" ON "price_rule" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_list_rule_rule_type_id_unique" ON "price_list_rule" (rule_type_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_price_list_id" ON "price_list_rule" (price_list_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_deleted_at" ON "price_list_rule" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_price_list_rule_id" ON "price_list_rule_value" (price_list_rule_id) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_deleted_at" ON "price_list_rule_value" (deleted_at) WHERE deleted_at IS NOT NULL;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_list" drop column if exists "name";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete cascade;'
     )
   }
 }
