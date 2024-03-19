@@ -86,11 +86,13 @@ export class RemoteQuery {
     relations: string[]
     args: Record<string, unknown[]>
   } {
+    const dataCopy = JSON.parse(JSON.stringify(data))
+
     let fields: Set<string> = new Set()
     let relations: string[] = []
     let selectAll = false
 
-    data.fields?.forEach((field: string) => {
+    dataCopy.fields?.forEach((field: string) => {
       if (selectAll || field === "*") {
         selectAll = true
         return
@@ -99,27 +101,25 @@ export class RemoteQuery {
     })
 
     if (selectAll) {
-      data.fields = []
+      dataCopy.fields = []
     }
 
-    args[prefix] = data.args
+    args[prefix] = dataCopy.args
 
-    if (data.expands) {
-      for (const property in data.expands) {
-        const newPrefix = prefix ? `${prefix}.${property}` : property
+    for (const property in dataCopy.expands ?? {}) {
+      const newPrefix = prefix ? `${prefix}.${property}` : property
 
-        relations.push(newPrefix)
-        fields.delete(newPrefix)
+      relations.push(newPrefix)
+      fields.delete(newPrefix)
 
-        const result = RemoteQuery.getAllFieldsAndRelations(
-          data.expands[property],
-          newPrefix,
-          args
-        )
+      const result = RemoteQuery.getAllFieldsAndRelations(
+        dataCopy.expands[property],
+        newPrefix,
+        args
+      )
 
-        result.select.forEach(fields.add, fields)
-        relations = relations.concat(result.relations)
-      }
+      result.select.forEach(fields.add, fields)
+      relations = relations.concat(result.relations)
     }
 
     return { select: [...fields], relations, args }
