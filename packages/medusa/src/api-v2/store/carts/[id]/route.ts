@@ -12,7 +12,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const query = remoteQueryObjectFromString({
     entryPoint: Modules.CART,
-    fields: defaultStoreCartFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [cart] = await remoteQuery(query, { cart: variables })

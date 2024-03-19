@@ -49,23 +49,22 @@ medusaIntegrationTestRunner({
           name: "VIP",
         })
         region = await regionModule.create({ name: "US", currency_code: "USD" })
-        ;[product] = await productModule.create([{ title: "test product" }])
+        ;[product] = await productModule.create([
+          {
+            title: "test product",
+            variants: [
+              {
+                title: "test product variant",
+              },
+            ],
+          },
+        ])
+
+        variant = product.variants[0]
 
         await pricingModule.createRuleTypes([
           { name: "Customer Group ID", rule_attribute: "customer_group_id" },
           { name: "Region ID", rule_attribute: "region_id" },
-        ])
-
-        const [productOption] = await productModule.createOptions([
-          { title: "Test option 1", product_id: product.id },
-        ])
-
-        ;[variant] = await productModule.createVariants([
-          {
-            product_id: product.id,
-            title: "test product variant",
-            options: [{ value: "test", option_id: productOption.id }],
-          },
         ])
       })
 
@@ -256,6 +255,373 @@ medusaIntegrationTestRunner({
             type: "not_found",
             message: "Price list with id: does-not-exist was not found",
           })
+        })
+      })
+
+      describe("POST /admin/price-lists", () => {
+        it("should create price list and prices successfully", async () => {
+          await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const data = {
+            title: "test price list",
+            description: "test",
+            type: "override",
+            status: "active",
+            starts_at: new Date(),
+            rules: {
+              customer_group_id: [customerGroup.id],
+            },
+            prices: [
+              {
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `admin/price-lists`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              title: "test price list",
+              description: "test",
+              type: "override",
+              status: "active",
+              starts_at: expect.any(String),
+              ends_at: null,
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+              prices: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 400,
+                  min_quantity: null,
+                  max_quantity: null,
+                  variant_id: variant.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should throw error when required attributes are not provided", async () => {
+          const data = {
+            prices: [
+              {
+                amount: 400,
+                currency_code: "usd",
+              },
+            ],
+          }
+
+          const errorResponse = await api
+            .post(`admin/price-lists`, data, adminHeaders)
+            .catch((e) => e)
+
+          expect(errorResponse.response.status).toEqual(400)
+          expect(errorResponse.response.data.message).toEqual(
+            "title must be a string, description must be a string, type must be one of the following values: sale, override, variant_id must be a string"
+          )
+        })
+      })
+
+      describe("DELETE /admin/price-lists/:id", () => {
+        it("should delete price list and money amounts", async () => {
+          await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const data = {
+            title: "test price list",
+            description: "test",
+            type: "override",
+            status: "active",
+            starts_at: new Date(),
+            prices: [
+              { amount: 400, variant_id: variant.id, currency_code: "usd" },
+            ],
+          }
+
+          const result = await api.post(`admin/price-lists`, data, adminHeaders)
+          const priceListId = result.data.price_list.id
+
+          let psmas = await pricingModule.listPriceSetMoneyAmounts({
+            price_list_id: [priceListId],
+          })
+
+          expect(psmas.length).toEqual(1)
+
+          const deleteRes = await api.delete(
+            `/admin/price-lists/${priceListId}`,
+            adminHeaders
+          )
+
+          expect(deleteRes.status).toEqual(200)
+
+          const afterDelete = await api
+            .get(`/admin/price-lists/${priceListId}`, adminHeaders)
+            .catch((e) => e)
+
+          expect(afterDelete.response.status).toEqual(404)
+
+          psmas = await pricingModule.listPriceSetMoneyAmounts({
+            price_list_id: [priceListId],
+          })
+          expect(psmas.length).toEqual(0)
+        })
+
+        it("should idempotently return a success even if price lists dont exist", async () => {
+          const deleteRes = await api.delete(
+            `/admin/price-lists/does-not-exist`,
+            adminHeaders
+          )
+
+          expect(deleteRes.status).toEqual(200)
+          expect(deleteRes.data).toEqual({
+            id: "does-not-exist",
+            object: "price_list",
+            deleted: true,
+          })
+        })
+      })
+
+      describe("POST /admin/price-lists/:id", () => {
+        it("should throw error when trying to update a price list that does not exist", async () => {
+          const updateRes = await api
+            .post(
+              `admin/price-lists/does-not-exist`,
+              { title: "new price list name" },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(updateRes.response.status).toEqual(404)
+          expect(updateRes.response.data.message).toEqual(
+            "Price lists with id: does-not-exist was not found"
+          )
+        })
+
+        it("should update price lists and set prices successfully", async () => {
+          await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              ends_at: new Date(),
+              starts_at: new Date(),
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+            },
+          ])
+
+          const data = {
+            title: "new price list name",
+            description: "new price list description",
+            rules: {
+              customer_group_id: [customerGroup.id],
+            },
+            prices: [
+              {
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+            ],
+          }
+
+          let response = await api.post(
+            `admin/price-lists/${priceList.id}`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              title: "new price list name",
+              description: "new price list description",
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 400,
+                  min_quantity: null,
+                  max_quantity: null,
+                  variant_id: variant.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+            })
+          )
+
+          // Updating prices should remove existing prices and create new ones
+          response = await api.post(
+            `admin/price-lists/${priceList.id}`,
+            {
+              prices: [
+                {
+                  amount: 600,
+                  variant_id: variant.id,
+                  currency_code: "usd",
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              prices: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 600,
+                  variant_id: variant.id,
+                  rules: { region_id: region.id },
+                }),
+              ],
+            })
+          )
+        })
+      })
+
+      describe("POST /admin/price-lists/:id/prices/batch/add", () => {
+        it("should add price list prices successfully", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+          ])
+
+          const data = {
+            prices: [
+              {
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `admin/price-lists/${priceList.id}/prices/batch/add`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list.prices.length).toEqual(2)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 400,
+                }),
+                expect.objectContaining({
+                  id: "test-price-id",
+                  currency_code: "usd",
+                  amount: 5000,
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("POST /admin/price-lists/:id/prices/batch/remove", () => {
+        it("should remove price list prices successfully", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+            },
+          ])
+
+          const psmaIdToDelete = priceList.price_set_money_amounts![0].id
+
+          const response = await api.post(
+            `/admin/price-lists/${priceList.id}/prices/batch/remove`,
+            { ids: [psmaIdToDelete] },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: [],
+            })
+          )
         })
       })
     })

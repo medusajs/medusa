@@ -1,8 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -666,7 +666,7 @@ moduleIntegrationTestRunner({
         it("should add a price to a priceList successfully", async () => {
           await service.addPriceListPrices([
             {
-              priceListId: "price-list-1",
+              price_list_id: "price-list-1",
               prices: [
                 {
                   amount: 123,
@@ -734,7 +734,7 @@ moduleIntegrationTestRunner({
           try {
             await service.addPriceListPrices([
               {
-                priceListId: "price-list-1",
+                price_list_id: "price-list-1",
                 prices: [
                   {
                     amount: 123,
@@ -774,7 +774,7 @@ moduleIntegrationTestRunner({
 
           await service.addPriceListPrices([
             {
-              priceListId: "price-list-1",
+              price_list_id: "price-list-1",
               prices: [
                 {
                   amount: 123,
@@ -839,6 +839,203 @@ moduleIntegrationTestRunner({
                 }),
               ]),
               price_list_rules: [],
+            })
+          )
+        })
+      })
+
+      describe("updatePriceListPrices", () => {
+        it("should update a price to a priceList successfully", async () => {
+          const [priceSet] = await service.create([
+            {
+              rules: [
+                { rule_attribute: "region_id" },
+                { rule_attribute: "customer_group_id" },
+              ],
+            },
+          ])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 123,
+                  currency_code: "EUR",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: "test",
+                  },
+                } as any,
+              ],
+            },
+          ])
+
+          await service.updatePriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: "new test",
+                    customer_group_id: "new test",
+                  },
+                },
+              ],
+            },
+          ])
+
+          const [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            {
+              relations: [
+                "price_set_money_amounts.money_amount",
+                "price_set_money_amounts.price_set",
+                "price_set_money_amounts.price_rules",
+                "price_set_money_amounts.price_rules.rule_type",
+                "price_list_rules.price_list_rule_values",
+                "price_list_rules.rule_type",
+              ],
+              select: [
+                "id",
+                "price_set_money_amounts.price_rules.value",
+                "price_set_money_amounts.price_rules.rule_type.rule_attribute",
+                "price_set_money_amounts.rules_count",
+                "price_set_money_amounts.money_amount.amount",
+                "price_set_money_amounts.money_amount.currency_code",
+                "price_set_money_amounts.money_amount.price_list_id",
+                "price_list_rules.price_list_rule_values.value",
+                "price_list_rules.rule_type.rule_attribute",
+              ],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              price_set_money_amounts: expect.arrayContaining([
+                expect.objectContaining({
+                  rules_count: 2,
+                  price_rules: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "new test",
+                      rule_type: expect.objectContaining({
+                        rule_attribute: "region_id",
+                      }),
+                    }),
+                    expect.objectContaining({
+                      value: "new test",
+                      rule_type: expect.objectContaining({
+                        rule_attribute: "customer_group_id",
+                      }),
+                    }),
+                  ]),
+                  price_list: expect.objectContaining({
+                    id: expect.any(String),
+                  }),
+                  money_amount: expect.objectContaining({
+                    amount: 123,
+                    currency_code: "EUR",
+                  }),
+                }),
+              ]),
+              price_list_rules: [],
+            })
+          )
+        })
+
+        it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
+          await service.createRuleTypes([
+            { name: "twitter_handle", rule_attribute: "twitter_handle" },
+            { name: "region_id", rule_attribute: "region_id" },
+          ])
+
+          const [priceSet] = await service.create([
+            { rules: [{ rule_attribute: "region_id" }] },
+          ])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 123,
+                  currency_code: "EUR",
+                  price_set_id: priceSet.id,
+                  rules: { region_id: "test" },
+                } as any,
+              ],
+            },
+          ])
+
+          const error = await service
+            .updatePriceListPrices([
+              {
+                price_list_id: "price-list-1",
+                prices: [
+                  {
+                    id: "test-price-id",
+                    amount: 123,
+                    price_set_id: priceSet.id,
+                    rules: { twitter_handle: "owjuhl" },
+                  },
+                ],
+              },
+            ])
+            .catch((e) => e)
+
+          expect(error.message).toEqual(
+            `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set ${priceSet.id}`
+          )
+        })
+      })
+
+      describe("removePrices", () => {
+        it("should remove prices from a priceList successfully", async () => {
+          const [priceSet] = await service.create([
+            { rules: [{ rule_attribute: "region_id" }] },
+          ])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  amount: 123,
+                  currency_code: "EUR",
+                  price_set_id: priceSet.id,
+                },
+              ],
+            },
+          ])
+
+          let [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            {
+              relations: ["price_set_money_amounts"],
+              select: ["price_set_money_amounts.id"],
+            }
+          )
+
+          await service.removePrices(
+            priceList.price_set_money_amounts!.map((psma) => psma.id)
+          )
+          ;[priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            {
+              relations: ["price_set_money_amounts"],
+              select: ["id", "price_set_money_amounts.id"],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              price_set_money_amounts: [],
             })
           )
         })

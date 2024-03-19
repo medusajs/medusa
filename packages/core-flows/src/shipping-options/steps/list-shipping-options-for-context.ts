@@ -4,7 +4,7 @@ import {
   IFulfillmentModuleService,
   ShippingOptionDTO,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   context: Record<string, unknown>
@@ -20,10 +20,11 @@ export const listShippingOptionsForContextStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const shippingOptions = await fulfillmentService.listShippingOptions(
-      data.context,
-      data.config
-    )
+    const shippingOptions =
+      await fulfillmentService.listShippingOptionsForContext(
+        data.context,
+        data.config
+      )
 
     return new StepResponse(shippingOptions)
   }

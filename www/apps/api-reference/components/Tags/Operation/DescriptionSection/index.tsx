@@ -8,7 +8,7 @@ import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
 import { useArea } from "../../../../providers/area"
-import { Feedback, Badge, NextLink, FeatureFlagNotice } from "docs-ui"
+import { Feedback, Badge, Link, FeatureFlagNotice } from "docs-ui"
 import { usePathname } from "next/navigation"
 import formatReportLink from "../../../../utils/format-report-link"
 
@@ -70,9 +70,9 @@ const TagsOperationDescriptionSection = ({
       {operation.externalDocs && (
         <>
           Related guide:{" "}
-          <NextLink href={operation.externalDocs.url} target="_blank">
+          <Link href={operation.externalDocs.url} target="_blank">
             {operation.externalDocs.description || "Read More"}
-          </NextLink>
+          </Link>
         </>
       )}
       {operation.security && (

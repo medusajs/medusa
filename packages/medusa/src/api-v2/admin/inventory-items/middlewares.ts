@@ -15,7 +15,7 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/admin/inventory-items*",
-    middlewares: [authenticate("admin", ["session", "bearer"])],
+    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
   },
   {
     method: ["GET"],
@@ -28,6 +28,16 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["GET"],
+    matcher: "/admin/inventory-items/:id",
+    middlewares: [
+      transformQuery(
+        AdminGetInventoryItemsItemParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/inventory-items/:id/location-levels",
     middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
@@ -35,6 +45,12 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/inventory-items",
-    middlewares: [transformBody(AdminPostInventoryItemsReq)],
+    middlewares: [
+      transformBody(AdminPostInventoryItemsReq),
+      transformQuery(
+        AdminGetInventoryItemsItemParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

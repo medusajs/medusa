@@ -11,7 +11,8 @@ export const InlineCode = (props: InlineCodeProps) => {
     <CopyButton
       text={props.children as string}
       buttonClassName={clsx(
-        "bg-transparent border-0 p-0 inline text-medusa-fg-subtle group"
+        "bg-transparent border-0 p-0 inline text-medusa-fg-subtle group",
+        "font-monospace"
       )}
     >
       <code

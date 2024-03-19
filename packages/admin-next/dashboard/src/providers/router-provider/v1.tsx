@@ -2,6 +2,8 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminDraftOrdersRes,
+  AdminDiscountsRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
@@ -100,6 +102,25 @@ export const v1Routes: RouteObject[] = [
                 },
                 children: [
                   {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-shipping-address"),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import("../../routes/orders/order-billing-address"),
+                  },
+                  {
+                    path: "email",
+                    lazy: () => import("../../routes/orders/order-email"),
+                  },
+                  {
+                    path: "transfer-ownership",
+                    lazy: () =>
+                      import("../../routes/orders/order-transfer-ownership"),
+                  },
+                  {
                     path: "edit",
                     lazy: () => import("../../routes/orders/order-edit"),
                   },
@@ -114,7 +135,7 @@ export const v1Routes: RouteObject[] = [
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-list"),
               },
@@ -122,6 +143,38 @@ export const v1Routes: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-detail"),
+                handle: {
+                  crumb: (data: AdminDraftOrdersRes) =>
+                    `Draft #${data.draft_order.display_id}`,
+                },
+                children: [
+                  {
+                    path: "transfer-ownership",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-transfer-ownership"
+                      ),
+                  },
+                  {
+                    path: "shipping-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-shipping-address"
+                      ),
+                  },
+                  {
+                    path: "billing-address",
+                    lazy: () =>
+                      import(
+                        "../../routes/draft-orders/draft-order-billing-address"
+                      ),
+                  },
+                  {
+                    path: "email",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-email"),
+                  },
+                ],
               },
             ],
           },
@@ -382,25 +435,36 @@ export const v1Routes: RouteObject[] = [
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/discounts/list"),
+                path: "",
+                lazy: () => import("../../routes/discounts/discount-list"),
               },
               {
                 path: "create",
-                lazy: () => import("../../routes/discounts/create"),
+                lazy: () => import("../../routes/discounts/discount-create"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/discounts/details"),
+                lazy: () => import("../../routes/discounts/discount-detail"),
+                handle: {
+                  crumb: (data: AdminDiscountsRes) => data.discount.code,
+                },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../routes/discounts/edit-details"),
+                    lazy: () =>
+                      import("../../routes/discounts/discount-edit-details"),
                   },
                   {
                     path: "configuration",
                     lazy: () =>
-                      import("../../routes/discounts/edit-configuration"),
+                      import(
+                        "../../routes/discounts/discount-edit-configuration"
+                      ),
+                  },
+                  {
+                    path: "conditions",
+                    lazy: () =>
+                      import("../../routes/discounts/discount-edit-conditions"),
                   },
                 ],
               },
