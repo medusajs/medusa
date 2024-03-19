@@ -1601,29 +1601,23 @@ export default class FulfillmentModuleService<
         })
       )
 
-      if (fulfillmentSet.service_zones?.length) {
-        for (const serviceZone of fulfillmentSet.service_zones) {
+      for (const serviceZone of fulfillmentSet.service_zones ?? []) {
+        sharedContext.messageAggregator!.saveRawMessageData(
+          buildMessage({
+            eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
+            id: serviceZone.id,
+            object: "service_zone",
+          })
+        )
+
+        for (const geoZone of serviceZone.geo_zones ?? []) {
           sharedContext.messageAggregator!.saveRawMessageData(
             buildMessage({
-              eventName:
-                FulfillmentUtils.FulfillmentEvents.service_zone_created,
-              id: serviceZone.id,
-              object: "service_zone",
+              eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
+              id: geoZone.id,
+              object: "geo_zone",
             })
           )
-
-          if (serviceZone.geo_zones?.length) {
-            for (const geoZone of serviceZone.geo_zones) {
-              sharedContext.messageAggregator!.saveRawMessageData(
-                buildMessage({
-                  eventName:
-                    FulfillmentUtils.FulfillmentEvents.geo_zone_created,
-                  id: geoZone.id,
-                  object: "geo_zone",
-                })
-              )
-            }
-          }
         }
       }
     }
