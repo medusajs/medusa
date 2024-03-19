@@ -351,7 +351,13 @@ export function ReturnsForm({
                 <Form.Item>
                   <div className="flex items-center justify-between">
                     <Form.Label
-                      tooltip={t("orders.returns.shippingPriceTooltip")}
+                      tooltip={
+                        form.watch("enable_custom_refund")
+                          ? t("orders.returns.shippingPriceTooltip1")
+                          : !form.watch("shipping")
+                          ? t("orders.returns.shippingPriceTooltip2")
+                          : undefined
+                      }
                     >
                       {t("orders.returns.customShippingPrice")}
                     </Form.Label>
