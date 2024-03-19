@@ -272,7 +272,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it.only("should list the inventory levels", async () => {
+        it("should list the inventory levels", async () => {
           const response = await api.get(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
             adminHeaders
