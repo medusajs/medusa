@@ -2,6 +2,7 @@ const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 const { createAdminUser } = require("../../../helpers/create-admin-user")
 const { breaking } = require("../../../helpers/breaking")
+const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 const adminReqConfig = {
   headers: {
@@ -21,6 +22,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let container
     let salesChannelService
+    let productService
+    let remoteQuery
 
     beforeAll(() => {
       ;({
@@ -41,6 +44,8 @@ medusaIntegrationTestRunner({
       salesChannelService = container.resolve(
         ModuleRegistrationName.SALES_CHANNEL
       )
+      productService = container.resolve(ModuleRegistrationName.PRODUCT)
+      remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
     })
 
     describe("GET /admin/sales-channels/:id", () => {
@@ -687,29 +692,59 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/sales-channels/:id/products/batch", () => {
-      let salesChannel
-      let product
+      let { salesChannel, product } = {}
 
       beforeEach(async () => {
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
-        product = await simpleProductFactory(dbConnection, {
-          id: "product_1",
-          title: "test title",
-        })
+        ;({ salesChannel, product } = await breaking(
+          async () => {
+            const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+              name: "test name",
+              description: "test description",
+            })
+            const product = await simpleProductFactory(dbConnection, {
+              id: "product_1",
+              title: "test title",
+            })
+
+            return { salesChannel, product }
+          },
+          async () => {
+            const salesChannel = await salesChannelService.create({
+              name: "test name",
+              description: "test description",
+            })
+            const product = await productService.create({
+              title: "test title",
+            })
+
+            return { salesChannel, product }
+          }
+        ))
       })
 
       it("should add products to a sales channel", async () => {
         const payload = {
-          product_ids: [{ id: product.id }],
+          product_ids: breaking(
+            () => [{ id: product.id }],
+            () => [product.id]
+          ),
         }
 
-        const response = await api.post(
-          `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          payload,
-          adminReqConfig
+        const response = await breaking(
+          async () => {
+            return await api.post(
+              `/admin/sales-channels/${salesChannel.id}/products/batch`,
+              payload,
+              adminReqConfig
+            )
+          },
+          async () => {
+            return await api.post(
+              `/admin/sales-channels/${salesChannel.id}/products/batch/add`,
+              payload,
+              adminReqConfig
+            )
+          }
         )
 
         expect(response.status).toEqual(200)
@@ -725,26 +760,64 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const attachedProduct = await dbConnection.manager.findOne(Product, {
-          where: { id: product.id },
-          relations: ["sales_channels"],
-        })
+        const attachedProduct = await breaking(
+          async () => {
+            return await dbConnection.manager.findOne(Product, {
+              where: { id: product.id },
+              relations: ["sales_channels"],
+            })
+          },
+          async () => {
+            const [product] = await remoteQuery({
+              products: {
+                fields: ["id"],
+                sales_channels: {
+                  fields: ["id", "name", "description", "is_disabled"],
+                },
+              },
+            })
+
+            return product
+          }
+        )
 
         // + default sales channel
-        expect(attachedProduct.sales_channels.length).toBe(2)
+        expect(attachedProduct.sales_channels.length).toBe(
+          breaking(
+            () => 2,
+            () => 1 // Comment: The product factory from v1 adds products to the default channel
+          )
+        )
         expect(attachedProduct.sales_channels).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: "test name",
-              description: "test description",
-              is_disabled: false,
-            }),
-            expect.objectContaining({
-              id: expect.any(String),
-              is_disabled: false,
-            }),
-          ])
+          expect.arrayContaining(
+            breaking(
+              () => {
+                return [
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    name: "test name",
+                    description: "test description",
+                    is_disabled: false,
+                  }),
+                  expect.objectContaining({
+                    // Comment: Same as above
+                    id: expect.any(String),
+                    is_disabled: false,
+                  }),
+                ]
+              },
+              () => {
+                return [
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    name: "test name",
+                    description: "test description",
+                    is_disabled: false,
+                  }),
+                ]
+              }
+            )
+          )
         )
       })
     })
