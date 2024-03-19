@@ -468,33 +468,28 @@ export function abstractModuleServiceFactory<
       this.__container__ = container
       this.baseRepository_ = container.baseRepository
 
-      try {
-        this.eventBusModuleService_ = container.eventBusModuleService
-      } catch {
-        /* ignore */
-      }
-    }
-
-    protected async emitEvents_(groupedEvents) {
       const hasEventBusModuleService = Object.keys(this.__container__).find(
-        (key) => key === ModuleRegistrationName.EVENT_BUS
+        // TODO: Should use ModuleRegistrationName.EVENT_BUS but it would require to move it to the utils package to prevent circular dependencies
+        (key) => key === "eventBusModuleService"
       )
       const hasEventBusService = Object.keys(this.__container__).find(
         (key) => key === "eventBusService"
       )
-      const eventBusModuleService = hasEventBusService
+      this.eventBusModuleService_ = hasEventBusService
         ? this.__container__.eventBusService
         : hasEventBusModuleService
         ? this.__container__[ModuleRegistrationName.EVENT_BUS]
         : undefined
+    }
 
-      if (!eventBusModuleService || !groupedEvents) {
+    protected async emitEvents_(groupedEvents) {
+      if (!this.eventBusModuleService_ || !groupedEvents) {
         return
       }
 
       const promises: Promise<void>[] = []
       for (const group of Object.keys(groupedEvents)) {
-        promises.push(eventBusModuleService.emit(groupedEvents[group]))
+        promises.push(this.eventBusModuleService_.emit(groupedEvents[group]))
       }
 
       await Promise.all(promises)
