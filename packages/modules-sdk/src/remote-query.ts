@@ -4,12 +4,14 @@ import {
   toRemoteJoinerQuery,
 } from "@medusajs/orchestration"
 import {
+  JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
   ModuleJoinerConfig,
   RemoteExpandProperty,
   RemoteJoinerQuery,
+  RemoteNestedExpands,
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
 
@@ -78,42 +80,36 @@ export class RemoteQuery {
   }
 
   public static getAllFieldsAndRelations(
-    data: any,
+    expand: RemoteExpandProperty | RemoteNestedExpands[number],
     prefix = "",
-    args: Record<string, unknown[]> = {}
+    args: JoinerArgument = {} as JoinerArgument
   ): {
     select: string[]
     relations: string[]
-    args: Record<string, unknown[]>
+    args: JoinerArgument
   } {
-    const dataCopy = JSON.parse(JSON.stringify(data))
+    expand = JSON.parse(JSON.stringify(expand))
 
     let fields: Set<string> = new Set()
     let relations: string[] = []
-    let selectAll = false
 
-    dataCopy.fields?.forEach((field: string) => {
-      if (selectAll || field === "*") {
-        selectAll = true
-        return
+    expand.fields?.forEach((field: string) => {
+      if (field === "*") {
+        expand.fields = []
       }
       fields.add(prefix ? `${prefix}.${field}` : field)
     })
 
-    if (selectAll) {
-      dataCopy.fields = []
-    }
+    args[prefix] = expand.args
 
-    args[prefix] = dataCopy.args
-
-    for (const property in dataCopy.expands ?? {}) {
+    for (const property in expand.expands ?? {}) {
       const newPrefix = prefix ? `${prefix}.${property}` : property
 
       relations.push(newPrefix)
       fields.delete(newPrefix)
 
       const result = RemoteQuery.getAllFieldsAndRelations(
-        dataCopy.expands[property],
+        expand.expands![property],
         newPrefix,
         args
       )
