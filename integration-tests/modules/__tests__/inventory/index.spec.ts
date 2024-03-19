@@ -284,6 +284,97 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("Update inventory levels", () => {
+        let locationId
+        let inventoryItemId
+        beforeEach(async () => {
+          const invItemReps = await api.post(
+            `/admin/inventory-items`,
+            { sku: "test-sku" },
+            adminHeaders
+          )
+
+          inventoryItemId = invItemReps.data.inventory_item.id
+
+          const sl = await appContainer
+            .resolve(ModuleRegistrationName.STOCK_LOCATION)
+            .create({ name: "test-location" })
+
+          locationId = sl.id
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: locationId,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+        })
+
+        it("should update the stocked and incoming quantity for an inventory level", async () => {
+          const result = await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`,
+            {
+              stocked_quantity: 15,
+              incoming_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          expect(result.status).toEqual(200)
+          expect(result.data.inventory_level).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              inventory_item_id: inventoryItemId,
+              location_id: locationId,
+              stocked_quantity: 15,
+              reserved_quantity: 0,
+              incoming_quantity: 5,
+              metadata: null,
+            })
+          )
+        })
+
+        it("should fail to update a non-existing location level", async () => {
+          const error = await api
+            .post(
+              `/admin/inventory-items/${inventoryItemId}/location-levels/does-not-exist`,
+              {
+                stocked_quantity: 15,
+                incoming_quantity: 5,
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: `Item ${inventoryItemId} is not stocked at location does-not-exist`,
+          })
+        })
+
+        it("should fail to update a non-existing inventory_item_id level", async () => {
+          const error = await api
+            .post(
+              `/admin/inventory-items/does-not-exist/location-levels/${locationId}`,
+              {
+                stocked_quantity: 15,
+                incoming_quantity: 5,
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data).toEqual({
+            type: "not_found",
+            message: `Item does-not-exist is not stocked at location ${locationId}`,
+          })
+        })
+      })
+
       describe("Retrieve inventory item", () => {
         let location1 = "loc_1"
         let location2 = "loc_2"

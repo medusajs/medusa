@@ -1,3 +1,4 @@
+import { BaseFilterable } from "../../dal"
 import { NumericalComparisonOperator } from "../../common"
 
 /**
@@ -53,7 +54,8 @@ export interface InventoryLevelDTO {
   deleted_at: string | Date | null
 }
 
-export interface FilterableInventoryLevelProps {
+export interface FilterableInventoryLevelProps
+  extends BaseFilterable<FilterableInventoryLevelProps> {
   /**
    * Filter inventory levels by the ID of their associated inventory item.
    */
