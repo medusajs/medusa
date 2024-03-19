@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetSalesChannelsParams,
   AdminGetSalesChannelsSalesChannelParams,
+  AdminPostSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsReq,
   AdminPostSalesChannelsSalesChannelReq,
 } from "./validators"
@@ -55,5 +56,10 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/sales-channels/:id",
     middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/sales-channels/:id/products/batch/add",
+    middlewares: [transformBody(AdminPostSalesChannelsChannelProductsBatchReq)],
   },
 ]
