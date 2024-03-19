@@ -61,7 +61,11 @@ export default class PriceListRule {
   price_list_rule_values = new Collection<PriceListRuleValue>(this)
 
   @PriceListRulePriceListIdIndex.MikroORMIndex()
-  @ManyToOne({ entity: () => PriceList, fieldName: "price_list_id" })
+  @ManyToOne({
+    entity: () => PriceList,
+    fieldName: "price_list_id",
+    onDelete: "cascade",
+  })
   price_list: PriceList
 
   @Property({

@@ -52,7 +52,7 @@ export default class PriceSetMoneyAmountRules {
   price_set_money_amount: PriceSetMoneyAmount
 
   @PriceSetMoneyAmountRulesRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne(() => RuleType, {})
+  @ManyToOne(() => RuleType, { onDelete: "cascade" })
   rule_type: RuleType
 
   @Property({ columnType: "text" })

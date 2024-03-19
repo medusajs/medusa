@@ -193,5 +193,45 @@ export class Migration20230929122253 extends Migration {
     this.addSql(
       'alter table if exists "price_set_money_amount" add constraint "price_set_money_amount_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete cascade;'
     )
+
+    this.addSql(
+      'alter table if exists "price_rule" drop constraint if exists "price_rule_rule_type_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_rule" add constraint "price_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_rule" drop constraint if exists "price_rule_rule_type_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_list_rule" drop constraint if exists "price_list_rule_price_list_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_rule" add constraint "price_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_list_rule" add constraint "price_list_rule_price_list_id_foreign" foreign key ("price_list_id") references "price_list" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_rule_type" drop constraint if exists "price_set_rule_type_rule_type_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount_rules" drop constraint if exists "price_set_money_amount_rules_rule_type_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
+    )
   }
 }

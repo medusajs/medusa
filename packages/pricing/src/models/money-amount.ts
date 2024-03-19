@@ -58,6 +58,7 @@ class MoneyAmount {
   @OneToOne({
     entity: () => PriceSetMoneyAmount,
     mappedBy: (psma) => psma.money_amount,
+    onDelete: "cascade",
   })
   price_set_money_amount: PriceSetMoneyAmount
 

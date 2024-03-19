@@ -63,10 +63,7 @@ export default class PriceRule {
   price_set: PriceSet
 
   @PriceRuleRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne({
-    entity: () => RuleType,
-    fieldName: "rule_type_id",
-  })
+  @ManyToOne({ entity: () => RuleType })
   rule_type: RuleType
 
   @Property({ columnType: "text" })

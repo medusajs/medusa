@@ -45,7 +45,7 @@ export default class PriceSetRuleType {
   price_set: PriceSet
 
   @PriceSetRuleTypeRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne(() => RuleType)
+  @ManyToOne(() => RuleType, { onDelete: "cascade" })
   rule_type: RuleType
 
   @Property({
