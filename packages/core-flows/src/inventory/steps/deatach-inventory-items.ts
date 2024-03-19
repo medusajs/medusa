@@ -13,47 +13,21 @@ export const deatachInventoryItemStep = createStep(
   async (ids: string[], { container }) => {
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
-    const linkModule: ILinkModule = remoteLink.getLinkModule(
-      Modules.PRODUCT,
-      "variant_id",
-      Modules.INVENTORY,
-      "inventory_item_id"
-    )
+    await remoteLink.delete({
+      [Modules.INVENTORY]: { inventory_item_id: ids },
+    })
 
-    const links = (await linkModule.list(
-      { inventory_item_id: ids },
-      { select: ["variant_id", "inventory_item_id"] }
-    )) as { inventory_item_id: string; variant_id: string }[]
-
-    await remoteLink.dismiss(
-      links.map(({ inventory_item_id, variant_id }) => ({
-        [Modules.PRODUCT]: {
-          variant_id,
-        },
-        [Modules.INVENTORY]: {
-          inventory_item_id,
-        },
-      }))
-    )
-
-    return new StepResponse(void 0, links)
+    return new StepResponse(void 0, ids)
   },
-  async (input, { container }) => {
-    if (!input?.length) {
+  async (deatachedInventoryIds, { container }) => {
+    if (!deatachedInventoryIds?.length) {
       return
     }
 
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
-    const linkDefinitions = input.map(({ inventory_item_id, variant_id }) => ({
-      [Modules.PRODUCT]: {
-        variant_id,
-      },
-      [Modules.INVENTORY]: {
-        inventory_item_id,
-      },
-    }))
-
-    const links = await remoteLink.create(linkDefinitions)
+    await remoteLink.restore({
+      [Modules.INVENTORY]: { inventory_item_id: deatachedInventoryIds },
+    })
   }
 )
