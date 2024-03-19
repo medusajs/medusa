@@ -270,6 +270,7 @@
       "sendNotificationHint": "Notify customer of created return.",
       "customRefund": "Custom refund",
       "shippingPriceTooltip1": "Custom refund is enabled",
+      "noShippingOptions": "There are no shipping options for the region",
       "shippingPriceTooltip2": "Shipping needs to be selected",
       "customRefundHint": "If you want to refund something else instead of the total refund.",
       "customShippingPrice": "Custom shipping",

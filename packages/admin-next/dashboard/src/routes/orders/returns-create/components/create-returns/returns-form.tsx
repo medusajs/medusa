@@ -46,10 +46,14 @@ export function ReturnsForm({
     Record<string, LevelWithAvailability[]>
   >({})
 
-  const { shipping_options = [] } = useAdminShippingOptions({
-    region_id: order.region_id,
-    is_return: true,
-  })
+  const { shipping_options = [], isLoading: isShippingOptionsLoading } =
+    useAdminShippingOptions({
+      region_id: order.region_id,
+      is_return: true,
+    })
+
+  const noShippingOptions =
+    !isShippingOptionsLoading && !shipping_options.length
 
   const { stock_locations = [] } = useAdminStockLocations({})
 
@@ -205,12 +209,24 @@ export function ReturnsForm({
               render={({ field: { onChange, ref, ...field } }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.shipping")}</Form.Label>
+                    <Form.Label
+                      tooltip={
+                        noShippingOptions
+                          ? t("orders.returns.noShippingOptions")
+                          : undefined
+                      }
+                    >
+                      {t("fields.shipping")}
+                    </Form.Label>
                     <Form.Hint>
                       {t("orders.returns.shippingDescription")}
                     </Form.Hint>
                     <Form.Control>
-                      <Select onValueChange={onChange} {...field}>
+                      <Select
+                        onValueChange={onChange}
+                        {...field}
+                        disabled={noShippingOptions}
+                      >
                         <Select.Trigger className="bg-ui-bg-base" ref={ref}>
                           <Select.Value />
                         </Select.Trigger>
