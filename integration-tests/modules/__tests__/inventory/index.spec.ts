@@ -238,6 +238,61 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("Delete inventory levels", () => {
+        const locationId = "loc_1"
+        let inventoryItem
+
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "MY_SKU",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: locationId,
+              stocked_quantity: 10,
+            },
+          ])
+        })
+
+        it("should delete an inventory location level without reservations", async () => {
+          const result = await api.delete(
+            `/admin/inventory-items/${inventoryItem.id}/location-levels/${locationId}`,
+            adminHeaders
+          )
+
+          expect(result.status).toEqual(200)
+          expect(result.data).toEqual({
+            id: expect.any(String),
+            object: "inventory-level",
+            deleted: true,
+          })
+        })
+
+        it("should fail delete an inventory location level with reservations", async () => {
+          await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: locationId,
+            quantity: 5,
+          })
+
+          let error
+
+          await api
+            .delete(
+              `/admin/inventory-items/${inventoryItem.id}/location-levels/${locationId}`,
+              adminHeaders
+            )
+            .catch((e) => (error = e))
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "not_allowed",
+            message: `Cannot remove Inventory Level ${inventoryItem.id} at Location ${locationId} because there are reservations at location`,
+          })
+        })
+      })
+
       describe("Retrieve inventory item", () => {
         let location1 = "loc_1"
         let location2 = "loc_2"
