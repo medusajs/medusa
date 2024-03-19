@@ -2,7 +2,8 @@
   "name": "medusa-file-s3",
   "version": "1.4.1",
   "description": "AWS s3 file connector for Medusa",
-  "main": "dist/index.js",
+  "main": "dist/services/s3.js",
+  "types": "dist/services/s3.d.ts",
   "files": [
     "dist"
   ],
