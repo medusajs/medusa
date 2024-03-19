@@ -27,10 +27,6 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_set_money_amount_rules" ("id" text not null, "price_set_money_amount_id" text not null, "rule_type_id" text not null, "value" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_set_money_amount_rules_pkey" primary key ("id"));'
-    )
-
-    this.addSql(
       'create table "price_rule" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, "value" text not null, "priority" integer not null default 0, "price_set_money_amount_id" text not null, "price_list_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_rule_pkey" primary key ("id"));'
     )
 
@@ -46,13 +42,6 @@ export class Migration20230929122253 extends Migration {
     )
     this.addSql(
       'alter table "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
-    )
-
-    this.addSql(
-      'alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade on delete cascade;'
-    )
-    this.addSql(
-      'alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
     )
 
     this.addSql(
@@ -149,15 +138,7 @@ export class Migration20230929122253 extends Migration {
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_price_set_rule_type_deleted_at" ON "price_set_rule_type" (deleted_at) WHERE deleted_at IS NOT NULL;'
     )
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_price_set_money_amount_id" ON "price_set_money_amount_rules" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL;'
-    )
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_rule_type_id" ON "price_set_money_amount_rules" (rule_type_id) WHERE deleted_at IS NOT NULL;'
-    )
-    this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_rules_deleted_at" ON "price_set_money_amount_rules" (deleted_at) WHERE deleted_at IS NOT NULL;'
-    )
+
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_price_rule_price_set_id" ON "price_rule" (price_set_id) WHERE deleted_at IS NOT NULL;'
     )
@@ -223,15 +204,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'alter table if exists "price_set_money_amount_rules" drop constraint if exists "price_set_money_amount_rules_rule_type_id_foreign";'
-    )
-
-    this.addSql(
       'alter table if exists "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table if exists "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
     )
   }
 }

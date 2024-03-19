@@ -35,7 +35,6 @@ import {
   PriceRule,
   PriceSet,
   PriceSetMoneyAmount,
-  PriceSetMoneyAmountRules,
   PriceSetRuleType,
   RuleType,
 } from "@models"
@@ -56,7 +55,6 @@ type InjectedDependencies = {
   pricingRepository: PricingRepositoryService
   moneyAmountService: ModulesSdkTypes.InternalModuleService<any>
   priceSetService: ModulesSdkTypes.InternalModuleService<any>
-  priceSetMoneyAmountRulesService: ModulesSdkTypes.InternalModuleService<any>
   ruleTypeService: RuleTypeService<any>
   priceRuleService: PriceRuleService<any>
   priceSetRuleTypeService: ModulesSdkTypes.InternalModuleService<any>
@@ -73,7 +71,6 @@ const generateMethodForModels = [
   PriceListRuleValue,
   PriceRule,
   PriceSetMoneyAmount,
-  PriceSetMoneyAmountRules,
   PriceSetRuleType,
   RuleType,
 ]
@@ -82,7 +79,6 @@ export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
     TMoneyAmount extends MoneyAmount = MoneyAmount,
     TRuleType extends RuleType = RuleType,
-    TPriceSetMoneyAmountRules extends PriceSetMoneyAmountRules = PriceSetMoneyAmountRules,
     TPriceRule extends PriceRule = PriceRule,
     TPriceSetRuleType extends PriceSetRuleType = PriceSetRuleType,
     TPriceSetMoneyAmount extends PriceSetMoneyAmount = PriceSetMoneyAmount,
@@ -96,9 +92,6 @@ export default class PricingModuleService<
     {
       MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
       PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
-      PriceSetMoneyAmountRules: {
-        dto: PricingTypes.PriceSetMoneyAmountRulesDTO
-      }
       PriceRule: { dto: PricingTypes.PriceRuleDTO }
       RuleType: { dto: PricingTypes.RuleTypeDTO }
       PriceList: { dto: PricingTypes.PriceListDTO }
@@ -112,7 +105,6 @@ export default class PricingModuleService<
   protected readonly moneyAmountService_: ModulesSdkTypes.InternalModuleService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceSetService_: ModulesSdkTypes.InternalModuleService<TPriceSet>
-  protected readonly priceSetMoneyAmountRulesService_: ModulesSdkTypes.InternalModuleService<TPriceSetMoneyAmountRules>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
   protected readonly priceSetRuleTypeService_: ModulesSdkTypes.InternalModuleService<TPriceSetRuleType>
   protected readonly priceSetMoneyAmountService_: ModulesSdkTypes.InternalModuleService<TPriceSetMoneyAmount>
@@ -127,7 +119,6 @@ export default class PricingModuleService<
       moneyAmountService,
       ruleTypeService,
       priceSetService,
-      priceSetMoneyAmountRulesService,
       priceRuleService,
       priceSetRuleTypeService,
       priceSetMoneyAmountService,
@@ -145,7 +136,6 @@ export default class PricingModuleService<
     this.moneyAmountService_ = moneyAmountService
     this.ruleTypeService_ = ruleTypeService
     this.priceSetService_ = priceSetService
-    this.priceSetMoneyAmountRulesService_ = priceSetMoneyAmountRulesService
     this.ruleTypeService_ = ruleTypeService
     this.priceRuleService_ = priceRuleService
     this.priceSetRuleTypeService_ = priceSetRuleTypeService
@@ -776,37 +766,18 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async createPriceSetMoneyAmountRules(
-    data: PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
+  async updatePriceRules(
+    data: PricingTypes.UpdatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]> {
-    const records = await this.priceSetMoneyAmountRulesService_.create(
-      data,
-      sharedContext
+  ): Promise<PricingTypes.PriceRuleDTO[]> {
+    const priceRules = await this.priceRuleService_.update(data, sharedContext)
+
+    return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+      priceRules,
+      {
+        populate: true,
+      }
     )
-
-    return await this.baseRepository_.serialize<
-      PricingTypes.PriceSetMoneyAmountRulesDTO[]
-    >(records, {
-      populate: true,
-    })
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updatePriceSetMoneyAmountRules(
-    data: PricingTypes.UpdatePriceSetMoneyAmountRulesDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]> {
-    const records = await this.priceSetMoneyAmountRulesService_.update(
-      data,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      PricingTypes.PriceSetMoneyAmountRulesDTO[]
-    >(records, {
-      populate: true,
-    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -818,21 +789,6 @@ export default class PricingModuleService<
       data as ServiceTypes.CreatePriceRuleDTO[],
       sharedContext
     )
-
-    return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-      priceRules,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updatePriceRules(
-    data: PricingTypes.UpdatePriceRuleDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const priceRules = await this.priceRuleService_.update(data, sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
       priceRules,

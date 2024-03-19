@@ -22,7 +22,6 @@ import MoneyAmount from "./money-amount"
 import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
-import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
@@ -79,12 +78,6 @@ export default class PriceSetMoneyAmount {
     cascade: ["soft-remove" as Cascade],
   })
   price_rules = new Collection<PriceRule>(this)
-
-  @OneToMany({
-    entity: () => PriceSetMoneyAmountRules,
-    mappedBy: (psmar) => psmar.price_set_money_amount,
-  })
-  price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
 
   @PriceSetMoneyAmountPriceListIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceList, { onDelete: "cascade", nullable: true })
