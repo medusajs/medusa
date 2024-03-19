@@ -1,9 +1,9 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
+import { UseFormReturn } from "react-hook-form"
 
 import { Input, Text } from "@medusajs/ui"
 import { LineItem } from "@medusajs/medusa"
-import { NestedForm } from "@medusajs/admin-ui/ui/src/utils/nested-form"
 
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -15,7 +15,7 @@ type OrderEditItemProps = {
   item: LineItem
   currencyCode: string
 
-  form: NestedForm<Record<string, number>>
+  form: UseFormReturn<Record<string, number>>
   onQuantityChangeComplete: (id: string) => void
   onRemove: (id: string) => void
 }
@@ -89,15 +89,11 @@ function OrderEditItem({
                     {...field}
                     onChange={(e) => {
                       const val = e.target.value
-                      if (val === "") {
-                        form.setValue(item.id, null)
-                      } else {
-                        form.setValue(item.id, Number(val))
-                      }
+                      field.onChange(val === "" ? null : Number(val))
                     }}
                     onBlur={() => {
                       if (typeof form.getValues()[item.id] === "undefined") {
-                        form.setValue(item.id, 1)
+                        field.onChange(1)
                       }
                       onQuantityChangeComplete(item.id)
                     }}

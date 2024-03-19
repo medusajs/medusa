@@ -3,16 +3,12 @@ import { useForm } from "react-hook-form"
 import * as zod from "zod"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {
   adminOrderEditsKeys,
   adminOrderKeys,
   useAdminCancelOrderEdit,
   useAdminConfirmOrderEdit,
-  useAdminDeleteOrderEditItemChange,
   useAdminOrderEditAddLineItem,
-  useAdminOrderEditDeleteLineItem,
-  useAdminOrderEditUpdateLineItem,
   useAdminUpdateOrderEdit,
 } from "medusa-react"
 
@@ -61,7 +57,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
         acc[i.id] = i.quantity
         return acc
       },
-      { note: orderEdit.internal_note }
+      { note: orderEdit.internal_note || "" }
     ),
   })
 
@@ -267,9 +263,8 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
 
                     {!!addedItems.length &&
                       addedItems.map((item) => (
-                        <div className="pb-4 pt-2">
+                        <div key={item.id} className="pb-4 pt-2">
                           <OrderEditItem
-                            key={item.id}
                             item={item}
                             form={form}
                             currencyCode={order.currency_code}
