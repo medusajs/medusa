@@ -6,14 +6,25 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { MockEventBusService } from "medusa-test-utils/dist"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment sets with a filter", async function () {
@@ -153,6 +164,22 @@ moduleIntegrationTestRunner({
                 type: data.type,
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              {
+                body: {
+                  data: { id: fulfillmentSet.id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "fulfillment_set",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.created,
+                options: undefined,
+              },
+            ])
           })
 
           it("should create a collection of fulfillment sets", async function () {
@@ -180,6 +207,25 @@ moduleIntegrationTestRunner({
                   type: data_.type,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  {
+                    body: {
+                      data: { id: fulfillmentSets[i].id },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "fulfillment_set",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.created,
+                    options: undefined,
+                  },
+                ])
+              )
+
               ++i
             }
           })
@@ -210,6 +256,35 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              {
+                body: {
+                  data: { id: fulfillmentSet.id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "fulfillment_set",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.created,
+                options: undefined,
+              },
+              {
+                body: {
+                  data: { id: fulfillmentSet.service_zones[0].id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "service_zone",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.service_zone_created,
+                options: undefined,
+              },
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones", async function () {
@@ -262,6 +337,38 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  {
+                    body: {
+                      data: { id: fulfillmentSets[i].id },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "fulfillment_set",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.created,
+                    options: undefined,
+                  },
+                  {
+                    body: {
+                      data: { id: fulfillmentSets[i].service_zones[0].id },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "service_zone",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.service_zone_created,
+                    options: undefined,
+                  },
+                ])
+              )
+
               ++i
             }
           })
@@ -305,6 +412,48 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              {
+                body: {
+                  data: { id: fulfillmentSet.id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "fulfillment_set",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.created,
+                options: undefined,
+              },
+              {
+                body: {
+                  data: { id: fulfillmentSet.service_zones[0].id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "service_zone",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.service_zone_created,
+                options: undefined,
+              },
+              {
+                body: {
+                  data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
+                  metadata: {
+                    action: "created",
+                    eventGroupId: undefined,
+                    object: "geo_zone",
+                    service: "fulfillment",
+                  },
+                },
+                eventName: FulfillmentEvents.geo_zone_created,
+                options: undefined,
+              },
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones and new geo zones", async function () {
@@ -385,6 +534,53 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  {
+                    body: {
+                      data: { id: fulfillmentSets[0].id },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "fulfillment_set",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.created,
+                    options: undefined,
+                  },
+                  {
+                    body: {
+                      data: { id: fulfillmentSets[0].service_zones[0].id },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "service_zone",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.service_zone_created,
+                    options: undefined,
+                  },
+                  {
+                    body: {
+                      data: {
+                        id: fulfillmentSets[0].service_zones[0].geo_zones[0].id,
+                      },
+                      metadata: {
+                        action: "created",
+                        eventGroupId: undefined,
+                        object: "geo_zone",
+                        service: "fulfillment",
+                      },
+                    },
+                    eventName: FulfillmentEvents.geo_zone_created,
+                    options: undefined,
+                  },
+                ])
+              )
+
               ++i
             }
           })

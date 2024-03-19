@@ -291,7 +291,10 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    this.aggregateFulfillmentSetCreatedEvents(createdFulfillmentSets, sharedContext)
+    this.aggregateFulfillmentSetCreatedEvents(
+      createdFulfillmentSets,
+      sharedContext
+    )
 
     return Array.isArray(data)
       ? createdFulfillmentSets
@@ -1564,7 +1567,10 @@ export default class FulfillmentModuleService<
     return geoZoneConstraints
   }
 
-  protected aggregateFulfillmentSetCreatedEvents(createdFulfillmentSets: TEntity[], sharedContext: Context): void {
+  protected aggregateFulfillmentSetCreatedEvents(
+    createdFulfillmentSets: TEntity[],
+    sharedContext: Context
+  ): void {
     for (const fulfillmentSet of createdFulfillmentSets) {
       sharedContext.messageAggregator!.saveRawMessageData({
         eventName: FulfillmentUtils.FulfillmentEvents.created,

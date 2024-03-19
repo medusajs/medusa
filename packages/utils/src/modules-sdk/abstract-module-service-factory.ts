@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -25,6 +25,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type BaseMethods =
   | "retrieve"
@@ -475,13 +476,25 @@ export function abstractModuleServiceFactory<
     }
 
     protected async emitEvents_(groupedEvents) {
-      if (!this.eventBusModuleService_ || !groupedEvents) {
+      const hasEventBusModuleService = Object.keys(this.__container__).find(
+        (key) => key === ModuleRegistrationName.EVENT_BUS
+      )
+      const hasEventBusService = Object.keys(this.__container__).find(
+        (key) => key === "eventBusService"
+      )
+      const eventBusModuleService = hasEventBusService
+        ? this.__container__.eventBusService
+        : hasEventBusModuleService
+        ? this.__container__[ModuleRegistrationName.EVENT_BUS]
+        : undefined
+
+      if (!eventBusModuleService || !groupedEvents) {
         return
       }
 
       const promises: Promise<void>[] = []
       for (const group of Object.keys(groupedEvents)) {
-        promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+        promises.push(eventBusModuleService.emit(groupedEvents[group]))
       }
 
       await Promise.all(promises)
