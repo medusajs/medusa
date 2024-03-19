@@ -41,11 +41,14 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   extends: [
     {
       serviceName: Modules.PRODUCT,
+      fieldAlias: {
+        price_set: "price_set_link.price_set",
+      },
       relationship: {
         serviceName: LINKS.ProductVariantPriceSet,
         primaryKey: "variant_id",
         foreignKey: "id",
-        alias: "price",
+        alias: "price_set_link",
       },
     },
     {
