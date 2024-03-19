@@ -1,8 +1,4 @@
-import {
-  IInventoryServiceNext,
-  InventoryNext,
-  UpdateInventoryItemInput,
-} from "@medusajs/types"
+import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import {
   convertItemResponseToUpdateRequest,
@@ -34,15 +30,11 @@ export const updateInventoryItemsStep = createStep(
     })
   },
   async (revertInput, { container }) => {
-    if (!revertInput) {
+    if (!revertInput?.dataBeforeUpdate?.length) {
       return
     }
 
-    const { dataBeforeUpdate = [], selects, relations } = revertInput
-
-    if (!dataBeforeUpdate.length) {
-      return
-    }
+    const { dataBeforeUpdate, selects, relations } = revertInput
 
     const inventoryService = container.resolve<IInventoryServiceNext>(
       ModuleRegistrationName.INVENTORY
