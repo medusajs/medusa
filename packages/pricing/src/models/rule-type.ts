@@ -1,10 +1,13 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
   Filter,
-  Index,
   ManyToMany,
   OnInit,
   OptionalProps,
@@ -15,7 +18,20 @@ import PriceSet from "./price-set"
 
 type OptionalFields = "default_priority"
 
-@Entity()
+const tableName = "rule_type"
+const RuleTypeDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const RuleTypeRuleAttributeIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "rule_attribute",
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class RuleType {
   [OptionalProps]?: OptionalFields
@@ -26,7 +42,8 @@ class RuleType {
   @Property({ columnType: "text" })
   name: string
 
-  @Property({ columnType: "text", index: "IDX_rule_type_rule_attribute" })
+  @RuleTypeRuleAttributeIndex.MikroORMIndex()
+  @Property({ columnType: "text" })
   rule_attribute: string
 
   @Property({ columnType: "integer", default: 0 })
@@ -50,7 +67,7 @@ class RuleType {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_rule_type_deleted_at" })
+  @RuleTypeDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

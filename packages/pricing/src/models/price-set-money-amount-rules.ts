@@ -1,10 +1,13 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -16,7 +19,27 @@ import RuleType from "./rule-type"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+const tableName = "price_set_money_amount_rules"
+const PriceSetMoneyAmountRulesDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const PriceSetMoneyAmountRulesPriceSetMoneyAmountIdIndex =
+  createPsqlIndexStatementHelper({
+    tableName: tableName,
+    columns: "price_set_money_amount_id",
+    where: "deleted_at IS NOT NULL",
+  })
+
+const PriceSetMoneyAmountRulesRuleTypeIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "rule_type_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceSetMoneyAmountRules {
   [OptionalProps]?: OptionalFields
@@ -24,15 +47,12 @@ export default class PriceSetMoneyAmountRules {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @ManyToOne(() => PriceSetMoneyAmount, {
-    onDelete: "cascade",
-    index: "IDX_price_set_money_amount_rules_price_set_money_amount_id",
-  })
+  @PriceSetMoneyAmountRulesPriceSetMoneyAmountIdIndex.MikroORMIndex()
+  @ManyToOne(() => PriceSetMoneyAmount, { onDelete: "cascade" })
   price_set_money_amount: PriceSetMoneyAmount
 
-  @ManyToOne(() => RuleType, {
-    index: "IDX_price_set_money_amount_rules_rule_type_id",
-  })
+  @PriceSetMoneyAmountRulesRuleTypeIdIndex.MikroORMIndex()
+  @ManyToOne(() => RuleType, {})
   rule_type: RuleType
 
   @Property({ columnType: "text" })
@@ -53,7 +73,7 @@ export default class PriceSetMoneyAmountRules {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_price_set_money_amount_rules_deleted_at" })
+  @PriceSetMoneyAmountRulesDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

@@ -1,11 +1,14 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
   Filter,
-  Index,
   ManyToMany,
   OnInit,
   OneToMany,
@@ -17,7 +20,14 @@ import PriceSetMoneyAmount from "./price-set-money-amount"
 import PriceSetRuleType from "./price-set-rule-type"
 import RuleType from "./rule-type"
 
-@Entity()
+const tableName = "price_set"
+const PriceSetDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceSet {
   @PrimaryKey({ columnType: "text" })
@@ -55,7 +65,7 @@ export default class PriceSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_price_set_deleted_at" })
+  @PriceSetDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

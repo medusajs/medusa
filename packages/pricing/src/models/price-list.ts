@@ -1,9 +1,10 @@
 import { DAL } from "@medusajs/types"
 import {
   DALUtils,
-  generateEntityId,
   PriceListStatus,
   PriceListType,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -12,10 +13,9 @@ import {
   Entity,
   Enum,
   Filter,
-  Index,
   ManyToMany,
-  OneToMany,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -29,7 +29,14 @@ type OptionalFields =
   | "ends_at"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+const tableName = "price_list"
+const PriceListDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceList {
   [OptionalProps]: OptionalFields
@@ -95,7 +102,7 @@ export default class PriceList {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_price_list_deleted_at" })
+  @PriceListDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

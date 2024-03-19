@@ -3,7 +3,11 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20230929122253 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table if not exists "money_amount" ("id" text not null, "currency_code" text not null, "amount" numeric not null, "min_quantity" numeric null, "max_quantity" numeric null, constraint "money_amount_pkey" primary key ("id"));'
+      'create table if not exists "money_amount" ("id" text not null, "currency_code" text not null, "amount" numeric not null, "min_quantity" numeric null, "max_quantity" numeric null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "money_amount_pkey" primary key ("id"));'
+    )
+
+    this.addSql(
+      'create index if not exists "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
     )
 
     this.addSql(
@@ -19,9 +23,16 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_set_money_amount" ("id" text not null, "title" text, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, constraint "price_set_money_amount_pkey" primary key ("id"));'
+      'create table "price_set_money_amount" ("id" text not null, "title" text, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_set_money_amount_pkey" primary key ("id"));'
     )
 
+    this.addSql(
+      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_unique" unique ("money_amount_id");'
+    )
+
+    this.addSql(
+      'create index "IDX_price_set_money_amount_deleted_at" on "price_set_money_amount" ("deleted_at");'
+    )
     this.addSql(
       'create index "IDX_price_set_money_amount_price_set_id" on "price_set_money_amount" ("price_set_id");'
     )
@@ -73,16 +84,22 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_rule" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, "is_dynamic" boolean not null default false, "value" text not null, "priority" integer not null default 0, "price_set_money_amount_id" text not null, "price_list_id" text not null, constraint "price_rule_pkey" primary key ("id"));'
+      'create table "price_rule" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, "value" text not null, "priority" integer not null default 0, "price_set_money_amount_id" text not null, "price_list_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_rule_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_price_rule_price_set_id" on "price_rule" ("price_set_id");'
     )
+
     this.addSql(
       'create index "IDX_price_rule_rule_type_id" on "price_rule" ("rule_type_id");'
     )
+
     this.addSql(
-      'create index "IDX_price_rule_price_set_money_amount_id" on "price_rule" ("price_set_money_amount_id");'
+      'create index "IDX_price_rule_deleted_at" on "price_rule" ("deleted_at");'
+    )
+
+    this.addSql(
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_rule_price_set_money_amount_id_unique" ON "price_rule" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL;'
     )
 
     this.addSql(
@@ -129,8 +146,9 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index "IDX_price_list_rule_rule_type_id" on "price_list_rule" ("rule_type_id");'
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_list_rule_rule_type_id_unique" ON "price_list_rule" (rule_type_id) WHERE deleted_at IS NOT NULL;'
     )
+
     this.addSql(
       'create index "IDX_price_list_rule_price_list_id" on "price_list_rule" ("price_list_id");'
     )
@@ -147,9 +165,45 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create index "IDX_price_rule_price_list_id" on "price_set_money_amount" ("price_list_id");'
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_list_id" ON "price_set_money_amount" (price_list_id) WHERE deleted_at IS NOT NULL;'
     )
 
     this.addSql('alter table "price_rule" drop column "price_list_id";')
+
+    this.addSql(
+      'create table "price_list_rule_value" ("id" text not null, "value" text not null, "price_list_rule_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_list_rule_value_pkey" primary key ("id"));'
+    )
+
+    this.addSql(
+      'create index "IDX_price_list_rule_value_deleted_at" on "price_list_rule_value" ("deleted_at");'
+    )
+
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_price_list_rule_id" ON "price_list_rule_value" (price_list_rule_id) WHERE deleted_at IS NOT NULL;'
+    )
+
+    this.addSql(
+      'alter table "price_list_rule_value" add constraint "price_list_rule_value_price_list_rule_id_foreign" foreign key ("price_list_rule_id") references "price_list_rule" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      `ALTER TABLE price_list
+          ADD COLUMN IF NOT EXISTS rules_count integer not null default 0`
+    )
+
+    this.addSql(
+      'alter table "price_list" add column if not exists "title" text, add column if not exists "name" text, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\', add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
+    )
+
+    this.addSql(`
+        UPDATE "price_list"
+        SET title = name
+    `)
+
+    this.addSql(`alter table "price_list" alter column "title" set not null `)
+
+    this.addSql(
+      'create index if not exists "IDX_price_list_deleted_at" on "price_list" ("deleted_at");'
+    )
   }
 }

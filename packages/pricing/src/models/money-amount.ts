@@ -1,10 +1,13 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -15,7 +18,20 @@ import { PriceSetMoneyAmount } from "./index"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+const tableName = "money_amount"
+const MoneyAmountDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const MoneyAmountCurrencyCodeIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class MoneyAmount {
   [OptionalProps]?: OptionalFields
@@ -23,10 +39,8 @@ class MoneyAmount {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({
-    columnType: "text",
-    index: "IDX_money_amount_currency_code",
-  })
+  @MoneyAmountCurrencyCodeIndex.MikroORMIndex()
+  @Property({ columnType: "text" })
   currency_code: string
 
   @Property({
@@ -62,7 +76,7 @@ class MoneyAmount {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_money_amount_deleted_at" })
+  @MoneyAmountDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
