@@ -6,7 +6,6 @@ import {
   Context,
   FindConfig,
   IEventBusModuleService,
-  InternalModuleDeclaration,
   Pluralize,
   RepositoryService,
   RestoreReturn,
@@ -26,7 +25,6 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type BaseMethods =
   | "retrieve"
@@ -480,7 +478,7 @@ export function abstractModuleServiceFactory<
       this.eventBusModuleService_ = hasEventBusService
         ? this.__container__.eventBusService
         : hasEventBusModuleService
-        ? this.__container__[ModuleRegistrationName.EVENT_BUS]
+        ? this.__container__.eventBusModuleService
         : undefined
     }
 
