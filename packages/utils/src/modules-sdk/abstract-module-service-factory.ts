@@ -6,6 +6,7 @@ import {
   Context,
   FindConfig,
   IEventBusModuleService,
+  InternalModuleDeclaration,
   Pluralize,
   RepositoryService,
   RestoreReturn,
@@ -475,6 +476,7 @@ export function abstractModuleServiceFactory<
       const hasEventBusService = Object.keys(this.__container__).find(
         (key) => key === "eventBusService"
       )
+
       this.eventBusModuleService_ = hasEventBusService
         ? this.__container__.eventBusService
         : hasEventBusModuleService
