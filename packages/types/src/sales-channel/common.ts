@@ -63,12 +63,12 @@ export interface FilterableSalesChannelProps
   /**
    * The IDs to filter the sales channel by.
    */
-  id?: string[]
+  id?: string | string[]
 
   /**
    * Filter sales channels by their names.
    */
-  name?: string[]
+  name?: string | string[]
 
   /**
    * Filter sales channels by whether they're disabled.

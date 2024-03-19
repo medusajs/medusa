@@ -2,12 +2,11 @@ import {
   deletePriceListsWorkflow,
   updatePriceListsWorkflow,
 } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { listPriceLists } from "../queries"
+import { getPriceList } from "../queries"
 import {
   adminPriceListRemoteQueryFields,
   defaultAdminPriceListFields,
@@ -19,23 +18,12 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const [[priceList], count] = await listPriceLists({
+  const priceList = await getPriceList({
+    id,
     container: req.scope,
     remoteQueryFields: adminPriceListRemoteQueryFields,
     apiFields: req.retrieveConfig.select!,
-    variables: {
-      filters: { id },
-      skip: 0,
-      take: 1,
-    },
   })
-
-  if (count === 0) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Price list with id: ${id} was not found`
-    )
-  }
 
   res.status(200).json({ price_list: priceList })
 }
@@ -56,11 +44,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const [[priceList]] = await listPriceLists({
+  const priceList = await getPriceList({
+    id,
     container: req.scope,
     remoteQueryFields: adminPriceListRemoteQueryFields,
     apiFields: defaultAdminPriceListFields,
-    variables: { filters: { id }, skip: 0, take: 1 },
   })
 
   res.status(200).json({ price_list: priceList })
