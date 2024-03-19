@@ -1,3 +1,5 @@
+export * from "./delete-inventory-items"
+export * from "./deatach-inventory-items"
 export * from "./attach-inventory-items"
 export * from "./create-inventory-items"
 export * from "./validate-singular-inventory-items-for-tags"

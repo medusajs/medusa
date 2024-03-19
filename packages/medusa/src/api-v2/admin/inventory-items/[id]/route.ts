@@ -4,10 +4,12 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  deleteInventoryItemWorkflow,
+  updateInventoryItemsWorkflow,
+} from "@medusajs/core-flows"
 
 import { AdminPostInventoryItemsInventoryItemReq } from "../validators"
-import { Modules } from "@medusajs/modules-sdk"
-import { updateInventoryItemsWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
@@ -67,5 +69,25 @@ export const POST = async (
 
   res.status(200).json({
     inventory_item,
+  })
+}
+
+export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+  const id = req.params.id
+  const deleteInventoryItems = deleteInventoryItemWorkflow(req.scope)
+
+  const { errors } = await deleteInventoryItems.run({
+    input: [id],
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({
+    id,
+    object: "inventory_item",
+    deleted: true,
   })
 }
