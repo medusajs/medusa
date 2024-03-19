@@ -135,3 +135,125 @@ export class AdminPostInventoryItemsItemLocationLevelsReq {
 
 // eslint-disable-next-line
 export class AdminPostInventoryItemsItemLocationLevelsParams extends FindParams {}
+
+/**
+ * @schema AdminPostInventoryItemsReq
+ * type: object
+ * description: "The details of the inventory item to create."
+ * properties:
+ *   sku:
+ *     description: The unique SKU of the associated Product Variant.
+ *     type: string
+ *   ean:
+ *     description: The EAN number of the item.
+ *     type: string
+ *   upc:
+ *     description: The UPC number of the item.
+ *     type: string
+ *   barcode:
+ *     description: A generic GTIN field for the Product Variant.
+ *     type: string
+ *   hs_code:
+ *     description: The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     type: string
+ *   inventory_quantity:
+ *     description: The amount of stock kept of the associated Product Variant.
+ *     type: integer
+ *     default: 0
+ *   allow_backorder:
+ *     description: Whether the associated Product Variant can be purchased when out of stock.
+ *     type: boolean
+ *   manage_inventory:
+ *     description: Whether Medusa should keep track of the inventory for the associated Product Variant.
+ *     type: boolean
+ *     default: true
+ *   weight:
+ *     description: The weight of the Inventory Item. May be used in shipping rate calculations.
+ *     type: number
+ *   length:
+ *     description: The length of the Inventory Item. May be used in shipping rate calculations.
+ *     type: number
+ *   height:
+ *     description: The height of the Inventory Item. May be used in shipping rate calculations.
+ *     type: number
+ *   width:
+ *     description: The width of the Inventory Item. May be used in shipping rate calculations.
+ *     type: number
+ *   origin_country:
+ *     description: The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     type: string
+ *   mid_code:
+ *     description: The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     type: string
+ *   material:
+ *     description: The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     type: string
+ *   title:
+ *     description: The inventory item's title.
+ *     type: string
+ *   description:
+ *     description: The inventory item's description.
+ *     type: string
+ *   thumbnail:
+ *     description: The inventory item's thumbnail.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs with additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ */
+export class AdminPostInventoryItemsReq {
+  @IsString()
+  @IsOptional()
+  sku?: string
+
+  @IsString()
+  @IsOptional()
+  hs_code?: string
+
+  @IsNumber()
+  @IsOptional()
+  weight?: number
+
+  @IsNumber()
+  @IsOptional()
+  length?: number
+
+  @IsNumber()
+  @IsOptional()
+  height?: number
+
+  @IsNumber()
+  @IsOptional()
+  width?: number
+
+  @IsString()
+  @IsOptional()
+  origin_country?: string
+
+  @IsString()
+  @IsOptional()
+  mid_code?: string
+
+  @IsString()
+  @IsOptional()
+  material?: string
+
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
+}

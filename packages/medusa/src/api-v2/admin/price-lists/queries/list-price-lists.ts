@@ -1,12 +1,10 @@
 import { MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  buildPriceListRules,
-  buildPriceSetPricesForCore,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { AdminPriceListRemoteQueryDTO } from "../types"
+import { buildPriceListResponse } from "./"
 
 export async function listPriceLists({
   container,
@@ -32,16 +30,7 @@ export async function listPriceLists({
     return [[], 0]
   }
 
-  for (const priceList of priceLists) {
-    priceList.rules = buildPriceListRules(priceList.price_list_rules || [])
-    priceList.prices = buildPriceSetPricesForCore(
-      priceList.price_set_money_amounts || []
-    )
-  }
-
-  const sanitizedPriceLists: AdminPriceListRemoteQueryDTO[] = priceLists.map(
-    (priceList) => cleanResponseData(priceList, apiFields)
-  )
+  const sanitizedPriceLists = buildPriceListResponse(priceLists, apiFields)
 
   return [sanitizedPriceLists, metadata.count]
 }

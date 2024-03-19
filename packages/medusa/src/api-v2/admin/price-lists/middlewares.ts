@@ -3,10 +3,10 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
 import {
-  AdminDeletePriceListsPriceListPricesReq,
   AdminGetPriceListsParams,
   AdminGetPriceListsPriceListParams,
-  AdminPostPriceListsPriceListPricesReq,
+  AdminPostPriceListsPriceListPricesBatchAddReq,
+  AdminPostPriceListsPriceListPricesBatchRemoveReq,
   AdminPostPriceListsPriceListReq,
   AdminPostPriceListsReq,
 } from "./validators"
@@ -49,12 +49,14 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/price-lists/:id/prices",
-    middlewares: [transformBody(AdminPostPriceListsPriceListPricesReq)],
+    matcher: "/admin/price-lists/:id/prices/batch/add",
+    middlewares: [transformBody(AdminPostPriceListsPriceListPricesBatchAddReq)],
   },
   {
-    method: ["DELETE"],
-    matcher: "/admin/price-lists/:id/prices",
-    middlewares: [transformBody(AdminDeletePriceListsPriceListPricesReq)],
+    method: ["POST"],
+    matcher: "/admin/price-lists/:id/prices/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPriceListsPriceListPricesBatchRemoveReq),
+    ],
   },
 ]
