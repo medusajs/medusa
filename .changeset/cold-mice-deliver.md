@@ -3,4 +3,4 @@
 "@medusajs/orchestration": patch
 ---
 
-fis(orchestration): Properly handle select all
+fix(orchestration): Properly handle select all
