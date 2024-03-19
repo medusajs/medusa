@@ -8,20 +8,15 @@ import {
   UpdatePriceListPriceDTO,
   UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPricesDTO,
-  UpdatePriceListWorkflowInputDTO,
+  UpsertPriceListPricesWorkflowStepDTO,
 } from "@medusajs/types"
 import { buildPriceSetPricesForModule, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type WorkflowStepInput = {
-  data: Pick<UpdatePriceListWorkflowInputDTO, "id" | "prices">[]
-  variant_price_map: Record<string, string>
-}
-
 export const upsertPriceListPricesStepId = "upsert-price-list-prices"
 export const upsertPriceListPricesStep = createStep(
   upsertPriceListPricesStepId,
-  async (stepInput: WorkflowStepInput, { container }) => {
+  async (stepInput: UpsertPriceListPricesWorkflowStepDTO, { container }) => {
     const { data, variant_price_map: variantPriceSetMap } = stepInput
 
     const priceListPricesToUpdate: UpdatePriceListPricesDTO[] = []

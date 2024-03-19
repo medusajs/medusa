@@ -98,21 +98,20 @@ export class AdminPostPriceListsPriceListReq {
 
   @IsOptional()
   @IsArray()
-  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+  prices: AdminPriceListPricesCreateReq[]
 
   @IsOptional()
   @IsObject()
   rules?: Record<string, string[]>
 }
 
-export class AdminPostPriceListsPriceListPricesReq {
+export class AdminPostPriceListsPriceListPricesBatchAddReq {
   @IsOptional()
   @IsArray()
-  prices: (AdminPriceListPricesCreateReq | AdminPriceListPricesUpdateReq)[]
+  prices: AdminPriceListPricesCreateReq[]
 }
 
-export class AdminDeletePriceListsPriceListPricesReq {
-  @IsOptional()
+export class AdminPostPriceListsPriceListPricesBatchRemoveReq {
   @IsArray()
   @IsString({ each: true })
   ids: string[]
