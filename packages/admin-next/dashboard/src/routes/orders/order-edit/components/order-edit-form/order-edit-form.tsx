@@ -46,7 +46,8 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
    * STATE
    */
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isAddingItems, setIsAddingItems] = useState(false)
 
   /**
    * FORM
@@ -74,7 +75,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   const { mutateAsync: updateOrderEdit } = useAdminUpdateOrderEdit(orderEdit.id)
 
   const onQuantityChangeComplete = async (itemId: string) => {
-    setIsLoading(true)
+    setIsSubmitting(true)
 
     const quantity = form.getValues()[itemId]
 
@@ -91,7 +92,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
       adminOrderEditsKeys.detail(orderEdit.id)
     )
 
-    setIsLoading(false)
+    setIsSubmitting(false)
   }
 
   const currentItems = useMemo(
@@ -137,7 +138,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
   }
 
   const onVariantsSelect = async (variantIds: string[]) => {
-    setIsLoading(true)
+    setIsAddingItems(true)
     try {
       await Promise.all(
         variantIds.map((id) =>
@@ -147,14 +148,14 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
 
       await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
     } finally {
-      setIsLoading(false)
+      setIsAddingItems(false)
     }
 
     setOpen(false)
   }
 
   const onItemRemove = async (itemId: string) => {
-    setIsLoading(true)
+    setIsSubmitting(true)
 
     const change = orderEdit.changes.find(
       (change) =>
@@ -184,12 +185,12 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
         adminOrderEditsKeys.detail(orderEdit.id)
       )
     } finally {
-      setIsLoading(false)
+      setIsSubmitting(false)
     }
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true)
+    setIsSubmitting(true)
 
     try {
       if (data.note !== orderEdit?.internal_note) {
@@ -198,7 +199,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
 
       await confirmOrderEdit() // TODO error notification if fails
     } finally {
-      setIsLoading(false)
+      setIsSubmitting(false)
     }
 
     handleSuccess(`/orders/${order.id}`)
@@ -221,7 +222,7 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isSubmitting}>
               {t("actions.confirm")}
             </Button>
           </div>
@@ -344,7 +345,11 @@ export function OrderEditForm({ order, orderEdit }: OrderEditFormProps) {
               </div>
             </SplitView.Content>
             <SplitView.Drawer>
-              <VariantTable onSave={onVariantsSelect} order={order} />
+              <VariantTable
+                isAddingItems={isAddingItems}
+                onSave={onVariantsSelect}
+                order={order}
+              />
             </SplitView.Drawer>
           </SplitView>
         </RouteFocusModal.Body>

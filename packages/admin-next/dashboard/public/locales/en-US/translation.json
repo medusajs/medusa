@@ -6,6 +6,8 @@
     "add": "Add",
     "start": "Start",
     "end": "End",
+    "open": "Open",
+    "close": "Close",
     "apply": "Apply",
     "range": "Range",
     "search": "Search",

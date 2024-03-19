@@ -21,18 +21,29 @@ export type Option = {
   label: string
 }
 
-const Footer = ({ onSave }: { onSave: () => void }) => {
+const Footer = ({
+  onSave,
+  isAddingItems,
+}: {
+  isAddingItems: boolean
+  onSave: () => void
+}) => {
   const { t } = useTranslation()
 
   return (
     <div className="flex items-center justify-end gap-x-2 border-t p-4">
       <SplitView.Close type="button" asChild>
         <Button variant="secondary" size="small">
-          {t("actions.cancel")}
+          {t("general.close")}
         </Button>
       </SplitView.Close>
-      <Button size="small" type="button" onClick={onSave}>
-        {t("actions.save")}
+      <Button
+        isLoading={isAddingItems}
+        size="small"
+        type="button"
+        onClick={onSave}
+      >
+        {t("general.add")}
       </Button>
     </div>
   )
@@ -40,10 +51,15 @@ const Footer = ({ onSave }: { onSave: () => void }) => {
 
 type VariantTableProps = {
   onSave: (ids: string[]) => Promise<void>
+  isAddingItems: boolean
   order: Order
 }
 
-export const VariantTable = ({ onSave, order }: VariantTableProps) => {
+export const VariantTable = ({
+  onSave,
+  order,
+  isAddingItems,
+}: VariantTableProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [intermediate, setIntermediate] = useState<string[]>([])
 
@@ -141,7 +157,7 @@ export const VariantTable = ({ onSave, order }: VariantTableProps) => {
         layout="fill"
         orderBy={["title", "created_at", "updated_at"]}
       />
-      <Footer onSave={handleSave} />
+      <Footer isAddingItems={isAddingItems} onSave={handleSave} />
     </div>
   )
 }
