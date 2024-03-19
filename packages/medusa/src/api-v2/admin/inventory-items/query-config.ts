@@ -1,8 +1,5 @@
 import { InventoryNext } from "@medusajs/types"
 
-export const defaultAdminInventoryItemRelations = []
-export const allowedAdminInventoryItemRelations = []
-
 // eslint-disable-next-line max-len
 export const defaultAdminLocationLevelFields = [
   "id",
@@ -43,9 +40,8 @@ export const defaultAdminInventoryItemFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminInventoryItemFields,
-  defaultRelations: defaultAdminInventoryItemRelations,
-  allowedRelations: allowedAdminInventoryItemRelations,
+  defaults: defaultAdminInventoryItemFields,
+  allowed: defaultAdminInventoryItemFields,
   isList: false,
 }
 
