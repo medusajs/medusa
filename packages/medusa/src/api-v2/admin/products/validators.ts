@@ -679,6 +679,7 @@ export class ProductTypeReq {
   value: string
 }
 
+// TODO: Add support for rules
 export class ProductVariantPricesCreateReq {
   @IsString()
   currency_code: string
@@ -700,12 +701,8 @@ export class ProductVariantPricesUpdateReq {
   @IsOptional()
   id?: string
 
-  @ValidateIf((o) => !o.id)
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @ValidateIf((o) => !o.id)
-  @Validate(XorConstraint, ["region_id"])
+  @IsString()
+  @IsOptional()
   currency_code?: string
 
   @IsInt()

@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, PricingTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
@@ -9,7 +9,13 @@ import { createPriceSetsStep } from "../../pricing"
 
 // TODO: We should have separate types here as input, not the module DTO. Eg. the HTTP request that we are handling
 // has different data than the DTO, so that needs to be represented differently.
-type WorkflowInput = { products: ProductTypes.CreateProductDTO[] }
+type WorkflowInput = {
+  products: (Omit<ProductTypes.CreateProductDTO, "variants"> & {
+    variants?: (ProductTypes.CreateProductVariantDTO & {
+      prices?: PricingTypes.CreateMoneyAmountDTO[]
+    })[]
+  })[]
+}
 
 export const createProductsWorkflowId = "create-products"
 export const createProductsWorkflow = createWorkflow(
@@ -39,11 +45,11 @@ export const createProductsWorkflow = createWorkflow(
             const inputProduct = data.input.products[i]
             return p.variants?.map((v, j) => ({
               id: v.id,
-              prices: (inputProduct?.variants?.[j] as any).prices,
+              prices: inputProduct?.variants?.[j]?.prices,
             }))
           })
           .flat()
-          .filter((v) => v.prices?.length > 0)
+          .filter((v) => !!v.prices?.length)
       }
     )
 
@@ -72,6 +78,7 @@ export const createProductsWorkflow = createWorkflow(
 
     createVariantPricingLinkStep(variantAndPriceSetLinks)
 
+    // TODO: Should we just refetch the products here?
     return transform(
       {
         createdProducts,

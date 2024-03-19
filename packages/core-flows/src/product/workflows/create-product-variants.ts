@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, PricingTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
@@ -10,8 +10,11 @@ import {
 } from "../steps"
 import { createPriceSetsStep } from "../../pricing"
 
+// TODO: Create separate typings for the workflow input
 type WorkflowInput = {
-  product_variants: ProductTypes.CreateProductVariantDTO[]
+  product_variants: (ProductTypes.CreateProductVariantDTO & {
+    prices?: PricingTypes.CreateMoneyAmountDTO[]
+  })[]
 }
 
 export const createProductVariantsWorkflowId = "create-product-variants"
@@ -38,11 +41,11 @@ export const createProductVariantsWorkflow = createWorkflow(
           .map((variant, i) => {
             return {
               id: variant.id,
-              prices: (data.input.product_variants[i] as any).prices,
+              prices: data.input.product_variants[i]?.prices,
             }
           })
           .flat()
-          .filter((v) => v.prices?.length > 0)
+          .filter((v) => !!v.prices?.length)
     )
 
     // TODO: From here until the final transform the code is the same as when creating a product, we can probably refactor
