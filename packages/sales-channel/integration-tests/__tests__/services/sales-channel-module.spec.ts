@@ -4,8 +4,8 @@ import { ISalesChannelModuleService } from "@medusajs/types"
 
 import { initialize } from "../../../src"
 
-import { DB_URL, MikroOrmWrapper } from "../../utils"
 import { createSalesChannels } from "../../__fixtures__"
+import { DB_URL, MikroOrmWrapper } from "../../utils"
 
 jest.setTimeout(30000)
 
@@ -84,13 +84,10 @@ describe("Sales Channel Service", () => {
     const id = "channel-2"
 
     it("should update the name of the SalesChannel successfully", async () => {
-      await service.update([
-        {
-          id,
-          name: "Update name 2",
-          is_disabled: true,
-        },
-      ])
+      await service.update(id, {
+        name: "Update name 2",
+        is_disabled: true,
+      })
 
       const channel = await service.retrieve(id)
 
@@ -102,11 +99,9 @@ describe("Sales Channel Service", () => {
       let error
 
       try {
-        await service.update([
-          {
-            id: "does-not-exist",
-          },
-        ])
+        await service.update("does-not-exist", {
+          name: "does-not-exist",
+        })
       } catch (e) {
         error = e
       }

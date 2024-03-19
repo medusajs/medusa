@@ -37,5 +37,40 @@ export interface UpdatePriceListWorkflowInputDTO {
   ends_at?: string | null
   status?: PriceListStatus
   rules?: Record<string, string[]>
-  prices?: (UpdatePriceListPriceWorkflowDTO | CreatePriceListPriceWorkflowDTO)[]
+  prices?: CreatePriceListPriceWorkflowDTO[]
+}
+
+export interface UpdatePriceListPricesWorkflowDTO {
+  id: string
+  prices: UpdatePriceListPriceWorkflowDTO[]
+}
+
+export interface CreatePriceListPricesWorkflowDTO {
+  id: string
+  prices: CreatePriceListPriceWorkflowDTO[]
+}
+
+export interface UpdatePriceListPriceWorkflowDTO {
+  data: Pick<UpdatePriceListWorkflowInputDTO, "id" | "prices">[]
+  variant_price_map: Record<string, string>
+}
+
+export interface UpdatePriceListPriceWorkflowStepDTO {
+  data?: UpdatePriceListPricesWorkflowDTO[]
+  variant_price_map: Record<string, string>
+}
+
+export interface UpsertPriceListPricesWorkflowStepDTO {
+  data: Pick<UpdatePriceListWorkflowInputDTO, "id" | "prices">[]
+  variant_price_map: Record<string, string>
+}
+
+export interface CreatePriceListsWorkflowStepDTO {
+  data: CreatePriceListWorkflowInputDTO[]
+  variant_price_map: Record<string, string>
+}
+
+export interface CreatePriceListPricesWorkflowStepDTO {
+  data: (Pick<CreatePriceListWorkflowInputDTO, "prices"> & { id: string })[]
+  variant_price_map: Record<string, string>
 }
