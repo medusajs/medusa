@@ -1,5 +1,6 @@
 import { Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { Divider } from "../../../../../../components/common/divider"
 import { CreateDraftOrderAddressDetails } from "./create-draft-order-address-details"
 import { CreateDraftOrderCustomerDetails } from "./create-draft-order-customer-details"
 import { CreateDraftOrderItemsDetails } from "./create-draft-order-items-details"
@@ -30,8 +31,4 @@ export const CreateDraftOrderDetails = () => {
       </div>
     </div>
   )
-}
-
-const Divider = () => {
-  return <div role="presentation" className="bg-ui-border-base h-px w-full" />
 }

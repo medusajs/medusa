@@ -1,11 +1,14 @@
 import { Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { Divider } from "../../../../../../components/common/divider"
+import { castNumber } from "../../../../../../lib/cast-number"
 import {
   getDbAmount,
   getLocaleAmount,
+  getStylizedAmount,
 } from "../../../../../../lib/money-amount-helpers"
 import { useCreateDraftOrder } from "../hooks"
-import { ShippingMethod } from "../types"
+import { CustomItem, ExistingItem, ShippingMethod } from "../types"
 
 export const CreateDraftOrderTotalSummary = () => {
   const { t } = useTranslation()
@@ -14,18 +17,16 @@ export const CreateDraftOrderTotalSummary = () => {
 
   const variantItems = form.getValues("existing_items") || []
   const variantItemsSubtotal = variantItems.reduce((acc, item) => {
-    const amount = item.custom_unit_price
-      ? getDbAmount(Number(item.custom_unit_price), currency_code!)
-      : item.unit_price
+    const amount = getExistingItemSubtotal(item, currency_code!)
 
-    return (acc += amount * item.quantity)
+    return (acc += amount)
   }, 0)
 
   const customItems = form.getValues("custom_items") || []
   const customItemsSubtotal = customItems.reduce((acc, item) => {
-    const amount = getDbAmount(Number(item.unit_price), currency_code!)
+    const amount = getCustomItemSubtotal(item, currency_code!)
 
-    return (acc += amount * item.quantity)
+    return (acc += amount)
   }, 0)
 
   const count = variantItems.length + customItems.length
@@ -33,6 +34,8 @@ export const CreateDraftOrderTotalSummary = () => {
 
   const shippingMethod = form.getValues("shipping_method")
   const shippingSubtotal = getShippingSubtotal(shippingMethod, currency_code!)
+
+  const total = subtotal + shippingSubtotal
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-4">
@@ -59,7 +62,7 @@ export const CreateDraftOrderTotalSummary = () => {
             {shippingMethod.custom_amount && (
               <Text size="small" className="text-ui-fg-muted line-through">
                 {getLocaleAmount(
-                  Number(shippingMethod.amount || 0),
+                  castNumber(shippingMethod.amount || 0),
                   currency_code!
                 )}
               </Text>
@@ -70,25 +73,48 @@ export const CreateDraftOrderTotalSummary = () => {
           </div>
         </div>
       </div>
+      <Divider variant="dashed" />
+      <div className="grid grid-cols-2 gap-4">
+        <Text size="small" leading="compact">
+          {t("fields.totalExclTax")}
+        </Text>
+        <Text size="small" leading="compact" className="text-right">
+          {getStylizedAmount(total, currency_code!)}
+        </Text>
+      </div>
     </div>
   )
+}
+
+const getExistingItemSubtotal = (item: ExistingItem, currency_code: string) => {
+  if (item.custom_unit_price) {
+    const customUnitPrice = castNumber(item.custom_unit_price)
+    return getDbAmount(customUnitPrice, currency_code) * item.quantity
+  }
+
+  return item.unit_price * item.quantity
+}
+
+const getCustomItemSubtotal = (item: CustomItem, currency_code: string) => {
+  return getDbAmount(item.unit_price, currency_code) * item.quantity
 }
 
 const getShippingSubtotal = (
   shippingMethod: ShippingMethod,
   currency_code: string
 ) => {
-  if (shippingMethod.custom_amount && shippingMethod.custom_amount !== "") {
-    const customAmount =
-      typeof shippingMethod.custom_amount === "string"
-        ? Number(shippingMethod.custom_amount.replace(",", "."))
-        : shippingMethod.custom_amount
-
+  if (shippingMethod.custom_amount) {
+    const customAmount = castNumber(shippingMethod.custom_amount)
     return getDbAmount(customAmount, currency_code)
   }
 
   if (shippingMethod.amount) {
-    return Number(shippingMethod.amount)
+    const amount =
+      typeof shippingMethod.amount === "string"
+        ? Number(shippingMethod.amount.replace(",", "."))
+        : shippingMethod.amount
+
+    return amount
   }
 
   return 0

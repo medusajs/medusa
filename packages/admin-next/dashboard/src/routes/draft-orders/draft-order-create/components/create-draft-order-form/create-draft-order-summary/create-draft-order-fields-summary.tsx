@@ -1,8 +1,10 @@
 import { Switch } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../../components/common/form"
 import { useCreateDraftOrder } from "../hooks"
 
 export const CreateDraftOrderFieldsSummary = () => {
+  const { t } = useTranslation()
   const { form } = useCreateDraftOrder()
 
   return (
@@ -15,7 +17,9 @@ export const CreateDraftOrderFieldsSummary = () => {
             <Form.Item>
               <div className="flex flex-col gap-y-1">
                 <div className="flex items-center justify-between">
-                  <Form.Label>Send notification</Form.Label>
+                  <Form.Label>
+                    {t("draftOrders.create.sendNotificationLabel")}
+                  </Form.Label>
                   <Form.Control>
                     <Switch
                       {...field}
@@ -24,7 +28,9 @@ export const CreateDraftOrderFieldsSummary = () => {
                     />
                   </Form.Control>
                 </div>
-                <Form.Hint>Notify the customer of this draft order.</Form.Hint>
+                <Form.Hint>
+                  {t("draftOrders.create.sendNotificationHint")}
+                </Form.Hint>
               </div>
               <Form.ErrorMessage />
             </Form.Item>

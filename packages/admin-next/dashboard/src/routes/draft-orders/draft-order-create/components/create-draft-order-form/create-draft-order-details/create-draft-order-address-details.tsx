@@ -233,7 +233,10 @@ const AddressFieldset = ({
         <Form.Field
           control={control}
           name={`${field}.country_code`}
-          render={({ field: { onChange, ref, disabled, ...field } }) => {
+          render={({
+            field: { onChange, ref, disabled, ...field },
+            fieldState: { error },
+          }) => {
             return (
               <ConditionalTooltip
                 showTooltip={!region}
@@ -249,7 +252,7 @@ const AddressFieldset = ({
                       onValueChange={onChange}
                       {...field}
                     >
-                      <Select.Trigger ref={ref}>
+                      <Select.Trigger aria-invalid={!!error} ref={ref}>
                         <Select.Value />
                       </Select.Trigger>
                       <Select.Content>

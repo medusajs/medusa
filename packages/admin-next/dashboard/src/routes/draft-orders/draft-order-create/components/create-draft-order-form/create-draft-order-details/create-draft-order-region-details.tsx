@@ -1,19 +1,54 @@
 import { Select } from "@medusajs/ui"
-import { useAdminRegions } from "medusa-react"
+import { useAdminRegions, useMedusa } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { json } from "react-router-dom"
 
+import { useWatch } from "react-hook-form"
 import { Form } from "../../../../../../components/common/form"
 import { useCreateDraftOrder } from "../hooks"
 
 export const CreateDraftOrderRegionDetails = () => {
   const { t } = useTranslation()
-  const { form, setRegion } = useCreateDraftOrder()
+  const {
+    form,
+    setRegion,
+    variants: { rebase },
+  } = useCreateDraftOrder()
+  const { client } = useMedusa()
+
+  const existingItems = useWatch({
+    control: form.control,
+    name: "existing_items",
+  })
 
   const { regions, isLoading, isError, error } = useAdminRegions({
     limit: 1000,
     fields: "id,name,currency_code",
   })
+
+  const handleRebaseUnitPrices = async (regionId: string) => {
+    if (!existingItems?.length) {
+      return
+    }
+
+    const { variants } = await client.admin.variants
+      .list({
+        region_id: regionId,
+        id: existingItems.map((i) => i.variant_id),
+      })
+      .catch((_err) => {
+        // Show toast with error message
+        return { variants: [] }
+      })
+
+    rebase(variants)
+  }
+
+  const handleResetShippingDetails = () => {
+    form.resetField("shipping_method")
+    form.resetField("shipping_address")
+    form.resetField("billing_address")
+  }
 
   const handleRegionChange = (regId: string) => {
     const region = regions?.find((r) => r.id === regId)
@@ -25,6 +60,15 @@ export const CreateDraftOrderRegionDetails = () => {
     setRegion(region)
   }
 
+  const onValueChange = (fn: (...event: any[]) => void) => {
+    return async (id: string) => {
+      fn(id)
+      await handleRebaseUnitPrices(id)
+      handleResetShippingDetails()
+      handleRegionChange(id)
+    }
+  }
+
   if (isError) {
     throw error
   }
@@ -34,7 +78,10 @@ export const CreateDraftOrderRegionDetails = () => {
       <Form.Field
         control={form.control}
         name="region_id"
-        render={({ field: { ref, onChange, disabled, ...field } }) => {
+        render={({
+          field: { ref, onChange, disabled, ...field },
+          fieldState: { error },
+        }) => {
           return (
             <Form.Item>
               <Form.Label className="!h2-core">{t("fields.region")}</Form.Label>
@@ -42,13 +89,10 @@ export const CreateDraftOrderRegionDetails = () => {
               <Form.Control>
                 <Select
                   {...field}
-                  onValueChange={(id) => {
-                    onChange(id)
-                    handleRegionChange(id)
-                  }}
+                  onValueChange={onValueChange(onChange)}
                   disabled={isLoading || disabled}
                 >
-                  <Select.Trigger ref={ref}>
+                  <Select.Trigger aria-invalid={!!error} ref={ref}>
                     <Select.Value />
                   </Select.Trigger>
                   <Select.Content>
@@ -60,6 +104,7 @@ export const CreateDraftOrderRegionDetails = () => {
                   </Select.Content>
                 </Select>
               </Form.Control>
+              <Form.ErrorMessage />
             </Form.Item>
           )
         }}

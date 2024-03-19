@@ -15,6 +15,7 @@ import {
 } from "../../../../../components/route-modal"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 
+import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import { CreateDraftOrderSchema, View } from "./constants"
 import { CreateDraftOrderContext } from "./context"
 import { CreateDraftOrderDetails } from "./create-draft-order-details"
@@ -32,6 +33,7 @@ export const CreateDraftOrderForm = () => {
 
   const [view, setView] = useState<View | null>(null)
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
+  const [detailsValidated, setDetailsValidated] = useState(false)
 
   const [region, setRegion] = useState<Region | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
@@ -74,6 +76,11 @@ export const CreateDraftOrderForm = () => {
   })
 
   const {
+    clearErrors,
+    formState: { isDirty },
+  } = form
+
+  const {
     append: createCustomItem,
     remove: deleteCustomItem,
     fields: customItems,
@@ -86,6 +93,7 @@ export const CreateDraftOrderForm = () => {
   const {
     append: createExistingItem,
     remove: deleteExistingItem,
+    update: updateExistingItem,
     fields: existingItems,
   } = useFieldArray({
     control: form.control,
@@ -95,104 +103,106 @@ export const CreateDraftOrderForm = () => {
 
   const { mutateAsync, isLoading } = useAdminCreateDraftOrder()
 
-  const handleSubmit = form.handleSubmit(
-    async (values) => {
-      let {
+  const handleSubmit = form.handleSubmit(async (values) => {
+    let {
+      shipping_address,
+      billing_address,
+      existing_items,
+      custom_items,
+      shipping_method,
+      email,
+      notification_order,
+      ...rest
+    } = values
+
+    const emailValue = email || customer?.email
+
+    if (!emailValue) {
+      form.setError("email", {
+        type: "manual",
+        message: "Email is required",
+      })
+
+      form.setError("customer_id", {
+        type: "manual",
+        message: "Customer is required",
+      })
+
+      return
+    }
+
+    if (!billing_address) {
+      billing_address = shipping_address
+    }
+
+    const preparedExistingItems =
+      existing_items?.map((item) => {
+        const { custom_unit_price, variant_id, quantity } = item
+
+        const customUnitPriceCast = Number(custom_unit_price)
+        const customUnitPriceValue = !isNaN(customUnitPriceCast)
+          ? getDbAmount(customUnitPriceCast, region?.currency_code!)
+          : undefined
+
+        return {
+          variant_id,
+          quantity,
+          unit_price: customUnitPriceValue,
+        }
+      }) || []
+
+    const preparedCustomItems =
+      custom_items?.map((item) => {
+        const { unit_price, quantity, title } = item
+
+        const unitPriceCast = Number(unit_price)
+        const unitPriceValue = !isNaN(unitPriceCast)
+          ? getDbAmount(unitPriceCast, region?.currency_code!)
+          : undefined
+
+        return {
+          title,
+          quantity,
+          unit_price: unitPriceValue,
+        }
+      }) || []
+
+    const items = [...preparedExistingItems, ...preparedCustomItems]
+
+    const preparedShippingMethods = [
+      {
+        option_id: shipping_method.option_id,
+        price: shipping_method.custom_amount
+          ? getDbAmount(
+              Number(shipping_method.custom_amount),
+              region?.currency_code!
+            )
+          : undefined,
+      },
+    ]
+
+    await mutateAsync(
+      {
+        ...rest,
+        email: emailValue,
         shipping_address,
         billing_address,
-        existing_items,
-        custom_items,
-        shipping_method,
-        email,
-        notification_order,
-        ...rest
-      } = values
-
-      const emailValue = email || customer?.email
-
-      if (!emailValue) {
-        form.setError("email", {
-          type: "manual",
-          message: "Email is required",
-        })
-
-        form.setError("customer_id", {
-          type: "manual",
-          message: "Customer is required",
-        })
-
-        return
-      }
-
-      if (!billing_address) {
-        billing_address = shipping_address
-      }
-
-      const preparedExistingItems =
-        existing_items?.map((item) => {
-          const { custom_unit_price, variant_id, quantity } = item
-
-          const customUnitPriceCast = Number(custom_unit_price)
-          const customUnitPriceValue = !isNaN(customUnitPriceCast)
-            ? getDbAmount(customUnitPriceCast, region?.currency_code!)
-            : undefined
-
-          return {
-            variant_id,
-            quantity,
-            unit_price: customUnitPriceValue,
-          }
-        }) || []
-
-      const preparedCustomItems =
-        custom_items?.map((item) => {
-          const { unit_price, quantity, title } = item
-
-          const unitPriceCast = Number(unit_price)
-          const unitPriceValue = !isNaN(unitPriceCast)
-            ? getDbAmount(unitPriceCast, region?.currency_code!)
-            : undefined
-
-          return {
-            title,
-            quantity,
-            unit_price: unitPriceValue,
-          }
-        }) || []
-
-      const items = [...preparedExistingItems, ...preparedCustomItems]
-
-      const preparedShippingMethods = [
-        {
-          option_id: shipping_method.option_id,
-          price: shipping_method.custom_amount
-            ? getDbAmount(
-                Number(shipping_method.custom_amount),
-                region?.currency_code!
-              )
-            : undefined,
+        items: items,
+        shipping_methods: preparedShippingMethods,
+        no_notification_order: !notification_order,
+      },
+      {
+        onSuccess: ({ draft_order }) => {
+          handleSuccess(`../${draft_order.id}`)
         },
-      ]
+      }
+    )
+  })
 
-      await mutateAsync(
-        {
-          ...rest,
-          email: emailValue,
-          shipping_address,
-          billing_address,
-          items: items,
-          shipping_methods: preparedShippingMethods,
-          no_notification_order: !notification_order,
-        },
-        {
-          onSuccess: ({ draft_order }) => {
-            handleSuccess(`../${draft_order.id}`)
-          },
-        }
-      )
-    },
-    (err) => console.log(err)
-  )
+  const clearItemErrors = useCallback(() => {
+    clearErrors("custom_items")
+    clearErrors("existing_items")
+  }, [clearErrors])
 
   const handleUpdateExistingItems = useCallback(
     (items: ExistingItem[]) => {
@@ -206,8 +216,9 @@ export const CreateDraftOrderForm = () => {
 
       setView(null)
       setOpen(false)
+      clearItemErrors()
     },
-    [createExistingItem, deleteExistingItem, existingItems]
+    [createExistingItem, deleteExistingItem, existingItems, clearItemErrors]
   )
 
   const handleCreateCustomItem = useCallback(
@@ -216,8 +227,9 @@ export const CreateDraftOrderForm = () => {
 
       setView(null)
       setOpen(false)
+      clearItemErrors()
     },
-    [createCustomItem]
+    [createCustomItem, clearItemErrors]
   )
 
   const handleOpenDrawer = (view: View) => {
@@ -239,6 +251,59 @@ export const CreateDraftOrderForm = () => {
     setOpen(open)
   }
 
+  const handleContinue = form.handleSubmit(() => {
+    setTab(Tab.SUMMARY)
+    setDetailsValidated(true)
+  })
+
+  const handleRebaseUnitPrices = useCallback(
+    (variants: PricedVariant[]) => {
+      if (!variants.length) {
+        return
+      }
+
+      for (const variant of variants) {
+        const index = existingItems.findIndex(
+          (item) => item.variant_id === variant.id
+        )
+
+        if (index === -1) {
+          continue
+        }
+
+        updateExistingItem(index, {
+          ...existingItems[index],
+          unit_price: variant.original_price!,
+        })
+      }
+    },
+    [updateExistingItem, existingItems]
+  )
+
+  const handleTabChange = (tab: Tab) => {
+    switch (tab) {
+      case Tab.DETAILS:
+        setDetailsValidated(false)
+        setTab(tab)
+        break
+      case Tab.SUMMARY:
+        handleContinue()
+        break
+    }
+  }
+
+  const detailsProgress = useMemo(() => {
+    if (detailsValidated) {
+      return "completed"
+    }
+
+    if (isDirty) {
+      return "in-progress"
+    }
+
+    return "not-started"
+  }, [detailsValidated, isDirty])
+
   return (
     <CreateDraftOrderContext.Provider
       value={useMemo(
@@ -252,6 +317,7 @@ export const CreateDraftOrderForm = () => {
             items: existingItems,
             remove: deleteExistingItem,
             update: handleUpdateExistingItems,
+            rebase: handleRebaseUnitPrices,
           },
           form,
           region,
@@ -269,6 +335,7 @@ export const CreateDraftOrderForm = () => {
           existingItems,
           deleteExistingItem,
           handleUpdateExistingItems,
+          handleRebaseUnitPrices,
           form,
           customer,
           region,
@@ -283,7 +350,7 @@ export const CreateDraftOrderForm = () => {
         >
           <ProgressTabs
             value={tab}
-            onValueChange={(tab) => setTab(tab as Tab)}
+            onValueChange={(tab) => handleTabChange(tab as Tab)}
             className="flex h-full flex-col overflow-hidden"
           >
             <RouteFocusModal.Header>
@@ -293,6 +360,7 @@ export const CreateDraftOrderForm = () => {
                     <ProgressTabs.Trigger
                       className="w-full"
                       value={Tab.DETAILS}
+                      status={detailsProgress}
                     >
                       {t("fields.details")}
                     </ProgressTabs.Trigger>
@@ -310,9 +378,25 @@ export const CreateDraftOrderForm = () => {
                       {t("actions.cancel")}
                     </Button>
                   </RouteFocusModal.Close>
-                  <Button type="submit" size="small" isLoading={isLoading}>
-                    {t("actions.save")}
-                  </Button>
+                  {tab === Tab.SUMMARY ? (
+                    <Button
+                      key="save-btn"
+                      type="submit"
+                      size="small"
+                      isLoading={isLoading}
+                    >
+                      {t("actions.save")}
+                    </Button>
+                  ) : (
+                    <Button
+                      key="continue-btn"
+                      type="button"
+                      onClick={handleContinue}
+                      size="small"
+                    >
+                      {t("actions.continue")}
+                    </Button>
+                  )}
                 </div>
               </div>
             </RouteFocusModal.Header>

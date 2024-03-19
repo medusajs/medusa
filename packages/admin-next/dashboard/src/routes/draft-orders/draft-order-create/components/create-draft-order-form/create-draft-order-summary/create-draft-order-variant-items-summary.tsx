@@ -1,6 +1,8 @@
 import { Copy, Text } from "@medusajs/ui"
 
+import { Divider } from "../../../../../../components/common/divider"
 import { Thumbnail } from "../../../../../../components/common/thumbnail"
+import { castNumber } from "../../../../../../lib/cast-number"
 import {
   getDbAmount,
   getLocaleAmount,
@@ -21,7 +23,7 @@ export const CreateDraftOrderVariantItemsSummary = () => {
     <div className="grid grid-cols-1 gap-4">
       {items.map((item) => {
         const price = item.custom_unit_price
-          ? getDbAmount(Number(item.custom_unit_price), currency_code!)
+          ? getDbAmount(castNumber(item.custom_unit_price), currency_code!)
           : item.unit_price
         const subtotal = price * item.quantity
 
@@ -75,6 +77,7 @@ export const CreateDraftOrderVariantItemsSummary = () => {
           </div>
         )
       })}
+      <Divider variant="dashed" />
     </div>
   )
 }

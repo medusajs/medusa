@@ -2,6 +2,7 @@ import { Customer, Region } from "@medusajs/medusa"
 import { FieldArrayWithId, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 
+import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import {
   CreateDraftOrderSchema,
   CustomItemSchema,
@@ -30,6 +31,7 @@ export type CreateDraftOrderContextValue = {
     >[]
     remove: (index: number) => void
     update: (items: ExistingItem[]) => void
+    rebase: (variants: PricedVariant[]) => void
   }
   custom: {
     items: FieldArrayWithId<

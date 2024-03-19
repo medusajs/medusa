@@ -24,15 +24,15 @@ export const CreateDraftOrderItemsDetails = () => {
           name="existing_items"
           render={({ field: { name } }) => {
             return (
-              <div className="flex flex-col gap-y-4">
-                <Form.Item>
+              <Form.Item className="flex flex-col gap-y-4">
+                <div>
                   <Form.Label>
                     {t("draftOrders.create.existingItemsLabel")}
                   </Form.Label>
                   <Form.Hint>
                     {t("draftOrders.create.existingItemsHint")}
                   </Form.Hint>
-                </Form.Item>
+                </div>
                 {variants.items.length > 0 ? (
                   variants.items.map((item, index) => {
                     return (
@@ -162,26 +162,27 @@ export const CreateDraftOrderItemsDetails = () => {
                     </Text>
                   </div>
                 )}
-              </div>
+                <div className="flex items-center justify-end">
+                  <ConditionalTooltip
+                    content={t("draftOrders.create.chooseRegionTooltip")}
+                    showTooltip={!region}
+                  >
+                    <Button
+                      disabled={!region}
+                      variant="secondary"
+                      size="small"
+                      type="button"
+                      onClick={() => onOpenDrawer(View.EXISTING_ITEMS)}
+                    >
+                      {t("draftOrders.create.addExistingItemsAction")}
+                    </Button>
+                  </ConditionalTooltip>
+                </div>
+                <Form.ErrorMessage />
+              </Form.Item>
             )
           }}
         />
-        <div className="flex items-center justify-end">
-          <ConditionalTooltip
-            content={t("draftOrders.create.chooseRegionTooltip")}
-            showTooltip={!region}
-          >
-            <Button
-              disabled={!region}
-              variant="secondary"
-              size="small"
-              type="button"
-              onClick={() => onOpenDrawer(View.EXISTING_ITEMS)}
-            >
-              {t("draftOrders.create.addExistingItemsAction")}
-            </Button>
-          </ConditionalTooltip>
-        </div>
       </fieldset>
       <div className="md:grid-grid-cols-2 grid grid-cols-1 gap-3 p-3">
         <Form.Field
@@ -189,15 +190,15 @@ export const CreateDraftOrderItemsDetails = () => {
           name="custom_items"
           render={({ field: { name } }) => {
             return (
-              <div className="flex flex-col gap-y-4">
-                <Form.Item>
+              <Form.Item className="flex flex-col gap-y-4">
+                <div>
                   <Form.Label>
                     {t("draftOrders.create.customItemsLabel")}
                   </Form.Label>
                   <Form.Hint>
                     {t("draftOrders.create.customItemsHint")}
                   </Form.Hint>
-                </Form.Item>
+                </div>
                 {custom.items.length > 0 ? (
                   custom.items.map((item, index) => {
                     return (
@@ -291,26 +292,27 @@ export const CreateDraftOrderItemsDetails = () => {
                     </Text>
                   </div>
                 )}
-              </div>
+                <div className="flex items-center justify-end">
+                  <ConditionalTooltip
+                    content={t("draftOrders.create.chooseRegionTooltip")}
+                    showTooltip={!region}
+                  >
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      type="button"
+                      disabled={!region}
+                      onClick={() => onOpenDrawer(View.CUSTOM_ITEMS)}
+                    >
+                      {t("draftOrders.create.addCustomItemAction")}
+                    </Button>
+                  </ConditionalTooltip>
+                </div>
+                <Form.ErrorMessage />
+              </Form.Item>
             )
           }}
         />
-        <div className="flex items-center justify-end">
-          <ConditionalTooltip
-            content={t("draftOrders.create.chooseRegionTooltip")}
-            showTooltip={!region}
-          >
-            <Button
-              variant="secondary"
-              size="small"
-              type="button"
-              disabled={!region}
-              onClick={() => onOpenDrawer(View.CUSTOM_ITEMS)}
-            >
-              {t("draftOrders.create.addCustomItemAction")}
-            </Button>
-          </ConditionalTooltip>
-        </div>
       </div>
     </div>
   )

@@ -25,7 +25,9 @@ export const CreateDraftOrderCustomerSummary = () => {
 
   const { first_name, last_name } = customer || shippingAddress || {}
   const name = [first_name, last_name].filter(Boolean).join(" ")
-  const fallback = name ? name[0].toUpperCase() : email[0].toUpperCase()
+  const fallback = name
+    ? name[0].toUpperCase()
+    : email?.[0].toUpperCase() || "?"
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-1 gap-2">

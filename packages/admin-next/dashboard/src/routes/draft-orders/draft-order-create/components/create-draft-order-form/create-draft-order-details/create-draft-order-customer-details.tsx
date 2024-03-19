@@ -152,7 +152,7 @@ export const CreateDraftOrderCustomerDetails = () => {
           />
         )}
       </fieldset>
-      <Label className="flex items-center gap-x-2">
+      <Label className="flex w-fit items-center gap-x-2">
         <Checkbox
           checked={useExistingCustomer}
           onCheckedChange={(val) => setUseExistingCustomer(!!val)}

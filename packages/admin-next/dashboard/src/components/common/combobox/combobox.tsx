@@ -199,7 +199,7 @@ const ComboboxImpl = <T extends Value = string>(
               "bg-ui-bg-field transition-fg shadow-borders-base",
               "hover:bg-ui-bg-field-hover",
               "has-[input:focus]:shadow-borders-interactive-with-active",
-              "has-[:invalid]:shadow-borders-error",
+              "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
               "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
               {
                 "pl-0.5": hasValue && isArrayValue,

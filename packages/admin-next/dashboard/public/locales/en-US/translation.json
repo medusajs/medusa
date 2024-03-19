@@ -325,7 +325,14 @@
       "shippingOptionLabel": "Shipping option",
       "shippingOptionHint": "Choose the shipping option for the draft order.",
       "shippingPriceOverrideLabel": "Shipping price override",
-      "shippingPriceOverrideHint": "Override the shipping price for the draft order."
+      "shippingPriceOverrideHint": "Override the shipping price for the draft order.",
+      "sendNotificationLabel": "Send notification",
+      "sendNotificationHint": "Send a notification to the customer when the draft order is created."
+    },
+    "validation": {
+      "requiredEmailOrCustomer": "Email or customer is required.",
+      "requiredItems": "At least one item is required.",
+      "invalidEmail": "Email must be a valid email address."
     }
   },
   "discounts": {
@@ -778,6 +785,7 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "tax": "Tax",

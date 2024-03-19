@@ -1,6 +1,8 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import { Divider } from "../../../../../../components/common/divider"
+import { CreateDraftOrderCustomItemsSummary } from "./create-draft-order-custom-items-summary"
 import { CreateDraftOrderCustomerSummary } from "./create-draft-order-customer-summary"
 import { CreateDraftOrderFieldsSummary } from "./create-draft-order-fields-summary"
 import { CreateDraftOrderTotalSummary } from "./create-draft-order-total-summary"
@@ -14,17 +16,15 @@ export const CreateDraftOrderSummary = () => {
       <div className="flex w-full max-w-[720px] flex-col gap-y-8">
         <Heading>{t("fields.summary")}</Heading>
         <CreateDraftOrderCustomerSummary />
-        <Divider />
-        <CreateDraftOrderVariantItemsSummary />
-        <Divider />
-        <CreateDraftOrderTotalSummary />
-        <Divider />
+        <div className="flex flex-col gap-y-4">
+          <Divider variant="dashed" />
+          <CreateDraftOrderVariantItemsSummary />
+          <CreateDraftOrderCustomItemsSummary />
+          <CreateDraftOrderTotalSummary />
+          <Divider variant="dashed" />
+        </div>
         <CreateDraftOrderFieldsSummary />
       </div>
     </div>
   )
-}
-
-const Divider = () => {
-  return <div className="w-full border-t border-dashed" />
 }
