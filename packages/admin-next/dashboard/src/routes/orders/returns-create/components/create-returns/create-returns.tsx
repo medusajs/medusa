@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
+import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
 import { AdminPostOrdersOrderReturnsReq, Order } from "@medusajs/medusa"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -13,8 +14,7 @@ import {
 import { ItemsTable } from "../items-table"
 import { ReturnsForm } from "./returns-form"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
-import { getErrorMessage } from "@medusajs/admin-ui/ui/src/utils/error-messages.ts"
+import { CreateReturnSchema } from "./schema"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -29,30 +29,16 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-const CreateReturnSchema = zod.object({
-  quantity: zod.record(zod.string(), zod.number()),
-  reason: zod.record(zod.string(), zod.string().optional()),
-  note: zod.record(zod.string(), zod.string().optional()),
-  location: zod.string(),
-  shipping: zod.string(),
-  send_notification: zod.boolean().optional(),
-
-  enable_custom_refund: zod.boolean().optional(),
-  enable_custom_shipping_price: zod.boolean().optional(),
-
-  custom_refund: zod.number().optional(),
-  custom_shipping_price: zod.number().optional(),
-})
-
 export function CreateReturns({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
   const [selectedItems, setSelectedItems] = useState([])
   const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { mutateAsync: requestReturnOrder } = useAdminRequestReturn(order.id)
+  const { mutateAsync: requestReturnOrder, isLoading } = useAdminRequestReturn(
+    order.id
+  )
 
   const { shipping_options = [] } = useAdminShippingOptions({
     region_id: order.region_id,
@@ -84,8 +70,6 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
   })
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsSubmitting(true)
-
     const items = selected.map((item) => {
       const ret = {
         item_id: item.id,
@@ -93,7 +77,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       }
 
       if (data.reason[item.id]) {
-        ret["reson_id"] = data.reason[item.id]
+        ret["reason_id"] = data.reason[item.id]
       }
 
       if (data.note[item.id]) {
@@ -147,12 +131,9 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       }
     }
 
-    try {
-      await requestReturnOrder(payload)
-      handleSuccess(`/orders/${order.id}`)
-    } finally {
-      setIsSubmitting(false)
-    }
+    await requestReturnOrder(payload)
+
+    handleSuccess(`/orders/${order.id}`)
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
@@ -166,16 +147,6 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     },
     [tab]
   )
-
-  // const onBack = React.useCallback(async () => {
-  //   switch (tab) {
-  //     case Tab.ITEMS:
-  //       break
-  //     case Tab.DETAILS:
-  //       setTab(Tab.ITEMS)
-  //       break
-  //   }
-  // }, [tab])
 
   const onNext = React.useCallback(async () => {
     switch (tab) {
@@ -259,12 +230,12 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
           <div className="flex flex-1 items-center justify-end gap-x-2">
             <Button
               className="whitespace-nowrap"
-              isLoading={isSubmitting}
+              isLoading={isLoading}
               onClick={onNext}
               disabled={!canMoveToDetails}
               type={tab === Tab.DETAILS ? "submit" : "button"}
             >
-              {t(tab === Tab.DETAILS ? "actions.save" : "actions.next")}
+              {t(tab === Tab.DETAILS ? "general.save" : "general.next")}
             </Button>
           </div>
         </RouteFocusModal.Header>

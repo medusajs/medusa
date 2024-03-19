@@ -8,7 +8,6 @@ import { useAdminReturnReasons } from "medusa-react"
 
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 
 type OrderEditItemProps = {
@@ -33,7 +32,7 @@ function ReturnItem({ item, currencyCode, form }: OrderEditItemProps) {
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}
               </Text>
-              {item.variant.sku && <span>(item.variant.sku)</span>}
+              {item.variant.sku && <span>({item.variant.sku})</span>}
             </div>
             <Text as="div" className="text-ui-fg-subtle txt-small">
               {item.variant.title}
@@ -41,29 +40,13 @@ function ReturnItem({ item, currencyCode, form }: OrderEditItemProps) {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle txt-small flex flex-shrink-0">
+        <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
           <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
-        </div>
-
-        <div className="flex items-center">
-          {/*<ActionMenu*/}
-          {/*  groups={[*/}
-          {/*    {*/}
-          {/*      actions: [*/}
-          {/*        {*/}
-          {/*          label: t("actions.remove"),*/}
-          {/*          icon: <Trash />,*/}
-          {/*          // onClick: () => onRemove(item.id),*/}
-          {/*        },*/}
-          {/*      ],*/}
-          {/*    },*/}
-          {/*  ]}*/}
-          {/*/>*/}
         </div>
       </div>
 
       <div className="block p-3 text-sm">
-        <div className="flex justify-between gap-x-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           <div className="flex-1">
             <Text weight="plus" className="txt-small mb-2">
               {t("fields.quantity")}

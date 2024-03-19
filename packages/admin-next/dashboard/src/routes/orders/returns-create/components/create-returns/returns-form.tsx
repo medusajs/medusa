@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
+import * as z from "zod"
 import {
   AdminGetVariantsVariantInventoryRes,
   LineItem,
@@ -22,11 +23,12 @@ import { Form } from "../../../../../components/common/form"
 
 import { medusa } from "../../../../../lib/medusa"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { getCurrencySymbol } from "../../../../../lib/currencies.ts"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
+import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { CreateReturnSchema } from "./schema"
 
 type ReturnsFormProps = {
-  form: UseFormReturn<any>
+  form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
   items: LineItem[] // Items selected for return
   order: Order
   onRefundableAmountChange: (amount: number) => void
@@ -166,18 +168,16 @@ export function ReturnsForm({
 
         <div className="flex gap-x-4">
           <div className="flex-1">
-            <Text weight="plus" className="txt-small">
-              {t("fields.location")}
-            </Text>
-            <Text className="text-ui-fg-subtle txt-small mb-1">
-              {t("orders.returns.locationDescription")}
-            </Text>
             <Form.Field
               control={form.control}
               name="location"
               render={({ field: { onChange, ref, ...field } }) => {
                 return (
                   <Form.Item>
+                    <Form.Label> {t("fields.location")}</Form.Label>
+                    <Form.Hint>
+                      {t("orders.returns.locationDescription")}
+                    </Form.Hint>
                     <Form.Control>
                       <Select onValueChange={onChange} {...field}>
                         <Select.Trigger className="bg-ui-bg-base" ref={ref}>
@@ -199,18 +199,16 @@ export function ReturnsForm({
             />
           </div>
           <div className="flex-1">
-            <Text weight="plus" className="txt-small">
-              {t("fields.shipping")}
-            </Text>
-            <Text className="text-ui-fg-subtle txt-small mb-1">
-              {t("orders.returns.shippingDescription")}
-            </Text>
             <Form.Field
               control={form.control}
               name="shipping"
               render={({ field: { onChange, ref, ...field } }) => {
                 return (
                   <Form.Item>
+                    <Form.Label>{t("fields.shipping")}</Form.Label>
+                    <Form.Hint>
+                      {t("orders.returns.shippingDescription")}
+                    </Form.Hint>
                     <Form.Control>
                       <Select onValueChange={onChange} {...field}>
                         <Select.Trigger className="bg-ui-bg-base" ref={ref}>

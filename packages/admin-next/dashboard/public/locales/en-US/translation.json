@@ -54,8 +54,6 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
-    "save": "Save",
-    "next": "Next",
     "back": "Back",
     "continue": "Continue",
     "edit": "Edit",
@@ -262,6 +260,7 @@
       }
     },
     "returns": {
+      "details": "Details",
       "chooseItems": "Choose items",
       "refundAmount": "Refund amount",
       "locationDescription": "Choose which location you want to return the items to.",
