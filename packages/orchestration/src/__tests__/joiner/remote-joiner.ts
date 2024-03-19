@@ -281,7 +281,7 @@ describe("RemoteJoiner", () => {
         fields: ["value"],
       },
       variants: {
-        fields: ["*"],
+        fields: [],
         expands: {
           options: {
             fields: ["id", "value"],
