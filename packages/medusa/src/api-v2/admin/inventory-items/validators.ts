@@ -257,3 +257,12 @@ export class AdminPostInventoryItemsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 }
+
+export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {
+  /**
+   * Location IDs to filter location levels.
+   */
+  @IsOptional()
+  @IsString({ each: true })
+  location_id?: string[]
+}

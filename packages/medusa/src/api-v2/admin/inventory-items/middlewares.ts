@@ -1,6 +1,7 @@
 import * as QueryConfig from "./query-config"
 
 import {
+  AdminGetInventoryItemsItemLocationLevelsParams,
   AdminGetInventoryItemsItemParams,
   AdminGetInventoryItemsParams,
   AdminPostInventoryItemsItemLocationLevelsReq,
@@ -39,11 +40,6 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/inventory-items/:id/location-levels",
-    middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
-  },
-  {
-    method: ["POST"],
     matcher: "/admin/inventory-items",
     middlewares: [
       transformBody(AdminPostInventoryItemsReq),
@@ -52,5 +48,20 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/inventory-items/:id/location-levels",
+    middlewares: [
+      transformQuery(
+        AdminGetInventoryItemsItemLocationLevelsParams,
+        QueryConfig.listLocationLevelsTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels",
+    middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
   },
 ]

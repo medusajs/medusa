@@ -229,6 +229,79 @@ medusaIntegrationTestRunner({
         )
       })
 
+      describe("List inventory levels", () => {
+        let inventoryItemId
+        let sl1Id
+        let sl2Id
+        beforeEach(async () => {
+          const inventoryItem = await api.post(
+            `/admin/inventory-items`,
+            { sku: "test-sku" },
+            adminHeaders
+          )
+          inventoryItemId = inventoryItem.data.inventory_item.id
+
+          const locationService = appContainer.resolve(
+            ModuleRegistrationName.STOCK_LOCATION
+          )
+          const sl1 = await locationService.create({
+            name: "loc-1",
+          })
+          sl1Id = sl1.id
+          const sl2 = await locationService.create({
+            name: "loc-2",
+          })
+          sl2Id = sl2.id
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: sl1Id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: sl2Id,
+              stocked_quantity: 15,
+            },
+            adminHeaders
+          )
+        })
+
+        it.only("should list the inventory levels", async () => {
+          const response = await api.get(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            adminHeaders
+          )
+
+          expect(response.data).toEqual(
+            expect.objectContaining({
+              count: 2,
+              offset: 0,
+              limit: 50,
+            })
+          )
+
+          expect(response.data.inventory_levels).toHaveLength(2)
+          expect(response.data.inventory_levels).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: sl1Id,
+                stocked_quantity: 10,
+              }),
+              expect.objectContaining({
+                location_id: sl2Id,
+                stocked_quantity: 15,
+              }),
+            ])
+          )
+        })
+      })
+
       describe("Delete inventory levels", () => {
         const locationId = "loc_1"
         let inventoryItem
