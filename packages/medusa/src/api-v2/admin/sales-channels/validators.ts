@@ -1,6 +1,7 @@
 import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsOptional,
@@ -99,4 +100,9 @@ export class AdminPostSalesChannelsSalesChannelReq {
   @IsString()
   @IsOptional()
   metadata?: Record<string, unknown>
+}
+
+export class AdminPostSalesChannelsChannelProductsBatchReq {
+  @IsArray()
+  product_ids: string[]
 }
