@@ -140,12 +140,7 @@ export class AdminPostInventoryItemsItemLocationLevelsParams extends FindParams 
  * @schema AdminPostInventoryItemsReq
  * type: object
  * description: "The details of the inventory item to create."
- * required:
- *   - variant_id
  * properties:
- *   variant_id:
- *     description: The ID of the variant to create the inventory item for.
- *     type: string
  *   sku:
  *     description: The unique SKU of the associated Product Variant.
  *     type: string
@@ -210,10 +205,6 @@ export class AdminPostInventoryItemsItemLocationLevelsParams extends FindParams 
  *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostInventoryItemsReq {
-  @IsOptional()
-  @IsString()
-  variant_id: string
-
   @IsString()
   @IsOptional()
   sku?: string

@@ -33,6 +33,7 @@ const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     rehypePlugins: [],
+    development: process.env.NODE_ENV === "development",
   },
 })
 

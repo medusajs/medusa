@@ -1,10 +1,10 @@
 # Install in Node.js-Based Application
 
-In this document, you’ll learn how to setup and use the Product module in a Node.js based application.
+In this document, you’ll learn how to setup and use the Product Module in a Node.js based application.
 
 ## Prerequisites
 
-Before installing the Product module in your application, make sure you have the following prerequisites:
+Before installing the Product Module in your application, make sure you have the following prerequisites:
 
 - Node.js v16 or greater
 - PostgreSQL database. You can use an existing Medusa database, or set up a new PostgreSQL database.
@@ -13,7 +13,7 @@ Before installing the Product module in your application, make sure you have the
 
 ## Install Package
 
-In your Node.js-based applications, such as a Next.js application, you can install the Product module with the following command:
+In your Node.js-based applications, such as a Next.js application, you can install the Product Module with the following command:
 
 ```bash npm2yarn
 npm install @medusajs/product
@@ -172,7 +172,7 @@ npm run product:seed
 
 ## Next.js Application: Adjust Configurations
 
-The Product module uses dependencies that aren’t Webpack optimized. Since Next.js uses Webpack for compilation, you need to add the Product module as an external dependency.
+the Product Module uses dependencies that aren’t Webpack optimized. Since Next.js uses Webpack for compilation, you need to add the Product Module as an external dependency.
 
 To do that, add the `serverComponentsExternalPackages` option in `next.config.js`:
 
@@ -193,6 +193,6 @@ module.exports = nextConfig
 
 ## Start Development
 
-You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Product module.
+You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Product Module.
 
 You can also refer to the [Module Interface Reference](../../references/product/interfaces/product.IProductModuleService.mdx) for a detailed reference on all available methods.

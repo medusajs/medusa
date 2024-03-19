@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # DiscountConditionService
 
@@ -14,13 +14,13 @@ Provides layer to manipulate discount conditions.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new DiscountConditionService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new DiscountConditionService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountConditionRepository_","type":"Repository&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="DiscountConditionService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountConditionRepository_","type":"Repository&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="DiscountConditionService"/>
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -40,21 +40,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -64,62 +64,62 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### retrieve
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"conditionId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"conditionId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### resolveConditionType\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`DiscountConditionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="resolveConditionType_"/>
+<TypeList types={[{"name":"data","type":"`DiscountConditionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="resolveConditionType_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"undefined \\| object","type":"`undefined` \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="resolveConditionType_"/>
+<TypeList types={[{"name":"undefined \\| object","type":"`undefined` \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="resolveConditionType_"/>
 
 ### upsertCondition
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`DiscountConditionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"overrideExisting","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}  sectionTitle="upsertCondition"/>
+<TypeList types={[{"name":"data","type":"`DiscountConditionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"overrideExisting","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}  sectionTitle="upsertCondition"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([DiscountConditionProduct](../../entities/classes/entities.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](../../entities/classes/entities.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](../../entities/classes/entities.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](../../entities/classes/entities.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](../../entities/classes/entities.DiscountConditionCustomerGroup.mdx))[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="upsertCondition"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;([DiscountConditionProduct](../../entities/classes/entities.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](../../entities/classes/entities.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](../../entities/classes/entities.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](../../entities/classes/entities.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](../../entities/classes/entities.DiscountConditionCustomerGroup.mdx))[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="upsertCondition"/>
 
 ### removeResources
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"Omit&#60;DiscountConditionInput, \"id\"&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeResources"/>
+<TypeList types={[{"name":"data","type":"Omit&#60;DiscountConditionInput, \"id\"&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeResources"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="removeResources"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="removeResources"/>
 
 ### delete
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"discountConditionId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"discountConditionId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>

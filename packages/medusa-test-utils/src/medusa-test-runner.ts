@@ -7,19 +7,6 @@ import { createMedusaContainer } from "@medusajs/utils"
 
 const axios = require("axios").default
 
-const keepTables = [
-  /*"store",*/
-  /*  "staged_job",
-  "shipping_profile",
-  "fulfillment_provider",
-  "payment_provider",
-  "country",
-  "region_country",
-  "currency",
-  "migrations",
-  "mikro_orm_migrations",*/
-]
-
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD

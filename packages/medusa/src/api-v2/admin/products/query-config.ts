@@ -22,6 +22,11 @@ export const defaultAdminProductsVariantFields = [
   "ean",
   "upc",
   "barcode",
+  "prices.id",
+  "prices.currency_code",
+  "prices.amount",
+  "prices.created_at",
+  "prices.updated_at",
   "options.id",
   "options.option_value.value",
   "options.option_value.option.title",
@@ -44,8 +49,6 @@ export const defaultAdminProductsOptionFields = ["id", "title"]
 
 export const retrieveOptionConfig = {
   defaultFields: defaultAdminProductsOptionFields,
-  defaultRelations: [],
-  allowedRelations: [],
   isList: false,
 }
 
@@ -55,9 +58,8 @@ export const listOptionConfig = {
   isList: true,
 }
 
-export const allowedAdminProductRelations = [
+/* export const allowedAdminProductRelations = [
   "variants",
-  // TODO: Add in next iteration
   // "variants.prices",
   "variants.options",
   "images",
@@ -68,21 +70,21 @@ export const allowedAdminProductRelations = [
   "tags",
   "type",
   "collection",
-]
+]*/
 
 // TODO: This is what we had in the v1 list. Do we still want to expand that much by default? Also this doesn't work in v2 it seems.
-export const defaultAdminProductRelations = [
+/* export const defaultAdminProductRelations = [
   "variants",
-  "variants.prices",
-  "variants.options",
-  "profiles",
+  // "variants.prices",
+  // "variants.options",
+  // "profiles",
   "images",
   "options",
-  "options.values",
+  // "options.values",
   "tags",
   "type",
   "collection",
-]
+]*/
 
 export const defaultAdminProductFields = [
   "id",
@@ -143,9 +145,7 @@ export const defaultAdminProductFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminProductFields,
-  defaultRelations: defaultAdminProductRelations,
-  allowedRelations: allowedAdminProductRelations,
+  defaults: defaultAdminProductFields,
   isList: false,
 }
 

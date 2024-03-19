@@ -48,11 +48,14 @@ describe("GET /admin/regions", () => {
 
     it("calls service list", () => {
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        RegionServiceMock.listAndCount.mock.calls[0][1].relations
+      ).toHaveLength(defaultRelations.length)
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,
-          relations: defaultRelations,
+          relations: expect.arrayContaining(defaultRelations),
           take: 50,
           skip: 0,
           order: { created_at: "DESC" },
@@ -84,11 +87,14 @@ describe("GET /admin/regions", () => {
 
     it("calls service list", () => {
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        RegionServiceMock.listAndCount.mock.calls[0][1].relations
+      ).toHaveLength(defaultRelations.length)
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,
-          relations: defaultRelations,
+          relations: expect.arrayContaining(defaultRelations),
           take: 20,
           skip: 10,
           order: { created_at: "DESC" },
