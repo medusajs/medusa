@@ -1571,49 +1571,57 @@ export default class FulfillmentModuleService<
     createdFulfillmentSets: TEntity[],
     sharedContext: Context
   ): void {
-    for (const fulfillmentSet of createdFulfillmentSets) {
-      sharedContext.messageAggregator!.saveRawMessageData({
-        eventName: FulfillmentUtils.FulfillmentEvents.created,
+    const buildMessage = ({
+      eventName,
+      id,
+      object,
+    }: {
+      eventName: string
+      id: string
+      object: string
+    }) => {
+      return {
+        eventName,
         metadata: {
+          object,
           service: Modules.FULFILLMENT,
           action: "created",
-          object: "fulfillment_set",
           eventGroupId: sharedContext.eventGroupId,
         },
-        data: {
+        data: { id },
+      }
+    }
+
+    for (const fulfillmentSet of createdFulfillmentSets) {
+      sharedContext.messageAggregator!.saveRawMessageData(
+        buildMessage({
+          eventName: FulfillmentUtils.FulfillmentEvents.created,
           id: fulfillmentSet.id,
-        },
-      })
+          object: "fulfillment_set",
+        })
+      )
 
       if (fulfillmentSet.service_zones?.length) {
         for (const serviceZone of fulfillmentSet.service_zones) {
-          sharedContext.messageAggregator!.saveRawMessageData({
-            eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
-            metadata: {
-              service: Modules.FULFILLMENT,
-              action: "created",
-              object: "service_zone",
-              eventGroupId: sharedContext.eventGroupId,
-            },
-            data: {
+          sharedContext.messageAggregator!.saveRawMessageData(
+            buildMessage({
+              eventName:
+                FulfillmentUtils.FulfillmentEvents.service_zone_created,
               id: serviceZone.id,
-            },
-          })
+              object: "service_zone",
+            })
+          )
 
           if (serviceZone.geo_zones?.length) {
             for (const geoZone of serviceZone.geo_zones) {
-              sharedContext.messageAggregator!.saveRawMessageData({
-                eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
-                metadata: {
-                  service: Modules.FULFILLMENT,
-                  action: "created",
-                  object: "geo_zone",
-                  eventGroupId: sharedContext.eventGroupId,
-                },
-                data: {
+              sharedContext.messageAggregator!.saveRawMessageData(
+                buildMessage({
+                  eventName:
+                    FulfillmentUtils.FulfillmentEvents.geo_zone_created,
                   id: geoZone.id,
-                },
-              })
+                  object: "geo_zone",
+                })
+              )
             }
           }
         }
