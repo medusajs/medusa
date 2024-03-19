@@ -41,6 +41,17 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/inventory-items",
+    middlewares: [
+      transformBody(AdminPostInventoryItemsReq),
+      transformQuery(
+        AdminGetInventoryItemsItemParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/inventory-items/:id/location-levels",
     middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
   },
