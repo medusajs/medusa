@@ -23,7 +23,6 @@ import {
   adminStoreKeys,
   useAdminCustomPost,
   useAdminCustomQuery,
-  useAdminUpdateStore,
 } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -60,6 +59,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     },
     meta: {
       currencyCodes: store.supported_currency_codes,
+      storeId: store.id,
     },
   })
 
@@ -182,13 +182,19 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 }
 
 const CurrencyActions = ({
+  storeId,
   currency,
   currencyCodes,
 }: {
+  storeId: string
   currency: Currency
   currencyCodes: string[]
 }) => {
-  const { mutateAsync } = useAdminUpdateStore()
+  const { mutateAsync } = useAdminCustomPost(
+    `/admin/stores/${storeId}`,
+    adminStoreKeys.details()
+  )
+
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -209,7 +215,9 @@ const CurrencyActions = ({
     }
 
     await mutateAsync({
-      currencies: currencyCodes.filter((c) => c !== currency.code),
+      supported_currency_codes: currencyCodes.filter(
+        (c) => c !== currency.code
+      ),
     })
   }
 
@@ -287,12 +295,14 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { currencyCodes } = table.options.meta as {
+          const { currencyCodes, storeId } = table.options.meta as {
             currencyCodes: string[]
+            storeId: string
           }
 
           return (
             <CurrencyActions
+              storeId={storeId}
               currency={row.original}
               currencyCodes={currencyCodes}
             />
