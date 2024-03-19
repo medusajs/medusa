@@ -93,12 +93,13 @@ export class RemoteQuery {
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
-    expand.fields?.forEach((field: string) => {
+    for (const field of expand.fields ?? []) {
       if (field === "*") {
         expand.fields = []
+        break
       }
       fields.add(prefix ? `${prefix}.${field}` : field)
-    })
+    }
 
     args[prefix] = expand.args
 
