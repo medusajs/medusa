@@ -10,8 +10,7 @@ export const deletePriceListsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    // TODO: Implement soft delete price lists
-    await pricingModule.deletePriceLists(ids)
+    await pricingModule.softDeletePriceLists(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -24,7 +23,6 @@ export const deletePriceListsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    // TODO: Implement restore price lists
-    // await pricingModule.restorePriceLists(idsToRestore)
+    await pricingModule.restorePriceLists(idsToRestore)
   }
 )

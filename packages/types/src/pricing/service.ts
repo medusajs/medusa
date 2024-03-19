@@ -2060,6 +2060,20 @@ export interface IPricingModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PriceSetMoneyAmountDTO[]>
 
+  softDeletePriceSetMoneyAmounts<
+    TReturnableLinkableKeys extends string = string
+  >(
+    psmaIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restorePriceSetMoneyAmounts<TReturnableLinkableKeys extends string = string>(
+    psmaIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
   /**
    * This method is used to retrieve a paginated list of price set money amounts along with the total count of
    * available price set money amounts satisfying the provided filters.
@@ -2993,6 +3007,18 @@ export interface IPricingModuleService extends IModuleService {
     priceListIds: string[],
     sharedContext?: Context
   ): Promise<void>
+
+  softDeletePriceLists<TReturnableLinkableKeys extends string = string>(
+    priceListIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restorePriceLists<TReturnableLinkableKeys extends string = string>(
+    priceListIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a price list rule by its ID.
