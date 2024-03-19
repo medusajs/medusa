@@ -21,7 +21,7 @@ export const createDefaultStoreStep = createStep(
         input: {
           stores: [
             {
-              // Should we be more sophisticated about the defaults here?
+              // TODO: Revisit for a more sophisticated approach
               ...data.store,
               supported_currency_codes: ["usd"],
               default_currency_code: "usd",
