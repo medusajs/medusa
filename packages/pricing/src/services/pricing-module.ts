@@ -39,11 +39,7 @@ import {
   RuleType,
 } from "@models"
 
-import {
-  PriceListRuleValueService,
-  PriceListService,
-  RuleTypeService,
-} from "@services"
+import { PriceListService, RuleTypeService } from "@services"
 import { ServiceTypes } from "@types"
 import { validatePriceListDates } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -59,7 +55,7 @@ type InjectedDependencies = {
   priceSetMoneyAmountService: ModulesSdkTypes.InternalModuleService<any>
   priceListService: PriceListService<any>
   priceListRuleService: ModulesSdkTypes.InternalModuleService<any>
-  priceListRuleValueService: PriceListRuleValueService<any>
+  priceListRuleValueService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -120,7 +116,7 @@ export default class PricingModuleService<
   protected readonly priceSetMoneyAmountService_: ModulesSdkTypes.InternalModuleService<TPriceSetMoneyAmount>
   protected readonly priceListService_: PriceListService<TPriceList>
   protected readonly priceListRuleService_: ModulesSdkTypes.InternalModuleService<TPriceListRule>
-  protected readonly priceListRuleValueService_: PriceListRuleValueService<TPriceListRuleValue>
+  protected readonly priceListRuleValueService_: ModulesSdkTypes.InternalModuleService<TPriceListRuleValue>
 
   constructor(
     {
@@ -806,7 +802,7 @@ export default class PricingModuleService<
           await this.priceListRuleValueService_.create(
             [
               {
-                price_list_rule: priceListRule,
+                price_list_rule_id: priceListRule.id,
                 value: ruleValue,
               },
             ],
@@ -968,7 +964,7 @@ export default class PricingModuleService<
 
         for (const ruleValue of ruleValues as string[]) {
           await this.priceListRuleValueService_.create(
-            [{ price_list_rule: priceListRule, value: ruleValue }],
+            [{ price_list_rule_id: priceListRule.id, value: ruleValue }],
             sharedContext
           )
         }
@@ -1453,7 +1449,7 @@ export default class PricingModuleService<
 
       values.forEach((v) => {
         priceListRuleValuesToCreate.push({
-          price_list_rule: id,
+          price_list_rule_id: id,
           value: v,
         })
       })
