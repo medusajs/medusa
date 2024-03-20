@@ -24,7 +24,7 @@ Version 1.20.3 of Medusa squashes a few bugs in the core, and updates an index o
 
 The multicolumn uniqueness index on the customer table (`email`, `has_account`) has been updated to only apply to rows where `deleted_at` is `null`. This is to allow for the creation of customers that were previously soft-deleted.
 
-This change requires you to run migrations. See section below
+This change requires you to run migrations. See section below.
 
 ---
 
