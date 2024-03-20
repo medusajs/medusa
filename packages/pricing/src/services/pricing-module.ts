@@ -94,13 +94,21 @@ export default class PricingModuleService<
     InjectedDependencies,
     PricingTypes.PriceSetDTO,
     {
-      MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
+      MoneyAmount: {
+        dto: PricingTypes.MoneyAmountDTO
+        create_dto: PricingTypes.CreateMoneyAmountDTO
+        update_dto: PricingTypes.UpdateMoneyAmountDTO
+      }
       PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
       PriceSetMoneyAmountRules: {
         dto: PricingTypes.PriceSetMoneyAmountRulesDTO
       }
       PriceRule: { dto: PricingTypes.PriceRuleDTO }
-      RuleType: { dto: PricingTypes.RuleTypeDTO }
+      RuleType: {
+        dto: PricingTypes.RuleTypeDTO
+        create_dto: PricingTypes.CreateRuleTypeDTO
+        update_dto: PricingTypes.UpdateRuleTypeDTO
+      }
       PriceList: { dto: PricingTypes.PriceListDTO }
       PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
     }
@@ -699,72 +707,6 @@ export default class PricingModuleService<
 
     return await this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
       priceSets,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createMoneyAmounts(
-    data: PricingTypes.CreateMoneyAmountDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const moneyAmounts = await this.moneyAmountService_.create(
-      data,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
-      moneyAmounts,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updateMoneyAmounts(
-    data: PricingTypes.UpdateMoneyAmountDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const moneyAmounts = await this.moneyAmountService_.update(
-      data,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
-      moneyAmounts,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createRuleTypes(
-    data: PricingTypes.CreateRuleTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.RuleTypeDTO[]> {
-    const ruleTypes = await this.ruleTypeService_.create(data, sharedContext)
-
-    return await this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
-      ruleTypes,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updateRuleTypes(
-    data: PricingTypes.UpdateRuleTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.RuleTypeDTO[]> {
-    const ruleTypes = await this.ruleTypeService_.update(data, sharedContext)
-
-    return await this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
-      ruleTypes,
       {
         populate: true,
       }
