@@ -5,14 +5,14 @@ import {
   isString,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { MedusaContainer } from "medusa-core-utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "../price-lists/queries"
-import { AdminGetProductsParams } from "./validators"
 import { refetchProduct, remapKeysForProduct, remapProduct } from "./helpers"
-import { MedusaContainer } from "medusa-core-utils"
+import { AdminGetProductsParams } from "./validators"
 
 const applyVariantFiltersForPriceList = async (
   scope: MedusaContainer,
@@ -59,6 +59,7 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let filterableFields: AdminGetProductsParams = { ...req.filterableFields }
+
   filterableFields = await applyVariantFiltersForPriceList(
     req.scope,
     filterableFields
