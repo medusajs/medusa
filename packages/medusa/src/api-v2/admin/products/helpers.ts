@@ -1,12 +1,19 @@
-import { ProductDTO, ProductVariantDTO } from "@medusajs/types"
+import { MedusaContainer, ProductDTO, ProductVariantDTO } from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+
+const isPricing = (fieldName: string) =>
+  fieldName.startsWith("variants.prices") ||
+  fieldName.startsWith("*variants.prices") ||
+  fieldName.startsWith("prices") ||
+  fieldName.startsWith("*prices")
 
 // The variant had prices before, but that is not part of the price_set money amounts. Do we remap the request and response or not?
 export const remapKeysForProduct = (selectFields: string[]) => {
   const productFields = selectFields.filter(
-    (fieldName: string) => !fieldName.startsWith("variants.prices")
+    (fieldName: string) => !isPricing(fieldName)
   )
   const pricingFields = selectFields
-    .filter((fieldName: string) => fieldName.startsWith("variants.prices"))
+    .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
       fieldName.replace(
         "variants.prices.",
@@ -19,10 +26,10 @@ export const remapKeysForProduct = (selectFields: string[]) => {
 
 export const remapKeysForVariant = (selectFields: string[]) => {
   const variantFields = selectFields.filter(
-    (fieldName: string) => !fieldName.startsWith("prices")
+    (fieldName: string) => !isPricing(fieldName)
   )
   const pricingFields = selectFields
-    .filter((fieldName: string) => fieldName.startsWith("prices"))
+    .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
       fieldName.replace(
         "prices.",
@@ -49,4 +56,22 @@ export const remapVariant = (v: ProductVariantDTO) => {
     })),
     price_set: undefined,
   }
+}
+
+export const refetchProduct = async (
+  productId: string,
+  scope: MedusaContainer,
+  fields: string[]
+) => {
+  const remoteQuery = scope.resolve("remoteQuery")
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "product",
+    variables: {
+      filters: { id: productId },
+    },
+    fields: remapKeysForProduct(fields ?? []),
+  })
+
+  const products = await remoteQuery(queryObject)
+  return products[0]
 }
