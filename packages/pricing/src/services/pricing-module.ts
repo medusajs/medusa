@@ -96,8 +96,8 @@ export default class PricingModuleService<
     {
       MoneyAmount: {
         dto: PricingTypes.MoneyAmountDTO
-        create_dto: PricingTypes.CreateMoneyAmountDTO
-        update_dto: PricingTypes.UpdateMoneyAmountDTO
+        create: PricingTypes.CreateMoneyAmountDTO
+        update: PricingTypes.UpdateMoneyAmountDTO
       }
       PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
       PriceSetMoneyAmountRules: {
@@ -106,8 +106,8 @@ export default class PricingModuleService<
       PriceRule: { dto: PricingTypes.PriceRuleDTO }
       RuleType: {
         dto: PricingTypes.RuleTypeDTO
-        create_dto: PricingTypes.CreateRuleTypeDTO
-        update_dto: PricingTypes.UpdateRuleTypeDTO
+        create: PricingTypes.CreateRuleTypeDTO
+        update: PricingTypes.UpdateRuleTypeDTO
       }
       PriceList: { dto: PricingTypes.PriceListDTO }
       PriceListRule: { dto: PricingTypes.PriceListRuleDTO }

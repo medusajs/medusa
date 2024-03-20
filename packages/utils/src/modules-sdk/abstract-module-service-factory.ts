@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -52,8 +52,8 @@ type ModelsConfigTemplate = {
     singular?: string
     plural?: string
     dto: object
-    create_dto?: object
-    update_dto?: object
+    create?: object
+    update?: object
   }
 }
 
@@ -65,14 +65,14 @@ type ExtractSingularName<
 type CreateMethodName<
   ModelConfig extends Record<any, any>,
   ModelKey = keyof ModelConfig
-> = ModelConfig[ModelKey] extends { create_dto?: object }
+> = ModelConfig[ModelKey] extends { create?: object }
   ? `create${ExtractPluralName<ModelConfig, ModelKey>}`
   : never
 
 type UpdateMethodName<
   ModelConfig extends Record<any, any>,
   ModelKey = keyof ModelConfig
-> = ModelConfig[ModelKey] extends { update_dto?: object }
+> = ModelConfig[ModelKey] extends { update?: object }
   ? `update${ExtractPluralName<ModelConfig, ModelKey>}`
   : never
 
@@ -185,7 +185,7 @@ export type AbstractModuleService<
     ModelName
   >]: {
     (
-      data: ModelsConfig[ModelName]["create_dto"][],
+      data: ModelsConfig[ModelName]["create"][],
       sharedContext?: Context
     ): Promise<ModelsConfig[ModelName]["dto"][]>
   }
@@ -194,10 +194,9 @@ export type AbstractModuleService<
     ModelsConfig,
     ModelName
   >]: {
-    (
-      data: ModelsConfig[ModelName]["create_dto"],
-      sharedContext?: Context
-    ): Promise<ModelsConfig[ModelName]["dto"]>
+    (data: ModelsConfig[ModelName]["create"], sharedContext?: Context): Promise<
+      ModelsConfig[ModelName]["dto"]
+    >
   }
 } & {
   [ModelName in keyof ModelsConfig as UpdateMethodName<
@@ -205,7 +204,7 @@ export type AbstractModuleService<
     ModelName
   >]: {
     (
-      data: ModelsConfig[ModelName]["update_dto"][],
+      data: ModelsConfig[ModelName]["update"][],
       sharedContext?: Context
     ): Promise<ModelsConfig[ModelName]["dto"][]>
   }
@@ -214,10 +213,9 @@ export type AbstractModuleService<
     ModelsConfig,
     ModelName
   >]: {
-    (
-      data: ModelsConfig[ModelName]["update_dto"],
-      sharedContext?: Context
-    ): Promise<ModelsConfig[ModelName]["dto"]>
+    (data: ModelsConfig[ModelName]["update"], sharedContext?: Context): Promise<
+      ModelsConfig[ModelName]["dto"]
+    >
   }
 }
 
