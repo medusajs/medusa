@@ -28,6 +28,9 @@ import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
+import { useV2Session } from "../../../lib/api-v2"
+
+const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || false
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -116,7 +119,19 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  const { user, isLoading, isError, error } = useAdminGetSession()
+  // Comment: Only place where we switch between the two modes inline.
+  //  This is to avoid having to rebuild the shell for the app.
+  let { user, isLoading, isError, error } = {} as any
+
+  // Medusa V2 disabled
+  ;({ user, isLoading, isError, error } = useAdminGetSession({
+    enabled: V2_ENABLED == "false",
+  }))
+
+  // Medusa V2 enabled
+  ;({ user, isLoading, isError, error } = useV2Session({
+    enabled: V2_ENABLED == "true",
+  }))
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email

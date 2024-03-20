@@ -87,6 +87,31 @@ export type CreateWorkflowComposerContext = {
  */
 export interface StepExecutionContext {
   /**
+   * The ID of the workflow.
+   */
+  workflowId: string
+
+  /**
+   * The attempt number of the step.
+   */
+  attempt: number
+
+  /**
+   * The idempoency key of the step.
+   */
+  idempotencyKey: string
+
+  /**
+   * The name of the step.
+   */
+  stepName: string
+
+  /**
+   * The action of the step.
+   */
+  action: "invoke" | "compensate"
+
+  /**
    * The container used to access resources, such as services, in the step.
    */
   container: MedusaContainer
