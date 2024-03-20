@@ -32,7 +32,7 @@ export interface CreateOrderDTO {
   sales_channel_id?: string
   status?: string
   email?: string
-  currency_code: string
+  currency_code?: string
   shipping_address_id?: string
   billing_address_id?: string
   shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO

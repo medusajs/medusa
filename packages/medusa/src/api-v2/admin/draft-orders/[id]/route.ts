@@ -1,7 +1,4 @@
-import {
-  deleteOrdersWorkflow,
-  updateOrdersWorkflow,
-} from "@medusajs/core-flows"
+import { Order } from "@medusajs/core-flows"
 import { UpdateOrderDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -26,7 +23,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { result, errors } = await updateOrdersWorkflow(req.scope).run({
+  const { result, errors } = await Order.updateOrdersWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as UpdateOrderDTO,
@@ -42,7 +39,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { result, errors } = await deleteOrdersWorkflow(req.scope).run({
+  const { result, errors } = await Order.deleteOrdersWorkflow(req.scope).run({
     input: {
       ids: Array.isArray(req.params.id) ? req.params.id : [req.params.id],
     },

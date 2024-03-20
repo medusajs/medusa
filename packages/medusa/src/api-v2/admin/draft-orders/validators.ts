@@ -1,3 +1,4 @@
+import { BigNumberInput } from "@medusajs/types"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -72,11 +73,11 @@ export class AdminPostDraftOrdersReq {
 
   @IsOptional()
   @IsType([AddressPayload, String])
-  billing_address?: AddressPayload | string
+  billing_address?: AddressPayload
 
   @IsOptional()
   @IsType([AddressPayload, String])
-  shipping_address?: AddressPayload | string
+  shipping_address?: AddressPayload
 
   @IsArray()
   @Type(() => Item)
@@ -120,6 +121,17 @@ export class AdminPostDraftOrdersReq {
 
 class ShippingMethod {
   @IsString()
+  @IsOptional()
+  shipping_method_id: string
+
+  @IsString()
+  @IsOptional()
+  order_id: string
+
+  @IsString()
+  name: string
+
+  @IsString()
   option_id: string
 
   @IsObject()
@@ -128,7 +140,7 @@ class ShippingMethod {
 
   @IsNumber()
   @IsOptional()
-  price?: number
+  amount: BigNumberInput
 }
 
 class Discount {
@@ -138,12 +150,12 @@ class Discount {
 
 class Item {
   @IsString()
-  @IsOptional()
-  title?: string
+  @ValidateIf((o) => !o.variant_id)
+  title: string
 
   @IsNumber()
   @IsOptional()
-  unit_price?: number
+  unit_price: BigNumberInput
 
   @IsString()
   @IsOptional()

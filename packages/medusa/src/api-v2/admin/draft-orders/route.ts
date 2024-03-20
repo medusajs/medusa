@@ -1,4 +1,4 @@
-import { createOrdersWorkflow } from "@medusajs/core-flows"
+import { Order } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -63,10 +63,8 @@ export const POST = async (
     input.email = customer.email
   }
 
-  const { result, errors } = await createOrdersWorkflow(req.scope).run({
-    input: {
-      order: workflowInput,
-    },
+  const { result, errors } = await Order.createOrdersWorkflow(req.scope).run({
+    input: workflowInput,
     throwOnError: false,
   })
 
