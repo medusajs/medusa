@@ -28,7 +28,7 @@ const MoneyAmountDeletedAtIndex = createPsqlIndexStatementHelper({
 const MoneyAmountCurrencyCodeIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "currency_code",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity({ tableName })

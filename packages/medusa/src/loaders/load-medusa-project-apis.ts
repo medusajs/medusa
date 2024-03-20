@@ -177,7 +177,8 @@ async function registerSubscribers(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
-    activityId
+    activityId,
+    true
   ).load()
 }
 

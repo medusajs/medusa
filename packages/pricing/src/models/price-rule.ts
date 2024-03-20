@@ -30,19 +30,19 @@ const PriceRuleDeletedAtIndex = createPsqlIndexStatementHelper({
 const PriceRulePriceSetIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "price_set_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const PriceRuleRuleTypeIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "rule_type_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const PriceRulePriceSetMoneyAmountIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "price_set_money_amount_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
   unique: true,
 })
 

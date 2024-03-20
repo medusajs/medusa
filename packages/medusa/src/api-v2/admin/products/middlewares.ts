@@ -83,7 +83,14 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants",
-    middlewares: [transformBody(AdminPostProductsProductVariantsReq)],
+    middlewares: [
+      transformBody(AdminPostProductsProductVariantsReq),
+      // We specify the product here as that's what we return after updating the variant
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],

@@ -28,7 +28,7 @@ const RuleTypeDeletedAtIndex = createPsqlIndexStatementHelper({
 const RuleTypeRuleAttributeIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "rule_attribute",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity({ tableName })

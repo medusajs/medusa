@@ -100,7 +100,7 @@ export class Migration20230929122253 extends Migration {
     this.addSql(`alter table "price_list" alter column "title" set not null `)
 
     this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_money_amount_currency_code" ON "money_amount" (currency_code) WHERE deleted_at IS NOT NULL;'
+      'CREATE INDEX IF NOT EXISTS "IDX_money_amount_currency_code" ON "money_amount" (currency_code) WHERE deleted_at IS NULL;'
     )
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_money_amount_deleted_at" ON "money_amount" (deleted_at) WHERE deleted_at IS NOT NULL;'
@@ -112,13 +112,13 @@ export class Migration20230929122253 extends Migration {
       'CREATE INDEX IF NOT EXISTS "IDX_price_set_deleted_at" ON "price_set" (deleted_at) WHERE deleted_at IS NOT NULL;'
     )
     this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_set_id" ON "price_set_money_amount" (price_set_id) WHERE deleted_at IS NOT NULL;'
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_set_id" ON "price_set_money_amount" (price_set_id) WHERE deleted_at IS NULL;'
     )
     this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_money_amount_id" ON "price_set_money_amount" (money_amount_id) WHERE deleted_at IS NOT NULL;'
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_money_amount_id" ON "price_set_money_amount" (money_amount_id) WHERE deleted_at IS NULL;'
     )
     this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_list_id" ON "price_set_money_amount" (price_list_id) WHERE deleted_at IS NOT NULL;'
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_price_list_id" ON "price_set_money_amount" (price_list_id) WHERE deleted_at IS NULL;'
     )
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_deleted_at" ON "price_set_money_amount" (deleted_at) WHERE deleted_at IS NOT NULL;'

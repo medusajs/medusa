@@ -35,19 +35,19 @@ const PriceSetMoneyAmountDeletedAtIndex = createPsqlIndexStatementHelper({
 const PriceSetMoneyAmountPriceSetIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "price_set_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const PriceSetMoneyAmountMoneyAmountIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "money_amount_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const PriceSetMoneyAmountPriceListIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "price_list_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity({ tableName })
