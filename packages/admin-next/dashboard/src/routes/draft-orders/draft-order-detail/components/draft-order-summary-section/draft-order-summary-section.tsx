@@ -199,6 +199,10 @@ const ItemBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
 
   const customItems = draftOrder.cart.items.filter((i) => i.variant_id === null)
 
+  const showDivider = variantBasedItems.length > 0 && customItems.length > 0
+
+  console.log("customItems", customItems)
+
   return (
     <div>
       {variantBasedItems.map((item) => {
@@ -215,7 +219,7 @@ const ItemBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
           />
         )
       })}
-      {customItems.length > 0 && <Divider variant="dashed" />}
+      {showDivider && <Divider variant="dashed" />}
       {customItems.map((item) => {
         const reservation = reservations
           ? reservations.find((r) => r.line_item_id === item.id)

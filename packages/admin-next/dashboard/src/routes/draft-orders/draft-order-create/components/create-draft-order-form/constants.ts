@@ -1,5 +1,6 @@
 import i18n from "i18next"
 import { z } from "zod"
+import { castNumber } from "../../../../../lib/cast-number"
 
 export const AddressPayload = z.object({
   first_name: z.string().min(1),
@@ -14,29 +15,62 @@ export const AddressPayload = z.object({
   company: z.string().optional(),
 })
 
-export const ExistingItemSchema = z.object({
-  product_title: z.string().optional(),
-  thumbnail: z.string().optional(),
-  variant_title: z.string().optional(),
-  variant_id: z.string().min(1),
-  sku: z.string().optional(),
-  quantity: z.number().min(1),
-  unit_price: z.number().min(0),
-  custom_unit_price: z.union([z.number(), z.string()]).optional(),
-})
+export const ExistingItemSchema = z
+  .object({
+    product_title: z.string().optional(),
+    thumbnail: z.string().optional(),
+    variant_title: z.string().optional(),
+    variant_id: z.string().min(1),
+    sku: z.string().optional(),
+    quantity: z.number().min(1),
+    unit_price: z.number().min(0),
+    custom_unit_price: z.union([z.number(), z.string()]).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.custom_unit_price && isNaN(castNumber(data.custom_unit_price))) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid custom unit price",
+        path: ["custom_unit_price"],
+      })
+    }
+  })
 
-export const CustomItemSchema = z.object({
-  title: z.string().min(1),
-  quantity: z.number().min(1),
-  unit_price: z.number().min(0),
-})
+export const CustomItemSchema = z
+  .object({
+    title: z.string().min(1),
+    quantity: z.number().min(1),
+    unit_price: z.union([z.number(), z.string()]),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      typeof data.unit_price === "string" &&
+      isNaN(castNumber(data.unit_price))
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid unit price",
+        path: ["unit_price"],
+      })
+    }
+  })
 
-export const ShippingMethodSchema = z.object({
-  option_id: z.string().min(1),
-  option_title: z.string(),
-  amount: z.union([z.number(), z.string()]).optional(),
-  custom_amount: z.union([z.number(), z.string()]).optional(),
-})
+export const ShippingMethodSchema = z
+  .object({
+    option_id: z.string().min(1),
+    option_title: z.string(),
+    amount: z.union([z.number(), z.string()]).optional(),
+    custom_amount: z.union([z.number(), z.string()]).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.custom_amount && isNaN(castNumber(data.custom_amount))) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid custom amount",
+        path: ["custom_amount"],
+      })
+    }
+  })
 
 export const CreateDraftOrderSchema = z
   .object({

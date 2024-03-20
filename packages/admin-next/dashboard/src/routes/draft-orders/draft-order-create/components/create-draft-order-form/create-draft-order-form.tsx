@@ -16,6 +16,7 @@ import {
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 
 import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
+import { castNumber } from "../../../../../lib/cast-number"
 import { CreateDraftOrderSchema, View } from "./constants"
 import { CreateDraftOrderContext } from "./context"
 import { CreateDraftOrderDetails } from "./create-draft-order-details"
@@ -155,7 +156,7 @@ export const CreateDraftOrderForm = () => {
       custom_items?.map((item) => {
         const { unit_price, quantity, title } = item
 
-        const unitPriceCast = Number(unit_price)
+        const unitPriceCast = castNumber(unit_price)
         const unitPriceValue = !isNaN(unitPriceCast)
           ? getDbAmount(unitPriceCast, region?.currency_code!)
           : undefined
@@ -174,7 +175,7 @@ export const CreateDraftOrderForm = () => {
         option_id: shipping_method.option_id,
         price: shipping_method.custom_amount
           ? getDbAmount(
-              Number(shipping_method.custom_amount),
+              castNumber(shipping_method.custom_amount),
               region?.currency_code!
             )
           : undefined,

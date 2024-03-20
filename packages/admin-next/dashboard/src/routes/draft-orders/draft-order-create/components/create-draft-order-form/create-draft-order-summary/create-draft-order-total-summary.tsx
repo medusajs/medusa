@@ -96,7 +96,7 @@ const getExistingItemSubtotal = (item: ExistingItem, currency_code: string) => {
 }
 
 const getCustomItemSubtotal = (item: CustomItem, currency_code: string) => {
-  return getDbAmount(item.unit_price, currency_code) * item.quantity
+  return getDbAmount(castNumber(item.unit_price), currency_code) * item.quantity
 }
 
 const getShippingSubtotal = (

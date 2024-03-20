@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { SplitView } from "../../../../../../components/layout/split-view"
+import { castNumber } from "../../../../../../lib/cast-number"
 import { CustomItemSchema } from "../constants"
 import { useCreateDraftOrder } from "../hooks"
 import { CustomItem } from "../types"
@@ -62,10 +63,8 @@ export const AddCustomItemDrawer = () => {
               type="number"
               step={1}
               onChange={(e) => {
-                const number = Number(e.target.value)
-                const value = isNaN(number) ? undefined : number
-
-                setItem((prev) => ({ ...prev, quantity: value }))
+                const val = castNumber(e.target.value)
+                setItem((prev) => ({ ...prev, quantity: val }))
               }}
             />
             <ErrorMessage errors={errors} field="quantity" />
@@ -79,10 +78,7 @@ export const AddCustomItemDrawer = () => {
               symbol={nativeSymbol}
               value={item.unit_price}
               onChange={(e) => {
-                const number = Number(e.target.value)
-                const value = isNaN(number) ? undefined : number
-
-                setItem((prev) => ({ ...prev, unit_price: value }))
+                setItem((prev) => ({ ...prev, unit_price: e.target.value }))
               }}
             />
             <ErrorMessage errors={errors} field="unit_price" />
