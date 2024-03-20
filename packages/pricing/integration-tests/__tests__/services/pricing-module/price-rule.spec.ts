@@ -1,15 +1,13 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { PriceSetMoneyAmount } from "../../../../src"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -28,7 +26,6 @@ moduleIntegrationTestRunner({
         await createPriceSets(testManager)
         await createRuleTypes(testManager)
         await createPriceSetMoneyAmounts(testManager)
-        await createPriceSetMoneyAmountRules(testManager)
         await createPriceRules(testManager)
       })
 
