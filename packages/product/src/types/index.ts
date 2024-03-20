@@ -54,5 +54,10 @@ export type UpdateCollectionInput = ProductTypes.UpdateProductCollectionDTO & {
 }
 
 export type UpdateProductVariantInput = ProductTypes.UpdateProductVariantDTO & {
-  product_id: string
+  id: string
+  product_id?: string
+}
+
+export type UpdateProductOptionInput = ProductTypes.UpdateProductOptionDTO & {
+  id: string
 }
