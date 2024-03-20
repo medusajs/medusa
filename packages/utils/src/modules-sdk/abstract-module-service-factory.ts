@@ -209,6 +209,16 @@ export type AbstractModuleService<
       sharedContext?: Context
     ): Promise<ModelsConfig[ModelName]["dto"][]>
   }
+} & {
+  [ModelName in keyof ModelsConfig as UpdateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (
+      data: ModelsConfig[ModelName]["update_dto"],
+      sharedContext?: Context
+    ): Promise<ModelsConfig[ModelName]["dto"]>
+  }
 }
 
 /**
