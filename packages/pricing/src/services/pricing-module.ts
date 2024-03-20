@@ -350,8 +350,8 @@ export default class PricingModuleService<
         const numberOfRules = Object.entries(cleanRules).length
 
         const priceSetMoneyAmount = {
-          price_set: createdPriceSets[index],
-          money_amount: createdMoneyAmounts[moneyAmountIndex++],
+          price_set_id: createdPriceSets[index].id,
+          money_amount_id: createdMoneyAmounts[moneyAmountIndex++].id,
           title: "test", // TODO: accept title
           rules_count: numberOfRules,
         }
@@ -601,8 +601,8 @@ export default class PricingModuleService<
           ).length
           maCursor++
           return {
-            price_set: priceSetId,
-            money_amount: ma,
+            price_set_id: priceSetId,
+            money_amount_id: ma.id,
             title: "test", // TODO: accept title
             rules_count: numberOfRules,
           }
@@ -827,9 +827,9 @@ export default class PricingModuleService<
           await this.priceSetMoneyAmountService_.create(
             [
               {
-                price_set: priceSetId,
-                price_list: priceList,
-                money_amount: moneyAmount,
+                price_set_id: priceSetId,
+                price_list_id: priceList.id,
+                money_amount_id: moneyAmount.id,
                 title: "test",
                 rules_count: Object.keys(priceRules).length,
               },
@@ -1305,10 +1305,10 @@ export default class PricingModuleService<
           const [psma] = await this.priceSetMoneyAmountService_.create(
             [
               {
-                price_set: price.price_set_id,
-                money_amount: moneyAmount.id,
+                price_set_id: price.price_set_id,
+                money_amount_id: moneyAmount.id,
                 title: "test",
-                price_list: priceList.id,
+                price_list_id: priceList.id,
                 rules_count: noOfRules,
               },
             ],
