@@ -25,7 +25,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product_option",
     variables,
-    fields: req.retrieveConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [product_option] = await remoteQuery(queryObject)
