@@ -40,10 +40,6 @@ export const updateProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertVariants(
-      prevData.map((r) => ({
-        ...r,
-      }))
-    )
+    await service.upsertVariants(prevData)
   }
 )

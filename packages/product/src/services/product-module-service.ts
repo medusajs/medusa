@@ -32,7 +32,6 @@ import {
   arrayDifference,
   InjectManager,
   InjectTransactionManager,
-  isPresent,
   isString,
   kebabCase,
   MedusaContext,
@@ -228,7 +227,8 @@ export default class ProductModuleService<
     return Array.isArray(data) ? createdVariants : createdVariants[0]
   }
 
-  async createVariants_(
+  @InjectTransactionManager("baseRepository_")
+  protected async createVariants_(
     data: ProductTypes.CreateProductVariantDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductVariant[]> {
@@ -241,9 +241,7 @@ export default class ProductModuleService<
 
     const productOptions = await this.productOptionService_.list(
       {
-        product_id: uniqBy(data, "product_id").map(
-          (v) => v.product_id
-        ) as string[],
+        product_id: [...new Set<string>(data.map((v) => v.product_id!))],
       },
       {
         take: null,
@@ -268,6 +266,7 @@ export default class ProductModuleService<
     data: ProductTypes.UpsertProductVariantDTO,
     sharedContext?: Context
   ): Promise<ProductTypes.ProductVariantDTO>
+
   @InjectTransactionManager("baseRepository_")
   async upsertVariants(
     data:
@@ -395,8 +394,8 @@ export default class ProductModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
-  async diffVariants_(
+  @InjectTransactionManager("baseRepository_")
+  protected async diffVariants_(
     data: UpdateProductVariantInput[],
     productOptions: ProductOption[],
     @MedusaContext() sharedContext: Context = {}
@@ -555,7 +554,8 @@ export default class ProductModuleService<
     return Array.isArray(data) ? createdOptions : createdOptions[0]
   }
 
-  async createOptions_(
+  @InjectTransactionManager("baseRepository_")
+  protected async createOptions_(
     data: ProductTypes.CreateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductOption[]> {
@@ -589,6 +589,7 @@ export default class ProductModuleService<
     data: ProductTypes.UpsertProductOptionDTO,
     sharedContext?: Context
   ): Promise<ProductTypes.ProductOptionDTO>
+
   @InjectTransactionManager("baseRepository_")
   async upsertOptions(
     data:
@@ -700,7 +701,7 @@ export default class ProductModuleService<
 
   // TODO: Do validation
   @InjectTransactionManager("baseRepository_")
-  async diffOptions_(
+  protected async diffOptions_(
     data: UpdateProductOptionInput[],
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -952,7 +953,7 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async updateCollections_(
+  protected async updateCollections_(
     data: UpdateCollectionInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProductCollection[]> {
