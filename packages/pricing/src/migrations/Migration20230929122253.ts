@@ -161,7 +161,7 @@ export class Migration20230929122253 extends Migration {
       'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_deleted_at" ON "price_list_rule" (deleted_at) WHERE deleted_at IS NOT NULL;'
     )
     this.addSql(
-      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_price_list_rule_id" ON "price_list_rule_value" (price_list_rule_id) WHERE deleted_at IS NOT NULL;'
+      'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_price_list_rule_id" ON "price_list_rule_value" (price_list_rule_id) WHERE deleted_at IS NULL;'
     )
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_price_list_rule_value_deleted_at" ON "price_list_rule_value" (deleted_at) WHERE deleted_at IS NOT NULL;'
