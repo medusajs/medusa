@@ -14,7 +14,7 @@ export const createDefaultStoreStep = createStep(
     const storeService = container.resolve(ModuleRegistrationName.STORE)
 
     let shouldDelete = false
-    let [store] = await storeService.list()
+    let [store] = await storeService.list({}, { take: 1 })
 
     if (!store) {
       store = await createStoresWorkflow(container).run({
