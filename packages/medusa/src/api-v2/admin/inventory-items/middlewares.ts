@@ -62,7 +62,7 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
       transformBody(AdminPostInventoryItemsItemLocationLevelsLevelReq),
       transformQuery(
         AdminPostInventoryItemsItemLocationLevelsLevelParams,
-        QueryConfig.retrieveLocationLevelsTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },

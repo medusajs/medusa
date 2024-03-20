@@ -1,4 +1,5 @@
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
+
 import { NumericalComparisonOperator } from "../../common"
 
 /**
@@ -67,13 +68,13 @@ export interface FilterableInventoryLevelProps
   /**
    * Filters to apply on inventory levels' `stocked_quantity` attribute.
    */
-  stocked_quantity?: number | NumericalComparisonOperator
+  stocked_quantity?: number | OperatorMap<Number>
   /**
    * Filters to apply on inventory levels' `reserved_quantity` attribute.
    */
-  reserved_quantity?: number | NumericalComparisonOperator
+  reserved_quantity?: number | OperatorMap<Number>
   /**
    * Filters to apply on inventory levels' `incoming_quantity` attribute.
    */
-  incoming_quantity?: number | NumericalComparisonOperator
+  incoming_quantity?: number | OperatorMap<Number>
 }

@@ -66,18 +66,17 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const [inventory_level] = await remoteQuery(
+  const [inventory_item] = await remoteQuery(
     remoteQueryObjectFromString({
-      entryPoint: "inventory_level",
+      entryPoint: "inventory",
       variables: {
-        inventory_item_id,
-        location_id,
+        id: inventory_item_id,
       },
-      fields: req.retrieveConfig.select as string[],
+      fields: req.remoteQueryConfig.fields,
     })
   )
 
   res.status(200).json({
-    inventory_level,
+    inventory_item,
   })
 }

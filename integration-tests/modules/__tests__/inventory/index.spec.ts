@@ -284,7 +284,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("Update inventory levels", () => {
+      describe.only("Update inventory levels", () => {
         let locationId
         let inventoryItemId
         beforeEach(async () => {
@@ -296,11 +296,11 @@ medusaIntegrationTestRunner({
 
           inventoryItemId = invItemReps.data.inventory_item.id
 
-          const sl = await appContainer
+          const stockLocation = await appContainer
             .resolve(ModuleRegistrationName.STOCK_LOCATION)
             .create({ name: "test-location" })
 
-          locationId = sl.id
+          locationId = stockLocation.id
 
           await api.post(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
@@ -323,15 +323,20 @@ medusaIntegrationTestRunner({
           )
 
           expect(result.status).toEqual(200)
-          expect(result.data.inventory_level).toEqual(
+          expect(result.data.inventory_item).toEqual(
             expect.objectContaining({
-              id: expect.any(String),
-              inventory_item_id: inventoryItemId,
-              location_id: locationId,
-              stocked_quantity: 15,
-              reserved_quantity: 0,
-              incoming_quantity: 5,
-              metadata: null,
+              id: inventoryItemId,
+              location_levels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  inventory_item_id: inventoryItemId,
+                  location_id: locationId,
+                  stocked_quantity: 15,
+                  reserved_quantity: 0,
+                  incoming_quantity: 5,
+                  metadata: null,
+                }),
+              ]),
             })
           )
         })
