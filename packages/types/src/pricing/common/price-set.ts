@@ -1,5 +1,5 @@
-import { BaseFilterable } from "../../dal";
-import { CreatePriceSetPriceRules } from "./price-list";
+import { BaseFilterable } from "../../dal"
+import { CreatePriceSetPriceRules } from "./price-list"
 import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,

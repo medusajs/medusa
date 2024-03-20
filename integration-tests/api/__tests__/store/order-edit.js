@@ -240,7 +240,7 @@ describe("/store/order-edits", () => {
         .catch((e) => e)
 
       expect(err.response.data.message).toBe(
-        "Fields [internal_note] are not valid"
+        "Requested fields [internal_note] are not valid"
       )
     })
   })

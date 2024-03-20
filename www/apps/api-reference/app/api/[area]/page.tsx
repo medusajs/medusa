@@ -8,6 +8,7 @@ import type { Area } from "@/types/openapi"
 import DividedLayout from "@/layouts/Divided"
 import { capitalize } from "docs-ui"
 import PageTitleProvider from "../../../providers/page-title"
+import PageHeading from "../../../components/PageHeading"
 
 type ReferencePageProps = {
   params: {
@@ -19,15 +20,11 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
   return (
     <AreaProvider area={area}>
       <PageTitleProvider>
-        <h1 className="!text-h2 block lg:hidden">
-          Medusa {capitalize(area)} API Reference
-        </h1>
+        <PageHeading className="!text-h2 block lg:hidden" />
         <DividedLayout
           mainContent={
             <Section>
-              <h1 className="!text-h2 hidden lg:block">
-                Medusa {capitalize(area)} API Reference
-              </h1>
+              <PageHeading className="!text-h2 hidden lg:block" />
               {area.includes("admin") && <AdminDescription />}
               {area.includes("store") && <StoreDescription />}
             </Section>

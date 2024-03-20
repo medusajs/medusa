@@ -39,9 +39,7 @@ export interface FilterableShippingOptionProps
   extends BaseFilterable<FilterableShippingOptionProps> {
   id?: string | string[] | OperatorMap<string | string[]>
   name?: string | string[] | OperatorMap<string | string[]>
-  fulfillment_set_id?: string | string[] | OperatorMap<string | string[]>
   shipping_profile_id?: string | string[] | OperatorMap<string | string[]>
-  fulfillment_set_type?: string | string[] | OperatorMap<string | string[]>
   price_type?:
     | ShippingOptionPriceType
     | ShippingOptionPriceType[]
@@ -49,5 +47,22 @@ export interface FilterableShippingOptionProps
   service_zone?: FilterableServiceZoneProps
   shipping_option_type?: FilterableShippingOptionTypeProps
   rules?: FilterableShippingOptionRuleProps
-  context?: Record<string, unknown>
+}
+
+export interface FilterableShippingOptionForContextProps
+  extends FilterableShippingOptionProps {
+  fulfillment_set_id?: string | string[] | OperatorMap<string | string[]>
+  fulfillment_set_type?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * The address is a shortcut to filter through geo_zones
+   * and build opinionated validation and filtering around the geo_zones.
+   * For custom filtering you can go through the service_zone.geo_zones directly.
+   */
+  address?: {
+    country_code?: string
+    province_code?: string
+    city?: string
+    postal_expression?: string
+  }
+  context?: Record<string, any>
 }
