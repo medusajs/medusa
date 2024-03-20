@@ -1018,8 +1018,11 @@ export interface CreateProductOptionDTO {
   product_id?: string
 }
 
+export interface UpsertProductOptionDTO extends UpdateProductOptionDTO {
+  id?: string
+}
+
 export interface UpdateProductOptionDTO {
-  id: string
   title?: string
   values?: string[] | { value: string }[]
   product_id?: string
@@ -1109,8 +1112,7 @@ export interface CreateProductVariantDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface UpsertProductVariantDTO
-  extends Omit<UpdateProductVariantDTO, "id"> {
+export interface UpsertProductVariantDTO extends UpdateProductVariantDTO {
   /**
    * The ID of the product variant to update.
    */
@@ -1123,10 +1125,6 @@ export interface UpsertProductVariantDTO
  * The data to update in a product variant. The `id` is used to identify which product variant to update.
  */
 export interface UpdateProductVariantDTO {
-  /**
-   * The ID of the product variant to update.
-   */
-  id: string
   /**
    * The tile of the product variant.
    */
