@@ -42,10 +42,12 @@ export const POST = async (
 ) => {
   const salesChannelsData = [req.validatedBody]
 
-  const { errors } = await createSalesChannelsWorkflow(req.scope).run({
+  const { result, errors } = await createSalesChannelsWorkflow(req.scope).run({
     input: { salesChannelsData },
     throwOnError: false,
   })
+
+  const salesChannel = result[0]
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
@@ -55,7 +57,7 @@ export const POST = async (
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "sales_channels",
-    variables: { id: req.params.id },
+    variables: { id: salesChannel.id },
     fields: req.remoteQueryConfig.fields,
   })
 

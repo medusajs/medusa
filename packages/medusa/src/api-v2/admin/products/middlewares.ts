@@ -3,6 +3,10 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
 import {
+  maybeApplyPriceListsFilter,
+  maybeApplySalesChannelsFilter,
+} from "./utils"
+import {
   AdminGetProductsOptionsParams,
   AdminGetProductsParams,
   AdminGetProductsProductOptionsOptionParams,
@@ -31,6 +35,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig
       ),
+      maybeApplySalesChannelsFilter(),
+      maybeApplyPriceListsFilter(),
     ],
   },
   {

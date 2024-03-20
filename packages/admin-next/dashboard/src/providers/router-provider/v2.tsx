@@ -8,6 +8,7 @@ import { SearchProvider } from "../search-provider"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { Spinner } from "@medusajs/icons"
 import { useV2Session } from "../../lib/api-v2"
+import { SalesChannelDTO } from "@medusajs/types"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useV2Session()
@@ -95,6 +96,54 @@ export const v2Routes: RouteObject[] = [
                 path: "add-currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "sales-channels",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Sales Channels",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-detail"),
+                handle: {
+                  crumb: (data: { sales_channel: SalesChannelDTO }) =>
+                    data.sales_channel.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-edit"
+                      ),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },
