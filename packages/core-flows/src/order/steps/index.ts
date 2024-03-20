@@ -1,3 +1,6 @@
 export * from "./create-orders"
 export * from "./delete-orders"
+export * from "./get-item-tax-lines"
+export * from "./set-tax-lines-for-items"
 export * from "./update-orders"
+export * from "./update-tax-lines"

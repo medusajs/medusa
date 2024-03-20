@@ -284,6 +284,7 @@ export class Migration20240219102530 extends Migration {
           "raw_compare_at_unit_price" JSONB NULL,
           "unit_price" NUMERIC NOT NULL,
           "raw_unit_price" JSONB NOT NULL,
+          "metadata" JSONB NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           CONSTRAINT "order_line_item_pkey" PRIMARY KEY ("id")

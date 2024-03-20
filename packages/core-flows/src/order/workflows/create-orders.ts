@@ -16,8 +16,10 @@ import {
   getVariantsStep,
   validateVariantsExistStep,
 } from "../../definition/cart"
+import { refreshCartPromotionsStep } from "../../definition/cart/steps/refresh-cart-promotions"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
-import { createOrdersStep } from "../steps"
+import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
+import { createOrdersStep, updateTaxLinesStep } from "../steps"
 
 export const createOrdersWorkflowId = "create-orders"
 export const createOrdersWorkflow = createWorkflow(
@@ -78,7 +80,6 @@ export const createOrdersWorkflow = createWorkflow(
     const confirmInventoryInput = transform(
       { productVariantInventoryItems, salesChannelLocations, input, variants },
       (data) => {
-        // We don't want to confirm inventory if there are no items in the cart.
         if (!data.input.items) {
           return { items: [] }
         }
@@ -125,7 +126,7 @@ export const createOrdersWorkflow = createWorkflow(
       context: pricingContext,
     })
 
-    const cartInput = transform(
+    const orderInput = transform(
       { input, region, customerData, salesChannel },
       (data) => {
         const data_ = {
@@ -153,8 +154,10 @@ export const createOrdersWorkflow = createWorkflow(
 
         return prepareLineItemData({
           variant: variant,
-          unitPrice: data.priceSets[item.variant_id].calculated_amount,
-          quantity: item.quantity,
+          unitPrice: item.variant_id
+            ? data.priceSets[item.variant_id].calculated_amount
+            : item.unit_price,
+          quantity: item.quantity as number,
           metadata: item?.metadata ?? {},
         })
       })
@@ -162,25 +165,22 @@ export const createOrdersWorkflow = createWorkflow(
       return items
     })
 
-    const cartToCreate = transform({ lineItems, cartInput }, (data) => {
+    const orderToCreate = transform({ lineItems, orderInput }, (data) => {
       return {
-        ...data.cartInput,
+        ...data.orderInput,
         items: data.lineItems,
       }
     })
 
-    const carts = createCartsStep([cartToCreate])
-    const cart = transform({ carts }, (data) => data.carts?.[0])
+    const orders = createOrdersStep([orderToCreate])
+    const order = transform({ orders }, (data) => data.orders?.[0])
 
     refreshCartPromotionsStep({
-      id: cart.id,
+      id: order.id,
       promo_codes: input.promo_codes,
     })
-    updateTaxLinesStep({ cart_or_cart_id: cart.id })
-    refreshPaymentCollectionForCartStep({
-      cart_id: cart.id,
-    })
+    updateTaxLinesStep({ order_id: order.id })
 
-    return createOrdersStep(input)
+    return order
   }
 )

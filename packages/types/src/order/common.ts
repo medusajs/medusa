@@ -233,8 +233,7 @@ export interface OrderShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
-
+  amount: BigNumberRawValue
   /**
    * Whether the shipping method price is tax inclusive or not
    */
@@ -417,6 +416,16 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   raw_unit_price: BigNumberRawValue
 
   /**
+   * The quantity of the order line item.
+   */
+  quantity: number
+
+  /**
+   * The raw quantity of the order line item.
+   */
+  raw_quantity: BigNumberRawValue
+
+  /**
    * The associated tax lines.
    *
    * @expandable
@@ -443,6 +452,11 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
    * The date when the order line item was last updated.
    */
   updated_at: Date
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface OrderItemDTO {

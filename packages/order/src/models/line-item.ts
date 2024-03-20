@@ -131,6 +131,9 @@ export default class LineItem {
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",

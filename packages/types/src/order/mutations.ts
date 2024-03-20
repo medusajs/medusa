@@ -42,6 +42,8 @@ export interface CreateOrderDTO {
   shipping_methods?: CreateOrderShippingMethodDTO[]
   transactions?: CreateOrderTransactionDTO[]
   metadata?: Record<string, unknown>
+
+  promo_codes?: string[]
 }
 
 export interface UpdateOrderDTO {
@@ -162,6 +164,8 @@ export interface CreateOrderLineItemDTO {
 
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
+
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateOrderLineItemForOrderDTO extends CreateOrderLineItemDTO {
