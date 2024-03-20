@@ -89,31 +89,6 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it.skip("should update the inventory item", async () => {
-        const inventoryItemId = inventoryItems[0].id
-
-        const response = await api.post(
-          `/admin/inventory-items/${inventoryItemId}`,
-          {
-            mid_code: "updated mid_code",
-            weight: 120,
-          },
-          adminHeaders
-        )
-
-        expect(response.data.inventory_item).toEqual(
-          expect.objectContaining({
-            origin_country: "UK",
-            hs_code: "hs001",
-            mid_code: "updated mid_code",
-            weight: 120,
-            length: 100,
-            height: 200,
-            width: 150,
-          })
-        )
-      })
-
       it.skip("should fail to update the location level to negative quantity", async () => {
         const inventoryItemId = inventoryItems[0].id
 
@@ -229,6 +204,40 @@ medusaIntegrationTestRunner({
         )
       })
 
+      describe("Update inventory item", () => {
+        let inventoryItemId
+        beforeEach(async () => {
+          const inventoryItemResponse = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku",
+            },
+            adminHeaders
+          )
+
+          inventoryItemId = inventoryItemResponse.data.inventory_item.id
+        })
+
+        it("should update the inventory item", async () => {
+          const response = await api.post(
+            `/admin/inventory-items/${inventoryItemId}`,
+            {
+              mid_code: "updated mid_code",
+              weight: 120,
+            },
+            adminHeaders
+          )
+
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku",
+              mid_code: "updated mid_code",
+              weight: 120,
+            })
+          )
+        })
+      })
+
       describe("Delete inventory levels", () => {
         const locationId = "loc_1"
         let inventoryItem
@@ -284,7 +293,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("Update inventory levels", () => {
+      describe("Update inventory levels", () => {
         let locationId
         let inventoryItemId
         beforeEach(async () => {
