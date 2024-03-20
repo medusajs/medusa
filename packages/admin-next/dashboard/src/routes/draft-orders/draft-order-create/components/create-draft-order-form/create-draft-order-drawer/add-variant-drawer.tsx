@@ -15,6 +15,7 @@ import { MoneyAmountCell } from "../../../../../../components/table/table-cells/
 import { PlaceholderCell } from "../../../../../../components/table/table-cells/common/placeholder-cell"
 import { ProductCell } from "../../../../../../components/table/table-cells/product/product-cell"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
+import { useProductVariantTableFilters } from "../../../../../products/product-detail/components/product-variant-section/use-variant-table-filters"
 import { useProductVariantTableQuery } from "../../../../../products/product-detail/components/product-variant-section/use-variant-table-query"
 import { useCreateDraftOrder } from "../hooks"
 import { ExistingItem } from "../types"
@@ -89,6 +90,7 @@ export const AddVariantDrawer = () => {
   }
 
   const columns = useVariantTableColumns()
+  const filters = useProductVariantTableFilters()
 
   const { table } = useDataTable({
     data: variants || [],
@@ -121,6 +123,8 @@ export const AddVariantDrawer = () => {
         isLoading={isLoading}
         queryObject={raw}
         pageSize={PAGE_SIZE}
+        filters={filters}
+        orderBy={["title", "created_at", "updated_at"]}
         pagination
         search
         layout="fill"

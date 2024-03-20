@@ -22,6 +22,22 @@ export const useProductVariantTableFilters = () => {
     ],
   }
 
+  const allowBackorderFilter: Filter = {
+    key: "allow_backorder",
+    label: t("fields.allowBackorder"),
+    type: "select",
+    options: [
+      {
+        label: t("fields.true"),
+        value: "true",
+      },
+      {
+        label: t("fields.false"),
+        value: "false",
+      },
+    ],
+  }
+
   const dateFilters: Filter[] = [
     { label: t("fields.createdAt"), key: "created_at" },
     { label: t("fields.updatedAt"), key: "updated_at" },
@@ -31,7 +47,12 @@ export const useProductVariantTableFilters = () => {
     type: "date",
   }))
 
-  filters = [...filters, manageInventoryFilter, ...dateFilters]
+  filters = [
+    ...filters,
+    manageInventoryFilter,
+    allowBackorderFilter,
+    ...dateFilters,
+  ]
 
   return filters
 }
