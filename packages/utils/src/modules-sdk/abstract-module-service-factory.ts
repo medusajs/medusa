@@ -351,7 +351,7 @@ export function abstractModuleServiceFactory<
           })
         }
 
-        applyMethod(methodImplementation, 2)
+        applyMethod(methodImplementation, 1)
 
         break
       case "update":
@@ -368,7 +368,7 @@ export function abstractModuleServiceFactory<
           })
         }
 
-        applyMethod(methodImplementation, 2)
+        applyMethod(methodImplementation, 1)
 
         break
       case "list":
