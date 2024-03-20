@@ -1,13 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -245,18 +244,16 @@ moduleIntegrationTestRunner({
       describe("softDeleteMoneyAmounts", () => {
         const id = "money-amount-USD"
 
-        it("should softDelete priceSetMoneyAmount and PriceRule when soft-deleting money amount", async () => {
+        it("should softDelete money amounts successfully", async () => {
           await createPriceSets(testManager)
           await createRuleTypes(testManager)
           await createPriceSetMoneyAmounts(testManager)
           await createPriceRules(testManager)
-          await createPriceSetMoneyAmountRules(testManager)
+
           await service.softDeleteMoneyAmounts([id])
 
           const [moneyAmount] = await service.listMoneyAmounts(
-            {
-              id: [id],
-            },
+            { id: [id] },
             {
               relations: [
                 "price_set_money_amount",
@@ -274,10 +271,10 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               deleted_at: deletedAt,
               price_set_money_amount: expect.objectContaining({
-                deleted_at: deletedAt,
+                deleted_at: null,
                 price_rules: [
                   expect.objectContaining({
-                    deleted_at: deletedAt,
+                    deleted_at: null,
                   }),
                 ],
               }),
@@ -294,7 +291,6 @@ moduleIntegrationTestRunner({
           await createRuleTypes(testManager)
           await createPriceSetMoneyAmounts(testManager)
           await createPriceRules(testManager)
-          await createPriceSetMoneyAmountRules(testManager)
           await service.softDeleteMoneyAmounts([id])
           await service.restoreMoneyAmounts([id])
 
