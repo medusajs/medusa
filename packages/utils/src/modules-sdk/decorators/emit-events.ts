@@ -1,7 +1,8 @@
 import { MessageAggregator } from "../../event-bus"
 import { InjectIntoContext } from "./inject-into-context"
+import {MessageAggregatorFormat} from "@medusajs/types";
 
-export function EmitEvents() {
+export function EmitEvents(options: MessageAggregatorFormat = {} as MessageAggregatorFormat) {
   return function (
     target: any,
     propertyKey: string | symbol,
@@ -17,7 +18,7 @@ export function EmitEvents() {
     descriptor.value = async function (...args: any[]) {
       const result = await original.apply(this, args)
 
-      await target.emitEvents_.apply(this, [aggregator.getMessages()])
+      await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
 
       aggregator.clearMessages()
       return result
