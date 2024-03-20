@@ -336,7 +336,6 @@ moduleIntegrationTestRunner({
             moneyAmountsData,
             priceSetsData,
             priceSetMoneyAmountsData,
-            priceSetMoneyAmountRulesData: [],
             priceRuleData,
             ruleTypesData,
           })

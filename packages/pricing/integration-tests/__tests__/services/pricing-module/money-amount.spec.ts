@@ -6,7 +6,6 @@ import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
 jest.setTimeout(30000)
@@ -250,7 +249,6 @@ moduleIntegrationTestRunner({
           await createRuleTypes(testManager)
           await createPriceSetMoneyAmounts(testManager)
           await createPriceRules(testManager)
-          await createPriceSetMoneyAmountRules(testManager)
 
           await service.softDeleteMoneyAmounts([id])
 
@@ -293,7 +291,6 @@ moduleIntegrationTestRunner({
           await createRuleTypes(testManager)
           await createPriceSetMoneyAmounts(testManager)
           await createPriceRules(testManager)
-          await createPriceSetMoneyAmountRules(testManager)
           await service.softDeleteMoneyAmounts([id])
           await service.restoreMoneyAmounts([id])
 
