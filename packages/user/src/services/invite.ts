@@ -17,7 +17,7 @@ type InjectedDependencies = {
 }
 
 // 1 day
-const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24
+const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24 * 1000
 
 export default class InviteService<
   TEntity extends Invite = Invite
@@ -151,9 +151,6 @@ export default class InviteService<
 
   private generateToken(data: any): string {
     const jwtSecret: string = this.getOption("jwt_secret")
-    const expiresIn: number =
-      parseInt(this.getOption("valid_duration")) ||
-      DEFAULT_VALID_INVITE_DURATION
 
     if (!jwtSecret) {
       throw new MedusaError(
@@ -163,7 +160,6 @@ export default class InviteService<
     }
 
     return jwt.sign(data, jwtSecret, {
-      expiresIn,
       jwtid: crypto.randomUUID(),
     })
   }

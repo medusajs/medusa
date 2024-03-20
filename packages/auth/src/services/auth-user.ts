@@ -42,7 +42,7 @@ export default class AuthUserService<
       { ...config, take: 1 }
     )
     const [result] = await this.authUserRepository_.find(
-      queryConfig,
+      queryConfig as any,
       sharedContext
     )
 
