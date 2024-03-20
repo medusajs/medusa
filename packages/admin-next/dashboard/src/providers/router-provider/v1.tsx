@@ -2,8 +2,8 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
-  AdminDraftOrdersRes,
   AdminDiscountsRes,
+  AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
@@ -218,6 +218,10 @@ export const v1Routes: RouteObject[] = [
                   {
                     path: "gallery",
                     lazy: () => import("../../routes/products/product-gallery"),
+                  },
+                  {
+                    path: "images",
+                    lazy: () => import("../../routes/products/product-images"),
                   },
                 ],
               },

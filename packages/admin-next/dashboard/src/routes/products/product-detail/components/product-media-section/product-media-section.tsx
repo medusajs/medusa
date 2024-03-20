@@ -87,7 +87,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                 },
                 {
                   label: t("products.gallery"),
-                  to: "gallery",
+                  to: "images",
                   icon: <Photo />,
                 },
               ],
