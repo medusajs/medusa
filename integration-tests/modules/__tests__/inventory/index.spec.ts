@@ -206,8 +206,9 @@ medusaIntegrationTestRunner({
 
       describe("List inventory levels", () => {
         let inventoryItemId
-        let sl1Id
-        let sl2Id
+        let stockLocation1Id
+        let stockLocation2Id
+
         beforeEach(async () => {
           const inventoryItem = await api.post(
             `/admin/inventory-items`,
@@ -219,19 +220,20 @@ medusaIntegrationTestRunner({
           const locationService = appContainer.resolve(
             ModuleRegistrationName.STOCK_LOCATION
           )
-          const sl1 = await locationService.create({
+          const stockLocation1 = await locationService.create({
             name: "loc-1",
           })
-          sl1Id = sl1.id
-          const sl2 = await locationService.create({
+          stockLocation1Id = stockLocation1.id
+
+          const stockLocation2 = await locationService.create({
             name: "loc-2",
           })
-          sl2Id = sl2.id
+          stockLocation2Id = stockLocation2.id
 
           await api.post(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: sl1Id,
+              location_id: stockLocation1Id,
               stocked_quantity: 10,
             },
             adminHeaders
@@ -239,7 +241,7 @@ medusaIntegrationTestRunner({
           await api.post(
             `/admin/inventory-items/${inventoryItemId}/location-levels`,
             {
-              location_id: sl2Id,
+              location_id: stockLocation2Id,
               stocked_quantity: 15,
             },
             adminHeaders
@@ -264,11 +266,11 @@ medusaIntegrationTestRunner({
           expect(response.data.inventory_levels).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                location_id: sl1Id,
+                location_id: stockLocation1Id,
                 stocked_quantity: 10,
               }),
               expect.objectContaining({
-                location_id: sl2Id,
+                location_id: stockLocation2Id,
                 stocked_quantity: 15,
               }),
             ])
