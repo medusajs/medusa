@@ -97,7 +97,7 @@ export function generateEntity(
         name: "IDX_id_" + hashTableName,
       },
       {
-        properties: primary.foreignKey.split(",") as any,
+        properties: primary.foreignKey.split(","),
         name:
           "IDX_" +
           primary.foreignKey.split(",").join("_") +
