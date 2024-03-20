@@ -1,0 +1,49 @@
+---
+description: "Actions Required for v.1.20.3"
+sidebar_custom_props:
+  iconName: "server-stack-solid"
+---
+
+# v1.20.3
+
+Version 1.20.3 of Medusa squashes a few bugs in the core, and updates an index on the customer table.
+
+<DocCard item={{
+  type: 'link',
+  href: 'https://github.com/medusajs/medusa/releases/tag/v1.20.3',
+  label: 'Release Notes',
+  customProps: {
+    iconName: "github",
+    html: 'Check the release notes for all changes.',
+  }
+}} />
+
+## Changes
+
+### Customer table index
+
+The multicolumn uniqueness index on the customer table (`email`, `has_account`) has been updated to only apply to rows where `deleted_at` is `null`. This is to allow for the creation of customers that were previously soft-deleted.
+
+This change requires you to run migrations. See section below.
+
+---
+
+## How to Update
+
+Run the following command in your Medusa backend:
+
+```bash npm2yarn
+npm install @medusajs/medusa@1.20.3
+```
+
+To avoid unexpected issues with dependencies, it's also recommended to update all other Medusa plugins or packages you have installed.
+
+## Actions Required
+
+### Run Migrations
+
+After updating your Medusa server and before running it, run the following command to run the latest migrations:
+
+```bash
+npx medusa migrations run
+```
