@@ -123,6 +123,8 @@ function applyStep<
       invoke: async (transactionContext) => {
         const executionContext: StepExecutionContext = {
           workflowId: transactionContext.model_id,
+          stepName: transactionContext.action,
+          action: "invoke",
           idempotencyKey: transactionContext.idempotency_key,
           attempt: transactionContext.attempt,
           container: transactionContext.container,
@@ -152,6 +154,8 @@ function applyStep<
         ? async (transactionContext) => {
             const executionContext: StepExecutionContext = {
               workflowId: transactionContext.model_id,
+              stepName: transactionContext.action,
+              action: "compensate",
               idempotencyKey: transactionContext.idempotency_key,
               attempt: transactionContext.attempt,
               container: transactionContext.container,
