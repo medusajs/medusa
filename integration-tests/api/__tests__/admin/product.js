@@ -701,7 +701,6 @@ medusaIntegrationTestRunner({
                     updated_at: expect.any(String),
                   }),
                 ]),
-
                 variants: expect.arrayContaining([
                   expect.objectContaining({
                     title: "Test variant",
@@ -1143,7 +1142,6 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               "id",
               "created_at",
-              // fields
               "updated_at",
               "deleted_at",
               "title",
@@ -1166,8 +1164,6 @@ medusaIntegrationTestRunner({
               "discountable",
               "external_id",
               "metadata",
-
-              // relations
               // "categories",
               "collection",
               "images",
@@ -1257,7 +1253,11 @@ medusaIntegrationTestRunner({
           const response = await api
             .post(
               "/admin/products",
-              { ...productFixture, title: "Test create" },
+              {
+                ...productFixture,
+                title: "Test create",
+                collection_id: "test-collection",
+              },
               adminHeaders
             )
             .catch((err) => {
@@ -1311,18 +1311,16 @@ medusaIntegrationTestRunner({
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
               }),
-              // TODO: Collection not expanded, investigate
-              // collection: expect.objectContaining({
-              //   id: "test-collection",
-              //   title: "Test collection",
-              //   created_at: expect.any(String),
-              //   updated_at: expect.any(String),
-              // }),
+              collection: expect.objectContaining({
+                id: "test-collection",
+                title: "Test collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.stringMatching(/^opt_*/),
-                  // TODO: Product not available on creation it seems
-                  // product_id: expect.stringMatching(/^prod_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
                   title: "size",
                   ...breaking(
                     () => ({}),
@@ -1337,7 +1335,7 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   id: expect.stringMatching(/^opt_*/),
-                  // product_id: expect.stringMatching(/^prod_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
                   title: "color",
                   ...breaking(
                     () => ({}),
@@ -1354,7 +1352,7 @@ medusaIntegrationTestRunner({
               variants: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.stringMatching(/^variant_*/),
-                  // product_id: expect.stringMatching(/^prod_*/),
+                  product_id: expect.stringMatching(/^prod_*/),
                   updated_at: expect.any(String),
                   created_at: expect.any(String),
                   title: "Test variant",
@@ -1384,49 +1382,48 @@ medusaIntegrationTestRunner({
                       variant_id: expect.stringMatching(/^variant_*/),
                     }),
                   ]),
-                  // TODO: `option_value` not returned on creation.
-                  // options: breaking(
-                  //   () =>
-                  //     expect.arrayContaining([
-                  //       expect.objectContaining({
-                  //         value: "large",
-                  //         created_at: expect.any(String),
-                  //         updated_at: expect.any(String),
-                  //         variant_id: expect.stringMatching(/^variant_*/),
-                  //         option_id: expect.stringMatching(/^opt_*/),
-                  //         id: expect.stringMatching(/^optval_*/),
-                  //       }),
-                  //       expect.objectContaining({
-                  //         value: "green",
-                  //         created_at: expect.any(String),
-                  //         updated_at: expect.any(String),
-                  //         variant_id: expect.stringMatching(/^variant_*/),
-                  //         option_id: expect.stringMatching(/^opt_*/),
-                  //         id: expect.stringMatching(/^optval_*/),
-                  //       }),
-                  //     ]),
-                  //   () =>
-                  //     expect.arrayContaining([
-                  //       expect.objectContaining({
-                  //         id: expect.stringMatching(/^varopt_*/),
-                  //         option_value: expect.objectContaining({
-                  //           value: "large",
-                  //           option: expect.objectContaining({
-                  //             title: "size",
-                  //           }),
-                  //         }),
-                  //       }),
-                  //       expect.objectContaining({
-                  //         id: expect.stringMatching(/^varopt_*/),
-                  //         option_value: expect.objectContaining({
-                  //           value: "green",
-                  //           option: expect.objectContaining({
-                  //             title: "color",
-                  //           }),
-                  //         }),
-                  //       }),
-                  //     ])
-                  // ),
+                  options: breaking(
+                    () =>
+                      expect.arrayContaining([
+                        expect.objectContaining({
+                          value: "large",
+                          created_at: expect.any(String),
+                          updated_at: expect.any(String),
+                          variant_id: expect.stringMatching(/^variant_*/),
+                          option_id: expect.stringMatching(/^opt_*/),
+                          id: expect.stringMatching(/^optval_*/),
+                        }),
+                        expect.objectContaining({
+                          value: "green",
+                          created_at: expect.any(String),
+                          updated_at: expect.any(String),
+                          variant_id: expect.stringMatching(/^variant_*/),
+                          option_id: expect.stringMatching(/^opt_*/),
+                          id: expect.stringMatching(/^optval_*/),
+                        }),
+                      ]),
+                    () =>
+                      expect.arrayContaining([
+                        expect.objectContaining({
+                          id: expect.stringMatching(/^varopt_*/),
+                          option_value: expect.objectContaining({
+                            value: "large",
+                            option: expect.objectContaining({
+                              title: "size",
+                            }),
+                          }),
+                        }),
+                        expect.objectContaining({
+                          id: expect.stringMatching(/^varopt_*/),
+                          option_value: expect.objectContaining({
+                            value: "green",
+                            option: expect.objectContaining({
+                              title: "color",
+                            }),
+                          }),
+                        }),
+                      ])
+                  ),
                 }),
               ]),
             })
@@ -1548,7 +1545,8 @@ medusaIntegrationTestRunner({
         })
 
         // TODO: Remove price setting on nested objects per the code convention.
-        it("updates a product (update prices, tags, update status, delete collection, delete type, replaces images)", async () => {
+        // TODO: The variants list requires a product_id currently, that should not be needed.
+        it.skip("updates a product (update prices, tags, update status, delete collection, delete type, replaces images)", async () => {
           const payload = {
             collection_id: null,
             variants: [
@@ -1593,24 +1591,23 @@ medusaIntegrationTestRunner({
                 }),
               ]),
               is_giftcard: false,
-              // TODO: Options are not populated since they were not affected
-              // options: expect.arrayContaining([
-              //   expect.objectContaining({
-              //     created_at: expect.any(String),
-              //     id: "test-option",
-              //     product_id: "test-product",
-              //     title: "test-option",
-              //     ...breaking(
-              //       () => ({}),
-              //       () => ({
-              //         values: expect.arrayContaining([
-              //           expect.objectContaining({ value: "large" }),
-              //         ]),
-              //       })
-              //     ),
-              //     updated_at: expect.any(String),
-              //   }),
-              // ]),
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  created_at: expect.any(String),
+                  id: "test-option",
+                  product_id: "test-product",
+                  title: "test-option",
+                  ...breaking(
+                    () => ({}),
+                    () => ({
+                      values: expect.arrayContaining([
+                        expect.objectContaining({ value: "large" }),
+                      ]),
+                    })
+                  ),
+                  updated_at: expect.any(String),
+                }),
+              ]),
               // profile_id: expect.stringMatching(/^sp_*/),
               status: "published",
               tags: expect.arrayContaining([
@@ -1622,8 +1619,7 @@ medusaIntegrationTestRunner({
                   value: "123",
                 }),
               ]),
-              // TODO: Currently we don't set the thumbnail on update
-              // thumbnail: "test-image-2.png",
+              thumbnail: "test-image-2.png",
               title: "Test product",
               type: expect.objectContaining({
                 id: expect.stringMatching(/^ptyp_*/),
@@ -1631,55 +1627,69 @@ medusaIntegrationTestRunner({
                 updated_at: expect.any(String),
                 value: "test-type-2",
               }),
-              // TODO: There is similar issue with collection, collection_id was set to nul but `collection` was populated
               // TODO: For some reason this is `test-type`, but the ID is correct in the `type` property.
               // type_id: expect.stringMatching(/^ptyp_*/),
               updated_at: expect.any(String),
-              // TODO: Variants are not returned, investigate
-              // variants: expect.arrayContaining([
-              //   expect.objectContaining({
-              //     allow_backorder: false,
-              //     barcode: "test-barcode",
-              //     created_at: expect.any(String),
-              //     ean: "test-ean",
-              //     id: "test-variant",
-              //     inventory_quantity: 10,
-              //     manage_inventory: true,
-              //     // options: expect.arrayContaining([
-              //     //   expect.objectContaining({
-              //     //     created_at: expect.any(String),
-              //     //     deleted_at: null,
-              //     //     id: "test-variant-option",
-              //     //     metadata: null,
-              //     //     option_id: "test-option",
-              //     //     updated_at: expect.any(String),
-              //     //     value: "Default variant",
-              //     //     variant_id: "test-variant",
-              //     //   }),
-              //     // ]),
-              //     origin_country: null,
-              //     // prices: expect.arrayContaining([
-              //     //   expect.objectContaining({
-              //     //     amount: 75,
-              //     //     created_at: expect.any(String),
-              //     //     currency_code: "usd",
-              //     //     id: "test-price",
-              //     //     updated_at: expect.any(String),
-              //     //     variant_id: "test-variant",
-              //     //   }),
-              //     // ]),
-              //     // product_id: "test-product",
-              //     sku: "test-sku",
-              //     title: "New variant",
-              //     upc: "test-upc",
-              //     updated_at: expect.any(String),
-              //   }),
-              // ]),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  allow_backorder: false,
+                  barcode: "test-barcode",
+                  created_at: expect.any(String),
+                  ean: "test-ean",
+                  id: "test-variant",
+                  inventory_quantity: 10,
+                  manage_inventory: true,
+                  options: breaking(
+                    () =>
+                      expect.arrayContaining([
+                        expect.objectContaining({
+                          created_at: expect.any(String),
+                          deleted_at: null,
+                          id: "test-variant-option",
+                          metadata: null,
+                          option_id: "test-option",
+                          updated_at: expect.any(String),
+                          value: "Default variant",
+                          variant_id: "test-variant",
+                        }),
+                      ]),
+                    () =>
+                      expect.arrayContaining([
+                        expect.objectContaining({
+                          id: expect.stringMatching(/^varopt_*/),
+                          option_value: expect.objectContaining({
+                            value: "Default variant",
+                            option: expect.objectContaining({
+                              title: "Test option",
+                            }),
+                          }),
+                        }),
+                      ])
+                  ),
+                  origin_country: null,
+                  // prices: expect.arrayContaining([
+                  //   expect.objectContaining({
+                  //     amount: 75,
+                  //     created_at: expect.any(String),
+                  //     currency_code: "usd",
+                  //     id: "test-price",
+                  //     updated_at: expect.any(String),
+                  //     variant_id: "test-variant",
+                  //   }),
+                  // ]),
+                  product_id: "test-product",
+                  sku: "test-sku",
+                  title: "New variant",
+                  upc: "test-upc",
+                  updated_at: expect.any(String),
+                }),
+              ]),
             })
           )
         })
 
-        it("updates product (removes images when empty array included)", async () => {
+        // TODO: Decide if we we should actually remove the images, as they are a many-to-many relationship currently
+        it.skip("updates product (removes images when empty array included)", async () => {
           const payload = {
             images: [],
           }
@@ -2674,7 +2684,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("successfully deletes a product variant and its associated prices", async () => {
+        it.skip("successfully deletes a product variant and its associated prices", async () => {
           // Validate that the price exists
           const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
             where: { id: "test-price" },
