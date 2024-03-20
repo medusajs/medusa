@@ -11,7 +11,7 @@ import {
 } from "../../../types/routing"
 import { listPriceLists } from "../price-lists/queries"
 import { AdminGetProductsParams } from "./validators"
-import { remapKeysForProduct, remapProduct } from "./helpers"
+import { refetchProduct, remapKeysForProduct, remapProduct } from "./helpers"
 import { MedusaContainer } from "medusa-core-utils"
 
 const applyVariantFiltersForPriceList = async (
@@ -103,5 +103,10 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product: remapProduct(result[0]) })
+  const product = await refetchProduct(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }

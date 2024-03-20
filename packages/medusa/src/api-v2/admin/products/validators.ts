@@ -11,7 +11,6 @@ import {
   IsOptional,
   IsString,
   NotEquals,
-  Validate,
   ValidateIf,
   ValidateNested,
 } from "class-validator"
@@ -19,7 +18,6 @@ import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
-import { XorConstraint } from "../../../types/validators/xor"
 
 export class AdminGetProductsProductParams extends FindParams {}
 export class AdminGetProductsProductVariantsVariantParams extends FindParams {}
