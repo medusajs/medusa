@@ -130,6 +130,7 @@ moduleIntegrationTestRunner({
                 price_set: {
                   id: "price-set-1",
                 },
+                price_set_id: "price-set-1",
               },
             ])
           })
