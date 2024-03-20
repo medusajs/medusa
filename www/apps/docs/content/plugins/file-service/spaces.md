@@ -76,6 +76,7 @@ SPACE_REGION=<YOUR_SPACE_REGION>
 SPACE_ENDPOINT=<YOUR_SPACE_ENDPOINT>
 SPACE_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
 SPACE_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+SPACE_PREFIX=<YOUR_PREFIX> 
 ```
 
 Where:
@@ -85,6 +86,7 @@ Where:
 3. `<YOUR_SPACE_REGION>` is the region your Spaces Object Storage bucket is in. If you're unsure, you can find it in the Origin Endpoint whose format is `https://<bucket-name>.<region>.digitaloceanspaces.com`. For example, `nyc3`.
 4. `<YOUR_SPACE_ENDPOINT>` is of the format `https://<region>.digitaloceanspaces.com`. For example, `https://nyc3.digitaloceanspaces.com`.
 5. `<YOUR_ACCESS_KEY_ID>` and `<YOUR_SECRET_ACCESS_KEY>` are the keys you created in the previous section.
+6. `<SPACE_PREFIX>` Optionally provide a prefix for your file keys
 
 Finally, in `medusa-config.js` add a new item to the `plugins` array:
 
@@ -100,6 +102,7 @@ const plugins = [
         endpoint: process.env.SPACE_ENDPOINT,
         access_key_id: process.env.SPACE_ACCESS_KEY_ID,
         secret_access_key: process.env.SPACE_SECRET_ACCESS_KEY,
+        prefix: process.env.SPACE_PREFIX,
     },
   },
 ]
