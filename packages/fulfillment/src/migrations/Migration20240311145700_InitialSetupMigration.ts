@@ -482,7 +482,7 @@ async function migrateUpModuleMigration(
   )
 
   this.addSql(
-    'create table if not exists "shipping_option" ("id" text not null, "name" text not null, "price_type" text check ("price_type" in (\'calculated\', \'flat\')) not null default \'flat\', "service_zone_id" text not null, "shipping_profile_id" text null, "provider_id" text null, "data" jsonb null, "metadata" jsonb null, "shipping_option_type_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "shipping_option_pkey" primary key ("id"));'
+    'create table if not exists "shipping_option" ("id" text not null, "name" text not null, "price_type" text check ("price_type" in (\'calculated\', \'flat\')) not null default \'flat\', "service_zone_id" text not null, "shipping_profile_id" text null, "provider_id" text null, "data" jsonb null, "metadata" jsonb null, "conditions" jsonb null, "shipping_option_type_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "shipping_option_pkey" primary key ("id"));'
   )
   this.addSql(
     'alter table if exists "shipping_option" add constraint "shipping_option_shipping_option_type_id_unique" unique ("shipping_option_type_id");'

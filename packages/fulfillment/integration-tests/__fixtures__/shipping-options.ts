@@ -9,6 +9,7 @@ export function generateCreateShippingOptionsData({
   rules,
   type,
   data,
+  conditions,
 }: Omit<CreateShippingOptionDTO, "name" | "price_type" | "type"> & {
   price_type?: CreateShippingOptionDTO["price_type"]
   name?: string
@@ -37,5 +38,6 @@ export function generateCreateShippingOptionsData({
         value: "test",
       },
     ],
+    conditions,
   }
 }

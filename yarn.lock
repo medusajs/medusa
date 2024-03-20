@@ -8261,6 +8261,7 @@ __metadata:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
+    ajv: ^8.12.0
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.4.5

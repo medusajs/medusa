@@ -115,6 +115,9 @@ export default class ShippingOption {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
+  @Property({ columnType: "jsonb", nullable: true })
+  conditions: Record<string, unknown> | null = null
+
   @ManyToOne(() => ServiceZone, { persist: false })
   service_zone: ServiceZone
 

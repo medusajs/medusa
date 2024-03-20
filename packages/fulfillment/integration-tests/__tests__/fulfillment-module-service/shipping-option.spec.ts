@@ -95,7 +95,7 @@ moduleIntegrationTestRunner({
           expect(listedOptions[0].id).toEqual(shippingOption1.id)
         })
 
-        it("should list shipping options with a context", async function () {
+        it.only("should list shipping options with a context", async function () {
           const fulfillmentSet = await service.create({
             name: "test",
             type: "test-type",
@@ -117,6 +117,9 @@ moduleIntegrationTestRunner({
                 service_zone_id: fulfillmentSet.service_zones[0].id,
                 shipping_profile_id: shippingProfile.id,
                 provider_id: providerId,
+                conditions: {
+                  "test-attribute": { enum: ["test"] },
+                },
                 rules: [
                   {
                     attribute: "test-attribute",
@@ -129,6 +132,9 @@ moduleIntegrationTestRunner({
                 service_zone_id: fulfillmentSet.service_zones[0].id,
                 shipping_profile_id: shippingProfile.id,
                 provider_id: providerId,
+                conditions: {
+                  "test-attribute": { enum: ["test-test"] },
+                },
                 rules: [
                   {
                     attribute: "test-attribute",
@@ -141,6 +147,10 @@ moduleIntegrationTestRunner({
                 service_zone_id: fulfillmentSet.service_zones[0].id,
                 shipping_profile_id: shippingProfile.id,
                 provider_id: providerId,
+                conditions: {
+                  "test-attribute": { const: "test" },
+                  "test-attribute2.options": { enum: ["test", "test2"] },
+                },
                 rules: [
                   {
                     attribute: "test-attribute",

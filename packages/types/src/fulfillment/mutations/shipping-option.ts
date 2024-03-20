@@ -11,6 +11,7 @@ export interface CreateShippingOptionDTO {
   type: Omit<CreateShippingOptionTypeDTO, "shipping_option_id">
   data?: Record<string, unknown> | null
   rules?: Omit<CreateShippingOptionRuleDTO, "shipping_option_id">[]
+  conditions?: Record<string, unknown> | null
 }
 
 export interface UpdateShippingOptionDTO {
