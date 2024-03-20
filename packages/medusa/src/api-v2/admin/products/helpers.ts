@@ -8,7 +8,10 @@ export const remapKeysForProduct = (selectFields: string[]) => {
   const pricingFields = selectFields
     .filter((fieldName: string) => fieldName.startsWith("variants.prices"))
     .map((fieldName: string) =>
-      fieldName.replace("variants.prices.", "variants.price_set.money_amounts.")
+      fieldName.replace(
+        "variants.prices.",
+        "variants.price_set.price_set_money_amounts.money_amount."
+      )
     )
 
   return [...productFields, ...pricingFields]
@@ -21,7 +24,10 @@ export const remapKeysForVariant = (selectFields: string[]) => {
   const pricingFields = selectFields
     .filter((fieldName: string) => fieldName.startsWith("prices"))
     .map((fieldName: string) =>
-      fieldName.replace("prices.", "price_set.money_amounts.")
+      fieldName.replace(
+        "prices.",
+        "price_set.price_set_money_amounts.money_amount."
+      )
     )
 
   return [...variantFields, ...pricingFields]
@@ -37,8 +43,8 @@ export const remapProduct = (p: ProductDTO) => {
 export const remapVariant = (v: ProductVariantDTO) => {
   return {
     ...v,
-    prices: (v as any).price_set?.money_amounts?.map((ma) => ({
-      ...ma,
+    prices: (v as any).price_set?.price_set_money_amounts?.map((psma) => ({
+      ...psma.money_amount,
       variant_id: v.id,
     })),
     price_set: undefined,
