@@ -22,7 +22,7 @@ export const GET = async (
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: req.listConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: product_options, metadata } = await remoteQuery(queryObject)
