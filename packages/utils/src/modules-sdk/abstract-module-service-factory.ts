@@ -190,6 +190,16 @@ export type AbstractModuleService<
     ): Promise<ModelsConfig[ModelName]["dto"][]>
   }
 } & {
+  [ModelName in keyof ModelsConfig as CreateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (
+      data: ModelsConfig[ModelName]["create_dto"],
+      sharedContext?: Context
+    ): Promise<ModelsConfig[ModelName]["dto"]>
+  }
+} & {
   [ModelName in keyof ModelsConfig as UpdateMethodName<
     ModelsConfig,
     ModelName
@@ -342,11 +352,13 @@ export function abstractModuleServiceFactory<
           this: AbstractModuleService_,
           data = [],
           sharedContext: Context = {}
-        ): Promise<T[]> {
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
           const service = this.__container__[serviceRegistrationName]
-          const entities = await service.create(data, sharedContext)
+          const entities = await service.create(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
 
-          return await this.baseRepository_.serialize<T[]>(entities, {
+          return await this.baseRepository_.serialize<T | T[]>(response, {
             populate: true,
           })
         }
@@ -359,11 +371,13 @@ export function abstractModuleServiceFactory<
           this: AbstractModuleService_,
           data = [],
           sharedContext: Context = {}
-        ): Promise<T[]> {
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
           const service = this.__container__[serviceRegistrationName]
-          const entities = await service.update(data, sharedContext)
+          const entities = await service.update(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
 
-          return await this.baseRepository_.serialize<T[]>(entities, {
+          return await this.baseRepository_.serialize<T | T[]>(response, {
             populate: true,
           })
         }
