@@ -28,7 +28,7 @@ const PriceListRuleValueDeletedAtIndex = createPsqlIndexStatementHelper({
 const PriceListPriceListRuleIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "price_list_rule_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity({ tableName })

@@ -30,13 +30,13 @@ const PriceSetMoneyAmountRulesPriceSetMoneyAmountIdIndex =
   createPsqlIndexStatementHelper({
     tableName: tableName,
     columns: "price_set_money_amount_id",
-    where: "deleted_at IS NOT NULL",
+    where: "deleted_at IS NULL",
   })
 
 const PriceSetMoneyAmountRulesRuleTypeIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "rule_type_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity({ tableName })

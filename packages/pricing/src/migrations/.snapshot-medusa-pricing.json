@@ -91,7 +91,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_money_amount_currency_code\" ON \"money_amount\" (currency_code) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_money_amount_currency_code\" ON \"money_amount\" (currency_code) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_money_amount_deleted_at",
@@ -420,7 +420,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_price_set_id\" ON \"price_set_money_amount\" (price_set_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_price_set_id\" ON \"price_set_money_amount\" (price_set_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_money_amount_money_amount_id",
@@ -428,7 +428,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_money_amount_id\" ON \"price_set_money_amount\" (money_amount_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_money_amount_id\" ON \"price_set_money_amount\" (money_amount_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_money_amount_price_list_id",
@@ -436,7 +436,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_price_list_id\" ON \"price_set_money_amount\" (price_list_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_price_list_id\" ON \"price_set_money_amount\" (price_list_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_money_amount_deleted_at",
@@ -566,7 +566,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rule_type_rule_attribute\" ON \"rule_type\" (rule_attribute) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rule_type_rule_attribute\" ON \"rule_type\" (rule_attribute) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_rule_type_deleted_at",
@@ -658,7 +658,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_price_set_id\" ON \"price_set_rule_type\" (price_set_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_price_set_id\" ON \"price_set_rule_type\" (price_set_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_rule_type_rule_type_id",
@@ -666,7 +666,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_rule_type_id\" ON \"price_set_rule_type\" (rule_type_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_rule_type_rule_type_id\" ON \"price_set_rule_type\" (rule_type_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_rule_type_deleted_at",
@@ -786,7 +786,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_rules_price_set_money_amount_id\" ON \"price_set_money_amount_rules\" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_rules_price_set_money_amount_id\" ON \"price_set_money_amount_rules\" (price_set_money_amount_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_money_amount_rules_rule_type_id",
@@ -794,7 +794,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_rules_rule_type_id\" ON \"price_set_money_amount_rules\" (rule_type_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_set_money_amount_rules_rule_type_id\" ON \"price_set_money_amount_rules\" (rule_type_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_set_money_amount_rules_deleted_at",
@@ -933,7 +933,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_id\" ON \"price_rule\" (price_set_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_id\" ON \"price_rule\" (price_set_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_rule_type_id",
@@ -941,7 +941,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_rule_type_id\" ON \"price_rule\" (rule_type_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_rule_type_id\" ON \"price_rule\" (rule_type_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_price_set_money_amount_id_unique",
@@ -949,7 +949,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_money_amount_id_unique\" ON \"price_rule\" (price_set_money_amount_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_money_amount_id_unique\" ON \"price_rule\" (price_set_money_amount_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_deleted_at",
@@ -1068,7 +1068,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_list_rule_rule_type_id_unique\" ON \"price_list_rule\" (rule_type_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_list_rule_rule_type_id_unique\" ON \"price_list_rule\" (rule_type_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_list_rule_price_list_id",
@@ -1076,7 +1076,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_price_list_id\" ON \"price_list_rule\" (price_list_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_price_list_id\" ON \"price_list_rule\" (price_list_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_list_rule_deleted_at",
@@ -1186,7 +1186,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_value_price_list_rule_id\" ON \"price_list_rule_value\" (price_list_rule_id) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_value_price_list_rule_id\" ON \"price_list_rule_value\" (price_list_rule_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_list_rule_value_deleted_at",
