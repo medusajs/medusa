@@ -1214,6 +1214,11 @@ export interface IPricingModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
+  createMoneyAmounts(
+    data: CreateMoneyAmountDTO,
+    sharedContext?: Context
+  ): Promise<MoneyAmountDTO>
+
   /**
    * This method updates existing money amounts.
    *
@@ -1243,6 +1248,11 @@ export interface IPricingModuleService extends IModuleService {
     data: UpdateMoneyAmountDTO[],
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
+
+  updateMoneyAmounts(
+    data: UpdateMoneyAmountDTO,
+    sharedContext?: Context
+  ): Promise<MoneyAmountDTO>
 
   /**
    * This method deletes money amounts by their IDs.

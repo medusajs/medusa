@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -33,20 +33,48 @@ type BaseMethods =
   | "delete"
   | "softDelete"
   | "restore"
+  | "create"
+  | "update"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
-const writeMethods = ["delete", "softDelete", "restore"] as BaseMethods[]
+const writeMethods = [
+  "delete",
+  "softDelete",
+  "restore",
+  "create",
+  "update",
+] as BaseMethods[]
 
 const methods: BaseMethods[] = [...readMethods, ...writeMethods]
 
 type ModelsConfigTemplate = {
-  [ModelName: string]: { singular?: string; plural?: string; dto: object }
+  [ModelName: string]: {
+    singular?: string
+    plural?: string
+    dto: object
+    create?: object
+    update?: object
+  }
 }
 
 type ExtractSingularName<
   T extends Record<any, any>,
   K = keyof T
 > = T[K] extends { singular?: string } ? T[K]["singular"] : K
+
+type CreateMethodName<
+  ModelConfig extends Record<any, any>,
+  ModelKey = keyof ModelConfig
+> = ModelConfig[ModelKey] extends { create?: object }
+  ? `create${ExtractPluralName<ModelConfig, ModelKey>}`
+  : never
+
+type UpdateMethodName<
+  ModelConfig extends Record<any, any>,
+  ModelKey = keyof ModelConfig
+> = ModelConfig[ModelKey] extends { update?: object }
+  ? `update${ExtractPluralName<ModelConfig, ModelKey>}`
+  : never
 
 type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   plural?: string
@@ -100,42 +128,33 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
+  ModelsConfig extends ModelsConfigTemplate
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${ExtractSingularName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
-  > &
+  [K in keyof ModelsConfig as `retrieve${ExtractSingularName<ModelsConfig, K> &
     string}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"]>
+  ) => Promise<ModelsConfig[K & string]["dto"]>
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `list${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
-  > &
+  [K in keyof ModelsConfig as `list${ExtractPluralName<ModelsConfig, K> &
     string}`]: (
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"][]>
+  ) => Promise<ModelsConfig[K & string]["dto"][]>
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `listAndCount${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
+  [K in keyof ModelsConfig as `listAndCount${ExtractPluralName<
+    ModelsConfig,
     K
   > &
     string}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TOtherModelNamesAndAssociatedDTO[K & string]["dto"][], number]
+      [ModelsConfig[K & string]["dto"][], number]
     >
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `delete${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
-  > &
+  [K in keyof ModelsConfig as `delete${ExtractPluralName<ModelsConfig, K> &
     string}`]: {
     (
       primaryKeyValues: string | object | string[] | object[],
@@ -143,10 +162,7 @@ export type AbstractModuleService<
     ): Promise<void>
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `softDelete${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
-  > &
+  [K in keyof ModelsConfig as `softDelete${ExtractPluralName<ModelsConfig, K> &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
@@ -155,16 +171,51 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `restore${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
-  > &
+  [K in keyof ModelsConfig as `restore${ExtractPluralName<ModelsConfig, K> &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
       config?: RestoreReturn<TReturnableLinkableKeys>,
       sharedContext?: Context
     ): Promise<Record<string, string[]> | void>
+  }
+} & {
+  [ModelName in keyof ModelsConfig as CreateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (
+      data: ModelsConfig[ModelName]["create"][],
+      sharedContext?: Context
+    ): Promise<ModelsConfig[ModelName]["dto"][]>
+  }
+} & {
+  [ModelName in keyof ModelsConfig as CreateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (data: ModelsConfig[ModelName]["create"], sharedContext?: Context): Promise<
+      ModelsConfig[ModelName]["dto"]
+    >
+  }
+} & {
+  [ModelName in keyof ModelsConfig as UpdateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (
+      data: ModelsConfig[ModelName]["update"][],
+      sharedContext?: Context
+    ): Promise<ModelsConfig[ModelName]["dto"][]>
+  }
+} & {
+  [ModelName in keyof ModelsConfig as UpdateMethodName<
+    ModelsConfig,
+    ModelName
+  >]: {
+    (data: ModelsConfig[ModelName]["update"], sharedContext?: Context): Promise<
+      ModelsConfig[ModelName]["dto"]
+    >
   }
 }
 
@@ -211,7 +262,7 @@ export type AbstractModuleService<
 export function abstractModuleServiceFactory<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
+  ModelsConfig extends ModelsConfigTemplate
 >(
   mainModel: Constructor<any>,
   otherModels: ModelConfiguration[],
@@ -220,7 +271,7 @@ export function abstractModuleServiceFactory<
   new (container: TContainer): AbstractModuleService<
     TContainer,
     TMainModelDTO,
-    TOtherModelNamesAndAssociatedDTO
+    ModelsConfig
   >
 } {
   const buildMethodNamesFromModel = (
@@ -302,6 +353,44 @@ export function abstractModuleServiceFactory<
         }
 
         applyMethod(methodImplementation, 2)
+
+        break
+      case "create":
+        methodImplementation = async function <T extends object>(
+          this: AbstractModuleService_,
+          data = [],
+          sharedContext: Context = {}
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
+          const service = this.__container__[serviceRegistrationName]
+          const entities = await service.create(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
+
+          return await this.baseRepository_.serialize<T | T[]>(response, {
+            populate: true,
+          })
+        }
+
+        applyMethod(methodImplementation, 1)
+
+        break
+      case "update":
+        methodImplementation = async function <T extends object>(
+          this: AbstractModuleService_,
+          data = [],
+          sharedContext: Context = {}
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
+          const service = this.__container__[serviceRegistrationName]
+          const entities = await service.update(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
+
+          return await this.baseRepository_.serialize<T | T[]>(response, {
+            populate: true,
+          })
+        }
+
+        applyMethod(methodImplementation, 1)
 
         break
       case "list":
@@ -532,9 +621,5 @@ export function abstractModuleServiceFactory<
 
   return AbstractModuleService_ as unknown as new (
     container: TContainer
-  ) => AbstractModuleService<
-    TContainer,
-    TMainModelDTO,
-    TOtherModelNamesAndAssociatedDTO
-  >
+  ) => AbstractModuleService<TContainer, TMainModelDTO, ModelsConfig>
 }
