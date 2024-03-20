@@ -22,6 +22,11 @@ export const defaultAdminProductsVariantFields = [
   "ean",
   "upc",
   "barcode",
+  "prices.id",
+  "prices.currency_code",
+  "prices.amount",
+  "prices.created_at",
+  "prices.updated_at",
   "options.id",
   "options.option_value.value",
   "options.option_value.option.title",
@@ -55,7 +60,6 @@ export const listOptionConfig = {
 
 /* export const allowedAdminProductRelations = [
   "variants",
-  // TODO: Add in next iteration
   // "variants.prices",
   "variants.options",
   "images",
