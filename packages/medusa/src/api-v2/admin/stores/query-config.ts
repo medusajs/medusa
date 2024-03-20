@@ -1,5 +1,3 @@
-export const defaultAdminStoreRelations = []
-export const allowedAdminStoreRelations = []
 export const defaultAdminStoreFields = [
   "id",
   "name",
@@ -17,9 +15,7 @@ export const defaultAdminStoreFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminStoreFields,
-  defaultRelations: defaultAdminStoreRelations,
-  allowedRelations: allowedAdminStoreRelations,
+  defaults: defaultAdminStoreFields,
   isList: false,
 }
 
