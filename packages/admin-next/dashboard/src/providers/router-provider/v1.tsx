@@ -121,6 +121,10 @@ export const v1Routes: RouteObject[] = [
                       import("../../routes/orders/order-transfer-ownership"),
                   },
                   {
+                    path: "edit",
+                    lazy: () => import("../../routes/orders/order-edit"),
+                  },
+                  {
                     path: "returns",
                     lazy: () => import("../../routes/orders/returns-create"),
                   },

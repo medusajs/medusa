@@ -6,6 +6,8 @@
     "add": "Add",
     "start": "Start",
     "end": "End",
+    "open": "Open",
+    "close": "Close",
     "apply": "Apply",
     "range": "Range",
     "search": "Search",
@@ -56,6 +58,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "continue": "Continue",
+    "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
     "clearAll": "Clear all",
@@ -258,6 +261,16 @@
         "canceled": "Canceled",
         "requiresAction": "Requires action"
       }
+    },
+    "edits": {
+      "title": "Edit order",
+      "currentItems": "Current items",
+      "currentItemsDescription": "Adjust item quantity or remove.",
+      "addItemsDescription": "You can add new items to the order.",
+      "addItems": "Add items",
+      "amountPaid": "Amount paid",
+      "newTotal": "New total",
+      "differenceDue": "Difference due"
     },
     "returns": {
       "details": "Details",
@@ -758,6 +771,7 @@
     "availability": "Availability",
     "inventory": "Inventory",
     "optional": "Optional",
+    "note": "Note",
     "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",

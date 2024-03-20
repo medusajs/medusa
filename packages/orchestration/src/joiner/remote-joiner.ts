@@ -45,6 +45,7 @@ export class RemoteJoiner {
     let filteredData: Record<string, unknown> = {}
 
     if (fields.includes("*")) {
+      // select all fields
       filteredData = data
     } else {
       filteredData = fields.reduce((acc: any, field: string) => {

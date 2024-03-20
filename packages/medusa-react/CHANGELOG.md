@@ -1,5 +1,18 @@
 # Change Log
 
+## 9.0.16
+
+### Patch Changes
+
+- [#6441](https://github.com/medusajs/medusa/pull/6441) [`8dad2b51a2`](https://github.com/medusajs/medusa/commit/8dad2b51a26c4c3c14a6c95f70424c8bef2ad63e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,utils): fix login for medusa v2 admin next dashboard
+
+- [#6700](https://github.com/medusajs/medusa/pull/6700) [`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Version all modules to allow for initial testing
+
+- [#6428](https://github.com/medusajs/medusa/pull/6428) [`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa,medusa-js,medusa-react,icons): Fixes GET /admin/products/:id/variants endpoint in the core, and medusa-js and medusa-react. Pulls latest icons from Figma into `@medusajs/icons`.
+
+- Updated dependencies [[`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8), [`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0)]:
+  - @medusajs/medusa-js@6.1.8
+
 ## 9.0.15
 
 ### Patch Changes
