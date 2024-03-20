@@ -6,6 +6,12 @@ import {
 import { CreateProductVariantDTO } from "@medusajs/types"
 import { createProductVariantsWorkflow } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  remapKeysForProduct,
+  remapKeysForVariant,
+  remapProduct,
+  remapVariant,
+} from "../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -22,13 +28,13 @@ export const GET = async (
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: req.listConfig.select as string[],
+    fields: remapKeysForVariant(req.remoteQueryConfig.fields ?? []),
   })
 
   const { rows: variants, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    variants,
+    variants: variants.map(remapVariant),
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
@@ -58,5 +64,15 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ variant: result[0] })
+  const remoteQuery = req.scope.resolve("remoteQuery")
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "product",
+    variables: {
+      filters: { id: productId },
+    },
+    fields: remapKeysForProduct(req.remoteQueryConfig.fields ?? []),
+  })
+
+  const products = await remoteQuery(queryObject)
+  res.status(200).json({ product: remapProduct(products[0]) })
 }
