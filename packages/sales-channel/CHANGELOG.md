@@ -1,6 +1,6 @@
-# @medusajs/payment
+# @medusajs/sales-channel
 
-## 0.0.2
+## 0.1.1
 
 ### Patch Changes
 

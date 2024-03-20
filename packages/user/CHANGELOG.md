@@ -1,4 +1,4 @@
-# @medusajs/payment
+# @medusajs/user
 
 ## 0.0.2
 
