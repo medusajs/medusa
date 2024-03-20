@@ -58,7 +58,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: req.listConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: inventory_levels, metadata } = await remoteQuery(query)
