@@ -27,7 +27,7 @@ export async function updateProductVariants({
   }
 
   if (updateVariantsData.length) {
-    await productModuleService.updateVariants(updateVariantsData)
+    await productModuleService.upsertVariants(updateVariantsData)
   }
 
   return productsVariants
