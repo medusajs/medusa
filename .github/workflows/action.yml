@@ -260,6 +260,7 @@ jobs:
 
   integration-tests-modules:
     needs: setup-chunks
+    name: Run Module Integration Tests (chunk ${{ matrix.chunk }})
     strategy:
       matrix:
         chunk: ${{ fromJson(needs.setup-chunks.outputs['test-chunk-ids']) }}
