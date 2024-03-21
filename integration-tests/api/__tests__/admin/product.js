@@ -4,7 +4,12 @@ const {
 } = require("../../../helpers/create-admin-user")
 const { breaking } = require("../../../helpers/breaking")
 const { IdMap, medusaIntegrationTestRunner } = require("medusa-test-utils")
-const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
+const { ModuleRegistrationName, Modules } = require("@medusajs/modules-sdk")
+const {
+  createVariantPriceSet,
+} = require("../../../modules/helpers/create-variant-price-set")
+const { PriceListStatus, PriceListType } = require("@medusajs/types")
+const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 let productSeeder = undefined
 let priceListSeeder = undefined
@@ -73,6 +78,12 @@ medusaIntegrationTestRunner({
   env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let v2Product
+    let pricingService
+    let productService
+    let scService
+    let remoteLink
+    let container
+
     beforeAll(() => {
       // Note: We have to lazily load everything because there are weird ordering issues when doing `require` of `@medusajs/medusa`
       productSeeder = require("../../../helpers/product-seeder")
@@ -96,7 +107,7 @@ medusaIntegrationTestRunner({
     })
 
     beforeEach(async () => {
-      const container = getContainer()
+      container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
       // We want to seed another product for v2 that has pricing correctly wired up for all pricing-related tests.
@@ -107,6 +118,11 @@ medusaIntegrationTestRunner({
             await api.post("/admin/products", productFixture, adminHeaders)
         )
       )?.data?.product
+
+      pricingService = container.resolve(ModuleRegistrationName.PRICING)
+      productService = container.resolve(ModuleRegistrationName.PRODUCT)
+      scService = container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+      remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     })
 
     describe("/admin/products", () => {
@@ -1103,6 +1119,128 @@ medusaIntegrationTestRunner({
               }),
             ])
           )
+        })
+
+        it("should return products filtered by price_list_id", async () => {
+          const priceList = await breaking(
+            async () => {
+              return await simplePriceListFactory(dbConnection, {
+                prices: [
+                  {
+                    variant_id: "test-variant",
+                    amount: 100,
+                    currency_code: "usd",
+                  },
+                ],
+              })
+            },
+            async () => {
+              const variantId = v2Product.variants[0].id
+
+              await pricingService.createRuleTypes([
+                {
+                  name: "Region ID",
+                  rule_attribute: "region_id",
+                },
+              ])
+
+              const priceSet = await createVariantPriceSet({
+                container,
+                variantId,
+              })
+
+              const [priceList] = await pricingService.createPriceLists([
+                {
+                  title: "Test price list",
+                  description: "Test",
+                  status: PriceListStatus.ACTIVE,
+                  type: PriceListType.OVERRIDE,
+                  prices: [
+                    {
+                      amount: 5000,
+                      currency_code: "usd",
+                      price_set_id: priceSet.id,
+                      rules: {
+                        region_id: "test-region",
+                      },
+                    },
+                  ],
+                },
+              ])
+
+              return priceList
+            }
+          )
+
+          const res = await api.get(
+            `/admin/products?price_list_id[]=${priceList.id}`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products.length).toEqual(1)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: breaking(
+                () => "test-product",
+                () => v2Product.id
+              ),
+              status: "draft",
+            }),
+          ])
+        })
+
+        it("should return products filtered by sales_channel_id", async () => {
+          const { salesChannel, product } = await breaking(
+            async () => {
+              const product = await simpleProductFactory(dbConnection, {
+                id: "product_1",
+                title: "test title",
+              })
+
+              const salesChannel = await simpleSalesChannelFactory(
+                dbConnection,
+                {
+                  name: "test name",
+                  description: "test description",
+                  products: [product],
+                }
+              )
+
+              return { salesChannel, product }
+            },
+            async () => {
+              const salesChannel = await scService.create({
+                name: "Test channel",
+                description: "Lorem Ipsum",
+              })
+
+              await remoteLink.create({
+                [Modules.PRODUCT]: {
+                  product_id: v2Product.id,
+                },
+                [Modules.SALES_CHANNEL]: {
+                  sales_channel_id: salesChannel.id,
+                },
+              })
+
+              return { salesChannel, product: v2Product }
+            }
+          )
+
+          const res = await api.get(
+            `/admin/products?sales_channel_id[]=${salesChannel.id}`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products.length).toEqual(1)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: product.id,
+              status: "draft",
+            }),
+          ])
         })
       })
 
