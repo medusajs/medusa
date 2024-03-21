@@ -8,7 +8,8 @@ export function ReturnsCreate() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
-    expand: "items,items.variant,items.variant.product",
+    expand:
+      "items,items.variant,items.variant.product,returnable_items,claims,claims.additional_items,claims.return_order,swaps,swaps.additional_items",
   })
 
   if (isError) {
