@@ -259,7 +259,7 @@ jobs:
     name: Run Module Integration Tests (chunk ${{ matrix.chunk }})
     strategy:
       matrix:
-        chunk: ${{ fromJson(needs.setup.outputs['test-chunk-ids']) }}
+        chunk: [0, 1, 2, 3, 4, 5]
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
