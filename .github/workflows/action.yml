@@ -36,7 +36,7 @@ jobs:
       - id: set-module-chunks
         name: Set Module Chunks
         working-directory: integration-tests/modules
-        run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')" >> $GITHUB_OUTPUT
+        run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 3 | ceil)]')" >> $GITHUB_OUTPUT
 
       - id: set-module-matrix
         name: Set Module Matrix
@@ -47,7 +47,7 @@ jobs:
       - id: set-api-chunks
         name: Set API Chunks
         working-directory: integration-tests/api
-        run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')" >> $GITHUB_OUTPUT
+        run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 3 | ceil)]')" >> $GITHUB_OUTPUT
 
       - id: set-api-matrix
         name: Set API Matrix
