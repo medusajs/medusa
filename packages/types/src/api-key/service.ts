@@ -133,7 +133,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the API keys are deleted successfully.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.delete(["apk_123"])
+   * await apiKeyModuleService.delete(["apk_123"])
    */
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
@@ -145,7 +145,7 @@ export interface IApiKeyModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the API key is deleted successfully.
    *
    * @example
-   * const apiKey = await apiKeyModuleService.delete("apk_123")
+   * await apiKeyModuleService.delete("apk_123")
    */
   delete(id: string, sharedContext?: Context): Promise<void>
 
