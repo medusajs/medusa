@@ -47,14 +47,19 @@ const writeMethods = [
 
 const methods: BaseMethods[] = [...readMethods, ...writeMethods]
 
+type ModelDTOConfig = {
+  dto: object
+  create?: object
+  update?: object
+}
+type ModelDTOConfigRecord = Record<any, ModelDTOConfig>
+type ModelNamingConfig = {
+  singular?: string
+  plural?: string
+}
+
 type ModelsConfigTemplate = {
-  [ModelName: string]: {
-    singular?: string
-    plural?: string
-    dto: object
-    create?: object
-    update?: object
-  }
+  [ModelName: string]: ModelDTOConfig & ModelNamingConfig
 }
 
 type ExtractSingularName<
@@ -63,17 +68,17 @@ type ExtractSingularName<
 > = T[K] extends { singular?: string } ? T[K]["singular"] : K
 
 type CreateMethodName<
-  ModelConfig extends Record<any, any>,
-  ModelKey = keyof ModelConfig
-> = ModelConfig[ModelKey] extends { create?: object }
-  ? `create${ExtractPluralName<ModelConfig, ModelKey>}`
+  TModelDTOConfig extends ModelDTOConfigRecord,
+  TModelName = keyof TModelDTOConfig
+> = TModelDTOConfig[TModelName] extends { create?: object }
+  ? `create${ExtractPluralName<TModelDTOConfig, TModelName>}`
   : never
 
 type UpdateMethodName<
-  ModelConfig extends Record<any, any>,
-  ModelKey = keyof ModelConfig
-> = ModelConfig[ModelKey] extends { update?: object }
-  ? `update${ExtractPluralName<ModelConfig, ModelKey>}`
+  TModelDTOConfig extends ModelDTOConfigRecord,
+  TModelName = keyof TModelDTOConfig
+> = TModelDTOConfig[TModelName] extends { update?: object }
+  ? `update${ExtractPluralName<TModelDTOConfig, TModelName>}`
   : never
 
 type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
@@ -128,33 +133,42 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  ModelsConfig extends ModelsConfigTemplate
+  TModelDTOConfig extends ModelsConfigTemplate
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
-  [K in keyof ModelsConfig as `retrieve${ExtractSingularName<ModelsConfig, K> &
+  [TModelName in keyof TModelDTOConfig as `retrieve${ExtractSingularName<
+    TModelDTOConfig,
+    TModelName
+  > &
     string}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<ModelsConfig[K & string]["dto"]>
+  ) => Promise<TModelDTOConfig[TModelName & string]["dto"]>
 } & {
-  [K in keyof ModelsConfig as `list${ExtractPluralName<ModelsConfig, K> &
+  [TModelName in keyof TModelDTOConfig as `list${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
+  > &
     string}`]: (
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<ModelsConfig[K & string]["dto"][]>
+  ) => Promise<TModelDTOConfig[TModelName & string]["dto"][]>
 } & {
-  [K in keyof ModelsConfig as `listAndCount${ExtractPluralName<
-    ModelsConfig,
-    K
+  [TModelName in keyof TModelDTOConfig as `listAndCount${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [ModelsConfig[K & string]["dto"][], number]
+      [TModelDTOConfig[TModelName & string]["dto"][], number]
     >
   }
 } & {
-  [K in keyof ModelsConfig as `delete${ExtractPluralName<ModelsConfig, K> &
+  [TModelName in keyof TModelDTOConfig as `delete${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
+  > &
     string}`]: {
     (
       primaryKeyValues: string | object | string[] | object[],
@@ -162,7 +176,10 @@ export type AbstractModuleService<
     ): Promise<void>
   }
 } & {
-  [K in keyof ModelsConfig as `softDelete${ExtractPluralName<ModelsConfig, K> &
+  [TModelName in keyof TModelDTOConfig as `softDelete${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
+  > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
@@ -171,7 +188,10 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [K in keyof ModelsConfig as `restore${ExtractPluralName<ModelsConfig, K> &
+  [TModelName in keyof TModelDTOConfig as `restore${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
+  > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
@@ -180,42 +200,44 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [ModelName in keyof ModelsConfig as CreateMethodName<
-    ModelsConfig,
-    ModelName
+  [TModelName in keyof TModelDTOConfig as CreateMethodName<
+    TModelDTOConfig,
+    TModelName
   >]: {
     (
-      data: ModelsConfig[ModelName]["create"][],
+      data: TModelDTOConfig[TModelName]["create"][],
       sharedContext?: Context
-    ): Promise<ModelsConfig[ModelName]["dto"][]>
+    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
   }
 } & {
-  [ModelName in keyof ModelsConfig as CreateMethodName<
-    ModelsConfig,
-    ModelName
-  >]: {
-    (data: ModelsConfig[ModelName]["create"], sharedContext?: Context): Promise<
-      ModelsConfig[ModelName]["dto"]
-    >
-  }
-} & {
-  [ModelName in keyof ModelsConfig as UpdateMethodName<
-    ModelsConfig,
-    ModelName
+  [TModelName in keyof TModelDTOConfig as CreateMethodName<
+    TModelDTOConfig,
+    TModelName
   >]: {
     (
-      data: ModelsConfig[ModelName]["update"][],
+      data: TModelDTOConfig[TModelName]["create"],
       sharedContext?: Context
-    ): Promise<ModelsConfig[ModelName]["dto"][]>
+    ): Promise<TModelDTOConfig[TModelName]["dto"]>
   }
 } & {
-  [ModelName in keyof ModelsConfig as UpdateMethodName<
-    ModelsConfig,
-    ModelName
+  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
+    TModelDTOConfig,
+    TModelName
   >]: {
-    (data: ModelsConfig[ModelName]["update"], sharedContext?: Context): Promise<
-      ModelsConfig[ModelName]["dto"]
-    >
+    (
+      data: TModelDTOConfig[TModelName]["update"][],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
+  }
+} & {
+  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
+    TModelDTOConfig,
+    TModelName
+  >]: {
+    (
+      data: TModelDTOConfig[TModelName]["update"],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"]>
   }
 }
 
