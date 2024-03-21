@@ -9,7 +9,13 @@ type Options = ModuleServiceInitializeOptions["database"]
  */
 export function createPgConnection(options: Options) {
   const { pool, schema = "public", clientUrl, driverOptions } = options
-  const ssl = options.driverOptions?.ssl ?? false
+  let ssl = options.driverOptions?.ssl ?? false
+
+  if (!ssl) {
+    if (options.driverOptions?.connection) {
+      ssl = options.driverOptions?.connection?.ssl ?? false
+    }
+  }
 
   return knex<any, any>({
     client: "pg",
