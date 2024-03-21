@@ -73,7 +73,7 @@ class KnowledgeBaseFactory {
       startsWith: "Filterable",
       endsWith: "Props",
       template: (str) => {
-        return `The filters to apply on the retrieved ${camelToTitle(
+        return `The filters to apply on the retrieved ${camelToWords(
           normalizeName(str)
         )}.`
       },
@@ -82,14 +82,14 @@ class KnowledgeBaseFactory {
       startsWith: "Create",
       endsWith: "DTO",
       template: (str) => {
-        return `The ${camelToTitle(normalizeName(str))} to be created.`
+        return `The ${camelToWords(normalizeName(str))} to be created.`
       },
     },
     {
       startsWith: "Update",
       endsWith: "DTO",
       template: (str) => {
-        return `The attributes to update in the ${camelToTitle(
+        return `The attributes to update in the ${camelToWords(
           normalizeName(str)
         )}.`
       },
@@ -106,7 +106,7 @@ class KnowledgeBaseFactory {
     {
       endsWith: "DTO",
       template: (str: string): string => {
-        return `The ${camelToTitle(normalizeName(str))} details.`
+        return `The ${camelToWords(normalizeName(str))} details.`
       },
     },
     {
@@ -149,6 +149,19 @@ class KnowledgeBaseFactory {
     {
       exact: "customHeaders",
       template: "Custom headers to attach to the request.",
+    },
+    {
+      startsWith: "I",
+      endsWith: "ModuleService",
+      template: (str) => {
+        const normalizedStr = camelToTitle(normalizeName(str))
+
+        if (str === "IApiKeyModuleService") {
+          console.log(str, normalizeName(str), normalizedStr)
+        }
+
+        return `The main service interface for the ${normalizedStr} Module.`
+      },
     },
   ]
   private functionSummaryKnowledgeBase: KnowledgeBase[] = [
@@ -224,6 +237,15 @@ class KnowledgeBaseFactory {
         )
       },
     },
+    {
+      startsWith: "upsert",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `updates or creates ${this.TYPE_PLACEHOLDER}(s) if it doesn't exist.`,
+          options
+        )
+      },
+    },
   ]
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
@@ -276,6 +298,15 @@ class KnowledgeBaseFactory {
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
           `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
+          options
+        )
+      },
+    },
+    {
+      startsWith: "upsert",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The created or updated ${this.TYPE_PLACEHOLDER}(s).`,
           options
         )
       },

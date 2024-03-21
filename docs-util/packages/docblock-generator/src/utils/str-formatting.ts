@@ -22,7 +22,6 @@ export function camelToTitle(str: string): string {
     .map((word) => capitalize(word))
     .join(" ")
     .trim()
-    .toLowerCase()
 }
 
 export function snakeToWords(str: string): string {
