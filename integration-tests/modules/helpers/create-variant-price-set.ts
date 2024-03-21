@@ -36,15 +36,11 @@ export const createVariantPriceSet = async ({
   })
 
   await remoteLink.create({
-    productService: {
-      variant_id: variantId,
-    },
-    pricingService: {
-      price_set_id: priceSet.id,
-    },
+    productService: { variant_id: variantId },
+    pricingService: { price_set_id: priceSet.id },
   })
 
   return await pricingModuleService.retrieve(priceSet.id, {
-    relations: ["price_set_money_amounts.money_amount"],
+    relations: ["price_set_money_amounts"],
   })
 }
