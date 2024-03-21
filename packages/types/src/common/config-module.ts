@@ -368,7 +368,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_extra:
+   *     database_driver_options:
    *       process.env.NODE_ENV !== "development"
    *         ? { connection: { ssl: { rejectUnauthorized: false } } }
    *         : {},
