@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": "jest --no-cache --silent=false --bail --runInBand --forceExit --logHeapUsage --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
+    "test:integration:chunk": "jest --no-cache --silent=false --bail --maxWorkers=1 --forceExit --logHeapUsage --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -41,6 +41,8 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@medusajs/types": "workspace:^",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "babel-preset-medusa-package": "*",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"
