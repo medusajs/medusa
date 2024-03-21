@@ -91,7 +91,7 @@ export async function migrateMedusaApp(
           type: "postgres",
           url: sharedResourcesConfig.database.clientUrl,
           clientUrl: sharedResourcesConfig.database.clientUrl,
-          extra: configModule.projectConfig.database_driver_options,
+          extra: configModule.projectConfig.database_extra,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
         },
@@ -281,7 +281,7 @@ export async function runModulesLoader({
         database: {
           type: "postgres",
           url: configModule.projectConfig.database_url,
-          extra: configModule.projectConfig.database_driver_options,
+          extra: configModule.projectConfig.database_extra,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
         },
