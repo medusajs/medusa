@@ -42,11 +42,14 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
-      prefix: `${this.constructor.name}`,
-      ...(moduleOptions.workerOptions ?? {}),
-      connection: eventBusRedisConnection,
-    })
+    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
+    if (shouldStartWorker) {
+      new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
+        prefix: `${this.constructor.name}`,
+        ...(moduleOptions.workerOptions ?? {}),
+        connection: eventBusRedisConnection,
+      })
+    }
   }
 
   /**
@@ -197,7 +200,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       job.data.completedSubscriberIds = updatedCompletedSubscribers
 
-      await job.update(job.data)
+      await job.updateData(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 

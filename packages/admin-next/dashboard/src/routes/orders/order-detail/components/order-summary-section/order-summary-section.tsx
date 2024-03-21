@@ -38,7 +38,7 @@ const Header = ({ order }: { order: Order }) => {
             actions: [
               {
                 label: t("orders.summary.editItems"),
-                to: "#", // TODO: Open modal to edit items
+                to: `/orders/${order.id}/edit`,
                 icon: <PencilSquare />,
               },
               {

@@ -41,9 +41,19 @@ export default async ({
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
+  const shouldStartAPI = configModule.projectConfig.worker_mode !== "worker"
+
   await promiseAll(
     resolved.map(async (pluginDetails) => {
-      await registerApi(pluginDetails, app, container, configModule, activityId)
+      if (shouldStartAPI) {
+        await registerApi(
+          pluginDetails,
+          app,
+          container,
+          configModule,
+          activityId
+        )
+      }
       await registerSubscribers(pluginDetails, container, activityId)
       await registerWorkflows(pluginDetails)
     })
@@ -177,7 +187,8 @@ async function registerSubscribers(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
-    activityId
+    activityId,
+    true
   ).load()
 }
 

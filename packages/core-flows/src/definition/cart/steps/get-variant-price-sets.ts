@@ -26,8 +26,8 @@ export const getVariantPriceSetsStep = createStep(
       {
         variant: {
           fields: ["id"],
-          price: {
-            fields: ["price_set_id"],
+          price_set: {
+            fields: ["id"],
           },
         },
       },
@@ -42,8 +42,8 @@ export const getVariantPriceSetsStep = createStep(
     const priceSetIds: string[] = []
 
     variantPriceSets.forEach((v) => {
-      if (v.price?.price_set_id) {
-        priceSetIds.push(v.price.price_set_id)
+      if (v.price_set?.id) {
+        priceSetIds.push(v.price_set.id)
       } else {
         notFound.push(v.id)
       }
@@ -66,8 +66,8 @@ export const getVariantPriceSetsStep = createStep(
     )
 
     const variantToCalculatedPriceSets = variantPriceSets.reduce(
-      (acc, { id, price }) => {
-        const calculatedPriceSet = idToPriceSet.get(price?.price_set_id)
+      (acc, { id, price_set }) => {
+        const calculatedPriceSet = idToPriceSet.get(price_set?.id)
         if (calculatedPriceSet) {
           acc[id] = calculatedPriceSet
         }

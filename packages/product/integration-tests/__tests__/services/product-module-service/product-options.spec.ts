@@ -242,7 +242,7 @@ moduleIntegrationTestRunner({
         const optionId = "option-1"
 
         it("should update the title of the option successfully", async () => {
-          await service.updateOptions([
+          await service.upsertOptions([
             {
               id: optionId,
               title: "new test",
@@ -258,7 +258,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.updateOptions([
+            await service.upsertOptions([
               {
                 id: "does-not-exist",
               },
