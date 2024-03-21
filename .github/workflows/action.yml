@@ -256,7 +256,7 @@ jobs:
 
   integration-tests-modules:
     needs: setup
-    name: Run Module Integration Tests (chunk ${{ matrix.chunk }})
+    name: Shard (${{ matrix.chunk }}) Module Integration Tests
     strategy:
       matrix:
         chunk: ${{ fromJSON(needs.setup.outputs.matrix) }}

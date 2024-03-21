@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": " echo $CHUNKS | jq \".[${CHUNK}] | .[] | @text\" | xargs jest --silent --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "echo $CHUNKS | jq \".[${CHUNK}] | .[] | @text\" | xargs jest --silent --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
