@@ -741,7 +741,8 @@ export default class PricingModuleService<
 
     const ruleTypes = await this.listRuleTypes(
       { rule_attribute: ruleTypeAttributes },
-      { take: null }
+      { take: null },
+      sharedContext
     )
 
     const invalidRuleTypes = arrayDifference(
@@ -775,9 +776,10 @@ export default class PricingModuleService<
       })
     }
 
-    const priceLists = (await this.priceListService_.create(
-      priceListsToCreate
-    )) as unknown as PricingTypes.PriceListDTO[]
+    const priceLists = await this.priceListService_.create(
+      priceListsToCreate,
+      sharedContext
+    )
 
     for (let i = 0; i < data.length; i++) {
       const { rules = {}, prices = [] } = data[i]
@@ -788,24 +790,14 @@ export default class PricingModuleService<
 
         // Create the rule
         const [priceListRule] = await this.priceListRuleService_.create(
-          [
-            {
-              price_list_id: priceList.id,
-              rule_type_id: ruleType.id,
-            },
-          ],
+          [{ price_list_id: priceList.id, rule_type_id: ruleType.id }],
           sharedContext
         )
 
         // Create the values for the rule
         for (const ruleValue of ruleValues as string[]) {
           await this.priceListRuleValueService_.create(
-            [
-              {
-                price_list_rule_id: priceListRule.id,
-                value: ruleValue,
-              },
-            ],
+            [{ price_list_rule_id: priceListRule.id, value: ruleValue }],
             sharedContext
           )
         }
@@ -833,7 +825,7 @@ export default class PricingModuleService<
                 title: "test",
                 rules_count: Object.keys(priceRules).length,
               },
-            ] as unknown as ServiceTypes.CreatePriceSetMoneyAmountDTO[],
+            ],
             sharedContext
           )
 
