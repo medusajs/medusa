@@ -6,6 +6,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   arrayDifference,
+  isString,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
@@ -71,9 +72,7 @@ export default class InviteService<
 
     const invites = await super.create(data_, context)
 
-    const expiresIn: number =
-      parseInt(this.getOption("valid_duration")) ||
-      DEFAULT_VALID_INVITE_DURATION
+    const expiresIn: number = this.getValidDuration()
 
     const updates = invites.map((invite) => {
       return {
@@ -113,9 +112,7 @@ export default class InviteService<
       }
     }
 
-    const expiresIn: number =
-      parseInt(this.getOption("valid_duration")) ||
-      DEFAULT_VALID_INVITE_DURATION
+    const expiresIn: number = this.getValidDuration()
 
     const updates = invites.map((invite) => {
       return {
@@ -151,6 +148,7 @@ export default class InviteService<
 
   private generateToken(data: any): string {
     const jwtSecret: string = this.getOption("jwt_secret")
+    const expiresIn: number = this.getValidDuration() / 1000
 
     if (!jwtSecret) {
       throw new MedusaError(
@@ -161,7 +159,15 @@ export default class InviteService<
 
     return jwt.sign(data, jwtSecret, {
       jwtid: crypto.randomUUID(),
+      expiresIn,
     })
+  }
+
+  private getValidDuration(): number {
+    return (
+      parseInt(this.getOption("valid_duration")) ||
+      DEFAULT_VALID_INVITE_DURATION
+    )
   }
 
   private validateToken(data: any): JwtPayload {
