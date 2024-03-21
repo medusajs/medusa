@@ -9,6 +9,7 @@ import {
 import pluralize from "pluralize"
 
 type TemplateOptions = {
+  pluralIndicatorStr?: string
   parentName?: string
   rawParentName?: string
   returnTypeName?: string
@@ -200,8 +201,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "create",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `creates ${this.TYPE_PLACEHOLDER}(s)`,
+          `creates${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
+            isPlural ? "s" : ""
+          }`,
           options
         )
       },
@@ -209,8 +213,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "delete",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `deletes ${this.TYPE_PLACEHOLDER} by its ID.`,
+          `deletes${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER} by ${
+            isPlural ? "their" : "its"
+          } ID${isPlural ? "s" : ""}.`,
           options
         )
       },
@@ -218,8 +225,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "update",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `updates existing ${this.TYPE_PLACEHOLDER}(s).`,
+          `updates${!isPlural ? " an" : ""} existing ${this.TYPE_PLACEHOLDER}${
+            isPlural ? "s" : ""
+          }.`,
           options
         )
       },
@@ -227,8 +237,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "softDelete",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `soft deletes ${this.TYPE_PLACEHOLDER}(s) by their IDs.`,
+          `soft deletes${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
+            isPlural ? "s" : ""
+          } by ${isPlural ? "their" : "its"} IDs.`,
           options
         )
       },
@@ -236,8 +249,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "restore",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `restores soft deleted ${this.TYPE_PLACEHOLDER}(s) by their IDs.`,
+          `restores${!isPlural ? " a" : ""} soft deleted ${
+            this.TYPE_PLACEHOLDER
+          }${isPlural ? "s" : ""} by ${isPlural ? "their" : "its"} IDs.`,
           options
         )
       },
@@ -245,8 +261,11 @@ class KnowledgeBaseFactory {
     {
       startsWith: "upsert",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `updates or creates ${this.TYPE_PLACEHOLDER}(s) if it doesn't exist.`,
+          `updates or creates${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
+            isPlural ? "s" : ""
+          } if ${isPlural ? "they don't" : "it doesn't"} exist.`,
           options
         )
       },
@@ -257,7 +276,7 @@ class KnowledgeBaseFactory {
       startsWith: "listAndCount",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `The list of ${this.TYPE_PLACEHOLDER}(s) along with their total count.`,
+          `The list of ${this.TYPE_PLACEHOLDER}s along with their total count.`,
           options
         )
       },
@@ -266,7 +285,7 @@ class KnowledgeBaseFactory {
       startsWith: "list",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `The list of ${this.TYPE_PLACEHOLDER}(s).`,
+          `The list of ${this.TYPE_PLACEHOLDER}s.`,
           options
         )
       },
@@ -275,7 +294,7 @@ class KnowledgeBaseFactory {
       startsWith: "retrieve",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `The retrieved ${this.TYPE_PLACEHOLDER}(s).`,
+          `The retrieved ${this.TYPE_PLACEHOLDER}.`,
           options
         )
       },
@@ -283,8 +302,9 @@ class KnowledgeBaseFactory {
     {
       startsWith: "create",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `The created ${this.TYPE_PLACEHOLDER}(s).`,
+          `The created ${this.TYPE_PLACEHOLDER}${isPlural ? "s" : ""}.`,
           options
         )
       },
@@ -292,8 +312,21 @@ class KnowledgeBaseFactory {
     {
       startsWith: "update",
       template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return this.replaceTypePlaceholder(
-          `The updated ${this.TYPE_PLACEHOLDER}(s).`,
+          `The updated ${this.TYPE_PLACEHOLDER}${isPlural ? "s" : ""}.`,
+          options
+        )
+      },
+    },
+    {
+      startsWith: "upsert",
+      template: (_str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+        return this.replaceTypePlaceholder(
+          `The created or updated ${this.TYPE_PLACEHOLDER}${
+            isPlural ? "s" : ""
+          }.`,
           options
         )
       },
@@ -303,15 +336,6 @@ class KnowledgeBaseFactory {
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
           `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
-          options
-        )
-      },
-    },
-    {
-      startsWith: "upsert",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `The created or updated ${this.TYPE_PLACEHOLDER}(s).`,
           options
         )
       },
@@ -407,6 +431,17 @@ class KnowledgeBaseFactory {
   }
 
   /**
+   * Checks whether a type should be handled as a plural. Typically used with {@link TemplateOptions.pluralIndicatorStr}.
+   *
+   * @param str - The type string to check.
+   * @returns Whether the type is handled as a plural.
+   */
+  private isTypePlural(str: string | undefined): boolean {
+    console.log(str)
+    return str?.endsWith("[]") || false
+  }
+
+  /**
    * Tries to retrieve the summary template of a specified type from the {@link summaryKnowledgeBase}.
    *
    * @returns {string | undefined} The matching knowledge base template, if found.
@@ -417,6 +452,10 @@ class KnowledgeBaseFactory {
       ...options,
       str: normalizedTypeStr,
       knowledgeBase: this.summaryKnowledgeBase,
+      templateOptions: {
+        pluralIndicatorStr: str,
+        ...options.templateOptions,
+      },
     })
   }
 

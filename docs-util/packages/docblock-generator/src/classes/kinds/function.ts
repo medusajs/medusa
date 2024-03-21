@@ -140,22 +140,39 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
   /**
    * Retrieves the summary comment of a function.
    *
-   * @param {FunctionNode} node - The node's function.
-   * @param {ts.Symbol} symbol - The node's symbol. If provided, the method will try to retrieve the summary from the {@link KnowledgeBaseFactory}.
-   * @param {ts.Symbol} parentSymbol - The node's parent symbol. This is useful to pass along the parent name to the knowledge base.
+   * @param {FunctionNode} node - The function's options.
    * @returns {string} The function's summary comment.
    */
-  getFunctionSummary(
-    node: FunctionNode,
-    symbol?: ts.Symbol,
+  getFunctionSummary({
+    node,
+    symbol,
+    parentSymbol,
+    returnType,
+  }: {
+    /**
+     * The node's function.
+     */
+    node: FunctionNode
+    /**
+     * The node's symbol. If provided, the method will try to retrieve the summary from the {@link KnowledgeBaseFactory}.
+     */
+    symbol?: ts.Symbol
+    /**
+     * The node's parent symbol. This is useful to pass along the parent name to the knowledge base.
+     */
     parentSymbol?: ts.Symbol
-  ): string {
+    /**
+     * The node's return type. Useful for the {@link KnowledgeBaseFactory}
+     */
+    returnType?: string
+  }): string {
     return symbol
       ? this.knowledgeBaseFactory.tryToGetFunctionSummary({
           symbol: symbol,
           kind: node.kind,
           templateOptions: {
             rawParentName: parentSymbol?.getName(),
+            pluralIndicatorStr: returnType,
           },
         }) || this.getNodeSummary({ node, symbol })
       : this.getNodeSummary({ node, symbol })
@@ -260,6 +277,11 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
 
     const nodeSymbol = getSymbol(node, this.checker)
     const nodeParentSymbol = getSymbol(node.parent, this.checker)
+    const nodeType = this.getReturnType(actualNode)
+    const returnTypeStr = this.checker.typeToString(nodeType)
+    const normalizedTypeStr = returnTypeStr.startsWith("Promise<")
+      ? returnTypeStr.replace(/^Promise</, "").replace(/>$/, "")
+      : returnTypeStr
 
     let str = DOCBLOCK_START
 
@@ -267,11 +289,12 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     str += `${
       options.summaryPrefix ||
       (this.isMethod(actualNode) ? `This method` : `This function`)
-    } ${this.getFunctionSummary(
-      actualNode,
-      nodeSymbol,
-      nodeParentSymbol
-    )}${DOCBLOCK_NEW_LINE}`
+    } ${this.getFunctionSummary({
+      node: actualNode,
+      symbol: nodeSymbol,
+      parentSymbol: nodeParentSymbol,
+      returnType: normalizedTypeStr,
+    })}${DOCBLOCK_NEW_LINE}`
 
     actualNode.parameters.map((parameterNode) => {
       const symbol = getSymbol(parameterNode, this.checker)
@@ -302,8 +325,6 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     })
 
     // add returns
-    const nodeType = this.getReturnType(actualNode)
-    const returnTypeStr = this.checker.typeToString(nodeType)
     const possibleReturnSummary = !this.hasReturnData(returnTypeStr)
       ? `Resolves when ${this.defaultSummary}`
       : this.getNodeSummary({
@@ -318,6 +339,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
             kind: actualNode.kind,
             templateOptions: {
               rawParentName: nodeParentSymbol?.getName(),
+              pluralIndicatorStr: normalizedTypeStr,
             },
           }) || possibleReturnSummary
         : possibleReturnSummary

@@ -98,7 +98,9 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     }
     const isMutation = this.isMutation(actualNode)
 
-    let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary(node)}`
+    let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary({
+      node,
+    })}`
 
     // add example
     str += this.getFunctionPlaceholderExample()
