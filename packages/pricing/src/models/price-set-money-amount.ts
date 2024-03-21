@@ -62,12 +62,28 @@ export default class PriceSetMoneyAmount {
   title: string | null = null
 
   @PriceSetMoneyAmountPriceSetIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceSet, { onDelete: "cascade" })
-  price_set: PriceSet
+  @ManyToOne(() => PriceSet, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "price_set_id",
+    onDelete: "cascade",
+  })
+  price_set_id: string
+
+  @ManyToOne(() => PriceSet, { persist: false })
+  price_set?: PriceSet
 
   @PriceSetMoneyAmountMoneyAmountIdIndex.MikroORMIndex()
-  @OneToOne(() => MoneyAmount, { onDelete: "cascade" })
-  money_amount: MoneyAmount
+  @OneToOne(() => MoneyAmount, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "money_amount_id",
+    onDelete: "cascade",
+  })
+  money_amount_id: string
+
+  @OneToOne(() => MoneyAmount, { persist: false })
+  money_amount?: MoneyAmount
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0
@@ -80,8 +96,17 @@ export default class PriceSetMoneyAmount {
   price_rules = new Collection<PriceRule>(this)
 
   @PriceSetMoneyAmountPriceListIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceList, { onDelete: "cascade", nullable: true })
-  price_list: PriceList | null
+  @ManyToOne(() => PriceList, {
+    columnType: "text",
+    mapToPk: true,
+    nullable: true,
+    fieldName: "price_list_id",
+    onDelete: "cascade",
+  })
+  price_list_id: string
+
+  @ManyToOne(() => PriceList, { persist: false, nullable: true })
+  price_list?: PriceList
 
   @Property({
     onCreate: () => new Date(),
