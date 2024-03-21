@@ -5,6 +5,7 @@ const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+console.log("DB_URL -- ", DB_URL)
 process.env.POSTGRES_URL = DB_URL
 process.env.LOG_LEVEL = "error"
 

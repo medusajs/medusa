@@ -6,8 +6,6 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const chunkNumber = parseInt(process.env.CHUNK || "1")
   process.env.DB_TEMP_NAME = `medusa-integration-${tempName}-${chunkNumber}`
-
-  console.log("process.env.DB_TEMP_NAME -- ", process.env.DB_TEMP_NAME)
 }
 
 global.performance = require("perf_hooks").performance
