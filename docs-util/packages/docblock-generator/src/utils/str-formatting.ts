@@ -73,7 +73,7 @@ export function pascalToCamel(str: string): string {
  */
 export function normalizeName(str: string): string {
   return str
-    .replace(/^(create|update|delete)/i, "")
+    .replace(/^(create|update|delete|upsert)/i, "")
     .replace(/DTO$/, "")
     .replace(/^Filterable/, "")
     .replace(/Props$/, "")

@@ -95,6 +95,15 @@ class KnowledgeBaseFactory {
       },
     },
     {
+      startsWith: "Upsert",
+      endsWith: "DTO",
+      template: (str) => {
+        return `The attributes in the ${camelToWords(
+          normalizeName(str)
+        )} to create or update.`
+      },
+    },
+    {
       startsWith: "RestoreReturn",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
