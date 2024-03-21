@@ -155,7 +155,12 @@ class KnowledgeBaseFactory {
         if (options?.rawParentName?.startsWith("Filterable")) {
           return `The IDs to filter the ${options?.parentName || `{name}`} by.`
         }
-        return `The ID of the ${options?.parentName || `{name}`}.`
+        const parentName = options?.parentName
+          ? options.parentName
+          : options?.rawParentName
+            ? camelToWords(normalizeName(options.rawParentName))
+            : `{name}`
+        return `The ID of the ${parentName}.`
       },
       kind: [ts.SyntaxKind.PropertySignature],
     },
