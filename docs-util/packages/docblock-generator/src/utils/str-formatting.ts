@@ -78,4 +78,6 @@ export function normalizeName(str: string): string {
     .replace(/DTO$/, "")
     .replace(/^Filterable/, "")
     .replace(/Props$/, "")
+    .replace(/^I([A-Z])/, "$1")
+    .replace(/ModuleService$/, "")
 }

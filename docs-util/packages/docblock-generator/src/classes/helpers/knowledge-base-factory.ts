@@ -52,6 +52,7 @@ type RetrieveSymbolOptions = Omit<RetrieveOptions, "str"> & {
  * A class that holds common Medusa patterns and acts as a knowledge base for possible summaries/examples/general templates.
  */
 class KnowledgeBaseFactory {
+  private TYPE_PLACEHOLDER = `{type name}`
   private summaryKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "FindConfig",
@@ -64,7 +65,7 @@ class KnowledgeBaseFactory {
         const typeName =
           typeArgs.length > 0 && typeArgs[0].length > 0
             ? typeArgs[0]
-            : `{type name}`
+            : this.TYPE_PLACEHOLDER
         return `The configurations determining how the ${typeName} is retrieved. Its properties, such as \`select\` or \`relations\`, accept the ${DOCBLOCK_NEW_LINE}attributes or relations associated with a ${typeName}.`
       },
     },
@@ -95,7 +96,12 @@ class KnowledgeBaseFactory {
     },
     {
       startsWith: "RestoreReturn",
-      template: `Configurations determining which relations to restore along with each of the {type name}. You can pass to its \`returnLinkableKeys\` ${DOCBLOCK_NEW_LINE}property any of the {type name}'s relation attribute names, such as \`{type relation name}\`.`,
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `Configurations determining which relations to restore along with each of the ${this.TYPE_PLACEHOLDER}. You can pass to its \`returnLinkableKeys\` ${DOCBLOCK_NEW_LINE}property any of the ${this.TYPE_PLACEHOLDER}'s relation attribute names, such as \`{type relation name}\`.`,
+          options
+        )
+      },
     },
     {
       endsWith: "DTO",
@@ -148,63 +154,131 @@ class KnowledgeBaseFactory {
   private functionSummaryKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template:
-        "retrieves a paginated list of {return type} along with the total count of available {return type}(s) satisfying the provided filters.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER} along with the total count of available ${this.TYPE_PLACEHOLDER}(s) satisfying the provided filters.`,
+          options
+        )
+      },
     },
     {
       startsWith: "list",
-      template:
-        "retrieves a paginated list of {return type}(s) based on optional filters and configuration.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}(s) based on optional filters and configuration.`,
+          options
+        )
+      },
     },
     {
       startsWith: "retrieve",
-      template: "retrieves a {return type} by its ID.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `retrieves a ${this.TYPE_PLACEHOLDER} by its ID.`,
+          options
+        )
+      },
     },
     {
       startsWith: "create",
-      template: "creates {return type}(s)",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `creates ${this.TYPE_PLACEHOLDER}(s)`,
+          options
+        )
+      },
     },
     {
       startsWith: "delete",
-      template: "deletes {return type} by its ID.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `deletes ${this.TYPE_PLACEHOLDER} by its ID.`,
+          options
+        )
+      },
     },
     {
       startsWith: "update",
-      template: "updates existing {return type}(s).",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `updates existing ${this.TYPE_PLACEHOLDER}(s).`,
+          options
+        )
+      },
     },
     {
       startsWith: "softDelete",
-      template: "soft deletes {return type}(s) by their IDs.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `soft deletes ${this.TYPE_PLACEHOLDER}(s) by their IDs.`,
+          options
+        )
+      },
     },
     {
       startsWith: "restore",
-      template: "restores soft deleted {return type}(s) by their IDs.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `restores soft deleted ${this.TYPE_PLACEHOLDER}(s) by their IDs.`,
+          options
+        )
+      },
     },
   ]
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template: "The list of {return type}(s) along with their total count.",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The list of ${this.TYPE_PLACEHOLDER}(s) along with their total count.`,
+          options
+        )
+      },
     },
     {
       startsWith: "list",
-      template: "The list of {return type}(s).",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The list of ${this.TYPE_PLACEHOLDER}(s).`,
+          options
+        )
+      },
     },
     {
       startsWith: "retrieve",
-      template: "The retrieved {return type}(s).",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The retrieved ${this.TYPE_PLACEHOLDER}(s).`,
+          options
+        )
+      },
     },
     {
       startsWith: "create",
-      template: "The created {return type}(s).",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The created ${this.TYPE_PLACEHOLDER}(s).`,
+          options
+        )
+      },
     },
     {
       startsWith: "update",
-      template: "The updated {return type}(s).",
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `The updated ${this.TYPE_PLACEHOLDER}(s).`,
+          options
+        )
+      },
     },
     {
       startsWith: "restore",
-      template: `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the {type name} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
+      template: (_str, options) => {
+        return this.replaceTypePlaceholder(
+          `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
+          options
+        )
+      },
     },
   ]
   private oasDescriptionKnowledgeBase: KnowledgeBase[] = [
@@ -276,6 +350,24 @@ class KnowledgeBaseFactory {
     return typeof foundItem.template === "string"
       ? foundItem?.template
       : foundItem?.template(str, templateOptions)
+  }
+
+  /**
+   * This method replaces uses of {@link TYPE_PLACEHOLDER} with the normalized parent name, if provided.
+   *
+   * @param str - The string to normalize
+   * @param options - The template options
+   * @returns The normalized string
+   */
+  private replaceTypePlaceholder(
+    str: string,
+    options?: TemplateOptions
+  ): string {
+    const typeName = options?.rawParentName
+      ? camelToWords(normalizeName(options.rawParentName))
+      : this.TYPE_PLACEHOLDER
+
+    return str.replaceAll(this.TYPE_PLACEHOLDER, typeName)
   }
 
   /**

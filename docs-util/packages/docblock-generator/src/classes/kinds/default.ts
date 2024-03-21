@@ -136,6 +136,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     node,
     symbol,
     nodeType,
+    knowledgeBaseOptions: overrideOptions,
   }: {
     /**
      * The node to retrieve the summary comment for.
@@ -151,12 +152,20 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
      * will try to retrieve it.
      */
     nodeType?: ts.Type
+    /**
+     * Override any of the default knowledge base options
+     * inferred using the {@link getKnowledgeBaseOptions} method
+     */
+    knowledgeBaseOptions?: Partial<RetrieveOptions>
   }): string {
     const syntheticComments = ts.getSyntheticLeadingComments(node)
     if (syntheticComments?.length) {
       return syntheticComments.map((comment) => comment.text).join(" ")
     }
-    const knowledgeBaseOptions = this.getKnowledgeBaseOptions(node)
+    const knowledgeBaseOptions = {
+      ...this.getKnowledgeBaseOptions(node),
+      ...overrideOptions,
+    }
     if (!nodeType) {
       nodeType =
         "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)

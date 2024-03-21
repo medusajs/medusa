@@ -142,13 +142,21 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
    *
    * @param {FunctionNode} node - The node's function.
    * @param {ts.Symbol} symbol - The node's symbol. If provided, the method will try to retrieve the summary from the {@link KnowledgeBaseFactory}.
+   * @param {ts.Symbol} parentSymbol - The node's parent symbol. This is useful to pass along the parent name to the knowledge base.
    * @returns {string} The function's summary comment.
    */
-  getFunctionSummary(node: FunctionNode, symbol?: ts.Symbol): string {
+  getFunctionSummary(
+    node: FunctionNode,
+    symbol?: ts.Symbol,
+    parentSymbol?: ts.Symbol
+  ): string {
     return symbol
       ? this.knowledgeBaseFactory.tryToGetFunctionSummary({
           symbol: symbol,
           kind: node.kind,
+          templateOptions: {
+            rawParentName: parentSymbol?.getName(),
+          },
         }) || this.getNodeSummary({ node, symbol })
       : this.getNodeSummary({ node, symbol })
   }
@@ -251,6 +259,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     }
 
     const nodeSymbol = getSymbol(node, this.checker)
+    const nodeParentSymbol = getSymbol(node.parent, this.checker)
 
     let str = DOCBLOCK_START
 
@@ -258,12 +267,16 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     str += `${
       options.summaryPrefix ||
       (this.isMethod(actualNode) ? `This method` : `This function`)
-    } ${this.getFunctionSummary(actualNode, nodeSymbol)}${DOCBLOCK_NEW_LINE}`
+    } ${this.getFunctionSummary(
+      actualNode,
+      nodeSymbol,
+      nodeParentSymbol
+    )}${DOCBLOCK_NEW_LINE}`
 
-    for (const parameterNode of actualNode.parameters) {
+    actualNode.parameters.map((parameterNode) => {
       const symbol = getSymbol(parameterNode, this.checker)
       if (!symbol) {
-        continue
+        return
       }
 
       const symbolType = this.checker.getTypeOfSymbolAtLocation(
@@ -276,12 +289,17 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
         node: parameterNode,
         symbol,
         nodeType: symbolType,
+        knowledgeBaseOptions: {
+          templateOptions: {
+            rawParentName: nodeParentSymbol?.getName(),
+          },
+        },
       })
 
       str += `${DOCBLOCK_NEW_LINE}@param {${this.checker.typeToString(
         symbolType
       )}} ${parameterName} - ${parameterSummary}`
-    }
+    })
 
     // add returns
     const nodeType = this.getReturnType(actualNode)
@@ -298,6 +316,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
         ? this.knowledgeBaseFactory.tryToGetFunctionReturns({
             symbol: nodeSymbol,
             kind: actualNode.kind,
+            templateOptions: {
+              rawParentName: nodeParentSymbol?.getName(),
+            },
           }) || possibleReturnSummary
         : possibleReturnSummary
     }`
@@ -331,7 +352,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     const comments = this.getNodeCommentsFromRange(node)
 
     return (
-      comments?.includes(FunctionKindGenerator.EXAMPLE_PLACEHOLDER) || false
+      !comments ||
+      comments?.includes(FunctionKindGenerator.EXAMPLE_PLACEHOLDER) ||
+      false
     )
   }
 }
