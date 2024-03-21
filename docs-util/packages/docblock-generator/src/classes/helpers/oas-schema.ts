@@ -10,7 +10,7 @@ import formatOas from "../../utils/format-oas.js"
 import pluralize from "pluralize"
 import { wordsToPascal } from "../../utils/str-formatting.js"
 
-type ParsedSchema = {
+export type ParsedSchema = {
   schema: OpenApiSchema
   schemaPrefix: string
 }

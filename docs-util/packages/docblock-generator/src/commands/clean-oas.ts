@@ -15,7 +15,8 @@ import GeneratorEventManager from "../classes/helpers/generator-event-manager.js
 import { parse, stringify } from "yaml"
 import OasSchemaHelper from "../classes/helpers/oas-schema.js"
 import { DEFAULT_OAS_RESPONSES } from "../constants.js"
-import { OpenApiDocument } from "../types/index.js"
+import { OpenApiDocument, OpenApiSchema } from "../types/index.js"
+import { OpenAPIV3 } from "openapi-types"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
 
@@ -243,16 +244,30 @@ export default async function () {
       allSchemas.add(parsedSchema.schema["x-schemaName"])
     }
 
-    // collect referenced schemas
-    if (parsedSchema.schema.properties) {
-      Object.values(parsedSchema.schema.properties).forEach((property) => {
-        if (oasSchemaHelper.isRefObject(property)) {
+    const findReferencedSchemas = (schema: OpenApiSchema) => {
+      const testSchema = (
+        nestedSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+      ) => {
+        if (oasSchemaHelper.isRefObject(nestedSchema)) {
           referencedSchemas.add(
-            oasSchemaHelper.normalizeSchemaName(property.$ref)
+            oasSchemaHelper.normalizeSchemaName(nestedSchema.$ref)
           )
+        } else {
+          findReferencedSchemas(nestedSchema)
         }
-      })
+      }
+
+      if (schema.properties) {
+        Object.values(schema.properties).forEach(testSchema)
+      } else if (schema.oneOf || schema.allOf || schema.anyOf) {
+        Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
+          testSchema
+        )
+      }
     }
+
+    // collect referenced schemas
+    findReferencedSchemas(parsedSchema.schema)
   })
 
   // clean up schemas
