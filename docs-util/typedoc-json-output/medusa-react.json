@@ -34531,6 +34531,12 @@
 																									"tag": "@inheritDoc",
 																									"text": "RequestQueryFields.expand"
 																								}
+																							],
+																							"blockTags": [
+																								{
+																									"tag": "@deprecated",
+																									"content": []
+																								}
 																							]
 																						},
 																						"type": {
@@ -97449,6 +97455,12 @@
 																			"kind": "inline-tag",
 																			"tag": "@inheritDoc",
 																			"text": "RequestQueryFields.expand"
+																		}
+																	],
+																	"blockTags": [
+																		{
+																			"tag": "@deprecated",
+																			"content": []
 																		}
 																	]
 																},

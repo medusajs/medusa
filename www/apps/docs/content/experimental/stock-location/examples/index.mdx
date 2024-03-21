@@ -42,7 +42,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   import {
     initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location"
+  } from "@medusajs/stock-location-next"
 
   export async function POST(request: Request) {
     const stockLocationModuleService =
@@ -95,7 +95,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   import {
     initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location"
+  } from "@medusajs/stock-location-next"
 
   export async function GET(request: Request) {
     const stockLocationModuleService =
@@ -130,8 +130,8 @@ In this document, you’ll find common examples of how you can use the Stock Loc
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
     const stockLocation = await stockLocationModuleService.update(
-      request.params.id,
       {
+        id: request.params.id,
         address: {
           country_code: request.body.country_code,
           city: request.body.city,
@@ -155,7 +155,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   import {
     initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location"
+  } from "@medusajs/stock-location-next"
 
   type ContextType = {
     params: {
@@ -172,8 +172,8 @@ In this document, you’ll find common examples of how you can use the Stock Loc
     const body = await request.json()
 
     const stockLocation = await stockLocationModuleService.update(
-      params.id,
       {
+        id: params.id,
         address: {
           country_code: body.country_code,
           city: body.city,
@@ -225,7 +225,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   import {
     initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location"
+  } from "@medusajs/stock-location-next"
 
   type ContextType = {
     params: {

@@ -3824,6 +3824,110 @@
 			"children": [
 				{
 					"id": 208,
+					"name": "workflowId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the workflow."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 209,
+					"name": "attempt",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The attempt number of the step."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 210,
+					"name": "idempotencyKey",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The idempoency key of the step."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 211,
+					"name": "stepName",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the step."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 212,
+					"name": "action",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The action of the step."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "invoke"
+							},
+							{
+								"type": "literal",
+								"value": "compensate"
+							}
+						]
+					}
+				},
+				{
+					"id": 213,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3847,7 +3951,7 @@
 					}
 				},
 				{
-					"id": 209,
+					"id": 214,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3871,7 +3975,7 @@
 					}
 				},
 				{
-					"id": 210,
+					"id": 215,
 					"name": "context",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3902,13 +4006,18 @@
 					"children": [
 						208,
 						209,
-						210
+						210,
+						211,
+						212,
+						213,
+						214,
+						215
 					]
 				}
 			]
 		},
 		{
-			"id": 211,
+			"id": 216,
 			"name": "WorkflowTransactionContext",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -3935,14 +4044,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 212,
+							"id": 217,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 213,
+									"id": 218,
 									"name": "invoke",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3950,20 +4059,20 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 214,
+											"id": 219,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"indexSignature": {
-												"id": 215,
+												"id": 220,
 												"name": "__index",
 												"variant": "signature",
 												"kind": 8192,
 												"flags": {},
 												"parameters": [
 													{
-														"id": 216,
+														"id": 221,
 														"name": "key",
 														"variant": "param",
 														"kind": 32768,
@@ -3977,14 +4086,14 @@
 												"type": {
 													"type": "reflection",
 													"declaration": {
-														"id": 217,
+														"id": 222,
 														"name": "__type",
 														"variant": "declaration",
 														"kind": 65536,
 														"flags": {},
 														"children": [
 															{
-																"id": 218,
+																"id": 223,
 																"name": "output",
 																"variant": "declaration",
 																"kind": 1024,
@@ -3999,7 +4108,7 @@
 															{
 																"title": "Properties",
 																"children": [
-																	218
+																	223
 																]
 															}
 														]
@@ -4014,7 +4123,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										213
+										218
 									]
 								}
 							]
@@ -4047,7 +4156,7 @@
 				168,
 				173,
 				181,
-				211
+				216
 			]
 		},
 		{
@@ -4608,41 +4717,61 @@
 		},
 		"208": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.container"
+			"qualifiedName": "StepExecutionContext.workflowId"
 		},
 		"209": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.metadata"
+			"qualifiedName": "StepExecutionContext.attempt"
 		},
 		"210": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.context"
+			"qualifiedName": "StepExecutionContext.idempotencyKey"
 		},
 		"211": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "WorkflowTransactionContext"
+			"qualifiedName": "StepExecutionContext.stepName"
 		},
 		"212": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.action"
 		},
 		"213": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.invoke"
+			"qualifiedName": "StepExecutionContext.container"
 		},
 		"214": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.metadata"
 		},
 		"215": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.__index"
+			"qualifiedName": "StepExecutionContext.context"
+		},
+		"216": {
+			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "WorkflowTransactionContext"
 		},
 		"217": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "__type"
 		},
 		"218": {
+			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.invoke"
+		},
+		"219": {
+			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"220": {
+			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"222": {
+			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"223": {
 			"sourceFileName": "../../../packages/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "__type.output"
 		}

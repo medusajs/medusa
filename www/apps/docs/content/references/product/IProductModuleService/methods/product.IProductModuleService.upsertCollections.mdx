@@ -21,10 +21,10 @@ import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
-async function upserCollections (title: string) {
+async function upsertCollections (title: string) {
   const productModule = await initializeProductModule()
 
-  const createdCollections = await productModule.upsert([
+  const createdCollections = await productModule.upsertCollections([
     {
       title
     }
@@ -53,10 +53,10 @@ import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
-async function upserCollection (title: string) {
+async function upsertCollection (title: string) {
   const productModule = await initializeProductModule()
 
-  const createdCollection = await productModule.upsert(
+  const createdCollection = await productModule.upsertCollection(
     {
       title
     }

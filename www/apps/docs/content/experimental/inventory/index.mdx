@@ -3,7 +3,13 @@ import TabItem from "@theme/TabItem"
 
 # Inventory Module
 
-The Inventory Module is the `@medusajs/inventory` NPM package that provides inventory-related features in your Medusa and Node.js applications.
+The Inventory Module is the `@medusajs/inventory-next` NPM package that provides inventory-related features in your Medusa and Node.js applications.
+
+<Note>
+
+This module is an updated version of the [Inventory Module part of the multi-warehouse feature](../../modules/multiwarehouse/inventory-module.md). In Medusa V2, the previous version of the module will no longer be in use.
+
+</Note>
 
 ## Features
 
@@ -15,7 +21,7 @@ Inventory items hold details of the underlying stock-kept item, as well as inven
 
 ```ts
 const inventoryItem =
-  await inventoryModuleService.createInventoryItem({
+  await inventoryModuleService.create({
     sku: "SHIRT",
     title: "Green Medusa Shirt",
     requires_shipping: true,
@@ -28,11 +34,11 @@ Inventory items' quantities are set per locations through inventory levels. This
 
 ```ts
 const inventoryLevel =
-  await inventoryModuleService.createInventoryLevel({
+  await inventoryModuleService.createInventoryLevels([{
     inventory_item_id: "iitem_123",
     location_id: "sloc_123",
     stocked_quantity: 20,
-  })
+  }])
 ```
 
 ### Reservation Management
@@ -41,11 +47,11 @@ Reserve quantities of inventory items at specific locations for orders or other 
 
 ```ts
 const reservationItem =
-  await inventoryModuleService.createReservationItem({
+  await inventoryModuleService.createReservationItems([{
     inventory_item_id: "iitem_123",
     location_id: "sloc_123",
     quantity: 10,
-  })
+  }])
 ```
 
 ### Check Inventory Availability
@@ -56,7 +62,7 @@ Check whether an inventory item has the necessary quantity for purchase. Any res
 const isAvailable =
   await inventoryModuleService.confirmInventory(
     inventoryItemId,
-    locationId,
+    [locationId],
     neededQuantity
   )
 ```
@@ -88,7 +94,7 @@ For example:
 
     response.json({
       inventory_items:
-        await inventoryModuleService.listInventoryItems({}),
+        await inventoryModuleService.list({}),
     })
   }
   ```
@@ -110,7 +116,7 @@ For example:
       container.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+      await inventoryModuleService.list({})
   }
   ```
 
@@ -129,7 +135,7 @@ For example:
       context.container.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+      await inventoryModuleService.list({})
   })
   ```
 

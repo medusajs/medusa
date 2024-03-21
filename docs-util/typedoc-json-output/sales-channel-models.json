@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"id": 15,
+					"id": 16,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125,6 +125,42 @@
 				},
 				{
 					"id": 9,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 10,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -140,7 +176,7 @@
 					}
 				},
 				{
-					"id": 10,
+					"id": 11,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -166,14 +202,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11,
+					"id": 12,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12,
+							"id": 13,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -186,14 +222,14 @@
 					]
 				},
 				{
-					"id": 13,
+					"id": 14,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 14,
+							"id": 15,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -216,21 +252,22 @@
 				{
 					"title": "Properties",
 					"children": [
-						15,
+						16,
 						4,
 						5,
 						6,
 						7,
 						8,
 						9,
-						10
+						10,
+						11
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						11,
-						13
+						12,
+						14
 					]
 				}
 			]
@@ -276,15 +313,15 @@
 		},
 		"9": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.metadata"
 		},
 		"10": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default.updated_at"
 		},
 		"11": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.deleted_at"
 		},
 		"12": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
@@ -292,13 +329,17 @@
 		},
 		"13": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.onCreate"
 		},
 		"14": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"15": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"16": {
 			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}

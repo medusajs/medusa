@@ -3,9 +3,15 @@ import TabItem from "@theme/TabItem"
 
 # Stock Location Module
 
-The Stock Location Module is the `@medusajs/stock-location` NPM package that provides stock-location-related features in your Medusa and Node.js applications.
+The Stock Location Module is the `@medusajs/stock-location-next` NPM package that provides stock-location-related features in your Medusa and Node.js applications.
 
 It's mainly useful with the [Inventory Module](../inventory/index.mdx).
+
+<Note>
+
+This module is an updated version of the [Stock Location Module part of the multi-warehouse feature](../../modules/multiwarehouse/stock-location-module.md). In Medusa V2, the previous version of the module will no longer be in use.
+
+</Note>
 
 ## Features
 
@@ -27,8 +33,8 @@ A stock location can have detailed address details.
 
 ```ts
 const stockLocation = await stockLocationModuleService.update(
-  "sloc_123",
   {
+    id: "sloc_123",
     address: {
       country_code: "US",
       city: "New York City",

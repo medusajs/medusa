@@ -62,11 +62,13 @@ module.exports = {
     "api-key",
     "customer",
     "inventory",
+    "inventory-next",
     "pricing",
     "product",
     "promotion",
     "sales-channel",
     "stock-location",
+    "stock-location-next",
     "store",
     "workflows",
   ],
@@ -398,6 +400,73 @@ npx medusa develop
       frontmatterData: {
         displayed_sidebar: "inventoryModelReference",
         slug: "/references/inventory/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Inventory Module Data Models Reference",
+      },
+    },
+
+    // INVENTORY NEXT CONFIG
+    "^inventory_next": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+      },
+    },
+    "^inventory_next/IInventoryServiceNext/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Inventory Module.",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+        slug: "/references/inventory-next/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Reference",
+      },
+    },
+    "^inventory_next/.*IInventoryServiceNext\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IInventoryServiceNext` interface’s methods. This is the interface developers use to use the functionalities provided by the Inventory Module.",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+        slug: "/references/inventory-next",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // INVENTORY NEXT MODELS CONFIG
+    "^inventory_next_models": {
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextModelReference",
+        slug: "/references/inventory-next/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Inventory Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/inventory_next_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Inventory Module",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextModelReference",
+        slug: "/references/inventory-next/models",
       },
       reflectionTitle: {
         fullReplacement: "Inventory Module Data Models Reference",
@@ -1099,13 +1168,13 @@ npx medusa develop
     },
 
     // STOCK LOCATION CONFIG
-    "^stock-location": {
+    "^stock_location": {
       ...modulesOptions,
       frontmatterData: {
         displayed_sidebar: "stockLocationReference",
       },
     },
-    "^stock-location/IStockLocationService/methods": {
+    "^stock_location/IStockLocationService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
       frontmatterData: {
@@ -1119,7 +1188,7 @@ npx medusa develop
         suffix: "- Stock Location Module Reference",
       },
     },
-    "^stock-location/.*IStockLocationService\\.md": {
+    "^stock_location/.*IStockLocationService\\.md": {
       reflectionDescription:
         "This section of the documentation provides a reference to the `IStockLocationService` interface’s methods. This is the interface developers use to use the functionalities provided by the Stock Location Module.",
       frontmatterData: {
@@ -1159,6 +1228,73 @@ npx medusa develop
       frontmatterData: {
         displayed_sidebar: "stockLocationModelReference",
         slug: "/references/stock-location/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Stock Location Module Data Models Reference",
+      },
+    },
+
+    // STOCK LOCATION NEXT CONFIG
+    "^stock_location_next": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+      },
+    },
+    "^stock-location/IStockLocationServiceNext/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+        slug: "/references/stock-location-next/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Reference",
+      },
+    },
+    "^stock_location_next/.*IStockLocationServiceNext\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IStockLocationServiceNext` interface’s methods. This is the interface developers use to use the functionalities provided by the Stock Location Module.",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+        slug: "/references/stock-location-next",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // STOCK LOCATION NEXT MODELS CONFIG
+    "^stock_location_next_models": {
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextModelReference",
+        slug: "/references/stock-location-next/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Stock Location Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/stock_location_next_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Stock Location Module",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextModelReference",
+        slug: "/references/stock-location-next/models",
       },
       reflectionTitle: {
         fullReplacement: "Stock Location Module Data Models Reference",

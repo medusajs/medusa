@@ -23,7 +23,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItem =
-      await inventoryModuleService.createInventoryItem({
+      await inventoryModuleService.create({
         sku: request.body.sku,
         title: request.body.title,
         requires_shipping: request.body.requires_shipping,
@@ -41,7 +41,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function POST(request: Request) {
     const inventoryModuleService =
@@ -49,7 +49,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const body = await request.json()
 
     const inventoryItem =
-      await inventoryModuleService.createInventoryItem({
+      await inventoryModuleService.create({
         sku: body.sku,
         title: body.title,
         requires_shipping: body.requires_shipping,
@@ -82,7 +82,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+      await inventoryModuleService.list({})
 
     response.json({ inventory_items: inventoryItems })
   }
@@ -96,14 +96,14 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function GET(request: Request) {
     const inventoryModuleService =
       await initializeInventoryModule({})
 
     const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+      await inventoryModuleService.list({})
 
     return NextResponse.json({ inventory_items: inventoryItems })
   }
@@ -132,7 +132,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItem =
-      await inventoryModuleService.retrieveInventoryItem(
+      await inventoryModuleService.retrieve(
         request.params.id
       )
 
@@ -148,7 +148,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   type ContextType = {
     params: {
@@ -164,7 +164,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       await initializeInventoryModule({})
 
     const inventoryItem =
-      await inventoryModuleService.retrieveInventoryItem(
+      await inventoryModuleService.retrieve(
         params.id
       )
 
@@ -195,7 +195,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryLevel =
-      await inventoryModuleService.createInventoryLevel({
+      await inventoryModuleService.createInventoryLevels({
         inventory_item_id: request.body.inventory_item_id,
         location_id: request.body.location_id,
         stocked_quantity: request.body.quantity,
@@ -213,7 +213,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function POST(request: Request) {
     const inventoryModuleService =
@@ -221,7 +221,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const body = await request.json()
 
     const inventoryLevel =
-      await inventoryModuleService.createInventoryLevel({
+      await inventoryModuleService.createInventoryLevels({
         inventory_item_id: body.inventory_item_id,
         location_id: body.location_id,
         stocked_quantity: body.quantity,
@@ -272,7 +272,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function POST(request: Request) {
     const inventoryModuleService =
@@ -330,7 +330,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function POST(request: Request) {
     const inventoryModuleService =
@@ -370,7 +370,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const reservationItem =
-      await inventoryModuleService.createReservationItem({
+      await inventoryModuleService.createReservationItems({
         inventory_item_id: request.body.inventory_item_id,
         location_id: request.body.location_id,
         quantity: request.body.reserved_quantity,
@@ -388,7 +388,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   export async function POST(request: Request) {
     const inventoryModuleService =
@@ -396,7 +396,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const body = await request.json()
 
     const reservationItem =
-      await inventoryModuleService.createReservationItem({
+      await inventoryModuleService.createReservationItems({
         inventory_item_id: body.inventory_item_id,
         location_id: body.location_id,
         quantity: body.reserved_quantity,
@@ -462,7 +462,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   type ContextType = {
     params: {
@@ -524,7 +524,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
-    await inventoryModuleService.deleteReservationItem([
+    await inventoryModuleService.deleteReservationItems([
       request.params.reservation_id,
     ])
 
@@ -538,7 +538,7 @@ In this document, you’ll find common examples of how you can use the Inventory
   ```ts
   import {
     initialize as initializeInventoryModule,
-  } from "@medusajs/inventory"
+  } from "@medusajs/inventory-next"
 
   type ContextType = {
     params: {
@@ -553,7 +553,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const inventoryModuleService =
       await initializeInventoryModule({})
 
-    await inventoryModuleService.deleteReservationItem([
+    await inventoryModuleService.deleteReservationItems([
       params.reservation_id,
     ])
   }
@@ -566,4 +566,4 @@ In this document, you’ll find common examples of how you can use the Inventory
 
 ## More Examples
 
-The [module interface reference](../../../references/inventory/interfaces/inventory.IInventoryService.mdx) provides a reference to all the methods available for use with examples for each.
+The [module interface reference](../../../references/inventory_next/interfaces/inventory_next.IInventoryServiceNext.mdx) provides a reference to all the methods available for use with examples for each.
