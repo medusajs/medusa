@@ -82,26 +82,31 @@ class KnowledgeBaseFactory {
     {
       startsWith: "Create",
       endsWith: "DTO",
-      template: (str) => {
-        return `The ${camelToWords(normalizeName(str))} to be created.`
+      template: (str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+        return `The ${camelToWords(normalizeName(str))}${
+          isPlural ? "s" : ""
+        } to be created.`
       },
     },
     {
       startsWith: "Update",
       endsWith: "DTO",
-      template: (str) => {
+      template: (str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return `The attributes to update in the ${camelToWords(
           normalizeName(str)
-        )}.`
+        )}${isPlural ? "s" : ""}.`
       },
     },
     {
       startsWith: "Upsert",
       endsWith: "DTO",
-      template: (str) => {
-        return `The attributes in the ${camelToWords(
-          normalizeName(str)
-        )} to create or update.`
+      template: (str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+        return `The attributes in the ${camelToWords(normalizeName(str))}${
+          isPlural ? "s" : ""
+        } ${isPlural ? "that are" : "that's"} created or updated.`
       },
     },
     {
@@ -115,8 +120,11 @@ class KnowledgeBaseFactory {
     },
     {
       endsWith: "DTO",
-      template: (str: string): string => {
-        return `The ${camelToWords(normalizeName(str))} details.`
+      template: (str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+        return `The ${camelToWords(normalizeName(str))}${
+          isPlural ? "s" : ""
+        } details.`
       },
     },
     {
@@ -437,7 +445,6 @@ class KnowledgeBaseFactory {
    * @returns Whether the type is handled as a plural.
    */
   private isTypePlural(str: string | undefined): boolean {
-    console.log(str)
     return str?.endsWith("[]") || false
   }
 

@@ -315,6 +315,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
         knowledgeBaseOptions: {
           templateOptions: {
             rawParentName: nodeParentSymbol?.getName(),
+            pluralIndicatorStr: this.checker.typeToString(symbolType),
           },
         },
       })
