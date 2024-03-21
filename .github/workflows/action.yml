@@ -34,7 +34,7 @@ jobs:
       - id: set-test-chunks
         name: Set Chunks
         working-directory: integration-tests/modules
-        run: echo "::set-output name=test-chunks::$(jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')"
+        run: echo "::save-state name={name}::{$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')}"
 
       - id: set-test-chunk-ids
         name: Set Chunk IDs
