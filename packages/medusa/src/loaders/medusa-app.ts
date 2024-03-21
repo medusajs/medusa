@@ -8,15 +8,15 @@ import {
 import {
   ContainerRegistrationKeys,
   FlagRouter,
-  MedusaV2Flag,
   isObject,
+  MedusaV2Flag,
 } from "@medusajs/utils"
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
   MedusaAppMigrateUp,
   MedusaAppOutput,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -71,7 +71,7 @@ export async function migrateMedusaApp(
         injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
           ?.config?.connection?.connectionString ??
         configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -136,7 +136,7 @@ export const loadMedusaApp = async (
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -168,6 +168,7 @@ export const loadMedusaApp = async (
   }
 
   const medusaApp = await MedusaApp({
+    workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
@@ -261,7 +262,7 @@ export async function runModulesLoader({
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
