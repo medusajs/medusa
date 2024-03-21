@@ -32,12 +32,11 @@ jobs:
           extension: pipeline
 
       - id: set-test-chunks
-        uses: actions/checkout@v3
         name: Set Chunks
-        working-directory: ./integration-tests/modules
+        working-directory: integration-tests/modules
         run: echo "::set-output name=test-chunks::$(jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')"
+
       - id: set-test-chunk-ids
-        uses: actions/checkout@v3
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
         env:
