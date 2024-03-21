@@ -130,6 +130,7 @@ moduleIntegrationTestRunner({
                 price_set: {
                   id: "price-set-1",
                 },
+                price_set_id: "price-set-1",
               },
             ])
           })
@@ -283,8 +284,8 @@ moduleIntegrationTestRunner({
             const psma: PriceSetMoneyAmount = testManager.create(
               PriceSetMoneyAmount,
               {
-                price_set: "price-set-1",
-                money_amount: ma.id,
+                price_set_id: "price-set-1",
+                money_amount_id: ma.id,
                 title: "test",
                 rules_count: 0,
               }

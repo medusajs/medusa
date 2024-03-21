@@ -23,7 +23,7 @@ export async function createPriceSets(
     for (let moneyAmount of moneyAmountsData) {
       const psma = manager.create(PriceSetMoneyAmount, {
         price_set: priceSet,
-        money_amount: moneyAmount.id,
+        money_amount_id: moneyAmount.id,
         title: "test",
       })
 
