@@ -8,6 +8,9 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    outputs:
+      test-chunks: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
+      test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,19 +31,13 @@ jobs:
         with:
           extension: pipeline
 
-  setup-chunks:
-    runs-on: ubuntu-latest
-    needs: setup
-    outputs:
-      test-chunks: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
-      test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
-    steps:
-      - uses: actions/checkout@v2
       - id: set-test-chunks
+        uses: actions/checkout@v3
         name: Set Chunks
         working-directory: ./integration-tests/modules
         run: echo "::set-output name=test-chunks::$(jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')"
       - id: set-test-chunk-ids
+        uses: actions/checkout@v3
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
         env:
@@ -259,11 +256,11 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-modules:
-    needs: setup-chunks
+    needs: setup
     name: Run Module Integration Tests (chunk ${{ matrix.chunk }})
     strategy:
       matrix:
-        chunk: ${{ fromJson(needs.setup-chunks.outputs['test-chunk-ids']) }}
+        chunk: ${{ fromJson(needs.setup.outputs['test-chunk-ids']) }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
