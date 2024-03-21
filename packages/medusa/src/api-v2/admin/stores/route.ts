@@ -1,6 +1,6 @@
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { defaultAdminStoreFields } from "./query-config"

@@ -1,7 +1,7 @@
 import {
-  StepResponse,
   createStep,
   createWorkflow,
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 
 const step_1 = createStep(
@@ -15,22 +15,20 @@ const step_1 = createStep(
       return
     }
 
-    console.log("reverted", compensateInput.compensate)
     return new StepResponse({
       reverted: true,
     })
   })
 )
 
+export const workflow2Step2Invoke = jest.fn((input, context) => {
+  if (input) {
+    return new StepResponse({ notAsyncResponse: input.hey })
+  }
+})
 const step_2 = createStep(
   "step_2",
-  jest.fn((input, context) => {
-    console.log("triggered async request", context.metadata.idempotency_key)
-
-    if (input) {
-      return new StepResponse({ notAsyncResponse: input.hey })
-    }
-  }),
+  workflow2Step2Invoke,
   jest.fn((_, context) => {
     return new StepResponse({
       step: context.metadata.action,
@@ -40,16 +38,14 @@ const step_2 = createStep(
   })
 )
 
-const step_3 = createStep(
-  "step_3",
-  jest.fn((res) => {
-    return new StepResponse({
-      done: {
-        inputFromSyncStep: res.notAsyncResponse,
-      },
-    })
+export const workflow2Step3Invoke = jest.fn((res) => {
+  return new StepResponse({
+    done: {
+      inputFromSyncStep: res.notAsyncResponse,
+    },
   })
-)
+})
+const step_3 = createStep("step_3", workflow2Step3Invoke)
 
 createWorkflow(
   {
@@ -59,13 +55,13 @@ createWorkflow(
   function (input) {
     step_1(input)
 
-    const ret2 = step_2({ hey: "oh" })
+    step_2({ hey: "oh" })
 
-    step_2({ hey: "async hello" }).config({
+    const ret2_async = step_2({ hey: "async hello" }).config({
       name: "new_step_name",
       async: true,
     })
 
-    return step_3(ret2)
+    return step_3(ret2_async)
   }
 )

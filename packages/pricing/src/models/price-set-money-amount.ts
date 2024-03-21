@@ -1,3 +1,9 @@
+import { DAL } from "@medusajs/types"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -5,68 +11,102 @@ import {
   Entity,
   Filter,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   OptionalProps,
   PrimaryKey,
-  PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-
 import MoneyAmount from "./money-amount"
 import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
-import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
 
-@Entity()
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
+
+const tableName = "price_set_money_amount"
+const PriceSetMoneyAmountDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const PriceSetMoneyAmountPriceSetIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "price_set_id",
+  where: "deleted_at IS NULL",
+})
+
+const PriceSetMoneyAmountMoneyAmountIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "money_amount_id",
+  where: "deleted_at IS NULL",
+})
+
+const PriceSetMoneyAmountPriceListIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "price_list_id",
+  where: "deleted_at IS NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceSetMoneyAmount {
-  [OptionalProps]?: "created_at" | "updated_at" | "deleted_at"
+  [OptionalProps]?: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text" })
-  title!: string
+  @Property({ columnType: "text", nullable: true })
+  title: string | null = null
 
+  @PriceSetMoneyAmountPriceSetIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceSet, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "price_set_id",
     onDelete: "cascade",
-    index: "IDX_price_set_money_amount_price_set_id",
   })
-  price_set: PriceSet
+  price_set_id: string
 
+  @ManyToOne(() => PriceSet, { persist: false })
+  price_set?: PriceSet
+
+  @PriceSetMoneyAmountMoneyAmountIdIndex.MikroORMIndex()
   @OneToOne(() => MoneyAmount, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "money_amount_id",
     onDelete: "cascade",
-    index: "IDX_price_set_money_amount_money_amount_id",
   })
-  money_amount: MoneyAmount
+  money_amount_id: string
+
+  @OneToOne(() => MoneyAmount, { persist: false })
+  money_amount?: MoneyAmount
 
   @Property({ columnType: "integer", default: 0 })
-  rules_count: number
+  rules_count: number = 0
 
   @OneToMany({
     entity: () => PriceRule,
     mappedBy: (pr) => pr.price_set_money_amount,
-    cascade: ["soft-remove"] as any,
+    cascade: ["soft-remove" as Cascade],
   })
   price_rules = new Collection<PriceRule>(this)
 
-  @OneToMany({
-    entity: () => PriceSetMoneyAmountRules,
-    mappedBy: (psmar) => psmar.price_set_money_amount,
-  })
-  price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
-
+  @PriceSetMoneyAmountPriceListIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceList, {
-    index: "IDX_price_rule_price_list_id",
-    onDelete: "cascade",
-    cascade: [Cascade.REMOVE, "soft-remove"] as any,
+    columnType: "text",
+    mapToPk: true,
     nullable: true,
+    fieldName: "price_list_id",
+    onDelete: "cascade",
   })
-  price_list: PriceList | null
+  price_list_id: string
+
+  @ManyToOne(() => PriceList, { persist: false, nullable: true })
+  price_list?: PriceList
 
   @Property({
     onCreate: () => new Date(),
@@ -83,12 +123,9 @@ export default class PriceSetMoneyAmount {
   })
   updated_at: Date
 
-  @Property({
-    columnType: "timestamptz",
-    nullable: true,
-    index: "IDX_price_set_money_amount_deleted_at",
-  })
-  deleted_at: Date | null
+  @PriceSetMoneyAmountDeletedAtIndex.MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
@@ -98,12 +135,5 @@ export default class PriceSetMoneyAmount {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "psma")
-  }
-
-  [PrimaryKeyType]?: [string, string]
-
-  constructor(money_amount: MoneyAmount, price_set: PriceSet) {
-    this.money_amount = money_amount
-    this.price_set = price_set
   }
 }

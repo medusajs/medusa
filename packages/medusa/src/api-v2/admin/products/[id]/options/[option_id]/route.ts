@@ -7,9 +7,9 @@ import {
   updateProductOptionsWorkflow,
 } from "@medusajs/core-flows"
 
-import { UpdateProductDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { UpdateProductOptionDTO } from "../../../../../../../../types/dist"
+import { refetchProduct, remapProduct } from "../../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -25,7 +25,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product_option",
     variables,
-    fields: req.retrieveConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [product_option] = await remoteQuery(queryObject)
@@ -51,7 +51,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_option: result[0] })
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }
 
 export const DELETE = async (
@@ -71,9 +76,16 @@ export const DELETE = async (
     throw errors[0].error
   }
 
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
     id: optionId,
     object: "product_option",
     deleted: true,
+    parent: product,
   })
 }
