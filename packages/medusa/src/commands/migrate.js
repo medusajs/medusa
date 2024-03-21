@@ -101,11 +101,13 @@ const main = async function ({ directory }) {
 
     Logger.info("Migrations completed.")
   } else if (args[0] === "revert") {
+    const dataSource = await getDataSource(directory)
     await dataSource.undoLastMigration({ transaction: "all" })
     await dataSource.destroy()
     await revertIsolatedModulesMigration(configModule)
     Logger.info("Migrations reverted.")
   } else if (args[0] === "show") {
+    const dataSource = await getDataSource(directory)
     const unapplied = await dataSource.showMigrations()
     Logger.info(unapplied)
     await dataSource.destroy()
