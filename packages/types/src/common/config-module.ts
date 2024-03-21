@@ -356,6 +356,41 @@ export type ProjectConfigOptions = {
   }
 
   /**
+   * An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
+   * `ssl` which enables support for TLS/SSL connections.
+   *
+   * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
+   * During development, it’s recommended not to pass this option.
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     database_driver_options:
+   *       process.env.NODE_ENV !== "development"
+   *         ? { connection: { ssl: { rejectUnauthorized: false } } }
+   *         : {},
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  database_driver_options?: Record<string, unknown> & {
+    connection?: {
+      /**
+       * Configure support for TLS/SSL connection
+       */
+      ssl?: {
+        /**
+         * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
+         */
+        rejectUnauthorized?: false
+      }
+    }
+  }
+
+  /**
    * Used to specify the URL to connect to Redis. This is only used for scheduled jobs. If you omit this configuration, scheduled jobs won't work.
    *
    * :::note
