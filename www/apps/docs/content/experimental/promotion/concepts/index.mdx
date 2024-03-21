@@ -76,6 +76,8 @@ A promotion can be restricted by a set of rules, each rule is represented by the
 
 A `PromotionRule`'s `attribute` field indicates the attribute's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
 
+When testing whether a promotion can be applied to a cart, the rule's `attribute` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
+
 ### Flexible Rules
 
 The `PromotionRule`'s `operator` field adds more flexibility to the rule’s condition rather than simple equality (`eq`).
