@@ -158,6 +158,7 @@ jobs:
     name: Shard (${{ matrix.chunk }}) API Integration Tests
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         chunk: ${{ fromJSON(needs.setup.outputs.api-matrix) }}
     env:
