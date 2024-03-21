@@ -100,6 +100,15 @@ class KnowledgeBaseFactory {
       },
     },
     {
+      endsWith: "UpdatableFields",
+      template: (str, options) => {
+        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+        return `The attributes to update in the ${camelToWords(
+          normalizeName(str)
+        )}${isPlural ? "s" : ""}.`
+      },
+    },
+    {
       startsWith: "Upsert",
       endsWith: "DTO",
       template: (str, options) => {
@@ -233,7 +242,7 @@ class KnowledgeBaseFactory {
         return this.replaceTypePlaceholder(
           `creates${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
             isPlural ? "s" : ""
-          }`,
+          }.`,
           options
         )
       },
