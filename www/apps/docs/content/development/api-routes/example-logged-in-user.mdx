@@ -47,6 +47,11 @@ const registerLoggedInUser = async (
     loggedInUser = await userService.retrieve(req.user.userId)
   }
 
+  if (req.headers["x-medusa-access-token"] && typeof req.headers["x-medusa-access-token"] === "string") {
+    const userService = req.scope.resolve("userService") as UserService;
+    loggedInUser = await userService.retrieveByApiToken(req.headers["x-medusa-access-token"]);
+  }
+
   req.scope.register({
     loggedInUser: {
       resolve: () => loggedInUser,
