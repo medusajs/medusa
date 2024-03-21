@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "test:integration": "jest --silent --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "jest --no-cache --silent=false --bail --runInBand --forceExit --logHeapUsage --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {

@@ -9,8 +9,10 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-      chunks: ${{ steps.set-chunks.outputs.chunks }}
+      module-matrix: ${{ steps.set-module-matrix.outputs.matrix }}
+      module-chunks: ${{ steps.set-module-chunks.outputs.chunks }}
+      api-matrix: ${{ steps.set-api-matrix.outputs.matrix }}
+      api-chunks: ${{ steps.set-api-chunks.outputs.chunks }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,16 +33,27 @@ jobs:
         with:
           extension: pipeline
 
-      - id: set-chunks
-        name: Set Chunks
+      - id: set-module-chunks
+        name: Set Module Chunks
         working-directory: integration-tests/modules
         run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 3 | ceil)]')" >> $GITHUB_OUTPUT
 
-      - id: set-matrix
-        name: Set Chunk IDs
+      - id: set-module-matrix
+        name: Set Module Matrix
         run: echo "matrix=$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')" >> $GITHUB_OUTPUT
         env:
-          CHUNKS: ${{ steps.set-chunks.outputs.chunks }}
+          CHUNKS: ${{ steps.set-module-chunks.outputs.chunks }}
+
+      - id: set-api-chunks
+        name: Set API Chunks
+        working-directory: integration-tests/api
+        run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 3 | ceil)]')" >> $GITHUB_OUTPUT
+
+      - id: set-api-matrix
+        name: Set API Matrix
+        run: echo "matrix=$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')" >> $GITHUB_OUTPUT
+        env:
+          CHUNKS: ${{ steps.set-api-chunks.outputs.chunks }}
 
   unit-tests:
     needs: setup
@@ -142,7 +155,11 @@ jobs:
 
   integration-tests-api:
     needs: setup
+    name: Shard (${{ matrix.chunk }}) API Integration Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        chunk: ${{ fromJSON(needs.setup.outputs.api-matrix) }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -195,11 +212,14 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Run integration tests
+      - name: Run API integration tests
         run: yarn test:integration:api
         env:
-          DB_PASSWORD: postgres
           DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+          NODE_OPTIONS: "--max_old_space_size=4096"
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: ${{ needs.setup.outputs.api-chunks }}
 
   integration-tests-plugins:
     needs: setup
@@ -259,7 +279,7 @@ jobs:
     name: Shard (${{ matrix.chunk }}) Module Integration Tests
     strategy:
       matrix:
-        chunk: ${{ fromJSON(needs.setup.outputs.matrix) }}
+        chunk: ${{ fromJSON(needs.setup.outputs.module-matrix) }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -311,7 +331,7 @@ jobs:
           DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
           CHUNK: ${{ matrix.chunk }}
-          CHUNKS: ${{ needs.setup.outputs.chunks }}
+          CHUNKS: ${{ needs.setup.outputs.module-chunks }}
 
   integration-tests-repositories:
     needs: setup
