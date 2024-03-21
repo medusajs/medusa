@@ -156,10 +156,6 @@ class KnowledgeBaseFactory {
       template: (str) => {
         const normalizedStr = camelToTitle(normalizeName(str))
 
-        if (str === "IApiKeyModuleService") {
-          console.log(str, normalizeName(str), normalizedStr)
-        }
-
         return `The main service interface for the ${normalizedStr} Module.`
       },
     },
