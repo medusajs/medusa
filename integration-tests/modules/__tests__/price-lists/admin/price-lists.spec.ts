@@ -590,7 +590,7 @@ medusaIntegrationTestRunner({
             prices: [],
           })
 
-          const [priceList] = await pricingModule.createPriceLists([
+          const [createdPriceList] = await pricingModule.createPriceLists([
             {
               title: "test price list",
               description: "test",
@@ -607,6 +607,10 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          const [priceList] = await pricingModule.listPriceLists(
+            { id: [createdPriceList.id] },
+            { relations: ["price_set_money_amounts"] }
+          )
           const psmaIdToDelete = priceList.price_set_money_amounts![0].id
 
           const response = await api.post(

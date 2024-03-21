@@ -14,6 +14,8 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
+  EmitEvents,
+  FulfillmentUtils,
   getSetDifference,
   InjectManager,
   InjectTransactionManager,
@@ -36,6 +38,7 @@ import {
 import { isContextValid, validateRules } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
+import { Modules } from "@medusajs/modules-sdk"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -242,6 +245,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async create(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
@@ -284,6 +288,11 @@ export default class FulfillmentModuleService<
 
     const createdFulfillmentSets = await this.fulfillmentSetService_.create(
       data_,
+      sharedContext
+    )
+
+    this.aggregateFulfillmentSetCreatedEvents(
+      createdFulfillmentSets,
       sharedContext
     )
 
@@ -1498,7 +1507,7 @@ export default class FulfillmentModuleService<
    *    ]
    *  }
    */
-  private static buildGeoZoneConstraintsFromAddress(
+  protected static buildGeoZoneConstraintsFromAddress(
     address: FulfillmentTypes.FilterableShippingOptionForContextProps["address"]
   ) {
     /**
@@ -1556,5 +1565,61 @@ export default class FulfillmentModuleService<
       .filter((v): v is Record<string, any> => !!v)
 
     return geoZoneConstraints
+  }
+
+  protected aggregateFulfillmentSetCreatedEvents(
+    createdFulfillmentSets: TEntity[],
+    sharedContext: Context
+  ): void {
+    const buildMessage = ({
+      eventName,
+      id,
+      object,
+    }: {
+      eventName: string
+      id: string
+      object: string
+    }) => {
+      return {
+        eventName,
+        metadata: {
+          object,
+          service: Modules.FULFILLMENT,
+          action: "created",
+          eventGroupId: sharedContext.eventGroupId,
+        },
+        data: { id },
+      }
+    }
+
+    for (const fulfillmentSet of createdFulfillmentSets) {
+      sharedContext.messageAggregator!.saveRawMessageData(
+        buildMessage({
+          eventName: FulfillmentUtils.FulfillmentEvents.created,
+          id: fulfillmentSet.id,
+          object: "fulfillment_set",
+        })
+      )
+
+      for (const serviceZone of fulfillmentSet.service_zones ?? []) {
+        sharedContext.messageAggregator!.saveRawMessageData(
+          buildMessage({
+            eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
+            id: serviceZone.id,
+            object: "service_zone",
+          })
+        )
+
+        for (const geoZone of serviceZone.geo_zones ?? []) {
+          sharedContext.messageAggregator!.saveRawMessageData(
+            buildMessage({
+              eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
+              id: geoZone.id,
+              object: "geo_zone",
+            })
+          )
+        }
+      }
+    }
   }
 }
