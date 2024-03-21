@@ -379,15 +379,15 @@ export type ProjectConfigOptions = {
    * ```
    */
   database_driver_options?: Record<string, unknown> & {
-    connection: {
+    connection?: {
       /**
        * Configure support for TLS/SSL connection
        */
-      ssl: {
+      ssl?: {
         /**
          * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
          */
-        rejectUnauthorized: false
+        rejectUnauthorized?: false
       }
     }
   }
