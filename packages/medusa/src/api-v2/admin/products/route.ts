@@ -5,14 +5,14 @@ import {
   isString,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { MedusaContainer } from "medusa-core-utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "../price-lists/queries"
+import { refetchProduct, remapKeysForProduct, remapProduct } from "./helpers"
 import { AdminGetProductsParams } from "./validators"
-import { remapKeysForProduct, remapProduct } from "./helpers"
-import { MedusaContainer } from "medusa-core-utils"
 
 const applyVariantFiltersForPriceList = async (
   scope: MedusaContainer,
@@ -59,6 +59,7 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let filterableFields: AdminGetProductsParams = { ...req.filterableFields }
+
   filterableFields = await applyVariantFiltersForPriceList(
     req.scope,
     filterableFields
@@ -103,5 +104,10 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product: remapProduct(result[0]) })
+  const product = await refetchProduct(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }

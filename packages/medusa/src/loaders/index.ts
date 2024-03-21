@@ -1,12 +1,13 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   InternalModuleDeclaration,
-  ModulesDefinition,
+  ModulesDefinition
 } from "@medusajs/modules-sdk"
 import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isString,
   MedusaV2Flag,
+  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -23,6 +24,7 @@ import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import medusaProjectApisLoader from "./load-medusa-project-apis"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -35,7 +37,6 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import medusaProjectApisLoader from "./load-medusa-project-apis"
 
 type Options = {
   directory: string
@@ -130,13 +131,15 @@ async function loadMedusaV2({
     featureFlagRouter,
   })
 
-  medusaProjectApisLoader({
+  await medusaProjectApisLoader({
     rootDirectory,
     container,
     app: expressApp,
     configModule,
     activityId: "medusa-project-apis",
   })
+
+  await createDefaultsWorkflow(container).run()
 
   return {
     container,
