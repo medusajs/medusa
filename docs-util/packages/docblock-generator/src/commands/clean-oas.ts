@@ -39,6 +39,28 @@ export default async function () {
     tags.set(area, new Set<string>())
   })
 
+  const testAndFindReferenceSchema = (
+    nestedSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+  ) => {
+    if (oasSchemaHelper.isRefObject(nestedSchema)) {
+      referencedSchemas.add(
+        oasSchemaHelper.normalizeSchemaName(nestedSchema.$ref)
+      )
+    } else {
+      findReferencedSchemas(nestedSchema)
+    }
+  }
+
+  const findReferencedSchemas = (schema: OpenApiSchema) => {
+    if (schema.properties) {
+      Object.values(schema.properties).forEach(testAndFindReferenceSchema)
+    } else if (schema.oneOf || schema.allOf || schema.anyOf) {
+      Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
+        testAndFindReferenceSchema
+      )
+    }
+  }
+
   console.log("Cleaning OAS files...")
 
   // read files under the operations/{area} directory
@@ -144,10 +166,8 @@ export default async function () {
           const requestBodySchema =
             oas.requestBody.content[Object.keys(oas.requestBody.content)[0]]
               .schema
-          if (oasSchemaHelper.isRefObject(requestBodySchema)) {
-            referencedSchemas.add(
-              oasSchemaHelper.normalizeSchemaName(requestBodySchema.$ref)
-            )
+          if (requestBodySchema) {
+            testAndFindReferenceSchema(requestBodySchema)
           }
         }
       }
@@ -163,10 +183,8 @@ export default async function () {
           } else if (responseObj.content) {
             const responseBodySchema =
               responseObj.content[Object.keys(responseObj.content)[0]].schema
-            if (oasSchemaHelper.isRefObject(responseBodySchema)) {
-              referencedSchemas.add(
-                oasSchemaHelper.normalizeSchemaName(responseBodySchema.$ref)
-              )
+            if (responseBodySchema) {
+              testAndFindReferenceSchema(responseBodySchema)
             }
           }
         }
@@ -242,28 +260,6 @@ export default async function () {
     // add schema to all schemas
     if (parsedSchema.schema["x-schemaName"]) {
       allSchemas.add(parsedSchema.schema["x-schemaName"])
-    }
-
-    const findReferencedSchemas = (schema: OpenApiSchema) => {
-      const testSchema = (
-        nestedSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
-      ) => {
-        if (oasSchemaHelper.isRefObject(nestedSchema)) {
-          referencedSchemas.add(
-            oasSchemaHelper.normalizeSchemaName(nestedSchema.$ref)
-          )
-        } else {
-          findReferencedSchemas(nestedSchema)
-        }
-      }
-
-      if (schema.properties) {
-        Object.values(schema.properties).forEach(testSchema)
-      } else if (schema.oneOf || schema.allOf || schema.anyOf) {
-        Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
-          testSchema
-        )
-      }
     }
 
     // collect referenced schemas
