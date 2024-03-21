@@ -5,19 +5,19 @@ import {
   isString,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { MedusaContainer } from "medusa-core-utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { listPriceLists } from "../price-lists/queries"
+import { refetchProduct, remapKeysForProduct, remapProduct } from "./helpers"
 import { AdminGetProductsParams } from "./validators"
 
-export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetProductsParams>,
-  res: MedusaResponse
+const applyVariantFiltersForPriceList = async (
+  scope: MedusaContainer,
+  filterableFields: AdminGetProductsParams
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const filterableFields: AdminGetProductsParams = { ...req.filterableFields }
   const filterByPriceListIds = filterableFields.price_list_id
   const priceListVariantIds: string[] = []
 
@@ -25,17 +25,17 @@ export const GET = async (
   // the variant IDs through the price list price sets.
   if (Array.isArray(filterByPriceListIds)) {
     const [priceLists] = await listPriceLists({
-      container: req.scope,
+      container: scope,
       remoteQueryFields: ["price_set_money_amounts.price_set.variant.id"],
       apiFields: ["prices.variant_id"],
       variables: { filters: { id: filterByPriceListIds }, skip: 0, take: null },
     })
 
     priceListVariantIds.push(
-      ...(priceLists
+      ...((priceLists
         .map((priceList) => priceList.prices?.map((price) => price.variant_id))
         .flat(2)
-        .filter(isString) || [])
+        .filter(isString) || []) as string[])
     )
 
     delete filterableFields.price_list_id
@@ -50,19 +50,35 @@ export const GET = async (
     }
   }
 
+  return filterableFields
+}
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest<AdminGetProductsParams>,
+  res: MedusaResponse
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  let filterableFields: AdminGetProductsParams = { ...req.filterableFields }
+
+  filterableFields = await applyVariantFiltersForPriceList(
+    req.scope,
+    filterableFields
+  )
+
+  const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {
       filters: filterableFields,
       ...req.remoteQueryConfig.pagination,
     },
-    fields: req.remoteQueryConfig.fields,
+    fields: selectFields,
   })
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    products,
+    products: products.map(remapProduct),
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
@@ -88,5 +104,10 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product: result[0] })
+  const product = await refetchProduct(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }
