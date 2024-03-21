@@ -203,7 +203,7 @@ class KnowledgeBaseFactory {
       startsWith: "listAndCount",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER} along with the total count of available ${this.TYPE_PLACEHOLDER}(s) satisfying the provided filters.`,
+          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}s along with the total count of available ${this.TYPE_PLACEHOLDER}s satisfying the provided filters.`,
           options
         )
       },
@@ -212,7 +212,7 @@ class KnowledgeBaseFactory {
       startsWith: "list",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}(s) based on optional filters and configuration.`,
+          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}s based on optional filters and configuration.`,
           options
         )
       },
