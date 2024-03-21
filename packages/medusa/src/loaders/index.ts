@@ -91,14 +91,7 @@ async function loadMedusaV2({
 }) {
   const container = createMedusaContainer()
 
-  // Add additional information to context of request
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    const ipAddress = requestIp.getClientIp(req) as string
-    ;(req as any).request_context = {
-      ip_address: ipAddress,
-    }
-    next()
-  })
+  const shouldStartAPI = configModule.projectConfig.worker_mode !== "worker"
 
   const pgConnection = await pgConnectionLoader({ container, configModule })
 
@@ -114,22 +107,33 @@ async function loadMedusaV2({
     container,
   })
 
-  await expressLoader({ app: expressApp, configModule })
+  if (shouldStartAPI) {
+    await expressLoader({ app: expressApp, configModule })
 
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    req.scope = container.createScope() as MedusaContainer
-    req.requestId = (req.headers["x-request-id"] as string) ?? v4()
-    next()
-  })
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      req.scope = container.createScope() as MedusaContainer
+      req.requestId = (req.headers["x-request-id"] as string) ?? v4()
+      next()
+    })
 
-  // TODO: Add Subscribers loader
+    // Add additional information to context of request
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      const ipAddress = requestIp.getClientIp(req) as string
+      ;(req as any).request_context = {
+        ip_address: ipAddress,
+      }
+      next()
+    })
 
-  await apiLoader({
-    container,
-    app: expressApp,
-    configModule,
-    featureFlagRouter,
-  })
+    // TODO: Add Subscribers loader
+
+    await apiLoader({
+      container,
+      app: expressApp,
+      configModule,
+      featureFlagRouter,
+    })
+  }
 
   await medusaProjectApisLoader({
     rootDirectory,
