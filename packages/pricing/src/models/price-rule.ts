@@ -1,66 +1,81 @@
+import { DAL } from "@medusajs/types"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-
 import PriceSet from "./price-set"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
-type OptionalFields =
-  | "id"
-  | "is_dynamic"
-  | "priority"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
-type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+const tableName = "price_rule"
+const PriceRuleDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const PriceRulePriceSetIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "price_set_id",
+  where: "deleted_at IS NULL",
+})
+
+const PriceRuleRuleTypeIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "rule_type_id",
+  where: "deleted_at IS NULL",
+})
+
+const PriceRulePriceSetMoneyAmountIdIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "price_set_money_amount_id",
+  where: "deleted_at IS NULL",
+  unique: true,
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceRule {
-  [OptionalProps]: OptionalFields | OptionalRelations
+  [OptionalProps]?: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @PriceRulePriceSetIdIndex.MikroORMIndex()
   @ManyToOne({
     entity: () => PriceSet,
     fieldName: "price_set_id",
-    name: "price_rule_price_set_id_unique",
     onDelete: "cascade",
-    index: "IDX_price_rule_price_set_id",
   })
   price_set: PriceSet
 
-  @ManyToOne({
-    entity: () => RuleType,
-    fieldName: "rule_type_id",
-    name: "price_rule_rule_type_id_unique",
-    index: "IDX_price_rule_rule_type_id",
-  })
+  @PriceRuleRuleTypeIdIndex.MikroORMIndex()
+  @ManyToOne({ entity: () => RuleType })
   rule_type: RuleType
 
   @Property({ columnType: "text" })
   value: string
 
   @Property({ columnType: "integer", default: 0 })
-  priority: number
+  priority: number = 0
 
+  @PriceRulePriceSetMoneyAmountIdIndex.MikroORMIndex()
   @ManyToOne({
     onDelete: "cascade",
     entity: () => PriceSetMoneyAmount,
-    fieldName: "price_set_money_amount_id",
-    name: "price_set_money_amount_id_unique",
-    index: "IDX_price_rule_price_set_money_amount_id",
   })
   price_set_money_amount: PriceSetMoneyAmount
 
@@ -79,9 +94,9 @@ export default class PriceRule {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_price_rule_deleted_at" })
+  @PriceRuleDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   beforeCreate() {

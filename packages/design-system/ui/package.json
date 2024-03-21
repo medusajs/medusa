@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/ui",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "repository": {
@@ -80,7 +80,7 @@
     "vitest": "^0.32.2"
   },
   "dependencies": {
-    "@medusajs/icons": "^1.2.0",
+    "@medusajs/icons": "^1.2.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.4",
     "@radix-ui/react-avatar": "^1.0.3",
