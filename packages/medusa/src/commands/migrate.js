@@ -72,9 +72,8 @@ const main = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const featureFlagRouter = featureFlagLoader(configModule)
   const configModule = configModuleLoader(directory)
-  const dataSource = await getDataSource(directory)
+  const featureFlagRouter = featureFlagLoader(configModule)
 
   if (args[0] === "run") {
     if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
@@ -91,6 +90,7 @@ const main = async function ({ directory }) {
         { registerInContainer: false }
       )
     } else {
+      const dataSource = await getDataSource(directory)
       await dataSource.runMigrations()
       await dataSource.destroy()
       await runIsolatedModulesMigration(configModule)
