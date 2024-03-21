@@ -76,7 +76,7 @@ class KnowledgeBaseFactory {
       template: (str) => {
         return `The filters to apply on the retrieved ${camelToWords(
           normalizeName(str)
-        )}.`
+        )}s.`
       },
     },
     {
