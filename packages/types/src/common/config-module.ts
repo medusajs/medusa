@@ -520,6 +520,25 @@ export type ProjectConfigOptions = {
    * ```
    */
   jobs_batch_size?: number
+
+  /**
+   * Configure the application's worker mode. The default value is `shared`.
+   * - Use `shared` if you want to run the application in a single process.
+   * - Use `worker` if you want to run the a worker process only.
+   * - Use `server` if you want to run the application server only.
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     worker_mode: "shared"
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 /**
