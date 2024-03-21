@@ -48,10 +48,10 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
     const res = await prompt({
       title: t("general.areYouSure"),
       description: includingThumbnail
-        ? t("products.deleteMediaAndThumbnail", {
+        ? t("products.media.deleteWarningWithThumbnail", {
             count: ids.length,
           })
-        : t("products.deleteMedia", {
+        : t("products.media.deleteWarning", {
             count: ids.length,
           }),
       confirmText: t("actions.delete"),
