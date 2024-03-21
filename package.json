@@ -74,7 +74,7 @@
     "test:integration:packages": "turbo run test:integration --concurrency=50% --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-plugins",
-    "test:integration:modules": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-modules",
+    "test:integration:modules": "turbo run test:integration:chunk --concurrency=50% --no-daemon --filter=integration-tests-modules",
     "test:integration:repositories": "turbo run test:integration --concurrency=50% --no-daemon --filter=integration-tests-repositories",
     "openapi:generate": "yarn ./packages/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/oas/medusa-oas-cli run medusa-oas",
