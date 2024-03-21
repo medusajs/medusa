@@ -165,6 +165,21 @@ class KnowledgeBaseFactory {
       kind: [ts.SyntaxKind.PropertySignature],
     },
     {
+      exact: "ids",
+      template: (str, options) => {
+        if (options?.rawParentName?.startsWith("Filterable")) {
+          return `The IDs to filter the ${options?.parentName || `{name}`} by.`
+        }
+        const parentName = options?.parentName
+          ? options.parentName
+          : options?.rawParentName
+            ? camelToWords(normalizeName(options.rawParentName))
+            : `{name}`
+        return `The IDs of the ${parentName}.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
       exact: "metadata",
       template: "Holds custom data in key-value pairs.",
       kind: [ts.SyntaxKind.PropertySignature],
