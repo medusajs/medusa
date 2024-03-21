@@ -342,6 +342,8 @@ export type ProjectConfigOptions = {
    *   // ...
    * }
    * ```
+   *
+   * @deprecated use `database_driver_options` instead
    */
   database_extra?: Record<string, unknown> & {
     /**
@@ -352,6 +354,41 @@ export type ProjectConfigOptions = {
        * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
        */
       rejectUnauthorized: false
+    }
+  }
+
+  /**
+   * An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
+   * `ssl` which enables support for TLS/SSL connections.
+   *
+   * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
+   * During development, it’s recommended not to pass this option.
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     database_extra:
+   *       process.env.NODE_ENV !== "development"
+   *         ? { connection: { ssl: { rejectUnauthorized: false } } }
+   *         : {},
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  database_driver_options?: Record<string, unknown> & {
+    connection: {
+      /**
+       * Configure support for TLS/SSL connection
+       */
+      ssl: {
+        /**
+         * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
+         */
+        rejectUnauthorized: false
+      }
     }
   }
 

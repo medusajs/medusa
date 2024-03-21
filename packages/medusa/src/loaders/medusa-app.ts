@@ -8,15 +8,15 @@ import {
 import {
   ContainerRegistrationKeys,
   FlagRouter,
-  MedusaV2Flag,
   isObject,
+  MedusaV2Flag,
 } from "@medusajs/utils"
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
   MedusaAppMigrateUp,
   MedusaAppOutput,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -71,7 +71,7 @@ export async function migrateMedusaApp(
         injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
           ?.config?.connection?.connectionString ??
         configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -91,7 +91,7 @@ export async function migrateMedusaApp(
           type: "postgres",
           url: sharedResourcesConfig.database.clientUrl,
           clientUrl: sharedResourcesConfig.database.clientUrl,
-          extra: configModule.projectConfig.database_extra,
+          extra: configModule.projectConfig.database_driver_options,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
         },
@@ -136,7 +136,7 @@ export const loadMedusaApp = async (
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -159,7 +159,7 @@ export const loadMedusaApp = async (
         database: {
           type: "postgres",
           url: configModule.projectConfig.database_url,
-          extra: configModule.projectConfig.database_extra,
+          extra: configModule.projectConfig.database_driver_options,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
         },
@@ -261,7 +261,7 @@ export async function runModulesLoader({
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -281,7 +281,7 @@ export async function runModulesLoader({
         database: {
           type: "postgres",
           url: configModule.projectConfig.database_url,
-          extra: configModule.projectConfig.database_extra,
+          extra: configModule.projectConfig.database_driver_options,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
         },
