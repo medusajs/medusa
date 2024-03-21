@@ -1,5 +1,5 @@
 import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MathBN, MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -20,13 +20,16 @@ import { refreshCartPromotionsStep } from "../../definition/cart/steps/refresh-c
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { createOrdersStep, updateTaxLinesStep } from "../steps"
+import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
 
 export const createOrdersWorkflowId = "create-orders"
 export const createOrdersWorkflow = createWorkflow(
   createOrdersWorkflowId,
   (input: WorkflowData<CreateOrderDTO>): WorkflowData<OrderDTO> => {
     const variantIds = transform({ input }, (data) => {
-      return (data.input.items ?? []).map((item) => item.variant_id) as string[]
+      return (data.input.items ?? [])
+        .map((item) => item.variant_id)
+        .filter(Boolean) as string[]
     })
 
     const [salesChannel, region, customerData] = parallelize(
@@ -152,11 +155,23 @@ export const createOrdersWorkflow = createWorkflow(
       const items = (data.input.items ?? []).map((item) => {
         const variant = data.variants.find((v) => v.id === item.variant_id)!
 
+        if (!variant) {
+          return prepareCustomLineItemData({
+            variant: {
+              ...item,
+            },
+            unitPrice: MathBN.max(0, item.unit_price),
+            quantity: item.quantity as number,
+            metadata: item?.metadata ?? {},
+          })
+        }
+
         return prepareLineItemData({
           variant: variant,
-          unitPrice: item.variant_id
-            ? data.priceSets[item.variant_id].calculated_amount
-            : item.unit_price,
+          unitPrice: MathBN.max(
+            0,
+            item.unit_price ?? data.priceSets[item.variant_id!]?.amount
+          ),
           quantity: item.quantity as number,
           metadata: item?.metadata ?? {},
         })

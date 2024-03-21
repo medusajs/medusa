@@ -1,6 +1,6 @@
 import { OrderLineItemDTO, OrderShippingMethodDTO } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { updateTaxLinesWorkflow } from "../workflows"
+import { updateTaxLinesWorkflow } from "../workflows/update-tax-lines"
 
 interface StepInput {
   order_id: string

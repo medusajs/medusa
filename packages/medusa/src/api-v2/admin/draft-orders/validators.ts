@@ -153,6 +153,16 @@ class Item {
   @ValidateIf((o) => !o.variant_id)
   title: string
 
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.variant_id)
+  sku: string
+
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.variant_id)
+  barcode: string
+
   @IsNumber()
   @IsOptional()
   unit_price: BigNumberInput

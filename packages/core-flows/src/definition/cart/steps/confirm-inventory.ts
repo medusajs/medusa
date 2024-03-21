@@ -22,7 +22,7 @@ export const confirmInventoryStep = createStep(
     )
 
     // TODO: Should be bulk
-    const promises = data.items.map((item) => {
+    const promises = data.items.map(async (item) => {
       const itemQuantity = item.required_quantity * item.quantity
 
       return inventoryService.confirmInventory(

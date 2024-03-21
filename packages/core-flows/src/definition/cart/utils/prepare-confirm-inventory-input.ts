@@ -37,6 +37,12 @@ export const prepareConfirmInventoryInput = ({
   const itemsToConfirm: ConfirmInventoryItem[] = []
 
   items.forEach((item) => {
+    const variant = variantsMap.get(item.variant_id!)
+
+    if (!variant?.manage_inventory) {
+      return
+    }
+
     const variantInventoryItem = product_variant_inventory_items.find(
       (i) => i.variant_id === item.variant_id
     )
@@ -48,16 +54,12 @@ export const prepareConfirmInventoryInput = ({
       )
     }
 
-    const variant = variantsMap.get(item.variant_id!)
-
-    if (variant?.manage_inventory) {
-      itemsToConfirm.push({
-        inventory_item_id: variantInventoryItem.inventory_item_id,
-        required_quantity: variantInventoryItem.required_quantity,
-        quantity: item.quantity as number, // TODO: update type to BigNumberInput
-        location_ids: location_ids,
-      })
-    }
+    itemsToConfirm.push({
+      inventory_item_id: variantInventoryItem.inventory_item_id,
+      required_quantity: variantInventoryItem.required_quantity,
+      quantity: item.quantity as number, // TODO: update type to BigNumberInput
+      location_ids: location_ids,
+    })
   })
 
   return itemsToConfirm
