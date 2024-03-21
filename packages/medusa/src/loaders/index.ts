@@ -1,9 +1,9 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   InternalModuleDeclaration,
-  ModulesDefinition
+  ModulesDefinition,
 } from "@medusajs/modules-sdk"
-import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
+import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaV2Flag,
@@ -146,6 +146,7 @@ async function loadMedusaV2({
   await createDefaultsWorkflow(container).run()
 
   return {
+    configModule,
     container,
     app: expressApp,
     pgConnection,
@@ -157,6 +158,7 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
+  configModule: ConfigModule
   container: MedusaContainer
   dbConnection?: Connection
   app: Express
@@ -323,6 +325,7 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return {
+    configModule,
     container,
     dbConnection,
     app: expressApp,
