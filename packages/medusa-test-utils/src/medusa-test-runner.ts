@@ -1,9 +1,9 @@
+import { getDatabaseURL } from "./database"
+import { initDb } from "./medusa-test-runner-utils/use-db"
+import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { createDatabase, dropDatabase } from "pg-god"
 import { ContainerLike } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
-import { createDatabase, dropDatabase } from "pg-god"
-import { getDatabaseURL } from "./database"
-import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { initDb } from "./medusa-test-runner-utils/use-db"
 
 const axios = require("axios").default
 
@@ -26,8 +26,6 @@ const dbTestUtilFactory = (): any => ({
   },
 
   create: async function (dbName: string) {
-    console.log("dbName -------- ", dbName)
-    console.log("pgGodCredentials -------- ", pgGodCredentials)
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
   },
 
@@ -82,7 +80,7 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   force_modules_migration = false,
-  debug = true,
+  debug = false,
   testSuite,
 }: {
   moduleName?: string
@@ -98,14 +96,14 @@ export function medusaIntegrationTestRunner({
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
   dbName ??= `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
-  console.log("dbName -- ", dbName)
+
   let dbConfig = {
     dbName,
     clientUrl: getDatabaseURL(dbName),
     schema,
     debug,
   }
-  console.log("dbConfig -- ", dbConfig)
+
   // Intercept call to this utils to apply the unique client url for the current suite
   const originalCreatePgConnection =
     require("@medusajs/utils/dist/modules-sdk/create-pg-connection").createPgConnection
@@ -119,15 +117,9 @@ export function medusaIntegrationTestRunner({
 
   const originalDatabaseLoader =
     require("@medusajs/medusa/dist/loaders/database").default
-
   require("@medusajs/medusa/dist/loaders/database").default = (
     options: any
   ) => {
-    console.log(
-      "options.configModule.projectConfig.database_url -- ",
-      options.configModule.projectConfig.database_url
-    )
-
     options.configModule.projectConfig.database_url
     return originalDatabaseLoader({
       ...options,
@@ -171,7 +163,6 @@ export function medusaIntegrationTestRunner({
   } as MedusaSuiteOptions
 
   const beforeAll_ = async () => {
-    console.log("before - dbConfig.clientUrl - ", dbConfig.clientUrl)
     await dbUtils.create(dbName)
     const { dbDataSource, pgConnection } = await initDb({
       cwd,
