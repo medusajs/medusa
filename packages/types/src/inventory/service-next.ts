@@ -795,6 +795,17 @@ export interface IInventoryServiceNext extends IModuleService {
     context?: Context
   ): Promise<void>
 
+  softDeleteInventoryLevels<TReturnableLinkableKeys extends string = string>(
+    inventoryLevelIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreInventoryLevels<TReturnableLinkableKeys extends string = string>(
+    inventoryLevelIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
   /**
    * This method is used to adjust the inventory level's stocked quantity. The inventory level is identified by the IDs of its associated inventory item and location.
    *
