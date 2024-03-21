@@ -48,6 +48,7 @@ export type InternalModuleDeclaration = {
    * If the module is the main module for the key when multiple ones are registered
    */
   main?: boolean
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 export type ExternalModuleDeclaration = {

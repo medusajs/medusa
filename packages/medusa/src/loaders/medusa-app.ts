@@ -168,6 +168,7 @@ export const loadMedusaApp = async (
   }
 
   const medusaApp = await MedusaApp({
+    workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),

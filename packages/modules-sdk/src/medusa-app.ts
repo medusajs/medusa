@@ -71,7 +71,8 @@ export async function loadModules(
   modulesConfig,
   sharedContainer,
   migrationOnly = false,
-  loaderOnly = false
+  loaderOnly = false,
+  workerMode: "shared" | "worker" | "server" = "server"
 ) {
   const allModules = {}
 
@@ -113,6 +114,7 @@ export async function loadModules(
         moduleExports,
         migrationOnly,
         loaderOnly,
+        workerMode,
       })) as LoadedModule
 
       if (loaderOnly) {
@@ -202,6 +204,7 @@ export type MedusaAppOutput = {
 }
 
 export type MedusaAppOptions = {
+  workerMode?: "shared" | "worker" | "server"
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
@@ -232,6 +235,7 @@ async function MedusaApp_({
   onApplicationStartCb,
   migrationOnly = false,
   loaderOnly = false,
+  workerMode = "server",
 }: MedusaAppOptions & { migrationOnly?: boolean } = {}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
@@ -300,7 +304,8 @@ async function MedusaApp_({
     modules,
     sharedContainer_,
     migrationOnly,
-    loaderOnly
+    loaderOnly,
+    workerMode
   )
 
   if (loaderOnly) {
