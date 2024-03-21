@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
@@ -15,6 +15,7 @@ import { ItemsTable } from "../items-table"
 import { ReturnsForm } from "./returns-form"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateReturnSchema } from "./schema"
+import { getAllReturnableItems } from "../../../../../lib/rma"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -47,8 +48,10 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   const refundableAmount = useRef(0)
 
-  // TODO: should we filter fullfilled items only here
-  const selected = order.items.filter((i) => selectedItems.includes(i.id))
+  // List of line items that can be returned with updated quantities
+  const returnableItems = useMemo(() => getAllReturnableItems(order, false), [])
+  // Line items that are selected for return
+  const selected = returnableItems.filter((i) => selectedItems.includes(i.id))
 
   const form = useForm<zod.infer<typeof CreateReturnSchema>>({
     defaultValues: {
@@ -242,7 +245,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
         <RouteFocusModal.Body className="flex h-[calc(100%-56px)] w-full flex-col items-center overflow-y-auto">
           <ProgressTabs.Content value={Tab.ITEMS} className="h-full w-full">
             <ItemsTable
-              items={order.items}
+              items={returnableItems}
               selectedItems={selectedItems}
               onSelectionChange={onSelectionChange}
             />
