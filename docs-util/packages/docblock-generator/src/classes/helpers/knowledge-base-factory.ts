@@ -106,7 +106,7 @@ class KnowledgeBaseFactory {
         const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
         return `The attributes in the ${camelToWords(normalizeName(str))}${
           isPlural ? "s" : ""
-        } ${isPlural ? "that are" : "that's"} created or updated.`
+        } to be created or updated.`
       },
     },
     {
