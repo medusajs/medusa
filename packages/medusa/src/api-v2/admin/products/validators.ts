@@ -5,6 +5,7 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -537,13 +538,10 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Add on next iteration, adding temporary field for now
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => ProductVariantPricesCreateReq)
-  // prices: ProductVariantPricesCreateReq[]
   @IsArray()
-  prices: any[]
+  @ValidateNested({ each: true })
+  @Type(() => ProductVariantPricesCreateReq)
+  prices: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @IsObject()
@@ -619,12 +617,11 @@ export class AdminPostProductsProductVariantsVariantReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  // TODO: Deal with in next iteration
-  // @IsArray()
-  // @IsOptional()
-  // @ValidateNested({ each: true })
-  // @Type(() => ProductVariantPricesUpdateReq)
-  // prices?: ProductVariantPricesUpdateReq[]
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ProductVariantPricesUpdateReq)
+  prices?: ProductVariantPricesUpdateReq[]
 
   @IsOptional()
   @IsObject()
@@ -678,4 +675,42 @@ export class ProductTypeReq {
    */
   @IsString()
   value: string
+}
+
+// TODO: Add support for rules
+export class ProductVariantPricesCreateReq {
+  @IsString()
+  currency_code: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
+}
+
+export class ProductVariantPricesUpdateReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  currency_code?: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
 }

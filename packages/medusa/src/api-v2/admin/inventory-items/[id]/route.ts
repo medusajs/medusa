@@ -4,8 +4,12 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  deleteInventoryItemWorkflow,
+  updateInventoryItemsWorkflow,
+} from "@medusajs/core-flows"
 
-import { deleteInventoryItemWorkflow } from "@medusajs/core-flows"
+import { AdminPostInventoryItemsInventoryItemReq } from "../validators"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
@@ -32,6 +36,36 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       `Inventory item with id: ${id} was not found`
     )
   }
+
+  res.status(200).json({
+    inventory_item,
+  })
+}
+
+// Update inventory item
+export const POST = async (
+  req: MedusaRequest<AdminPostInventoryItemsInventoryItemReq>,
+  res: MedusaResponse
+) => {
+  const { id } = req.params
+
+  await updateInventoryItemsWorkflow(req.scope).run({
+    input: {
+      updates: [{ id, ...req.validatedBody }],
+    },
+  })
+
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const [inventory_item] = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "inventory",
+      variables: {
+        id,
+      },
+      fields: req.retrieveConfig.select as string[],
+    })
+  )
 
   res.status(200).json({
     inventory_item,

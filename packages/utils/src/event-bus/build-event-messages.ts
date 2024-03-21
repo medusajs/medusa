@@ -13,19 +13,21 @@ export function buildEventMessages<T>(
   options?: Record<string, unknown>
 ): EventBusTypes.Message<T>[] {
   const messageData_ = Array.isArray(messageData) ? messageData : [messageData]
-  const messages: EventBusTypes.Message<T>[] = []
+  const messages: EventBusTypes.Message<any>[] = []
 
   messageData_.map((data) => {
     const data_ = Array.isArray(data.data) ? data.data : [data.data]
     data_.forEach((bodyData) => {
-      const message = {
-        eventName: data.eventName,
-        body: {
-          metadata: data.metadata,
-          data: bodyData,
-        },
+      const message = composeMessage(data.eventName, {
+        data: bodyData,
+        service: data.metadata.service,
+        entity: data.metadata.object,
+        action: data.metadata.action,
+        context: {
+          eventGroupId: data.metadata.eventGroupId,
+        } as Context,
         options,
-      }
+      })
       messages.push(message)
     })
   })
