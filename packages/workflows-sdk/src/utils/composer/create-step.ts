@@ -167,8 +167,7 @@ function applyStep<
             const invokeResult =
               stepOutput?.__type ===
               OrchestrationUtils.SymbolWorkflowStepResponse
-                ? stepOutput.compensateInput &&
-                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
+                ? stepOutput.compensateInput && stepOutput.compensateInput
                 : stepOutput && JSON.parse(JSON.stringify(stepOutput))
 
             const args = [invokeResult, executionContext]
