@@ -342,8 +342,6 @@ export type ProjectConfigOptions = {
    *   // ...
    * }
    * ```
-   *
-   * @deprecated use `database_driver_options` instead
    */
   database_extra?: Record<string, unknown> & {
     /**
@@ -358,7 +356,7 @@ export type ProjectConfigOptions = {
   }
 
   /**
-   * An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
+   * An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
    * `ssl` which enables support for TLS/SSL connections.
    *
    * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
