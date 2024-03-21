@@ -1,4 +1,4 @@
-import { PencilSquare, Photo, ThumbnailBadge } from "@medusajs/icons"
+import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import {
   Checkbox,
@@ -66,29 +66,31 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       .filter((i) => !ids.includes(i.id))
       .map((i) => i.url)
 
-    await mutateAsync({
-      images: mediaToKeep,
-      thumbnail: includingThumbnail ? "" : undefined,
-    })
+    await mutateAsync(
+      {
+        images: mediaToKeep,
+        thumbnail: includingThumbnail ? "" : undefined,
+      },
+      {
+        onSuccess: () => {
+          setSelection({})
+        },
+      }
+    )
   }
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("products.media")}</Heading>
+        <Heading level="h2">{t("products.media.label")}</Heading>
         <ActionMenu
           groups={[
             {
               actions: [
                 {
                   label: t("actions.edit"),
-                  to: "media",
+                  to: "media?view=edit",
                   icon: <PencilSquare />,
-                },
-                {
-                  label: t("products.gallery"),
-                  to: "images",
-                  icon: <Photo />,
                 },
               ],
             },
@@ -97,7 +99,9 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       </div>
       {media && (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4">
-          {media.map((i) => {
+          {media.map((i, index) => {
+            const isSelected = selection[i.id]
+
             return (
               <div
                 className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full cursor-pointer overflow-hidden rounded-[8px]"
@@ -107,7 +111,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                   className={clx(
                     "transition-fg invisible absolute right-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100",
                     {
-                      "visible opacity-100": Object.keys(selection).length > 0,
+                      "visible opacity-100": isSelected,
                     }
                   )}
                 >
@@ -123,7 +127,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                     </Tooltip>
                   </div>
                 )}
-                <Link to={`gallery?img=${i.id}`}>
+                <Link to={`media`} state={{ curr: index }}>
                   <img
                     src={i.url}
                     alt={`${product.title} image`}

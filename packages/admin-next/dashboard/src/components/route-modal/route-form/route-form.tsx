@@ -7,10 +7,12 @@ import { Form } from "../../common/form"
 
 type RouteFormProps<TFieldValues extends FieldValues> = PropsWithChildren<{
   form: UseFormReturn<TFieldValues>
+  blockSearch?: boolean
 }>
 
 export const RouteForm = <TFieldValues extends FieldValues = any>({
   form,
+  blockSearch = false,
   children,
 }: RouteFormProps<TFieldValues>) => {
   const { t } = useTranslation()
@@ -26,7 +28,14 @@ export const RouteForm = <TFieldValues extends FieldValues = any>({
       return false
     }
 
-    return isDirty && currentLocation.pathname !== nextLocation.pathname
+    const isPathChanged = currentLocation.pathname !== nextLocation.pathname
+    const isSearchChanged = currentLocation.search !== nextLocation.search
+
+    if (blockSearch) {
+      return isDirty && (isPathChanged || isSearchChanged)
+    }
+
+    return isDirty && isPathChanged
   })
 
   const handleCancel = () => {

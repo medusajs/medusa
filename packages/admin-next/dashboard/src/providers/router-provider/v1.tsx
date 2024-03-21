@@ -216,12 +216,8 @@ export const v1Routes: RouteObject[] = [
                     lazy: () => import("../../routes/products/product-options"),
                   },
                   {
-                    path: "gallery",
-                    lazy: () => import("../../routes/products/product-gallery"),
-                  },
-                  {
-                    path: "images",
-                    lazy: () => import("../../routes/products/product-images"),
+                    path: "media",
+                    lazy: () => import("../../routes/products/product-media"),
                   },
                 ],
               },
