@@ -41,9 +41,14 @@ export default class PriceListRuleValue {
 
   @PriceListPriceListRuleIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceListRule, {
-    onDelete: "cascade",
+    columnType: "text",
+    mapToPk: true,
     fieldName: "price_list_rule_id",
+    onDelete: "cascade",
   })
+  price_list_rule_id: string
+
+  @ManyToOne(() => PriceListRule, { persist: false })
   price_list_rule: PriceListRule
 
   @Property({ columnType: "text" })
