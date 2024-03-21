@@ -8,9 +8,6 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      test-chunks: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
-      test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,13 +31,12 @@ jobs:
       - id: set-test-chunks
         name: Set Chunks
         working-directory: integration-tests/modules
-        run: echo "::save-state name={name}::{$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')}"
+        run: echo "CHUNKS={$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 20 | ceil)]')}" >> $GITHUB_ENV
 
       - id: set-test-chunk-ids
+        needs: set-test-chunks
         name: Set Chunk IDs
-        run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
-        env:
-          CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
+        run: echo "CHUNKMATRIX={$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')}" >> $GITHUB_ENV
 
   unit-tests:
     needs: setup
@@ -259,7 +255,7 @@ jobs:
     name: Run Module Integration Tests (chunk ${{ matrix.chunk }})
     strategy:
       matrix:
-        chunk: [0, 1, 2, 3, 4, 5]
+        chunk: ${{ env.CHUNKMATRIX }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -311,7 +307,6 @@ jobs:
           DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
           CHUNK: ${{ matrix.chunk }}
-          CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
 
   integration-tests-repositories:
     needs: setup
