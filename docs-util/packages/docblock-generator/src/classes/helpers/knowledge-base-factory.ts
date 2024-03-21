@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../../constants.js"
+import { DOCBLOCK_NEW_LINE } from "../../constants.js"
 import {
   camelToTitle,
   camelToWords,
@@ -181,17 +181,6 @@ class KnowledgeBaseFactory {
       template: "restores soft deleted {return type}(s) by their IDs.",
     },
   ]
-  private exampleCodeBlockLine = `${DOCBLOCK_DOUBLE_LINES}\`\`\`ts${DOCBLOCK_NEW_LINE}{example-code}${DOCBLOCK_NEW_LINE}\`\`\`${DOCBLOCK_DOUBLE_LINES}`
-  private examplesKnowledgeBase: KnowledgeBase[] = [
-    {
-      startsWith: "list",
-      template: `To retrieve a list of {type name} using their IDs: ${this.exampleCodeBlockLine}To specify relations that should be retrieved within the {type name}: ${this.exampleCodeBlockLine}By default, only the first \`{default limit}\` records are retrieved. You can control pagination by specifying the \`skip\` and \`take\` properties of the \`config\` parameter: ${this.exampleCodeBlockLine}`,
-    },
-    {
-      startsWith: "retrieve",
-      template: `A simple example that retrieves a {type name} by its ID: ${this.exampleCodeBlockLine}To specify relations that should be retrieved: ${this.exampleCodeBlockLine}`,
-    },
-  ]
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
@@ -316,22 +305,6 @@ class KnowledgeBaseFactory {
       ...options,
       str: symbol.getName(),
       knowledgeBase: this.functionSummaryKnowledgeBase,
-    })
-  }
-
-  /**
-   * Tries to retrieve the example template of a function's symbol from the {@link examplesKnowledgeBase}.
-   *
-   * @returns {string | undefined} The matching knowledge base template, if found.
-   */
-  tryToGetFunctionExamples({
-    symbol,
-    ...options
-  }: RetrieveSymbolOptions): string | undefined {
-    return this.tryToFindInKnowledgeBase({
-      ...options,
-      str: symbol.getName(),
-      knowledgeBase: this.examplesKnowledgeBase,
     })
   }
 

@@ -7,6 +7,8 @@ import {
   DOCBLOCK_DOUBLE_LINES,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
+import AiGenerator from "../helpers/ai-generator.js"
+import path from "path"
 
 export type FunctionNode =
   | ts.MethodDeclaration
@@ -32,6 +34,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     ...this.methodKinds,
     ...this.functionKinds,
   ]
+  public name = "function"
+  static EXAMPLE_PLACEHOLDER = `{example-code}`
+  protected aiParameterExceptions = ["sharedContext"]
 
   /**
    * Checks whether a node is considered a function node. A node is considered a function node if:
@@ -154,15 +159,53 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
    * @param {ts.Symbol} symbol - The function's symbol. If provided, the method will try to retrieve the example from the {@link KnowledgeBaseFactory}.
    * @returns {string} The function's example comment.
    */
-  getFunctionExample(symbol?: ts.Symbol): string {
-    const str = `${DOCBLOCK_DOUBLE_LINES}@example${DOCBLOCK_NEW_LINE}`
-    return `${str}${
-      symbol
-        ? this.knowledgeBaseFactory.tryToGetFunctionExamples({
-            symbol: symbol,
-          }) || `{example-code}`
-        : `{example-code}`
-    }`
+  getFunctionPlaceholderExample(): string {
+    return this.formatExample(FunctionKindGenerator.EXAMPLE_PLACEHOLDER)
+  }
+
+  /**
+   * Retrieves a function's example using the AiGenerator
+   *
+   * @param node - The function's node.
+   * @param aiGenerator - An instance of the AiGenerator
+   * @returns the example code
+   */
+  async getFunctionExampleAi(
+    node: FunctionOrVariableNode,
+    aiGenerator: AiGenerator,
+    withTag = true
+  ): Promise<string> {
+    const actualNode = ts.isVariableStatement(node)
+      ? this.extractFunctionNode(node)
+      : node
+
+    if (!actualNode) {
+      return ""
+    }
+
+    const symbol = getSymbol(node, this.checker)
+
+    const example = await aiGenerator.generateExample({
+      className: this.isMethod(actualNode)
+        ? getSymbol(node.parent, this.checker)?.name
+        : undefined,
+      functionName: symbol?.name || "",
+      signature: node.getText(),
+      fileName: path.basename(node.getSourceFile().fileName),
+    })
+
+    return this.formatExample(
+      example.length
+        ? `${example}${DOCBLOCK_NEW_LINE}`
+        : FunctionKindGenerator.EXAMPLE_PLACEHOLDER,
+      withTag
+    )
+  }
+
+  formatExample(example: string, withTag = true): string {
+    return `${
+      withTag ? `${DOCBLOCK_DOUBLE_LINES}@example${DOCBLOCK_NEW_LINE}` : ""
+    }${example}`
   }
 
   /**
@@ -173,12 +216,12 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
    * @param {GetDocBlockOptions} options - Formatting options.
    * @returns {string} The function's docblock.
    */
-  getDocBlock(
+  async getDocBlock(
     node: FunctionOrVariableNode | ts.Node,
     options: GetDocBlockOptions = { addEnd: true }
-  ): string {
+  ): Promise<string> {
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
 
     const actualNode = ts.isVariableStatement(node)
@@ -186,7 +229,25 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
       : node
 
     if (!actualNode) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
+    }
+
+    let existingComments = this.getNodeCommentsFromRange(node)
+
+    if (existingComments?.includes(FunctionKindGenerator.EXAMPLE_PLACEHOLDER)) {
+      // just replace the existing comment and return it
+      if (options.aiGenerator) {
+        existingComments = existingComments.replace(
+          FunctionKindGenerator.EXAMPLE_PLACEHOLDER,
+          await this.getFunctionExampleAi(
+            actualNode,
+            options.aiGenerator,
+            false
+          )
+        )
+      }
+
+      return existingComments.replace("/*", "").replace("*/", "")
     }
 
     const nodeSymbol = getSymbol(node, this.checker)
@@ -199,29 +260,28 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
       (this.isMethod(actualNode) ? `This method` : `This function`)
     } ${this.getFunctionSummary(actualNode, nodeSymbol)}${DOCBLOCK_NEW_LINE}`
 
-    // add params
-    actualNode.forEachChild((childNode) => {
-      if (!ts.isParameter(childNode)) {
-        return
-      }
-      const symbol = getSymbol(childNode, this.checker)
+    for (const parameterNode of actualNode.parameters) {
+      const symbol = getSymbol(parameterNode, this.checker)
       if (!symbol) {
-        return
+        continue
       }
 
       const symbolType = this.checker.getTypeOfSymbolAtLocation(
         symbol,
-        childNode
+        parameterNode
       )
+
+      const parameterName = symbol.getName()
+      const parameterSummary = this.getNodeSummary({
+        node: parameterNode,
+        symbol,
+        nodeType: symbolType,
+      })
 
       str += `${DOCBLOCK_NEW_LINE}@param {${this.checker.typeToString(
         symbolType
-      )}} ${symbol.getName()} - ${this.getNodeSummary({
-        node: childNode,
-        symbol,
-        nodeType: symbolType,
-      })}`
-    })
+      )}} ${parameterName} - ${parameterSummary}`
+    }
 
     // add returns
     const nodeType = this.getReturnType(actualNode)
@@ -243,7 +303,11 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     }`
 
     // add example
-    str += this.getFunctionExample(nodeSymbol)
+    if (!options.aiGenerator) {
+      str += this.getFunctionPlaceholderExample()
+    } else {
+      str += await this.getFunctionExampleAi(actualNode, options.aiGenerator)
+    }
 
     // add common docs
     str += this.getCommonDocs(node, {
@@ -255,6 +319,20 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     }
 
     return str
+  }
+
+  /**
+   * Allows documenting (updating) a node if it has the example placeholder.
+   *
+   * @param node - The node to document.
+   * @returns Whether the node can be documented.
+   */
+  canDocumentNode(node: ts.Node): boolean {
+    const comments = this.getNodeCommentsFromRange(node)
+
+    return (
+      comments?.includes(FunctionKindGenerator.EXAMPLE_PLACEHOLDER) || false
+    )
   }
 }
 

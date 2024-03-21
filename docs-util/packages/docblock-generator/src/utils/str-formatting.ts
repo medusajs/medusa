@@ -62,6 +62,10 @@ export function wordsToPascal(str: string): string {
     .join("")
 }
 
+export function pascalToCamel(str: string): string {
+  return `${str.charAt(0).toLowerCase()}${str.substring(1)}`
+}
+
 /**
  * Remove parts of the name such as DTO, Filterable, etc...
  *
