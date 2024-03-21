@@ -86,10 +86,10 @@ moduleIntegrationTestRunner({
             {
               select: [
                 "id",
-                "price_set_money_amounts.money_amount.id",
-                "price_set_money_amounts.money_amount.amount",
+                "price_set_money_amounts.id",
+                "price_set_money_amounts.amount",
               ],
-              relations: ["price_set_money_amounts.money_amount"],
+              relations: ["price_set_money_amounts"],
             }
           )
 
@@ -100,10 +100,8 @@ moduleIntegrationTestRunner({
               id: "price-set-1",
               price_set_money_amounts: [
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    id: "money-amount-USD",
-                    amount: 500,
-                  }),
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
                 }),
               ],
             },
@@ -148,8 +146,12 @@ moduleIntegrationTestRunner({
               id: ["price-set-1"],
             },
             {
-              select: ["id", "min_quantity", "money_amounts.id"],
-              relations: ["price_set_money_amounts.money_amount"],
+              select: [
+                "id",
+                "price_set_money_amounts.amount",
+                "price_set_money_amounts.id",
+              ],
+              relations: ["price_set_money_amounts"],
             }
           )
 
@@ -161,9 +163,8 @@ moduleIntegrationTestRunner({
               id: "price-set-1",
               price_set_money_amounts: [
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    id: "money-amount-USD",
-                  }),
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
                 }),
               ],
             },
@@ -380,10 +381,9 @@ moduleIntegrationTestRunner({
               ],
               price_set_money_amounts: [
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 100,
-                    currency_code: "USD",
-                  }),
+                  amount: 100,
+                  currency_code: "USD",
+                  rules_count: 1,
                 }),
               ],
             })
@@ -419,16 +419,12 @@ moduleIntegrationTestRunner({
               ],
               price_set_money_amounts: expect.arrayContaining([
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 100,
-                    currency_code: "USD",
-                  }),
+                  amount: 100,
+                  currency_code: "USD",
                 }),
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 150,
-                    currency_code: "USD",
-                  }),
+                  amount: 150,
+                  currency_code: "USD",
                 }),
               ]),
             })
@@ -460,10 +456,8 @@ moduleIntegrationTestRunner({
               ],
               price_set_money_amounts: [
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 100,
-                    currency_code: "USD",
-                  }),
+                  amount: 100,
+                  currency_code: "USD",
                 }),
               ],
               price_rules: [
@@ -540,7 +534,7 @@ moduleIntegrationTestRunner({
             {
               relations: [
                 "rule_types",
-                "price_set_money_amounts.money_amount",
+                "price_set_money_amounts",
                 "price_rules",
               ],
             }
@@ -560,10 +554,8 @@ moduleIntegrationTestRunner({
                 ],
                 price_set_money_amounts: [
                   expect.objectContaining({
-                    money_amount: expect.objectContaining({
-                      amount: 500,
-                      currency_code: "EUR",
-                    }),
+                    amount: 500,
+                    currency_code: "EUR",
                   }),
                 ],
                 rule_types: [
@@ -625,7 +617,7 @@ moduleIntegrationTestRunner({
 
           const [priceSet] = await service.list(
             { id: ["price-set-1"] },
-            { relations: ["price_set_money_amounts.money_amount"] }
+            { relations: ["price_set_money_amounts"] }
           )
 
           expect(priceSet).toEqual(
@@ -633,10 +625,8 @@ moduleIntegrationTestRunner({
               id: "price-set-1",
               price_set_money_amounts: expect.arrayContaining([
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 100,
-                    currency_code: "USD",
-                  }),
+                  amount: 100,
+                  currency_code: "USD",
                 }),
               ]),
             })
@@ -669,7 +659,7 @@ moduleIntegrationTestRunner({
 
           const priceSets = await service.list(
             { id: ["price-set-1", "price-set-2"] },
-            { relations: ["price_set_money_amounts.money_amount"] }
+            { relations: ["price_set_money_amounts"] }
           )
 
           expect(priceSets).toEqual([
@@ -677,10 +667,8 @@ moduleIntegrationTestRunner({
               id: "price-set-1",
               price_set_money_amounts: expect.arrayContaining([
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 100,
-                    currency_code: "USD",
-                  }),
+                  amount: 100,
+                  currency_code: "USD",
                 }),
               ]),
             }),
@@ -688,10 +676,8 @@ moduleIntegrationTestRunner({
               id: "price-set-2",
               price_set_money_amounts: expect.arrayContaining([
                 expect.objectContaining({
-                  money_amount: expect.objectContaining({
-                    amount: 150,
-                    currency_code: "EUR",
-                  }),
+                  amount: 150,
+                  currency_code: "EUR",
                 }),
               ]),
             }),
