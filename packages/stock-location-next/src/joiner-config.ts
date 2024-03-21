@@ -1,6 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
 import { StockLocation } from "./models"
 import moduleSchema from "./schema"
 
@@ -16,6 +16,7 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
     valueFrom: key.split("_").pop()!,
   })
 })
+
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
