@@ -153,7 +153,7 @@ jobs:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
 
-  integration-tests-api:
+  integration-tests-api-matrix:
     needs: setup
     name: Shard (${{ matrix.chunk }}) API Integration Tests
     runs-on: ubuntu-latest
@@ -222,6 +222,20 @@ jobs:
           CHUNK: ${{ matrix.chunk }}
           CHUNKS: ${{ needs.setup.outputs.api-chunks }}
 
+  integration-tests-api:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: Check status of matrix jobs
+    needs: integration-tests-api-matrix
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.integration-tests-api-matrix.result, 'failure')
+            || contains(needs.integration-tests-api-matrix.result, 'cancelled')
+            || contains(needs.integration-tests-api-matrix.result, 'skipped')
+          }}
+
   integration-tests-plugins:
     needs: setup
     runs-on: ubuntu-latest
@@ -275,7 +289,7 @@ jobs:
           DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
 
-  integration-tests-modules:
+  integration-tests-modules-matrix:
     needs: setup
     name: Shard (${{ matrix.chunk }}) Module Integration Tests
     strategy:
@@ -333,6 +347,20 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
           CHUNK: ${{ matrix.chunk }}
           CHUNKS: ${{ needs.setup.outputs.module-chunks }}
+
+  integration-tests-modules:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: Check status of matrix jobs
+    needs: integration-tests-modules-matrix
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.integration-tests-modules-matrix.result, 'failure')
+            || contains(needs.integration-tests-modules-matrix.result, 'cancelled')
+            || contains(needs.integration-tests-modules-matrix.result, 'skipped')
+          }}
 
   integration-tests-repositories:
     needs: setup
