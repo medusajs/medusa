@@ -22,18 +22,27 @@ export function applySalesChannelsFilter() {
 
     delete filterableFields.sales_channel_id
 
-    const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-
-    const sl = await remoteQuery.getLinkModule(
-      Modules.SALES_CHANNEL,
-      "sales_channel_id",
-      Modules.STOCK_LOCATION,
-      "stock_location_id"
+    const remoteLinkService = req.scope.resolve(
+      ContainerRegistrationKeys.REMOTE_LINK
     )
 
-    const a = await sl.list({ sales_channel_id: salesChannelIds }, {})
+    const stockLocationSalesChannelLinkModuleService =
+      await remoteLinkService.getLinkModule(
+        Modules.SALES_CHANNEL,
+        "sales_channel_id",
+        Modules.STOCK_LOCATION,
+        "stock_location_id"
+      )
 
-    filterableFields.id = a.map((p) => p.stock_location_id)
+    const stockLocationSalesChannelLinks =
+      await stockLocationSalesChannelLinkModuleService.list(
+        { sales_channel_id: salesChannelIds },
+        {}
+      )
+
+    filterableFields.id = stockLocationSalesChannelLinks.map(
+      (link) => link.stock_location_id
+    )
 
     return next()
   }
