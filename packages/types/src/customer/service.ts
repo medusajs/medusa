@@ -1010,7 +1010,11 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {string[]} customerIds - The IDs of customers.
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} Resolves when the customers are deleted successfully.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated address.
+   * The object's keys are the ID attribute names of the customer entity's relations, such as `address_id`, and its value is an array of strings, each being the ID of a record associated
+   * with the customer through this relation, such as the IDs of associated address.
+   *
+   * If there are no related records, the promise resolves to `void`.
    *
    * @example
    * await customerModuleService.softDelete(["cus_123"])
@@ -1045,7 +1049,8 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {string[]} groupIds - The IDs of customer groups.
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} Resolves when the customer groups are deleted successfully.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were also soft deleted.
+   * If there are no related records, the promise resolves to `void`.
    *
    * @example
    * await customerModuleService.softDeleteCustomerGroups([
