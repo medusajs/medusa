@@ -381,7 +381,7 @@ class KnowledgeBaseFactory {
       startsWith: "restore",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the ${this.TYPE_PLACEHOLDER} through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
+          `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the ${this.TYPE_PLACEHOLDER} through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.${DOCBLOCK_DOUBLE_LINES}If there are no related records restored, the promise resolves to \`void\`.`,
           options
         )
       },
