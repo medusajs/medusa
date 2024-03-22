@@ -13,12 +13,10 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
-  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import MoneyAmount from "./money-amount"
 import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
@@ -50,6 +48,12 @@ const PriceSetMoneyAmountPriceListIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+const PriceSetMoneyAmountCurrencyCodeIndex = createPsqlIndexStatementHelper({
+  tableName: tableName,
+  columns: "currency_code",
+  where: "deleted_at IS NULL",
+})
+
 @Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceSetMoneyAmount {
@@ -61,13 +65,30 @@ export default class PriceSetMoneyAmount {
   @Property({ columnType: "text", nullable: true })
   title: string | null = null
 
-  @PriceSetMoneyAmountPriceSetIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceSet, { onDelete: "cascade" })
-  price_set: PriceSet
+  @PriceSetMoneyAmountCurrencyCodeIndex.MikroORMIndex()
+  @Property({ columnType: "text" })
+  currency_code: string
 
-  @PriceSetMoneyAmountMoneyAmountIdIndex.MikroORMIndex()
-  @OneToOne(() => MoneyAmount, { onDelete: "cascade" })
-  money_amount: MoneyAmount
+  @Property({ columnType: "numeric", serializer: Number })
+  amount: number
+
+  @Property({ columnType: "numeric", nullable: true })
+  min_quantity: number | null = null
+
+  @Property({ columnType: "numeric", nullable: true })
+  max_quantity: number | null = null
+
+  @PriceSetMoneyAmountPriceSetIdIndex.MikroORMIndex()
+  @ManyToOne(() => PriceSet, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "price_set_id",
+    onDelete: "cascade",
+  })
+  price_set_id: string
+
+  @ManyToOne(() => PriceSet, { persist: false })
+  price_set?: PriceSet
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0
@@ -80,8 +101,17 @@ export default class PriceSetMoneyAmount {
   price_rules = new Collection<PriceRule>(this)
 
   @PriceSetMoneyAmountPriceListIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceList, { onDelete: "cascade", nullable: true })
-  price_list: PriceList | null
+  @ManyToOne(() => PriceList, {
+    columnType: "text",
+    mapToPk: true,
+    nullable: true,
+    fieldName: "price_list_id",
+    onDelete: "cascade",
+  })
+  price_list_id: string | null = null
+
+  @ManyToOne(() => PriceList, { persist: false, nullable: true })
+  price_list: PriceList | null = null
 
   @Property({
     onCreate: () => new Date(),
