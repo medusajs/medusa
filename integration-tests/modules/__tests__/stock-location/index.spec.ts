@@ -53,7 +53,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("Get stock location", () => {
+    describe("Get stock location", () => {
       let locationId
       const location = {
         name: "Test Location",
