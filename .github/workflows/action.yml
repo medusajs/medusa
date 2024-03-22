@@ -235,6 +235,8 @@ jobs:
             || contains(needs.integration-tests-api-matrix.result, 'cancelled')
             || contains(needs.integration-tests-api-matrix.result, 'skipped')
           }}
+      - run: exit 0
+        if: ${{ contains(needs.integration-tests-api-matrix.result, 'success') }}
 
   integration-tests-plugins:
     needs: setup
@@ -361,6 +363,8 @@ jobs:
             || contains(needs.integration-tests-modules-matrix.result, 'cancelled')
             || contains(needs.integration-tests-modules-matrix.result, 'skipped')
           }}
+      - run: exit 0
+        if: ${{ contains(needs.integration-tests-modules-matrix.result, 'success') }}
 
   integration-tests-repositories:
     needs: setup
