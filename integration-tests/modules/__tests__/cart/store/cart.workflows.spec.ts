@@ -204,6 +204,113 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should revert if the cart creation fails", async () => {
+          const region = await regionModuleService.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const salesChannel = await scModuleService.create({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.create({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.create([
+            {
+              title: "Test product",
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.create({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
+            },
+          ])
+
+          const priceSet = await pricingModule.create({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          const workflow = createCartWorkflow(appContainer)
+
+          workflow.addAction(
+            "throw",
+            {
+              invoke: async function failStep() {
+                throw new Error(`Failed to create cart`)
+              },
+            },
+            {
+              noCompensation: true,
+            }
+          )
+
+          const { transaction } = await workflow.run({
+            throwOnError: false,
+            input: {
+              email: "tony@stark.com",
+              currency_code: "usd",
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+
+          expect(transaction.flow.state).toEqual("reverted")
+        })
+
         it("should throw when no regions exist", async () => {
           await regionModuleService.delete(defaultRegion.id)
 
