@@ -33,7 +33,7 @@ let {
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true, MEDUSA_FF_MEDUSA_V2: true },
+  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let v2Product
     let pricingService
@@ -41,6 +41,7 @@ medusaIntegrationTestRunner({
     let scService
     let remoteLink
     let container
+    let productFixture
 
     beforeAll(() => {
       // Note: We have to lazily load everything because there are weird ordering issues when doing `require` of `@medusajs/medusa`
@@ -68,7 +69,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
-      const productFixture = {
+      productFixture = {
         title: "Test fixture",
         description: "test-product-description",
         type: { value: "test-type" },
