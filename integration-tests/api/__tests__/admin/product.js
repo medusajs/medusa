@@ -32,50 +32,8 @@ let {
 
 jest.setTimeout(50000)
 
-const productFixture = {
-  title: "Test fixture",
-  description: "test-product-description",
-  type: { value: "test-type" },
-  images: ["test-image.png", "test-image-2.png"],
-  tags: [{ value: "123" }, { value: "456" }],
-  options: breaking(
-    () => [{ title: "size" }, { title: "color" }],
-    () => [
-      { title: "size", values: ["large"] },
-      { title: "color", values: ["green"] },
-    ]
-  ),
-  variants: [
-    {
-      title: "Test variant",
-      inventory_quantity: 10,
-      prices: [
-        {
-          currency_code: "usd",
-          amount: 100,
-        },
-        {
-          currency_code: "eur",
-          amount: 45,
-        },
-        {
-          currency_code: "dkk",
-          amount: 30,
-        },
-      ],
-      options: breaking(
-        () => [{ value: "large" }, { value: "green" }],
-        () => ({
-          size: "large",
-          color: "green",
-        })
-      ),
-    },
-  ],
-}
-
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true, MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let v2Product
     let pricingService
@@ -109,6 +67,48 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      const productFixture = {
+        title: "Test fixture",
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        tags: [{ value: "123" }, { value: "456" }],
+        options: breaking(
+          () => [{ title: "size" }, { title: "color" }],
+          () => [
+            { title: "size", values: ["large"] },
+            { title: "color", values: ["green"] },
+          ]
+        ),
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 100,
+              },
+              {
+                currency_code: "eur",
+                amount: 45,
+              },
+              {
+                currency_code: "dkk",
+                amount: 30,
+              },
+            ],
+            options: breaking(
+              () => [{ value: "large" }, { value: "green" }],
+              () => ({
+                size: "large",
+                color: "green",
+              })
+            ),
+          },
+        ],
+      }
 
       // We want to seed another product for v2 that has pricing correctly wired up for all pricing-related tests.
       v2Product = (
@@ -1196,6 +1196,11 @@ medusaIntegrationTestRunner({
               const product = await simpleProductFactory(dbConnection, {
                 id: "product_1",
                 title: "test title",
+              })
+
+              await simpleProductFactory(dbConnection, {
+                id: "product_2",
+                title: "test title 2",
               })
 
               const salesChannel = await simpleSalesChannelFactory(
