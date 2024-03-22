@@ -42,6 +42,9 @@ export interface UpdateSalesChannelDTO {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * The attributes in the sales channel to be created or updated.
+ */
 export interface UpsertSalesChannelDTO {
   /**
    * The ID of the sales channel.
