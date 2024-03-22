@@ -5,7 +5,10 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { getItemTaxLinesStep, setTaxLinesForItemsStep } from "../steps"
+import {
+  getOrderItemTaxLinesStep,
+  setOrderTaxLinesForItemsStep,
+} from "../steps"
 
 const orderFields = [
   "id",
@@ -60,9 +63,9 @@ type WorkflowInput = {
   force_tax_calculation?: boolean
 }
 
-export const updateTaxLinesWorkflowId = "update-tax-lines"
-export const updateTaxLinesWorkflow = createWorkflow(
-  updateTaxLinesWorkflowId,
+export const updateOrderTaxLinesWorkflowId = "update-order-tax-lines"
+export const updateOrderTaxLinesWorkflow = createWorkflow(
+  updateOrderTaxLinesWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
     const order = useRemoteQueryStep({
       entry_point: "order",
@@ -70,7 +73,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
       variables: { id: input.order_id },
     })
 
-    const taxLineItems = getItemTaxLinesStep(
+    const taxLineItems = getOrderItemTaxLinesStep(
       transform({ input, order }, (data) => ({
         order: data.order,
         items: data.input.items || data.order.items,
@@ -80,7 +83,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
       }))
     )
 
-    setTaxLinesForItemsStep({
+    setOrderTaxLinesForItemsStep({
       order,
       item_tax_lines: taxLineItems.lineItemTaxLines,
       shipping_tax_lines: taxLineItems.shippingMethodsTaxLines,

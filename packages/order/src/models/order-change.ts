@@ -65,7 +65,7 @@ export default class OrderChange {
   version: number
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
-    cascade: [Cascade.PERSIST, "sotf-remove"] as any,
+    cascade: [Cascade.PERSIST, "sotf-remove" as Cascade],
   })
   actions = new Collection<OrderChangeAction>(this)
 

@@ -1,8 +1,8 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IInventoryService } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { MedusaError } from "medusa-core-utils"
-import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 
 interface StepInput {
   items: {
@@ -25,7 +25,7 @@ export const confirmInventoryStep = createStep(
     const promises = data.items.map(async (item) => {
       const itemQuantity = item.required_quantity * item.quantity
 
-      return inventoryService.confirmInventory(
+      return await inventoryService.confirmInventory(
         item.inventory_item_id,
         item.location_ids,
         itemQuantity

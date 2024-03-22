@@ -18,7 +18,7 @@ import {
 } from "../../definition/cart"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
-import { createOrdersStep, updateTaxLinesStep } from "../steps"
+import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"
 import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
 
 export const createOrdersWorkflowId = "create-orders"
@@ -196,7 +196,7 @@ export const createOrdersWorkflow = createWorkflow(
     })
     */
 
-    updateTaxLinesStep({ order_id: order.id })
+    updateOrderTaxLinesStep({ order_id: order.id })
 
     return order
   }

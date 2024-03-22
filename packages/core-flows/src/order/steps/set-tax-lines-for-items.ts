@@ -15,9 +15,9 @@ interface StepInput {
   shipping_tax_lines: ShippingTaxLineDTO[]
 }
 
-export const setTaxLinesForItemsStepId = "set-tax-lines-for-items"
-export const setTaxLinesForItemsStep = createStep(
-  setTaxLinesForItemsStepId,
+export const setOrderTaxLinesForItemsStepId = "set-order-tax-lines-for-items"
+export const setOrderTaxLinesForItemsStep = createStep(
+  setOrderTaxLinesForItemsStepId,
   async (data: StepInput, { container }) => {
     const { order, item_tax_lines, shipping_tax_lines } = data
     const orderService = container.resolve<IOrderModuleService>(

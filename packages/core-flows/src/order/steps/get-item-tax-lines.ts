@@ -101,9 +101,9 @@ function normalizeLineItemsForShipping(
   )
 }
 
-export const getItemTaxLinesStepId = "get-item-tax-lines"
-export const getItemTaxLinesStep = createStep(
-  getItemTaxLinesStepId,
+export const getOrderItemTaxLinesStepId = "get-order-item-tax-lines"
+export const getOrderItemTaxLinesStep = createStep(
+  getOrderItemTaxLinesStepId,
   async (data: StepInput, { container }) => {
     const {
       order,
