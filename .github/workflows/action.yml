@@ -225,7 +225,6 @@ jobs:
   integration-tests-api:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    name: Check status of matrix jobs
     needs: integration-tests-api-matrix
     steps:
       - run: exit 1
@@ -353,7 +352,6 @@ jobs:
   integration-tests-modules:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    name: Check status of matrix jobs
     needs: integration-tests-modules-matrix
     steps:
       - run: exit 1
