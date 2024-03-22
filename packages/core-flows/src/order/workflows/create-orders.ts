@@ -16,7 +16,6 @@ import {
   getVariantsStep,
   validateVariantsExistStep,
 } from "../../definition/cart"
-import { refreshCartPromotionsStep } from "../../definition/cart/steps/refresh-cart-promotions"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { createOrdersStep, updateTaxLinesStep } from "../steps"
@@ -190,10 +189,13 @@ export const createOrdersWorkflow = createWorkflow(
     const orders = createOrdersStep([orderToCreate])
     const order = transform({ orders }, (data) => data.orders?.[0])
 
-    refreshCartPromotionsStep({
+    /* TODO: Implement Order promotions
+    refreshOrderPromotionsStep({
       id: order.id,
       promo_codes: input.promo_codes,
     })
+    */
+
     updateTaxLinesStep({ order_id: order.id })
 
     return order

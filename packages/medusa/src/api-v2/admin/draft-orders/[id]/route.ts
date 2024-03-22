@@ -18,8 +18,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     fields: defaultAdminOrderFields,
   })
 
-  const [store] = await remoteQuery(queryObject)
-  res.status(200).json({ store })
+  const [order] = await remoteQuery(queryObject)
+  res.status(200).json({ order })
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -35,7 +35,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  res.status(200).json({ store: result[0] })
+  res.status(200).json({ order: result[0] })
 }
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -50,5 +50,5 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  res.status(200).json({ store: result[0] })
+  res.status(200).json({ order: result[0] })
 }

@@ -139,7 +139,6 @@ class ShippingMethod {
   data?: Record<string, unknown> = {}
 
   @IsNumber()
-  @IsOptional()
   amount: BigNumberInput
 }
 

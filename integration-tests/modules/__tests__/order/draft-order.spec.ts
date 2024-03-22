@@ -229,6 +229,7 @@ medusaIntegrationTestRunner({
             {
               name: "test-method",
               option_id: "test-option",
+              amount: 100,
             },
           ],
         }
@@ -238,6 +239,7 @@ medusaIntegrationTestRunner({
           payload,
           adminHeaders
         )
+
         expect(response.status).toEqual(200)
       })
     })

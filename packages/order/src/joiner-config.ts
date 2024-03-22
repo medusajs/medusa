@@ -22,5 +22,12 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.ORDER,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: [],
+  alias: [
+    {
+      name: ["order", "orders"],
+      args: {
+        entity: "Order",
+      },
+    },
+  ],
 } as ModuleJoinerConfig
