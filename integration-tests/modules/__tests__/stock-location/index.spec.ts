@@ -55,7 +55,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("Delete stock location", () => {
+    describe("Delete stock location", () => {
       let stockLocationId
       beforeEach(async () => {
         const stockLocationCreateResponse = await api.post(
