@@ -52,5 +52,33 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe("Update stock locations", () => {
+      let stockLocationId
+
+      beforeEach(async () => {
+        const createResponse = await api.post(
+          `/admin/stock-locations`,
+          {
+            name: "test location",
+          },
+          adminHeaders
+        )
+
+        stockLocationId = createResponse.data.stock_location.id
+      })
+      it("should update stock location name", async () => {
+        const response = await api.post(
+          `/admin/stock-locations/${stockLocationId}`,
+          {
+            name: "new name",
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location.name).toEqual("new name")
+      })
+    })
   },
 })
