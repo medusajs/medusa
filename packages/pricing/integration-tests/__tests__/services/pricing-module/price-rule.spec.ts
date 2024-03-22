@@ -1,9 +1,9 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
+import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Price } from "../../../../src"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price"
+import { createPrices } from "../../../__fixtures__/price"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
@@ -23,7 +23,7 @@ moduleIntegrationTestRunner({
 
         await createPriceSets(testManager)
         await createRuleTypes(testManager)
-        await createPriceSetMoneyAmounts(testManager)
+        await createPrices(testManager)
         await createPriceRules(testManager)
       })
 
@@ -272,7 +272,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a PriceRule successfully", async () => {
-            const psma: Price = testManager.create(Price, {
+            const price: Price = testManager.create(Price, {
               currency_code: "EUR",
               amount: 100,
               price_set_id: "price-set-1",
@@ -280,27 +280,25 @@ moduleIntegrationTestRunner({
               rules_count: 0,
             })
 
-            await testManager.persist(psma).flush()
+            await testManager.persist(price).flush()
 
-            await service.createPriceRules([
-              {
-                id: "price-rule-new",
-                price_set_id: "price-set-1",
-                rule_type_id: "rule-type-1",
-                value: "region_1",
-                price_list_id: "test",
-                price_id: psma.id,
-              },
-            ])
+            await service.createPriceRules({
+              id: "price-rule-new",
+              price_set_id: "price-set-1",
+              rule_type_id: "rule-type-1",
+              value: "region_1",
+              price_list_id: "test",
+              price_id: price.id,
+            })
 
-            const [pricerule] = await service.listPriceRules({
+            const [priceRule] = await service.listPriceRules({
               id: ["price-rule-new"],
             })
 
-            expect(pricerule).toEqual(
+            expect(priceRule).toEqual(
               expect.objectContaining({
                 id: "price-rule-new",
-              } as unknown as CreatePriceRuleDTO)
+              })
             )
           })
         })

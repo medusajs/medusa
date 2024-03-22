@@ -23,7 +23,7 @@ import PriceSet from "./price-set"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
-const tableName = "price_set_money_amount"
+const tableName = "price"
 const PriceDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "deleted_at",
@@ -128,14 +128,14 @@ export default class Price {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "psma")
+    this.id = generateEntityId(this.id, "price")
     this.price_set_id ??= this.price_set?.id!
     this.price_list_id ??= this.price_list?.id!
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "psma")
+    this.id = generateEntityId(this.id, "price")
     this.price_set_id ??= this.price_set?.id!
     this.price_list_id ??= this.price_list?.id!
   }

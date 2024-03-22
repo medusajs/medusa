@@ -4,7 +4,7 @@ import { defaultPricesData } from "./data"
 
 export * from "./data"
 
-export async function createPriceSetMoneyAmounts(
+export async function createPrices(
   manager: SqlEntityManager,
   pricesData: any[] = defaultPricesData
 ): Promise<Price[]> {
