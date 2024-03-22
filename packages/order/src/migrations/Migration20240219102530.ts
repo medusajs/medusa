@@ -33,7 +33,7 @@ export class Migration20240219102530 extends Migration {
           "customer_id" TEXT NULL,
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
-          "status" text NOT NULL DEFAULT 'pending',
+          "status" text NOT NULL,
           "email" text NULL,
           "currency_code" text NOT NULL,
           "shipping_address_id" text NULL,
@@ -64,7 +64,9 @@ export class Migration20240219102530 extends Migration {
         'canceled',
         'requires_action'
       );
-      ALTER TABLE "order" ALTER COLUMN status TYPE order_status_enum USING status::order_status_enum;
+      ALTER TABLE "order" ALTER COLUMN status DROP DEFAULT;
+      ALTER TABLE "order" ALTER COLUMN status TYPE order_status_enum USING (status::text::order_status_enum);
+	  ALTER TABLE "order" ALTER COLUMN status SET DEFAULT 'pending';
     
 
       ALTER TABLE "order" DROP constraint if EXISTS "FK_6ff7e874f01b478c115fdd462eb" CASCADE;
