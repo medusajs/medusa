@@ -68,7 +68,7 @@ export default class PriceList {
   })
   ends_at: Date | null = null
 
-  @OneToMany(() => Price, (psma) => psma.price_list, {
+  @OneToMany(() => Price, (price) => price.price_list, {
     cascade: ["soft-remove" as Cascade],
   })
   prices = new Collection<Price>(this)

@@ -272,7 +272,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a PriceRule successfully", async () => {
-            const psma: Price = testManager.create(Price, {
+            const price: Price = testManager.create(Price, {
               currency_code: "EUR",
               amount: 100,
               price_set_id: "price-set-1",
@@ -280,7 +280,7 @@ moduleIntegrationTestRunner({
               rules_count: 0,
             })
 
-            await testManager.persist(psma).flush()
+            await testManager.persist(price).flush()
 
             await service.createPriceRules({
               id: "price-rule-new",
@@ -288,14 +288,14 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-1",
               value: "region_1",
               price_list_id: "test",
-              price_id: psma.id,
+              price_id: price.id,
             })
 
-            const [pricerule] = await service.listPriceRules({
+            const [priceRule] = await service.listPriceRules({
               id: ["price-rule-new"],
             })
 
-            expect(pricerule).toEqual(
+            expect(priceRule).toEqual(
               expect.objectContaining({
                 id: "price-rule-new",
               })

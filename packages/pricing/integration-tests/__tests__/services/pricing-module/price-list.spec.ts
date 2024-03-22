@@ -1005,7 +1005,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          await service.removePrices(priceList.prices!.map((psma) => psma.id))
+          await service.removePrices(priceList.prices!.map((price) => price.id))
           ;[priceList] = await service.listPriceLists(
             { id: ["price-list-1"] },
             {

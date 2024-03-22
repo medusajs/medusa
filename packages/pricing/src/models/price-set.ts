@@ -33,7 +33,7 @@ export default class PriceSet {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @OneToMany(() => Price, (psma) => psma.price_set, {
+  @OneToMany(() => Price, (price) => price.price_set, {
     cascade: ["soft-remove" as Cascade],
   })
   prices = new Collection<Price>(this)
