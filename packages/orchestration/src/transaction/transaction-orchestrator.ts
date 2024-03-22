@@ -781,7 +781,7 @@ export class TransactionOrchestrator extends EventEmitter {
     if (flow.state === TransactionState.FAILED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Cannot revert a perment failed transaction.`
+        `Cannot revert a permanent failed transaction.`
       )
     }
 

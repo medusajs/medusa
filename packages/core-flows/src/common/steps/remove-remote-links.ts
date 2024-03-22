@@ -1,6 +1,7 @@
 import { DeleteEntityInput, RemoteLink } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type RemoveRemoteLinksStepInput = DeleteEntityInput | DeleteEntityInput[]
 
