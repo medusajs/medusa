@@ -13,9 +13,19 @@ export const updateOrderTaxLinesStepId = "update-order-tax-lines-step"
 export const updateOrderTaxLinesStep = createStep(
   updateOrderTaxLinesStepId,
   async (input: StepInput, { container }) => {
-    // TODO: manually trigger rollback on workflow when step fails
-    await updateOrderTaxLinesWorkflow(container).run({ input })
+    const { transaction } = await updateOrderTaxLinesWorkflow(container).run({
+      input,
+    })
 
-    return new StepResponse(null)
+    return new StepResponse(null, { transaction })
+  },
+  async (flow, { container }) => {
+    if (!flow) {
+      return
+    }
+
+    await updateOrderTaxLinesWorkflow(container).cancel({
+      transaction: flow.transaction,
+    })
   }
 )

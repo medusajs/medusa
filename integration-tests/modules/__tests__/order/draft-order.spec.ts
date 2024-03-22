@@ -10,6 +10,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
   IStockLocationServiceNext,
+  ITaxModuleService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -17,6 +18,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import { setupTaxStructure } from "../fixtures"
 
 jest.setTimeout(50000)
 
@@ -37,6 +39,7 @@ medusaIntegrationTestRunner({
     let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
     let locationModule: IStockLocationServiceNext
+    let taxModule: ITaxModuleService
     let remoteLink, remoteQuery
 
     let defaultRegion
@@ -62,6 +65,7 @@ medusaIntegrationTestRunner({
       locationModule = appContainer.resolve(
         ModuleRegistrationName.STOCK_LOCATION
       )
+      taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       remoteQuery = appContainer.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
     })
@@ -177,6 +181,8 @@ medusaIntegrationTestRunner({
             },
           },
         ])
+
+        await setupTaxStructure(taxModule)
 
         const payload = {
           email: "oli@test.dk",
