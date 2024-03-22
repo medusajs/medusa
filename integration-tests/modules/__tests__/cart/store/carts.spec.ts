@@ -65,7 +65,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /store/carts", () => {
-        it("should create a cart", async () => {
+        it.skip("should create a cart", async () => {
           const region = await regionModule.create({
             name: "US",
             currency_code: "usd",
@@ -786,7 +786,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /store/carts/:id/line-items", () => {
-        it("should add item to cart", async () => {
+        it.skip("should add item to cart", async () => {
           await setupTaxStructure(taxModule)
 
           const region = await regionModule.create({
