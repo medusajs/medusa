@@ -1033,6 +1033,7 @@ export interface ICustomerModuleService extends IModuleService {
    * property any of the customer's relation attribute names, such as `groups`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were restored.
+   * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
    * await customerModuleService.restore(["cus_123"])
@@ -1071,6 +1072,7 @@ export interface ICustomerModuleService extends IModuleService {
    * property any of the customer group's relation attribute names, such as `customers`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were restored.
+   * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
    * await customerModuleService.restoreCustomerGroups([
