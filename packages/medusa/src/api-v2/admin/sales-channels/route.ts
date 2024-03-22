@@ -42,7 +42,7 @@ export const POST = async (
 ) => {
   const salesChannelsData = [req.validatedBody]
 
-  const { errors } = await createSalesChannelsWorkflow(req.scope).run({
+  const { errors, result } = await createSalesChannelsWorkflow(req.scope).run({
     input: { salesChannelsData },
     throwOnError: false,
   })
@@ -51,11 +51,13 @@ export const POST = async (
     throw errors[0].error
   }
 
+  const salesChannel = result[0]
+
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "sales_channels",
-    variables: { id: req.params.id },
+    variables: { id: salesChannel.id },
     fields: req.remoteQueryConfig.fields,
   })
 
