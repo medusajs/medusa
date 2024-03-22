@@ -36,7 +36,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO>} The retrieved customer.
    *
    * @example
-   * A simple example that retrieves a inventory item by its ID:
+   * A simple example that retrieves a customer by its ID:
    *
    * ```ts
    * const customer =
