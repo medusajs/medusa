@@ -57,7 +57,7 @@ export default async function ({ port, directory }) {
         track("PING")
       })
 
-      return shouldStartServer ? { dbConnection, server } : { dbConnection }
+      return { dbConnection, server }
     } catch (err) {
       Logger.error("Error starting server", err)
       process.exit(1)
