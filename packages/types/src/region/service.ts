@@ -441,7 +441,7 @@ export interface IRegionModuleService extends IModuleService {
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated country.
-   * The object's keys are the ID attribute names of the region entity's relations, such as `country_id`, and its value is an array of strings, each being the ID of a record associated region
+   * The object's keys are the ID attribute names of the region entity's relations, such as `country_id`, and its value is an array of strings, each being the ID of a record associated
    * with the region through this relation, such as the IDs of associated countries.
    *
    * If there are no related records, the promise resolves to `void`.
