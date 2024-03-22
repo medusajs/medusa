@@ -22,11 +22,11 @@ export async function run({
 
   logger.info(`Loading seed data from ${path}...`)
 
-  const { priceSetsData, priceSetMoneyAmountsData } = await import(
+  const { priceSetsData, pricesData } = await import(
     resolve(process.cwd(), path)
   ).catch((e) => {
     logger?.error(
-      `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData and priceSetMoneyAmountsData.${EOL}${e}`
+      `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData and pricesData.${EOL}${e}`
     )
     throw e
   })
@@ -44,10 +44,10 @@ export async function run({
   const manager = orm.em.fork()
 
   try {
-    logger.info("Inserting price_set & price_set_money_amount")
+    logger.info("Inserting price_sets & prices")
 
-    await createPriceSets(manager as any, priceSetsData)
-    await createPriceSetMoneyAmounts(manager as any, priceSetMoneyAmountsData)
+    await createPriceSets(manager, priceSetsData)
+    await createPrices(manager, pricesData)
   } catch (e) {
     logger.error(
       `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
@@ -70,15 +70,15 @@ async function createPriceSets(
   return priceSets
 }
 
-async function createPriceSetMoneyAmounts(
+async function createPrices(
   manager: SqlEntityManager<PostgreSqlDriver>,
   data: RequiredEntityData<PricingModels.Price>[]
 ) {
-  const priceSetMoneyAmounts = data.map((priceSetMoneyAmountData) => {
-    return manager.create(PricingModels.Price, priceSetMoneyAmountData)
+  const prices = data.map((priceData) => {
+    return manager.create(PricingModels.Price, priceData)
   })
 
-  await manager.persistAndFlush(priceSetMoneyAmounts)
+  await manager.persistAndFlush(prices)
 
-  return priceSetMoneyAmounts
+  return prices
 }
