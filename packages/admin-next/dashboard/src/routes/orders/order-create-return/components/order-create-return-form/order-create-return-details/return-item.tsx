@@ -1,14 +1,13 @@
-import React from "react"
 import { useTranslation } from "react-i18next"
 
-import { Input, Select, Text } from "@medusajs/ui"
 import { LineItem } from "@medusajs/medusa"
-import { UseFormReturn } from "react-hook-form"
+import { Input, Select, Text } from "@medusajs/ui"
 import { useAdminReturnReasons } from "medusa-react"
+import { UseFormReturn } from "react-hook-form"
 
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { Form } from "../../../../../components/common/form"
+import { Form } from "../../../../../../components/common/form"
+import { Thumbnail } from "../../../../../../components/common/thumbnail"
+import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
 
 type OrderEditItemProps = {
   item: LineItem

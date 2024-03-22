@@ -19,7 +19,6 @@
     "is": "is",
     "select": "Select",
     "selected": "Selected",
-    "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
     "expired": "Expired",
@@ -51,6 +50,7 @@
     "settings": "Settings"
   },
   "actions": {
+    "save": "Save",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -288,7 +288,11 @@
       "customRefundHint": "If you want to refund something else instead of the total refund.",
       "customShippingPrice": "Custom shipping",
       "customShippingPriceHint": "Custom shipping cost.",
-      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location."
+      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
+      "refundableAmountLabel": "Refundable amount",
+      "refundableAmountHeader": "Refundable Amount",
+      "returnableQuantityLabel": "Returnable quantity",
+      "returnableQuantityHeader": "Returnable Quantity"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -741,7 +745,7 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
-    "reason" : "Reason",
+    "reason": "Reason",
     "note": "Note",
     "none": "none",
     "all": "all",

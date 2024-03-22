@@ -1,23 +1,30 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
-import { AdminPostOrdersOrderReturnsReq, Order } from "@medusajs/medusa"
+import {
+  AdminPostOrdersOrderReturnsReq,
+  LineItem,
+  Order,
+} from "@medusajs/medusa"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { OrdersReturnItem } from "@medusajs/medusa/dist/types/orders"
+import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { ItemsTable } from "../items-table"
-import { ReturnsForm } from "./returns-form"
+import { castNumber } from "../../../../../lib/cast-number"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-import { CreateReturnSchema } from "./schema"
 import { getAllReturnableItems } from "../../../../../lib/rma"
+import { CreateReturnSchema } from "./constants"
+import { OrderCreateReturnDetails } from "./order-create-return-details"
+import { CreateReturnItemTable } from "./order-create-return-item-table"
 
-type CreateReturnsFormProps = {
+type OrderCreateReturnsFormProps = {
   order: Order
 }
 
@@ -30,11 +37,11 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-export function CreateReturns({ order }: CreateReturnsFormProps) {
+export function OrderCreateReturnForm({ order }: OrderCreateReturnsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const [selectedItems, setSelectedItems] = useState([])
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [tab, setTab] = React.useState<Tab>(Tab.ITEMS)
 
   const { mutateAsync: requestReturnOrder, isLoading } = useAdminRequestReturn(
@@ -67,14 +74,19 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
       enable_custom_refund: false,
       enable_custom_shipping_price: false,
 
-      custom_refund: 0,
-      custom_shipping_price: 0,
+      custom_refund: "",
+      custom_shipping_price: "",
     },
   })
 
+  const {
+    formState: { isDirty },
+    setValue,
+  } = form
+
   const onSubmit = form.handleSubmit(async (data) => {
     const items = selected.map((item) => {
-      const ret = {
+      const ret: OrdersReturnItem = {
         item_id: item.id,
         quantity: data.quantity[item.id],
       }
@@ -94,7 +106,7 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
     if (data.enable_custom_refund && data.custom_refund) {
       const customRefund =
-        data.custom_refund === "" ? 0 : Number(data.custom_refund)
+        data.custom_refund === "" ? 0 : castNumber(data.custom_refund)
       refund = getDbAmount(customRefund, order.currency_code)
     }
 
@@ -109,21 +121,23 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     }
 
     if (data.shipping) {
-      const option = shipping_options.find((o) => o.id === data.shipping)!
+      const option = shipping_options.find((o) => o.id === data.shipping) as
+        | PricedShippingOption
+        | undefined
 
-      const taxRate = option?.tax_rates.reduce((acc, curr) => {
-        return acc + curr.rate / 100
-      }, 0)
+      const taxRate =
+        option?.tax_rates?.reduce((acc, curr) => {
+          return acc + (curr.rate || 0) / 100
+        }, 0) || 0
 
-      let price = option.price_incl_tax
+      let price = option?.price_incl_tax
         ? Math.round(option.price_incl_tax / (1 + taxRate))
         : 0
 
       if (data.enable_custom_shipping_price) {
-        const customShipping =
-          data.custom_shipping_price === ""
-            ? 0
-            : Number(data.custom_shipping_price)
+        const customShipping = data.custom_shipping_price
+          ? castNumber(data.custom_shipping_price)
+          : 0
         price = getDbAmount(customShipping, order.currency_code)
       }
 
@@ -144,20 +158,26 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
     [Tab.DETAILS]: "not-started",
   })
 
-  const onTabChange = React.useCallback(
-    async (value: Tab) => {
-      setTab(value)
-    },
-    [tab]
-  )
+  const onTabChange = React.useCallback(async (value: Tab) => {
+    setTab(value)
+  }, [])
 
   const onNext = React.useCallback(async () => {
     switch (tab) {
       case Tab.ITEMS: {
         selected.forEach((item) => {
-          form.setValue(`quantity.${item.id}`, item.quantity)
-          form.setValue(`reason.${item.id}`, "")
-          form.setValue(`note.${item.id}`, "")
+          setValue(`quantity.${item.id}`, item.quantity, {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
+          setValue(`reason.${item.id}`, "", {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
+          setValue(`note.${item.id}`, "", {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
         })
         setTab(Tab.DETAILS)
         break
@@ -166,15 +186,13 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
         await onSubmit()
         break
     }
-  }, [tab, selected])
+  }, [tab, selected, setValue, onSubmit])
 
   const onSelectionChange = (ids: string[]) => {
     setSelectedItems(ids)
 
     if (ids.length) {
-      const state = { ...status }
-      state[Tab.ITEMS] = "in-progress"
-      setStatus(state)
+      setStatus((prev) => ({ ...prev, [Tab.ITEMS]: "in-progress" }))
     }
   }
 
@@ -184,19 +202,15 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
 
   useEffect(() => {
     if (tab === Tab.DETAILS) {
-      const state = { ...status }
-      state[Tab.ITEMS] = "completed"
       setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "not-started" })
     }
   }, [tab])
 
   useEffect(() => {
-    if (form.formState.isDirty) {
-      const state = { ...status }
-      state[Tab.ITEMS] = "completed"
+    if (isDirty) {
       setStatus({ [Tab.ITEMS]: "completed", [Tab.DETAILS]: "in-progress" })
     }
-  }, [form.formState.isDirty])
+  }, [isDirty])
 
   const canMoveToDetails = selectedItems.length
 
@@ -231,29 +245,36 @@ export function CreateReturns({ order }: CreateReturnsFormProps) {
             </ProgressTabs.Trigger>
           </ProgressTabs.List>
           <div className="flex flex-1 items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
             <Button
+              size="small"
               className="whitespace-nowrap"
               isLoading={isLoading}
               onClick={onNext}
               disabled={!canMoveToDetails}
               type={tab === Tab.DETAILS ? "submit" : "button"}
             >
-              {t(tab === Tab.DETAILS ? "general.save" : "general.next")}
+              {tab === Tab.DETAILS ? t("actions.save") : t("general.next")}
             </Button>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex h-[calc(100%-56px)] w-full flex-col items-center overflow-y-auto">
           <ProgressTabs.Content value={Tab.ITEMS} className="h-full w-full">
-            <ItemsTable
-              items={returnableItems}
+            <CreateReturnItemTable
+              items={returnableItems as LineItem[]}
               selectedItems={selectedItems}
               onSelectionChange={onSelectionChange}
+              currencyCode={order.currency_code}
             />
           </ProgressTabs.Content>
           <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-            <ReturnsForm
+            <OrderCreateReturnDetails
               form={form}
-              items={selected}
+              items={selected as LineItem[]}
               order={order}
               onRefundableAmountChange={onRefundableAmountChange}
             />

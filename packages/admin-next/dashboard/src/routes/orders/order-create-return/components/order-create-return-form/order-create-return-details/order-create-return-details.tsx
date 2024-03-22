@@ -1,8 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { UseFormReturn, useWatch } from "react-hook-form"
-import * as z from "zod"
 import {
   AdminGetVariantsVariantInventoryRes,
+  LevelWithAvailability,
   LineItem,
   Order,
 } from "@medusajs/medusa"
@@ -14,37 +12,53 @@ import {
   Switch,
   Text,
 } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
 import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
-import { LevelWithAvailability } from "@medusajs/medusa"
+import { useEffect, useMemo, useState } from "react"
+import { Control, UseFormReturn, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as z from "zod"
 
+import { Form } from "../../../../../../components/common/form"
 import { ReturnItem } from "./return-item"
-import { Form } from "../../../../../components/common/form"
 
-import { medusa } from "../../../../../lib/medusa"
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-import { CreateReturnSchema } from "./schema"
+import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
+import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
+import { castNumber } from "../../../../../../lib/cast-number"
+import { getCurrencySymbol } from "../../../../../../lib/currencies"
+import { medusa } from "../../../../../../lib/medusa"
+import { getDbAmount } from "../../../../../../lib/money-amount-helpers"
+import { CreateReturnSchema } from "../constants"
 
-type ReturnsFormProps = {
+type OrderCreateReturnDetailsProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
   items: LineItem[] // Items selected for return
   order: Order
   onRefundableAmountChange: (amount: number) => void
 }
 
-export function ReturnsForm({
+export function OrderCreateReturnDetails({
   form,
   items,
   order,
   onRefundableAmountChange,
-}: ReturnsFormProps) {
+}: OrderCreateReturnDetailsProps) {
   const { t } = useTranslation()
+
+  const { currency_code } = order
+  const { setValue } = form
 
   const [inventoryMap, setInventoryMap] = useState<
     Record<string, LevelWithAvailability[]>
   >({})
+
+  const {
+    customShippingPrice,
+    enableCustomRefund,
+    enableCustomShippingPrice,
+    quantity,
+    shipping,
+    selectedLocation,
+  } = useWatchFields(form.control)
 
   const { shipping_options = [], isLoading: isShippingOptionsLoading } =
     useAdminShippingOptions({
@@ -78,7 +92,13 @@ export function ReturnsForm({
         .filter((it) => it?.variant)
         .forEach((item) => {
           const { variant } = item as AdminGetVariantsVariantInventoryRes
-          ret[variant.id] = variant.inventory[0]?.location_levels
+          const levels = variant.inventory[0]?.location_levels
+
+          if (!levels) {
+            return
+          }
+
+          ret[variant.id] = levels
         })
 
       return ret
@@ -88,8 +108,6 @@ export function ReturnsForm({
       setInventoryMap(map)
     })
   }, [items])
-
-  const selectedLocation = form.watch("location")
 
   const showLevelsWarning = useMemo(() => {
     if (!selectedLocation) {
@@ -110,29 +128,31 @@ export function ReturnsForm({
     return !allItemsHaveLocation
   }, [items, inventoryMap, selectedLocation])
 
-  const {
-    quantity,
-    shipping,
-    custom_shipping_price,
-    enable_custom_shipping_price,
-  } = useWatch()
-
   const shippingPrice = useMemo(() => {
-    if (enable_custom_shipping_price && custom_shipping_price) {
-      return getDbAmount(custom_shipping_price, order.currency_code)
+    if (enableCustomShippingPrice && customShippingPrice) {
+      const amount =
+        customShippingPrice === "" ? 0 : castNumber(customShippingPrice)
+
+      return getDbAmount(amount, currency_code)
     }
 
-    const method = shipping_options?.find(
-      (o) => form.watch("shipping") === o.id
-    )
+    const method = shipping_options?.find((o) => shipping === o.id) as
+      | PricedShippingOption
+      | undefined
 
     return method?.price_incl_tax || 0
-  }, [shipping, custom_shipping_price, enable_custom_shipping_price])
+  }, [
+    shipping,
+    customShippingPrice,
+    enableCustomShippingPrice,
+    shipping_options,
+    currency_code,
+  ])
 
   const refundable = useMemo(() => {
     const itemTotal = items.reduce((acc: number, curr: LineItem): number => {
       const unitRefundable =
-        (curr.refundable || 0) / (curr.quantity - curr.returned_quantity)
+        (curr.refundable || 0) / (curr.quantity - (curr.returned_quantity || 0))
 
       return acc + unitRefundable * quantity[curr.id]
     }, 0)
@@ -141,16 +161,22 @@ export function ReturnsForm({
     onRefundableAmountChange(amount)
 
     return amount
-  }, [items, quantity, shippingPrice])
+  }, [items, onRefundableAmountChange, quantity, shippingPrice])
 
   useEffect(() => {
-    form.setValue("enable_custom_shipping_price", false)
-    form.setValue("custom_shipping_price", 0)
-  }, [form.watch("enable_custom_refund")])
+    setValue("enable_custom_shipping_price", false, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    setValue("custom_shipping_price", 0, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+  }, [enableCustomRefund, setValue])
 
   return (
     <div className="flex size-full flex-col items-center overflow-auto p-16">
-      <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
+      <div className="flex w-full max-w-[720px] flex-col justify-center px-2 pb-2">
         <div className="flex flex-col gap-y-1 pb-10">
           <Heading className="text-2xl">{t("general.details")}</Heading>
         </div>
@@ -278,7 +304,7 @@ export function ReturnsForm({
           <Form.Field
             control={form.control}
             name="send_notification"
-            render={({ field }) => {
+            render={({ field: { onChange, value, ...field } }) => {
               return (
                 <Form.Item>
                   <div className="flex items-center justify-between">
@@ -288,8 +314,9 @@ export function ReturnsForm({
                     <Form.Control>
                       <Form.Control>
                         <Switch
-                          checked={!!field.value}
-                          onCheckedChange={field.onChange}
+                          checked={!!value}
+                          onCheckedChange={onChange}
+                          {...field}
                         />
                       </Form.Control>
                     </Form.Control>
@@ -308,7 +335,7 @@ export function ReturnsForm({
           <Form.Field
             control={form.control}
             name="enable_custom_refund"
-            render={({ field }) => {
+            render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
                   <div className="flex items-center justify-between">
@@ -316,8 +343,9 @@ export function ReturnsForm({
                     <Form.Control>
                       <Form.Control>
                         <Switch
-                          checked={!!field.value}
-                          onCheckedChange={field.onChange}
+                          checked={!!value}
+                          onCheckedChange={onChange}
+                          {...field}
                         />
                       </Form.Control>
                     </Form.Control>
@@ -331,7 +359,7 @@ export function ReturnsForm({
             }}
           />
 
-          {form.watch("enable_custom_refund") && (
+          {enableCustomRefund && (
             <div className="w-[50%] pr-2">
               <Form.Field
                 control={form.control}
@@ -363,18 +391,18 @@ export function ReturnsForm({
             control={form.control}
             name="enable_custom_shipping_price"
             render={({ field }) => {
+              let tooltip = undefined
+
+              if (enableCustomRefund) {
+                tooltip = t("orders.returns.shippingPriceTooltip1")
+              } else if (!shipping) {
+                tooltip = t("orders.returns.shippingPriceTooltip2")
+              }
+
               return (
                 <Form.Item>
                   <div className="flex items-center justify-between">
-                    <Form.Label
-                      tooltip={
-                        form.watch("enable_custom_refund")
-                          ? t("orders.returns.shippingPriceTooltip1")
-                          : !form.watch("shipping")
-                          ? t("orders.returns.shippingPriceTooltip2")
-                          : undefined
-                      }
-                    >
+                    <Form.Label tooltip={tooltip}>
                       {t("orders.returns.customShippingPrice")}
                     </Form.Label>
                     <Form.Control>
@@ -399,7 +427,7 @@ export function ReturnsForm({
             }}
           />
 
-          {form.watch("enable_custom_shipping_price") && (
+          {enableCustomShippingPrice && (
             <div className="w-[50%] pr-2">
               <Form.Field
                 control={form.control}
@@ -427,4 +455,47 @@ export function ReturnsForm({
       </div>
     </div>
   )
+}
+
+const useWatchFields = (
+  control: Control<z.infer<typeof CreateReturnSchema>>
+) => {
+  const enableCustomShippingPrice = useWatch({
+    control: control,
+    name: "enable_custom_shipping_price",
+  })
+
+  const enableCustomRefund = useWatch({
+    control: control,
+    name: "enable_custom_refund",
+  })
+
+  const quantity = useWatch({
+    control: control,
+    name: "quantity",
+  })
+
+  const shipping = useWatch({
+    control: control,
+    name: "shipping",
+  })
+
+  const customShippingPrice = useWatch({
+    control: control,
+    name: "custom_shipping_price",
+  })
+
+  const selectedLocation = useWatch({
+    control: control,
+    name: "location",
+  })
+
+  return {
+    enableCustomShippingPrice,
+    enableCustomRefund,
+    quantity,
+    shipping,
+    customShippingPrice,
+    selectedLocation,
+  }
 }

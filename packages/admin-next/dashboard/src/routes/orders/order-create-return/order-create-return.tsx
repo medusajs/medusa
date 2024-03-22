@@ -1,10 +1,10 @@
 import { useAdminOrder } from "medusa-react"
 import { useParams } from "react-router-dom"
 
-import { CreateReturns } from "./components/create-returns"
 import { RouteFocusModal } from "../../../components/route-modal"
+import { CreateReturns } from "./components/order-create-return-form"
 
-export function ReturnsCreate() {
+export function OrderCreateReturn() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
@@ -16,13 +16,11 @@ export function ReturnsCreate() {
     throw error
   }
 
-  if (isLoading || !order) {
-    return null
-  }
+  const ready = !isLoading && order
 
   return (
     <RouteFocusModal>
-      <CreateReturns order={order} />
+      {ready && <CreateReturns order={order} />}
     </RouteFocusModal>
   )
 }
