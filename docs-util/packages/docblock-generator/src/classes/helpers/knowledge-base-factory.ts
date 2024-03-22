@@ -372,7 +372,7 @@ class KnowledgeBaseFactory {
       startsWith: "softDelete",
       template: (_str, options) => {
         return this.replaceTypePlaceholder(
-          `An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated {related entity name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, and its value is an array of strings, each being the ID of a record associated ${this.TYPE_PLACEHOLDER}with the ${this.TYPE_PLACEHOLDER} through this relation, such as the IDs of associated {related entity name}.${DOCBLOCK_DOUBLE_LINES}If there are no related records, the promise resolves to \`void\`.`,
+          `An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated {related entity name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, and its value is an array of strings, each being the ID of a record associated ${this.TYPE_PLACEHOLDER} with the ${this.TYPE_PLACEHOLDER} through this relation, such as the IDs of associated {related entity name}.${DOCBLOCK_DOUBLE_LINES}If there are no related records, the promise resolves to \`void\`.`,
           options
         )
       },
