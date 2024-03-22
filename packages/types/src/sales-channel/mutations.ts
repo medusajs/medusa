@@ -52,7 +52,8 @@ export interface UpsertSalesChannelDTO {
   id?: string
 
   /**
-   * The name of the sales channel.
+   * The name of the sales channel. Required
+   * when creating a sales channel.
    */
   name?: string
 
