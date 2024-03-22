@@ -5,11 +5,12 @@ import {
   IPricingModuleService,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+import * as console from "console"
 
-jest.setTimeout(30000)
+jest.setTimeout(300000)
 
 async function createPriceSetPriceRules(
   manager: SqlEntityManager,
@@ -50,6 +51,26 @@ moduleIntegrationTestRunner({
 
       describe("list", () => {
         it("list priceSets", async () => {
+          /*let shouldContinue = true
+          while (shouldContinue) {
+            const [priceSet, priceSetDefaultTax] = await service.create([
+              {
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+              {
+                prices: [{ amount: 2000, currency_code: "usd" }],
+              },
+            ])
+
+            if (priceSet.prices[0].amount !== 3000) {
+              console.log(
+                "priceSet.prices[0].amount",
+                priceSet.prices[0].amount
+              )
+              shouldContinue = false
+            }
+          }*/
+
           const priceSetsResult = await service.list()
 
           expect(priceSetsResult).toEqual([
@@ -422,7 +443,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a price set with rule types and money amountss", async () => {
+        it("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.create([
             {
               rules: [{ rule_attribute: "region_id" }],

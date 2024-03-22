@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -117,10 +117,16 @@ export default class PriceRule {
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prule")
+    this.rule_type_id ??= this.rule_type?.id!
+    this.price_set_id ??= this.price_set?.id!
+    this.price_id ??= this.price?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "prule")
+    this.rule_type_id ??= this.rule_type?.id!
+    this.price_set_id ??= this.price_set?.id!
+    this.price_id ??= this.price?.id!
   }
 }
