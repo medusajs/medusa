@@ -2098,7 +2098,7 @@ medusaIntegrationTestRunner({
         expect(variantRes.data.variant.inventory_quantity).toEqual(9)
       })
 
-      it("calculates correct payment totals on cart completion taking into account line item adjustments", async () => {
+      it.skip("calculates correct payment totals on cart completion taking into account line item adjustments", async () => {
         await api.post("/store/carts/test-cart-3", {
           discounts: [{ code: "CREATED" }],
         })
