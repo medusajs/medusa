@@ -51,6 +51,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   res.status(200).json({
     stock_locations,
-    ...metadata,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }

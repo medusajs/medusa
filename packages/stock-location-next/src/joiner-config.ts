@@ -1,6 +1,6 @@
-import { MapToConfig } from "@medusajs/utils"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { MapToConfig } from "@medusajs/utils"
 import { StockLocation } from "./models"
 import moduleSchema from "./schema"
 
@@ -16,15 +16,14 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
     valueFrom: key.split("_").pop()!,
   })
 })
-
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.STOCK_LOCATION,
   primaryKeys: ["id"],
   linkableKeys: {
-    location_id: StockLocation.name,
     stock_location_id: StockLocation.name,
+    location_id: StockLocation.name,
   },
   schema: moduleSchema,
   alias: [
