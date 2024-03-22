@@ -16,7 +16,7 @@ module.exports = {
   ],
   transformIgnorePatterns: [`/dist`],
   transform: {
-    "^.+\\.[jt]s$": `../../jest-transformer.js`,
+    "^.+\\.[jt]s$": ["@swc/jest"],
   },
   setupFiles: ["../setup-env.js"],
   /*setupFilesAfterEnv: ["../setup.js"],
