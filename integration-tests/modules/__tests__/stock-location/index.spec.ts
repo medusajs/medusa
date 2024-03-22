@@ -52,5 +52,34 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe.only("Get stock location", () => {
+      let locationId
+      const location = {
+        name: "Test Location",
+      }
+      beforeEach(async () => {
+        const createLocationRespones = await api.post(
+          "/admin/stock-locations",
+          {
+            ...location,
+          },
+          adminHeaders
+        )
+        locationId = createLocationRespones.data.stock_location.id
+      })
+
+      it("should get a stock location", async () => {
+        const response = await api.get(
+          `/admin/stock-locations/${locationId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location).toEqual(
+          expect.objectContaining({ id: locationId, ...location })
+        )
+      })
+    })
   },
 })
