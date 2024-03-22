@@ -17,7 +17,18 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The created stores.
    *
    * @example
-   * {example-code}
+   * const stores = await storeModuleService.create([
+   *   {
+   *     name: "Acme",
+   *     supported_currency_codes: ["usd", "eur"],
+   *     default_currency_code: "usd",
+   *   },
+   *   {
+   *     name: "Acme 2",
+   *     supported_currency_codes: ["usd"],
+   *     default_currency_code: "usd",
+   *   },
+   * ])
    */
   create(data: CreateStoreDTO[], sharedContext?: Context): Promise<StoreDTO[]>
 
@@ -29,7 +40,11 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The created store.
    *
    * @example
-   * {example-code}
+   * const store = await storeModuleService.create({
+   *   name: "Acme",
+   *   supported_currency_codes: ["usd", "eur"],
+   *   default_currency_code: "usd",
+   * })
    */
   create(data: CreateStoreDTO, sharedContext?: Context): Promise<StoreDTO>
 
@@ -41,7 +56,17 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The created or updated stores.
    *
    * @example
-   * {example-code}
+   * const stores = await storeModuleService.upsert([
+   *   {
+   *     id: "store_123",
+   *     name: "Acme",
+   *   },
+   *   {
+   *     name: "Acme 2",
+   *     supported_currency_codes: ["usd"],
+   *     default_currency_code: "usd",
+   *   },
+   * ])
    */
   upsert(data: UpsertStoreDTO[], sharedContext?: Context): Promise<StoreDTO[]>
 
@@ -53,7 +78,10 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The created or updated store.
    *
    * @example
-   * {example-code}
+   * const store = await storeModuleService.upsert({
+   *   id: "store_123",
+   *   name: "Acme",
+   * })
    */
   upsert(data: UpsertStoreDTO, sharedContext?: Context): Promise<StoreDTO>
 
@@ -66,7 +94,9 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The updated store.
    *
    * @example
-   * {example-code}
+   * const store = await storeModuleService.update("store_123", {
+   *   name: "Acme",
+   * })
    */
   update(
     id: string,
@@ -83,7 +113,14 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The updated stores.
    *
    * @example
-   * {example-code}
+   * const store = await storeModuleService.update(
+   *   {
+   *     name: ["Acme"],
+   *   },
+   *   {
+   *     default_currency_code: "usd",
+   *   }
+   * )
    */
   update(
     selector: FilterableStoreProps,
@@ -99,7 +136,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the stores are deleted successfully.
    *
    * @example
-   * {example-code}
+   * await storeModuleService.delete(["store_123", "store_321"])
    */
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
@@ -111,7 +148,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the store is deleted successfully.
    *
    * @example
-   * {example-code}
+   * await storeModuleService.delete("store_123")
    */
   delete(id: string, sharedContext?: Context): Promise<void>
 
@@ -125,7 +162,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The retrieved store.
    *
    * @example
-   * {example-code}
+   * const store = await storeModuleService.retrieve("store_123")
    */
   retrieve(
     id: string,
@@ -143,7 +180,27 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The list of stores.
    *
    * @example
-   * {example-code}
+   * To retrieve a list of stores using their IDs:
+   *
+   * ```ts
+   * const stores = await storeModuleService.list({
+   *   id: ["store_123", "store_321"],
+   * })
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const stores = await storeModuleService.list(
+   *   {
+   *     id: ["store_123", "store_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
    */
   list(
     filters?: FilterableStoreProps,
@@ -161,7 +218,29 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<[StoreDTO[], number]>} The list of stores along with their total count.
    *
    * @example
-   * {example-code}
+   * To retrieve a list of stores using their IDs:
+   *
+   * ```ts
+   * const [stores, count] = await storeModuleService.listAndCount(
+   *   {
+   *     id: ["store_123", "store_321"],
+   *   }
+   * )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const [stores, count] = await storeModuleService.listAndCount(
+   *   {
+   *     id: ["store_123", "store_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
    */
   listAndCount(
     filters?: FilterableStoreProps,
@@ -179,7 +258,10 @@ export interface IStoreModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * {example-code}
+   * await storeModuleService.softDelete([
+   *   "store_123",
+   *   "store_321",
+   * ])
    */
   softDelete<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
@@ -198,7 +280,7 @@ export interface IStoreModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * {example-code}
+   * await storeModuleService.restore(["store_123", "store_321"])
    */
   restore<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
