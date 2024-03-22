@@ -1,11 +1,10 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { MoneyAmount, PriceList, PriceSet, PriceSetMoneyAmount } from "@models"
+import { PriceList, PriceSet, PriceSetMoneyAmount } from "@models"
 import schema from "./schema"
 
 export const LinkableKeys = {
-  money_amount_id: MoneyAmount.name,
   price_set_id: PriceSet.name,
   price_list_id: PriceList.name,
   price_set_money_amount_id: PriceSetMoneyAmount.name,
@@ -32,13 +31,6 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["price_set", "price_sets"],
       args: {
         entity: "PriceSet",
-      },
-    },
-    {
-      name: ["money_amount", "money_amounts"],
-      args: {
-        methodSuffix: "MoneyAmounts",
-        entity: "MoneyAmount",
       },
     },
     {

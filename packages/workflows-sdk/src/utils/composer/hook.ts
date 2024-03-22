@@ -110,6 +110,11 @@ export function hook<TOutput>(
     return {
       __value: async function (transactionContext) {
         const executionContext: StepExecutionContext = {
+          workflowId: transactionContext.model_id,
+          stepName: transactionContext.action,
+          action: transactionContext.action_type,
+          idempotencyKey: transactionContext.idempotency_key,
+          attempt: transactionContext.attempt,
           container: transactionContext.container,
           metadata: transactionContext.metadata,
           context: transactionContext.context,
