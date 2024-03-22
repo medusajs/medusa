@@ -72,13 +72,10 @@ async function createPriceSets(
 
 async function createPriceSetMoneyAmounts(
   manager: SqlEntityManager<PostgreSqlDriver>,
-  data: RequiredEntityData<PricingModels.PriceSetMoneyAmount>[]
+  data: RequiredEntityData<PricingModels.Price>[]
 ) {
   const priceSetMoneyAmounts = data.map((priceSetMoneyAmountData) => {
-    return manager.create(
-      PricingModels.PriceSetMoneyAmount,
-      priceSetMoneyAmountData
-    )
+    return manager.create(PricingModels.Price, priceSetMoneyAmountData)
   })
 
   await manager.persistAndFlush(priceSetMoneyAmounts)

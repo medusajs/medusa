@@ -57,82 +57,12 @@ moduleIntegrationTestRunner({
     describe("PricingModule Service - Calculate Price", () => {
       describe("calculatePrices", () => {
         beforeEach(async () => {
-          const moneyAmountsData = [
-            {
-              id: "psma-PLN",
-              currency_code: "PLN",
-              amount: 1000,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-company_id-EUR",
-              currency_code: "EUR",
-              amount: 500,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-company_id-PLN",
-              currency_code: "PLN",
-              amount: 400,
-              min_quantity: 1,
-              max_quantity: 5,
-            },
-            {
-              id: "psma-region_id-PLN",
-              currency_code: "PLN",
-              amount: 300,
-              min_quantity: 1,
-              max_quantity: 4,
-            },
-            {
-              id: "psma-region_id+company_id-PLN",
-              currency_code: "PLN",
-              amount: 999,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id-PLN-5-qty",
-              currency_code: "PLN",
-              amount: 250,
-              min_quantity: 4,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR",
-              currency_code: "EUR",
-              amount: 200,
-              min_quantity: 1,
-              max_quantity: 3,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR-4-qty",
-              currency_code: "EUR",
-              amount: 50,
-              min_quantity: 4,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR-customer-group",
-              currency_code: "EUR",
-              amount: 100,
-              min_quantity: 1,
-              max_quantity: 3,
-            },
-          ]
-
           const priceSetsData = [
-            {
-              id: "price-set-EUR",
-            },
-            {
-              id: "price-set-PLN",
-            },
+            { id: "price-set-EUR" },
+            { id: "price-set-PLN" },
           ] as unknown as CreatePriceSetDTO[]
 
-          const priceSetMoneyAmountsData = [
+          const pricesData = [
             {
               id: "psma-PLN",
               title: "psma PLN",
@@ -254,7 +184,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "EUR",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-company_id-EUR",
+              price_id: "psma-company_id-EUR",
             },
             {
               id: "price-rule-company_id-PLN",
@@ -262,7 +192,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-company_id-PLN",
+              price_id: "psma-company_id-PLN",
             },
             {
               id: "price-rule-region_id-PLN",
@@ -270,7 +200,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id-PLN",
+              price_id: "psma-region_id-PLN",
             },
             {
               id: "price-rule-region_id+company_id-PL",
@@ -278,7 +208,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id+company_id-PLN",
+              price_id: "psma-region_id+company_id-PLN",
             },
             {
               id: "price-rule-region_id+company_id-medusa-company-id",
@@ -286,7 +216,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id+company_id-PLN",
+              price_id: "psma-region_id+company_id-PLN",
             },
             {
               id: "price-rule-region_id-PLN-5-qty",
@@ -294,7 +224,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id-PLN-5-qty",
+              price_id: "psma-region_id-PLN-5-qty",
             },
             {
               id: "price-rule-region_id-company_id-PL",
@@ -302,7 +232,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+              price_id: "psma-region_id_company_id-PL-EUR",
             },
             {
               id: "price-rule-region_id-company_id-PLN",
@@ -310,7 +240,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+              price_id: "psma-region_id_company_id-PL-EUR",
             },
             {
               id: "price-rule-region_id-company_id-PL-4-qty",
@@ -318,8 +248,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-4-qty",
+              price_id: "psma-region_id_company_id-PL-EUR-4-qty",
             },
             {
               id: "price-rule-region_id-company_id-PLN-4-qty",
@@ -327,8 +256,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-4-qty",
+              price_id: "psma-region_id_company_id-PL-EUR-4-qty",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-PL",
@@ -336,8 +264,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "psma-region_id_company_id-PL-EUR-customer-group",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-PLN",
@@ -345,8 +272,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "psma-region_id_company_id-PL-EUR-customer-group",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-test_customer_group",
@@ -354,15 +280,13 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-customer_group_id",
               value: "test-customer-group",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "psma-region_id_company_id-PL-EUR-customer-group",
             },
           ] as unknown as CreatePriceRuleDTO[]
 
           await seedPriceData(MikroOrmWrapper.forkManager(), {
-            moneyAmountsData,
             priceSetsData,
-            priceSetMoneyAmountsData,
+            pricesData,
             priceRuleData,
             ruleTypesData,
           })

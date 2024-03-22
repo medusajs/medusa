@@ -70,6 +70,7 @@ export interface UpdatePriceSetMoneyAmountDTO {
 export interface CreatePriceSetMoneyAmountDTO {
   title?: string
   price_set?: PriceSetDTO | string
+  price_set_id: string
   price_list?: PriceListDTO | string
   money_amount?: MoneyAmountDTO | string
   rules_count?: number

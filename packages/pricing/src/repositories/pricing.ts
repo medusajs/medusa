@@ -76,7 +76,7 @@ export class PricingRepository
         ),
       })
       .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma1.id")
-      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma1.id")
+      .leftJoin("price_rule as pr", "pr.price_id", "psma1.id")
       .leftJoin("price_list as pl", "pl.id", "psma1.price_list_id")
       .leftJoin("price_list_rule as plr", "plr.price_list_id", "pl.id")
       .leftJoin(
@@ -165,7 +165,7 @@ export class PricingRepository
         price_list_id: "psma.price_list_id",
       })
       .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
-      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
+      .leftJoin("price_rule as pr", "pr.price_id", "psma.id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("psma.currency_code", "=", currencyCode)

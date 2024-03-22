@@ -1,6 +1,6 @@
 import { CreatePriceSetDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet, PriceSetMoneyAmount } from "@models"
+import { Price, PriceSet } from "@models"
 import { defaultPriceSetsData } from "./data"
 
 export * from "./data"
@@ -21,7 +21,7 @@ export async function createPriceSets(
     manager.persist(priceSet)
 
     for (let psmaData of psmas) {
-      const psma = manager.create(PriceSetMoneyAmount, {
+      const psma = manager.create(Price, {
         ...psmaData,
         price_set_id: priceSet.id,
         title: "test",

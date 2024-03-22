@@ -1,5 +1,5 @@
 import { BaseFilterable, PriceSetDTO, RuleTypeDTO } from "@medusajs/types"
-import { PriceSet, PriceSetMoneyAmount, RuleType } from "@models"
+import { Price, PriceSet, RuleType } from "@models"
 
 export interface CreatePriceRuleDTO {
   id?: string
@@ -10,7 +10,7 @@ export interface CreatePriceRuleDTO {
   value: string
   priority?: number
   price_set_money_amount_id?: string
-  price_set_money_amount?: PriceSetMoneyAmount | string
+  price_set_money_amount?: Price | string
 }
 
 export interface UpdatePriceRuleDTO {

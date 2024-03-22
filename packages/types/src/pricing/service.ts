@@ -1258,10 +1258,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string) {
+   * async function retrievePrices (id: string) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+   *   const priceSetMoneyAmounts = await pricingService.listPrices({
    *     id: [id]
    *   })
    *
@@ -1276,10 +1276,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string) {
+   * async function retrievePrices (id: string) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+   *   const priceSetMoneyAmounts = await pricingService.listPrices({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"]
@@ -1296,10 +1296,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string, skip: number, take: number) {
+   * async function retrievePrices (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+   *   const priceSetMoneyAmounts = await pricingService.listPrices({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"],
@@ -1318,10 +1318,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], skip: number, take: number) {
+   * async function retrievePrices (ids: string[], titles: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+   *   const priceSetMoneyAmounts = await pricingService.listPrices({
    *     $and: [
    *       {
    *         id: ids
@@ -1340,21 +1340,19 @@ export interface IPricingModuleService extends IModuleService {
    * }
    * ```
    */
-  listPriceSetMoneyAmounts(
+  listPrices(
     filters?: FilterablePriceSetMoneyAmountProps,
     config?: FindConfig<PriceSetMoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<PriceSetMoneyAmountDTO[]>
 
-  softDeletePriceSetMoneyAmounts<
-    TReturnableLinkableKeys extends string = string
-  >(
+  softDeletePrices<TReturnableLinkableKeys extends string = string>(
     psmaIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
-  restorePriceSetMoneyAmounts<TReturnableLinkableKeys extends string = string>(
+  restorePrices<TReturnableLinkableKeys extends string = string>(
     psmaIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1380,10 +1378,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string) {
+   * async function retrievePrices (id: string) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
+   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPrices({
    *     id: [id]
    *   })
    *
@@ -1398,10 +1396,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string) {
+   * async function retrievePrices (id: string) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
+   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPrices({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"],
@@ -1418,10 +1416,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (id: string, skip: number, take: number) {
+   * async function retrievePrices (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
+   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPrices({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"],
@@ -1440,10 +1438,10 @@ export interface IPricingModuleService extends IModuleService {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    *
-   * async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], skip: number, take: number) {
+   * async function retrievePrices (ids: string[], titles: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
    *
-   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
+   *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPrices({
    *     $and: [
    *       {
    *         id: ids
@@ -1462,7 +1460,7 @@ export interface IPricingModuleService extends IModuleService {
    * }
    * ```
    */
-  listAndCountPriceSetMoneyAmounts(
+  listAndCountPrices(
     filters?: FilterablePriceSetMoneyAmountProps,
     config?: FindConfig<PriceSetMoneyAmountDTO>,
     sharedContext?: Context
@@ -1874,7 +1872,7 @@ export interface IPricingModuleService extends IModuleService {
    *   const priceList = await pricingService.retrievePriceList(
    *     priceListId,
    *     {
-   *       relations: ["price_set_money_amounts"]
+   *       relations: ["prices"]
    *     }
    *   )
    *
@@ -1935,7 +1933,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: priceListIds
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"]
+   *       relations: ["prices"]
    *     }
    *   )
    *
@@ -1958,7 +1956,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: priceListIds
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"],
+   *       relations: ["prices"],
    *       skip,
    *       take
    *     }
@@ -1990,7 +1988,7 @@ export interface IPricingModuleService extends IModuleService {
    *       ]
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"],
+   *       relations: ["prices"],
    *       skip,
    *       take
    *     }
@@ -2053,7 +2051,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: priceListIds
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"]
+   *       relations: ["prices"]
    *     }
    *   )
    *
@@ -2076,7 +2074,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: priceListIds
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"],
+   *       relations: ["prices"],
    *       skip,
    *       take
    *     }
@@ -2108,7 +2106,7 @@ export interface IPricingModuleService extends IModuleService {
    *       ]
    *     },
    *     {
-   *       relations: ["price_set_money_amounts"],
+   *       relations: ["prices"],
    *       skip,
    *       take
    *     }

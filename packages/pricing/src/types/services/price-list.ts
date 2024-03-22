@@ -33,7 +33,7 @@ export interface PriceListDTO {
   status?: PriceListStatus
   ends_at?: string | null
   number_rules?: number
-  price_set_money_amounts?: PriceSetMoneyAmountDTO[]
+  prices?: PriceSetMoneyAmountDTO[]
   money_amounts?: MoneyAmountDTO[]
   rule_types?: RuleTypeDTO[]
   rules?: PriceListRuleDTO[]

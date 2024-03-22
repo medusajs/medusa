@@ -15,122 +15,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "currency_code": {
-          "name": "currency_code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "decimal"
-        },
-        "min_quantity": {
-          "name": "min_quantity",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "decimal"
-        },
-        "max_quantity": {
-          "name": "max_quantity",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "decimal"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "money_amount",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_money_amount_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_money_amount_currency_code\" ON \"money_amount\" (currency_code) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_money_amount_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_money_amount_deleted_at\" ON \"money_amount\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "money_amount_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "title": {
           "name": "title",
           "type": "text",
@@ -827,8 +711,8 @@
           "default": "0",
           "mappedType": "integer"
         },
-        "price_set_money_amount_id": {
-          "name": "price_set_money_amount_id",
+        "price_id": {
+          "name": "price_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -893,14 +777,14 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_rule_type_id\" ON \"price_rule\" (rule_type_id) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_price_rule_price_set_money_amount_id_unique",
+          "keyName": "IDX_price_rule_price_id_rule_type_id_unique",
           "columnNames": [
-            "price_set_money_amount_id"
+            "price_id"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_set_money_amount_id_unique\" ON \"price_rule\" (price_set_money_amount_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_id_rule_type_id_unique\" ON \"price_rule\" (price_id, rule_type_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_deleted_at",
@@ -949,10 +833,10 @@
           "referencedTableName": "public.rule_type",
           "updateRule": "cascade"
         },
-        "price_rule_price_set_money_amount_id_foreign": {
-          "constraintName": "price_rule_price_set_money_amount_id_foreign",
+        "price_rule_price_id_foreign": {
+          "constraintName": "price_rule_price_id_foreign",
           "columnNames": [
-            "price_set_money_amount_id"
+            "price_id"
           ],
           "localTableName": "public.price_rule",
           "referencedColumnNames": [
