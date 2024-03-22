@@ -78,7 +78,7 @@ export default class PricingModuleService<
     InjectedDependencies,
     PricingTypes.PriceSetDTO,
     {
-      Price: { dto: PricingTypes.PriceSetMoneyAmountDTO }
+      Price: { dto: PricingTypes.PriceDTO }
       PriceRule: {
         dto: PricingTypes.PriceRuleDTO
         create: PricingTypes.CreatePriceRuleDTO
@@ -305,7 +305,7 @@ export default class PricingModuleService<
       await this.priceSetRuleTypeService_.create(ruleTypeData, sharedContext)
     }
 
-    const priceDataToCreate: PricingTypes.CreatePriceSetMoneyAmountDTO[] = []
+    const priceDataToCreate: PricingTypes.CreatePriceDTO[] = []
     const priceRulesData: PricingTypes.CreatePriceRuleDTO[] = []
 
     for (const [index, item] of data.entries()) {
@@ -314,7 +314,7 @@ export default class PricingModuleService<
         const cleanRules = rules ? removeNullish<string>(rules) : {}
         const numberOfRules = Object.keys(cleanRules).length
 
-        const priceToCreate: PricingTypes.CreatePriceSetMoneyAmountDTO = {
+        const priceToCreate: PricingTypes.CreatePriceDTO = {
           ...rest,
           price_set_id: createdPriceSets[index].id,
           title: "test", // TODO: accept title
@@ -540,8 +540,8 @@ export default class PricingModuleService<
       }
     })
 
-    const pricesToCreate: PricingTypes.CreatePriceSetMoneyAmountDTO[] =
-      input.flatMap(({ priceSetId, prices }) =>
+    const pricesToCreate: PricingTypes.CreatePriceDTO[] = input.flatMap(
+      ({ priceSetId, prices }) =>
         prices.map((price) => {
           const numberOfRules = Object.entries(price?.rules ?? {}).length
 
@@ -552,7 +552,7 @@ export default class PricingModuleService<
             rules_count: numberOfRules,
           }
         })
-      )
+    )
 
     const createdPrices = await this.priceService_.create(
       pricesToCreate,
@@ -961,7 +961,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    const priceMap: Map<string, PricingTypes.PriceSetMoneyAmountDTO> = new Map(
+    const priceMap: Map<string, PricingTypes.PriceDTO> = new Map(
       prices.map((price) => [price.id, price])
     )
 
@@ -1042,7 +1042,7 @@ export default class PricingModuleService<
 
       const priceRuleIdsToDelete: string[] = []
       const priceRulesToCreate: PricingTypes.CreatePriceRuleDTO[] = []
-      const pricesToUpdate: (PricingTypes.UpdatePriceSetMoneyAmountDTO & {
+      const pricesToUpdate: (PricingTypes.UpdatePriceDTO & {
         rules_count: number
       })[] = []
 
