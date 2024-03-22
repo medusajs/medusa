@@ -6,21 +6,25 @@ import {
   FilterQuery as InternalFilterQuery,
   RepositoryService,
   RepositoryTransformOptions,
+  UpsertWithReplaceConfig,
 } from "@medusajs/types"
 import {
   EntityManager,
   EntitySchema,
   LoadStrategy,
+  ReferenceType,
   RequiredEntityData,
+  wrap,
 } from "@mikro-orm/core"
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 import {
   EntityClass,
   EntityName,
+  EntityProperty,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { isString } from "../../common"
+import { arrayDifference, deepCopy, isString, promiseAll } from "../../common"
 import { buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
@@ -113,6 +117,17 @@ export class MikroOrmBaseRepository<T extends object = object>
   }
 
   upsert(data: unknown[], context: Context = {}): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  upsertWithReplace(
+    data: unknown[],
+    upsertConfig: UpsertWithReplaceConfig<T> = {
+      relationsToUpsert: [],
+      relationsToSkip: [],
+    },
+    context: Context = {}
+  ): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -419,6 +434,312 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       // TODO return the all, created, updated entities
       return upsertedEntities
+    }
+
+    // UpsertWithReplace does several things to simplify module implementation.
+    // For each entry of your base entity, it will go through all relations, and it will do a diff between what is passed and what is in the database.
+    // For each relation, it create new entries (without an ID), it will associate existing entries (with only an ID), and it will update existing entries (with an ID and other fields).
+    // Finally, it will delete the relation entries that were omitted in the new data.
+    // Limitations: We expect that IDs are used as primary keys, and we don't support composite keys. Also, we only support 1-level depth of upserts
+    async upsertWithReplace(
+      data: any[],
+      upsertConfig: UpsertWithReplaceConfig<T> = {
+        relationsToUpsert: [],
+        relationsToSkip: [],
+      },
+      context: Context = {}
+    ): Promise<T[]> {
+      if (!data.length) {
+        return []
+      }
+
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+      const allRelationsToHandle = [
+        ...(upsertConfig.relationsToUpsert ?? []),
+        ...(upsertConfig.relationsToSkip ?? []),
+      ] as string[]
+
+      // Handle the relations
+      const allRelations = manager
+        .getDriver()
+        .getMetadata()
+        .get(entity.name).relations
+
+      const nonexistentRelations = arrayDifference(
+        allRelationsToHandle,
+        allRelations.map((r) => r.name)
+      )
+
+      if (nonexistentRelations.length) {
+        throw new Error(
+          `Nonexistent relations were passed during upsert: ${nonexistentRelations}`
+        )
+      }
+      const entryUpsertedMap = new Map<string, T>()
+      const upsertsPerType: Record<string, any[]> = {}
+
+      // Create only the top-level entity without the relations first
+      const toUpsert = data.map((entry) => {
+        // Make a copy of the data. We also convert an ORM model to a POJO in case that's what we got passed
+        const entryCopy = JSON.parse(JSON.stringify(entry))
+
+        allRelations?.forEach((relation) => {
+          this.handleRelationAssignment_(
+            manager,
+            upsertConfig,
+            allRelationsToHandle,
+            relation,
+            entryCopy,
+            upsertsPerType
+          )
+        })
+
+        const mainEntity = this.getEntityWithId(manager, entity.name, entryCopy)
+
+        entryUpsertedMap.set(mainEntity.id, entry)
+        return mainEntity
+      })
+
+      // The order of insert is: many-to-one, main entity, one-to-many, many-to-many
+      await this.upsertManyToOneRelations_(manager, upsertsPerType)
+      const upsertedTopLevelEntities = await this.upsertMany_(
+        manager,
+        entity.name,
+        toUpsert
+      )
+
+      await promiseAll(
+        upsertedTopLevelEntities.map(async (entityEntry) => {
+          const originalEntry = entryUpsertedMap.get((entityEntry as any).id)!
+
+          await promiseAll(
+            allRelations?.map(async (relation) => {
+              const relationName = relation.name as keyof T
+              if (!upsertConfig.relationsToUpsert?.includes(relationName)) {
+                return
+              }
+
+              // TODO: Handle ONE_TO_ONE
+              // One to one and Many to one are handled outside of the assignment as they need to happen before the main entity is created
+              if (
+                relation.reference === ReferenceType.ONE_TO_ONE ||
+                relation.reference === ReferenceType.MANY_TO_ONE
+              ) {
+                return
+              }
+
+              await this.assignCollectionRelation_(
+                manager,
+                { ...originalEntry, id: (entityEntry as any).id },
+                relation
+              )
+              return
+            })
+          )
+
+          return originalEntry
+        })
+      )
+
+      return upsertedTopLevelEntities
+    }
+
+    // TODO: We can make this performant by only aggregating the operations, but only executing them at the end.
+    protected async assignCollectionRelation_(
+      manager: SqlEntityManager,
+      data: T,
+      relation: EntityProperty
+    ) {
+      const dataForRelation = data[relation.name]
+      // If the field is not set, we ignore it. Null and empty arrays are a valid input and are handled below
+      if (dataForRelation === undefined) {
+        return undefined
+      }
+
+      // Make sure the data is correctly initialized with IDs before using it
+      const normalizedData = dataForRelation.map((normalizedItem) => {
+        return this.getEntityWithId(manager, relation.type, normalizedItem)
+      })
+
+      if (relation.reference === ReferenceType.MANY_TO_MANY) {
+        const currentPivotColumn = relation.inverseJoinColumns[0]
+        const parentPivotColumn = relation.joinColumns[0]
+
+        if (!normalizedData.length) {
+          await manager.nativeDelete(relation.pivotEntity, {
+            [parentPivotColumn]: (data as any).id,
+          })
+
+          return normalizedData
+        }
+
+        await this.upsertMany_(manager, relation.type, normalizedData)
+
+        const pivotData = normalizedData.map((currModel) => {
+          return {
+            [parentPivotColumn]: (data as any).id,
+            [currentPivotColumn]: currModel.id,
+          }
+        })
+
+        const qb = manager.qb(relation.pivotEntity)
+        await qb.insert(pivotData).onConflict().ignore().execute()
+
+        await manager.nativeDelete(relation.pivotEntity, {
+          [parentPivotColumn]: (data as any).id,
+          [currentPivotColumn]: {
+            $nin: pivotData.map((d) => d[currentPivotColumn]),
+          },
+        })
+
+        return normalizedData
+      }
+
+      if (relation.reference === ReferenceType.ONE_TO_MANY) {
+        const joinColumns =
+          relation.targetMeta?.properties[relation.mappedBy]?.joinColumns
+
+        const joinColumnsConstraints = {}
+        joinColumns?.forEach((joinColumn, index) => {
+          const referencedColumnName = relation.referencedColumnNames[index]
+          joinColumnsConstraints[joinColumn] = data[referencedColumnName]
+        })
+
+        if (normalizedData.length) {
+          normalizedData.forEach((normalizedDataItem: any) => {
+            Object.assign(normalizedDataItem, {
+              ...joinColumnsConstraints,
+            })
+          })
+
+          await this.upsertMany_(manager, relation.type, normalizedData)
+        }
+
+        await manager.nativeDelete(relation.type, {
+          ...joinColumnsConstraints,
+          id: { $nin: normalizedData.map((d: any) => d.id) },
+        })
+
+        return normalizedData
+      }
+
+      return normalizedData
+    }
+
+    protected handleRelationAssignment_(
+      manager: SqlEntityManager,
+      upsertConfig: UpsertWithReplaceConfig<T>,
+      allRelationsToHandle: string[],
+      relation: EntityProperty<any>,
+      entryCopy: T,
+      upsertsPerType: Record<string, any[]>
+    ) {
+      if (
+        upsertConfig.relationsToUpsert?.includes(relation.name as keyof T) &&
+        relation.reference === ReferenceType.MANY_TO_ONE
+      ) {
+        // If it is undefined (not passed) then just return
+        if (entryCopy[relation.name] === undefined) {
+          return
+        }
+
+        // If null is passed (to be unset) then we need to set that on the join column
+        if (entryCopy[relation.name] === null) {
+          delete entryCopy[relation.name]
+          entryCopy[relation.joinColumns[0]] = null
+          return
+        }
+
+        const newEntity = this.getEntityWithId(
+          manager,
+          relation.type,
+          entryCopy[relation.name]
+        )
+
+        delete entryCopy[relation.name]
+        entryCopy[relation.joinColumns[0]] = newEntity.id
+
+        if (!upsertsPerType[relation.type]) {
+          upsertsPerType[relation.type] = []
+        }
+        upsertsPerType[relation.type].push(newEntity)
+
+        return
+      }
+
+      if (allRelationsToHandle.includes(relation.name)) {
+        delete entryCopy[relation.name]
+      }
+    }
+
+    // Returns a POJO object with the ID populated from the entity model hooks
+    protected getEntityWithId(
+      manager: SqlEntityManager,
+      entityName: string,
+      data: any
+    ): Record<string, any> & { id: string } {
+      const created = manager.create(entityName, data, {
+        managed: false,
+        persist: false,
+      })
+
+      return { id: (created as any).id, ...data }
+    }
+
+    protected async upsertManyToOneRelations_(
+      manager: SqlEntityManager,
+      upsertsPerType: Record<string, any[]>
+    ) {
+      const typesToUpsert = Object.entries(upsertsPerType)
+      if (!typesToUpsert.length) {
+        return []
+      }
+
+      return (
+        await promiseAll(
+          typesToUpsert.map(async ([type, data]) => {
+            return await this.upsertMany_(manager, type, data)
+          })
+        )
+      ).flat()
+    }
+
+    protected async upsertMany_(
+      manager: SqlEntityManager,
+      entityName: string,
+      entries: any[]
+    ) {
+      const existingEntities: any[] = await manager.find(
+        entityName,
+        {
+          id: { $in: entries.map((d) => d.id) },
+        },
+        {
+          populate: [],
+          disableIdentityMap: true,
+        }
+      )
+      const existingEntitiesMap = new Map(
+        existingEntities.map((e) => [e.id, e])
+      )
+
+      const createdEntities: T[] = []
+      const updatedEntities: T[] = []
+
+      await promiseAll(
+        entries.map(async (data) => {
+          const existingEntity = existingEntitiesMap.get(data.id)
+          if (existingEntity) {
+            await manager.nativeUpdate(entityName, { id: data.id }, data)
+            updatedEntities.push(data)
+          } else {
+            await manager.insert(entityName, data)
+            createdEntities.push(data)
+          }
+        })
+      )
+
+      return [...createdEntities, ...updatedEntities]
     }
   }
 

@@ -23,6 +23,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
+import { UpsertWithReplaceConfig } from "@medusajs/types"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -454,6 +455,35 @@ export function internalModuleServiceFactory<
       const data_ = Array.isArray(data) ? data : [data]
       const entities = await this[propertyRepositoryName].upsert(
         data_,
+        sharedContext
+      )
+      return Array.isArray(data) ? entities : entities[0]
+    }
+
+    upsertWithReplace(
+      data: any[],
+      config?: UpsertWithReplaceConfig<TEntity>,
+      sharedContext?: Context
+    ): Promise<TEntity[]>
+    upsertWithReplace(
+      data: any,
+      config?: UpsertWithReplaceConfig<TEntity>,
+      sharedContext?: Context
+    ): Promise<TEntity>
+
+    @InjectTransactionManager(propertyRepositoryName)
+    async upsertWithReplace(
+      data: any | any[],
+      config: UpsertWithReplaceConfig<TEntity> = {
+        relationsToUpsert: [],
+        relationsToSkip: [],
+      },
+      @MedusaContext() sharedContext: Context = {}
+    ): Promise<TEntity | TEntity[]> {
+      const data_ = Array.isArray(data) ? data : [data]
+      const entities = await this[propertyRepositoryName].upsertWithReplace(
+        data_,
+        config,
         sharedContext
       )
       return Array.isArray(data) ? entities : entities[0]

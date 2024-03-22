@@ -70,5 +70,18 @@ export type FindOptions<T = any> = {
   options?: OptionsQuery<T, any>
 }
 
+/**
+ * @interface
+ *
+ * An object used to specify the configuration of how the upsert should be performed.
+ */
+export type UpsertWithReplaceConfig<T> = {
+  /**
+   * The relationships that will be updated/created/deleted as part of the upsert
+   */
+  relationsToUpsert?: (keyof T)[]
+  relationsToSkip?: (keyof T)[]
+}
+
 export * from "./repository-service"
 export * from "./entity"
