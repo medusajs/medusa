@@ -66,6 +66,7 @@ module.exports = {
     "pricing",
     "product",
     "promotion",
+    "region",
     "sales-channel",
     "stock-location",
     "stock-location-next",
@@ -1033,6 +1034,73 @@ npx medusa develop
       },
       reflectionTitle: {
         fullReplacement: "Promotion Module Data Models Reference",
+      },
+    },
+
+    // REGION CONFIG
+    "^region": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+      },
+    },
+    "^region/IRegionModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Region Module.",
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+        slug: "/references/region/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Region Module Reference",
+      },
+    },
+    "^region/.*IRegionModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IRegionModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Region Module.",
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+        slug: "/references/region",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // REGION MODELS CONFIG
+    "^region_models": {
+      frontmatterData: {
+        displayed_sidebar: "regionModelReference",
+        slug: "/references/region/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Region Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Region Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/region_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Region Module",
+      frontmatterData: {
+        displayed_sidebar: "regionModelReference",
+        slug: "/references/region/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Region Module Data Models Reference",
       },
     },
 

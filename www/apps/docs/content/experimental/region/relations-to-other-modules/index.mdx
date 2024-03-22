@@ -1,0 +1,13 @@
+# Relations between Region Module and Other Modules
+
+When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
+
+This document showcases the relation between the Region Module and other Commerce Modules.
+
+## Cart Module
+
+Carts are associated with a region. The Medusa application forms a relation between the `Region` and the `Cart` data models.
+
+![A diagram showcasing an example of how resources from the API Key and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711116934/Medusa%20Resources/region-cart_hffaib.jpg)
+
+The cart then uses the same currency as the region. During checkout, the cart's taxes, payment, and fulfillment providers are available based on the region's settings.

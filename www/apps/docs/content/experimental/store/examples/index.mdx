@@ -129,7 +129,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       request.scope.resolve(ModuleRegistrationName.STORE)
 
     const store = await storeModuleService.retrieve(
-      request.params.id
+      "store_123"
     )
 
     response.json({
@@ -148,21 +148,14 @@ In this guide, you’ll find common examples of how you can use the Store Module
     initialize as initializeStoreModule,
   } from "@medusajs/store"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function GET(
     request: Request,
     { params }: ContextType
   ) {
     const storeModuleService = await initializeStoreModule()
-    const body = await request.json()
 
     const store = await storeModuleService.retrieve(
-      params.id
+      "store_123"
     )
 
     return NextResponse.json({ store })
@@ -191,7 +184,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    const store = await storeModuleService.update({
+    const store = await storeModuleService.update("store_123", {
       name: "Change Store",
     })
 
@@ -211,19 +204,13 @@ In this guide, you’ll find common examples of how you can use the Store Module
     initialize as initializeStoreModule,
   } from "@medusajs/store"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function POST(
     request: Request,
     { params }: ContextType
   ) {
     const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.update({
+    const store = await storeModuleService.update("store_123", {
       name: "Change Store",
     })
 
