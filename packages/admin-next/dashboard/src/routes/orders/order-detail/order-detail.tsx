@@ -1,6 +1,7 @@
 import { useAdminOrder } from "medusa-react"
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { OrderActivitySection } from "./components/order-activity-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
@@ -41,11 +42,13 @@ export const OrderDetail = () => {
         <OrderFulfillmentSection order={order} />
         <div className="flex flex-col gap-y-2 lg:hidden">
           <OrderCustomerSection order={order} />
+          <OrderActivitySection order={order} />
         </div>
         <JsonViewSection data={order} />
       </div>
       <div className="hidden flex-col gap-y-2 lg:flex">
         <OrderCustomerSection order={order} />
+        <OrderActivitySection order={order} />
       </div>
       <Outlet />
     </div>
