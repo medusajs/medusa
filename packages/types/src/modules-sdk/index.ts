@@ -254,7 +254,9 @@ export interface ModuleServiceInitializeOptions {
     user?: string
     password?: string
     database?: string
-    driverOptions?: Record<string, unknown>
+    driverOptions?: Record<string, unknown> & {
+      connection?: Record<string, unknown>
+    }
     debug?: boolean
     pool?: Record<string, unknown>
   }
