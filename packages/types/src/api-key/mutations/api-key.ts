@@ -36,8 +36,7 @@ export interface UpsertApiKeyDTO {
   title?: string
 
   /**
-   * The type of the API key. It's only
-   * usable and required when creating an API key.
+   * The type of the API key. Required only when creating an API key.
    */
   type?: ApiKeyType
 

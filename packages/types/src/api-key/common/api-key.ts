@@ -53,7 +53,8 @@ export interface ApiKeyDTO {
   created_at: Date
 
   /**
-   * Who revoked the API key.
+   * Who revoked the API key. For example,
+   * the ID of the user that revoked it.
    */
   revoked_by: string | null
 
