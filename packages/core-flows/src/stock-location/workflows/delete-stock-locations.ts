@@ -1,6 +1,8 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 
+import { Modules } from "@medusajs/modules-sdk"
 import { deleteStockLocationsStep } from "../steps"
+import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 
 interface WorkflowInput {
   ids: string[]
@@ -12,6 +14,8 @@ export const deleteStockLocationsWorkflow = createWorkflow(
   (input: WorkflowData<WorkflowInput>) => {
     deleteStockLocationsStep(input.ids)
 
-    // TODO: deatach links
+    removeRemoteLinkStep({
+      [Modules.STOCK_LOCATION]: { stock_location_id: input.ids },
+    })
   }
 )
