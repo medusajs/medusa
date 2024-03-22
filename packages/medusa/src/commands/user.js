@@ -6,6 +6,31 @@ import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import featureFlagLoader from "../loaders/feature-flags"
+import configModuleLoader from "../loaders/config"
+import { MedusaV2Flag } from "@medusajs/utils"
+
+// TEMP: Only supporting emailpass
+const createV2User = async ({ email, password }, { container }) => {
+  const authService = container.resolve(ModuleRegistrationName.AUTH)
+  const userService = container.resolve(ModuleRegistrationName.USER)
+  const user = await userService.create({ email })
+  const { authUser } = await authService.authenticate("emailpass", {
+    body: {
+      email,
+      password,
+    },
+    authScope: "admin",
+  })
+
+  await authService.update({
+    id: authUser.id,
+    app_metadata: {
+      user_id: user.id,
+    },
+  })
+}
 
 export default async function ({
   directory,
@@ -33,8 +58,15 @@ export default async function ({
       Invite token: ${invite[0].token}
       Open the invite in Medusa Admin at: [your-admin-url]/invite?token=${invite[0].token}`)
     } else {
-      const userService = container.resolve("userService")
-      await userService.create({ id, email }, password)
+      const configModule = configModuleLoader(directory)
+      const featureFlagRouter = featureFlagLoader(configModule)
+
+      if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+        await createV2User({ email, password }, { container })
+      } else {
+        const userService = container.resolve("userService")
+        await userService.create({ id, email }, password)
+      }
     }
   } catch (err) {
     console.error(err)

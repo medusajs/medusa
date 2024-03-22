@@ -22,10 +22,7 @@ export const deleteProductsWorkflow = createWorkflow(
         .map((variant) => variant.id)
     })
 
-    // Question: Should we also remove the price set manually, or would that be cascaded?
-    // Question: Since we soft-delete the product, how do we restore the product with the prices and the links?
     removeVariantPricingLinkStep({ variant_ids: variantsToBeDeleted })
-
     return deleteProductsStep(input.ids)
   }
 )
