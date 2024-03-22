@@ -111,8 +111,6 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          console.log(response?.data.product)
-
           expect(response?.data.product.variants).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
