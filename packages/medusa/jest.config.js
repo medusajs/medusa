@@ -18,7 +18,7 @@ module.exports = {
   transform: {
     "^.+\\.[jt]s?$": ["@swc/jest"],
   },
-  modulePathIgnorePatterns: ["__fixtures__"],
+  modulePathIgnorePatterns: ["__fixtures__", "dist"],
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
