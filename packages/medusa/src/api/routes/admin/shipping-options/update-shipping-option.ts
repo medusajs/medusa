@@ -15,6 +15,7 @@ import {
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { ShippingOptionPriceType } from "../../../../models"
 import { ShippingOptionService } from "../../../../services"
@@ -257,4 +258,12 @@ export class AdminPostShippingOptionsOptionReq {
     IsBoolean(),
   ])
   includes_tax?: boolean
+
+  constructor() {
+    if (
+      !featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
+    ) {
+      delete this.includes_tax
+    }
+  }
 }

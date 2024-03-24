@@ -7,13 +7,14 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  Relation,
   Unique,
 } from "typeorm"
 
+import { resolveDbType } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { resolveDbType } from "../utils/db-aware-column"
 
 @Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()
@@ -26,7 +27,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => GiftCard)
   @JoinColumn({ name: "gift_card_id" })
-  gift_card: GiftCard
+  gift_card: Relation<GiftCard>
 
   @Index()
   @Column()
@@ -34,7 +35,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column("int")
   amount: number
