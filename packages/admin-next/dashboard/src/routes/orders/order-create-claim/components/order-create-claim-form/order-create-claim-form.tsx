@@ -12,7 +12,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { ItemsTable } from "./order-create-claim-item-table"
+import { OrderCreateClaimItemTable } from "./order-create-claim-item-table"
 import { CreateReturnSchema } from "./schema"
 import { getReturnableItemsForClaim } from "../../../../../lib/rma"
 import { OrderCreateClaimDetails } from "./order-create-claim-details"
@@ -243,9 +243,10 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
         <RouteFocusModal.Body className="flex h-[calc(100%-56px)] w-full flex-col items-center overflow-y-auto">
           <ProgressTabs.Content value={Tab.ITEMS} className="h-full w-full">
             {!!returnableItems.length ? (
-              <ItemsTable
+              <OrderCreateClaimItemTable
                 items={returnableItems}
                 selectedItems={selectedItems}
+                currencyCode={order.currency_code}
                 onSelectionChange={onSelectionChange}
               />
             ) : (
