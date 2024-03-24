@@ -34,9 +34,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       const url = new URL(successRedirectUrl!)
       url.searchParams.append("auth_token", token)
 
-      const redirectUrl = `${url}`
-
-      return res.redirect(redirectUrl.toString())
+      return res.redirect(url.toString())
     }
 
     return res.json({ token })
