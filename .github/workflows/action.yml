@@ -108,9 +108,6 @@ jobs:
         with:
           extension: pipeline
 
-      - name: Build Packages
-        run: yarn build
-
       - name: Run unit tests
         run: yarn test:chunk
         env:
@@ -168,9 +165,6 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run integration tests
         run: yarn test:integration:packages
@@ -234,9 +228,6 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run API integration tests
         run: yarn test:integration:api
@@ -320,9 +311,6 @@ jobs:
         with:
           extension: pipeline
 
-      - name: Build Packages
-        run: yarn build
-
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
         env:
@@ -376,9 +364,6 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run Modules integration tests
         run: yarn test:integration:modules
