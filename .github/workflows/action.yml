@@ -262,6 +262,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.10.0"
+          cache: "yarn"
+
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
