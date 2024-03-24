@@ -9,6 +9,7 @@ import {
 import { EntityManager } from "typeorm"
 
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
@@ -237,4 +238,12 @@ export class AdminPostRegionsRegionReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  constructor() {
+    if (
+      !featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
+    ) {
+      delete this.includes_tax
+    }
+  }
 }

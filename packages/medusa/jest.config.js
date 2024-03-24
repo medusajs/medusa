@@ -1,25 +1,9 @@
 module.exports = {
-  //moduleNameMapper: {
-  //  "^highlight.js$": `<rootDir>/node_modules/highlight.js/lib/index.js`,
-  //},
-  //snapshotSerializers: [`jest-serializer-path`],
-  // collectCoverageFrom: coverageDirs,
-  //reporters: process.env.CI
-  //  ? [[`jest-silent-reporter`, { useDots: true }]].concat(
-  //      useCoverage ? `jest-junit` : []
-  //    )
-  //  : [`default`].concat(useCoverage ? `jest-junit` : []),
-  globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
-  },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": ["@swc/jest"],
   },
-  modulePathIgnorePatterns: ["__fixtures__"],
+  modulePathIgnorePatterns: ["__fixtures__", "dist", "node_modules"],
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 }

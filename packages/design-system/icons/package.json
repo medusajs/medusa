@@ -22,7 +22,7 @@
     "build": "yarn build:bundles && yarn build:types",
     "build:bundles": "rollup -c ./rollup.config.mjs",
     "build:types": "tsc --emitDeclarationOnly",
-    "test": "vitest --run",
+    "test": "NODE_OPTIONS='--no-experimental-fetch' vitest --run",
     "test:watch": "vitest",
     "test:coverage": "vitest --run --coverage",
     "generate": "rimraf ./src/components && toolbox icons -o './src/components'"
