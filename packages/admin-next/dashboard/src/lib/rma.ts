@@ -1,5 +1,14 @@
 import { ClaimItem, LineItem, Order } from "@medusajs/medusa"
 
+export type ReturnItem = Omit<
+  LineItem,
+  "beforeInsert",
+  "beforeUpdate",
+  "afterUpdateOrLoad"
+> & {
+  returnable_quantity: number
+}
+
 /**
  * Return line items that are returnable from an order
  * @param order
@@ -72,4 +81,28 @@ export const getAllReturnableItems = (
   }
 
   return [...orderItems.values()]
+}
+
+/**
+ *
+ * Get items from an order that are returnable for a claim
+ * @param order
+ */
+export const getReturnableItemsForClaim = (order: Order) => {
+  const returnItems: ReturnItem[] = []
+
+  if (!order.returnable_items?.length) {
+    return returnItems
+  }
+
+  order.returnable_items.forEach((item) => {
+    const returnableQuantity = item.quantity - (item.returned_quantity || 0)
+
+    returnItems.push({
+      ...item,
+      returnable_quantity: returnableQuantity,
+    })
+  })
+
+  return returnItems
 }

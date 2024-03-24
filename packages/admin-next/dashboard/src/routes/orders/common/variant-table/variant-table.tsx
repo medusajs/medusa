@@ -6,9 +6,9 @@ import { useAdminVariants } from "medusa-react"
 import { Button } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
 
-import { DataTable } from "../../../../../components/table/data-table"
-import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
-import { SplitView } from "../../../../../components/layout/split-view"
+import { DataTable } from "../../../../components/table/data-table"
+import { useDataTable } from "../../../../hooks/use-data-table.tsx"
+import { SplitView } from "../../../../components/layout/split-view"
 
 import { useVariantTableQuery } from "./use-variant-table-query"
 import { useVariantTableColumns } from "./use-variant-table-columns"
@@ -62,6 +62,9 @@ export const VariantTable = ({
 }: VariantTableProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [intermediate, setIntermediate] = useState<string[]>([])
+  const [selectedVariants, setSelectedVariants] = useState<
+    Record<string, PricedVariant>
+  >({})
 
   const { searchParams, raw } = useVariantTableQuery({
     pageSize: PAGE_SIZE,
@@ -89,16 +92,20 @@ export const VariantTable = ({
     )
 
     if (added.length) {
-      const addedProducts = (variants?.filter((v) => added.includes(v.id!)) ??
+      const addedVariants = (variants?.filter((v) => added.includes(v.id!)) ??
         []) as PricedVariant[]
 
-      if (addedProducts.length > 0) {
-        const newConditions = addedProducts.map((p) => p.id!)
+      if (addedVariants.length > 0) {
+        const newConditions = addedVariants.map((p) => p.id!)
 
         setIntermediate((prev) => {
           const filteredPrev = prev.filter((p) => newState[p])
           return Array.from(new Set([...filteredPrev, ...newConditions]))
         })
+
+        const variantsState = { ...selectedVariants }
+        addedVariants.forEach((v) => (variantsState[v.id] = v))
+        setSelectedVariants(variantsState)
       }
 
       setRowSelection(newState)
@@ -114,11 +121,15 @@ export const VariantTable = ({
       })
 
       setRowSelection(newState)
+
+      const variantsState = { ...selectedVariants }
+      removed.forEach((id) => delete variantsState[id])
+      setSelectedVariants(variantsState)
     }
   }
 
   const handleSave = () => {
-    onSave(intermediate)
+    onSave(intermediate, selectedVariants)
   }
 
   const columns = useVariantTableColumns(order.currency_code)

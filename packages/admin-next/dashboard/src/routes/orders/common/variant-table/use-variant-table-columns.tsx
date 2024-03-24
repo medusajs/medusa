@@ -1,13 +1,13 @@
 import React, { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { createColumnHelper } from "@tanstack/react-table"
+import { PricedVariant } from "@medusajs/client-types"
 import { Checkbox } from "@medusajs/ui"
 import {
   ProductCell,
   ProductHeader,
-} from "../../../../../components/table/table-cells/product/product-cell"
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { PricedVariant } from "@medusajs/client-types"
+} from "../../../../components/table/table-cells/product/product-cell"
+import { MoneyAmountCell } from "../../../../components/table/table-cells/common/money-amount-cell"
 
 const columnHelper = createColumnHelper<PricedVariant>()
 

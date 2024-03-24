@@ -136,7 +136,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         ? {
             option_id: data.replacement_shipping.option.value.id,
             /**
-             * We set the price to 0 as we don't want to make the shippng price
+             * We set the price to 0 as we don't want to make the shipping price
              * affect the refund amount currently. This is a temporary solution,
              * and users should instead use the refund amount field to specify
              * the amount to refund when they receive the returned items if they
