@@ -27,8 +27,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   if (success) {
     const { jwt_secret } = req.scope.resolve("configModule").projectConfig
 
-    const user = { ...authUser }
-    const token = jwt.sign(user, jwt_secret)
+    const token = jwt.sign(authUser, jwt_secret)
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
