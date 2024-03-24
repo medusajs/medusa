@@ -57,6 +57,7 @@ export type MedusaAppOutput = {
 }
 
 export type MedusaAppOptions<TRemoteFetch> = {
+  workerMode?: "shared" | "worker" | "server"
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]

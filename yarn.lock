@@ -8640,6 +8640,8 @@ __metadata:
     "@fastify/compress": ^7.0.0
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
+    "@grpc/grpc-js": ^1.9.14
+    "@grpc/proto-loader": ^0.7.10
     "@medusajs/orchestration": ^0.5.5
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
