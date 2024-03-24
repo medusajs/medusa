@@ -1,16 +1,15 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 
+import { Trash } from "@medusajs/icons"
 import { clx, Input, Select, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-import { useAdminReturnReasons } from "medusa-react"
 
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { Form } from "../../../../../components/common/form"
-import { ReturnItem } from "../../../../../lib/rma"
-import { ActionMenu } from "../../../../../components/common/action-menu"
-import { Trash } from "@medusajs/icons"
+import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
+import { ActionMenu } from "../../../../../../components/common/action-menu"
+import { Thumbnail } from "../../../../../../components/common/thumbnail"
+import { Form } from "../../../../../../components/common/form"
+import { ReturnItem } from "../../../../../../lib/rma"
 
 const claimReturnReasons = [
   {
@@ -39,7 +38,7 @@ type OrderEditItemProps = {
   onVariantRemove?: (variantId: string) => {}
 }
 
-function ClaimsItem({
+function ClaimItem({
   item,
   currencyCode,
   form,
@@ -192,4 +191,4 @@ function ClaimsItem({
   )
 }
 
-export { ClaimsItem }
+export { ClaimItem }

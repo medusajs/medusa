@@ -131,7 +131,8 @@ export const v1Routes: RouteObject[] = [
                   },
                   {
                     path: "claims",
-                    lazy: () => import("../../routes/orders/claims-create"),
+                    lazy: () =>
+                      import("../../routes/orders/order-create-claim"),
                   },
                 ],
               },

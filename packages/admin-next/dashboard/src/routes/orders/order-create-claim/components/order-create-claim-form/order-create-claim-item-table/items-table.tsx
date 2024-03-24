@@ -2,8 +2,8 @@ import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 import { LineItem } from "@medusajs/medusa"
 
-import { DataTable } from "../../../../../components/table/data-table"
-import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
+import { DataTable } from "../../../../../../components/table/data-table"
+import { useDataTable } from "../../../../../../hooks/use-data-table"
 
 import { useItemsTableColumns } from "./use-items-table-columns"
 

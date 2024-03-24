@@ -21,15 +21,14 @@ import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
 import { LevelWithAvailability } from "@medusajs/medusa"
 import { PricedVariant } from "@medusajs/client-types"
 
-import { ClaimsItem } from "./claims-item"
-import { Form } from "../../../../../components/common/form"
-
-import { medusa } from "../../../../../lib/medusa"
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
-import { CreateReturnSchema } from "./schema"
-import { SplitView } from "../../../../../components/layout/split-view"
-import { VariantTable } from "../../../common/variant-table"
+import { ClaimItem } from "./claim-item"
+import { Form } from "../../../../../../components/common/form"
+import { medusa } from "../../../../../../lib/medusa"
+import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
+import { getCurrencySymbol } from "../../../../../../lib/currencies"
+import { SplitView } from "../../../../../../components/layout/split-view"
+import { VariantTable } from "../../../../common/variant-table"
+import { CreateReturnSchema } from "../schema"
 
 type ReturnsFormProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
@@ -41,7 +40,7 @@ type ReturnsFormProps = {
   onRefundableAmountChange: (amount: number) => void
 }
 
-export function ClaimsForm({
+export function OrderCreateClaimDetails({
   form,
   items,
   addedItems,
@@ -168,7 +167,7 @@ export function ClaimsForm({
               {t("orders.returns.chooseItems")}
             </Heading>
             {items.map((item) => (
-              <ClaimsItem
+              <ClaimItem
                 key={item.id}
                 item={item}
                 form={form}
@@ -279,7 +278,7 @@ export function ClaimsForm({
                 <div className="mt-4" />
               )}
               {addedItems.map((item) => (
-                <ClaimsItem
+                <ClaimItem
                   key={item.id}
                   item={item}
                   form={form}

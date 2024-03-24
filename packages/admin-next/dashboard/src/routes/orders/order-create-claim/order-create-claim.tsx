@@ -1,10 +1,10 @@
 import { useAdminOrder } from "medusa-react"
 import { useParams } from "react-router-dom"
 
-import { CreateClaim } from "./components/create-claims"
 import { RouteFocusModal } from "../../../components/route-modal"
+import { OrderCreateClaimForm } from "./components/order-create-claim-form/order-create-claim-form"
 
-export function ClaimsCreate() {
+export function OrderCreateClaim() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
@@ -21,7 +21,7 @@ export function ClaimsCreate() {
 
   return (
     <RouteFocusModal>
-      <CreateClaim order={order} />
+      <OrderCreateClaimForm order={order} />
     </RouteFocusModal>
   )
 }

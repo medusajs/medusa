@@ -12,10 +12,10 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { ItemsTable } from "../items-table"
-import { ClaimsForm } from "./claims-form.tsx"
+import { ItemsTable } from "./order-create-claim-item-table"
 import { CreateReturnSchema } from "./schema"
 import { getReturnableItemsForClaim } from "../../../../../lib/rma"
+import { OrderCreateClaimDetails } from "./order-create-claim-details"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -30,7 +30,7 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-export function CreateClaim({ order }: CreateReturnsFormProps) {
+export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -236,7 +236,7 @@ export function CreateClaim({ order }: CreateReturnsFormProps) {
             )}
           </ProgressTabs.Content>
           <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-            <ClaimsForm
+            <OrderCreateClaimDetails
               form={form}
               items={selected}
               order={order}

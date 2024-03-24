@@ -1,12 +1,13 @@
 import React, { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { createColumnHelper } from "@tanstack/react-table"
+import { LineItem } from "@medusajs/medusa"
 import { Checkbox } from "@medusajs/ui"
+
 import {
   ProductCell,
   ProductHeader,
-} from "../../../../../components/table/table-cells/product/product-cell"
-import { LineItem } from "@medusajs/medusa"
+} from "../../../../../../components/table/table-cells/product/product-cell"
 
 const columnHelper = createColumnHelper<LineItem>()
 
