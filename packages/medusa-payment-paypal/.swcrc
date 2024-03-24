@@ -2,16 +2,10 @@
   "jsc": {
     "target": "es5",
     "parser": {
-      "syntax": "typescript",
-      "decorators": true
-    },
-    "transform": {
-      "legacyDecorator": true,
-      "decoratorMetadata": true
+      "syntax": "typescript"
     }
   },
   "module": {
     "type": "commonjs"
-  },
-  "sourceMaps": "inline"
+  }
 }
