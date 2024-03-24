@@ -1,31 +1,78 @@
-import { MedusaError } from "@medusajs/utils"
+import {
+  deletePriceListsWorkflow,
+  updatePriceListsWorkflow,
+} from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { listPriceLists } from "../utils"
+import { getPriceList } from "../queries"
+import {
+  adminPriceListRemoteQueryFields,
+  defaultAdminPriceListFields,
+} from "../query-config"
+import { AdminPostPriceListsPriceListReq } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const [[priceList], count] = await listPriceLists({
+  const priceList = await getPriceList({
+    id,
     container: req.scope,
-    fields: req.retrieveConfig.select!,
-    variables: {
-      filters: { id },
-      skip: 0,
-      take: 1,
-    },
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: req.retrieveConfig.select!,
   })
 
-  if (count === 0) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Price list with id: ${id} was not found`
-    )
+  res.status(200).json({ price_list: priceList })
+}
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostPriceListsPriceListReq>,
+  res: MedusaResponse
+) => {
+  const id = req.params.id
+  const workflow = updatePriceListsWorkflow(req.scope)
+
+  const { errors } = await workflow.run({
+    input: { price_lists_data: [{ id, ...req.validatedBody }] },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
   }
 
+  const priceList = await getPriceList({
+    id,
+    container: req.scope,
+    remoteQueryFields: adminPriceListRemoteQueryFields,
+    apiFields: defaultAdminPriceListFields,
+  })
+
   res.status(200).json({ price_list: priceList })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.params.id
+  const workflow = deletePriceListsWorkflow(req.scope)
+
+  const { errors } = await workflow.run({
+    input: { ids: [id] },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({
+    id,
+    object: "price_list",
+    deleted: true,
+  })
 }

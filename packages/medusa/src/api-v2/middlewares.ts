@@ -1,15 +1,20 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
+import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
+import { adminFulfillmentRoutesMiddlewares } from "./admin/fulfillment/middlewares"
+import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
+import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
+import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
 import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
 import { adminTaxRegionRoutesMiddlewares } from "./admin/tax-regions/middlewares"
@@ -47,5 +52,10 @@ export const config: MiddlewaresConfig = {
     ...adminProductRoutesMiddlewares,
     ...adminPaymentRoutesMiddlewares,
     ...adminPriceListsRoutesMiddlewares,
+    ...adminInventoryRoutesMiddlewares,
+    ...adminCollectionRoutesMiddlewares,
+    ...adminPricingRoutesMiddlewares,
+    ...adminFulfillmentRoutesMiddlewares,
+    ...adminSalesChannelRoutesMiddlewares,
   ],
 }

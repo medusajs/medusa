@@ -1,5 +1,5 @@
-import { exportWorkflow } from "../workflow-export"
 import { createMedusaContainer } from "@medusajs/utils"
+import { exportWorkflow } from "../workflow-export"
 
 jest.mock("@medusajs/orchestration", () => {
   return {
@@ -39,6 +39,17 @@ jest.mock("@medusajs/orchestration", () => {
           return {
             getErrors: jest.fn(),
             getState: jest.fn(() => "done"),
+            getContext: jest.fn(() => {
+              return {
+                invoke: { result_step: "invoke_test" },
+              }
+            }),
+          }
+        }),
+        cancel: jest.fn(() => {
+          return {
+            getErrors: jest.fn(),
+            getState: jest.fn(() => "reverted"),
             getContext: jest.fn(() => {
               return {
                 invoke: { result_step: "invoke_test" },

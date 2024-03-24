@@ -37,20 +37,27 @@ export class RemoteJoiner {
     data: any,
     fields: string[],
     expands?: RemoteNestedExpands
-  ): Record<string, unknown> {
+  ): Record<string, unknown> | undefined {
     if (!fields || !data) {
       return data
     }
 
-    const filteredData = fields.reduce((acc: any, field: string) => {
-      const fieldValue = data?.[field]
+    let filteredData: Record<string, unknown> = {}
 
-      if (isDefined(fieldValue)) {
-        acc[field] = data?.[field]
-      }
+    if (fields.includes("*")) {
+      // select all fields
+      filteredData = data
+    } else {
+      filteredData = fields.reduce((acc: any, field: string) => {
+        const fieldValue = data?.[field]
 
-      return acc
-    }, {})
+        if (isDefined(fieldValue)) {
+          acc[field] = data?.[field]
+        }
+
+        return acc
+      }, {})
+    }
 
     if (expands) {
       for (const key of Object.keys(expands ?? {})) {
@@ -119,9 +126,16 @@ export class RemoteJoiner {
 
   constructor(
     private serviceConfigs: ModuleJoinerConfig[],
-    private remoteFetchData: RemoteFetchDataCallback
+    private remoteFetchData: RemoteFetchDataCallback,
+    private options: {
+      autoCreateServiceNameAlias?: boolean
+    } = {}
   ) {
-    this.serviceConfigs = this.buildReferences(serviceConfigs)
+    this.options.autoCreateServiceNameAlias ??= true
+
+    this.serviceConfigs = this.buildReferences(
+      JSON.parse(JSON.stringify(serviceConfigs))
+    )
   }
 
   public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
@@ -133,6 +147,7 @@ export class RemoteJoiner {
       string,
       { fieldAlias; relationships: JoinerRelationship[] }
     > = new Map()
+
     for (const service of serviceConfigs) {
       if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
@@ -152,7 +167,9 @@ export class RemoteJoiner {
           service.alias = [service.alias]
         }
 
-        service.alias.push({ name: service.serviceName! })
+        if (this.options.autoCreateServiceNameAlias) {
+          service.alias.push({ name: service.serviceName! })
+        }
 
         // handle alias.name as array
         for (let idx = 0; idx < service.alias.length; idx++) {
@@ -197,7 +214,11 @@ export class RemoteJoiner {
             serviceName: service.serviceName!,
             args,
           })
-          this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+          this.cacheServiceConfig(
+            serviceConfigs,
+            undefined,
+            alias.name as string
+          )
         }
 
         this.cacheServiceConfig(serviceConfigs, service.serviceName)
@@ -276,7 +297,7 @@ export class RemoteJoiner {
   private cacheServiceConfig(
     serviceConfigs,
     serviceName?: string,
-    serviceAlias?: string | string[]
+    serviceAlias?: string
   ): void {
     if (serviceAlias) {
       const name = `alias_${serviceAlias}`
@@ -763,7 +784,7 @@ export class RemoteJoiner {
     // remove alias from fields
     const parentPath = [BASE_PATH, ...currentPath].join(".")
     const parentExpands = parsedExpands.get(parentPath)
-    parentExpands.fields = parentExpands.fields.filter(
+    parentExpands.fields = parentExpands.fields?.filter(
       (field) => field !== property
     )
 
@@ -773,12 +794,13 @@ export class RemoteJoiner {
       )
     )
 
+    const parentFieldAlias = fullPath[Math.max(fullPath.length - 2, 0)]
     implodeMapping.push({
       location: [...currentPath],
       property,
       path: fullPath,
       isList: !!serviceConfig.relationships?.find(
-        (relationship) => relationship.alias === fullPath[0]
+        (relationship) => relationship.alias === parentFieldAlias
       )?.isList,
     })
 

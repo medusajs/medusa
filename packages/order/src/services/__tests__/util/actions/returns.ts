@@ -9,33 +9,45 @@ describe("Order Return - Actions", function () {
         quantity: 1,
         unit_price: 10,
 
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 1,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "2",
         quantity: 2,
         unit_price: 100,
 
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 2,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "3",
         quantity: 3,
         unit_price: 20,
 
-        fulfilled_quantity: 3,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 3,
+          shipped_quantity: 3,
+          fulfilled_quantity: 3,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
     ],
     shipping_methods: [
@@ -45,7 +57,6 @@ describe("Order Return - Actions", function () {
       },
     ],
     total: 270,
-    shipping_total: 0,
   }
 
   it("should validate return requests", function () {
@@ -66,7 +77,9 @@ describe("Order Return - Actions", function () {
         order: originalOrder,
         actions,
       })
-    }).toThrow("Cannot request to return more items than what was fulfilled.")
+    }).toThrow(
+      "Cannot request to return more items than what was shipped for item 1."
+    )
 
     expect(() => {
       actions[0].details!.reference_id = undefined
@@ -87,6 +100,7 @@ describe("Order Return - Actions", function () {
 
   it("should validate return received", function () {
     const [] = []
+
     const actions = [
       {
         action: ChangeActionType.RETURN_ITEM,
@@ -111,36 +125,49 @@ describe("Order Return - Actions", function () {
       actions,
     })
 
-    expect(changes.order.items).toEqual([
+    const toJson = JSON.parse(JSON.stringify(changes.order.items))
+    expect(toJson).toEqual([
       {
         id: "1",
         quantity: 1,
         unit_price: 10,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 1,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "2",
         quantity: 2,
         unit_price: 100,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 1,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 2,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: "1",
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "3",
         quantity: 3,
         unit_price: 20,
-        fulfilled_quantity: 3,
-        return_requested_quantity: 2,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 3,
+          shipped_quantity: 3,
+          fulfilled_quantity: 3,
+          return_requested_quantity: "2",
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
     ])
 
@@ -162,7 +189,9 @@ describe("Order Return - Actions", function () {
           },
         ],
       })
-    }).toThrow("Cannot request to return more items than what was fulfilled.")
+    }).toThrow(
+      "Cannot request to return more items than what was shipped for item 3."
+    )
 
     expect(() => {
       calculateOrderChange({
@@ -178,7 +207,7 @@ describe("Order Return - Actions", function () {
         ],
       })
     }).toThrow(
-      "Cannot receive more items than what was requested to be returned."
+      "Cannot receive more items than what was requested to be returned for item 3."
     )
 
     expect(() => {
@@ -202,7 +231,7 @@ describe("Order Return - Actions", function () {
         ],
       })
     }).toThrow(
-      "Cannot receive more items than what was requested to be returned."
+      "Cannot receive more items than what was requested to be returned for item 3."
     )
 
     const receivedChanges = calculateOrderChange({
@@ -225,36 +254,51 @@ describe("Order Return - Actions", function () {
       ],
     })
 
-    expect(receivedChanges.order.items).toEqual([
+    const toJsonReceived = JSON.parse(
+      JSON.stringify(receivedChanges.order.items)
+    )
+    expect(toJsonReceived).toEqual([
       {
         id: "1",
         quantity: 1,
         unit_price: 10,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 1,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "2",
         quantity: 2,
         unit_price: 100,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 1,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 2,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: "1",
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "3",
         quantity: 3,
         unit_price: 20,
-        fulfilled_quantity: 3,
-        return_requested_quantity: 0,
-        return_received_quantity: 1,
-        return_dismissed_quantity: 1,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 3,
+          shipped_quantity: 3,
+          fulfilled_quantity: 3,
+          return_requested_quantity: "0",
+          return_received_quantity: "1",
+          return_dismissed_quantity: "1",
+          written_off_quantity: 0,
+        },
       },
     ])
   })

@@ -1,13 +1,7 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -65,68 +59,5 @@ export default class ProductCollectionService<
     }
 
     return queryOptions
-  }
-
-  create(
-    data: ProductCollectionServiceTypes.CreateProductCollection,
-    context?: Context
-  ): Promise<TEntity>
-  create(
-    data: ProductCollectionServiceTypes.CreateProductCollection[],
-    context?: Context
-  ): Promise<TEntity[]>
-
-  @InjectTransactionManager("productCollectionRepository_")
-  async create(
-    data:
-      | ProductCollectionServiceTypes.CreateProductCollection
-      | ProductCollectionServiceTypes.CreateProductCollection[],
-    context: Context = {}
-  ): Promise<TEntity | TEntity[]> {
-    const data_ = Array.isArray(data) ? data : [data]
-    const productCollections = data_.map((collectionData) => {
-      if (collectionData.product_ids) {
-        collectionData.products = collectionData.product_ids
-
-        delete collectionData.product_ids
-      }
-
-      return collectionData
-    })
-
-    return super.create(productCollections, context)
-  }
-
-  // @ts-ignore
-  update(
-    data: ProductCollectionServiceTypes.UpdateProductCollection,
-    context?: Context
-  ): Promise<TEntity>
-  // @ts-ignore
-  update(
-    data: ProductCollectionServiceTypes.UpdateProductCollection[],
-    context?: Context
-  ): Promise<TEntity[]>
-
-  @InjectTransactionManager("productCollectionRepository_")
-  // @ts-ignore Do not implement all the expected overloads, see if we must do it
-  async update(
-    data:
-      | ProductCollectionServiceTypes.UpdateProductCollection
-      | ProductCollectionServiceTypes.UpdateProductCollection[],
-    context: Context = {}
-  ): Promise<TEntity | TEntity[]> {
-    const data_ = Array.isArray(data) ? data : [data]
-    const productCollections = data_.map((collectionData) => {
-      if (collectionData.product_ids) {
-        collectionData.products = collectionData.product_ids
-
-        delete collectionData.product_ids
-      }
-
-      return collectionData
-    })
-
-    return super.update(productCollections, context)
   }
 }

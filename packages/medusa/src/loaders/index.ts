@@ -1,9 +1,14 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   InternalModuleDeclaration,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
-import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
-import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaV2Flag,
+  isString,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
@@ -19,6 +24,7 @@ import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import medusaProjectApisLoader from "./load-medusa-project-apis"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -77,26 +83,19 @@ async function loadLegacyModulesEntities(configModules, container) {
   }
 }
 
-async function loadMedusaV2({ directory, expressApp }) {
-  const configModule = loadConfig(directory)
-
+async function loadMedusaV2({
+  rootDirectory,
+  configModule,
+  featureFlagRouter,
+  expressApp,
+}) {
   const container = createMedusaContainer()
 
-  // Add additional information to context of request
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    const ipAddress = requestIp.getClientIp(req) as string
-    ;(req as any).request_context = {
-      ip_address: ipAddress,
-    }
-    next()
-  })
-
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  const shouldStartAPI = configModule.projectConfig.worker_mode !== "worker"
 
   const pgConnection = await pgConnectionLoader({ container, configModule })
 
   container.register({
-    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
@@ -108,24 +107,46 @@ async function loadMedusaV2({ directory, expressApp }) {
     container,
   })
 
-  await expressLoader({ app: expressApp, configModule })
+  if (shouldStartAPI) {
+    await expressLoader({ app: expressApp, configModule })
 
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    req.scope = container.createScope() as MedusaContainer
-    req.requestId = (req.headers["x-request-id"] as string) ?? v4()
-    next()
-  })
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      req.scope = container.createScope() as MedusaContainer
+      req.requestId = (req.headers["x-request-id"] as string) ?? v4()
+      next()
+    })
 
-  // TODO: Add Subscribers loader
+    // Add additional information to context of request
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      const ipAddress = requestIp.getClientIp(req) as string
+      ;(req as any).request_context = {
+        ip_address: ipAddress,
+      }
+      next()
+    })
 
-  await apiLoader({
+    // TODO: Add Subscribers loader
+
+    await apiLoader({
+      container,
+      app: expressApp,
+      configModule,
+      featureFlagRouter,
+    })
+  }
+
+  await medusaProjectApisLoader({
+    rootDirectory,
     container,
     app: expressApp,
     configModule,
-    featureFlagRouter,
+    activityId: "medusa-project-apis",
   })
 
+  await createDefaultsWorkflow(container).run()
+
   return {
+    configModule,
     container,
     app: expressApp,
     pgConnection,
@@ -137,16 +158,24 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
+  configModule: ConfigModule
   container: MedusaContainer
   dbConnection?: Connection
   app: Express
   pgConnection: unknown
 }> => {
-  if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
-    return await loadMedusaV2({ directory: rootDirectory, expressApp })
-  }
-
   const configModule = loadConfig(rootDirectory)
+  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  track("FEATURE_FLAGS_LOADED")
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    return await loadMedusaV2({
+      rootDirectory,
+      configModule,
+      featureFlagRouter,
+      expressApp,
+    })
+  }
 
   const container = createMedusaContainer()
   container.register(
@@ -162,9 +191,6 @@ export default async ({
     }
     next()
   })
-
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
-  track("FEATURE_FLAGS_LOADED")
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
@@ -299,6 +325,7 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return {
+    configModule,
     container,
     dbConnection,
     app: expressApp,

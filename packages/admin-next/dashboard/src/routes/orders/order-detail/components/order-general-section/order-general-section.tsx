@@ -12,6 +12,10 @@ import { format } from "date-fns"
 import { useAdminCancelOrder } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  getOrderFulfillmentStatus,
+  getOrderPaymentStatus,
+} from "../../../../../lib/order-helpers"
 
 type OrderGeneralSectionProps = {
   order: Order
@@ -80,26 +84,10 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
 const FulfillmentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
-  const [label, color] = {
-    not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],
-    partially_fulfilled: [
-      t("orders.fulfillment.status.partiallyFulfilled"),
-      "orange",
-    ],
-    fulfilled: [t("orders.fulfillment.status.fulfilled"), "green"],
-    partially_shipped: [
-      t("orders.fulfillment.status.partiallyShipped"),
-      "orange",
-    ],
-    shipped: [t("orders.fulfillment.status.shipped"), "green"],
-    partially_returned: [
-      t("orders.fulfillment.status.partiallyReturned"),
-      "orange",
-    ],
-    returned: [t("orders.fulfillment.status.returned"), "green"],
-    canceled: [t("orders.fulfillment.status.canceled"), "red"],
-    requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
-  }[order.fulfillment_status] as [string, "red" | "orange" | "green"]
+  const { label, color } = getOrderFulfillmentStatus(
+    t,
+    order.fulfillment_status
+  )
 
   return (
     <StatusBadge color={color} className="text-nowrap">
@@ -111,18 +99,7 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
 const PaymentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
-  const [label, color] = {
-    not_paid: [t("orders.payment.status.notPaid"), "red"],
-    awaiting: [t("orders.payment.status.awaiting"), "orange"],
-    captured: [t("orders.payment.status.captured"), "green"],
-    refunded: [t("orders.payment.status.refunded"), "green"],
-    partially_refunded: [
-      t("orders.payment.status.partiallyRefunded"),
-      "orange",
-    ],
-    canceled: [t("orders.payment.status.canceled"), "red"],
-    requires_action: [t("orders.payment.status.requresAction"), "orange"],
-  }[order.payment_status] as [string, "red" | "orange" | "green"]
+  const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
   return (
     <StatusBadge color={color} className="text-nowrap">

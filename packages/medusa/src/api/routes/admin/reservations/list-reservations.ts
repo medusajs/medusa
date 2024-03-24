@@ -1,20 +1,20 @@
-import {
-  DateComparisonOperator,
-  extendedFindParamsMixin,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-} from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
-import { EntityManager } from "typeorm"
 import { IInventoryService } from "@medusajs/types"
-import { IsType } from "../../../../utils/validators/is-type"
-import { LineItemService } from "../../../../services"
+import { promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import { LineItemService } from "../../../../services"
+import { IsType } from "../../../../utils/validators/is-type"
 import { joinInventoryItems } from "./utils/join-inventory-items"
 import { joinLineItems } from "./utils/join-line-items"
-import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/reservations
@@ -288,7 +288,15 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   created_at?: DateComparisonOperator
 
   /**
-   * String filters tp apply on the reservations' `description` field.
+   * Date filters to apply on the reservations' `updated_at` field.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  /**
+   * String filters to apply on the reservations' `description` field.
    */
   @IsOptional()
   @IsType([StringComparisonOperator, String])

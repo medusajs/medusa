@@ -41,7 +41,8 @@ export async function loadModules(
   modulesConfig,
   sharedContainer,
   migrationOnly = false,
-  loaderOnly = false
+  loaderOnly = false,
+  workerMode: "shared" | "worker" | "server" = "server"
 ) {
   const allModules = {}
 
@@ -83,6 +84,7 @@ export async function loadModules(
         moduleExports,
         migrationOnly,
         loaderOnly,
+        workerMode,
       })) as LoadedModule
 
       if (loaderOnly) {
@@ -175,6 +177,7 @@ async function MedusaApp_({
   onApplicationStartCb,
   migrationOnly = false,
   loaderOnly = false,
+  workerMode = "server",
 }: MedusaAppOptions<RemoteFetchDataCallback> & {
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
@@ -235,7 +238,8 @@ async function MedusaApp_({
     modules,
     sharedContainer_,
     migrationOnly,
-    loaderOnly
+    loaderOnly,
+    workerMode
   )
 
   if (loaderOnly) {

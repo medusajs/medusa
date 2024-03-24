@@ -1,8 +1,12 @@
-import { transformQuery } from "../../../api/middlewares"
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as queryConfig from "./query-config"
-import { AdminGetPaymentsParams } from "./validators"
+import {
+  AdminGetPaymentsParams,
+  AdminPostPaymentsCapturesReq,
+  AdminPostPaymentsRefundsReq,
+} from "./validators"
 
 export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -33,11 +37,11 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/payments/:id/capture",
-    middlewares: [],
+    middlewares: [transformBody(AdminPostPaymentsCapturesReq)],
   },
   {
     method: ["POST"],
     matcher: "/admin/payments/:id/refund",
-    middlewares: [],
+    middlewares: [transformBody(AdminPostPaymentsRefundsReq)],
   },
 ]

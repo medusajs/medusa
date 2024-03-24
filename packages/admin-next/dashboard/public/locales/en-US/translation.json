@@ -6,6 +6,8 @@
     "add": "Add",
     "start": "Start",
     "end": "End",
+    "open": "Open",
+    "close": "Close",
     "apply": "Apply",
     "range": "Range",
     "search": "Search",
@@ -17,10 +19,6 @@
     "is": "is",
     "select": "Select",
     "selected": "Selected",
-    "extensions": "Extensions",
-    "settings": "Settings",
-    "general": "General",
-    "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
     "expired": "Expired",
@@ -28,6 +26,7 @@
     "revoked": "Revoked",
     "admin": "Admin",
     "store": "Store",
+    "details": "Details",
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
@@ -41,19 +40,49 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
+    "timeline": "Timeline"
+  },
+  "nav": {
+    "general": "General",
+    "developer": "Developer",
+    "extensions": "Extensions",
+    "settings": "Settings"
   },
   "actions": {
+    "save": "Save",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
-    "save": "Save",
+    "back": "Back",
     "continue": "Continue",
+    "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "apply": "Apply"
+  },
+  "filters": {
+    "date": {
+      "today": "Today",
+      "lastSevenDays": "Last 7 days",
+      "lastThirtyDays": "Last 30 days",
+      "lastNinetyDays": "Last 90 days",
+      "lastTwelveMonths": "Last 12 months",
+      "custom": "Custom"
+    },
+    "compare": {
+      "lessThan": "Less than",
+      "greaterThan": "Greater than",
+      "exact": "Exact",
+      "range": "Range",
+      "lessThanLabel": "less than {{value}}",
+      "greaterThanLabel": "greater than {{value}}",
+      "andLabel": "and"
+    },
+    "addFilter": "Add filter"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -66,9 +95,46 @@
     "defaultMessage": "An error occurred while rendering this page."
   },
   "addresses": {
-    "shippingAddress": "Shipping Address",
-    "billingAddress": "Billing Address",
-    "sameAsShipping": "Same as shipping address"
+    "shippingAddress": {
+      "header": "Shipping Address",
+      "editHeader": "Edit Shipping Address",
+      "editLabel": "Shipping address",
+      "label": "Shipping address"
+    },
+    "billingAddress": {
+      "header": "Billing Address",
+      "editHeader": "Edit Billing Address",
+      "editLabel": "Billing address",
+      "label": "Billing address",
+      "sameAsShipping": "Same as shipping address"
+    },
+    "contactHeading": "Contact",
+    "locationHeading": "Location"
+  },
+  "email": {
+    "editHeader": "Edit Email",
+    "editLabel": "Email",
+    "label": "Email"
+  },
+  "transferOwnership": {
+    "header": "Transfer Ownership",
+    "label": "Transfer ownership",
+    "details": {
+      "order": "Order details",
+      "draft": "Draft details"
+    },
+    "currentOwner": {
+      "label": "Current owner",
+      "hint": "The current owner of the order."
+    },
+    "newOwner": {
+      "label": "New owner",
+      "hint": "The new owner to transfer the order to."
+    },
+    "validation": {
+      "mustBeDifferent": "The new owner must be different from the current owner.",
+      "required": "New owner is required."
+    }
   },
   "products": {
     "domain": "Products",
@@ -121,7 +187,9 @@
     "domain": "Categories"
   },
   "inventory": {
-    "domain": "Inventory"
+    "domain": "Inventory",
+    "reserved": "Reserved",
+    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
     "domain": "Gift Cards",
@@ -172,6 +240,7 @@
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "summary": {
+      "requestReturn": "Request return",
       "allocateItems": "Allocate items",
       "editItems": "Edit items"
     },
@@ -192,6 +261,38 @@
         "canceled": "Canceled",
         "requiresAction": "Requires action"
       }
+    },
+    "edits": {
+      "title": "Edit order",
+      "currentItems": "Current items",
+      "currentItemsDescription": "Adjust item quantity or remove.",
+      "addItemsDescription": "You can add new items to the order.",
+      "addItems": "Add items",
+      "amountPaid": "Amount paid",
+      "newTotal": "New total",
+      "differenceDue": "Difference due"
+    },
+    "returns": {
+      "details": "Details",
+      "chooseItems": "Choose items",
+      "refundAmount": "Refund amount",
+      "locationDescription": "Choose which location you want to return the items to.",
+      "shippingDescription": "Choose which method you want to use for this return.",
+      "noInventoryLevel": "No inventory level",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify customer of created return.",
+      "customRefund": "Custom refund",
+      "shippingPriceTooltip1": "Custom refund is enabled",
+      "noShippingOptions": "There are no shipping options for the region",
+      "shippingPriceTooltip2": "Shipping needs to be selected",
+      "customRefundHint": "If you want to refund something else instead of the total refund.",
+      "customShippingPrice": "Custom shipping",
+      "customShippingPriceHint": "Custom shipping cost.",
+      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
+      "refundableAmountLabel": "Refundable amount",
+      "refundableAmountHeader": "Refundable Amount",
+      "returnableQuantityLabel": "Returnable quantity",
+      "returnableQuantityHeader": "Returnable Quantity"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -228,21 +329,36 @@
     }
   },
   "draftOrders": {
-    "domain": "Draft Orders"
+    "domain": "Draft Orders",
+    "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
+    "paymentLinkLabel": "Payment link",
+    "cartIdLabel": "Cart ID",
+    "markAsPaid": {
+      "label": "Mark as paid",
+      "warningTitle": "Mark as Paid",
+      "warningDescription": "You are about to mark the draft order as paid. This action cannot be undone, and collecting payment will not be possible later."
+    },
+    "status": {
+      "open": "Open",
+      "completed": "Completed"
+    }
   },
   "discounts": {
     "domain": "Discounts",
     "startDate": "Start date",
+    "createDiscountTitle": "Create Discount",
     "validDuration": "Duration of the discount",
     "redemptionsLimit": "Redemptions limit",
     "endDate": "End date",
+    "type": "Discount type",
     "percentageDiscount": "Percentage discount",
     "freeShipping": "Free shipping",
     "fixedDiscount": "Fixed discount",
+    "fixedAmount": "Fixed amount",
     "validRegions": "Valid regions",
     "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
-    "editDiscountDetails": "Edit discount details",
-    "editDiscountConfiguration": "Edit discount configuration",
+    "editDiscountDetails": "Edit Discount Details",
+    "editDiscountConfiguration": "Edit Discount Configuration",
     "hasStartDate": "Discount has a start date",
     "hasEndDate": "Discount has an expiry date",
     "startDateHint": "Schedule the discount to activate in the future.",
@@ -250,31 +366,54 @@
     "codeHint": "Discount code applies from when you hit the publish button and forever if left untouched.",
     "hasUsageLimit": "Limit the number of redemptions?",
     "usageLimitHint": "Limit applies across all customers, not per customer.",
-    "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
+    "titleHint": "The code your customers will enter during checkout. This will appear on your customer's invoice.\nUppercase letters and numbers only.",
     "hasDurationLimit": "Availability duration",
     "durationHint": "Set the duration of the discount",
     "chooseValidRegions": "Choose valid regions",
-    "noConditions": "No conditions are defined for this discount.",
-    "editConditions": "Edit conditions",
+    "conditionsHint": "Create conditions to apply on the discount",
+    "isTemplateDiscount": "Is this a template discount?",
+    "percentageDescription": "Discount applied in %",
+    "fixedDescription": "Amount discount",
+    "shippingDescription": "Override delivery amount",
+    "selectRegionFirst": "Select a region first",
+    "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
     "conditions": {
+      "editHeader": "Edit Discount Conditions",
+      "editHint": "Specify conditions for when the discount can be applied to a cart.",
+      "manageTypesAction": "Manage condition types",
       "including": {
-        "products_one": "Discount applies to <0/> product.",
-        "products_other": "Discount applies to <0/> products.",
-        "customer_groups_one": "Discount applies to <0/> customer group.",
-        "customer_groups_other": "Discount applies to <0/> customer groups.",
-        "product_tags_one": "Discount applies to <0/> tag.",
-        "product_tags_other": "Discount applies to <0/> tags.",
-        "product_collections_one": "Discount applies to <0/> product collection.",
-        "product_collections_other": "Discount applies to <0/> product collections.",
-        "product_types_one": "Discount applies to <0/> product type.",
-        "product_types_other": "Discount applies to <0/> product types."
+        "products_one": "Discount applies to <0/> product",
+        "products_other": "Discount applies to <0/> products",
+        "customer_groups_one": "Discount applies to <0/> customer group",
+        "customer_groups_other": "Discount applies to <0/> customer groups",
+        "product_tags_one": "Discount applies to <0/> tag",
+        "product_tags_other": "Discount applies to <0/> tags",
+        "product_collections_one": "Discount applies to <0/> product collection",
+        "product_collections_other": "Discount applies to <0/> product collections",
+        "product_types_one": "Discount applies to <0/> product type",
+        "product_types_other": "Discount applies to <0/> product types"
       },
       "excluding": {
-        "products": "Discount applies to <1>all</1> products except <0/>.",
-        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>.",
-        "product_tags": "Discount applies to <1>all</1> product tags except <0/>.",
-        "product_collections": "Discount applies to <1>all</1> product collections except <0/>.",
-        "product_types": "Discount applies to <1>all</1> product types except <0/>."
+        "products": "Discount applies to <1>all</1> products except <0/>",
+        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>",
+        "product_tags": "Discount applies to <1>all</1> product tags except <0/>",
+        "product_collections": "Discount applies to <1>all</1> product collections except <0/>",
+        "product_types": "Discount applies to <1>all</1> product types except <0/>"
+      },
+      "edit": {
+        "appliesTo": "Discount applies to",
+        "except": {
+          "products_one": "product, except",
+          "products_other": "products, except",
+          "product_tags_one": "product tag, except",
+          "product_tags_other": "product tags, except",
+          "product_types_one": "product type, except",
+          "product_types_other": "product types, except",
+          "product_collections_one": "product collection, except",
+          "product_collections_other": "product collections, except",
+          "customer_groups_one": "customer group, except",
+          "customer_groups_other": "customer groups, except"
+        }
       }
     },
     "discountStatus": {
@@ -285,7 +424,35 @@
     }
   },
   "pricing": {
-    "domain": "Pricing"
+    "domain": "Pricing",
+    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "status": {
+      "draft": "Draft",
+      "expired": "Expired",
+      "active": "Active",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "sale": "Sale",
+      "override": "Override"
+    },
+    "settings": {
+      "typeHint": "Choose the type of price list you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "editPriceListTitle": "Edit Price List",
+      "customerGroupsLabel": "Customer groups",
+      "priceOverridesLabel": "Price overrides",
+      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
+    },
+    "products": {
+      "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
+      "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
+    },
+    "prices": {
+      "addPrices": "Add prices",
+      "editPrices": "Edit prices"
+    }
   },
   "profile": {
     "domain": "Profile",
@@ -347,7 +514,7 @@
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
-    "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
+    "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
     "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
@@ -376,10 +543,55 @@
         "adminOnly": "Admin only",
         "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
       },
+      "taxInclusiveHint": "When enabled, the shipping option's price will be tax inclusive.",
       "requirements": {
         "label": "Requirements",
         "hint": "Specify the requirements for the shipping option."
       }
+    }
+  },
+  "taxes": {
+    "domain": "Taxes",
+    "countries": {
+      "taxCountriesHint": "Tax settings apply to the listed countries."
+    },
+    "settings": {
+      "editTaxSettings": "Edit Tax Settings",
+      "taxProviderLabel": "Tax provider",
+      "systemTaxProviderLabel": "System Tax Provider",
+      "calculateTaxesAutomaticallyLabel": "Calculate taxes automatically",
+      "calculateTaxesAutomaticallyHint": "When enabled, tax rates will be calculated automatically and applied to carts. When disabled, taxes must be manually computed at checkout. Manual taxes are recommended for usage with third-party tax providers.",
+      "applyTaxesOnGiftCardsLabel": "Apply taxes on gift cards",
+      "applyTaxesOnGiftCardsHint": "When enabled, taxes will be applied to gift cards at checkout. In some countries, tax regulations require the application of taxes to gift cards upon purchase.",
+      "defaultTaxRateLabel": "Default tax rate",
+      "defaultTaxCodeLabel": "Default tax code"
+    },
+    "defaultRate": {
+      "sectionTitle": "Default Tax Rate"
+    },
+    "taxRate": {
+      "sectionTitle": "Tax Rates",
+      "createTaxRate": "Create Tax Rate",
+      "createTaxRateHint": "Create a new tax rate for the region.",
+      "deleteRateDescription": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+      "editTaxRate": "Edit Tax Rate",
+      "editRateAction": "Edit rate",
+      "editOverridesAction": "Edit overrides",
+      "editOverridesTitle": "Edit Tax Rate Overrides",
+      "editOverridesHint": "Specify the overrides for the tax rate.",
+      "deleteTaxRateWarning": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+      "productOverridesLabel": "Product overrides",
+      "productOverridesHint": "Specify the product overrides for the tax rate.",
+      "addProductOverridesAction": "Add product overrides",
+      "productTypeOverridesLabel": "Product type overrides",
+      "productTypeOverridesHint": "Specify the product type overrides for the tax rate.",
+      "addProductTypeOverridesAction": "Add product type overrides",
+      "shippingOptionOverridesLabel": "Shipping option overrides",
+      "shippingOptionOverridesHint": "Specify the shipping option overrides for the tax rate.",
+      "addShippingOptionOverridesAction": "Add shipping option overrides",
+      "productOverridesHeader": "Products",
+      "productTypeOverridesHeader": "Product Types",
+      "shippingOptionOverridesHeader": "Shipping Options"
     }
   },
   "locations": {
@@ -392,6 +604,10 @@
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
+  },
+  "reservations": {
+    "domain": "Reservations",
+    "deleteWarning": "You are about to delete a reservation. This action cannot be undone."
   },
   "salesChannels": {
     "domain": "Sales Channels",
@@ -419,6 +635,15 @@
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
+  },
+  "returnReasons": {
+    "domain": "Return Reasons",
+    "calloutHint": "Manage the reasons to categorize returns.",
+    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+    "createReason": "Create Return Reason",
+    "createReasonHint": "Create a new return reason to categorize returns.",
+    "editReason": "Edit Return Reason",
+    "valueTooltip": "The value should be a unique identifier for the return reason."
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
@@ -453,6 +678,45 @@
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
   },
+  "executions": {
+    "domain": "Executions",
+    "transactionIdLabel": "Transaction ID",
+    "workflowIdLabel": "Workflow ID",
+    "progressLabel": "Progress",
+    "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
+    "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
+    "history": {
+      "sectionTitle": "History",
+      "runningState": "Running...",
+      "awaitingState": "Awaiting",
+      "failedState": "Failed",
+      "definitionLabel": "Definition",
+      "outputLabel": "Output",
+      "compensateInputLabel": "Compensate input",
+      "revertedLabel": "Reverted",
+      "errorLabel": "Error"
+    },
+    "state": {
+      "done": "Done",
+      "failed": "Failed",
+      "reverted": "Reverted",
+      "invoking": "Invoking",
+      "compensating": "Compensating",
+      "notStarted": "Not started"
+    },
+    "transaction": {
+      "state": {
+        "waitingToCompensate": "Waiting to compensate"
+      }
+    },
+    "step": {
+      "state": {
+        "skipped": "Skipped",
+        "dormant": "Dormant",
+        "timeout": "Timeout"
+      }
+    }
+  },
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
@@ -481,8 +745,16 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "reason": "Reason",
+    "note": "Note",
+    "none": "none",
+    "all": "all",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
+    "customer_groups": "Customer Groups",
+    "product_tags": "Product Tags",
+    "product_types": "Product Types",
+    "product_collections": "Product Collections",
     "status": "Status",
     "code": "Code",
     "value": "Value",
@@ -503,7 +775,8 @@
     "availability": "Availability",
     "inventory": "Inventory",
     "optional": "Optional",
-    "taxInclusivePricing": "Tax Inclusive Pricing",
+    "note": "Note",
+    "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",
     "currency": "Currency",
@@ -563,14 +836,21 @@
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
+    "inStock": "In stock",
+    "location": "Location",
+    "quantity": "Quantity",
+    "variant": "Variant",
     "id": "ID",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
     "summary": "Summary",
-    "shippingProfile": "Shipping Profile"
+    "label": "Label",
+    "rate": "Rate",
+    "requiresShipping": "Requires shipping",
+    "draft": "Draft"
   },
-  "dateTime" : {
+  "dateTime": {
     "years_one": "Year",
     "years_other": "Years",
     "months_one": "Month",

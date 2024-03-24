@@ -8,8 +8,13 @@ import {
 } from "@medusajs/core-flows"
 
 import { UpdateProductVariantDTO } from "@medusajs/types"
-import { defaultAdminProductsVariantFields } from "../../../query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  refetchProduct,
+  remapKeysForVariant,
+  remapProduct,
+  remapVariant,
+} from "../../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -24,13 +29,13 @@ export const GET = async (
   const variables = { id: variantId, product_id: productId }
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_variant",
+    entryPoint: "variant",
     variables,
-    fields: req.retrieveConfig.select as string[],
+    fields: remapKeysForVariant(req.remoteQueryConfig.fields ?? []),
   })
 
-  const [product_variant] = await remoteQuery(queryObject)
-  res.status(200).json({ product_variant })
+  const [variant] = await remoteQuery(queryObject)
+  res.status(200).json({ variant: remapVariant(variant) })
 }
 
 export const POST = async (
@@ -55,7 +60,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_variant: result[0] })
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }
 
 export const DELETE = async (
@@ -76,9 +86,16 @@ export const DELETE = async (
     throw errors[0].error
   }
 
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
     id: variantId,
-    object: "product_variant",
+    object: "variant",
     deleted: true,
+    parent: product,
   })
 }

@@ -1,4 +1,4 @@
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { EVENT_STATUS } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
@@ -15,33 +15,50 @@ OrderChangeProcessing.registerActionType(
 
       let toReturn = action.details.quantity
 
-      existing.return_dismissed_quantity ??= 0
-      existing.return_dismissed_quantity += toReturn
-      existing.return_requested_quantity -= toReturn
+      existing.detail.return_dismissed_quantity ??= 0
+      existing.detail.return_requested_quantity ??= 0
+
+      existing.detail.return_dismissed_quantity = MathBN.add(
+        existing.detail.return_dismissed_quantity,
+        toReturn
+      )
+      existing.detail.return_requested_quantity = MathBN.sub(
+        existing.detail.return_requested_quantity,
+        toReturn
+      )
 
       if (previousEvents) {
         for (const previousEvent of previousEvents) {
           previousEvent.original_ = JSON.parse(JSON.stringify(previousEvent))
 
-          let ret = Math.min(toReturn, previousEvent.details.quantity)
-          toReturn -= ret
+          let ret = MathBN.min(toReturn, previousEvent.details.quantity)
+          toReturn = MathBN.sub(toReturn, ret)
 
-          previousEvent.details.quantity -= ret
-          if (previousEvent.details.quantity <= 0) {
+          previousEvent.details.quantity = MathBN.sub(
+            previousEvent.details.quantity,
+            ret
+          )
+          if (MathBN.lte(previousEvent.details.quantity, 0)) {
             previousEvent.status = EVENT_STATUS.DONE
           }
         }
       }
 
-      return existing.unit_price * action.details.quantity
+      return MathBN.mult(existing.unit_price, action.details.quantity)
     },
     revert({ action, currentOrder, previousEvents }) {
       const existing = currentOrder.items.find(
         (item) => item.id === action.details.reference_id
       )!
 
-      existing.return_dismissed_quantity -= action.details.quantity
-      existing.return_requested_quantity += action.details.quantity
+      existing.detail.return_dismissed_quantity = MathBN.sub(
+        existing.detail.return_dismissed_quantity,
+        action.details.quantity
+      )
+      existing.detail.return_requested_quantity = MathBN.add(
+        existing.detail.return_requested_quantity,
+        action.details.quantity
+      )
 
       if (previousEvents) {
         for (const previousEvent of previousEvents) {
@@ -76,11 +93,18 @@ OrderChangeProcessing.registerActionType(
         )
       }
 
-      const quantityRequested = existing?.return_requested_quantity || 0
-      if (action.details.quantity > quantityRequested) {
+      if (!action.details?.quantity) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Cannot receive more items than what was requested to be returned."
+          `Quantity to return of item ${refId} is required.`
+        )
+      }
+
+      const quantityRequested = existing?.detail.return_requested_quantity || 0
+      if (action.details?.quantity > quantityRequested) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot receive more items than what was requested to be returned for item ${refId}.`
         )
       }
     },

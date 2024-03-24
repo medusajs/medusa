@@ -21,11 +21,7 @@ import {
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { isString } from "../../common"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  buildQuery,
-} from "../../modules-sdk"
+import { buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -119,10 +115,9 @@ export class MikroOrmBaseRepository<T extends object = object>
     throw new Error("Method not implemented.")
   }
 
-  @InjectTransactionManager()
   async softDelete(
     idsOrFilter: string[] | InternalFilterQuery,
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
     const isArray = Array.isArray(idsOrFilter)
     // TODO handle composite keys
@@ -152,10 +147,9 @@ export class MikroOrmBaseRepository<T extends object = object>
     return [entities, softDeletedEntitiesMap]
   }
 
-  @InjectTransactionManager()
   async restore(
     idsOrFilter: string[] | InternalFilterQuery,
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
     // TODO handle composite keys
     const isArray = Array.isArray(idsOrFilter)
@@ -278,10 +272,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     async update(data: { entity; update }[], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
       const entities = data.map((data_) => {
-        return manager.assign(
-          data_.entity,
-          data_.update as RequiredEntityData<T>
-        )
+        return manager.assign(data_.entity, data_.update)
       })
 
       manager.persist(entities)

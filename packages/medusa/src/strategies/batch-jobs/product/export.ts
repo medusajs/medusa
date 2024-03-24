@@ -1,5 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag, createContainerLike } from "@medusajs/utils"
+import { createContainerLike, FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { humanizeAmount } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultAdminProductRelations } from "../../../api"
@@ -114,7 +114,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       ...context
     } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
 
-    const listConfig = prepareListQuery(
+    const { listConfig } = prepareListQuery(
       {
         limit,
         offset,

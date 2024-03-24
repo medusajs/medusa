@@ -1,3 +1,7 @@
+import { CustomerDTO } from "../customer"
+import { ShippingOptionDTO } from "../fulfillment"
+import { ProductDTO } from "../product"
+import { RegionDTO } from "../region"
 import { CartDTO, CartLineItemDTO } from "./common"
 import { UpdateLineItemDTO } from "./mutations"
 
@@ -66,11 +70,12 @@ export interface CreateCartWorkflowInputDTO {
   metadata?: Record<string, unknown>
 
   items?: CreateCartCreateLineItemDTO[]
+  promo_codes?: string[]
 }
 
 export interface AddToCartWorkflowInputDTO {
   items: CreateCartCreateLineItemDTO[]
-  cart: CartDTO
+  cart: CartWorkflowDTO
 }
 
 export interface UpdateCartWorkflowInputDTO {
@@ -90,4 +95,25 @@ export interface CreatePaymentCollectionForCartWorkflowInputDTO {
   currency_code: string
   amount: number
   metadata?: Record<string, unknown>
+}
+
+export interface CartWorkflowDTO extends CartDTO {
+  customer?: CustomerDTO
+  product?: ProductDTO
+  region?: RegionDTO
+}
+
+export interface ListShippingOptionsForCartWorkflowInputDTO {
+  cart_id: string
+  sales_channel_id?: string
+  currency_code: string
+  shipping_address: {
+    city?: string
+    country_code?: string
+    province?: string
+  }
+}
+
+export interface PricedShippingOptionDTO extends ShippingOptionDTO {
+  amount: number
 }

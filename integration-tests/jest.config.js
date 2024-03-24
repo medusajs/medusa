@@ -25,7 +25,7 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transform: { "^.+\\.[jt]s$": `<rootDir>/jest-transformer.js` },
+  transform: { "^.+\\.[jt]s$": ["@swc/jest"] },
   setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
   setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }

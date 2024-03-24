@@ -9,33 +9,45 @@ describe("Order Exchange - Actions", function () {
         quantity: 1,
         unit_price: 10,
 
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 1,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "2",
         quantity: 2,
         unit_price: 100,
 
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 2,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "3",
         quantity: 3,
         unit_price: 20,
 
-        fulfilled_quantity: 3,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 3,
+          shipped_quantity: 3,
+          fulfilled_quantity: 3,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
     ],
     shipping_methods: [
@@ -44,8 +56,9 @@ describe("Order Exchange - Actions", function () {
         price: 0,
       },
     ],
-    total: 270,
-    shipping_total: 0,
+    summary: {
+      total: 270,
+    },
   }
 
   it("should perform an item exchage", function () {
@@ -83,47 +96,61 @@ describe("Order Exchange - Actions", function () {
       actions: actions,
     })
 
-    expect(changes.summary).toEqual({
-      transactionTotal: 0,
+    const sumToJSON = JSON.parse(JSON.stringify(changes.summary))
+    expect(sumToJSON).toEqual({
+      transactionTotal: "0",
       originalOrderTotal: 270,
-      currentOrderTotal: 312.5,
-      temporaryDifference: 62.5,
+      currentOrderTotal: "312.5",
+      temporaryDifference: "62.5",
       futureDifference: 0,
-      futureTemporaryDifference: 0,
-      pendingDifference: 312.5,
-      differenceSum: 42.5,
+      futureTemporaryDifference: "0",
+      pendingDifference: "312.5",
+      differenceSum: "42.5",
     })
 
-    expect(changes.order.items).toEqual([
+    const toJson = JSON.parse(JSON.stringify(changes.order.items))
+    expect(toJson).toEqual([
       {
         id: "1",
         quantity: 1,
         unit_price: 10,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 1,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "2",
         quantity: 2,
         unit_price: 100,
-        fulfilled_quantity: 1,
-        return_requested_quantity: 0,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 2,
+          shipped_quantity: 1,
+          fulfilled_quantity: 1,
+          return_requested_quantity: 0,
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "3",
         quantity: 3,
         unit_price: 20,
-        fulfilled_quantity: 3,
-        return_requested_quantity: 1,
-        return_received_quantity: 0,
-        return_dismissed_quantity: 0,
-        written_off_quantity: 0,
+        detail: {
+          quantity: 3,
+          shipped_quantity: 3,
+          fulfilled_quantity: 3,
+          return_requested_quantity: "1",
+          return_received_quantity: 0,
+          return_dismissed_quantity: 0,
+          written_off_quantity: 0,
+        },
       },
       {
         id: "item_555",

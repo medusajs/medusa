@@ -431,3 +431,7 @@ export type UpdateStockLocationInput = {
    */
   metadata?: Record<string, unknown>
 }
+
+export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
+  id: string
+}

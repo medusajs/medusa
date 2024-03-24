@@ -1,4 +1,5 @@
 const { Modules } = require("@medusajs/modules-sdk")
+const { FulfillmentModuleOptions } = require("@medusajs/fulfillment")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -49,8 +50,14 @@ module.exports = {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 0 }, // Cache disabled
     },
-    [Modules.STOCK_LOCATION]: true,
-    [Modules.INVENTORY]: true,
+    [Modules.STOCK_LOCATION]: {
+      resolve: "@medusajs/stock-location-next",
+      options: {},
+    },
+    [Modules.INVENTORY]: {
+      resolve: "@medusajs/inventory-next",
+      options: {},
+    },
     [Modules.PRODUCT]: true,
     [Modules.PRICING]: true,
     [Modules.PROMOTION]: true,
@@ -64,5 +71,20 @@ module.exports = {
     [Modules.TAX]: true,
     [Modules.CURRENCY]: true,
     [Modules.PAYMENT]: true,
+    [Modules.FULFILLMENT]: {
+      /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/fulfillment-manual",
+            options: {
+              config: {
+                "test-provider": {},
+              },
+            },
+          },
+        ],
+      },
+    },
   },
 }

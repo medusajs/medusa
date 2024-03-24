@@ -1,4 +1,4 @@
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
 
@@ -8,7 +8,12 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.return_requested_quantity -= action.details.quantity
+    existing.detail.return_requested_quantity ??= 0
+
+    existing.detail.return_requested_quantity = MathBN.sub(
+      existing.detail.return_requested_quantity,
+      action.details.quantity
+    )
 
     return action.details.unit_price * action.details.quantity
   },
@@ -17,7 +22,10 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       (item) => item.id === action.details.reference_id
     )!
 
-    existing.return_requested_quantity += action.details.quantity
+    existing.detail.return_requested_quantity = MathBN.add(
+      existing.detail.return_requested_quantity,
+      action.details.quantity
+    )
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id
@@ -25,6 +33,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Details reference ID is required."
+      )
+    }
+
+    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Unit price of item ${action.reference_id} is required if no action.amount is provided.`
       )
     }
 
@@ -37,13 +52,21 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       )
     }
 
-    const notFulfilled =
-      (existing.quantity as number) - (existing.fulfilled_quantity as number)
-
-    if (action.details.quantity > notFulfilled) {
+    if (!action.details?.quantity) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Cannot fulfill more items than what was ordered."
+        `Quantity to cancel return of item ${refId} is required.`
+      )
+    }
+
+    const greater = MathBN.gt(
+      action.details?.quantity,
+      existing.detail?.return_requested_quantity
+    )
+    if (greater) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot cancel more items than what was requested to return for item ${refId}.`
       )
     }
   },

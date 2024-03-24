@@ -1,5 +1,5 @@
 import { useAdminOrder } from "medusa-react"
-import { useLoaderData, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
@@ -47,6 +47,7 @@ export const OrderDetail = () => {
       <div className="hidden flex-col gap-y-2 lg:flex">
         <OrderCustomerSection order={order} />
       </div>
+      <Outlet />
     </div>
   )
 }

@@ -1,6 +1,10 @@
 "use client"
-import { Highlight, themes } from "prism-react-renderer"
+import { Highlight, Prism, themes } from "prism-react-renderer"
 import * as React from "react"
+;(typeof global !== "undefined" ? global : window).Prism = Prism
+
+// @ts-ignore
+import("prismjs/components/prism-json")
 
 import { Copy } from "@/components/copy"
 import { clx } from "@/utils/clx"
@@ -216,6 +220,12 @@ const Body = ({
                 },
               },
               {
+                types: ["property"],
+                style: {
+                  color: "rgb(247,208,25)",
+                },
+              },
+              {
                 types: ["maybe-class-name"],
                 style: {
                   color: "rgb(255,203,107)",
@@ -230,7 +240,7 @@ const Body = ({
               {
                 types: ["comment"],
                 style: {
-                  color: "rgb(52,211,153)",
+                  color: "var(--code-fg-subtle)",
                 },
               },
             ],

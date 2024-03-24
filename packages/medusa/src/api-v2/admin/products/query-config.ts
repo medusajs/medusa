@@ -1,62 +1,3 @@
-export const allowedAdminProductRelations = [
-  "variants",
-  // TODO: Add in next iteration
-  // "variants.prices",
-  // TODO: See how this should be handled
-  // "variants.options",
-  "images",
-  // TODO: What is this?
-  // "profiles",
-  "options",
-  // TODO: See how this should be handled
-  // "options.values",
-  // TODO: Handle in next iteration
-  // "tags",
-  // "type",
-  // "collection",
-]
-export const defaultAdminProductRelations = []
-export const defaultAdminProductFields = [
-  "id",
-  "title",
-  "subtitle",
-  "status",
-  "external_id",
-  "description",
-  "handle",
-  "is_giftcard",
-  "discountable",
-  "thumbnail",
-  // TODO: Handle in next iteration
-  // "collection_id",
-  // "type_id",
-  "weight",
-  "length",
-  "height",
-  "width",
-  "hs_code",
-  "origin_country",
-  "mid_code",
-  "material",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-]
-
-export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminProductFields,
-  defaultRelations: defaultAdminProductRelations,
-  allowedRelations: allowedAdminProductRelations,
-  isList: false,
-}
-
-export const listTransformQueryConfig = {
-  ...retrieveTransformQueryConfig,
-  defaultLimit: 50,
-  isList: true,
-}
-
 export const defaultAdminProductsVariantFields = [
   "id",
   "product_id",
@@ -81,6 +22,8 @@ export const defaultAdminProductsVariantFields = [
   "ean",
   "upc",
   "barcode",
+  "*prices",
+  "*options",
 ]
 
 export const retrieveVariantConfig = {
@@ -100,13 +43,59 @@ export const defaultAdminProductsOptionFields = ["id", "title"]
 
 export const retrieveOptionConfig = {
   defaultFields: defaultAdminProductsOptionFields,
-  defaultRelations: [],
-  allowedRelations: [],
   isList: false,
 }
 
 export const listOptionConfig = {
   ...retrieveVariantConfig,
+  defaultLimit: 50,
+  isList: true,
+}
+
+export const defaultAdminProductFields = [
+  "id",
+  "title",
+  "subtitle",
+  "status",
+  "external_id",
+  "description",
+  "handle",
+  "is_giftcard",
+  "discountable",
+  "thumbnail",
+  "collection_id",
+  "type_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+  "*type",
+  "*collection",
+  "*options",
+  "*options.values",
+  "*tags",
+  "*images",
+  "*variants",
+  "*variants.prices",
+  "*variants.options",
+  "*sales_channels",
+]
+
+export const retrieveProductQueryConfig = {
+  defaults: defaultAdminProductFields,
+  isList: false,
+}
+
+export const listProductQueryConfig = {
+  ...retrieveProductQueryConfig,
   defaultLimit: 50,
   isList: true,
 }
