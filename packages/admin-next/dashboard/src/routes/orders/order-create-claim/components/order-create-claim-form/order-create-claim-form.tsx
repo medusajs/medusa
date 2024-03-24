@@ -74,11 +74,11 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
     const type = addedItems.length ? "replace" : "refund"
     const returnShipping = data.return_shipping
 
-    const returnableItems = selectedItems.map((item) => ({
-      item_id: item.id,
-      quantity: data.quantity[item.id],
-      note: data.note[item.id],
-      reason: data.reason[item.id] as ClaimReason,
+    const returnableItems = selectedItems.map((itemId) => ({
+      item_id: itemId,
+      quantity: data.quantity[itemId],
+      note: data.note[itemId],
+      reason: data.reason[itemId] as ClaimReason,
     }))
 
     const additionalItems =
@@ -89,7 +89,24 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
           }))
         : undefined
 
-    // TODO: rest
+    const itemsMissingReturnReason = returnableItems.filter(
+      (i) => !data.reason[i.item_id]
+    )
+
+    if (itemsMissingReturnReason) {
+      itemsMissingReturnReason.forEach((item) => {
+        form.setError(
+          `reason.${item.item_id}`,
+          {
+            type: "manual",
+            message: t("orders.claims.selectReason"),
+          },
+          { shouldFocus: true }
+        )
+      })
+
+      return
+    }
 
     handleSuccess(`/orders/${order.id}`)
   })

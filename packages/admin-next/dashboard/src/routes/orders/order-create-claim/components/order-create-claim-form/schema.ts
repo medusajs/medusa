@@ -2,7 +2,7 @@ import * as zod from "zod"
 
 export const CreateReturnSchema = zod.object({
   quantity: zod.record(zod.string(), zod.number()),
-  reason: zod.record(zod.string(), zod.string().optional()),
+  reason: zod.record(zod.string(), zod.string()),
   note: zod.record(zod.string(), zod.string().optional()),
 
   location: zod.string(),
