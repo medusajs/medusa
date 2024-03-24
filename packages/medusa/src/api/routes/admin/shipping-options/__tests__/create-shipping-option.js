@@ -31,11 +31,11 @@ describe("POST /admin/shipping-options", () => {
       })
     })
 
-    it.skip("returns 200", () => {
+    it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it.skip("calls service create", () => {
+    it("calls service create", () => {
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledWith({
         is_return: false,

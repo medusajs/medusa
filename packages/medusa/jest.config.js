@@ -16,10 +16,10 @@ module.exports = {
     },
   },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": ["@swc/jest"],
   },
   modulePathIgnorePatterns: ["__fixtures__"],
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 }

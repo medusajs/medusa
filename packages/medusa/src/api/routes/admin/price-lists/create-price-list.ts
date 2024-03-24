@@ -11,6 +11,7 @@ import {
 import { Request } from "express"
 import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
@@ -288,4 +289,12 @@ export class AdminPostPriceListsPriceListReq {
     IsBoolean(),
   ])
   includes_tax?: boolean
+
+  constructor() {
+    if (
+      !featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
+    ) {
+      delete this.includes_tax
+    }
+  }
 }
