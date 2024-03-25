@@ -16,6 +16,7 @@ import { OrderCreateClaimItemTable } from "./order-create-claim-item-table"
 import { CreateReturnSchema } from "./schema"
 import { getReturnableItemsForClaim } from "../../../../../lib/rma"
 import { OrderCreateClaimDetails } from "./order-create-claim-details"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -45,8 +46,6 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
   //   region_id: order.region_id,
   //   is_return: true,
   // })
-
-  const refundableAmount = useRef(0)
 
   const form = useForm<zod.infer<typeof CreateReturnSchema>>({
     defaultValues: {
@@ -86,7 +85,6 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
 
   const onSubmit = form.handleSubmit(async (data) => {
     const type = addedItems.length ? "replace" : "refund"
-    const returnShipping = data.return_shipping
 
     const returnableItems = selectedItems.map((itemId) => ({
       item_id: itemId,
@@ -98,7 +96,7 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
     const additionalItems =
       type === "replace"
         ? addedItems.map((item) => ({
-            quantity: data.quantity[item.id],
+            quantity: data.quantity[item.id] as number,
             variant_id: item.id,
           }))
         : undefined
@@ -107,7 +105,7 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
       (i) => !data.reason[i.item_id]
     )
 
-    if (itemsMissingReturnReason) {
+    if (itemsMissingReturnReason.length) {
       itemsMissingReturnReason.forEach((item) => {
         form.setError(
           `reason.${item.item_id}`,
@@ -121,6 +119,79 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
 
       return
     }
+
+    if (type === "replace" && !data.replacement_shipping) {
+      form.setError(
+        "replacement_shipping",
+        {
+          type: "manual",
+          message: t("orders.claims.replacementShippingError"),
+        },
+        { shouldFocus: true }
+      )
+      return
+    }
+
+    let refundAmount = undefined
+
+    if (type === "refund") {
+      if (data.enable_custom_refund && data.custom_refund !== undefined) {
+        const amountValue =
+          typeof data.custom_refund === "string"
+            ? Number(data.custom_refund)
+            : data.custom_refund
+
+        refundAmount = getDbAmount(amountValue, order.currency_code)
+      } // else -> refund will be calculated on the backend from the items
+    }
+
+    const replacementShipping =
+      type === "replace" && data.replacement_shipping
+        ? {
+            option_id: data.replacement_shipping,
+            /**
+             * We set the price to 0 as we don't want to make the shipping price
+             * affect the refund amount currently. This is a temporary solution,
+             * and users should instead use the refund amount field to specify
+             * the amount to refund when they receive the returned items if they
+             * wish to deduct the cost of shipping.
+             */
+            price: 0,
+          }
+        : undefined
+
+    const payload = {
+      type,
+      claim_items: returnableItems,
+      additional_items: additionalItems,
+
+      return_shipping: data.return_shipping
+        ? { option_id: data.return_shipping, price: 0 }
+        : undefined,
+      return_location_id: data.location,
+
+      refund_amount: refundAmount,
+
+      shipping_address:
+        type === "replace"
+          ? {
+              address_1: data.shipping_address.address_1,
+              address_2: data.shipping_address.address_2 || undefined,
+              city: data.shipping_address.city,
+              country_code: data.shipping_address.country_code,
+              company: data.shipping_address.company || undefined,
+              first_name: data.shipping_address.first_name,
+              last_name: data.shipping_address.last_name,
+              phone: data.shipping_address.phone || undefined,
+              postal_code: data.shipping_address.postal_code,
+              province: data.shipping_address.province || undefined,
+            }
+          : undefined,
+      shipping_methods: replacementShipping ? [replacementShipping] : undefined,
+      no_notification: !data.send_notification,
+    }
+
+    await createClaim(payload)
 
     handleSuccess(`/orders/${order.id}`)
   })
@@ -143,11 +214,9 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
         return item
       })
     )
-
-    // TODO: set quantities to form state
   }
 
-  const onVarianRemove = (variantId: string) => {
+  const onVariantRemove = (variantId: string) => {
     setAddedItems((state) => state.filter((i) => i.id !== variantId))
   }
 
@@ -188,10 +257,6 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
       state[Tab.ITEMS] = "in-progress"
       setStatus(state)
     }
-  }
-
-  const onRefundableAmountChange = (amount: number) => {
-    refundableAmount.current = amount
   }
 
   useEffect(() => {
@@ -274,8 +339,7 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
               order={order}
               addedItems={addedItems}
               onVariantAdd={onVariantAdd}
-              onVariantRemove={onVarianRemove}
-              onRefundableAmountChange={onRefundableAmountChange}
+              onVariantRemove={onVariantRemove}
             />
           </ProgressTabs.Content>
         </RouteFocusModal.Body>

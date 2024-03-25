@@ -312,6 +312,7 @@
       "sendNotificationHint": "Notify customer of created return.",
       "customRefund": "Custom refund",
       "selectReason": "Please select a reason",
+      "replacementShippingError": "A shipping method for replacement items is required.",
       "shippingIsComplementary": "Shipping is complementary",
       "replacementShipping": "Shipping for replacement items",
       "replacementShippingDescription": "Shipping for replacement items is complimentary.",

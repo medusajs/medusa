@@ -39,7 +39,6 @@ type ReturnsFormProps = {
   onVariantAdd: (variants: PricedVariant[]) => void
   onVariantRemove: (variantId: string) => void
   order: Order
-  onRefundableAmountChange: (amount: number) => void
 }
 
 export function OrderCreateClaimDetails({
@@ -49,7 +48,6 @@ export function OrderCreateClaimDetails({
   onVariantAdd,
   onVariantRemove,
   order,
-  onRefundableAmountChange,
 }: ReturnsFormProps) {
   const { t } = useTranslation()
 
@@ -137,8 +135,6 @@ export function OrderCreateClaimDetails({
     const claimItemsRefund = items.reduce((acc, item) => {
       return acc + (item.total / item.quantity) * quantity[item.id]
     }, 0)
-
-    onRefundableAmountChange(claimItemsRefund)
 
     return claimItemsRefund
   }, [items, quantity])
