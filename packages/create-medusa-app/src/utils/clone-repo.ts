@@ -9,18 +9,26 @@ type CloneRepoOptions = {
   directoryName?: string
   repoUrl?: string
   abortController?: AbortController
+  v2?: boolean
 }
 
 const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
+const V2_BRANCH = "feat/v2"
 
 export default async function cloneRepo({
   directoryName = "",
   repoUrl,
   abortController,
+  v2 = false,
 }: CloneRepoOptions) {
-  await promiseExec(`git clone ${repoUrl || DEFAULT_REPO} ${directoryName}`, {
-    signal: abortController?.signal,
-  })
+  await promiseExec(
+    `git clone ${repoUrl || DEFAULT_REPO}${
+      v2 ? ` -b ${V2_BRANCH}` : ""
+    } ${directoryName}`,
+    {
+      signal: abortController?.signal,
+    }
+  )
 }
 
 export async function runCloneRepo({
@@ -28,17 +36,20 @@ export async function runCloneRepo({
   repoUrl,
   abortController,
   spinner,
+  v2 = false,
 }: {
   projectName: string
   repoUrl: string
   abortController: AbortController
   spinner: Ora
+  v2?: boolean
 }) {
   try {
     await cloneRepo({
       directoryName: projectName,
       repoUrl,
       abortController,
+      v2,
     })
 
     deleteGitDirectory(projectName)
