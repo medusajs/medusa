@@ -56,6 +56,47 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("Get stock location", () => {
+      let locationId
+      const location = {
+        name: "Test Location",
+      }
+      beforeEach(async () => {
+        const createLocationRespones = await api.post(
+          "/admin/stock-locations",
+          {
+            ...location,
+          },
+          adminHeaders
+        )
+        locationId = createLocationRespones.data.stock_location.id
+      })
+
+      it("should get a stock location", async () => {
+        const response = await api.get(
+          `/admin/stock-locations/${locationId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location).toEqual(
+          expect.objectContaining({ id: locationId, ...location })
+        )
+      })
+
+      it("should get a stock location", async () => {
+        let error
+        await api
+          .get(`/admin/stock-locations/does-not-exist`, adminHeaders)
+          .catch((e) => (error = e))
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.message).toEqual(
+          `Stock location with id: does-not-exist was not found`
+        )
+      })
+    })
+
     describe("Delete stock location", () => {
       let stockLocationId
       beforeEach(async () => {

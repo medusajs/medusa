@@ -14,7 +14,7 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transformIgnorePatterns: [`dist`, "node_modules"],
+  transformIgnorePatterns: [`dist`],
   transform: {
     "^.+\\.[jt]s$": ["@swc/jest"],
   },
