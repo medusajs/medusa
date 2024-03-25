@@ -1,4 +1,4 @@
-export const defaultPriceSetMoneyAmountsData = [
+export const defaultPricesData = [
   {
     id: "price-set-money-amount-USD",
     currency_code: "USD",

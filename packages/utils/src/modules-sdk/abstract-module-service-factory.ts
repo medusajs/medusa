@@ -248,13 +248,11 @@ export type AbstractModuleService<
  *
  * const otherModels = new Set([
  *   Currency,
- *   MoneyAmount,
+ *   Price,
  *   PriceList,
  *   PriceListRule,
  *   PriceListRuleValue,
  *   PriceRule,
- *   PriceSetMoneyAmount,
- *   PriceSetMoneyAmountRules,
  *   PriceSetRuleType,
  *   RuleType,
  * ])
@@ -265,11 +263,7 @@ export type AbstractModuleService<
  *   // The configuration of each entity also accept singular/plural properties, if not provided then it is using english pluralization
  *   {
  *     Currency: { dto: PricingTypes.CurrencyDTO }
- *     MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
- *     PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
- *     PriceSetMoneyAmountRules: {
- *       dto: PricingTypes.PriceSetMoneyAmountRulesDTO
- *     }
+ *     Price: { dto: PricingTypes.PriceDTO }
  *     PriceRule: { dto: PricingTypes.PriceRuleDTO }
  *     RuleType: { dto: PricingTypes.RuleTypeDTO }
  *     PriceList: { dto: PricingTypes.PriceListDTO }
