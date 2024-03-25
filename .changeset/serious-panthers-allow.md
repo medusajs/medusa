@@ -4,4 +4,4 @@
 "@medusajs/oas-github-ci": patch
 ---
 
-fix(medusa-oas-cli): fix tool not working in custom projects
+fix(medusa-oas-cli): fix tool not working in Medusa backends
