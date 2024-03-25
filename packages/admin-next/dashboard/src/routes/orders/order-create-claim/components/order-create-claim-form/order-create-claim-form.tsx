@@ -55,6 +55,19 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
       reason: {},
       note: {},
 
+      shipping_address: {
+        address_1: order.shipping_address.address_1,
+        address_2: order.shipping_address.address_2,
+        city: order.shipping_address.city,
+        company: order.shipping_address.company,
+        country_code: order.shipping_address.country_code,
+        first_name: order.shipping_address.first_name,
+        last_name: order.shipping_address.last_name,
+        phone: order.shipping_address.phone,
+        postal_code: order.shipping_address.postal_code,
+        province: order.shipping_address.province,
+      },
+
       location: "",
       return_shipping: "",
       send_notification: !order.no_notification,

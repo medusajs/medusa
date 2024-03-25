@@ -30,7 +30,7 @@ const claimReturnReasons = [
   },
 ]
 
-type OrderEditItemProps = {
+type OrderCreateClaimItemProps = {
   item: ReturnItem
   currencyCode: string
   isAddedItem?: boolean
@@ -38,13 +38,13 @@ type OrderEditItemProps = {
   onVariantRemove?: (variantId: string) => {}
 }
 
-function ClaimItem({
+function OrderCreateClaimItem({
   item,
   currencyCode,
   form,
   isAddedItem,
   onVariantRemove,
-}: OrderEditItemProps) {
+}: OrderCreateClaimItemProps) {
   const { t } = useTranslation()
 
   return (
@@ -191,4 +191,4 @@ function ClaimItem({
   )
 }
 
-export { ClaimItem }
+export { OrderCreateClaimItem }

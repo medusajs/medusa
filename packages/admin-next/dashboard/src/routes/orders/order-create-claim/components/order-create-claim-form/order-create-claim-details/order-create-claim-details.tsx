@@ -21,7 +21,7 @@ import { useAdminShippingOptions, useAdminStockLocations } from "medusa-react"
 import { LevelWithAvailability } from "@medusajs/medusa"
 import { PricedVariant } from "@medusajs/client-types"
 
-import { ClaimItem } from "./claim-item"
+import { OrderCreateClaimItem } from "./order-create-claim-item"
 import { Form } from "../../../../../../components/common/form"
 import { medusa } from "../../../../../../lib/medusa"
 import { MoneyAmountCell } from "../../../../../../components/table/table-cells/common/money-amount-cell"
@@ -29,6 +29,7 @@ import { getCurrencySymbol } from "../../../../../../lib/currencies"
 import { SplitView } from "../../../../../../components/layout/split-view"
 import { VariantTable } from "../../../../common/variant-table"
 import { CreateReturnSchema } from "../schema"
+import { OrderCreateClaimShippingDetails } from "./order-create-claim-shipping-details.tsx"
 
 type ReturnsFormProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
@@ -51,7 +52,9 @@ export function OrderCreateClaimDetails({
 }: ReturnsFormProps) {
   const { t } = useTranslation()
 
-  const [open, setOpen] = useState(false)
+  const [modalContent, setModalContent] = useState<
+    "items" | "address" | undefined
+  >()
 
   const [inventoryMap, setInventoryMap] = useState<
     Record<string, LevelWithAvailability[]>
@@ -148,15 +151,16 @@ export function OrderCreateClaimDetails({
     variantsMap: Record<string, PricedVariant>
   ) => {
     onVariantAdd(Object.values(variantsMap))
-    setOpen(false)
+    setModalContent(false)
   }
 
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open)
+  const handleOpenChange = () => {
+    // called on close
+    setModalContent(undefined)
   }
 
   return (
-    <SplitView open={open} onOpenChange={handleOpenChange}>
+    <SplitView open={!!modalContent} onOpenChange={handleOpenChange}>
       <SplitView.Content>
         <div className="flex size-full flex-col items-center overflow-auto p-16">
           <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
@@ -167,7 +171,7 @@ export function OrderCreateClaimDetails({
               {t("orders.returns.chooseItems")}
             </Heading>
             {items.map((item) => (
-              <ClaimItem
+              <OrderCreateClaimItem
                 key={item.id}
                 item={item}
                 form={form}
@@ -278,7 +282,7 @@ export function OrderCreateClaimDetails({
                 <div className="mt-4" />
               )}
               {addedItems.map((item) => (
-                <ClaimItem
+                <OrderCreateClaimItem
                   key={item.id}
                   item={item}
                   form={form}
@@ -290,8 +294,17 @@ export function OrderCreateClaimDetails({
               <div
                 className={clx("mt-2 text-right", { "mt-4": hasAddedItems })}
               >
-                <Button onClick={() => setOpen(true)} type="button">
+                <Button onClick={() => setModalContent("items")} type="button">
                   {t("orders.claims.addItems")}
+                </Button>
+              </div>
+
+              <div className="mt-2 mt-4 text-right">
+                <Button
+                  onClick={() => setModalContent("address")}
+                  type="button"
+                >
+                  {t("orders.claims.changeShippingAddress")}
                 </Button>
               </div>
             </div>
@@ -404,7 +417,15 @@ export function OrderCreateClaimDetails({
         </div>
       </SplitView.Content>
       <SplitView.Drawer>
-        <VariantTable onSave={onVariantsSelect} order={order} />
+        {modalContent === "items" && (
+          <VariantTable onSave={onVariantsSelect} order={order} />
+        )}
+        {modalContent === "address" && (
+          <OrderCreateClaimShippingDetails
+            control={form.control}
+            region={order.region}
+          />
+        )}
       </SplitView.Drawer>
     </SplitView>
   )

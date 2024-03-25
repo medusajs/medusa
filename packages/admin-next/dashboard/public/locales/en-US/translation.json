@@ -302,6 +302,7 @@
       "refundAmount": "Refund amount",
       "addItems": "Add items",
       "itemsToReplace": "Items to replace",
+      "changeShippingAddress": "Change shipping address",
       "addItemsHint": "You haven’t selected any replace items so this is treated as a Refund only action.",
       "locationDescription": "Choose which location you want to return the items to.",
       "shippingDescription": "Choose which method you want to use for this return.",

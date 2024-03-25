@@ -8,7 +8,8 @@ export function OrderCreateClaim() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
-    expand: "items,items.variant,items.variant.product,returnable_items",
+    expand:
+      "items,items.variant,items.variant.product,returnable_items,shipping_address,region,region.countries",
   })
 
   if (isError) {
