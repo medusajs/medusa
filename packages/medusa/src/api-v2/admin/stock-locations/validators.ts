@@ -239,3 +239,5 @@ export class AdminPostStockLocationsLocationReq {
 }
 
 export class AdminPostStockLocationsLocationParams extends FindParams {}
+
+export class AdminGetStockLocationsLocationParams extends FindParams {}
