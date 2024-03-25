@@ -288,13 +288,5 @@ export class AdminPostPriceListsPriceListReq {
     IsOptional(),
     IsBoolean(),
   ])
-  includes_tax?: boolean
-
-  constructor() {
-    if (
-      !featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
-    ) {
-      delete this.includes_tax
-    }
-  }
+  includes_tax?: boolean = false
 }
