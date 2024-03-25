@@ -32064,6 +32064,8 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
