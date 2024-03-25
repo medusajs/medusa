@@ -87,6 +87,7 @@ export const defaultAdminProductFields = [
   "*variants",
   "*variants.prices",
   "*variants.options",
+  "*sales_channels",
 ]
 
 export const retrieveProductQueryConfig = {

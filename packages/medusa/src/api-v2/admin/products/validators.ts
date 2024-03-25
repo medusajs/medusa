@@ -82,7 +82,7 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   price_list_id?: string[]
 
   /**
-   * Filter products by the associated sales channel ID.
+   * Filter products by associated sales channel IDs.
    */
   @IsOptional()
   @IsArray()
