@@ -172,6 +172,13 @@ const useActivityItems = (order: Order) => {
       })
     }
 
+    if (order.canceled_at) {
+      items.push({
+        title: t("orders.activity.events.canceled.title"),
+        timestamp: order.canceled_at,
+      })
+    }
+
     const sortedActivities = items.sort((a, b) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     })

@@ -318,6 +318,9 @@
           "title": "Order placed",
           "fromSalesChannel": "from {{salesChannel}}"
         },
+        "canceled": {
+          "title": "Order canceled"
+        },
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
