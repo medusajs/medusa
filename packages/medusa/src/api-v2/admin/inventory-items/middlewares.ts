@@ -5,6 +5,8 @@ import {
   AdminGetInventoryItemsParams,
   AdminPostInventoryItemsInventoryItemParams,
   AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelParams,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
   AdminPostInventoryItemsReq,
 } from "./validators"
@@ -41,16 +43,27 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/inventory-items/:id/location-levels",
-    middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
-  },
-  {
-    method: ["POST"],
     matcher: "/admin/inventory-items",
     middlewares: [
       transformBody(AdminPostInventoryItemsReq),
       transformQuery(
         AdminGetInventoryItemsItemParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels",
+    middlewares: [transformBody(AdminPostInventoryItemsItemLocationLevelsReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels/:location_id",
+    middlewares: [
+      transformBody(AdminPostInventoryItemsItemLocationLevelsLevelReq),
+      transformQuery(
+        AdminPostInventoryItemsItemLocationLevelsLevelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
