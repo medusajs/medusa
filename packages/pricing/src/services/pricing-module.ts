@@ -231,12 +231,17 @@ export default class PricingModuleService<
     const priceSets = await this.create_(input, sharedContext)
 
     const dbPriceSets = await this.list(
-      { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
+      { id: priceSets.map((p) => p.id) },
       { relations: ["rule_types", "prices", "price_rules"] },
       sharedContext
     )
 
-    return Array.isArray(data) ? dbPriceSets : dbPriceSets[0]
+    // Ensure the output to be in the same order as the input
+    const results = priceSets.map((priceSet) => {
+      return dbPriceSets.find((p) => p.id === priceSet.id)!
+    })
+
+    return Array.isArray(data) ? results : results[0]
   }
 
   @InjectTransactionManager("baseRepository_")

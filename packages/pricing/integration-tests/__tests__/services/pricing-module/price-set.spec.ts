@@ -8,7 +8,6 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import * as console from "console"
 
 jest.setTimeout(30000)
 
