@@ -7799,6 +7799,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/admin-next@workspace:packages/admin-next/plugin":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/admin-next@workspace:packages/admin-next/plugin"
+  dependencies:
+    "@medusajs/dashboard": "workspace:^"
+    "@medusajs/types": "workspace:^"
+    "@vitejs/plugin-react": ^4.2.1
+    express: ^4.18.2
+    picocolors: ^1.0.0
+    tsup: ^8.0.2
+    vite: 5.0.10
+    vite-express: ^0.16.0
+  peerDependencies:
+    express: ^4.18.2
+    vite: 5.0.10
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/admin-shared@*, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin-next/admin-shared"
@@ -8145,7 +8163,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/dashboard@workspace:packages/admin-next/dashboard":
+"@medusajs/dashboard@workspace:^, @medusajs/dashboard@workspace:packages/admin-next/dashboard":
   version: 0.0.0-use.local
   resolution: "@medusajs/dashboard@workspace:packages/admin-next/dashboard"
   dependencies:
@@ -8169,7 +8187,7 @@ __metadata:
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
-    date-fns: ^3.2.0
+    date-fns: ^3.6.0
     framer-motion: ^11.0.3
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
@@ -8547,8 +8565,12 @@ __metadata:
     uuid: ^9.0.0
     winston: ^3.8.2
   peerDependencies:
+    "@medusajs/admin-next": ^0.0.1
     medusa-interfaces: ^1.3.7
     typeorm: ^0.3.16
+  peerDependenciesMeta:
+    "@medusajs/admin-next":
+      optional: true
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -9050,7 +9072,7 @@ __metadata:
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
-    date-fns: ^2.30.0
+    date-fns: ^3.6.0
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
     jsdom: ^22.1.0
@@ -25110,7 +25132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -25119,10 +25141,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "date-fns@npm:3.2.0"
-  checksum: f93e987f785d7f2b7349986d150b014ce21fa6425e2e1edea6f0e01731dceef68deabf0f723689c28604e857648ac708a52b924cb7584e4321835686aa665371
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -49941,6 +49963,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tsup@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "tsup@npm:8.0.2"
+  dependencies:
+    bundle-require: ^4.0.0
+    cac: ^6.7.12
+    chokidar: ^3.5.1
+    debug: ^4.3.1
+    esbuild: ^0.19.2
+    execa: ^5.0.0
+    globby: ^11.0.3
+    joycon: ^3.0.1
+    postcss-load-config: ^4.0.1
+    resolve-from: ^5.0.0
+    rollup: ^4.0.2
+    source-map: 0.8.0-beta.0
+    sucrase: ^3.20.3
+    tree-kill: ^1.2.2
+  peerDependencies:
+    "@microsoft/api-extractor": ^7.36.0
+    "@swc/core": ^1
+    postcss: ^8.4.12
+    typescript: ">=4.5.0"
+  peerDependenciesMeta:
+    "@microsoft/api-extractor":
+      optional: true
+    "@swc/core":
+      optional: true
+    postcss:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    tsup: dist/cli-default.js
+    tsup-node: dist/cli-node.js
+  checksum: de3e8b2d9a7a504afb9394f2409ef88fd21dd338a78ebb572dd5c1719d73db816baa7ae4b7867016f08ba6a67560daec13a85768efff1d70e380972e39e27ce6
+  languageName: node
+  linkType: hard
+
 "tsutils@npm:^3.21.0":
   version: 3.21.0
   resolution: "tsutils@npm:3.21.0"
@@ -51476,6 +51537,15 @@ __metadata:
     replace-ext: ^2.0.0
     teex: ^1.0.1
   checksum: 566ab41a84c1a167023a07cb94110d40a07835a5239297e3266a11b0e9c522969a1e623ec2a4f9b05ac7fef596cf47685b410359e5b2ca00bd77400657808816
+  languageName: node
+  linkType: hard
+
+"vite-express@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "vite-express@npm:0.16.0"
+  dependencies:
+    picocolors: ^1.0.0
+  checksum: cf9fd5610f2190ccc5d5a21767c81ebe63a736361e7f34b486ef2ff8514e75dc7913c871760e70a7c3044991690e0b06b2c25268f9c6537be07ec22ec713d2a4
   languageName: node
   linkType: hard
 

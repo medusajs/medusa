@@ -1,7 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "generate:static": "node ./scripts/generate-countries.js && prettier --write ./src/lib/countries.ts && node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "vite",
@@ -10,11 +9,22 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "main": "index.html",
+  "exports": {
+    ".": {
+      "import": "./index.html",
+      "require": "./index.html"
+    },
+    "./config": {
+      "import": "./vite.config.mts",
+      "require": "./vite.config.mts"
+    }
+  },
   "files": [
     "index.html",
     "public",
     "src",
-    "package.json"
+    "package.json",
+    "vite.config.mts"
   ],
   "dependencies": {
     "@ariakit/react": "^0.4.1",
@@ -28,7 +38,7 @@
     "@tanstack/react-virtual": "^3.0.4",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
     "cmdk": "^0.2.0",
-    "date-fns": "^3.2.0",
+    "date-fns": "^3.6.0",
     "framer-motion": "^11.0.3",
     "i18next": "23.7.11",
     "i18next-browser-languagedetector": "7.2.0",
