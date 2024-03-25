@@ -16,6 +16,11 @@ jobs:
       unit-tests-matrix: ${{ steps.set-unit-tests-matrix.outputs.matrix }}
       unit-tests-chunks: ${{ steps.set-unit-tests-chunks.outputs.chunks }}
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -79,21 +84,10 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
 
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
@@ -102,9 +96,6 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run unit tests
         run: yarn test:chunk
@@ -143,29 +134,15 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run integration tests
         run: yarn test:integration:packages
@@ -209,29 +186,15 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
-
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run API integration tests
         run: yarn test:integration:api
@@ -294,11 +257,6 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -314,9 +272,6 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
@@ -351,29 +306,15 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
-
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
-
-      - name: Build Packages
-        run: yarn build
 
       - name: Run Modules integration tests
         run: yarn test:integration:modules
@@ -421,21 +362,10 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps

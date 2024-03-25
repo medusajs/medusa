@@ -1,10 +1,10 @@
+import { Logger } from "@medusajs/medusa"
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from "axios"
 import {
   PaypalApiPath,
   PaypalEnvironmentPaths,
   PaypalSdkOptions,
 } from "./types"
-import { Logger } from "@medusajs/medusa"
 
 const MAX_ATTEMPTS = 2
 
@@ -28,15 +28,17 @@ export class PaypalHttpClient {
       baseURL: this.baseUrl_,
     })
 
+    const instance = this
+
     this.httpClient_ = new Proxy(axiosInstance, {
       // Handle automatic retry mechanism
-      get: (target, prop) => {
+      get: function (_, prop) {
         // @ts-ignore
         // eslint-disable-next-line prefer-rest-params
-        const original = Reflect.get(...arguments)
+        var original = Reflect.get.apply(this, arguments)
 
-        if ("request" === (prop as string)) {
-          return this.retryIfNecessary(original)
+        if ("request" === prop) {
+          return instance.retryIfNecessary(original)
         }
 
         return original
