@@ -857,6 +857,8 @@
     "label": "Label",
     "rate": "Rate",
     "requiresShipping": "Requires shipping",
+    "startDate": "Start date",
+    "endDate": "End date",
     "draft": "Draft"
   },
   "dateTime": {
