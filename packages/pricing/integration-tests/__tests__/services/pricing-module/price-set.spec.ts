@@ -5,7 +5,7 @@ import {
   IPricingModuleService,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
@@ -422,7 +422,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a price set with rule types and money amountss", async () => {
+        it("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.create([
             {
               rules: [{ rule_attribute: "region_id" }],

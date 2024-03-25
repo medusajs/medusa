@@ -34,12 +34,12 @@ export default class PriceSet {
   id!: string
 
   @OneToMany(() => Price, (price) => price.price_set, {
-    cascade: ["soft-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   prices = new Collection<Price>(this)
 
   @OneToMany(() => PriceRule, (pr) => pr.price_set, {
-    cascade: ["soft-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   price_rules = new Collection<PriceRule>(this)
 
