@@ -30,6 +30,7 @@ import { SplitView } from "../../../../../../components/layout/split-view"
 import { VariantTable } from "../../../../common/variant-table"
 import { CreateReturnSchema } from "../schema"
 import { OrderCreateClaimShippingDetails } from "./order-create-claim-shipping-details"
+import { getFormattedAddress } from "../../../../../../components/common/customer-info"
 
 type ReturnsFormProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
@@ -300,62 +301,86 @@ export function OrderCreateClaimDetails({
               </div>
 
               {hasAddedItems && (
-                <div className="mt-2 mt-4 text-right">
-                  <Button
-                    onClick={() => setModalContent("address")}
-                    type="button"
-                  >
-                    {t("orders.claims.changeShippingAddress")}
-                  </Button>
-                </div>
-              )}
-
-              {hasAddedItems && (
-                <div className="mt-2 mt-4 text-right sm:w-[50%]">
-                  <Form.Field
-                    control={form.control}
-                    name="replacement_shipping"
-                    render={({ field: { onChange, ref, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label
-                            tooltip={
-                              noShippingOptions
-                                ? t("orders.returns.noShippingOptions")
-                                : undefined
-                            }
-                          >
-                            {t("orders.claims.replacementShipping")}
-                          </Form.Label>
-                          <Form.Hint>
-                            {t("orders.claims.replacementShippingDescription")}
-                          </Form.Hint>
-                          <Form.Control>
-                            <Select
-                              onValueChange={onChange}
-                              {...field}
-                              disabled={noShippingOptions}
+                <div className="mt-8 flex items-start">
+                  <div className="flex-1 text-right sm:w-[50%]">
+                    <Form.Field
+                      control={form.control}
+                      name="replacement_shipping"
+                      render={({ field: { onChange, ref, ...field } }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label
+                              tooltip={
+                                noShippingOptions
+                                  ? t("orders.returns.noShippingOptions")
+                                  : undefined
+                              }
                             >
-                              <Select.Trigger
-                                className="bg-ui-bg-base"
-                                ref={ref}
+                              {t("orders.claims.replacementShipping")}
+                            </Form.Label>
+                            <Form.Hint>
+                              {t(
+                                "orders.claims.replacementShippingDescription"
+                              )}
+                            </Form.Hint>
+                            <Form.Control>
+                              <Select
+                                onValueChange={onChange}
+                                {...field}
+                                disabled={noShippingOptions}
                               >
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {shipping_options.map((o) => (
-                                  <Select.Item key={o.id} value={o.id}>
-                                    {o.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select>
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
+                                <Select.Trigger
+                                  className="bg-ui-bg-base"
+                                  ref={ref}
+                                >
+                                  <Select.Value />
+                                </Select.Trigger>
+                                <Select.Content>
+                                  {shipping_options.map((o) => (
+                                    <Select.Item key={o.id} value={o.id}>
+                                      {o.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select>
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex-1 text-right">
+                    <Text
+                      as="div"
+                      className="txt-compact-small mb-2 font-medium"
+                    >
+                      {t("addresses.shippingAddress.header")}
+                    </Text>
+                    <Text
+                      size="small"
+                      className="text-ui-fg-subtle mb-4"
+                      leading="compact"
+                    >
+                      {getFormattedAddress({
+                        address: form.getValues("shipping_address"),
+                      }).map((line, i) => {
+                        return (
+                          <span key={i} className="break-words">
+                            {line}
+                            <br />
+                          </span>
+                        )
+                      })}
+                    </Text>
+                    <Button
+                      onClick={() => setModalContent("address")}
+                      type="button"
+                    >
+                      {t("orders.claims.changeShippingAddress")}
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

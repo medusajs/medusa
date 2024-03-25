@@ -101,7 +101,7 @@ const Contact = ({ data }: { data: Cart | Order }) => {
   )
 }
 
-const AddressPrint = ({
+export const AddressPrint = ({
   address,
   type,
 }: {
@@ -199,7 +199,7 @@ const isSameAddress = (a: Address | null, b: Address | null) => {
   )
 }
 
-const getFormattedAddress = ({ address }: { address: Address }) => {
+export const getFormattedAddress = ({ address }: { address: Address }) => {
   const {
     first_name,
     last_name,
