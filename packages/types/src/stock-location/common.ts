@@ -435,3 +435,5 @@ export type UpdateStockLocationInput = {
 export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
   id: string
 }
+
+export type UpsertStockLocationInput = Partial<UpdateStockLocationNextInput>

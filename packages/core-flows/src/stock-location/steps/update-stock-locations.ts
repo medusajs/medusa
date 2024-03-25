@@ -1,4 +1,5 @@
 import {
+  FilterableStockLocationProps,
   IStockLocationServiceNext,
   UpdateStockLocationNextInput,
 } from "@medusajs/types"
@@ -9,44 +10,50 @@ import {
 } from "@medusajs/utils"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { UpdateStockLocationInput } from "@medusajs/types"
+
+interface StepInput {
+  selector: FilterableStockLocationProps
+  update: UpdateStockLocationInput
+}
 
 export const updateStockLocationsStepId = "update-stock-locations-step"
 export const updateStockLocationsStep = createStep(
   updateStockLocationsStepId,
-  async (input: UpdateStockLocationNextInput[], { container }) => {
+  async (input: StepInput, { container }) => {
     const stockLocationService = container.resolve<IStockLocationServiceNext>(
       ModuleRegistrationName.STOCK_LOCATION
     )
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
+      input.update,
+    ])
 
-    const dataBeforeUpdate = await stockLocationService.list(
-      { id: input.map(({ id }) => id) },
-      {}
-    )
-
-    const updatedStockLocations = await stockLocationService.update(input)
-
-    return new StepResponse(updatedStockLocations, {
-      dataBeforeUpdate,
-      selects,
+    const dataBeforeUpdate = await stockLocationService.list(input.selector, {
+      select: selects,
       relations,
     })
+
+    const updatedStockLocations = await stockLocationService.update(
+      input.selector,
+      input.update
+    )
+
+    return new StepResponse(updatedStockLocations, dataBeforeUpdate)
   },
   async (revertInput, { container }) => {
-    if (!revertInput?.dataBeforeUpdate?.length) {
+    if (!revertInput?.length) {
       return
     }
 
-    const { dataBeforeUpdate, selects, relations } = revertInput
-
     const stockLocationService = container.resolve<IStockLocationServiceNext>(
       ModuleRegistrationName.STOCK_LOCATION
     )
 
-    await stockLocationService.update(
-      dataBeforeUpdate.map((data) =>
-        convertItemResponseToUpdateRequest(data, selects, relations)
-      )
+    await stockLocationService.upsert(
+      revertInput.map((item) => ({
+        id: item.id,
+        name: item.name,
+      }))
     )
   }
 )

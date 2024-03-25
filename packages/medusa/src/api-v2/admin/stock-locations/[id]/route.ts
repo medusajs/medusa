@@ -17,7 +17,8 @@ export const POST = async (
 
   await updateStockLocationsWorkflow(req.scope).run({
     input: {
-      updates: [{ id, ...req.validatedBody }],
+      selector: { id: req.params.id },
+      update: req.validatedBody,
     },
   })
 
