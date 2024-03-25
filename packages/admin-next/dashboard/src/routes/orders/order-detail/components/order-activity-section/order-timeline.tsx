@@ -108,7 +108,7 @@ const useActivityItems = (order: Order) => {
 
     for (const payment of order.payments) {
       items.push({
-        title: t("orders.activity.labels.payment.awaiting"),
+        title: t("orders.activity.events.payment.awaiting"),
         timestamp: payment.created_at,
         children: (
           <Text size="small" className="text-ui-fg-subtle">
@@ -119,7 +119,7 @@ const useActivityItems = (order: Order) => {
 
       if (payment.canceled_at) {
         items.push({
-          title: t("orders.activity.labels.payment.canceled"),
+          title: t("orders.activity.events.payment.canceled"),
           timestamp: payment.canceled_at,
           children: (
             <Text size="small" className="text-ui-fg-subtle">
@@ -131,7 +131,7 @@ const useActivityItems = (order: Order) => {
 
       if (payment.captured_at) {
         items.push({
-          title: t("orders.activity.labels.payment.captured"),
+          title: t("orders.activity.events.payment.captured"),
           timestamp: payment.captured_at,
           children: (
             <Text size="small" className="text-ui-fg-subtle">
@@ -144,14 +144,14 @@ const useActivityItems = (order: Order) => {
 
     for (const fulfillment of order.fulfillments) {
       items.push({
-        title: t("orders.activity.labels.fulfillment.created"),
+        title: t("orders.activity.events.fulfillment.created"),
         timestamp: fulfillment.created_at,
         children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
       })
 
       if (fulfillment.shipped_at) {
         items.push({
-          title: t("orders.activity.labels.fulfillment.shipped"),
+          title: t("orders.activity.events.fulfillment.shipped"),
           timestamp: fulfillment.shipped_at,
         })
       }
@@ -159,14 +159,14 @@ const useActivityItems = (order: Order) => {
 
     for (const ret of order.returns) {
       items.push({
-        title: t("orders.activity.labels.return.created"),
+        title: t("orders.activity.events.return.created"),
         timestamp: ret.created_at,
       })
     }
 
     for (const note of notes || []) {
       items.push({
-        title: t("orders.activity.labels.note.comment"),
+        title: t("orders.activity.events.note.comment"),
         timestamp: note.created_at,
         children: <NoteBody note={note} />,
       })
@@ -177,11 +177,11 @@ const useActivityItems = (order: Order) => {
     })
 
     const createdAt = {
-      title: t("orders.activity.labels.placed.title"),
+      title: t("orders.activity.events.placed.title"),
       timestamp: order.created_at,
       children: (
         <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.activity.labels.placed.fromSalesChannel", {
+          {t("orders.activity.events.placed.fromSalesChannel", {
             salesChannel: order.sales_channel.name,
           })}
         </Text>
@@ -301,11 +301,26 @@ const NoteBody = ({ note }: { note: Note }) => {
   const { first_name, last_name, email } = note.author || {}
   const name = [first_name, last_name].filter(Boolean).join(" ")
 
-  const byLine = t("orders.activity.labels.note.byLine", {
+  const byLine = t("orders.activity.events.note.byLine", {
     author: name || email,
   })
 
   const { mutateAsync } = useAdminDeleteNote(note.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: "This action cannot be undone",
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync()
+  }
 
   return (
     <div className="flex flex-col gap-y-2 pt-2">
@@ -319,7 +334,12 @@ const NoteBody = ({ note }: { note: Note }) => {
           size="small"
           variant="transparent"
           className="transition-fg invisible opacity-0 group-hover:visible group-hover:opacity-100"
+          type="button"
+          onClick={handleDelete}
         >
+          <span className="sr-only">
+            {t("orders.activity.comment.deleteButtonText")}
+          </span>
           <XMarkMini className="text-ui-fg-muted" />
         </IconButton>
       </div>
@@ -338,6 +358,8 @@ const FulfillmentCreatedBody = ({
 }: {
   fulfillment: Fulfillment
 }) => {
+  const { t } = useTranslation()
+
   const { stock_location, isLoading, isError, error } = useAdminStockLocation(
     fulfillment.location_id!,
     {
@@ -350,8 +372,13 @@ const FulfillmentCreatedBody = ({
   }, 0)
 
   const triggerText = stock_location
-    ? `${numberOfItems} items were fulfilled from ${stock_location.name}`
-    : `${numberOfItems} items were fulfilled`
+    ? t("orders.activity.events.fulfillment.itemsFulfilledFrom", {
+        count: numberOfItems,
+        location: stock_location.name,
+      })
+    : t("orders.activity.events.fulfillment.itemsFulfilled", {
+        count: numberOfItems,
+      })
 
   if (isError) {
     throw error

@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowUpCircleSolid } from "@medusajs/icons"
 import { Order } from "@medusajs/medusa"
+import { IconButton } from "@medusajs/ui"
 import { useAdminCreateNote } from "medusa-react"
+import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { ArrowUpCircleSolid, FaceSmile } from "@medusajs/icons"
-import { IconButton } from "@medusajs/ui"
-import { useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
 
 type OrderNoteFormProps = {
@@ -18,6 +19,7 @@ const OrderNoteSchema = z.object({
 })
 
 export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
+  const { t } = useTranslation()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const form = useForm<z.infer<typeof OrderNoteSchema>>({
@@ -71,14 +73,16 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label hidden>Note</Form.Label>
+                    <Form.Label hidden>
+                      {t("orders.activity.comment.label")}
+                    </Form.Label>
                     <Form.Control>
                       <textarea
                         {...field}
                         ref={textareaRef}
                         onInput={handleResize}
                         className="txt-small text-ui-fg-base placeholder:text-ui-fg-muted resize-none overflow-hidden bg-transparent outline-none"
-                        placeholder="Leave a comment"
+                        placeholder={t("orders.activity.comment.placeholder")}
                         rows={1}
                       />
                     </Form.Control>
@@ -86,17 +90,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
                 )
               }}
             />
-            <div className="flex items-center justify-between">
-              <div>
-                <IconButton
-                  type="button"
-                  variant="transparent"
-                  size="small"
-                  className="text-ui-fg-muted hover:text-ui-fg-subtle active:text-ui-fg-subtle"
-                >
-                  <FaceSmile />
-                </IconButton>
-              </div>
+            <div className="flex items-center justify-end">
               <IconButton
                 type="submit"
                 isLoading={isLoading}
@@ -104,6 +98,9 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
                 size="small"
                 className="text-ui-fg-muted hover:text-ui-fg-subtle active:text-ui-fg-subtle"
               >
+                <span className="sr-only">
+                  {t("orders.activity.comment.addButtonText")}
+                </span>
                 <ArrowUpCircleSolid />
               </IconButton>
             </div>
