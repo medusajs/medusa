@@ -9,7 +9,7 @@ import {
 
 import { UpdateProductDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { remapKeysForProduct, remapProduct } from "../helpers"
+import { refetchProduct, remapKeysForProduct, remapProduct } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -47,7 +47,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product: remapProduct(result[0]) })
+  const product = await refetchProduct(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }
 
 export const DELETE = async (

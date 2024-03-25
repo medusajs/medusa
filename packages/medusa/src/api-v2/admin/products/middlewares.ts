@@ -3,6 +3,10 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
 import {
+  maybeApplyPriceListsFilter,
+  maybeApplySalesChannelsFilter,
+} from "./utils"
+import {
   AdminGetProductsOptionsParams,
   AdminGetProductsParams,
   AdminGetProductsProductOptionsOptionParams,
@@ -29,8 +33,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsParams,
-        QueryConfig.listTransformQueryConfig
+        QueryConfig.listProductQueryConfig
       ),
+      maybeApplySalesChannelsFilter(),
+      maybeApplyPriceListsFilter(),
     ],
   },
   {
@@ -39,24 +45,41 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetProductsProductParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.retrieveProductQueryConfig
       ),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products",
-    middlewares: [transformBody(AdminPostProductsReq)],
+    middlewares: [
+      transformBody(AdminPostProductsReq),
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/:id",
-    middlewares: [transformBody(AdminPostProductsProductReq)],
+    middlewares: [
+      transformBody(AdminPostProductsProductReq),
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id",
-    middlewares: [],
+    middlewares: [
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
 
   {
@@ -85,22 +108,32 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id/variants",
     middlewares: [
       transformBody(AdminPostProductsProductVariantsReq),
-      // We specify the product here as that's what we return after updating the variant
       transformQuery(
         AdminGetProductsProductParams,
-        QueryConfig.retrieveTransformQueryConfig
+        QueryConfig.retrieveProductQueryConfig
       ),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants/:variant_id",
-    middlewares: [transformBody(AdminPostProductsProductVariantsVariantReq)],
+    middlewares: [
+      transformBody(AdminPostProductsProductVariantsVariantReq),
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id/variants/:variant_id",
-    middlewares: [],
+    middlewares: [
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
 
   // Note: New endpoint in v2
@@ -128,16 +161,33 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/:id/options",
-    middlewares: [transformBody(AdminPostProductsProductOptionsReq)],
+    middlewares: [
+      transformBody(AdminPostProductsProductOptionsReq),
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/:id/options/:option_id",
-    middlewares: [transformBody(AdminPostProductsProductOptionsOptionReq)],
+    middlewares: [
+      transformBody(AdminPostProductsProductOptionsOptionReq),
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id/options/:option_id",
-    middlewares: [],
+    middlewares: [
+      transformQuery(
+        AdminGetProductsProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
   },
 ]

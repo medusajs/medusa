@@ -2,8 +2,8 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
-  AdminDraftOrdersRes,
   AdminDiscountsRes,
+  AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
@@ -124,6 +124,11 @@ export const v1Routes: RouteObject[] = [
                     path: "edit",
                     lazy: () => import("../../routes/orders/order-edit"),
                   },
+                  {
+                    path: "returns",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-return"),
+                  },
                 ],
               },
             ],
@@ -220,8 +225,8 @@ export const v1Routes: RouteObject[] = [
                     lazy: () => import("../../routes/products/product-options"),
                   },
                   {
-                    path: "gallery",
-                    lazy: () => import("../../routes/products/product-gallery"),
+                    path: "media",
+                    lazy: () => import("../../routes/products/product-media"),
                   },
                 ],
               },

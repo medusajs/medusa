@@ -2,7 +2,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
@@ -122,6 +122,11 @@ function applyStep<
     const handler = {
       invoke: async (transactionContext) => {
         const executionContext: StepExecutionContext = {
+          workflowId: transactionContext.model_id,
+          stepName: transactionContext.action,
+          action: "invoke",
+          idempotencyKey: transactionContext.idempotency_key,
+          attempt: transactionContext.attempt,
           container: transactionContext.container,
           metadata: transactionContext.metadata,
           context: transactionContext.context,
@@ -148,6 +153,11 @@ function applyStep<
       compensate: compensateFn
         ? async (transactionContext) => {
             const executionContext: StepExecutionContext = {
+              workflowId: transactionContext.model_id,
+              stepName: transactionContext.action,
+              action: "compensate",
+              idempotencyKey: transactionContext.idempotency_key,
+              attempt: transactionContext.attempt,
               container: transactionContext.container,
               metadata: transactionContext.metadata,
               context: transactionContext.context,
@@ -158,8 +168,8 @@ function applyStep<
               stepOutput?.__type ===
               OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
-                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
-                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
+                  deepCopy(stepOutput.compensateInput)
+                : stepOutput && deepCopy(stepOutput)
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
