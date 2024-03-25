@@ -1,14 +1,20 @@
+import { createUserAccountWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../types/routing"
+  CreateUserDTO,
+  IAuthModuleService,
+  IUserModuleService,
+  UserDTO,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-
-import { CreateUserDTO } from "@medusajs/types"
-import { createUsersWorkflow } from "@medusajs/core-flows"
+import jwt from "jsonwebtoken"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -43,16 +49,38 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<CreateUserDTO>,
   res: MedusaResponse
 ) => {
-  const workflow = createUsersWorkflow(req.scope)
+  const userModuleService = req.scope.resolve<IUserModuleService>(
+    ModuleRegistrationName.USER
+  )
+  const authModuleService = req.scope.resolve<IAuthModuleService>(
+    ModuleRegistrationName.AUTH
+  )
+
+  const authUser = await authModuleService.retrieve(req.auth.auth_user_id)
+
+  const { jwt_secret } = req.scope.resolve("configModule").projectConfig
+  const token = jwt.sign(authUser, jwt_secret)
+
+  let user: UserDTO | null = null
+
+  if (req.auth.actor_id) {
+    user = await userModuleService.retrieve(req.auth.actor_id)
+
+    res.status(200).json({ user, token })
+
+    return
+  }
 
   const input = {
     input: {
-      users: [req.validatedBody],
+      userData: req.validatedBody,
+      authUserId: req.auth.auth_user_id,
     },
   }
 
-  const { result } = await workflow.run(input)
+  const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
-  const [user] = result
-  res.status(200).json({ user })
+  user = result
+
+  res.status(200).json({ user, token })
 }

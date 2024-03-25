@@ -27,7 +27,10 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users",
-    middlewares: [transformBody(AdminCreateUserRequest)],
+    middlewares: [
+      transformBody(AdminCreateUserRequest),
+      authenticate("admin", ["bearer", "session"], { allowUnregistered: true }),
+    ],
   },
   {
     method: ["GET"],

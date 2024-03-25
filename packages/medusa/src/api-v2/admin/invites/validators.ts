@@ -115,6 +115,14 @@ export class AdminPostInvitesInviteAcceptUserReq {}
 export class AdminPostInvitesInviteAcceptReq {
   /**
    * The invite's first name.
+   * If email is not passed, we default to using the email of the invite.
+   */
+  @IsString()
+  @IsOptional()
+  email: string
+
+  /**
+   * The invite's first name.
    */
   @IsString()
   @IsOptional()
