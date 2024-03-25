@@ -293,7 +293,7 @@ export function OrderCreateClaimDetails({
                 />
               ))}
               <div
-                className={clx("mt-2 text-right", { "mt-4": hasAddedItems })}
+                className={clx("mt-2 sm:text-right", { "mt-4": hasAddedItems })}
               >
                 <Button onClick={() => setModalContent("items")} type="button">
                   {t("orders.claims.addItems")}
@@ -301,7 +301,7 @@ export function OrderCreateClaimDetails({
               </div>
 
               {hasAddedItems && (
-                <div className="mt-8 flex items-start">
+                <div className="mt-10 flex flex-col items-start sm:flex-row">
                   <div className="flex-1 text-right sm:w-[50%]">
                     <Form.Field
                       control={form.control}
@@ -351,10 +351,10 @@ export function OrderCreateClaimDetails({
                     />
                   </div>
 
-                  <div className="flex-1 text-right">
+                  <div className="flex-1 sm:text-right">
                     <Text
                       as="div"
-                      className="txt-compact-small mb-2 font-medium"
+                      className="txt-compact-small mb-2 mt-4 font-medium sm:mt-0"
                     >
                       {t("addresses.shippingAddress.header")}
                     </Text>
