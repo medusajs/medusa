@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent=false  --maxWorkers=50% --bail --clearMocks --forceExit",
+    "test:integration": "jest --silent=false  --maxWorkers=50% --bail --detectOpenHandles --clearMocks --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
