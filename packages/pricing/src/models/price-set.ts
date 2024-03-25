@@ -46,7 +46,7 @@ export default class PriceSet {
   @ManyToMany({
     entity: () => RuleType,
     pivotEntity: () => PriceSetRuleType,
-    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
+    cascade: ["soft-remove" as Cascade],
   })
   rule_types = new Collection<RuleType>(this)
 

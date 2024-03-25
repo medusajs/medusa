@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
+  CreatePricesDTO,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -38,9 +39,9 @@ import {
   RuleType,
 } from "@models"
 
-import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import {PriceListService, RuleTypeService} from "@services"
+import {validatePriceListDates} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -293,21 +294,28 @@ export default class PricingModuleService<
       )
     }
 
-    const ruleSetRuleTypeToCreateMap: Map<string, any> = new Map()
+    const ruleSetRuleTypeToCreateMap: Map<string, TPriceSetRuleType> = new Map()
 
     const toCreate = input.map((inputData) => {
-      const id = generateEntityId((inputData as any).id, "pset")
+      const id = generateEntityId(
+        (inputData as unknown as TPriceSet).id,
+        "pset"
+      )
 
       const { prices, rules = [], ...rest } = inputData
 
-      let pricesData: any[] = []
+      let pricesData: CreatePricesDTO[] = []
 
       rules.forEach((rule) => {
-        const ruleType = {
+        const priceSetRuleType = {
           rule_type_id: ruleTypeMap.get(rule.rule_attribute).id,
           price_set_id: id,
-        }
-        ruleSetRuleTypeToCreateMap.set(JSON.stringify(ruleType), ruleType)
+        } as TPriceSetRuleType
+
+        ruleSetRuleTypeToCreateMap.set(
+          JSON.stringify(priceSetRuleType),
+          priceSetRuleType
+        )
       })
 
       if (inputData.prices) {
@@ -326,11 +334,15 @@ export default class PricingModuleService<
             }
             rulesDataMap.set(JSON.stringify(rule), rule)
 
-            const ruleType = {
+            const priceSetRuleType = {
               rule_type_id: ruleTypeMap.get(attribute).id,
               price_set_id: id,
-            }
-            ruleSetRuleTypeToCreateMap.set(JSON.stringify(ruleType), ruleType)
+            } as TPriceSetRuleType
+
+            ruleSetRuleTypeToCreateMap.set(
+              JSON.stringify(priceSetRuleType),
+              priceSetRuleType
+            )
           })
 
           return {
