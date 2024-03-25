@@ -39,7 +39,7 @@ export function moduleIntegrationTestRunner({
 }) {
   process.env.LOG_LEVEL = "error"
 
-  moduleModels = Object.values(require(`${process.cwd()}/src/models`))
+  moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
   // migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
