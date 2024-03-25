@@ -4,12 +4,14 @@ import {
   toRemoteJoinerQuery,
 } from "@medusajs/orchestration"
 import {
+  JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
   ModuleJoinerConfig,
   RemoteExpandProperty,
   RemoteJoinerQuery,
+  RemoteNestedExpands,
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
 
@@ -78,38 +80,43 @@ export class RemoteQuery {
   }
 
   public static getAllFieldsAndRelations(
-    data: any,
+    expand: RemoteExpandProperty | RemoteNestedExpands[number],
     prefix = "",
-    args: Record<string, unknown[]> = {}
+    args: JoinerArgument = {} as JoinerArgument
   ): {
     select: string[]
     relations: string[]
-    args: Record<string, unknown[]>
+    args: JoinerArgument
   } {
+    expand = JSON.parse(JSON.stringify(expand))
+
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
-    data.fields?.forEach((field: string) => {
-      fields.add(prefix ? `${prefix}.${field}` : field)
-    })
-    args[prefix] = data.args
-
-    if (data.expands) {
-      for (const property in data.expands) {
-        const newPrefix = prefix ? `${prefix}.${property}` : property
-
-        relations.push(newPrefix)
-        fields.delete(newPrefix)
-
-        const result = RemoteQuery.getAllFieldsAndRelations(
-          data.expands[property],
-          newPrefix,
-          args
-        )
-
-        result.select.forEach(fields.add, fields)
-        relations = relations.concat(result.relations)
+    for (const field of expand.fields ?? []) {
+      if (field === "*") {
+        expand.fields = []
+        break
       }
+      fields.add(prefix ? `${prefix}.${field}` : field)
+    }
+
+    args[prefix] = expand.args
+
+    for (const property in expand.expands ?? {}) {
+      const newPrefix = prefix ? `${prefix}.${property}` : property
+
+      relations.push(newPrefix)
+      fields.delete(newPrefix)
+
+      const result = RemoteQuery.getAllFieldsAndRelations(
+        expand.expands![property],
+        newPrefix,
+        args
+      )
+
+      result.select.forEach(fields.add, fields)
+      relations = relations.concat(result.relations)
     }
 
     return { select: [...fields], relations, args }

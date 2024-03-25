@@ -13,7 +13,7 @@ export const createAdminUser = async (
   adminHeaders,
   container?
 ) => {
-  await adminSeeder(dbConnection)
+  const { password_hash } = await adminSeeder(dbConnection)
   const appContainer = container ?? getContainer()!
 
   const authModule: IAuthModuleService = appContainer.resolve(
@@ -26,6 +26,9 @@ export const createAdminUser = async (
       scope: "admin",
       app_metadata: {
         user_id: "admin_user",
+      },
+      provider_metadata: {
+        password: password_hash,
       },
     })
 

@@ -6626,6 +6626,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jest/create-cache-key-function@npm:^29.7.0":
+  version: 29.7.0
+  resolution: "@jest/create-cache-key-function@npm:29.7.0"
+  dependencies:
+    "@jest/types": ^29.6.3
+  checksum: 5c47ef62205264adf77b1ff26b969ce9fe84920b8275c3c5e83f4236859d6ae5e4e7027af99eef04a8e334c4e424d44af3e167972083406070aca733ac2a2795
+  languageName: node
+  linkType: hard
+
 "@jest/environment@npm:^25.5.0":
   version: 25.5.0
   resolution: "@jest/environment@npm:25.5.0"
@@ -7939,9 +7948,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/api-key"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -7951,7 +7960,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -7966,9 +7975,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/auth"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -7979,7 +7988,7 @@ __metadata:
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     scrypt-kdf: ^2.0.1
     simple-oauth2: ^5.0.0
@@ -8026,9 +8035,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/cart"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.11.6
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8038,7 +8047,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8053,7 +8062,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/client-types@workspace:packages/generated/client-types"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.3.0
+    "@medusajs/medusa-oas-cli": 0.3.1
     cross-env: ^7.0.3
     execa: ^5.1.1
     jest: ^27.4.7
@@ -8063,15 +8072,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.6, @medusajs/core-flows@workspace:packages/core-flows":
+"@medusajs/core-flows@^0.0.7, @medusajs/core-flows@workspace:packages/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core-flows"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/orchestration": ^0.5.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
-    "@medusajs/workflows-sdk": ^0.1.3
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/orchestration": ^0.5.5
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
+    "@medusajs/workflows-sdk": ^0.1.4
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -8086,9 +8095,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/currency"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8113,9 +8122,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/customer"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.11.6
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8125,7 +8134,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8209,7 +8218,7 @@ __metadata:
     "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
-    bullmq: ^3.5.6
+    bullmq: ^5.4.2
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     jest: ^29.6.3
@@ -8239,7 +8248,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
   dependencies:
-    "@medusajs/utils": ^1.11.3
+    "@medusajs/utils": ^1.11.7
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     express: ^4.17.1
@@ -8254,9 +8263,9 @@ __metadata:
   resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
   dependencies:
     "@medusajs/fulfillment-manual": "workspace:*"
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8266,7 +8275,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8277,7 +8286,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@^1.1.0, @medusajs/icons@^1.2.0, @medusajs/icons@workspace:^, @medusajs/icons@workspace:packages/design-system/icons":
+"@medusajs/icons@^1.1.0, @medusajs/icons@^1.2.1, @medusajs/icons@workspace:^, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
@@ -8315,9 +8324,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory-next@workspace:packages/inventory-next"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8327,7 +8336,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8353,13 +8362,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.8, @medusajs/link-modules@workspace:packages/link-modules":
+"@medusajs/link-modules@^0.2.9, @medusajs/link-modules@workspace:packages/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/link-modules"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
@@ -8421,7 +8430,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.20.1
+    "@medusajs/medusa": ^1.20.3
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^5.2.1
@@ -8437,14 +8446,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@0.3.0, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@0.3.1, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": ^1.20.1
+    "@medusajs/medusa": ^1.20.3
     "@medusajs/openapi-typescript-codegen": ^0.2.1
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": ^1.7.0
@@ -8467,18 +8476,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.1, @medusajs/medusa@^1.20.1, @medusajs/medusa@^1.20.2, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.1, @medusajs/medusa@^1.20.1, @medusajs/medusa@^1.20.2, @medusajs/medusa@^1.20.3, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/core-flows": ^0.0.6
-    "@medusajs/link-modules": ^0.2.8
+    "@medusajs/core-flows": ^0.0.7
+    "@medusajs/link-modules": ^0.2.9
     "@medusajs/medusa-cli": ^1.3.22
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/orchestration": ^0.5.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
-    "@medusajs/workflows-sdk": ^0.1.3
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/orchestration": ^0.5.5
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
+    "@medusajs/workflows-sdk": ^0.1.4
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -8488,7 +8497,7 @@ __metadata:
     awilix: ^8.0.0
     body-parser: ^1.19.0
     boxen: ^5.0.1
-    bullmq: ^3.5.6
+    bullmq: ^5.4.2
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
@@ -8511,9 +8520,9 @@ __metadata:
     jsonwebtoken: ^9.0.0
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.1
-    medusa-interfaces: ^1.3.8
+    medusa-interfaces: ^1.3.9
     medusa-telemetry: ^0.0.17
-    medusa-test-utils: ^1.1.41
+    medusa-test-utils: ^1.1.42
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
@@ -8545,15 +8554,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.4, @medusajs/modules-sdk@^1.12.5, @medusajs/modules-sdk@^1.12.6, @medusajs/modules-sdk@^1.12.7, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
-    "@medusajs/orchestration": ^0.5.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/orchestration": ^0.5.5
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8571,7 +8580,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.3.0
+    "@medusajs/medusa-oas-cli": 0.3.1
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -8613,12 +8622,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@^0.5.4, @medusajs/orchestration@workspace:packages/orchestration":
+"@medusajs/orchestration@^0.5.5, @medusajs/orchestration@workspace:packages/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8633,9 +8642,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/order@workspace:packages/order"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8645,7 +8654,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8660,8 +8669,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/payment-stripe"
   dependencies:
-    "@medusajs/medusa": ^1.19.1
-    "@medusajs/utils": ^1.11.3
+    "@medusajs/medusa": ^1.20.3
+    "@medusajs/utils": ^1.11.7
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
     body-parser: ^1.19.0
@@ -8680,9 +8689,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/payment"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8693,7 +8702,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8708,9 +8717,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/pricing"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8720,7 +8729,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.41
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8735,9 +8744,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8749,7 +8758,7 @@ __metadata:
     jest: ^29.6.3
     knex: 2.4.2
     lodash: ^4.17.21
-    medusa-test-utils: ^1.1.41
+    medusa-test-utils: ^1.1.42
     pg-god: ^1.0.12
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -8765,9 +8774,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/promotion"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": 1.11.6
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": 1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8777,7 +8786,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8792,9 +8801,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/region"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8819,9 +8828,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/sales-channel"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8831,7 +8840,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8846,9 +8855,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location-next@workspace:packages/stock-location-next"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8858,7 +8867,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8888,9 +8897,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/store"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8915,9 +8924,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/tax"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8927,7 +8936,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8964,7 +8973,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.1.41, @medusajs/types@^1.10.0, @medusajs/types@^1.11.11, @medusajs/types@^1.11.12, @medusajs/types@^1.11.13, @medusajs/types@^1.11.6, @medusajs/types@^1.11.8, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.11, @medusajs/types@^1.11.12, @medusajs/types@^1.11.14, @medusajs/types@^1.11.6, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -8998,7 +9007,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/ui@workspace:packages/design-system/ui"
   dependencies:
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": ^1.2.1
     "@medusajs/ui-preset": ^1.1.2
     "@radix-ui/react-accordion": ^1.1.2
     "@radix-ui/react-alert-dialog": ^1.0.4
@@ -9073,9 +9082,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/user"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -9086,7 +9095,7 @@ __metadata:
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -9097,11 +9106,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@1.11.6, @medusajs/utils@^1.1.41, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.4, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.6, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@1.11.7, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.7, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": ^1.11.13
+    "@medusajs/types": ^1.11.14
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
@@ -9144,10 +9153,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
-    "@medusajs/workflows-sdk": ^0.1.2
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
+    "@medusajs/workflows-sdk": ^0.1.4
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -9157,7 +9166,7 @@ __metadata:
     dotenv: ^16.4.5
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -9170,10 +9179,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-redis@workspace:packages/workflow-engine-redis"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
-    "@medusajs/workflows-sdk": ^0.1.2
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
+    "@medusajs/workflows-sdk": ^0.1.4
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -9185,7 +9194,7 @@ __metadata:
     ioredis: ^5.3.2
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -9194,14 +9203,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.4, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/orchestration": ^0.5.4
-    "@medusajs/types": ^1.11.12
-    "@medusajs/utils": ^1.11.5
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/orchestration": ^0.5.5
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -16757,9 +16766,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-darwin-arm64@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-darwin-arm64@npm:1.4.8"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@swc/core-darwin-x64@npm:1.3.67":
   version: 1.3.67
   resolution: "@swc/core-darwin-x64@npm:1.3.67"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-darwin-x64@npm:1.4.8"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -16771,9 +16794,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-arm-gnueabihf@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.4.8"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
 "@swc/core-linux-arm64-gnu@npm:1.3.67":
   version: 1.3.67
   resolution: "@swc/core-linux-arm64-gnu@npm:1.3.67"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.4.8"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -16785,9 +16822,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-arm64-musl@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-linux-arm64-musl@npm:1.4.8"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@swc/core-linux-x64-gnu@npm:1.3.67":
   version: 1.3.67
   resolution: "@swc/core-linux-x64-gnu@npm:1.3.67"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-linux-x64-gnu@npm:1.4.8"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -16799,9 +16850,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-x64-musl@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-linux-x64-musl@npm:1.4.8"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@swc/core-win32-arm64-msvc@npm:1.3.67":
   version: 1.3.67
   resolution: "@swc/core-win32-arm64-msvc@npm:1.3.67"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.4.8"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -16813,9 +16878,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-win32-ia32-msvc@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.4.8"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@swc/core-win32-x64-msvc@npm:1.3.67":
   version: 1.3.67
   resolution: "@swc/core-win32-x64-msvc@npm:1.3.67"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core-win32-x64-msvc@npm:1.4.8"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -16864,6 +16943,59 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core@npm:^1.4.8":
+  version: 1.4.8
+  resolution: "@swc/core@npm:1.4.8"
+  dependencies:
+    "@swc/core-darwin-arm64": 1.4.8
+    "@swc/core-darwin-x64": 1.4.8
+    "@swc/core-linux-arm-gnueabihf": 1.4.8
+    "@swc/core-linux-arm64-gnu": 1.4.8
+    "@swc/core-linux-arm64-musl": 1.4.8
+    "@swc/core-linux-x64-gnu": 1.4.8
+    "@swc/core-linux-x64-musl": 1.4.8
+    "@swc/core-win32-arm64-msvc": 1.4.8
+    "@swc/core-win32-ia32-msvc": 1.4.8
+    "@swc/core-win32-x64-msvc": 1.4.8
+    "@swc/counter": ^0.1.2
+    "@swc/types": ^0.1.5
+  peerDependencies:
+    "@swc/helpers": ^0.5.0
+  dependenciesMeta:
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc/helpers":
+      optional: true
+  checksum: da9079e66d7de696bef2445ba5ba20c7be80b9132f56b7912f2359edab3caa02d334204e4663458771b1995e5556c0629de9427b55587cbac27de6b259c61932
+  languageName: node
+  linkType: hard
+
+"@swc/counter@npm:^0.1.2, @swc/counter@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@swc/counter@npm:0.1.3"
+  checksum: 8424f60f6bf8694cfd2a9bca45845bce29f26105cda8cf19cdb9fd3e78dc6338699e4db77a89ae449260bafa1cc6bec307e81e7fb96dbf7dcfce0eea55151356
+  languageName: node
+  linkType: hard
+
 "@swc/helpers@npm:^0.4.2":
   version: 0.4.14
   resolution: "@swc/helpers@npm:0.4.14"
@@ -16879,6 +17011,28 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 2e2272c8278351670e1daf27cc634ace793afb378dcc85be2800d30a7b4d3afad37707371ead2a6d96662fa30294da678d66cdc4dc7f3e698bd8e111235c60fc
+  languageName: node
+  linkType: hard
+
+"@swc/jest@npm:^0.2.36":
+  version: 0.2.36
+  resolution: "@swc/jest@npm:0.2.36"
+  dependencies:
+    "@jest/create-cache-key-function": ^29.7.0
+    "@swc/counter": ^0.1.3
+    jsonc-parser: ^3.2.0
+  peerDependencies:
+    "@swc/core": "*"
+  checksum: 7f1993f9201420bb499c92ab28797352bcbf9e3a6c7b5a1806fdc34c9c3b46ea9e5b2f070c0e13fcf7f3c3fadbbc38777840baabb178f589bf1f67543763adb6
+  languageName: node
+  linkType: hard
+
+"@swc/types@npm:^0.1.5":
+  version: 0.1.6
+  resolution: "@swc/types@npm:0.1.6"
+  dependencies:
+    "@swc/counter": ^0.1.3
+  checksum: 043a0e56d69db8733827ad69db55d0ffbd6976fd24ef629a488e57040067ac84d057a57e08bc5a3db545d44b01d6aa43c22df1152c637af450d366e57cde6e22
   languageName: node
   linkType: hard
 
@@ -22283,22 +22437,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bullmq@npm:^3.5.6":
-  version: 3.15.8
-  resolution: "bullmq@npm:3.15.8"
-  dependencies:
-    cron-parser: ^4.6.0
-    glob: ^8.0.3
-    ioredis: ^5.3.2
-    lodash: ^4.17.21
-    msgpackr: ^1.6.2
-    semver: ^7.3.7
-    tslib: ^2.0.0
-    uuid: ^9.0.0
-  checksum: e41429c526ec44c24891cc4533fb34e358a6ad996a001b14869b7495189c47395f9539def423e3a950f5e11a43711fdcea73592994a6387a7fcbf720d76b0442
-  languageName: node
-  linkType: hard
-
 "bullmq@npm:^5.1.3":
   version: 5.1.3
   resolution: "bullmq@npm:5.1.3"
@@ -22313,6 +22451,22 @@ __metadata:
     tslib: ^2.0.0
     uuid: ^9.0.0
   checksum: dc2177dfd736b2d008ccab1ba9f77f80cc730ce6197c9ffa0f37327e1cf34bd8b97d83ee9f9008253ef0c0854bbd04f8c925889a3370a0899e8f5c7a34fd3ab3
+  languageName: node
+  linkType: hard
+
+"bullmq@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "bullmq@npm:5.4.2"
+  dependencies:
+    cron-parser: ^4.6.0
+    ioredis: ^5.3.2
+    lodash: ^4.17.21
+    msgpackr: ^1.10.1
+    node-abort-controller: ^3.1.1
+    semver: ^7.5.4
+    tslib: ^2.0.0
+    uuid: ^9.0.0
+  checksum: 01687a41bbacb646ab9cac181181c0cf18362f23b250c332125e0a701dacefb48ff20b030e095f24bd5e471f29d514bcc02779fd1f1c3cb830a3a5f1d0a39d75
   languageName: node
   linkType: hard
 
@@ -31826,6 +31980,8 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -31864,6 +32020,8 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -31891,6 +32049,7 @@ __metadata:
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/inventory": "workspace:^"
+    "@medusajs/inventory-next": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/pricing": "workspace:^"
@@ -37709,9 +37868,9 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.1
-    medusa-interfaces: ^1.3.8
+    medusa-interfaces: ^1.3.9
   peerDependencies:
-    medusa-interfaces: 1.3.8
+    medusa-interfaces: 1.3.9
   languageName: unknown
   linkType: soft
 
@@ -37743,7 +37902,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@^1.3.7, medusa-interfaces@^1.3.8, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@^1.3.7, medusa-interfaces@^1.3.8, medusa-interfaces@^1.3.9, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -37759,7 +37918,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.1
-    medusa-test-utils: ^1.1.41
+    medusa-test-utils: ^1.1.42
     rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
@@ -37789,10 +37948,10 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.1
-    medusa-interfaces: ^1.3.8
-    medusa-test-utils: ^1.1.41
+    medusa-interfaces: ^1.3.9
+    medusa-test-utils: ^1.1.42
   peerDependencies:
-    medusa-interfaces: 1.3.8
+    medusa-interfaces: 1.3.9
   languageName: unknown
   linkType: soft
 
@@ -37876,8 +38035,8 @@ __metadata:
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
     "@medusajs/admin": ^7.1.10
-    "@medusajs/medusa": ^1.19.1
-    "@medusajs/utils": ^1.11.3
+    "@medusajs/medusa": ^1.20.3
+    "@medusajs/utils": ^1.11.7
     "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
@@ -37885,7 +38044,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-react: ^9.0.13
+    medusa-react: ^9.0.16
     rimraf: ^5.0.1
     stripe: ^11.10.0
     typescript: ^4.9.5
@@ -38261,12 +38420,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.13, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.13, medusa-react@^9.0.16, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa": ^1.20.1
+    "@medusajs/medusa": ^1.20.3
     "@medusajs/medusa-js": "*"
     "@storybook/addon-essentials": ^6.3.12
     "@storybook/addon-links": ^6.3.12
@@ -38357,13 +38516,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.40, medusa-test-utils@^1.1.41, medusa-test-utils@workspace:*, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.40, medusa-test-utils@^1.1.42, medusa-test-utils@workspace:*, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.6
-    "@medusajs/types": ^1.1.41
-    "@medusajs/utils": ^1.1.41
+    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/types": ^1.11.14
+    "@medusajs/utils": ^1.11.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
@@ -39252,7 +39411,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msgpackr@npm:^1.5.4, msgpackr@npm:^1.6.2":
+"msgpackr@npm:^1.5.4":
   version: 1.9.5
   resolution: "msgpackr@npm:1.9.5"
   dependencies:

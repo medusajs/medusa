@@ -1,7 +1,7 @@
 import {
-  StepResponse,
   createStep,
   createWorkflow,
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 
 const step_1 = createStep(
@@ -15,7 +15,6 @@ const step_1 = createStep(
       return
     }
 
-    console.log("reverted", compensateInput.compensate)
     return new StepResponse({
       reverted: true,
     })
@@ -25,8 +24,6 @@ const step_1 = createStep(
 const step_2 = createStep(
   "step_2",
   jest.fn((input, context) => {
-    console.log("triggered async request", context.metadata.idempotency_key)
-
     if (input) {
       return new StepResponse({ notAsyncResponse: input.hey })
     }

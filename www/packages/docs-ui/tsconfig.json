@@ -11,15 +11,11 @@
     "tsBuildInfoFile": "./dist/.tsbuildinfo-client",
     "noEmit": false,
     "jsx": "react",
-    "lib": ["dom", "ES2015"],
+    "lib": ["dom", "ES2015", "es2021"],
     "module": "ESNext",
     "target": "es6",
     "declaration": true,
     "declarationMap": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ]
   },
   "include": [
     "src/**/*",

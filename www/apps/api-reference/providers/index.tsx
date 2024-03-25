@@ -1,18 +1,17 @@
 "use client"
 
 import {
-  AiAssistantProvider,
   AnalyticsProvider,
   ColorModeProvider,
   MobileProvider,
   ModalProvider,
-  NavbarProvider,
   PageLoadingProvider,
   ScrollControllerProvider,
 } from "docs-ui"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
 import SearchProvider from "./search"
+import VersionProvider from "./version"
 
 type ProvidersProps = {
   children?: React.ReactNode
@@ -27,11 +26,11 @@ const Providers = ({ children }: ProvidersProps) => {
             <BaseSpecsProvider>
               <ScrollControllerProvider scrollableSelector="#main">
                 <SidebarProvider>
-                  <NavbarProvider>
-                    <SearchProvider>
-                      <MobileProvider>{children}</MobileProvider>
-                    </SearchProvider>
-                  </NavbarProvider>
+                  <SearchProvider>
+                    <MobileProvider>
+                      <VersionProvider>{children}</VersionProvider>
+                    </MobileProvider>
+                  </SearchProvider>
                 </SidebarProvider>
               </ScrollControllerProvider>
             </BaseSpecsProvider>

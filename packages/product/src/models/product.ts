@@ -66,6 +66,7 @@ class Product {
   is_giftcard!: boolean
 
   @Enum(() => ProductUtils.ProductStatus)
+  @Property({ default: ProductUtils.ProductStatus.DRAFT })
   status!: ProductUtils.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
@@ -129,6 +130,7 @@ class Product {
     pivotTable: "product_tags",
     index: "IDX_product_tag_id",
     cascade: ["soft-remove"] as any,
+    // TODO: Do we really want to remove tags if the product is deleted?
   })
   tags = new Collection<ProductTag>(this)
 

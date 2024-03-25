@@ -1,13 +1,4 @@
 import {
-  MedusaApp,
-  MedusaAppMigrateUp,
-  MedusaAppOutput,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
-  Modules,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
-import {
   CommonTypes,
   InternalModuleDeclaration,
   LoadedModule,
@@ -20,9 +11,19 @@ import {
   isObject,
   MedusaV2Flag,
 } from "@medusajs/utils"
+import {
+  MedusaApp,
+  MedusaAppMigrateUp,
+  MedusaAppOutput,
+  MedusaModule,
+  MODULE_PACKAGE_NAMES,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 import { joinerConfig } from "../joiner-config"
+import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -70,11 +71,10 @@ export async function migrateMedusaApp(
         injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
           ?.config?.connection?.connectionString ??
         configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
-
   const configModules = mergeDefaultModules(configModule.modules)
 
   // Apply default options to legacy modules
@@ -90,6 +90,7 @@ export async function migrateMedusaApp(
         database: {
           type: "postgres",
           url: sharedResourcesConfig.database.clientUrl,
+          clientUrl: sharedResourcesConfig.database.clientUrl,
           extra: configModule.projectConfig.database_extra,
           schema: configModule.projectConfig.database_schema,
           logging: configModule.projectConfig.database_logging,
@@ -135,7 +136,7 @@ export const loadMedusaApp = async (
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
@@ -167,6 +168,7 @@ export const loadMedusaApp = async (
   }
 
   const medusaApp = await MedusaApp({
+    workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
@@ -260,7 +262,7 @@ export async function runModulesLoader({
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
       debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }

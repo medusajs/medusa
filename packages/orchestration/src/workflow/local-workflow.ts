@@ -4,6 +4,8 @@ import {
   MedusaContextType,
   MedusaModuleType,
   createMedusaContainer,
+  isDefined,
+  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -90,11 +92,10 @@ export class LocalWorkflow {
           }
 
           return async (...args) => {
-            const ctxIndex =
-              MedusaContext.getIndex(target, prop as string) ?? args.length - 1
+            const ctxIndex = MedusaContext.getIndex(target, prop as string)
 
-            const hasContext = args[ctxIndex]?.__type === MedusaContextType
-            if (!hasContext) {
+            const hasContext = args[ctxIndex!]?.__type === MedusaContextType
+            if (!hasContext && isDefined(ctxIndex)) {
               const context = this_.medusaContext
               if (context?.__type === MedusaContextType) {
                 delete context?.manager
@@ -348,17 +349,16 @@ export class LocalWorkflow {
   }
 
   async cancel(
-    uniqueTransactionId: string,
+    transactionOrTransactionId: string | DistributedTransaction,
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ) {
     this.medusaContext = context
     const { orchestrator } = this.workflow
 
-    const transaction = await this.getRunningTransaction(
-      uniqueTransactionId,
-      context
-    )
+    const transaction = isString(transactionOrTransactionId)
+      ? await this.getRunningTransaction(transactionOrTransactionId, context)
+      : transactionOrTransactionId
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,

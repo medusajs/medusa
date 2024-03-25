@@ -62,8 +62,11 @@ export class PricingRepository
     })
       .select({
         id: "psma1.id",
+        amount: "psma1.amount",
+        min_quantity: "psma1.min_quantity",
+        max_quantity: "psma1.max_quantity",
+        currency_code: "psma1.currency_code",
         price_set_id: "psma1.price_set_id",
-        money_amount_id: "psma1.money_amount_id",
         rules_count: "psma1.rules_count",
         price_list_id: "psma1.price_list_id",
         pl_rules_count: "pl.rules_count",
@@ -149,12 +152,12 @@ export class PricingRepository
       ps: "price_set",
     })
       .select({
-        id: "ma.id",
+        id: "psma.id",
         price_set_id: "ps.id",
-        amount: "ma.amount",
-        min_quantity: "ma.min_quantity",
-        max_quantity: "ma.max_quantity",
-        currency_code: "ma.currency_code",
+        amount: "psma.amount",
+        min_quantity: "psma.min_quantity",
+        max_quantity: "psma.max_quantity",
+        currency_code: "psma.currency_code",
         default_priority: "rt.default_priority",
         rules_count: "psma.rules_count",
         pl_rules_count: "psma.pl_rules_count",
@@ -162,11 +165,10 @@ export class PricingRepository
         price_list_id: "psma.price_list_id",
       })
       .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
-      .join("money_amount as ma", "ma.id", "psma.money_amount_id")
       .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
-      .andWhere("ma.currency_code", "=", currencyCode)
+      .andWhere("psma.currency_code", "=", currencyCode)
 
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
@@ -176,12 +178,12 @@ export class PricingRepository
       ])
 
     if (quantity) {
-      priceSetQueryKnex.where("ma.min_quantity", "<=", quantity)
-      priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
+      priceSetQueryKnex.where("psma.min_quantity", "<=", quantity)
+      priceSetQueryKnex.andWhere("psma.max_quantity", ">=", quantity)
     } else {
       priceSetQueryKnex.andWhere(function () {
-        this.andWhere("ma.min_quantity", "<=", "1").orWhereNull(
-          "ma.min_quantity"
+        this.andWhere("psma.min_quantity", "<=", "1").orWhereNull(
+          "psma.min_quantity"
         )
       })
     }

@@ -37,20 +37,27 @@ export class RemoteJoiner {
     data: any,
     fields: string[],
     expands?: RemoteNestedExpands
-  ): Record<string, unknown> {
+  ): Record<string, unknown> | undefined {
     if (!fields || !data) {
       return data
     }
 
-    const filteredData = fields.reduce((acc: any, field: string) => {
-      const fieldValue = data?.[field]
+    let filteredData: Record<string, unknown> = {}
 
-      if (isDefined(fieldValue)) {
-        acc[field] = data?.[field]
-      }
+    if (fields.includes("*")) {
+      // select all fields
+      filteredData = data
+    } else {
+      filteredData = fields.reduce((acc: any, field: string) => {
+        const fieldValue = data?.[field]
 
-      return acc
-    }, {})
+        if (isDefined(fieldValue)) {
+          acc[field] = data?.[field]
+        }
+
+        return acc
+      }, {})
+    }
 
     if (expands) {
       for (const key of Object.keys(expands ?? {})) {
@@ -777,7 +784,7 @@ export class RemoteJoiner {
     // remove alias from fields
     const parentPath = [BASE_PATH, ...currentPath].join(".")
     const parentExpands = parsedExpands.get(parentPath)
-    parentExpands.fields = parentExpands.fields.filter(
+    parentExpands.fields = parentExpands.fields?.filter(
       (field) => field !== property
     )
 
@@ -787,12 +794,13 @@ export class RemoteJoiner {
       )
     )
 
+    const parentFieldAlias = fullPath[Math.max(fullPath.length - 2, 0)]
     implodeMapping.push({
       location: [...currentPath],
       property,
       path: fullPath,
       isList: !!serviceConfig.relationships?.find(
-        (relationship) => relationship.alias === fullPath[0]
+        (relationship) => relationship.alias === parentFieldAlias
       )?.isList,
     })
 

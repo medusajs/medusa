@@ -7,9 +7,9 @@ import {
   updateProductOptionsWorkflow,
 } from "@medusajs/core-flows"
 
-import { UpdateProductDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { UpdateProductOptionDTO } from "../../../../../../../../types/dist"
+import { refetchProduct, remapProduct } from "../../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -17,7 +17,6 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 
@@ -26,7 +25,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product_option",
     variables,
-    fields: req.retrieveConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [product_option] = await remoteQuery(queryObject)
@@ -37,7 +36,6 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<UpdateProductOptionDTO>,
   res: MedusaResponse
 ) => {
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 
@@ -53,14 +51,18 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_option: result[0] })
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProduct(product) })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  // TODO: Should we allow fetching a option without knowing the product ID? In such case we'll need to change the route to /admin/products/options/:id
   const productId = req.params.id
   const optionId = req.params.option_id
 
@@ -74,9 +76,16 @@ export const DELETE = async (
     throw errors[0].error
   }
 
+  const product = await refetchProduct(
+    productId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
     id: optionId,
     object: "product_option",
     deleted: true,
+    parent: product,
   })
 }

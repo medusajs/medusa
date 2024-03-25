@@ -75,7 +75,7 @@ export async function mikroOrmCreateConnection(
   let schema = database.schema || "public"
 
   let driverOptions = database.driverOptions ?? {
-    connection: { ssl: true },
+    connection: { ssl: false },
   }
 
   let clientUrl = database.clientUrl
@@ -103,6 +103,11 @@ export async function mikroOrmCreateConnection(
     migrations: {
       path: pathToMigrations,
       generator: TSMigrationGenerator,
+      silent: !(
+        database.debug ??
+        process.env.NODE_ENV?.startsWith("dev") ??
+        false
+      ),
     },
     pool: database.pool as any,
   })

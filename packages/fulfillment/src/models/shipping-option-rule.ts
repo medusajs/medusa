@@ -1,10 +1,10 @@
+import { DAL } from "@medusajs/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  RuleOperator,
 } from "@medusajs/utils"
-
-import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -17,7 +17,6 @@ import {
   Property,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
-import { RuleOperator } from "@utils"
 
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -57,6 +56,7 @@ export default class ShippingOptionRule {
     type: "text",
     mapToPk: true,
     fieldName: "shipping_option_id",
+    onDelete: "cascade",
   })
   @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string

@@ -234,7 +234,7 @@ It’s highly recommended to use strong, randomly generated secrets for `JWT_SE
 
 :::
 
-Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa admin or your modules.
+Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa Admin or your modules.
 
 ### Change Start Command
 
