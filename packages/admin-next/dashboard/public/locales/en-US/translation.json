@@ -335,6 +335,47 @@
       "transferOwnership": "Transfer ownership",
       "editBillingAddress": "Edit billing address",
       "editShippingAddress": "Edit shipping address"
+    },
+    "activity": {
+      "header": "Activity",
+      "showMoreActivities_one": "Show {{count}} more activity",
+      "showMoreActivities_other": "Show {{count}} more activities",
+      "comment": {
+        "label": "Comment",
+        "placeholder": "Leave a comment",
+        "addButtonText": "Add comment",
+        "deleteButtonText": "Delete comment"
+      },
+      "events": {
+        "placed": {
+          "title": "Order placed",
+          "fromSalesChannel": "from {{salesChannel}}"
+        },
+        "canceled": {
+          "title": "Order canceled"
+        },
+        "payment": {
+          "awaiting": "Awaiting payment",
+          "captured": "Payment captured",
+          "canceled": "Payment canceled"
+        },
+        "fulfillment": {
+          "created": "Fulfillment created",
+          "canceled": "Fulfillment canceled",
+          "shipped": "Fulfillment shipped",
+          "itemsFulfilledFrom_one": "{{count}} item fulfilled from {{location}}",
+          "itemsFulfilledFrom_other": "{{count}} items fulfilled from {{location}}",
+          "itemsFulfilled_one": "{{count}} item fulfilled",
+          "itemsFulfilled_other": "{{count}} items fulfilled"
+        },
+        "return": {
+          "created": "Return created"
+        },
+        "note": {
+          "comment": "Comment",
+          "byLine": "by {{author}}"
+        }
+      }
     }
   },
   "draftOrders": {
@@ -814,6 +855,7 @@
     "date": "Date",
     "order": "Order",
     "fulfillment": "Fulfillment",
+    "provider": "Provider",
     "payment": "Payment",
     "items": "Items",
     "salesChannel": "Sales Channel",
