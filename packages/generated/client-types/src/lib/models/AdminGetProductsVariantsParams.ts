@@ -41,6 +41,29 @@ export interface AdminGetProductsVariantsParams {
    */
   allow_backorder?: boolean
   /**
+   * Filter by available inventory quantity
+   */
+  inventory_quantity?:
+    | number
+    | {
+        /**
+         * filter by inventory quantity less than this number
+         */
+        lt?: number
+        /**
+         * filter by inventory quantity greater than this number
+         */
+        gt?: number
+        /**
+         * filter by inventory quantity less than or equal to this number
+         */
+        lte?: number
+        /**
+         * filter by inventory quantity greater than or equal to this number
+         */
+        gte?: number
+      }
+  /**
    * Filter by a creation date range.
    */
   created_at?: {

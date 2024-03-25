@@ -9,7 +9,10 @@ import { Request, Response } from "express"
 
 import { Transform, Type } from "class-transformer"
 import { ProductVariantService } from "../../../../services"
-import { DateComparisonOperator } from "../../../../types/common"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+} from "../../../../types/common"
 import { IsType } from "../../../../utils"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
@@ -31,6 +34,28 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) order {string} The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - (query) manage_inventory {boolean} Filter product variants by whether their inventory is managed or not.
  *   - (query) allow_backorder {boolean} Filter product variants by whether they are allowed to be backordered or not.
+ *   - in: query
+ *     name: inventory_quantity
+ *     description: Filter by available inventory quantity
+ *     schema:
+ *       oneOf:
+ *         - type: number
+ *           description: a specific number to filter by.
+ *         - type: object
+ *           description: filter using less and greater than comparisons.
+ *           properties:
+ *             lt:
+ *               type: number
+ *               description: filter by inventory quantity less than this number
+ *             gt:
+ *               type: number
+ *               description: filter by inventory quantity greater than this number
+ *             lte:
+ *               type: number
+ *               description: filter by inventory quantity less than or equal to this number
+ *             gte:
+ *               type: number
+ *               description: filter by inventory quantity greater than or equal to this number
  *   - in: query
  *     name: created_at
  *     description: Filter by a creation date range.
@@ -188,6 +213,13 @@ export class AdminGetProductsVariantsParams {
   @IsString()
   @IsOptional()
   order?: string
+
+  /**
+   * Number filters to apply on product variants' `inventory_quantity` field.
+   */
+  @IsOptional()
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 
   /**
    * Filter product variants by whether their inventory is managed or not.

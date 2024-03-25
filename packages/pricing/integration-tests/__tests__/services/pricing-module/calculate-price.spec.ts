@@ -57,85 +57,15 @@ moduleIntegrationTestRunner({
     describe("PricingModule Service - Calculate Price", () => {
       describe("calculatePrices", () => {
         beforeEach(async () => {
-          const moneyAmountsData = [
-            {
-              id: "psma-PLN",
-              currency_code: "PLN",
-              amount: 1000,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-company_id-EUR",
-              currency_code: "EUR",
-              amount: 500,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-company_id-PLN",
-              currency_code: "PLN",
-              amount: 400,
-              min_quantity: 1,
-              max_quantity: 5,
-            },
-            {
-              id: "psma-region_id-PLN",
-              currency_code: "PLN",
-              amount: 300,
-              min_quantity: 1,
-              max_quantity: 4,
-            },
-            {
-              id: "psma-region_id+company_id-PLN",
-              currency_code: "PLN",
-              amount: 999,
-              min_quantity: 1,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id-PLN-5-qty",
-              currency_code: "PLN",
-              amount: 250,
-              min_quantity: 4,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR",
-              currency_code: "EUR",
-              amount: 200,
-              min_quantity: 1,
-              max_quantity: 3,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR-4-qty",
-              currency_code: "EUR",
-              amount: 50,
-              min_quantity: 4,
-              max_quantity: 10,
-            },
-            {
-              id: "psma-region_id_company_id-PL-EUR-customer-group",
-              currency_code: "EUR",
-              amount: 100,
-              min_quantity: 1,
-              max_quantity: 3,
-            },
-          ]
-
           const priceSetsData = [
-            {
-              id: "price-set-EUR",
-            },
-            {
-              id: "price-set-PLN",
-            },
+            { id: "price-set-EUR" },
+            { id: "price-set-PLN" },
           ] as unknown as CreatePriceSetDTO[]
 
-          const priceSetMoneyAmountsData = [
+          const pricesData = [
             {
-              id: "psma-PLN",
-              title: "psma PLN",
+              id: "price-PLN",
+              title: "price PLN",
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 1000,
@@ -144,8 +74,8 @@ moduleIntegrationTestRunner({
               rules_count: 0,
             },
             {
-              id: "psma-company_id-EUR",
-              title: "psma EUR - company_id",
+              id: "price-company_id-EUR",
+              title: "price EUR - company_id",
               price_set_id: "price-set-EUR",
               currency_code: "EUR",
               amount: 500,
@@ -154,8 +84,8 @@ moduleIntegrationTestRunner({
               rules_count: 1,
             },
             {
-              id: "psma-company_id-PLN",
-              title: "psma PLN - company_id",
+              id: "price-company_id-PLN",
+              title: "price PLN - company_id",
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 400,
@@ -164,8 +94,8 @@ moduleIntegrationTestRunner({
               rules_count: 1,
             },
             {
-              id: "psma-region_id-PLN",
-              title: "psma PLN - region_id",
+              id: "price-region_id-PLN",
+              title: "price PLN - region_id",
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 300,
@@ -174,8 +104,8 @@ moduleIntegrationTestRunner({
               rules_count: 1,
             },
             {
-              id: "psma-region_id+company_id-PLN",
-              title: "psma region_id + company_id",
+              id: "price-region_id+company_id-PLN",
+              title: "price region_id + company_id",
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 999,
@@ -184,8 +114,8 @@ moduleIntegrationTestRunner({
               rules_count: 2,
             },
             {
-              id: "psma-region_id-PLN-5-qty",
-              title: "psma PLN - region_id 5 qty",
+              id: "price-region_id-PLN-5-qty",
+              title: "price PLN - region_id 5 qty",
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 250,
@@ -194,8 +124,8 @@ moduleIntegrationTestRunner({
               rules_count: 1,
             },
             {
-              id: "psma-region_id_company_id-PL-EUR",
-              title: "psma PLN - region_id PL with EUR currency",
+              id: "price-region_id_company_id-PL-EUR",
+              title: "price PLN - region_id PL with EUR currency",
               price_set_id: "price-set-PLN",
               currency_code: "EUR",
               amount: 200,
@@ -204,8 +134,9 @@ moduleIntegrationTestRunner({
               rules_count: 2,
             },
             {
-              id: "psma-region_id_company_id-PL-EUR-4-qty",
-              title: "psma PLN - region_id PL with EUR currency for quantity 4",
+              id: "price-region_id_company_id-PL-EUR-4-qty",
+              title:
+                "price PLN - region_id PL with EUR currency for quantity 4",
               price_set_id: "price-set-PLN",
               currency_code: "EUR",
               amount: 50,
@@ -214,9 +145,9 @@ moduleIntegrationTestRunner({
               rules_count: 2,
             },
             {
-              id: "psma-region_id_company_id-PL-EUR-customer-group",
+              id: "price-region_id_company_id-PL-EUR-customer-group",
               title:
-                "psma PLN - region_id PL with EUR currency for customer group",
+                "price PLN - region_id PL with EUR currency for customer group",
               price_set_id: "price-set-PLN",
               currency_code: "EUR",
               amount: 100,
@@ -254,7 +185,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "EUR",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-company_id-EUR",
+              price_id: "price-company_id-EUR",
             },
             {
               id: "price-rule-company_id-PLN",
@@ -262,7 +193,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-company_id-PLN",
+              price_id: "price-company_id-PLN",
             },
             {
               id: "price-rule-region_id-PLN",
@@ -270,7 +201,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id-PLN",
+              price_id: "price-region_id-PLN",
             },
             {
               id: "price-rule-region_id+company_id-PL",
@@ -278,7 +209,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id+company_id-PLN",
+              price_id: "price-region_id+company_id-PLN",
             },
             {
               id: "price-rule-region_id+company_id-medusa-company-id",
@@ -286,7 +217,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id+company_id-PLN",
+              price_id: "price-region_id+company_id-PLN",
             },
             {
               id: "price-rule-region_id-PLN-5-qty",
@@ -294,7 +225,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id-PLN-5-qty",
+              price_id: "price-region_id-PLN-5-qty",
             },
             {
               id: "price-rule-region_id-company_id-PL",
@@ -302,7 +233,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+              price_id: "price-region_id_company_id-PL-EUR",
             },
             {
               id: "price-rule-region_id-company_id-PLN",
@@ -310,7 +241,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+              price_id: "price-region_id_company_id-PL-EUR",
             },
             {
               id: "price-rule-region_id-company_id-PL-4-qty",
@@ -318,8 +249,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-4-qty",
+              price_id: "price-region_id_company_id-PL-EUR-4-qty",
             },
             {
               id: "price-rule-region_id-company_id-PLN-4-qty",
@@ -327,8 +257,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-4-qty",
+              price_id: "price-region_id_company_id-PL-EUR-4-qty",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-PL",
@@ -336,8 +265,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-region_id",
               value: "PL",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "price-region_id_company_id-PL-EUR-customer-group",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-PLN",
@@ -345,8 +273,7 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-company_id",
               value: "medusa-company-id",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "price-region_id_company_id-PL-EUR-customer-group",
             },
             {
               id: "price-rule-region_id-currency_customer_group_code-test_customer_group",
@@ -354,15 +281,13 @@ moduleIntegrationTestRunner({
               rule_type_id: "rule-type-customer_group_id",
               value: "test-customer-group",
               price_list_id: "test",
-              price_set_money_amount_id:
-                "psma-region_id_company_id-PL-EUR-customer-group",
+              price_id: "price-region_id_company_id-PL-EUR-customer-group",
             },
           ] as unknown as CreatePriceRuleDTO[]
 
           await seedPriceData(MikroOrmWrapper.forkManager(), {
-            moneyAmountsData,
             priceSetsData,
-            priceSetMoneyAmountsData,
+            pricesData,
             priceRuleData,
             ruleTypesData,
           })
@@ -427,14 +352,14 @@ moduleIntegrationTestRunner({
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 10,
               },
               original_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -483,14 +408,14 @@ moduleIntegrationTestRunner({
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
               },
               original_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -539,14 +464,14 @@ moduleIntegrationTestRunner({
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 10,
               },
               original_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -651,14 +576,14 @@ moduleIntegrationTestRunner({
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
               },
               original_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -707,14 +632,14 @@ moduleIntegrationTestRunner({
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 10,
               },
               original_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -741,14 +666,14 @@ moduleIntegrationTestRunner({
               original_amount: 250,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN-5-qty",
+                id: "price-region_id-PLN-5-qty",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 4,
                 max_quantity: 10,
               },
               original_price: {
-                id: "psma-region_id-PLN-5-qty",
+                id: "price-region_id-PLN-5-qty",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 4,
@@ -802,14 +727,14 @@ moduleIntegrationTestRunner({
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
               },
               original_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -864,14 +789,14 @@ moduleIntegrationTestRunner({
               original_amount: 100,
               currency_code: "EUR",
               calculated_price: {
-                id: "psma-region_id_company_id-PL-EUR-customer-group",
+                id: "price-region_id_company_id-PL-EUR-customer-group",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 3,
               },
               original_price: {
-                id: "psma-region_id_company_id-PL-EUR-customer-group",
+                id: "price-region_id_company_id-PL-EUR-customer-group",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -926,14 +851,14 @@ moduleIntegrationTestRunner({
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
               },
               original_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -988,14 +913,14 @@ moduleIntegrationTestRunner({
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 10,
               },
               original_price: {
-                id: "psma-PLN",
+                id: "price-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -1104,14 +1029,14 @@ moduleIntegrationTestRunner({
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 4,
               },
               original_price: {
-                id: "psma-region_id-PLN",
+                id: "price-region_id-PLN",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -1487,14 +1412,14 @@ moduleIntegrationTestRunner({
                 original_amount: 300,
                 currency_code: "PLN",
                 calculated_price: {
-                  id: "psma-region_id-PLN",
+                  id: "price-region_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
                   max_quantity: 4,
                 },
                 original_price: {
-                  id: "psma-region_id-PLN",
+                  id: "price-region_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
@@ -1700,14 +1625,14 @@ moduleIntegrationTestRunner({
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
-                  id: "psma-company_id-PLN",
+                  id: "price-company_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
                   max_quantity: 5,
                 },
                 original_price: {
-                  id: "psma-company_id-PLN",
+                  id: "price-company_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
@@ -1775,14 +1700,14 @@ moduleIntegrationTestRunner({
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
-                  id: "psma-company_id-PLN",
+                  id: "price-company_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
                   max_quantity: 5,
                 },
                 original_price: {
-                  id: "psma-company_id-PLN",
+                  id: "price-company_id-PLN",
                   price_list_id: null,
                   price_list_type: null,
                   min_quantity: 1,
