@@ -1,10 +1,12 @@
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
+
 import { IStockLocationServiceNext } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../helpers/create-admin-user"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-
-const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 jest.setTimeout(30000)
 
