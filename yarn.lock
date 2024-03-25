@@ -7799,24 +7799,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-next@workspace:packages/admin-next/plugin":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/admin-next@workspace:packages/admin-next/plugin"
-  dependencies:
-    "@medusajs/dashboard": "workspace:^"
-    "@medusajs/types": "workspace:^"
-    "@vitejs/plugin-react": ^4.2.1
-    express: ^4.18.2
-    picocolors: ^1.0.0
-    tsup: ^8.0.2
-    vite: 5.0.10
-    vite-express: ^0.16.0
-  peerDependencies:
-    express: ^4.18.2
-    vite: 5.0.10
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/admin-shared@*, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin-next/admin-shared"
@@ -8163,7 +8145,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/dashboard@workspace:^, @medusajs/dashboard@workspace:packages/admin-next/dashboard":
+"@medusajs/dashboard@workspace:packages/admin-next/dashboard":
   version: 0.0.0-use.local
   resolution: "@medusajs/dashboard@workspace:packages/admin-next/dashboard"
   dependencies:
@@ -8203,6 +8185,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
+    react-nestable: ^3.0.2
     react-resizable-panels: ^2.0.9
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
@@ -23259,6 +23242,13 @@ __metadata:
   version: 2.3.2
   resolution: "classnames@npm:2.3.2"
   checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.3.2":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
   languageName: node
   linkType: hard
 
@@ -44344,6 +44334,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-nestable@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-nestable@npm:3.0.2"
+  dependencies:
+    classnames: ^2.3.2
+    react: ^18.2.0
+    react-addons-shallow-compare: ^15.6.3
+    react-addons-update: ^15.6.3
+    react-dom: ^18.2.0
+  checksum: e2a7947382ca28e12048c534a2ad6e544dff60a56e712b7a1b00838434c5b5444b4c50c1fd652e032710b567674b4eff36ee4c3a5021c02f933d11c7b88ce7b9
+  languageName: node
+  linkType: hard
+
 "react-onclickoutside@npm:^6.12.2":
   version: 6.13.0
   resolution: "react-onclickoutside@npm:6.13.0"
@@ -49967,45 +49970,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "tsup@npm:8.0.2"
-  dependencies:
-    bundle-require: ^4.0.0
-    cac: ^6.7.12
-    chokidar: ^3.5.1
-    debug: ^4.3.1
-    esbuild: ^0.19.2
-    execa: ^5.0.0
-    globby: ^11.0.3
-    joycon: ^3.0.1
-    postcss-load-config: ^4.0.1
-    resolve-from: ^5.0.0
-    rollup: ^4.0.2
-    source-map: 0.8.0-beta.0
-    sucrase: ^3.20.3
-    tree-kill: ^1.2.2
-  peerDependencies:
-    "@microsoft/api-extractor": ^7.36.0
-    "@swc/core": ^1
-    postcss: ^8.4.12
-    typescript: ">=4.5.0"
-  peerDependenciesMeta:
-    "@microsoft/api-extractor":
-      optional: true
-    "@swc/core":
-      optional: true
-    postcss:
-      optional: true
-    typescript:
-      optional: true
-  bin:
-    tsup: dist/cli-default.js
-    tsup-node: dist/cli-node.js
-  checksum: de3e8b2d9a7a504afb9394f2409ef88fd21dd338a78ebb572dd5c1719d73db816baa7ae4b7867016f08ba6a67560daec13a85768efff1d70e380972e39e27ce6
-  languageName: node
-  linkType: hard
-
 "tsutils@npm:^3.21.0":
   version: 3.21.0
   resolution: "tsutils@npm:3.21.0"
@@ -51541,15 +51505,6 @@ __metadata:
     replace-ext: ^2.0.0
     teex: ^1.0.1
   checksum: 566ab41a84c1a167023a07cb94110d40a07835a5239297e3266a11b0e9c522969a1e623ec2a4f9b05ac7fef596cf47685b410359e5b2ca00bd77400657808816
-  languageName: node
-  linkType: hard
-
-"vite-express@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "vite-express@npm:0.16.0"
-  dependencies:
-    picocolors: ^1.0.0
-  checksum: cf9fd5610f2190ccc5d5a21767c81ebe63a736361e7f34b486ef2ff8514e75dc7913c871760e70a7c3044991690e0b06b2c25268f9c6537be07ec22ec713d2a4
   languageName: node
   linkType: hard
 

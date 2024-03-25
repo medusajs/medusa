@@ -240,11 +240,11 @@ export const v1Routes: RouteObject[] = [
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/categories/list"),
+                lazy: () => import("../../routes/categories/category-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/categories/details"),
+                lazy: () => import("../../routes/categories/category-detail"),
               },
             ],
           },
