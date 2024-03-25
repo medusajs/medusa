@@ -1,5 +1,6 @@
 # All files not owned by other teams must be reviewed by the core team
 *                                               @medusajs/core 
+/.changeset/                                    @medusajs/engineering
 /packages/                                      @medusajs/engineering
 /integration-tests/                             @medusajs/engineering
 /docs-util/                                     @medusajs/docs
