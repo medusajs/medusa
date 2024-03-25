@@ -8488,6 +8488,8 @@ __metadata:
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
     "@medusajs/workflows-sdk": ^0.1.4
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -32062,6 +32064,8 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -38016,6 +38020,8 @@ __metadata:
     "@medusajs/medusa": ^1.12.2
     "@medusajs/types": ^1.8.10
     "@paypal/checkout-server-sdk": ^1.0.3
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     "@types/stripe": ^8.0.417
     axios: ^1.3.4
     body-parser: ^1.19.0
@@ -38037,6 +38043,8 @@ __metadata:
     "@medusajs/admin": ^7.1.10
     "@medusajs/medusa": ^1.20.3
     "@medusajs/utils": ^1.11.7
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
     "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1

@@ -9,14 +9,15 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Currency } from "./currency"
 import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
@@ -26,7 +27,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency?: Currency
+  currency?: Relation<Currency>
 
   @Column({ type: "int" })
   amount: number
@@ -45,7 +46,7 @@ export class MoneyAmount extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "price_list_id" })
-  price_list: PriceList | null
+  price_list: Relation<PriceList> | null
 
   @ManyToMany(() => ProductVariant, {
     onDelete: "CASCADE",
@@ -61,9 +62,9 @@ export class MoneyAmount extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  variants: ProductVariant[]
+  variants: Relation<ProductVariant>[]
 
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   variant_id: string
 
@@ -73,7 +74,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Relation<Region>
 
   /**
    * @apiIgnore

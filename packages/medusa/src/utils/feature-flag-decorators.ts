@@ -1,5 +1,7 @@
 import { Column, ColumnOptions, Entity, EntityOptions } from "typeorm"
 import { featureFlagRouter } from "../loaders/feature-flags"
+import { Equals, ValidateIf } from "class-validator"
+import { isDefined } from "@medusajs/utils"
 
 /**
  * If that file is required in a non node environment then the setImmediate timer does not exists.
@@ -15,7 +17,7 @@ try {
   console.warn(
     "[feature-flag-decorator.ts] setImmediate will use a mock, this happen when this file is required in a browser environment and should not impact you"
   )
-  setImmediate_ = (callback: () => void | Promise<void>) => callback()
+  setImmediate_ = async (callback: () => void | Promise<void>) => callback()
 }
 
 export function FeatureFlagColumn(
@@ -40,6 +42,10 @@ export function FeatureFlagDecorators(
   return function (target, propertyName) {
     setImmediate_((): any => {
       if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
+        ValidateIf((o) => isDefined(o[propertyName]))(target, propertyName)
+        Equals(undefined, {
+          message: `${propertyName as string} should not exist`,
+        })(target, propertyName)
         return
       }
 

@@ -5,6 +5,8 @@ import {
   UpdateStockLocationInput,
   UpdateStockLocationNextInput,
 } from "./common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+
 import { Context } from "../shared-context"
 import { FindConfig } from "../common/common"
 import { IModuleService } from "../modules-sdk"
@@ -245,4 +247,30 @@ export interface IStockLocationServiceNext extends IModuleService {
    * await stockLocationModuleService.delete("sloc_123")
    */
   delete(id: string, context?: Context): Promise<void>
+
+  /**
+   * Soft delete stock locations
+   * @param stockLocationIds
+   * @param config
+   * @param sharedContext
+   */
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore a stock location or multiple stock locations that were previously deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} stockLocationIds - The ID(s) of the stock location(s) to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Restore config
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the stock location(s) are successfully restored.
+   */
+  restore<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
