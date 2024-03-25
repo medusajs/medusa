@@ -7,24 +7,23 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
+  Relation,
   Unique,
 } from "typeorm"
 
-import { CustomerGroup } from "./customer-group"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
+import { CustomerGroup } from "./customer-group"
 import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { Discount } from "./discount"
 
 /**
  * @enum
- * 
+ *
  * The discount condition's type.
  */
 export enum DiscountConditionType {
@@ -52,7 +51,7 @@ export enum DiscountConditionType {
 
 /**
  * @enum
- * 
+ *
  * The possible operators used for a discount condition.
  */
 export enum DiscountConditionOperator {
@@ -87,7 +86,7 @@ export class DiscountCondition extends SoftDeletableEntity {
 
   @ManyToOne(() => DiscountRule, (dr) => dr.conditions)
   @JoinColumn({ name: "discount_rule_id" })
-  discount_rule: DiscountRule
+  discount_rule: Relation<DiscountRule>
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -191,7 +190,7 @@ export class DiscountCondition extends SoftDeletableEntity {
  *     type: string
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
- *     description: "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`, 
+ *     description: "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`,
  *      that means the `products` relation will hold the products associated with this condition and other relations will be empty."
  *     type: string
  *     enum:
