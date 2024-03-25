@@ -1,9 +1,9 @@
-import { adminStoreKeys, useAdminCustomQuery } from "medusa-react"
+import { useAdminCustomQuery } from "medusa-react"
 
 export const useV2Store = ({ initialData }: { initialData?: any }) => {
   const { data, isLoading, isError, error } = useAdminCustomQuery(
     "/admin/stores",
-    adminStoreKeys.details(),
+    [],
     {},
     { initialData }
   )
