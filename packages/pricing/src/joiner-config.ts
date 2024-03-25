@@ -1,13 +1,13 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { PriceList, PriceSet, PriceSetMoneyAmount } from "@models"
+import { Price, PriceList, PriceSet } from "@models"
 import schema from "./schema"
 
 export const LinkableKeys = {
   price_set_id: PriceSet.name,
   price_list_id: PriceList.name,
-  price_set_money_amount_id: PriceSetMoneyAmount.name,
+  price_id: Price.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}

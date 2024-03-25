@@ -4,7 +4,7 @@ import {
   CreatePriceListPriceDTO,
   CreatePriceListPriceWorkflowDTO,
   IPricingModuleService,
-  PriceSetMoneyAmountDTO,
+  PriceDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPricesDTO,
@@ -56,33 +56,30 @@ export const upsertPriceListPricesStep = createStep(
       }
     }
 
-    const updatedPriceSetMoneyAmounts =
-      await pricingModule.listPriceSetMoneyAmounts(
-        {
-          id: priceListPricesToUpdate
-            .map((priceListData) =>
-              priceListData.prices.map((price) => price.id)
-            )
-            .filter(Boolean)
-            .flat(1),
-        },
-        { relations: ["price_list"] }
-      )
+    const updatedPrices = await pricingModule.listPrices(
+      {
+        id: priceListPricesToUpdate
+          .map((priceListData) => priceListData.prices.map((price) => price.id))
+          .filter(Boolean)
+          .flat(1),
+      },
+      { relations: ["price_list"] }
+    )
 
-    const priceListPsmaMap = new Map<string, PriceSetMoneyAmountDTO[]>()
+    const priceListPricesMap = new Map<string, PriceDTO[]>()
     const dataBeforePriceUpdate: UpdatePriceListPricesDTO[] = []
 
-    for (const priceSetMoneyAmount of updatedPriceSetMoneyAmounts) {
-      const priceListId = priceSetMoneyAmount.price_list!.id
-      const psmas = priceListPsmaMap.get(priceListId) || []
+    for (const updatedPrice of updatedPrices) {
+      const priceListId = updatedPrice.price_list!.id
+      const prices = priceListPricesMap.get(priceListId) || []
 
-      priceListPsmaMap.set(priceListId, psmas)
+      priceListPricesMap.set(priceListId, prices)
     }
 
-    for (const [priceListId, psmas] of Object.entries(priceListPsmaMap)) {
+    for (const [priceListId, prices] of Object.entries(priceListPricesMap)) {
       dataBeforePriceUpdate.push({
         price_list_id: priceListId,
-        prices: buildPriceSetPricesForModule(psmas),
+        prices: buildPriceSetPricesForModule(prices),
       })
     }
 

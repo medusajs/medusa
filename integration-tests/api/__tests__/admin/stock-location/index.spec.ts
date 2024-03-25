@@ -1,10 +1,11 @@
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { IStockLocationServiceNext } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -93,6 +94,65 @@ medusaIntegrationTestRunner({
         expect(error.response.data.message).toEqual(
           `Stock location with id: does-not-exist was not found`
         )
+      })
+    })
+
+    describe("Delete stock location", () => {
+      let stockLocationId
+      beforeEach(async () => {
+        const stockLocationCreateResponse = await api.post(
+          `/admin/stock-locations`,
+          { name: "test location" },
+          adminHeaders
+        )
+
+        stockLocationId = stockLocationCreateResponse.data.stock_location.id
+      })
+
+      it("should successfully delete stock location", async () => {
+        const stockLocationDeleteResponse = await api.delete(
+          `/admin/stock-locations/${stockLocationId}`,
+          adminHeaders
+        )
+
+        expect(stockLocationDeleteResponse.status).toEqual(200)
+        expect(stockLocationDeleteResponse.data).toEqual({
+          id: stockLocationId,
+          object: "stock_location",
+          deleted: true,
+        })
+      })
+
+      it("should successfully delete stock location associations", async () => {
+        const remoteLink = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        await remoteLink.create([
+          {
+            [Modules.SALES_CHANNEL]: {
+              sales_channel_id: "default",
+            },
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: stockLocationId,
+            },
+          },
+        ])
+
+        await api.delete(
+          `/admin/stock-locations/${stockLocationId}`,
+          adminHeaders
+        )
+
+        const linkService = remoteLink.getLinkModule(
+          Modules.SALES_CHANNEL,
+          "sales_channel_id",
+          Modules.STOCK_LOCATION,
+          "stock_location_id"
+        )
+
+        const stockLocationLinks = await linkService.list()
+        expect(stockLocationLinks).toHaveLength(0)
       })
     })
   },
