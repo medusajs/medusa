@@ -9,6 +9,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryColumn,
+  Relation,
 } from "typeorm"
 
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -42,7 +43,7 @@ export class ShippingMethod {
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Index()
   @Column({ nullable: true })
@@ -50,7 +51,7 @@ export class ShippingMethod {
 
   @ManyToOne(() => ClaimOrder)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @Index()
   @Column({ nullable: true })
@@ -58,7 +59,7 @@ export class ShippingMethod {
 
   @ManyToOne(() => Cart, (cart) => cart.shipping_methods)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -66,7 +67,7 @@ export class ShippingMethod {
 
   @ManyToOne(() => Swap)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap: Relation<Swap>
 
   @Index()
   @Column({ nullable: true })
@@ -74,16 +75,16 @@ export class ShippingMethod {
 
   @OneToOne(() => Return, (ret) => ret.shipping_method)
   @JoinColumn({ name: "return_id" })
-  return_order: Return
+  return_order: Relation<Return>
 
   @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option: ShippingOption
+  shipping_option: Relation<ShippingOption>
 
   @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method, {
     cascade: ["insert"],
   })
-  tax_lines: ShippingMethodTaxLine[]
+  tax_lines: Relation<ShippingMethodTaxLine>[]
 
   @Column({ type: "int" })
   price: number

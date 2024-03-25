@@ -32,7 +32,7 @@
     "watch": "tsc --build --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
-    "test": "jest --passWithNoTests"
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.8",
