@@ -40,9 +40,9 @@ export interface PriceRuleDTO {
    */
   priority: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id: string
+  price_id: string
   /**
    * The ID of the associated price list.
    */
@@ -85,16 +85,16 @@ export interface CreatePriceRuleDTO {
    */
   priority?: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id?: string
+  price_id?: string
 }
 
 /**
  *
  * @interface
  *
- * The data to update in a price rule. The `id` is used to identify which money amount to update.
+ * The data to update in a price rule. The `id` is used to identify which price rule to update.
  */
 export interface UpdatePriceRuleDTO {
   id: string
@@ -109,9 +109,9 @@ export interface UpdatePriceRuleDTO {
    */
   priority?: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id?: string
+  price_id?: string
   /**
    * The ID of the associated price list.
    */
