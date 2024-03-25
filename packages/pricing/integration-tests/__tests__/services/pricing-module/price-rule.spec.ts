@@ -1,15 +1,12 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { PriceSetMoneyAmount } from "../../../../src"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -24,11 +21,9 @@ moduleIntegrationTestRunner({
       beforeEach(async () => {
         testManager = await MikroOrmWrapper.forkManager()
 
-        await createMoneyAmounts(testManager)
         await createPriceSets(testManager)
         await createRuleTypes(testManager)
         await createPriceSetMoneyAmounts(testManager)
-        await createPriceSetMoneyAmountRules(testManager)
         await createPriceRules(testManager)
       })
 
@@ -133,6 +128,7 @@ moduleIntegrationTestRunner({
                 price_set: {
                   id: "price-set-1",
                 },
+                price_set_id: "price-set-1",
               },
             ])
           })
@@ -276,18 +272,12 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a PriceRule successfully", async () => {
-            const [ma] = await createMoneyAmounts(testManager, [
-              {
-                amount: 100,
-                currency_code: "EUR",
-              },
-            ])
-
             const psma: PriceSetMoneyAmount = testManager.create(
               PriceSetMoneyAmount,
               {
-                price_set: "price-set-1",
-                money_amount: ma.id,
+                currency_code: "EUR",
+                amount: 100,
+                price_set_id: "price-set-1",
                 title: "test",
                 rules_count: 0,
               }

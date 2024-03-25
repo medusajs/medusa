@@ -11,7 +11,6 @@ import {
   IsOptional,
   IsString,
   NotEquals,
-  Validate,
   ValidateIf,
   ValidateNested,
 } from "class-validator"
@@ -19,7 +18,6 @@ import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 import { IsType } from "../../../utils"
 import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
-import { XorConstraint } from "../../../types/validators/xor"
 
 export class AdminGetProductsProductParams extends FindParams {}
 export class AdminGetProductsProductVariantsVariantParams extends FindParams {}
@@ -84,6 +82,13 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   price_list_id?: string[]
 
   /**
+   * Filter products by associated sales channel IDs.
+   */
+  @IsOptional()
+  @IsArray()
+  sales_channel_id?: string[]
+
+  /**
    * Filter products by their associated product collection's ID.
    */
   @IsArray()
@@ -108,12 +113,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsObject()
   variants?: Record<any, any>
-
-  // /**
-  //  * Filter products by their associated sales channels' ID.
-  //  */
-  // @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
-  // sales_channel_id?: string[]
 
   // /**
   //  * Filter products by their associated discount condition's ID.

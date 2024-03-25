@@ -24,6 +24,11 @@ export type AuthenticationResponse = {
    * Redirect location. Location takes precedence over success.
    */
   location?: string
+
+  /**
+   * Redirect url for successful authentication.
+   */
+  successRedirectUrl?: string
 }
 
 /**

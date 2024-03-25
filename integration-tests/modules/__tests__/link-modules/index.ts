@@ -238,6 +238,35 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("Should dismiss the link of a given pair of keys and recreate it", async function () {
+        await links.linkServiceName.create("123", "abc", {
+          extra_field: 333,
+          another_field: "value**",
+        })
+
+        await links.linkServiceName.dismiss("123", "abc")
+
+        const values = await links.linkServiceName.list()
+
+        expect(values).toHaveLength(0)
+
+        await links.linkServiceName.create("123", "abc", {
+          another_field: "changed",
+        })
+
+        const values2 = await links.linkServiceName.list()
+
+        expect(values2).toEqual([
+          expect.objectContaining({
+            product_id: "123",
+            inventory_item_id: "abc",
+            extra_field: 333,
+            another_field: "changed",
+            deleted_at: null,
+          }),
+        ])
+      })
     })
   },
 })
