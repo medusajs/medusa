@@ -69,6 +69,7 @@ export type ModuleBootstrapOptions = {
    * Forces the modules bootstrapper to only run the modules loaders and return prematurely
    */
   loaderOnly?: boolean
+  workerMode?: "shared" | "worker" | "server"
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -225,6 +226,7 @@ export class MedusaModule {
     injectedDependencies,
     migrationOnly,
     loaderOnly,
+    workerMode,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -267,6 +269,7 @@ export class MedusaModule {
         options: declaration?.options ?? declaration,
         alias: declaration?.alias,
         main: declaration?.main,
+        worker_mode: workerMode,
       }
     }
 
@@ -302,7 +305,7 @@ export class MedusaModule {
         moduleResolutions,
         logger: logger_,
         migrationOnly,
-        loaderOnly
+        loaderOnly,
       })
     } catch (err) {
       errorLoading(err)

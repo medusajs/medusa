@@ -46,7 +46,7 @@ export function buildPriceSetPricesForCore(
       : {}
 
     return {
-      ...priceSetMoneyAmount.money_amount,
+      ...priceSetMoneyAmount,
       variant_id: productVariant?.id ?? null,
       rules,
     }
@@ -62,7 +62,7 @@ export function buildPriceSetPricesForModule(
       : {}
 
     return {
-      ...priceSetMoneyAmount.money_amount!,
+      ...priceSetMoneyAmount,
       price_set_id: priceSetMoneyAmount.price_set!?.id!,
       rules,
     }

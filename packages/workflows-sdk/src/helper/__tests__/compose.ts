@@ -2086,4 +2086,40 @@ describe("Workflow composer", function () {
       },
     ])
   })
+
+  it("should cancel the workflow after completed", async () => {
+    const mockStep1Fn = jest.fn().mockImplementation(function (input) {
+      return new StepResponse({ obj: "return from 1" }, { data: "data" })
+    })
+
+    const mockCompensateSte1 = jest.fn().mockImplementation(function (input) {
+      return input
+    })
+
+    const step1 = createStep("step1", mockStep1Fn, mockCompensateSte1)
+
+    const workflow = createWorkflow("workflow1", function (input) {
+      return step1(input)
+    })
+
+    const workflowInput = { test: "payload1" }
+    const { transaction } = await workflow().run({
+      input: workflowInput,
+      throwOnError: false,
+    })
+
+    expect(mockStep1Fn).toHaveBeenCalledTimes(1)
+    expect(mockCompensateSte1).toHaveBeenCalledTimes(0)
+
+    await workflow().cancel({
+      transaction,
+      throwOnError: false,
+    })
+
+    expect(mockStep1Fn).toHaveBeenCalledTimes(1)
+    expect(mockCompensateSte1).toHaveBeenCalledTimes(1)
+
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
+    expect(mockCompensateSte1.mock.calls[0][0]).toEqual({ data: "data" })
+  })
 })

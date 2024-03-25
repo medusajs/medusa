@@ -1,12 +1,12 @@
 import { BaseFilterable } from "../../dal"
-import { CreatePriceSetPriceRules } from "./price-list"
+import { Context } from "../../shared-context"
 import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,
   MoneyAmountDTO,
 } from "./money-amount"
+import { CreatePriceSetPriceRules } from "./price-list"
 import { RuleTypeDTO } from "./rule-type"
-import { Context } from "../../shared-context"
 
 export interface PricingRepositoryService {
   calculatePrices(
@@ -145,9 +145,9 @@ export interface CalculatedPriceSet {
    */
   calculated_price?: {
     /**
-     * The ID of the money amount selected as the calculated price.
+     * The ID of the price selected as the calculated price.
      */
-    money_amount_id: string | null
+    id: string | null
     /**
      * The ID of the associated price list, if any.
      */
@@ -157,11 +157,11 @@ export interface CalculatedPriceSet {
      */
     price_list_type: string | null
     /**
-     * The `min_quantity` field defined on a money amount.
+     * The `min_quantity` field defined on a price.
      */
     min_quantity: number | null
     /**
-     * The `max_quantity` field defined on a money amount.
+     * The `max_quantity` field defined on a price.
      */
     max_quantity: number | null
   }
@@ -171,9 +171,9 @@ export interface CalculatedPriceSet {
    */
   original_price?: {
     /**
-     * The ID of the money amount selected as the original price.
+     * The ID of the price selected as the original price.
      */
-    money_amount_id: string | null
+    id: string | null
     /**
      * The ID of the associated price list, if any.
      */
@@ -183,11 +183,11 @@ export interface CalculatedPriceSet {
      */
     price_list_type: string | null
     /**
-     * The `min_quantity` field defined on a money amount.
+     * The `min_quantity` field defined on a price.
      */
     min_quantity: number | null
     /**
-     * The `max_quantity` field defined on a money amount.
+     * The `max_quantity` field defined on a price.
      */
     max_quantity: number | null
   }
