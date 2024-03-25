@@ -1,11 +1,6 @@
 import { createUserAccountWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  CreateUserDTO,
-  IAuthModuleService,
-  IUserModuleService,
-  UserDTO,
-} from "@medusajs/types"
+import { CreateUserDTO, IAuthModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -50,33 +45,16 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<CreateUserDTO>,
   res: MedusaResponse
 ) => {
-  const userModuleService = req.scope.resolve<IUserModuleService>(
-    ModuleRegistrationName.USER
-  )
   const authModuleService = req.scope.resolve<IAuthModuleService>(
     ModuleRegistrationName.AUTH
   )
 
-  const { jwt_secret } = req.scope.resolve("configModule").projectConfig
-
-  let authUser = await authModuleService.retrieve(req.auth.auth_user_id)
-  let token = jwt.sign(authUser, jwt_secret)
-
-  let user: UserDTO | null = null
-
+  // If `actor_id` is present, the request carries authentication for an existing user
   if (req.auth.actor_id) {
-    user = await userModuleService.retrieve(req.auth.actor_id)
-
-    if (user.email !== req.validatedBody.email) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Request carries authentication for an existing user with a different email"
-      )
-    }
-
-    res.status(200).json({ user, token })
-
-    return
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Request carries authentication for an existing user"
+    )
   }
 
   const input = {
@@ -88,11 +66,9 @@ export const POST = async (
 
   const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
-  user = result
+  const { jwt_secret } = req.scope.resolve("configModule").projectConfig
+  const authUser = await authModuleService.retrieve(req.auth.auth_user_id)
+  const token = jwt.sign(authUser, jwt_secret)
 
-  // Refresh token with updated auth user app_metadata
-  authUser = await authModuleService.retrieve(req.auth.auth_user_id)
-  token = jwt.sign(authUser, jwt_secret)
-
-  res.status(200).json({ user, token })
+  res.status(200).json({ user: result, token })
 }

@@ -96,31 +96,50 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
+        const v1Response = [
+          expect.objectContaining({
+            id: "admin_user",
+            email: "admin@medusa.js",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            api_token: "test_token",
+            role: "admin",
+          }),
+          expect.objectContaining({
+            id: "member-user",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            role: "member",
+          }),
+        ]
+
+        const v2Response = [
+          expect.objectContaining({
+            id: "admin_user",
+            email: "admin@medusa.js",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+          expect.objectContaining({
+            id: "member-user",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ]
+
         expect(response.data.users).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: "admin_user",
-              email: "admin@medusa.js",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              ...breaking(
-                () => ({ api_token: "test_token", role: "admin" }),
-                () => ({})
-              ),
-            }),
-            expect.objectContaining({
-              id: "member-user",
-              email: "member@test.com",
-              first_name: "member",
-              last_name: "user",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              ...breaking(
-                () => ({ role: "member" }),
-                () => ({})
-              ),
-            }),
-          ])
+          expect.arrayContaining(
+            breaking(
+              () => v1Response,
+              () => v2Response
+            )
+          )
         )
       })
 
@@ -140,10 +159,7 @@ medusaIntegrationTestRunner({
               last_name: "user",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              ...breaking(
-                () => ({ role: "member" }),
-                () => ({})
-              ),
+              role: "member",
             }),
           ])
         )
@@ -211,45 +227,7 @@ medusaIntegrationTestRunner({
       })
 
       // V2 only test
-      it.skip("should return user, if session/bearer auth is present", async () => {
-        const emailPassResponse = await api.post("/auth/admin/emailpass", {
-          email: "test@test123.com",
-          password: "test123",
-        })
-
-        const token = emailPassResponse.data.token
-
-        const payload = {
-          email: "test@test123.com",
-        }
-
-        const headers = (token) => ({
-          headers: { Authorization: `Bearer ${token}` },
-        })
-
-        // Create user
-        const res = await api
-          .post("/admin/users", payload, headers(token))
-          .catch((err) => console.log(err))
-
-        // Second time, the user should be returned early
-        const response = await api
-          .post("/admin/users", payload, headers(res.data.token))
-          .catch((err) => console.log(err))
-
-        expect(response.status).toEqual(200)
-        expect(response.data.user).toEqual(
-          expect.objectContaining({
-            id: expect.stringMatching(/^user_*/),
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            email: "test@test123.com",
-          })
-        )
-      })
-
-      // V2 only test
-      it.skip("should throw, if session/bearer auth is present for different user", async () => {
+      it.skip("should throw, if session/bearer auth is present for existing user", async () => {
         const emailPassResponse = await api.post("/auth/admin/emailpass", {
           email: "test@test123.com",
           password: "test123",
@@ -282,7 +260,7 @@ medusaIntegrationTestRunner({
 
         expect(errorResponse.status).toEqual(400)
         expect(errorResponse.data.message).toEqual(
-          "Request carries authentication for an existing user with a different email"
+          "Request carries authentication for an existing user"
         )
       })
     })
