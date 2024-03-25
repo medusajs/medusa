@@ -29,7 +29,7 @@ import { getCurrencySymbol } from "../../../../../../lib/currencies"
 import { SplitView } from "../../../../../../components/layout/split-view"
 import { VariantTable } from "../../../../common/variant-table"
 import { CreateReturnSchema } from "../schema"
-import { OrderCreateClaimShippingDetails } from "./order-create-claim-shipping-details.tsx"
+import { OrderCreateClaimShippingDetails } from "./order-create-claim-shipping-details"
 
 type ReturnsFormProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
@@ -226,7 +226,7 @@ export function OrderCreateClaimDetails({
                           tooltip={
                             noShippingOptions
                               ? t("orders.returns.noShippingOptions")
-                              : undefined
+                              : t("orders.claims.shippingIsComplementary")
                           }
                         >
                           {t("fields.shipping")}
@@ -299,14 +299,65 @@ export function OrderCreateClaimDetails({
                 </Button>
               </div>
 
-              <div className="mt-2 mt-4 text-right">
-                <Button
-                  onClick={() => setModalContent("address")}
-                  type="button"
-                >
-                  {t("orders.claims.changeShippingAddress")}
-                </Button>
-              </div>
+              {hasAddedItems && (
+                <div className="mt-2 mt-4 text-right">
+                  <Button
+                    onClick={() => setModalContent("address")}
+                    type="button"
+                  >
+                    {t("orders.claims.changeShippingAddress")}
+                  </Button>
+                </div>
+              )}
+
+              {hasAddedItems && (
+                <div className="mt-2 mt-4 text-right sm:w-[50%]">
+                  <Form.Field
+                    control={form.control}
+                    name="replacement_shipping"
+                    render={({ field: { onChange, ref, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label
+                            tooltip={
+                              noShippingOptions
+                                ? t("orders.returns.noShippingOptions")
+                                : undefined
+                            }
+                          >
+                            {t("orders.claims.replacementShipping")}
+                          </Form.Label>
+                          <Form.Hint>
+                            {t("orders.claims.replacementShippingDescription")}
+                          </Form.Hint>
+                          <Form.Control>
+                            <Select
+                              onValueChange={onChange}
+                              {...field}
+                              disabled={noShippingOptions}
+                            >
+                              <Select.Trigger
+                                className="bg-ui-bg-base"
+                                ref={ref}
+                              >
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                {shipping_options.map((o) => (
+                                  <Select.Item key={o.id} value={o.id}>
+                                    {o.name}
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="text-ui-fg-base my-10 flex w-full justify-between border-b border-t border-dashed py-8">

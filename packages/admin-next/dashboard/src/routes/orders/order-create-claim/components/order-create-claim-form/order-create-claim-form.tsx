@@ -70,6 +70,7 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
 
       location: "",
       return_shipping: "",
+      replacement_shipping: "",
       send_notification: !order.no_notification,
 
       enable_custom_refund: false,
