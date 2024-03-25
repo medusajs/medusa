@@ -11,7 +11,7 @@ const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 jest.setTimeout(30000)
 
 let userSeeder = {}
-let analyticsFactory = {}
+let simpleAnalyticsConfigFactory = {}
 
 medusaIntegrationTestRunner({
   // env: { MEDUSA_FF_MEDUSA_V2: true },
@@ -21,7 +21,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       userSeeder = require("../../../helpers/user-seeder")
-      analyticsFactory = require("../../../factories/simple-analytics-config-factory")
+      simpleAnalyticsConfigFactory = require("../../../factories/simple-analytics-config-factory")
     })
 
     beforeEach(async () => {
@@ -151,6 +151,22 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/users", () => {
+      let token
+
+      beforeEach(async () => {
+        token = await breaking(
+          () => null,
+          async () => {
+            const emailPassResponse = await api.post("/auth/admin/emailpass", {
+              email: "test@test123.com",
+              password: "test123",
+            })
+
+            return emailPassResponse.data.token
+          }
+        )
+      })
+
       it("should create a user", async () => {
         const payload = {
           email: "test@test123.com",
@@ -160,8 +176,18 @@ medusaIntegrationTestRunner({
           ),
         }
 
+        // In V2, the flow to create an authenticated user depends on the token or session of a previously created auth user
+        const headers = breaking(
+          () => adminHeaders,
+          () => {
+            return {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          }
+        )
+
         const response = await api
-          .post("/admin/users", payload, adminHeaders)
+          .post("/admin/users", payload, headers)
           .catch((err) => console.log(err))
 
         expect(response.status).toEqual(200)
@@ -181,6 +207,82 @@ medusaIntegrationTestRunner({
               () => ({})
             ),
           })
+        )
+      })
+
+      // V2 only test
+      it.skip("should return user, if session/bearer auth is present", async () => {
+        const emailPassResponse = await api.post("/auth/admin/emailpass", {
+          email: "test@test123.com",
+          password: "test123",
+        })
+
+        const token = emailPassResponse.data.token
+
+        const payload = {
+          email: "test@test123.com",
+        }
+
+        const headers = (token) => ({
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        // Create user
+        const res = await api
+          .post("/admin/users", payload, headers(token))
+          .catch((err) => console.log(err))
+
+        // Second time, the user should be returned early
+        const response = await api
+          .post("/admin/users", payload, headers(res.data.token))
+          .catch((err) => console.log(err))
+
+        expect(response.status).toEqual(200)
+        expect(response.data.user).toEqual(
+          expect.objectContaining({
+            id: expect.stringMatching(/^user_*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            email: "test@test123.com",
+          })
+        )
+      })
+
+      // V2 only test
+      it.skip("should throw, if session/bearer auth is present for different user", async () => {
+        const emailPassResponse = await api.post("/auth/admin/emailpass", {
+          email: "test@test123.com",
+          password: "test123",
+        })
+
+        const token = emailPassResponse.data.token
+
+        const headers = (token) => ({
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        // Create user
+        const res = await api
+          .post(
+            "/admin/users",
+            {
+              email: "test@test123.com",
+            },
+            headers(token)
+          )
+          .catch((err) => console.log(err))
+
+        const payload = {
+          email: "different@email.com",
+        }
+
+        const { response: errorResponse } = await api
+          .post("/admin/users", payload, headers(res.data.token))
+          .catch((err) => err)
+
+        expect(errorResponse.status).toEqual(400)
+        expect(errorResponse.data.message).toEqual(
+          "Request carries authentication for an existing user with a different email"
         )
       })
     })

@@ -13,14 +13,10 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    method: ["ALL"],
-    matcher: "/admin/users*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
-  },
-  {
     method: ["GET"],
     matcher: "/admin/users",
     middlewares: [
+      authenticate("admin", ["bearer", "session"]),
       transformQuery(AdminGetUsersParams, QueryConfig.listTransformQueryConfig),
     ],
   },
@@ -28,14 +24,15 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/users",
     middlewares: [
-      transformBody(AdminCreateUserRequest),
       authenticate("admin", ["bearer", "session"], { allowUnregistered: true }),
+      transformBody(AdminCreateUserRequest),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/users/:id",
     middlewares: [
+      authenticate("admin", ["bearer", "session"]),
       transformQuery(
         AdminGetUsersUserParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -46,6 +43,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users/me",
     middlewares: [
+      authenticate("admin", ["bearer", "session"]),
       transformQuery(
         AdminGetUsersUserParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -55,6 +53,9 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/:id",
-    middlewares: [transformBody(AdminUpdateUserRequest)],
+    middlewares: [
+      authenticate("admin", ["bearer", "session"]),
+      transformBody(AdminUpdateUserRequest),
+    ],
   },
 ]

@@ -8,6 +8,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
@@ -56,15 +57,22 @@ export const POST = async (
     ModuleRegistrationName.AUTH
   )
 
-  const authUser = await authModuleService.retrieve(req.auth.auth_user_id)
-
   const { jwt_secret } = req.scope.resolve("configModule").projectConfig
-  const token = jwt.sign(authUser, jwt_secret)
+
+  let authUser = await authModuleService.retrieve(req.auth.auth_user_id)
+  let token = jwt.sign(authUser, jwt_secret)
 
   let user: UserDTO | null = null
 
   if (req.auth.actor_id) {
     user = await userModuleService.retrieve(req.auth.actor_id)
+
+    if (user.email !== req.validatedBody.email) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Request carries authentication for an existing user with a different email"
+      )
+    }
 
     res.status(200).json({ user, token })
 
@@ -81,6 +89,10 @@ export const POST = async (
   const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
   user = result
+
+  // Refresh token with updated auth user app_metadata
+  authUser = await authModuleService.retrieve(req.auth.auth_user_id)
+  token = jwt.sign(authUser, jwt_secret)
 
   res.status(200).json({ user, token })
 }
