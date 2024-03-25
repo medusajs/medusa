@@ -67,8 +67,10 @@ module.exports = {
             resolve: "@medusajs/cache-inmemory",
             options: { ttl: 0 }, // Cache disabled
           },
-          [Modules.STOCK_LOCATION]: true,
-          [Modules.INVENTORY]: true,
+          [Modules.STOCK_LOCATION]: {
+            resolve: "@medusajs/stock-location-next",
+            options: {},
+          },
           [Modules.PRODUCT]: true,
           [Modules.PRICING]: true,
           [Modules.PROMOTION]: true,
