@@ -42,6 +42,7 @@ export type CreateOptions = {
   migrations?: boolean
   directoryPath?: string
   withNextjsStarter?: boolean
+  v2?: boolean
 }
 
 export default async ({
@@ -54,6 +55,7 @@ export default async ({
   migrations,
   directoryPath,
   withNextjsStarter = false,
+  v2 = false,
 }: CreateOptions) => {
   track("CREATE_CLI_CMA")
 
@@ -134,6 +136,7 @@ export default async ({
       repoUrl,
       abortController,
       spinner,
+      v2,
     })
   } catch {
     return
@@ -184,6 +187,7 @@ export default async ({
       onboardingType: installNextjs ? "nextjs" : "default",
       nextjsDirectory,
       client,
+      v2,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
