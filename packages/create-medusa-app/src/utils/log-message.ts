@@ -4,7 +4,7 @@ import { logger } from "./logger.js"
 
 type LogOptions = {
   message: string
-  type?: "error" | "success" | "info" | "warning"
+  type?: "error" | "success" | "info" | "warning" | "verbose"
 }
 
 export default ({ message, type = "info" }: LogOptions) => {
@@ -17,6 +17,9 @@ export default ({ message, type = "info" }: LogOptions) => {
       break
     case "warning":
       logger.warning(chalk.yellow(message))
+      break
+    case "verbose":
+      logger.info(`${chalk.bgYellowBright("VERBOSE LOG:")} ${message}`)
       break
     case "error":
       program.error(chalk.bold.red(message))

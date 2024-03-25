@@ -17,4 +17,5 @@ export default ({ directory, abortController }: StartOptions) => {
   })
 
   childProcess.stdout?.pipe(process.stdout)
+  childProcess.stderr?.pipe(process.stderr)
 }
