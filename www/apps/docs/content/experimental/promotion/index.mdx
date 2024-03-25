@@ -113,7 +113,7 @@ For example:
 
   export default async function subscriberHandler({
     container,
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs) {
     const promotionModuleService: IPromotionModuleService =
       container.resolve(ModuleRegistrationName.PROMOTION)
 

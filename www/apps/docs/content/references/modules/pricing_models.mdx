@@ -13,7 +13,6 @@ This documentation provides a reference to the data models in the Pricing Module
 
 ```mermaid
 erDiagram
-	MoneyAmount ||--|| PriceSetMoneyAmount : price_set_money_amount
 	PriceList ||--|| PriceSetMoneyAmount : price_set_money_amounts
 	PriceList ||--|| PriceListRule : price_list_rules
 	PriceList }|--|{ RuleType : rule_types
@@ -31,7 +30,6 @@ erDiagram
 
 ## Classes
 
-- [MoneyAmount](../pricing_models/classes/pricing_models.MoneyAmount.mdx)
 - [PriceListRuleValue](../pricing_models/classes/pricing_models.PriceListRuleValue.mdx)
 - [PriceListRule](../pricing_models/classes/pricing_models.PriceListRule.mdx)
 - [PriceList](../pricing_models/classes/pricing_models.PriceList.mdx)

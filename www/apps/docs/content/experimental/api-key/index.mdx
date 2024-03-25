@@ -111,7 +111,7 @@ For example:
 
   export default async function subscriberHandler({
     container,
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs) {
     const apiKeyModuleService: IApiKeyModuleService =
       container.resolve(ModuleRegistrationName.API_KEY)
 

@@ -107,7 +107,7 @@ For example:
 
   export default async function subscriberHandler({
     container,
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs) {
     const regionModuleService: IRegionModuleService =
       container.resolve(ModuleRegistrationName.REGION)
 

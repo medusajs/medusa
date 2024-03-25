@@ -60,6 +60,7 @@ module.exports = {
   maxLevel: 3,
   allReflectionsHaveOwnDocument: [
     "api-key",
+    "auth",
     "customer",
     "inventory",
     "inventory-next",
@@ -150,6 +151,73 @@ module.exports = {
       },
       reflectionTitle: {
         fullReplacement: "API Key Module Data Models Reference",
+      },
+    },
+
+    // AUTH CONFIG
+    "^auth": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+      },
+    },
+    "^auth/IAuthModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Auth Module.",
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+        slug: "/references/auth/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Auth Module Reference",
+      },
+    },
+    "^auth/.*IAuthModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IAuthModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Auth Module.",
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+        slug: "/references/auth",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // AUTH MODELS CONFIG
+    "^auth_models": {
+      frontmatterData: {
+        displayed_sidebar: "authModelReference",
+        slug: "/references/auth/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Auth Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Auth Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/auth_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Auth Module",
+      frontmatterData: {
+        displayed_sidebar: "authModelReference",
+        slug: "/references/auth/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Auth Module Data Models Reference",
       },
     },
 

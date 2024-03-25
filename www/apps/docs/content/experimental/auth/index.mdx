@@ -1,0 +1,138 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Auth Module
+
+The Auth Module is the `@medusajs/auth` NPM package that provides authentication-related features in your Medusa and Node.js applications.
+
+---
+
+## Features
+
+### Authenticate Users
+
+With the Auth Module, authenticate users using their credentials.
+
+```ts
+const { success, authUser, error } =
+  await authModuleService.authenticate("emailpass", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+
+if (!success) {
+  throw new Error(error)
+}
+
+// user is authenticated
+```
+
+### Third-Party and Social Authentication
+
+The Auth Module supports a variety of authentication methods, such as authenticating with third-party services and social platforms.
+
+```ts
+// in authentication API route
+const { success, authUser, location } =
+  await authModuleService.authenticate("google", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+
+if (!authUser && location) {
+  res.redirect(location)
+  return
+}
+
+// in callback API route
+const { success, authUser } =
+  await authModuleService.validateCallback("google", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+```
+
+---
+
+## How to Use Auth Module's Service
+
+You can use the Auth Module's main service by resolving from the dependency container the resource `ModuleRegistrationName.AUTH` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<Tabs groupId="resource-type" isCodeTabs={true}>
+  <TabItem label="API Route" value="api-route" attributes={{
+    title: "src/api/store/custom/route.ts"
+  }}>
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const authModuleService: IAuthModuleService =
+      req.scope.resolve(ModuleRegistrationName.AUTH)
+
+    res.json({
+      authUsers: authModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Subscriber" value="subscribers" attributes={{
+    title: "src/subscribers/custom-handler.ts"
+  }}>
+
+  ```ts
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const authModuleService: IAuthModuleService =
+      container.resolve(ModuleRegistrationName.AUTH)
+
+    const authUsers = await authModuleService.list()
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Workflow Step" value="workflow-step" attributes={{
+    title: "src/workflows/hello-world/step1.ts"
+  }}>
+
+  ```ts
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep("step-1", async (_, context) => {
+    const authModuleService: IAuthModuleService =
+      context.container.resolve(
+        ModuleRegistrationName.AUTH
+      )
+    const authUsers = await authModuleService.list()
+  })
+  ```
+
+  </TabItem>
+</Tabs>

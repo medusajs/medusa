@@ -962,6 +962,197 @@
 				},
 				{
 					"id": 22,
+					"name": "database_driver_options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is\n"
+							},
+							{
+								"kind": "code",
+								"text": "`ssl`"
+							},
+							{
+								"kind": "text",
+								"text": " which enables support for TLS/SSL connections.\n\nThis is useful for production databases, which can be supported by setting the "
+							},
+							{
+								"kind": "code",
+								"text": "`rejectUnauthorized`"
+							},
+							{
+								"kind": "text",
+								"text": " attribute of "
+							},
+							{
+								"kind": "code",
+								"text": "`ssl`"
+							},
+							{
+								"kind": "text",
+								"text": " object to "
+							},
+							{
+								"kind": "code",
+								"text": "`false`"
+							},
+							{
+								"kind": "text",
+								"text": ".\nDuring development, it’s recommended not to pass this option."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_driver_options:\n      process.env.NODE_ENV !== \"development\"\n        ? { connection: { ssl: { rejectUnauthorized: false } } }\n        : {},\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "intersection",
+						"types": [
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 23,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 24,
+											"name": "connection",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reflection",
+												"declaration": {
+													"id": 25,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 26,
+															"name": "ssl",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {
+																"isOptional": true
+															},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "Configure support for TLS/SSL connection"
+																	}
+																]
+															},
+															"type": {
+																"type": "reflection",
+																"declaration": {
+																	"id": 27,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 28,
+																			"name": "rejectUnauthorized",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found."
+																					}
+																				]
+																			},
+																			"type": {
+																				"type": "literal",
+																				"value": false
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				28
+																			]
+																		}
+																	]
+																}
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																26
+															]
+														}
+													]
+												}
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												24
+											]
+										}
+									]
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 29,
 					"name": "redis_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1009,7 +1200,7 @@
 					}
 				},
 				{
-					"id": 23,
+					"id": 30,
 					"name": "redis_prefix",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1057,7 +1248,7 @@
 					}
 				},
 				{
-					"id": 24,
+					"id": 31,
 					"name": "redis_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1094,7 +1285,7 @@
 					}
 				},
 				{
-					"id": 25,
+					"id": 32,
 					"name": "session_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1131,7 +1322,7 @@
 					}
 				},
 				{
-					"id": 26,
+					"id": 33,
 					"name": "http_compression",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1173,7 +1364,7 @@
 					}
 				},
 				{
-					"id": 27,
+					"id": 34,
 					"name": "jobs_batch_size",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1211,6 +1402,83 @@
 						"type": "intrinsic",
 						"name": "number"
 					}
+				},
+				{
+					"id": 35,
+					"name": "worker_mode",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Configure the application's worker mode. The default value is "
+							},
+							{
+								"kind": "code",
+								"text": "`shared`"
+							},
+							{
+								"kind": "text",
+								"text": ".\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`shared`"
+							},
+							{
+								"kind": "text",
+								"text": " if you want to run the application in a single process.\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`worker`"
+							},
+							{
+								"kind": "text",
+								"text": " if you want to run the a worker process only.\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`server`"
+							},
+							{
+								"kind": "text",
+								"text": " if you want to run the application server only."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    worker_mode: \"shared\"\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "shared"
+							},
+							{
+								"type": "literal",
+								"value": "worker"
+							},
+							{
+								"type": "literal",
+								"value": "server"
+							}
+						]
+					}
 				}
 			],
 			"groups": [
@@ -1228,17 +1496,19 @@
 						15,
 						17,
 						22,
-						23,
-						24,
-						25,
-						26,
-						27
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35
 					]
 				}
 			]
 		},
 		{
-			"id": 28,
+			"id": 36,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1269,7 +1539,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 29,
+						"target": 37,
 						"tsLinkText": "projectConfig"
 					},
 					{
@@ -1280,7 +1550,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "plugins",
-						"target": 30,
+						"target": 38,
 						"tsLinkText": "plugins"
 					},
 					{
@@ -1291,7 +1561,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 34,
+						"target": 42,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1302,7 +1572,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 35,
+						"target": 43,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1337,7 +1607,7 @@
 			},
 			"children": [
 				{
-					"id": 29,
+					"id": 37,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1358,7 +1628,7 @@
 					}
 				},
 				{
-					"id": 30,
+					"id": 38,
 					"name": "plugins",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1426,14 +1696,14 @@
 								{
 									"type": "reflection",
 									"declaration": {
-										"id": 31,
+										"id": 39,
 										"name": "__type",
 										"variant": "declaration",
 										"kind": 65536,
 										"flags": {},
 										"children": [
 											{
-												"id": 32,
+												"id": 40,
 												"name": "resolve",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1444,7 +1714,7 @@
 												}
 											},
 											{
-												"id": 33,
+												"id": 41,
 												"name": "options",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1474,8 +1744,8 @@
 											{
 												"title": "Properties",
 												"children": [
-													32,
-													33
+													40,
+													41
 												]
 											}
 										]
@@ -1486,7 +1756,7 @@
 					}
 				},
 				{
-					"id": 34,
+					"id": 42,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1660,7 +1930,7 @@
 					}
 				},
 				{
-					"id": 35,
+					"id": 43,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1738,10 +2008,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						29,
-						30,
-						34,
-						35
+						37,
+						38,
+						42,
+						43
 					]
 				}
 			]
@@ -1753,7 +2023,7 @@
 			"children": [
 				1,
 				6,
-				28
+				36
 			]
 		}
 	],
@@ -1845,57 +2115,89 @@
 		},
 		"22": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_url"
+			"qualifiedName": "__type.database_driver_options"
 		},
 		"23": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_prefix"
+			"qualifiedName": "__type"
 		},
 		"24": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_options"
+			"qualifiedName": "__type.connection"
 		},
 		"25": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.session_options"
+			"qualifiedName": "__type"
 		},
 		"26": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.http_compression"
+			"qualifiedName": "__type.ssl"
 		},
 		"27": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.jobs_batch_size"
+			"qualifiedName": "__type"
 		},
 		"28": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "ConfigModule"
+			"qualifiedName": "__type.rejectUnauthorized"
 		},
 		"29": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.projectConfig"
+			"qualifiedName": "__type.redis_url"
 		},
 		"30": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.plugins"
+			"qualifiedName": "__type.redis_prefix"
 		},
 		"31": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.redis_options"
 		},
 		"32": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.resolve"
+			"qualifiedName": "__type.session_options"
 		},
 		"33": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.options"
+			"qualifiedName": "__type.http_compression"
 		},
 		"34": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.modules"
+			"qualifiedName": "__type.jobs_batch_size"
 		},
 		"35": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.worker_mode"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "ConfigModule"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.projectConfig"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.plugins"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.resolve"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.options"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.modules"
+		},
+		"43": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.featureFlags"
 		}

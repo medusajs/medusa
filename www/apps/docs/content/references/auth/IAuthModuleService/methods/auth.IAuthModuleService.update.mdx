@@ -1,0 +1,47 @@
+---
+displayed_sidebar: authReference
+slug: /references/auth/update
+sidebar_label: update
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# update - Auth Module Reference
+
+This documentation provides a reference to the update method. This belongs to the Auth Module.
+
+## update(data, sharedContext?): Promise&#60;[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)[]&#62;
+
+This method updates existing users.
+
+### Example
+
+```ts
+{example-code}
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateAuthUserDTO](../../interfaces/auth.UpdateAuthUserDTO.mdx)[]","description":"The attributes to update in the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"The provider metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"The user metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"The app metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../interfaces/auth.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/auth.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="update"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The updated users.","expandable":false,"children":[{"name":"AuthUserDTO[]","type":"[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO","type":"`object`","description":"The auth user details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="update"/>
+
+## update(data, sharedContext?): Promise&#60;[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)&#62;
+
+This method updates existing user.
+
+### Example
+
+```ts
+{example-code}
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateAuthUserDTO](../../interfaces/auth.UpdateAuthUserDTO.mdx)","description":"The attributes to update in the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"The provider metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"The user metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"The app metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../interfaces/auth.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/auth.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="update"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated user.","expandable":false,"children":[{"name":"AuthUserDTO","type":"[AuthUserDTO](../../interfaces/auth.AuthUserDTO.mdx)","optional":false,"defaultValue":"","description":"The auth user details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"The provider of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"The associated providers entity's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"scope","type":"`string`","description":"The scope of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"The user metadata of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"The app metadata of the auth user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"The provider metadata of the auth user.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="update"/>

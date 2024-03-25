@@ -143,7 +143,7 @@ For example:
 
   export default async function subscriberHandler({
     container,
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs) {
     const pricingModuleService: IPricingModuleService =
       container.resolve(ModuleRegistrationName.PRICING)
 

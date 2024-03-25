@@ -96,7 +96,7 @@ For example:
 
   export default async function subscriberHandler({
     container,
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs) {
     const productModuleService: IProductModuleService =
       container.resolve(ModuleRegistrationName.PRODUCT)
 

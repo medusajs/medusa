@@ -1,0 +1,11 @@
+---
+displayed_sidebar: authReference
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# FilterableAuthUserProps
+
+The filters to apply on the retrieved auth user.
+
+<TypeList types={[{"name":"id","type":"`string`[]","description":"The IDs to filter the auth user by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string` \\| `string`[]","description":"Filter the auth auth user by the associated provider(s).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$and","type":"([FilterableAuthUserProps](auth.FilterableAuthUserProps.mdx) \\| [BaseFilterable](auth.BaseFilterable.mdx)&#60;[FilterableAuthUserProps](auth.FilterableAuthUserProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableAuthUserProps](auth.FilterableAuthUserProps.mdx) \\| [BaseFilterable](auth.BaseFilterable.mdx)&#60;[FilterableAuthUserProps](auth.FilterableAuthUserProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FilterableAuthUserProps"/>

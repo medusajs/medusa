@@ -316,6 +316,33 @@ module.exports = {
 
 <TypeList types={[{"name":"ssl","type":"`object`","description":"Configure support for TLS/SSL connection","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"rejectUnauthorized","type":"`false`","description":"Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="database_extra"/>
 
+### database\_driver\_options
+
+An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
+`ssl` which enables support for TLS/SSL connections.
+
+This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
+During development, it’s recommended not to pass this option.
+
+#### Example
+
+```js title="medusa-config.js"
+module.exports = {
+  projectConfig: {
+    database_driver_options:
+      process.env.NODE_ENV !== "development"
+        ? { connection: { ssl: { rejectUnauthorized: false } } }
+        : {},
+    // ...
+  },
+  // ...
+}
+```
+
+#### Properties
+
+<TypeList types={[{"name":"connection","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"ssl","type":"`object`","description":"Configure support for TLS/SSL connection","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"rejectUnauthorized","type":"`false`","description":"Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="database_driver_options"/>
+
 ### redis\_url
 
 Used to specify the URL to connect to Redis. This is only used for scheduled jobs. If you omit this configuration, scheduled jobs won't work.
@@ -449,6 +476,25 @@ Configure the number of staged jobs that are polled from the database. Default i
 module.exports = {
   projectConfig: {
     jobs_batch_size: 100
+    // ...
+  },
+  // ...
+}
+```
+
+### worker\_mode
+
+Configure the application's worker mode. The default value is `shared`.
+- Use `shared` if you want to run the application in a single process.
+- Use `worker` if you want to run the a worker process only.
+- Use `server` if you want to run the application server only.
+
+#### Example
+
+```js title="medusa-config.js"
+module.exports = {
+  projectConfig: {
+    worker_mode: "shared"
     // ...
   },
   // ...

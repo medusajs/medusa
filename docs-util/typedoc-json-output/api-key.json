@@ -9,18 +9,13 @@
 			"id": 157,
 			"name": "ApiKeyType",
 			"variant": "declaration",
-			"kind": 2097152,
+			"kind": 256,
 			"flags": {},
-			"type": {
-				"type": "union",
-				"types": [
+			"comment": {
+				"summary": [
 					{
-						"type": "literal",
-						"value": "secret"
-					},
-					{
-						"type": "literal",
-						"value": "publishable"
+						"kind": "text",
+						"text": "An API key's type."
 					}
 				]
 			}
@@ -31,6 +26,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The API key details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 91,
@@ -38,6 +41,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -49,6 +60,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The token of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -60,6 +79,22 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The redacted form of the API key's token. This is useful\nwhen showing portion of the token. For example "
+							},
+							{
+								"kind": "code",
+								"text": "`sk_...123`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -71,6 +106,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -82,6 +125,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 157,
@@ -95,6 +146,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was last used."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -120,6 +179,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -131,6 +198,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was created."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": {
@@ -147,6 +222,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who revoked the API key. For example,\nthe ID of the user that revoked it."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -167,6 +250,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was revoked."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -215,7 +306,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved API keys."
 					}
 				]
 			},
@@ -227,6 +318,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the API keys by."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -253,6 +352,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The tokens to filter the API keys by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -278,6 +385,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The titles to filter the API keys by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -302,6 +417,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the API keys by their type."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -447,6 +570,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The API key to be created."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 76,
@@ -454,6 +585,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -465,6 +604,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 157,
@@ -478,6 +625,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -501,6 +656,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes in the API key to be created or updated."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 102,
@@ -509,6 +672,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the API key."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -523,6 +694,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -535,6 +714,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key. Required only when creating an API key."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -550,6 +737,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key. It's only\nusable and required when creating an API key."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -575,6 +770,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes to update in the API key."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 107,
@@ -583,6 +786,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -605,6 +816,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of revoking an API key."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 128,
@@ -612,6 +831,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who revoked the API key."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -624,6 +851,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "When to revoke the API key (time in seconds)."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -647,6 +882,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The main service interface for the Api Key Module."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2,
@@ -665,7 +908,27 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Create a new api key"
+										"text": "This method creates API keys."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.create([\n  {\n    title: \"Development API key\",\n    type: \"publishable\",\n    created_by: \"user_123\",\n  },\n])\n```"
+											}
+										]
 									}
 								]
 							},
@@ -676,6 +939,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The API keys to be created."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -693,6 +964,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -729,6 +1008,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates an API key."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.create({\n  title: \"Development API key\",\n  type: \"publishable\",\n  created_by: \"user_123\"\n})\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 7,
@@ -736,6 +1043,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The API key to be created."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 75,
@@ -750,6 +1065,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -796,7 +1119,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates existing API keys, or creates new ones if they don't exist."
+										"text": "This method updates or creates API keys if they don't exist."
 									}
 								],
 								"blockTags": [
@@ -805,7 +1128,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated and created API keys."
+												"text": "The created or updated API keys."
 											}
 										]
 									},
@@ -814,7 +1137,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{\n  example - code\n}\n```"
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.upsert([\n  {\n    id: \"apk_123\",\n    title: \"My development key\",\n  },\n  {\n    title: \"New development key\",\n    type: \"secret\",\n    created_by: \"user_123\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -831,7 +1154,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update or create for each API key."
+												"text": "The attributes in the API keys that are created or updated."
 											}
 										]
 									},
@@ -852,6 +1175,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -892,7 +1223,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates an existing API key, or creates a new one if it doesn't exist."
+										"text": "This method updates or creates an API key if it doesn't exist."
 									}
 								],
 								"blockTags": [
@@ -901,7 +1232,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated or created API key."
+												"text": "The created or updated API key."
 											}
 										]
 									},
@@ -910,7 +1241,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.upsert({\n  id: \"apk_123\",\n  title: \"My development key\"\n})\n```"
 											}
 										]
 									}
@@ -927,7 +1258,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update or create for the API key."
+												"text": "The attributes in the API key that's created or updated."
 											}
 										]
 									},
@@ -945,6 +1276,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1003,6 +1342,15 @@
 												"text": "The updated API key."
 											}
 										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.update(\"apk_123\", {\n  title: \"My development key\"\n})\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1017,7 +1365,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The API key's ID."
+												"text": "The ID of the API key."
 											}
 										]
 									},
@@ -1036,7 +1384,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the API key."
+												"text": "The attributes to update in the API key."
 											}
 										]
 									},
@@ -1117,7 +1465,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.update(\n  {\n    title: \"Development key\",\n  },\n  {\n    title: \"My development key\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -1134,7 +1482,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which API keys should be updated."
+												"text": "The filters that specify which API keys should be updated."
 											}
 										]
 									},
@@ -1155,7 +1503,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the API keys."
+												"text": "The attributes to update in the API keys."
 											}
 										]
 									},
@@ -1230,7 +1578,27 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Delete an api key"
+										"text": "This method deletes API keys by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the API keys are deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait apiKeyModuleService.delete([\"apk_123\"])\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1241,6 +1609,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the API keys."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -1256,6 +1632,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1287,6 +1671,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes an API key by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the API key is deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait apiKeyModuleService.delete(\"apk_123\")\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 30,
@@ -1294,6 +1706,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -1306,6 +1726,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1350,7 +1778,27 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Retrieve an api key"
+										"text": "This method retrieves an API key by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrieved API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.retrieve(\"apk_123\")\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1361,6 +1809,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -1373,6 +1829,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the API key is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a api key."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1396,6 +1876,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1442,7 +1930,71 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "List api keys"
+										"text": "This method retrieves a paginated list of API keys based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of API keys using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKeys = await apiKeyModuleService.list({\n  id: [\"apk_123\", \"apk_321\"]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKeys = await apiKeyModuleService.list(\n  {\n    id: [\"apk_123\", \"apk_321\"],\n  },\n  {\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1454,6 +2006,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved API keys."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1469,6 +2029,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the API key is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a API key."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1492,6 +2076,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1541,7 +2133,71 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "List and count api keys"
+										"text": "This method retrieves a paginated list of API keys along with the total count of available API keys satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of API keys along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of API keys using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [apiKeys, count] =\nawait apiKeyModuleService.listAndCount({\n  id: [\"apk_123\", \"apk_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [apiKeys, count] =\n  await apiKeyModuleService.listAndCount(\n    {\n      id: [\"apk_123\", \"apk_321\"],\n    },\n    {\n      take: 15,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1553,6 +2209,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved API keys."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1568,6 +2232,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the api API is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a API key."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1591,6 +2279,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1649,7 +2345,27 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Revokes an api key"
+										"text": "This method revokes API keys based on the filters provided."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The revoked API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.revoke(\n  {\n    id: \"apk_123\",\n  },\n  {\n    revoked_by: \"user_123\",\n    // 1 minute\n    revoke_in: 60,\n  }\n)\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1660,6 +2376,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to specify which API keys should be revoked."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 108,
@@ -1673,6 +2397,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of revoking the API keys."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 127,
@@ -1687,6 +2419,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1727,7 +2467,27 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Revokes an api key"
+										"text": "This method revokes an API key based on the ID provided."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The revoked API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.revoke(\"apk_123\", {\n  revoked_by: \"user_123\",\n  // 1 minute\n  revoke_in: 60,\n})\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1738,6 +2498,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key to revoke."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -1749,6 +2517,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of revoking the API key."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 127,
@@ -1763,6 +2539,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -1809,7 +2593,35 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Check the validity of an api key"
+										"text": "This method verifies whether a token is valid, considering it authenticated."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "If the token is verified successfully, the API key associated with the token is returned. Otherwise, "
+											},
+											{
+												"kind": "code",
+												"text": "`false`"
+											},
+											{
+												"kind": "text",
+												"text": " is returned."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey =\n  await apiKeyModuleService.authenticate(\"AbCD123987\")\n\nif (!apiKey) {\n  // authentication failed\n}\n```"
+											}
+										]
 									}
 								]
 							},
@@ -1820,6 +2632,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The token to verify."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -1832,6 +2652,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -4660,6 +5488,7 @@
 		{
 			"title": "Interfaces",
 			"children": [
+				157,
 				90,
 				108,
 				75,
@@ -4680,7 +5509,6 @@
 		{
 			"title": "Type Aliases",
 			"children": [
-				157,
 				230,
 				194,
 				206,
