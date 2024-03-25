@@ -288,5 +288,5 @@ export class AdminPostPriceListsPriceListReq {
     IsOptional(),
     IsBoolean(),
   ])
-  includes_tax?: boolean = false
+  includes_tax?: boolean
 }
