@@ -17,3 +17,6 @@ runs:
       # We want to only bootstrap and install if no cache is found.
     - run: yarn install --immutable
       shell: bash
+
+    - run: yarn build
+      shell: bash

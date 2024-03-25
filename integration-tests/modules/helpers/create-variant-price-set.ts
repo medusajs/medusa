@@ -41,6 +41,6 @@ export const createVariantPriceSet = async ({
   })
 
   return await pricingModuleService.retrieve(priceSet.id, {
-    relations: ["price_set_money_amounts"],
+    relations: ["prices"],
   })
 }
