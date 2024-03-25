@@ -4,10 +4,10 @@ const { User } = require("@medusajs/medusa/dist/models/user")
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  const buf = await Scrypt.kdf("secret_password", { logN: 1, r: 1, p: 1 })
+  const buf = await Scrypt.kdf("secret_password", { logN: 15, r: 8, p: 1 })
   const password_hash = buf.toString("base64")
 
-  await manager.insert(User, {
+  const user = await manager.insert(User, {
     id: "admin_user",
     email: "admin@medusa.js",
     api_token: "test_token",
@@ -15,4 +15,6 @@ module.exports = async (dataSource, data = {}) => {
     password_hash,
     ...data,
   })
+
+  return { user, password_hash }
 }
