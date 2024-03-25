@@ -19,16 +19,16 @@ export const PricingDetail = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-x-4 xl:grid-cols-[1fr,400px]">
-      <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
+      <div className="flex w-full flex-col gap-y-2">
         <PricingGeneralSection priceList={price_list} />
         <PricingProductSection priceList={price_list} />
-        <div className="flex flex-col gap-y-2 xl:hidden">
+        <div className="flex w-full flex-col gap-y-2 xl:hidden">
           <PricingConfigurationSection priceList={price_list} />
         </div>
         <JsonViewSection data={price_list} />
       </div>
-      <div className="hidden flex-col gap-y-2 xl:flex">
+      <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
         <PricingConfigurationSection priceList={price_list} />
       </div>
       <Outlet />

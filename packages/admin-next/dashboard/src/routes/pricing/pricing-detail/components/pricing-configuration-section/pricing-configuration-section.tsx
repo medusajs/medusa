@@ -27,7 +27,7 @@ export const PricingConfigurationSection = ({
               actions: [
                 {
                   label: t("actions.edit"),
-                  to: "/configurations/edit",
+                  to: "configurations/edit",
                   icon: <PencilSquare />,
                 },
               ],
