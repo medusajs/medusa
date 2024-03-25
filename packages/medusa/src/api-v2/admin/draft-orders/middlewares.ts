@@ -39,14 +39,4 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/draft-orders",
     middlewares: [transformBody(AdminPostDraftOrdersReq)],
   },
-  {
-    method: ["POST"],
-    matcher: "/admin/draft-orders/:id",
-    middlewares: [transformBody(AdminPostDraftOrdersReq)],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/draft-orders/:id",
-    middlewares: [transformBody(AdminPostDraftOrdersReq)],
-  },
 ]

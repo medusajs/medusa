@@ -30,10 +30,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     fields: defaultAdminOrderFields,
   })
 
-  const { rows: stores, metadata } = await remoteQuery(queryObject)
+  const { rows: orders, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    stores,
+    orders,
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,

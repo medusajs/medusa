@@ -43,7 +43,7 @@ function normalizeTaxModuleContext(
     return null
   }
 
-  let customer = order.customer
+  const customer = order.customer
     ? {
         id: order.customer.id,
         email: order.customer.email,
@@ -61,7 +61,6 @@ function normalizeTaxModuleContext(
       postal_code: address.postal_code,
     },
     customer,
-    // TODO: Should probably come in from order module, defaulting to false
     is_return: false,
   }
 }

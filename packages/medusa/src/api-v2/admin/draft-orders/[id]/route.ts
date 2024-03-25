@@ -1,9 +1,4 @@
 import {
-  deleteOrdersWorkflow,
-  updateOrdersWorkflow,
-} from "@medusajs/core-flows"
-import { UpdateOrderDTO } from "@medusajs/types"
-import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -23,35 +18,4 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const [order] = await remoteQuery(queryObject)
   res.status(200).json({ order })
-}
-
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { result, errors } = await updateOrdersWorkflow(req.scope).run({
-    input: {
-      selector: { id: req.params.id },
-      update: req.validatedBody as UpdateOrderDTO,
-    },
-    throwOnError: false,
-  })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
-
-  res.status(200).json({ order: result[0] })
-}
-
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { result, errors } = await deleteOrdersWorkflow(req.scope).run({
-    input: {
-      ids: Array.isArray(req.params.id) ? req.params.id : [req.params.id],
-    },
-    throwOnError: false,
-  })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
-
-  res.status(200).json({ order: result[0] })
 }
