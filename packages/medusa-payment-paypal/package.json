@@ -18,7 +18,7 @@
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "test": "jest --runInBand --bail --forceExit",
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit",
     "build": "rimraf dist && tsc",
     "watch": "tsc --watch"
   },
