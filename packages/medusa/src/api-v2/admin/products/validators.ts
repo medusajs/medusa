@@ -82,6 +82,13 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   price_list_id?: string[]
 
   /**
+   * Filter products by associated sales channel IDs.
+   */
+  @IsOptional()
+  @IsArray()
+  sales_channel_id?: string[]
+
+  /**
    * Filter products by their associated product collection's ID.
    */
   @IsArray()
@@ -106,12 +113,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsObject()
   variants?: Record<any, any>
-
-  // /**
-  //  * Filter products by their associated sales channels' ID.
-  //  */
-  // @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
-  // sales_channel_id?: string[]
 
   // /**
   //  * Filter products by their associated discount condition's ID.
