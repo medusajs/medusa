@@ -1,7 +1,7 @@
 import {
+  PriceDTO,
   PriceListRuleDTO,
   PriceRuleDTO,
-  PriceSetMoneyAmountDTO,
   ProductVariantDTO,
   UpdatePriceListPriceDTO,
 } from "@medusajs/types"
@@ -33,20 +33,20 @@ export function buildPriceSetRules(
 }
 
 export function buildPriceSetPricesForCore(
-  priceSetMoneyAmounts: (PriceSetMoneyAmountDTO & {
-    price_set: PriceSetMoneyAmountDTO["price_set"] & {
+  prices: (PriceDTO & {
+    price_set: PriceDTO["price_set"] & {
       variant?: ProductVariantDTO
     }
   })[]
 ): Record<string, any>[] {
-  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const productVariant = (priceSetMoneyAmount.price_set as any).variant
-    const rules: Record<string, string> = priceSetMoneyAmount.price_rules
-      ? buildPriceSetRules(priceSetMoneyAmount.price_rules)
+  return prices.map((price) => {
+    const productVariant = (price.price_set as any).variant
+    const rules: Record<string, string> = price.price_rules
+      ? buildPriceSetRules(price.price_rules)
       : {}
 
     return {
-      ...priceSetMoneyAmount,
+      ...price,
       variant_id: productVariant?.id ?? null,
       rules,
     }
@@ -54,16 +54,16 @@ export function buildPriceSetPricesForCore(
 }
 
 export function buildPriceSetPricesForModule(
-  priceSetMoneyAmounts: PriceSetMoneyAmountDTO[]
+  prices: PriceDTO[]
 ): UpdatePriceListPriceDTO[] {
-  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const rules: Record<string, string> = priceSetMoneyAmount.price_rules
-      ? buildPriceSetRules(priceSetMoneyAmount.price_rules)
+  return prices.map((price) => {
+    const rules: Record<string, string> = price.price_rules
+      ? buildPriceSetRules(price.price_rules)
       : {}
 
     return {
-      ...priceSetMoneyAmount,
-      price_set_id: priceSetMoneyAmount.price_set!?.id!,
+      ...price,
+      price_set_id: price.price_set!?.id!,
       rules,
     }
   })
