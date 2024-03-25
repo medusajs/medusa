@@ -126,7 +126,7 @@ export const CreateDraftOrderItemsDetails = () => {
                           <Form.Field
                             control={form.control}
                             name={`${name}.${index}.custom_unit_price`}
-                            render={({ field }) => {
+                            render={({ field: { onChange, ...field } }) => {
                               return (
                                 <Form.Item>
                                   <Form.Label optional>
@@ -139,6 +139,7 @@ export const CreateDraftOrderItemsDetails = () => {
                                       className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
                                       code={currency_code!}
                                       symbol={currency?.symbol_native!}
+                                      onValueChange={onChange}
                                       {...field}
                                     />
                                   </Form.Control>
@@ -259,7 +260,7 @@ export const CreateDraftOrderItemsDetails = () => {
                           <Form.Field
                             control={form.control}
                             name={`${name}.${index}.unit_price`}
-                            render={({ field }) => {
+                            render={({ field: { onChange, ...field } }) => {
                               return (
                                 <Form.Item>
                                   <Form.Label>
@@ -270,6 +271,7 @@ export const CreateDraftOrderItemsDetails = () => {
                                       className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover"
                                       code={currency_code!}
                                       symbol={currency?.symbol_native!}
+                                      onValueChange={onChange}
                                       {...field}
                                     />
                                   </Form.Control>

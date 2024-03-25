@@ -180,7 +180,7 @@ const ComboboxImpl = <T extends Value = string>(
   const results = isSearchControlled ? options : matches
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
+    <Popover.Root modal open={open} onOpenChange={setOpen}>
       <PrimitiveComboboxProvider
         open={open}
         setOpen={setOpen}

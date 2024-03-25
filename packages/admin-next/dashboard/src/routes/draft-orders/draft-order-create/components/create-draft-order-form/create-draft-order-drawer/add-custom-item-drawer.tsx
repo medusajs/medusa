@@ -77,8 +77,8 @@ export const AddCustomItemDrawer = () => {
               code={currencyCode}
               symbol={nativeSymbol}
               value={item.unit_price}
-              onChange={(e) => {
-                setItem((prev) => ({ ...prev, unit_price: e.target.value }))
+              onValueChange={(value) => {
+                setItem((prev) => ({ ...prev, unit_price: value }))
               }}
             />
             <ErrorMessage errors={errors} field="unit_price" />
