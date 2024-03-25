@@ -206,5 +206,29 @@ export class Migration20230929122253 extends Migration {
     this.addSql(
       'alter table if exists "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade on delete cascade;'
     )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount" drop constraint if exists "price_set_money_amount_money_amount_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount" add column if not exists "amount" numeric not null, add column "min_quantity" numeric null, add column "max_quantity" numeric null;'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount" drop constraint if exists "price_set_money_amount_money_amount_id_unique";'
+    )
+
+    this.addSql(
+      'drop index if exists "IDX_price_set_money_amount_money_amount_id";'
+    )
+
+    this.addSql(
+      'alter table if exists "price_set_money_amount" rename column "money_amount_id" to "currency_code";'
+    )
+
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_price_set_money_amount_currency_code" ON "price_set_money_amount" (currency_code) WHERE deleted_at IS NULL;'
+    )
   }
 }

@@ -48,6 +48,7 @@ export type InternalModuleDeclaration = {
    * If the module is the main module for the key when multiple ones are registered
    */
   main?: boolean
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 export type ExternalModuleDeclaration = {
@@ -253,7 +254,9 @@ export interface ModuleServiceInitializeOptions {
     user?: string
     password?: string
     database?: string
-    driverOptions?: Record<string, unknown>
+    driverOptions?: Record<string, unknown> & {
+      connection?: Record<string, unknown>
+    }
     debug?: boolean
     pool?: Record<string, unknown>
   }

@@ -15,6 +15,7 @@ const { logger } = require("@medusajs/medusa-cli/dist/reporter")
 module.exports = {
   initDb: async function ({
     cwd,
+    // use for v1 datasource only
     database_extra,
     env,
     force_modules_migration,

@@ -284,7 +284,7 @@ class PricingService extends TransactionBaseService {
 
         if (calculatedPrices) {
           pricingResult.prices.push({
-            id: calculatedPrices?.original_price?.money_amount_id,
+            id: calculatedPrices?.original_price?.id,
             currency_code: calculatedPrices.currency_code,
             amount: calculatedPrices.original_amount,
             min_quantity: calculatedPrices.original_price?.min_quantity,
@@ -293,11 +293,11 @@ class PricingService extends TransactionBaseService {
           } as MoneyAmount)
 
           if (
-            calculatedPrices.calculated_price?.money_amount_id !==
-            calculatedPrices.original_price?.money_amount_id
+            calculatedPrices.calculated_price?.id !==
+            calculatedPrices.original_price?.id
           ) {
             pricingResult.prices.push({
-              id: calculatedPrices.calculated_price?.money_amount_id,
+              id: calculatedPrices.calculated_price?.id,
               currency_code: calculatedPrices.currency_code,
               amount: calculatedPrices.calculated_amount,
               min_quantity: calculatedPrices.calculated_price?.min_quantity,

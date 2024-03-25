@@ -14,6 +14,7 @@ import {
 import { AuthUser } from "@models"
 
 type InjectedDependencies = {
+  baseRepository: DAL.RepositoryService
   authUserRepository: DAL.RepositoryService
 }
 
@@ -23,11 +24,13 @@ export default class AuthUserService<
   AuthUser
 )<TEntity> {
   protected readonly authUserRepository_: RepositoryService<TEntity>
+  protected baseRepository_: DAL.RepositoryService
 
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
     this.authUserRepository_ = container.authUserRepository
+    this.baseRepository_ = container.baseRepository
   }
 
   @InjectManager("authUserRepository_")
@@ -36,7 +39,7 @@ export default class AuthUserService<
     provider: string,
     config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
+  ): Promise<AuthTypes.AuthUserDTO> {
     const queryConfig = ModulesSdkUtils.buildQuery<TEntity>(
       { entity_id: entityId, provider },
       { ...config, take: 1 }
@@ -53,6 +56,6 @@ export default class AuthUserService<
       )
     }
 
-    return result
+    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(result)
   }
 }
