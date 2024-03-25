@@ -4,5 +4,5 @@ module.exports = {
   },
   transformIgnorePatterns: ["/node_modules/(?!(axios)/).*", "dist"],
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `ts`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
 }

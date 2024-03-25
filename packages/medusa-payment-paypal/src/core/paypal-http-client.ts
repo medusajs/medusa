@@ -28,20 +28,10 @@ export class PaypalHttpClient {
       baseURL: this.baseUrl_,
     })
 
-    const instance = this
-
     this.httpClient_ = new Proxy(axiosInstance, {
       // Handle automatic retry mechanism
-      get: function (_, prop) {
-        // @ts-ignore
-        // eslint-disable-next-line prefer-rest-params
-        var original = Reflect.get.apply(this, arguments)
-
-        if ("request" === prop) {
-          return instance.retryIfNecessary(original)
-        }
-
-        return original
+      get: (target, prop) => {
+        return this.retryIfNecessary(target[prop].bind(target))
       },
     })
   }
