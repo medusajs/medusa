@@ -30,7 +30,7 @@ export const POST = async (
       variables: {
         id,
       },
-      fields: req.retrieveConfig.select as string[],
+      fields: req.remoteQueryConfig.fields,
     })
   )
 

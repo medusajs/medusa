@@ -1,3 +1,5 @@
+import { BaseFilterable, OperatorMap } from "../dal"
+
 import { StringComparisonOperator } from "../common/common"
 
 /**
@@ -241,7 +243,8 @@ export type StockLocationExpandedDTO = StockLocationDTO & {
  *
  * The filters to apply on the retrieved stock locations.
  */
-export type FilterableStockLocationProps = {
+export interface FilterableStockLocationProps
+  extends BaseFilterable<FilterableStockLocationProps> {
   /**
    * Search parameter for stock location names
    */
@@ -255,7 +258,7 @@ export type FilterableStockLocationProps = {
   /**
    * The names to filter stock locations by.
    */
-  name?: string | string[] | StringComparisonOperator
+  name?: string | string[] | OperatorMap<string>
 }
 
 /**

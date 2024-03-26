@@ -138,6 +138,20 @@ export default class StockLocationModuleService<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
   > {
     const input = Array.isArray(data) ? data : [data]
+
+    const result = await this.upsert_(input, context)
+
+    return await this.baseRepository_.serialize<
+      | StockLocationTypes.StockLocationDTO[]
+      | StockLocationTypes.StockLocationDTO
+    >(Array.isArray(data) ? result : result[0])
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsert_(
+    input: UpsertStockLocationInput[],
+    @MedusaContext() context: Context = {}
+  ) {
     const toUpdate = input.filter(
       (location): location is UpdateStockLocationNextInput => !!location.id
     ) as UpdateStockLocationNextInput[]
@@ -154,11 +168,7 @@ export default class StockLocationModuleService<
       operations.push(this.update_(toUpdate, context))
     }
 
-    const result = (await promiseAll(operations)).flat()
-    return await this.baseRepository_.serialize<
-      | StockLocationTypes.StockLocationDTO[]
-      | StockLocationTypes.StockLocationDTO
-    >(Array.isArray(data) ? result : result[0])
+    return (await promiseAll(operations)).flat()
   }
 
   update(
