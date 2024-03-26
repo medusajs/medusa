@@ -432,6 +432,14 @@ export type UpdateStockLocationInput = {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * @interface
+ *
+ * The attributes to update in a stock location.
+ */
 export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
+  /**
+   * The ID of the stock location.
+   */
   id: string
 }
