@@ -57,6 +57,21 @@ const products = await productService.update([
 
 ---
 
+## Configure Product Module
+
+After installing the `@medusajs/product` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+
+```js
+const modules = {
+  // ...
+  productService: {
+    resolve: "@medusajs/product",
+  },
+}
+```
+
+---
+
 ## How to Use Product Module's Service
 
 You can use the Product Module's main service by resolving from the dependency container the resource `ModuleRegistrationName.PRODUCT` imported from `@medusajs/modules-sdk`.

@@ -109,16 +109,6 @@ Gets the prices for a product variant
 
 <TypeList types={[{"name":"TaxedPricing","type":"`object`","description":"Pricing fields related to taxes.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="calculateTaxes"/>
 
-### getProductVariantPricingModulePricing\_
-
-#### Parameters
-
-<TypeList types={[{"name":"variantPriceData","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricingModulePricing_"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Map&#60;any, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricingModulePricing_"/>
-
 ### getProductVariantPricing\_
 
 #### Parameters
@@ -227,16 +217,6 @@ Set additional prices on a list of products.
 #### Returns
 
 <TypeList types={[{"name":"Promise","type":"Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;","optional":false,"defaultValue":"","description":"A list of products with variants decorated with prices","expandable":false,"children":[]}]}  sectionTitle="setProductPrices"/>
-
-### getPricingModuleVariantMoneyAmounts
-
-#### Parameters
-
-<TypeList types={[{"name":"variantIds","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPricingModuleVariantMoneyAmounts"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Map&#60;string, [MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getPricingModuleVariantMoneyAmounts"/>
 
 ### setAdminVariantPricing
 

@@ -1,0 +1,57 @@
+# User Creation Flows
+
+This document provides some possible flows to create a user.
+
+## Using the Auth Module
+
+The Auth Module allows you to create a user with different providers, such as creating a user with an email and password or creating a user using their Google account.
+
+Learn more about this creation flow in [this Auth Module guide](../../auth/user-creation/index.mdx).
+
+---
+
+## Invite Users
+
+Another possible flow to create a user is by sending them an invite. Then, once they accept it, you create a new user for them:
+
+```ts
+// create invite
+const invite = await userModuleService.createInvites({
+  email: "user@example.com",
+})
+
+// later, accept invite and create user
+const invite =
+  await userModuleService.validateInviteToken("secret123")
+
+await userModuleService.updateInvites({
+  id: invite.id,
+  accepted: true,
+})
+
+const user = await userModuleService.create({
+  email: invite.email,
+})
+```
+
+### Invite Expiry
+
+An invite has an expiry date. You can renew the expiry date and refresh the token using the `refreshInviteTokens` method:
+
+```ts
+await userModuleService.refreshInviteTokens(["invite_123"])
+```
+
+---
+
+## Straightforward Creation
+
+Finally, you can create a user using the `create` method of the User Module’s main service (`IUserModuleService`):
+
+```ts
+const user = await userModuleService.create({
+  email: "user@example.com",
+})
+```
+
+However, the User Module doesn’t handle authentication methods or store a user’s password. For that, you’d need to use the [Auth Module](../../auth/index.mdx).

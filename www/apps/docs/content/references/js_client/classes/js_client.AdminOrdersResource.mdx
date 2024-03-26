@@ -10,7 +10,7 @@ import TypeList from "@site/src/components/TypeList"
 This class is used to send requests to [Admin Order API Routes](https://docs.medusajs.com/api/admin#orders). All its method
 are available in the JS Client under the `medusa.admin.orders` property.
 
-All methods in this class require [user authentication](js_client.AdminAuthResource.mdx#createsession).
+All methods in this class require [authentication](../../modules/user.mdx).
 
 Orders are purchases made by customers, typically through a storefront using [CartsResource](js_client.CartsResource.mdx). Draft orders created by the admin are also transformed to an Order once the payment is captured.
 Managing orders include managing fulfillment, payment, claims, reservations, and more.

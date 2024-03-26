@@ -72,6 +72,7 @@ module.exports = {
     "stock-location",
     "stock-location-next",
     "store",
+    "user",
     "workflows",
   ],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
@@ -1594,6 +1595,73 @@ npx medusa develop
 4\\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
       `,
       ],
+    },
+
+    // USER CONFIG
+    "^user": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+      },
+    },
+    "^user/IUserModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the User Module.",
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+        slug: "/references/user/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- User Module Reference",
+      },
+    },
+    "^user/.*IUserModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IUserModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the User Module.",
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+        slug: "/references/user",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // USER MODELS CONFIG
+    "^user_models": {
+      frontmatterData: {
+        displayed_sidebar: "userModelReference",
+        slug: "/references/user/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the User Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- User Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/user_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the User Module",
+      frontmatterData: {
+        displayed_sidebar: "userModelReference",
+        slug: "/references/user/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "User Module Data Models Reference",
+      },
     },
 
     // WORKFLOWS CONFIG

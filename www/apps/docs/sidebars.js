@@ -14,6 +14,8 @@
  * - To add a coming soon link (with a badge), add in customProps sidebar_is_soon: true
  * - To add a badge, add in customProps sidebar_badge with its value being the props to pass to the Badge component.
  */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const userReferenceSidebars = require("./src/sidebars/user-reference")
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
@@ -2796,6 +2798,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "experimental/auth/user-creation/index",
+        },
+        {
+          type: "doc",
           id: "experimental/auth/persisting-auth-user/index",
         },
         {
@@ -3296,6 +3302,56 @@ module.exports = {
         {
           type: "ref",
           id: "references/modules/store_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "User Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/user/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/user/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "User Creation Flows",
+          id: "experimental/user/user-creation-flows/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/user/interfaces/user.IUserModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/user_models",
           label: "Data Models Reference",
         },
       ],
@@ -4597,6 +4653,7 @@ module.exports = {
       ],
     },
   ],
+  ...userReferenceSidebars,
   workflowsSidebar: [
     {
       type: "ref",

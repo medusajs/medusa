@@ -102,6 +102,21 @@ const price = await pricingModuleService.calculatePrices(
 
 ---
 
+## Configure Pricing Module
+
+After installing the `@medusajs/pricing` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+
+```js
+const modules = {
+  // ...
+  pricingService: {
+    resolve: "@medusajs/pricing",
+  },
+}
+```
+
+---
+
 ## How to Use Pricing Module's Service
 
 You can use the Pricing Module's main service by resolving from the dependency container the resource `ModuleRegistrationName.PRICING` imported from `@medusajs/modules-sdk`.

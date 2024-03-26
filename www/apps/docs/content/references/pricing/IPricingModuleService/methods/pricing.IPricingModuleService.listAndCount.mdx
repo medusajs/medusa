@@ -49,7 +49,7 @@ async function retrievePriceSets (priceSetIds: string[]) {
       id: priceSetIds
     },
     {
-      relations: ["money_amounts"]
+      relations: ["prices"]
     }
   )
 
@@ -72,7 +72,7 @@ async function retrievePriceSets (priceSetIds: string[], skip: number, take: num
       id: priceSetIds
     },
     {
-      relations: ["money_amounts"],
+      relations: ["prices"],
       skip,
       take
     }
@@ -89,7 +89,7 @@ import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
-async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
+async function retrievePriceSets (priceSetIds: string[], priceIds: string[], skip: number, take: number) {
   const pricingService = await initializePricingModule()
 
   const [priceSets, count] = await pricingService.listAndCount(
@@ -99,14 +99,14 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
           id: priceSetIds
         },
         {
-          money_amounts: {
-            id: moneyAmountIds
+          prices: {
+            id: priceIds
           }
         }
       ]
     },
     {
-      relations: ["money_amounts"],
+      relations: ["prices"],
       skip,
       take
     }
