@@ -36,6 +36,8 @@ const PriceListDeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+export const PriceListIdPrefix = "plist"
+
 @Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceList {
@@ -108,11 +110,11 @@ export default class PriceList {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "plist")
+    this.id = generateEntityId(this.id, PriceListIdPrefix)
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "plist")
+    this.id = generateEntityId(this.id, PriceListIdPrefix)
   }
 }

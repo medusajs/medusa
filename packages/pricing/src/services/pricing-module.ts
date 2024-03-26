@@ -39,9 +39,11 @@ import {
   RuleType,
 } from "@models"
 
-import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import {PriceListService, RuleTypeService} from "@services"
+import {validatePriceListDates} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {PriceSetIdPrefix} from "../models/price-set";
+import {PriceListIdPrefix} from "../models/price-list";
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -299,7 +301,7 @@ export default class PricingModuleService<
     const toCreate = input.map((inputData) => {
       const id = generateEntityId(
         (inputData as unknown as TPriceSet).id,
-        "pset"
+        PriceSetIdPrefix
       )
 
       const { prices, rules = [], ...rest } = inputData
@@ -717,7 +719,7 @@ export default class PricingModuleService<
       (priceListData) => {
         const id = generateEntityId(
           (priceListData as unknown as TPriceList).id,
-          "plist"
+          PriceListIdPrefix
         )
 
         const { prices = [], rules = {}, ...rest } = priceListData
