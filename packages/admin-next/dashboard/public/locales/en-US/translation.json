@@ -312,6 +312,7 @@
       "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
       "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfillment status",
+      "fulfillItems": "Fulfill items",
       "statusTitle": "Fulfillment Status",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",

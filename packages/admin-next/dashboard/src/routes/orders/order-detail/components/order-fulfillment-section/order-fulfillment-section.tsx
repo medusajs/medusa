@@ -5,6 +5,7 @@ import {
   Order,
 } from "@medusajs/medusa"
 import {
+  Button,
   Container,
   Copy,
   Heading,
@@ -135,6 +136,9 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
             currencyCode={order.currency_code}
           />
         ))}
+      </div>
+      <div className="px-5 py-4 text-right">
+        <Button>{t("orders.fulfillment.fulfillItems")}</Button>
       </div>
     </Container>
   )
