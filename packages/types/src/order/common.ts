@@ -752,11 +752,11 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: Record<string, unknown>
+  action: string
   /**
-   * The metadata of the order change action
+   * The details of the order change action
    */
-  metadata?: Record<string, unknown> | null
+  details: Record<string, unknown> | null
   /**
    * The internal note of the order change action
    */

@@ -7,6 +7,7 @@ import {
   OrderDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
@@ -36,7 +37,7 @@ export const setOrderTaxLinesForItemsStep = createStep(
     const itemsTaxLinesData = normalizeItemTaxLinesForOrder(item_tax_lines)
     const setItemTaxLinesPromise = itemsTaxLinesData.length
       ? orderService.setLineItemTaxLines(order.id, itemsTaxLinesData)
-      : 0
+      : void 0
 
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForOrder(shipping_tax_lines)
@@ -45,17 +46,17 @@ export const setOrderTaxLinesForItemsStep = createStep(
           order.id,
           shippingTaxLinesData
         )
-      : 0
+      : void 0
 
     const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
-      await Promise.all([
+      await promiseAll([
         getShippingTaxLinesPromise,
         getItemTaxLinesPromise,
         setItemTaxLinesPromise,
         setShippingTaxLinesPromise,
       ])
 
-    return new StepResponse(null, {
+    return new StepResponse(void 0, {
       order,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,

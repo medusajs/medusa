@@ -12,6 +12,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
+  OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
   OrderItemDTO,
@@ -27,6 +28,7 @@ import {
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
+  CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
@@ -136,13 +138,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
 
-  addLineItems(
+  createLineItems(
     data: CreateOrderLineItemForOrderDTO
   ): Promise<OrderLineItemDTO[]>
-  addLineItems(
+  createLineItems(
     data: CreateOrderLineItemForOrderDTO[]
   ): Promise<OrderLineItemDTO[]>
-  addLineItems(
+  createLineItems(
     orderId: string,
     items: CreateOrderLineItemDTO[],
     sharedContext?: Context
@@ -195,13 +197,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 
-  addShippingMethods(
+  createShippingMethods(
     data: CreateOrderShippingMethodDTO
   ): Promise<OrderShippingMethodDTO>
-  addShippingMethods(
+  createShippingMethods(
     data: CreateOrderShippingMethodDTO[]
   ): Promise<OrderShippingMethodDTO[]>
-  addShippingMethods(
+  createShippingMethods(
     orderId: string,
     methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
@@ -226,13 +228,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     data: CreateOrderAdjustmentDTO[]
   ): Promise<OrderLineItemAdjustmentDTO[]>
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     data: CreateOrderAdjustmentDTO
   ): Promise<OrderLineItemAdjustmentDTO[]>
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     orderId: string,
     data: CreateOrderAdjustmentDTO[]
   ): Promise<OrderLineItemAdjustmentDTO[]>
@@ -262,13 +264,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
 
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO[]
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO
   ): Promise<OrderShippingMethodAdjustmentDTO>
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     orderId: string,
     data: CreateOrderShippingMethodAdjustmentDTO[],
     sharedContext?: Context
@@ -302,13 +304,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
 
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     taxLines: CreateOrderLineItemTaxLineDTO[]
   ): Promise<OrderLineItemTaxLineDTO[]>
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     taxLine: CreateOrderLineItemTaxLineDTO
   ): Promise<OrderLineItemTaxLineDTO>
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     orderId: string,
     taxLines: CreateOrderLineItemTaxLineDTO[] | CreateOrderLineItemTaxLineDTO,
     sharedContext?: Context
@@ -339,13 +341,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     taxLines: CreateOrderShippingMethodTaxLineDTO[]
   ): Promise<OrderShippingMethodTaxLineDTO[]>
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     taxLine: CreateOrderShippingMethodTaxLineDTO
   ): Promise<OrderShippingMethodTaxLineDTO>
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     orderId: string,
     taxLines:
       | CreateOrderShippingMethodTaxLineDTO[]
@@ -424,7 +426,14 @@ export interface IOrderModuleService extends IModuleService {
 
   applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
 
-  addOrderAction(data: any, sharedContext?: Context)
+  addOrderAction(
+    data: CreateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+  addOrderAction(
+    data: CreateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
 
   softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
     ids: string[],

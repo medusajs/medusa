@@ -289,18 +289,14 @@ export interface CreateOrderChangeActionDTO {
   order_change_id: string
   reference: string
   reference_id: string
-  action: Record<string, unknown>
+  action: string
   internal_note?: string
-  metadata?: Record<string, unknown>
+  details?: Record<string, unknown>
 }
 
 export interface UpdateOrderChangeActionDTO {
   id: string
-  reference?: string
-  reference_id?: string
-  action?: Record<string, unknown>
   internal_note?: string
-  metadata?: Record<string, unknown>
 }
 
 /** ORDER TRANSACTION START */

@@ -378,7 +378,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addLineItems", () => {
+      describe("createLineItems", () => {
         it("should add a line item to order succesfully", async () => {
           const [createdOrder] = await service.create([
             {
@@ -386,7 +386,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.addLineItems(createdOrder.id, [
+          await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -415,7 +415,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.addLineItems([
+          await service.createLineItems([
             {
               quantity: 1,
               unit_price: 100,
@@ -466,7 +466,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const items = await service.addLineItems([
+          const items = await service.createLineItems([
             {
               order_id: eurOrder.id,
               quantity: 1,
@@ -502,7 +502,7 @@ moduleIntegrationTestRunner({
 
         it("should throw if order does not exist", async () => {
           const error = await service
-            .addLineItems("foo", [
+            .createLineItems("foo", [
               {
                 quantity: 1,
                 unit_price: 100,
@@ -523,7 +523,7 @@ moduleIntegrationTestRunner({
           ])
 
           const error = await service
-            .addLineItems(createdOrder.id, [
+            .createLineItems(createdOrder.id, [
               {
                 unit_price: 10,
                 title: "test",
@@ -544,7 +544,7 @@ moduleIntegrationTestRunner({
           ])
 
           const error = await service
-            .addLineItems([
+            .createLineItems([
               {
                 order_id: createdOrder.id,
                 unit_price: 10,
@@ -567,7 +567,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -595,7 +595,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -620,7 +620,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const items = await service.addLineItems(createdOrder.id, [
+          const items = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -694,7 +694,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -721,7 +721,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item, item2] = await service.addLineItems(createdOrder.id, [
+          const [item, item2] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -744,7 +744,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addShippingMethods", () => {
+      describe("createShippingMethods", () => {
         it("should add a shipping method to order succesfully", async () => {
           const [createdOrder] = await service.create([
             {
@@ -752,12 +752,15 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [method] = await service.addShippingMethods(createdOrder.id, [
-            {
-              amount: 100,
-              name: "Test",
-            },
-          ])
+          const [method] = await service.createShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "Test",
+              },
+            ]
+          )
 
           const order = await service.retrieve(createdOrder.id, {
             relations: ["shipping_methods"],
@@ -779,7 +782,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const methods = await service.addShippingMethods([
+          const methods = await service.createShippingMethods([
             {
               order_id: eurOrder.id,
               amount: 100,
@@ -819,12 +822,15 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [method] = await service.addShippingMethods(createdOrder.id, [
-            {
-              amount: 100,
-              name: "test",
-            },
-          ])
+          const [method] = await service.createShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
 
           expect(method.id).not.toBe(null)
 
@@ -846,7 +852,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -854,7 +860,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemTwo] = await service.addLineItems(createdOrder.id, [
+          const [itemTwo] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -901,7 +907,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -968,7 +974,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1023,7 +1029,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1086,7 +1092,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addLineItemAdjustments", () => {
+      describe("createLineItemAdjustments", () => {
         it("should add line item adjustments for items in an order", async () => {
           const [createdOrder] = await service.create([
             {
@@ -1094,7 +1100,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1102,7 +1108,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const adjustments = await service.addLineItemAdjustments(
+          const adjustments = await service.createLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1131,14 +1137,14 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.addLineItems(createdOrder.id, [
+          const [itemTwo] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -1146,7 +1152,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const adjustments = await service.addLineItemAdjustments(
+          const adjustments = await service.createLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1188,14 +1194,14 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(orderOne.id, [
+          const [itemOne] = await service.createLineItems(orderOne.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.addLineItems(orderTwo.id, [
+          const [itemTwo] = await service.createLineItems(orderTwo.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -1203,7 +1209,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.addLineItemAdjustments([
+          await service.createLineItemAdjustments([
             // item from order one
             {
               item_id: itemOne.id,
@@ -1263,7 +1269,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1271,7 +1277,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [adjustment] = await service.addLineItemAdjustments(
+          const [adjustment] = await service.createLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1299,7 +1305,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1307,7 +1313,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [adjustment] = await service.addLineItemAdjustments(
+          const [adjustment] = await service.createLineItemAdjustments(
             createdOrder.id,
             [
               {
@@ -1337,7 +1343,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1347,7 +1353,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const [shippingMethodTwo] = await service.addShippingMethods(
+          const [shippingMethodTwo] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1396,7 +1402,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1466,7 +1472,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1523,7 +1529,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1587,7 +1593,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addShippingMethodAdjustments", () => {
+      describe("createShippingMethodAdjustments", () => {
         it("should add shipping method adjustments in an order", async () => {
           const [createdOrder] = await service.create([
             {
@@ -1595,7 +1601,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1605,7 +1611,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.addShippingMethodAdjustments(
+          const adjustments = await service.createShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1634,7 +1640,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1643,7 +1649,7 @@ moduleIntegrationTestRunner({
               },
             ]
           )
-          const [shippingMethodTwo] = await service.addShippingMethods(
+          const [shippingMethodTwo] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1653,7 +1659,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const adjustments = await service.addShippingMethodAdjustments(
+          const adjustments = await service.createShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1697,7 +1703,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             orderOne.id,
             [
               {
@@ -1706,7 +1712,7 @@ moduleIntegrationTestRunner({
               },
             ]
           )
-          const [shippingMethodTwo] = await service.addShippingMethods(
+          const [shippingMethodTwo] = await service.createShippingMethods(
             orderTwo.id,
             [
               {
@@ -1716,7 +1722,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          await service.addShippingMethodAdjustments([
+          await service.createShippingMethodAdjustments([
             // item from order one
             {
               shipping_method_id: shippingMethodOne.id,
@@ -1782,7 +1788,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethodOne] = await service.addShippingMethods(
+          const [shippingMethodOne] = await service.createShippingMethods(
             orderOne.id,
             [
               {
@@ -1793,7 +1799,7 @@ moduleIntegrationTestRunner({
           )
 
           const error = await service
-            .addShippingMethodAdjustments(orderTwo.id, [
+            .createShippingMethodAdjustments(orderTwo.id, [
               {
                 shipping_method_id: shippingMethodOne.id,
                 amount: 100,
@@ -1816,14 +1822,17 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [method] = await service.addShippingMethods(createdOrder.id, [
-            {
-              amount: 100,
-              name: "test",
-            },
-          ])
+          const [method] = await service.createShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
 
-          const [adjustment] = await service.addShippingMethodAdjustments(
+          const [adjustment] = await service.createShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1852,7 +1861,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [shippingMethod] = await service.addShippingMethods(
+          const [shippingMethod] = await service.createShippingMethods(
             createdOrder.id,
             [
               {
@@ -1862,7 +1871,7 @@ moduleIntegrationTestRunner({
             ]
           )
 
-          const [adjustment] = await service.addShippingMethodAdjustments(
+          const [adjustment] = await service.createShippingMethodAdjustments(
             createdOrder.id,
             [
               {
@@ -1895,7 +1904,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -1903,7 +1912,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemTwo] = await service.addLineItems(createdOrder.id, [
+          const [itemTwo] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -1947,7 +1956,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2011,7 +2020,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2063,7 +2072,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2129,7 +2138,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2213,7 +2222,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("addLineItemAdjustments", () => {
+      describe("createLineItemAdjustments", () => {
         it("should add line item tax lines for items in an order", async () => {
           const [createdOrder] = await service.create([
             {
@@ -2221,7 +2230,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2229,13 +2238,16 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const taxLines = await service.addLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.createLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -2255,14 +2267,14 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(createdOrder.id, [
+          const [itemOne] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.addLineItems(createdOrder.id, [
+          const [itemTwo] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -2270,18 +2282,21 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const taxLines = await service.addLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: itemOne.id,
-              rate: 20,
-              code: "TX",
-            },
-            {
-              item_id: itemTwo.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const taxLines = await service.createLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              },
+              {
+                item_id: itemTwo.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLines).toEqual(
             expect.arrayContaining([
@@ -2311,14 +2326,14 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [itemOne] = await service.addLineItems(orderOne.id, [
+          const [itemOne] = await service.createLineItems(orderOne.id, [
             {
               quantity: 1,
               unit_price: 100,
               title: "test",
             },
           ])
-          const [itemTwo] = await service.addLineItems(orderTwo.id, [
+          const [itemTwo] = await service.createLineItems(orderTwo.id, [
             {
               quantity: 2,
               unit_price: 200,
@@ -2326,7 +2341,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.addLineItemTaxLines([
+          await service.createLineItemTaxLines([
             // item from order one
             {
               item_id: itemOne.id,
@@ -2386,7 +2401,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2394,13 +2409,16 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [taxLine] = await service.addLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: item.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const [taxLine] = await service.createLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: item.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLine.item_id).toBe(item.id)
 
@@ -2420,7 +2438,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [item] = await service.addLineItems(createdOrder.id, [
+          const [item] = await service.createLineItems(createdOrder.id, [
             {
               quantity: 1,
               unit_price: 100,
@@ -2428,13 +2446,16 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [taxLine] = await service.addLineItemTaxLines(createdOrder.id, [
-            {
-              item_id: item.id,
-              rate: 20,
-              code: "TX",
-            },
-          ])
+          const [taxLine] = await service.createLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: item.id,
+                rate: 20,
+                code: "TX",
+              },
+            ]
+          )
 
           expect(taxLine.item_id).toBe(item.id)
 

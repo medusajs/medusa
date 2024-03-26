@@ -43,13 +43,11 @@ function normalizeTaxModuleContext(
     return null
   }
 
-  const customer = order.customer
-    ? {
-        id: order.customer.id,
-        email: order.customer.email,
-        customer_groups: order.customer.groups?.map((g) => g.id) || [],
-      }
-    : undefined
+  const customer = order.customer && {
+    id: order.customer.id,
+    email: order.customer.email,
+    customer_groups: order.customer.groups?.map((g) => g.id) || [],
+  }
 
   return {
     address: {
@@ -81,7 +79,7 @@ function normalizeLineItemsForTax(
         quantity: item.quantity,
         unit_price: item.unit_price,
         currency_code: order.currency_code,
-      } as any)
+      } as TaxableItemDTO)
   )
 }
 
@@ -96,7 +94,7 @@ function normalizeLineItemsForShipping(
         shipping_option_id: shippingMethod.shipping_option_id!,
         unit_price: shippingMethod.amount,
         currency_code: order.currency_code,
-      } as any)
+      } as TaxableShippingDTO)
   )
 }
 
@@ -116,26 +114,25 @@ export const getOrderItemTaxLinesStep = createStep(
 
     const taxContext = normalizeTaxModuleContext(order, forceTaxCalculation)
 
-    if (!taxContext) {
-      return new StepResponse({
-        lineItemTaxLines: [],
-        shippingMethodsTaxLines: [],
-      })
+    const stepResponseData = {
+      lineItemTaxLines: [] as ItemTaxLineDTO[],
+      shippingMethodsTaxLines: [] as ShippingTaxLineDTO[],
     }
 
-    const lineItemTaxLines = (await taxService.getTaxLines(
+    if (!taxContext) {
+      return new StepResponse(stepResponseData)
+    }
+
+    stepResponseData.lineItemTaxLines = (await taxService.getTaxLines(
       normalizeLineItemsForTax(order, items),
       taxContext
     )) as ItemTaxLineDTO[]
 
-    const shippingMethodsTaxLines = (await taxService.getTaxLines(
+    stepResponseData.shippingMethodsTaxLines = (await taxService.getTaxLines(
       normalizeLineItemsForShipping(order, shippingMethods),
       taxContext
     )) as ShippingTaxLineDTO[]
 
-    return new StepResponse({
-      lineItemTaxLines,
-      shippingMethodsTaxLines,
-    })
+    return new StepResponse(stepResponseData)
   }
 )

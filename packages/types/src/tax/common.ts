@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { BigNumberInput } from "../totals"
 
 export interface TaxRateDTO {
   /**
@@ -131,15 +132,15 @@ export interface TaxableItemDTO {
   product_sku?: string
   product_type?: string
   product_type_id?: string
-  quantity?: number
-  unit_price?: number
+  quantity?: BigNumberInput
+  unit_price?: BigNumberInput
   currency_code?: string
 }
 
 export interface TaxableShippingDTO {
   id: string
   shipping_option_id: string
-  unit_price?: number
+  unit_price?: BigNumberInput
   currency_code?: string
 }
 
