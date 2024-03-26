@@ -3,11 +3,10 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import { AdminPostInvitesInviteAcceptReq } from "../validators"
-import { IUserModuleService } from "@medusajs/types"
-import { InviteWorkflow } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { acceptInviteWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IUserModuleService, InviteWorkflow } from "@medusajs/types"
+import { AdminPostInvitesInviteAcceptReq } from "../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostInvitesInviteAcceptReq>,
