@@ -20,8 +20,6 @@ export const SalesChannelDetail = () => {
     return <div>Loading...</div>
   }
 
-  console.log("SalesChannelDetail")
-
   return (
     <div className="flex flex-col gap-y-2">
       <SalesChannelGeneralSection salesChannel={sales_channel} />

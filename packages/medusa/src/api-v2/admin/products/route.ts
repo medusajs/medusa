@@ -18,6 +18,7 @@ export const GET = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
+
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {

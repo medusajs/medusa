@@ -21,11 +21,11 @@ import { useAdminDeleteSalesChannel, useAdminSalesChannels } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
-import { OrderBy } from "../../../../../components/filtering/order-by"
-import { Query } from "../../../../../components/filtering/query"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { ActionMenu } from "../../../../components/common/action-menu"
+import { OrderBy } from "../../../../components/filtering/order-by"
+import { Query } from "../../../../components/filtering/query"
+import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
+import { useQueryParams } from "../../../../hooks/use-query-params"
 
 const PAGE_SIZE = 50
 
