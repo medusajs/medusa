@@ -121,11 +121,11 @@ export default class StockLocationModuleService<
     return await this.stockLocationService_.create(data, context)
   }
 
-  upsert(
+  async upsert(
     data: UpsertStockLocationInput,
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
-  upsert(
+  async upsert(
     data: UpsertStockLocationInput[],
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
