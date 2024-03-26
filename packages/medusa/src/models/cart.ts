@@ -237,6 +237,7 @@
  *       $ref: "#/components/schemas/SalesChannel"
  */
 
+import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 import {
   AfterLoad,
   BeforeInsert,
@@ -250,11 +251,15 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
 } from "typeorm"
-import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { Customer } from "./customer"
@@ -266,10 +271,6 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
 
 export enum CartType {
   DEFAULT = "default",
@@ -297,7 +298,7 @@ export class Cart extends SoftDeletableEntity {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address: Relation<Address>
 
   @Index()
   @Column({ nullable: true })
@@ -307,12 +308,12 @@ export class Cart extends SoftDeletableEntity {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address | null
+  shipping_address: Relation<Address> | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
   })
-  items: LineItem[]
+  items: Relation<LineItem>[]
 
   @Index()
   @Column()
@@ -320,7 +321,7 @@ export class Cart extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region: Relation<Region>
 
   @ManyToMany(() => Discount)
   @JoinTable({
@@ -334,7 +335,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts: Relation<Discount>[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -348,7 +349,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards: Relation<GiftCard>[]
 
   @Index()
   @Column({ nullable: true })
@@ -356,14 +357,14 @@ export class Cart extends SoftDeletableEntity {
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer: Relation<Customer>
 
   payment_session: PaymentSession | null
 
   @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
     cascade: true,
   })
-  payment_sessions: PaymentSession[]
+  payment_sessions: Relation<PaymentSession>[]
 
   @Index()
   @Column({ nullable: true })
@@ -371,12 +372,12 @@ export class Cart extends SoftDeletableEntity {
 
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment: Relation<Payment>
 
   @OneToMany(() => ShippingMethod, (method) => method.cart, {
     cascade: ["soft-remove", "remove"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: Relation<ShippingMethod>[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
   type: CartType
@@ -406,7 +407,7 @@ export class Cart extends SoftDeletableEntity {
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel: SalesChannel
+  sales_channel: Relation<SalesChannel>
 
   @FeatureFlagDecorators(
     [MedusaV2Flag.key, SalesChannelFeatureFlag.key],
@@ -425,7 +426,7 @@ export class Cart extends SoftDeletableEntity {
       }),
     ]
   )
-  sales_channels?: SalesChannel[]
+  sales_channels?: Relation<SalesChannel>[]
 
   shipping_total?: number
   discount_total?: number

@@ -20,8 +20,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import Price from "./price"
 import PriceListRule from "./price-list-rule"
-import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
 type OptionalFields =
@@ -68,10 +68,10 @@ export default class PriceList {
   })
   ends_at: Date | null = null
 
-  @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_list, {
+  @OneToMany(() => Price, (price) => price.price_list, {
     cascade: ["soft-remove" as Cascade],
   })
-  price_set_money_amounts = new Collection<PriceSetMoneyAmount>(this)
+  prices = new Collection<Price>(this)
 
   @OneToMany(() => PriceListRule, (pr) => pr.price_list, {
     cascade: ["soft-remove" as Cascade],
