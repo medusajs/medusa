@@ -1971,8 +1971,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "development/medusa-worker/index",
-          label: "Medusa Worker",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
         },
         {
           type: "category",

@@ -130,11 +130,11 @@ cmds=['yarn install']
 
 ---
 
-## Step 2: Add Medusa Worker Configuration
+## Step 2: Add Worker Mode Configuration
 
 :::note
 
-Learn more about the Medusa Worker in [this guide](../../development/medusa-worker/index.mdx).
+Learn more about the Worker Mode in [this guide](../../development/worker-mode/index.mdx).
 
 :::
 
@@ -189,7 +189,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ## Step 4: Deploy to Railway
 
-In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the Medusa backend and worker, both from the GitHub repository. 
+In this section, you’ll create the PostgreSQL and Redis databases first, then deploy two instances of the Medusa backend: one having a `server` runtime mode, and another having a `worker` runtime mode.
 
 ### Create the PostgreSQL Database
 
@@ -214,7 +214,9 @@ A new Redis database will be added to the project view in a few seconds. Click o
 
 If you use modules that require setting up other resources, make sure to add them at this point. This guide does not cover configurations specific to a module.
 
-### Deploy the Medusa Backend Application
+### Deploy Medusa in Server Mode
+
+In this section, you'll create a Medusa backend instance running in `server` runtime mode.
 
 In the same project view:
 
@@ -273,7 +275,9 @@ To change the start command of your Medusa backend:
 medusa migrations run && medusa start
 ```
 
-### Deploy the Medusa Worker
+### Deploy Medusa in Worker Mode
+
+You'll now create another Medusa instance that'll be in `worker` runtime mode.
 
 In the same project view:
 
@@ -283,11 +287,11 @@ In the same project view:
 
 It will take the worker backend a few minutes for the deployment to finish. It may fail since you haven't added the environment variables yet.
 
-#### Configure Worker Environment Variables
+#### Configure Environment Variables for Worker Mode
 
-To configure the environment variables of your Medusa worker:
+To configure the environment variables of the Medusa instance running in worker mode:
 
-1. Click on the worker’s card.
+1. Click on the card of the Medusa instance you just created..
 2. Choose the Variables tab.
 3. Add the following environment variables:
 
@@ -313,7 +317,7 @@ Make sure to add any other environment variables that are relevant for you here.
 
 #### Change Worker's Start Command
 
-The start command is the command used to run the Medusa worker. To set it:
+The start command is the command used to run the Medusa instance in worker mode. To set it:
 
 1. Click on the worker’s card.
 2. Click on the Settings tab and scroll down to the Deploy section.
