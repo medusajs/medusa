@@ -1970,6 +1970,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
+        },
+        {
           type: "category",
           label: "Feature Flag",
           items: [
