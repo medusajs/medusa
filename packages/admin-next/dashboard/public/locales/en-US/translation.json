@@ -502,6 +502,12 @@
       "disabled": "Disabled"
     }
   },
+  "promotions": {
+    "domain": "Promotions",
+    "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
+    "createPromotionTitle": "Create Promotion",
+    "type": "Promotion type"
+  },
   "pricing": {
     "domain": "Pricing",
     "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",

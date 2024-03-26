@@ -131,6 +131,15 @@
       },
       "required": ["domain"]
     },
+    "promotions": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
     "giftCards": {
       "type": "object",
       "properties": {
