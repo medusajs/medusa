@@ -686,8 +686,8 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("removeLineItems", () => {
-        it("should remove a line item succesfully", async () => {
+      describe("deleteLineItems", () => {
+        it("should delete a line item succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -705,7 +705,7 @@ moduleIntegrationTestRunner({
 
           expect(item.title).toBe("test")
 
-          await service.removeLineItems([item.id])
+          await service.deleteLineItems([item.id])
 
           const order = await service.retrieve(createdOrder.id, {
             relations: ["items"],
@@ -714,7 +714,7 @@ moduleIntegrationTestRunner({
           expect(order.items?.length).toBe(0)
         })
 
-        it("should remove multiple line items succesfully", async () => {
+        it("should delete multiple line items succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -734,7 +734,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          await service.removeLineItems([item.id, item2.id])
+          await service.deleteLineItems([item.id, item2.id])
 
           const order = await service.retrieve(createdOrder.id, {
             relations: ["items"],
@@ -811,8 +811,8 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("removeShippingMethods", () => {
-        it("should remove a line item succesfully", async () => {
+      describe("deleteShippingMethods", () => {
+        it("should delete a line item succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -828,7 +828,7 @@ moduleIntegrationTestRunner({
 
           expect(method.id).not.toBe(null)
 
-          await service.removeShippingMethods(method.id)
+          await service.deleteShippingMethods(method.id)
 
           const order = await service.retrieve(createdOrder.id, {
             relations: ["shipping_methods"],
@@ -961,7 +961,7 @@ moduleIntegrationTestRunner({
           expect(order.items[0].adjustments?.length).toBe(1)
         })
 
-        it("should remove all line item adjustments for an order", async () => {
+        it("should delete all line item adjustments for an order", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1255,8 +1255,8 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("removeLineItemAdjustments", () => {
-        it("should remove a line item succesfully", async () => {
+      describe("deleteLineItemAdjustments", () => {
+        it("should delete a line item succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1283,7 +1283,7 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.item_id).toBe(item.id)
 
-          await service.removeLineItemAdjustments(adjustment.id)
+          await service.deleteLineItemAdjustments(adjustment.id)
 
           const adjustments = await service.listLineItemAdjustments({
             item_id: item.id,
@@ -1292,7 +1292,7 @@ moduleIntegrationTestRunner({
           expect(adjustments?.length).toBe(0)
         })
 
-        it("should remove a line item succesfully with selector", async () => {
+        it("should delete a line item succesfully with selector", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1319,7 +1319,7 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.item_id).toBe(item.id)
 
-          await service.removeLineItemAdjustments({ item_id: item.id })
+          await service.deleteLineItemAdjustments({ item_id: item.id })
 
           const adjustments = await service.listLineItemAdjustments({
             item_id: item.id,
@@ -1459,7 +1459,7 @@ moduleIntegrationTestRunner({
           expect(order.shipping_methods?.[0].adjustments?.length).toBe(1)
         })
 
-        it("should remove all shipping method adjustments for an order", async () => {
+        it("should delete all shipping method adjustments for an order", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1808,8 +1808,8 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("removeShippingMethodAdjustments", () => {
-        it("should remove a shipping method succesfully", async () => {
+      describe("deleteShippingMethodAdjustments", () => {
+        it("should delete a shipping method succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1836,7 +1836,7 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.shipping_method_id).toBe(method.id)
 
-          await service.removeShippingMethodAdjustments(adjustment.id)
+          await service.deleteShippingMethodAdjustments(adjustment.id)
 
           const adjustments = await service.listShippingMethodAdjustments({
             shipping_method_id: method.id,
@@ -1845,7 +1845,7 @@ moduleIntegrationTestRunner({
           expect(adjustments?.length).toBe(0)
         })
 
-        it("should remove a shipping method succesfully with selector", async () => {
+        it("should delete a shipping method succesfully with selector", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -1875,7 +1875,7 @@ moduleIntegrationTestRunner({
 
           expect(adjustment.shipping_method_id).toBe(shippingMethod.id)
 
-          await service.removeShippingMethodAdjustments({
+          await service.deleteShippingMethodAdjustments({
             shipping_method_id: shippingMethod.id,
           })
 
@@ -2004,7 +2004,7 @@ moduleIntegrationTestRunner({
           expect(order.items[0].tax_lines.length).toBe(1)
         })
 
-        it("should remove all line item tax lines for an order", async () => {
+        it("should delete all line item tax lines for an order", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -2122,7 +2122,7 @@ moduleIntegrationTestRunner({
           expect(order.items[0].tax_lines.length).toBe(1)
         })
 
-        it("should remove, update, and create line item tax lines for an order", async () => {
+        it("should delete, update, and create line item tax lines for an order", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -2180,7 +2180,7 @@ moduleIntegrationTestRunner({
               rate: 25,
               code: "TX-2",
             },
-            // remove: should remove the initial tax line for itemOne
+            // delete: should delete the initial tax line for itemOne
           ])
 
           const order = await service.retrieve(createdOrder.id, {
@@ -2378,8 +2378,8 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("removeLineItemAdjustments", () => {
-        it("should remove line item tax line succesfully", async () => {
+      describe("deleteLineItemAdjustments", () => {
+        it("should delete line item tax line succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -2404,7 +2404,7 @@ moduleIntegrationTestRunner({
 
           expect(taxLine.item_id).toBe(item.id)
 
-          await service.removeLineItemTaxLines(taxLine.id)
+          await service.deleteLineItemTaxLines(taxLine.id)
 
           const taxLines = await service.listLineItemTaxLines({
             item_id: item.id,
@@ -2413,7 +2413,7 @@ moduleIntegrationTestRunner({
           expect(taxLines?.length).toBe(0)
         })
 
-        it("should remove line item tax lines succesfully with selector", async () => {
+        it("should delete line item tax lines succesfully with selector", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
@@ -2438,7 +2438,7 @@ moduleIntegrationTestRunner({
 
           expect(taxLine.item_id).toBe(item.id)
 
-          await service.removeLineItemTaxLines({ item_id: item.id })
+          await service.deleteLineItemTaxLines({ item_id: item.id })
 
           const taxLines = await service.listLineItemTaxLines({
             item_id: item.id,

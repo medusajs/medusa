@@ -91,9 +91,8 @@ export class AdminPostDraftOrdersReq {
 
   @IsArray()
   @IsOptional()
-  @Type(() => Discount)
   @ValidateNested({ each: true })
-  discounts?: Discount[]
+  promo_codes?: string[]
 
   @IsString()
   @IsOptional()
@@ -140,11 +139,6 @@ class ShippingMethod {
 
   @IsNumber()
   amount: BigNumberInput
-}
-
-class Discount {
-  @IsString()
-  code: string
 }
 
 class Item {

@@ -1,7 +1,6 @@
 import {
   Context,
   DAL,
-  FilterableLineItemTaxLineProps,
   FindConfig,
   InternalModuleDeclaration,
   IOrderModuleService,
@@ -688,45 +687,6 @@ export default class OrderModuleService<
     return await this.orderItemService_.update(toUpdate, sharedContext)
   }
 
-  async removeLineItems(
-    itemIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
-  async removeLineItems(
-    selector: Partial<OrderTypes.FilterableOrderLineItemProps>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async removeLineItems(
-    itemIdsOrSelector:
-      | string
-      | string[]
-      | Partial<OrderTypes.FilterableOrderLineItemProps>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let toDelete: string[]
-
-    if (isObject(itemIdsOrSelector)) {
-      const items = await this.listLineItems(
-        {
-          ...itemIdsOrSelector,
-        } as Partial<OrderTypes.FilterableOrderLineItemProps>,
-        {},
-        sharedContext
-      )
-
-      toDelete = items.map((item) => item.id)
-    } else {
-      toDelete = Array.isArray(itemIdsOrSelector)
-        ? itemIdsOrSelector
-        : [itemIdsOrSelector]
-    }
-
-    await this.lineItemService_.delete(toDelete, sharedContext)
-  }
-
   async createAddresses(
     data: OrderTypes.CreateOrderAddressDTO,
     sharedContext?: Context
@@ -878,46 +838,6 @@ export default class OrderModuleService<
     )
   }
 
-  async removeShippingMethods(
-    methodIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethods(
-    methodIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethods(
-    selector: Partial<OrderTypes.OrderShippingMethodDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async removeShippingMethods(
-    methodIdsOrSelector:
-      | string
-      | string[]
-      | Partial<OrderTypes.OrderShippingMethodDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let toDelete: string[]
-    if (isObject(methodIdsOrSelector)) {
-      const methods = await this.listShippingMethods(
-        {
-          ...(methodIdsOrSelector as Partial<OrderTypes.OrderShippingMethodDTO>),
-        },
-        {},
-        sharedContext
-      )
-
-      toDelete = methods.map((m) => m.id)
-    } else {
-      toDelete = Array.isArray(methodIdsOrSelector)
-        ? methodIdsOrSelector
-        : [methodIdsOrSelector]
-    }
-    await this.shippingMethodService_.delete(toDelete, sharedContext)
-  }
-
   async addLineItemAdjustments(
     adjustments: OrderTypes.CreateOrderLineItemAdjustmentDTO[]
   ): Promise<OrderTypes.OrderLineItemAdjustmentDTO[]>
@@ -1029,46 +949,6 @@ export default class OrderModuleService<
     >(result, {
       populate: true,
     })
-  }
-
-  async removeLineItemAdjustments(
-    adjustmentIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItemAdjustments(
-    adjustmentId: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItemAdjustments(
-    selector: Partial<OrderTypes.OrderLineItemAdjustmentDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeLineItemAdjustments(
-    adjustmentIdsOrSelector:
-      | string
-      | string[]
-      | Partial<OrderTypes.OrderLineItemAdjustmentDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(adjustmentIdsOrSelector)) {
-      const adjustments = await this.listLineItemAdjustments(
-        {
-          ...adjustmentIdsOrSelector,
-        } as Partial<OrderTypes.OrderLineItemAdjustmentDTO>,
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = adjustments.map((adj) => adj.id)
-    } else {
-      ids = Array.isArray(adjustmentIdsOrSelector)
-        ? adjustmentIdsOrSelector
-        : [adjustmentIdsOrSelector]
-    }
-
-    await this.lineItemAdjustmentService_.delete(ids, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1201,46 +1081,6 @@ export default class OrderModuleService<
     })
   }
 
-  async removeShippingMethodAdjustments(
-    adjustmentIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethodAdjustments(
-    adjustmentId: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethodAdjustments(
-    selector: Partial<OrderTypes.OrderShippingMethodAdjustmentDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeShippingMethodAdjustments(
-    adjustmentIdsOrSelector:
-      | string
-      | string[]
-      | Partial<OrderTypes.OrderShippingMethodAdjustmentDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(adjustmentIdsOrSelector)) {
-      const adjustments = await this.listShippingMethodAdjustments(
-        {
-          ...adjustmentIdsOrSelector,
-        } as Partial<OrderTypes.OrderShippingMethodAdjustmentDTO>,
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = adjustments.map((adj) => adj.id)
-    } else {
-      ids = Array.isArray(adjustmentIdsOrSelector)
-        ? adjustmentIdsOrSelector
-        : [adjustmentIdsOrSelector]
-    }
-
-    await this.shippingMethodAdjustmentService_.delete(ids, sharedContext)
-  }
-
   addLineItemTaxLines(
     taxLines: OrderTypes.CreateOrderLineItemTaxLineDTO[]
   ): Promise<OrderTypes.OrderLineItemTaxLineDTO[]>
@@ -1351,46 +1191,6 @@ export default class OrderModuleService<
     })
   }
 
-  removeLineItemTaxLines(
-    taxLineIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  removeLineItemTaxLines(
-    taxLineIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  removeLineItemTaxLines(
-    selector: FilterableLineItemTaxLineProps,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeLineItemTaxLines(
-    taxLineIdsOrSelector:
-      | string
-      | string[]
-      | OrderTypes.FilterableOrderShippingMethodTaxLineProps,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(taxLineIdsOrSelector)) {
-      const taxLines = await this.listLineItemTaxLines(
-        {
-          ...(taxLineIdsOrSelector as OrderTypes.FilterableOrderLineItemTaxLineProps),
-        },
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = taxLines.map((taxLine) => taxLine.id)
-    } else {
-      ids = Array.isArray(taxLineIdsOrSelector)
-        ? taxLineIdsOrSelector
-        : [taxLineIdsOrSelector]
-    }
-
-    await this.lineItemTaxLineService_.delete(ids, sharedContext)
-  }
-
   addShippingMethodTaxLines(
     taxLines: OrderTypes.CreateOrderShippingMethodTaxLineDTO[]
   ): Promise<OrderTypes.OrderShippingMethodTaxLineDTO[]>
@@ -1499,46 +1299,6 @@ export default class OrderModuleService<
     >(result, {
       populate: true,
     })
-  }
-
-  removeShippingMethodTaxLines(
-    taxLineIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  removeShippingMethodTaxLines(
-    taxLineIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  removeShippingMethodTaxLines(
-    selector: Partial<OrderTypes.OrderShippingMethodTaxLineDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeShippingMethodTaxLines(
-    taxLineIdsOrSelector:
-      | string
-      | string[]
-      | OrderTypes.FilterableOrderShippingMethodTaxLineProps,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(taxLineIdsOrSelector)) {
-      const taxLines = await this.listShippingMethodTaxLines(
-        {
-          ...(taxLineIdsOrSelector as OrderTypes.FilterableOrderShippingMethodTaxLineProps),
-        },
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = taxLines.map((taxLine) => taxLine.id)
-    } else {
-      ids = Array.isArray(taxLineIdsOrSelector)
-        ? taxLineIdsOrSelector
-        : [taxLineIdsOrSelector]
-    }
-
-    await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
   }
 
   async createOrderChange(

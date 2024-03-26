@@ -434,14 +434,12 @@ export class Migration20240219102530 extends Migration {
       ALTER TABLE if exists "order"
       ADD CONSTRAINT "order_shipping_address_id_foreign" FOREIGN KEY ("shipping_address_id") REFERENCES "order_address" ("id") ON
       UPDATE CASCADE ON
-      DELETE
-      SET NULL;
+      DELETE CASCADE;
 
       ALTER TABLE if exists "order"
       ADD CONSTRAINT "order_billing_address_id_foreign" FOREIGN KEY ("billing_address_id") REFERENCES "order_address" ("id") ON
       UPDATE CASCADE ON
-      DELETE
-      SET NULL;
+      DELETE CASCADE;
 
       ALTER TABLE if exists "order_change"
       ADD CONSTRAINT "order_change_order_id_foreign" FOREIGN KEY ("order_id") REFERENCES "order" ("id") ON

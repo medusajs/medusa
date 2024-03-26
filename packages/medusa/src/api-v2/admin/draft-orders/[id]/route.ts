@@ -16,6 +16,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     fields: defaultAdminOrderFields,
   })
 
-  const [order] = await remoteQuery(queryObject)
-  res.status(200).json({ order })
+  const [draft_order] = await remoteQuery(queryObject)
+  res.status(200).json({ draft_order })
 }

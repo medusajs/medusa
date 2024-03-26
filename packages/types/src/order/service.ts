@@ -162,9 +162,9 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemDTO>
 
-  removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
-  removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
-  removeLineItems(
+  deleteLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
+  deleteLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  deleteLineItems(
     selector: Partial<FilterableOrderLineItemProps>,
     sharedContext?: Context
   ): Promise<void>
@@ -207,15 +207,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 
-  removeShippingMethods(
+  deleteShippingMethods(
     methodIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethods(
+  deleteShippingMethods(
     methodIds: string,
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethods(
+  deleteShippingMethods(
     selector: Partial<FilterableOrderShippingMethodProps>,
     sharedContext?: Context
   ): Promise<void>
@@ -243,15 +243,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     adjustmentIds: string,
     sharedContext?: Context
   ): Promise<void>
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     selector: Partial<OrderLineItemAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -283,15 +283,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
 
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     selector: Partial<OrderShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -320,15 +320,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
 
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     taxLineIds: string,
     sharedContext?: Context
   ): Promise<void>
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     selector: FilterableOrderLineItemTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -362,15 +362,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     taxLineIds: string,
     sharedContext?: Context
   ): Promise<void>
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -425,4 +425,91 @@ export interface IOrderModuleService extends IModuleService {
   applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
 
   addOrderAction(data: any, sharedContext?: Context)
+
+  softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemAdjustments<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 }

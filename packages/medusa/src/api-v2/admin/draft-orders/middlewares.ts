@@ -37,6 +37,12 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/draft-orders",
-    middlewares: [transformBody(AdminPostDraftOrdersReq)],
+    middlewares: [
+      transformBody(AdminPostDraftOrdersReq),
+      transformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]
