@@ -72,6 +72,7 @@ module.exports = {
     "stock-location",
     "stock-location-next",
     "store",
+    "tax",
     "user",
     "workflows",
   ],
@@ -1503,6 +1504,73 @@ npx medusa develop
       },
     },
 
+    // TAX CONFIG
+    "^tax": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+      },
+    },
+    "^tax/ITaxModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Tax Module.",
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+        slug: "/references/tax/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Tax Module Reference",
+      },
+    },
+    "^tax/.*ITaxModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ITaxModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Tax Module.",
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+        slug: "/references/tax",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // TAX MODELS CONFIG
+    "^tax_models": {
+      frontmatterData: {
+        displayed_sidebar: "taxModelReference",
+        slug: "/references/tax/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Tax Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Tax Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/tax_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Tax Module",
+      frontmatterData: {
+        displayed_sidebar: "taxModelReference",
+        slug: "/references/tax/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Tax Module Data Models Reference",
+      },
+    },
+
     // TAX CALCULATION CONFIG
     "^tax_calculation": {
       frontmatterData: {
@@ -1550,12 +1618,12 @@ npx medusa develop
     },
 
     // TAX PROVIDER CONFIG
-    "^tax/": {
+    "^tax_provider/": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
     },
-    "^tax/.*AbstractTaxService": {
+    "^tax_provider/.*AbstractTaxService": {
       reflectionGroups: {
         Properties: false,
       },

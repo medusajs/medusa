@@ -8,3 +8,5 @@ tokens:
   - we'(?:ve|re)
   - us
   - let's
+exceptions:
+  - US
