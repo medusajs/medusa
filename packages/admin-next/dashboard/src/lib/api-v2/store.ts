@@ -8,7 +8,7 @@ export const useV2Store = ({ initialData }: { initialData?: any }) => {
     { initialData }
   )
 
-  const store = data.stores[0]
+  const store = data?.stores[0]
 
   return { store, isLoading, isError, error }
 }
