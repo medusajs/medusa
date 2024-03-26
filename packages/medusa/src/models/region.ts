@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
@@ -33,13 +34,13 @@ export class Region extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency: Relation<Currency>
 
   @Column({ type: "real" })
   tax_rate: number
 
   @OneToMany(() => TaxRate, (tr) => tr.region)
-  tax_rates: TaxRate[] | null
+  tax_rates: Relation<TaxRate>[] | null
 
   @Column({ nullable: true })
   tax_code: string
@@ -51,14 +52,14 @@ export class Region extends SoftDeletableEntity {
   automatic_taxes: boolean
 
   @OneToMany(() => Country, (c) => c.region)
-  countries: Country[]
+  countries: Relation<Country>[]
 
   @Column({ type: "text", nullable: true })
   tax_provider_id: string | null
 
   @ManyToOne(() => TaxProvider)
   @JoinColumn({ name: "tax_provider_id" })
-  tax_provider: TaxProvider
+  tax_provider: Relation<TaxProvider>
 
   @ManyToMany(() => PaymentProvider, {
     cascade: ["insert", "update"],
@@ -74,7 +75,7 @@ export class Region extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payment_providers: PaymentProvider[]
+  payment_providers: Relation<PaymentProvider>[]
 
   @ManyToMany(() => FulfillmentProvider, {
     cascade: ["insert", "update"],
@@ -90,7 +91,7 @@ export class Region extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  fulfillment_providers: FulfillmentProvider[]
+  fulfillment_providers: Relation<FulfillmentProvider>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
