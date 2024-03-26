@@ -30,7 +30,7 @@ import { SplitView } from "../../../../../../components/layout/split-view"
 import { VariantTable } from "../../../../common/variant-table"
 import { CreateReturnSchema } from "../schema"
 import { OrderCreateClaimShippingDetails } from "./order-create-claim-shipping-details"
-import { getFormattedAddress } from "../../../../../../components/common/customer-info"
+import { getFormattedAddress } from "../../../../../../lib/addresses"
 
 type ReturnsFormProps = {
   form: UseFormReturn<z.infer<typeof CreateReturnSchema>>
