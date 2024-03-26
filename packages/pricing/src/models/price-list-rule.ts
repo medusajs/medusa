@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -11,8 +11,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -63,7 +63,7 @@ export default class PriceListRule {
   rule_type: RuleType
 
   @OneToMany(() => PriceListRuleValue, (plrv) => plrv.price_list_rule, {
-    cascade: ["soft-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   price_list_rule_values = new Collection<PriceListRuleValue>(this)
 
@@ -101,10 +101,14 @@ export default class PriceListRule {
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "plrule")
+    this.price_list_id ??= this.price_list?.id!
+    this.rule_type_id ??= this.rule_type?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "plrule")
+    this.price_list_id ??= this.price_list?.id!
+    this.rule_type_id ??= this.rule_type?.id!
   }
 }
