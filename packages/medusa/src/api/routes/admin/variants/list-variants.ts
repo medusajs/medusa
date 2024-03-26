@@ -1,3 +1,4 @@
+import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,16 +6,16 @@ import {
   RegionService,
   SalesChannelService,
 } from "../../../../services"
-import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { AdminPriceSelectionParams } from "../../../../types/price-selection"
 import { IInventoryService } from "@medusajs/types"
-import { IsType } from "../../../../utils/validators/is-type"
-import { NumericalComparisonOperator } from "../../../../types/common"
-import { PricedVariant } from "../../../../types/pricing"
-import ProductVariantService from "../../../../services/product-variant"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { omit } from "lodash"
+import ProductVariantService from "../../../../services/product-variant"
+import { NumericalComparisonOperator } from "../../../../types/common"
+import { AdminPriceSelectionParams } from "../../../../types/price-selection"
+import { PricedVariant } from "../../../../types/pricing"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/variants
@@ -40,6 +41,9 @@ import { omit } from "lodash"
  *   - (query) fields {string} "Comma-separated fields that should be included in the returned product variants."
  *   - (query) offset=0 {number} The number of product variants to skip when retrieving the product variants.
  *   - (query) limit=100 {number} Limit the number of product variants returned.
+ *   - (query) order {string} The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - (query) manage_inventory {boolean} Filter product variants by whether their inventory is managed or not.
+ *   - (query) allow_backorder {boolean} Filter product variants by whether they are allowed to be backordered or not.
  *   - in: query
  *     name: cart_id
  *     style: form
@@ -320,4 +324,27 @@ export class AdminGetVariantsParams extends AdminPriceSelectionParams {
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
+  /**
+   * Filter product variants by whether their inventory is managed or not.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  manage_inventory?: boolean
+
+  /**
+   * Filter product variants by whether they are allowed to be backordered or not.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  allow_backorder?: boolean
 }

@@ -1,8 +1,15 @@
-import { BeforeInsert, Column, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from "typeorm"
 
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
+import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SalesChannel } from "./sales-channel"
 
 @FeatureFlagEntity("sales_channels")
@@ -17,7 +24,7 @@ export class SalesChannelLocation extends SoftDeletableEntity {
 
   @ManyToOne(() => SalesChannel, (sc) => sc.locations)
   @JoinColumn({ name: "sales_channel_id" })
-  sales_channel: SalesChannel
+  sales_channel: Relation<SalesChannel>
 
   /**
    * @apiIgnore

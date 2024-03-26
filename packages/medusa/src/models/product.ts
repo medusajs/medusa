@@ -10,26 +10,27 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import _ from "lodash"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { Image } from "./image"
+import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
-import { ProductCategory } from "./product-category"
 import { ProductVariant } from "./product-variant"
 import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import _ from "lodash"
-import { generateEntityId } from "../utils"
 
 /**
  * @enum
- * 
+ *
  * The status of a product.
  */
 export enum ProductStatus {
@@ -84,18 +85,18 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  images: Image[]
+  images: Relation<Image>[]
 
   @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
   @OneToMany(() => ProductOption, (productOption) => productOption.product)
-  options: ProductOption[]
+  options: Relation<ProductOption>[]
 
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: true,
   })
-  variants: ProductVariant[]
+  variants: Relation<ProductVariant>[]
 
   @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -109,11 +110,11 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  categories: ProductCategory[]
+  categories: Relation<ProductCategory>[]
 
   profile_id: string
 
-  profile: ShippingProfile
+  profile: Relation<ShippingProfile>
 
   @ManyToMany(() => ShippingProfile, {
     cascade: ["remove", "soft-remove"],
@@ -129,7 +130,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  profiles: ShippingProfile[]
+  profiles: Relation<ShippingProfile>[]
 
   @Column({ type: "int", nullable: true })
   weight: number | null
@@ -160,14 +161,14 @@ export class Product extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductCollection)
   @JoinColumn({ name: "collection_id" })
-  collection: ProductCollection
+  collection: Relation<ProductCollection>
 
   @Column({ type: "text", nullable: true })
   type_id: string | null
 
   @ManyToOne(() => ProductType)
   @JoinColumn({ name: "type_id" })
-  type: ProductType
+  type: Relation<ProductType>
 
   @ManyToMany(() => ProductTag)
   @JoinTable({
@@ -181,7 +182,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ProductTag[]
+  tags: Relation<ProductTag>[]
 
   @Column({ default: true })
   discountable: boolean
@@ -206,7 +207,7 @@ export class Product extends SoftDeletableEntity {
       },
     }),
   ])
-  sales_channels: SalesChannel[]
+  sales_channels: Relation<SalesChannel>[]
 
   /**
    * @apiIgnore
