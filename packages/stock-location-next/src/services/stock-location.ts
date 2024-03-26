@@ -217,7 +217,8 @@ export default class StockLocationModuleService<
   @InjectTransactionManager("baseRepository_")
   async update_(
     data:
-      | (UpdateStockLocationInput & { id: string })[]
+      | UpdateStockLocationNextInput[]
+      | UpdateStockLocationNextInput
       | { data: any; selector: FilterableStockLocationProps },
     @MedusaContext() context: Context = {}
   ): Promise<TEntity[] | TEntity> {
