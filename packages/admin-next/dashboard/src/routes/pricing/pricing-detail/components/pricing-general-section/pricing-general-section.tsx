@@ -1,13 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { PriceList } from "@medusajs/medusa"
-import {
-  Container,
-  Heading,
-  StatusBadge,
-  Text,
-  Tooltip,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
 import { useAdminDeletePriceList } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -28,8 +21,6 @@ export const PricingGeneralSection = ({
   const { mutateAsync } = useAdminDeletePriceList(priceList.id)
 
   const overrideCount = priceList.prices?.length || 0
-  const firstCustomerGroups = priceList.customer_groups?.slice(0, 3)
-  const remainingCustomerGroups = priceList.customer_groups?.slice(3)
 
   const { color, text } = getPriceListStatus(t, priceList)
 
@@ -103,36 +94,6 @@ export const PricingGeneralSection = ({
         </Text>
         <Text size="small" className="text-pretty">
           {priceList.description}
-        </Text>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text leading="compact" size="small" weight="plus">
-          {t("pricing.settings.customerGroupsLabel")}
-        </Text>
-        <Text size="small" className="text-pretty">
-          <span>
-            {firstCustomerGroups.length > 0
-              ? firstCustomerGroups.join(", ")
-              : "-"}
-          </span>
-          {remainingCustomerGroups.length > 0 && (
-            <Tooltip
-              content={
-                <ul>
-                  {remainingCustomerGroups.map((cg) => (
-                    <li key={cg.id}>{cg.name}</li>
-                  ))}
-                </ul>
-              }
-            >
-              <span className="text-ui-fg-muted">
-                {" "}
-                {t("general.plusCountMore", {
-                  count: remainingCustomerGroups.length,
-                })}
-              </span>
-            </Tooltip>
-          )}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
