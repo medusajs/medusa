@@ -4,7 +4,11 @@
  * description: The campaign's budget.
  * x-schemaName: CampaignBudget
  * properties:
- *   type: {}
+ *   type:
+ *     type: string
+ *     enum:
+ *       - spend
+ *       - usage
  *   limit:
  *     type: number
  *     title: limit

@@ -25,8 +25,16 @@
  *     type: string
  *     title: ends_at
  *     description: The price list's ends at.
- *   status: {}
- *   type: {}
+ *   status:
+ *     type: string
+ *     enum:
+ *       - active
+ *       - draft
+ *   type:
+ *     type: string
+ *     enum:
+ *       - sale
+ *       - override
  *   prices:
  *     type: array
  *     description: The price list's prices.
