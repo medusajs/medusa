@@ -1,4 +1,7 @@
+import { useMemo } from "react"
+import { useAdminVariantsInventory } from "medusa-react"
 import { useTranslation } from "react-i18next"
+import { Trash } from "@medusajs/icons"
 import * as zod from "zod"
 
 import { LineItem } from "@medusajs/medusa"
@@ -7,13 +10,16 @@ import { UseFormReturn } from "react-hook-form"
 
 import { CreateFulfillmentSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
+import { getFulfillableQuantity } from "../../../../../lib/line-item"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type OrderEditItemProps = {
   item: LineItem
   currencyCode: string
-
+  locationId?: string
+  onItemRemove: (itemId: string) => void
   form: UseFormReturn<zod.infer<typeof CreateFulfillmentSchema>>
 }
 
@@ -21,8 +27,41 @@ export function OrderCreateFulfillmentItem({
   item,
   currencyCode,
   form,
+  locationId,
+  onItemRemove,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
+
+  const { variant } = useAdminVariantsInventory(item.variant_id as string)
+
+  const hasInventoryItem = !!variant?.inventory.length
+
+  const { availableQuantity, inStockQuantity } = useMemo(() => {
+    if (!variant || !locationId) {
+      return {
+        availableQuantity: item.variant.inventory_quantity,
+        inStockQuantity: item.variant.inventory_quantity,
+      }
+    }
+
+    const { inventory } = variant
+
+    const locationInventory = inventory[0]?.location_levels?.find(
+      (inv) => inv.location_id === locationId
+    )
+
+    if (!locationInventory) {
+      return {}
+    }
+
+    return {
+      availableQuantity: locationInventory.available_quantity,
+      inStockQuantity: locationInventory.stocked_quantity,
+    }
+  }, [variant, locationId])
+
+  const minValue = 0
+  const maxValue = getFulfillableQuantity(item) // TODO: stock location qunatities
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
@@ -45,6 +84,22 @@ export function OrderCreateFulfillmentItem({
         <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
           <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
         </div>
+
+        <div className="flex items-center">
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.remove"),
+                    icon: <Trash />,
+                    onClick: () => onItemRemove(item.id),
+                  },
+                ],
+              },
+            ]}
+          />
+        </div>
       </div>
 
       <div className="block p-3 text-sm">
@@ -61,8 +116,8 @@ export function OrderCreateFulfillmentItem({
                   <Form.Control>
                     <Input
                       className="bg-ui-bg-base txt-small w-full rounded-lg"
-                      min={1}
-                      max={item.quantity}
+                      min={minValue}
+                      max={maxValue}
                       type="number"
                       {...field}
                       onChange={(e) => {

@@ -315,6 +315,7 @@
       "fulfillItems": "Fulfill items",
       "statusTitle": "Fulfillment Status",
       "itemsToFulfill": "Items to fulfill",
+      "create": "Create Fulfillment",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",

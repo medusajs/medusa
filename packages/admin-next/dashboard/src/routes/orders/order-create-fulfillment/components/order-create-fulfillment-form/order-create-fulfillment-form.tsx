@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import * as zod from "zod"
 import { useTranslation } from "react-i18next"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { Order } from "@medusajs/medusa"
 import { Button, Select, Switch } from "@medusajs/ui"
 
@@ -11,9 +12,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { CreateFulfillmentSchema } from "./constants"
-import { useAdminStockLocations } from "medusa-react"
+import { useAdminCreateFulfillment, useAdminStockLocations } from "medusa-react"
 import { Form } from "../../../../../components/common/form"
-import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item.tsx"
+import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
+import { getFulfillableQuantity } from "../../../../../lib/line-item"
 
 type OrderCreateFulfillmentFormProps = {
   order: Order
@@ -25,18 +27,46 @@ export function OrderCreateFulfillmentForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const isMutating = false
+  const { mutateAsync: createOrderFulfillment, isLoading: isMutating } =
+    useAdminCreateFulfillment(order.id)
+
+  const [fulfillableItems, setFulfillableItems] = useState(() =>
+    order.items.filter((item) => getFulfillableQuantity(item) > 0)
+  )
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: {},
+      quantity: fulfillableItems.reduce((acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      }, {} as Record<string, number>),
+      send_notification: !order.no_notification,
     },
+    resolver: zodResolver(CreateFulfillmentSchema),
   })
 
   const { stock_locations = [] } = useAdminStockLocations({})
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    await createOrderFulfillment({
+      location_id: data.location,
+      no_notification: !data.send_notification,
+      items: Object.entries(data.quantity)
+        .filter(([, value]) => !!value)
+        .map(([item_id, quantity]) => ({ item_id, quantity })),
+    })
+
     handleSuccess(`/orders/${order.id}`)
+  })
+
+  const onItemRemove = (itemId: string) => {
+    setFulfillableItems((state) => state.filter((i) => i.id !== itemId))
+    form.setValue(`quantity.${itemId}`, undefined)
+  }
+
+  const selectedLocationId = useWatch({
+    name: "location",
+    control: form.control,
   })
 
   return (
@@ -53,7 +83,7 @@ export function OrderCreateFulfillmentForm({
               </Button>
             </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
-              {t("actions.save")}
+              {t("orders.fulfillment.create")}
             </Button>
           </div>
         </RouteFocusModal.Header>
@@ -104,11 +134,13 @@ export function OrderCreateFulfillmentForm({
                     </Form.Hint>
 
                     <div className="flex flex-col gap-y-1">
-                      {order.items.map((item) => (
+                      {fulfillableItems.map((item) => (
                         <OrderCreateFulfillmentItem
                           key={item.id}
                           form={form}
                           item={item}
+                          onItemRemove={onItemRemove}
+                          locationId={selectedLocationId}
                           currencyCode={order.currency_code}
                         />
                       ))}
