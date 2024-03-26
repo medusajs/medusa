@@ -1,5 +1,16 @@
 # @medusajs/oas-cli
 
+## 0.3.2
+
+### Patch Changes
+
+- [#6812](https://github.com/medusajs/medusa/pull/6812) [`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli): fix tool not working in Medusa backends
+
+- Updated dependencies [[`0168c819da`](https://github.com/medusajs/medusa/commit/0168c819da2bcdf2391c5fb5501342ea140882df), [`70859397c0`](https://github.com/medusajs/medusa/commit/70859397c00ad0b45a517547e2792ed4f6882d73), [`deab12e27e`](https://github.com/medusajs/medusa/commit/deab12e27e8249e26d24d7bc904c18195679ff24), [`56481e683d`](https://github.com/medusajs/medusa/commit/56481e683d33ff98f0d4c4e144873bb23f993c9c), [`9073d7aba3`](https://github.com/medusajs/medusa/commit/9073d7aba3419e4dc0a206473291a46ebd79b8c1), [`7bc7adeeb4`](https://github.com/medusajs/medusa/commit/7bc7adeeb4568ad85a81df08e3d6d3b5023cee13), [`509ddf9a56`](https://github.com/medusajs/medusa/commit/509ddf9a5631b4c8a4c2641595c40d7f9261e563), [`68b9812aa1`](https://github.com/medusajs/medusa/commit/68b9812aa1fe8a9e368112e721cd868919369980), [`4974f5e455`](https://github.com/medusajs/medusa/commit/4974f5e4557bd64a328a881ec02b91e15485bd23), [`205573f5e3`](https://github.com/medusajs/medusa/commit/205573f5e3bb826abe1cc1bc16855f079aa490e4), [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713), [`05e857d256`](https://github.com/medusajs/medusa/commit/05e857d25657b5576a891c9b48c19c1759c70701), [`1ef9c78cea`](https://github.com/medusajs/medusa/commit/1ef9c78cea080c3b7c136f909c6cddec9d8f0c62), [`20132d7cea`](https://github.com/medusajs/medusa/commit/20132d7cea13b7c7ae77b33684d01a9ab40f7ed3)]:
+  - @medusajs/medusa@1.20.4
+  - @medusajs/types@1.11.15
+  - @medusajs/utils@1.11.8
+
 ## 0.3.1
 
 ### Patch Changes

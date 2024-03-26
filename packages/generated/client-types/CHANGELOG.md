@@ -1,5 +1,16 @@
 # @medusajs/client-types
 
+## 0.2.11
+
+### Patch Changes
+
+- [#6812](https://github.com/medusajs/medusa/pull/6812) [`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli): fix tool not working in Medusa backends
+
+- [#6680](https://github.com/medusajs/medusa/pull/6680) [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui-preset): Pull latest styles from Figma.
+  fix(ui): Fix invalid state styling of Select, so it correctly shows when aria-invalid is true.
+  fix(medusa): Align query params between `/admin/products/:id/variants` and `/admin/variants`.
+  chore(client-types): Update `medusa` client types to reflect changes to the API.
+
 ## 0.2.10
 
 ### Patch Changes
