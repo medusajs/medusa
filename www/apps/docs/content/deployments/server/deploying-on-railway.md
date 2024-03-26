@@ -187,7 +187,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ---
 
-## Step 3: Deploy to Railway
+## Step 4: Deploy to Railway
 
 In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the Medusa backend and worker, both from the GitHub repository. 
 
@@ -333,7 +333,7 @@ The last step is to add a domain name to your Medusa backend. To do that:
 
 ---
 
-## Step 4: Test the Backend
+## Step 5: Test the Backend
 
 Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 
