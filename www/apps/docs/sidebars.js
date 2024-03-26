@@ -1970,6 +1970,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/medusa-worker/index",
+          label: "Medusa Worker",
+        },
+        {
           type: "category",
           label: "Feature Flag",
           items: [
