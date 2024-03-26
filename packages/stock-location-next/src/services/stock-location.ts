@@ -129,9 +129,11 @@ export default class StockLocationModuleService<
     data: UpsertStockLocationInput[],
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
+
+  @InjectManager("baseRepository_")
   async upsert(
     data: UpsertStockLocationInput | UpsertStockLocationInput[],
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
   > {
