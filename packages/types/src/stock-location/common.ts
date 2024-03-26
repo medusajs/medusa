@@ -312,7 +312,7 @@ export type StockLocationAddressInput = {
   /**
    * The second line of the stock location address.
    */
-  address_2?: string
+  address_2?: string | null
 
   /**
    * The country code of the stock location address.
@@ -322,27 +322,27 @@ export type StockLocationAddressInput = {
   /**
    * The city of the stock location address.
    */
-  city?: string
+  city?: string | null
 
   /**
    * The phone of the stock location address.
    */
-  phone?: string
+  phone?: string | null
 
   /**
    * The province of the stock location address.
    */
-  province?: string
+  province?: string | null
 
   /**
    * The postal code of the stock location address.
    */
-  postal_code?: string
+  postal_code?: string | null
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /**

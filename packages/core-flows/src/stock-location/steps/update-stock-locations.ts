@@ -53,6 +53,8 @@ export const updateStockLocationsStep = createStep(
       revertInput.map((item) => ({
         id: item.id,
         name: item.name,
+        ...(item.metadata ? { metadata: item.metadata } : {}),
+        ...(item.address ? { address: item.address } : {}),
       }))
     )
   }
