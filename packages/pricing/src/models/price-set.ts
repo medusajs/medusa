@@ -1,6 +1,6 @@
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -10,8 +10,8 @@ import {
   Entity,
   Filter,
   ManyToMany,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -26,6 +26,8 @@ const PriceSetDeletedAtIndex = createPsqlIndexStatementHelper({
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
+
+export const PriceSetIdPrefix = "pset"
 
 @Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -71,11 +73,11 @@ export default class PriceSet {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, PriceSetIdPrefix)
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, PriceSetIdPrefix)
   }
 }
