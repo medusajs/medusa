@@ -159,7 +159,7 @@ export default class StockLocationModuleService<
       (location) => !location.id
     ) as CreateStockLocationInput[]
 
-    const operations: Promise<StockLocation[]>[] = []
+    const operations: Promise<StockLocation[] | StockLocation>[] = []
 
     if (toCreate.length) {
       operations.push(this.create_(toCreate, context))
@@ -196,16 +196,13 @@ export default class StockLocationModuleService<
   ): Promise<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
   > {
-    let normalizedInput: (UpdateStockLocationNextInput & { id: string })[] = []
+    let normalizedInput:
+      | (UpdateStockLocationNextInput & { id: string })[]
+      | { data: any; selector: FilterableStockLocationProps } = []
     if (isString(idOrSelector)) {
       normalizedInput = [{ id: idOrSelector, ...data }]
     } else {
-      const locations = await this.list(idOrSelector, {}, context)
-
-      normalizedInput = locations.map((region) => ({
-        id: region.id,
-        ...data,
-      }))
+      normalizedInput = { data, selector: idOrSelector }
     }
     const updated = await this.update_(normalizedInput, context)
 
@@ -219,9 +216,11 @@ export default class StockLocationModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async update_(
-    data: (UpdateStockLocationInput & { id: string })[],
+    data:
+      | (UpdateStockLocationInput & { id: string })[]
+      | { data: any; selector: FilterableStockLocationProps },
     @MedusaContext() context: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<TEntity[] | TEntity> {
     return await this.stockLocationService_.update(data, context)
   }
 
