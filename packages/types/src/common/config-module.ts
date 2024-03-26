@@ -1,7 +1,7 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-} from "../modules-sdk"
+} from "../modules-sdk/common"
 
 import { LoggerOptions } from "typeorm"
 import { RedisOptions } from "ioredis"

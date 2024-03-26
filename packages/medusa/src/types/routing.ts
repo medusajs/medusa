@@ -1,7 +1,8 @@
-import type { Customer, User } from "../models"
 import type { NextFunction, Request, Response } from "express"
+import type { Customer, User } from "../models"
+import type { MedusaContainer } from "./global"
 
-import { MedusaContainer, RequestQueryFields } from "@medusajs/types"
+import { RequestQueryFields } from "@medusajs/types"
 import { FindConfig } from "./common"
 
 export interface MedusaRequest<Body = unknown> extends Request {
@@ -22,7 +23,10 @@ export interface MedusaRequest<Body = unknown> extends Request {
   /**
    * An object containing fields and variables to be used with the remoteQuery
    */
-  remoteQueryConfig: { fields: string[]; pagination: { order?: Record<string, string>, skip?: number, take?: number } }
+  remoteQueryConfig: {
+    fields: string[]
+    pagination: { order?: Record<string, string>; skip?: number; take?: number }
+  }
   /**
    * An object containing the fields that are filterable e.g `{ id: Any<String> }`
    */
