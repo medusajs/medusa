@@ -101,16 +101,8 @@ const UnfulfilledItem = ({
 const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
-  const fulfillmentItems = order.fulfillments?.map((f) =>
-    f.items.map((i) => ({ id: i.item_id, quantity: i.quantity }))
-  )
-
-  // Create an array of order items that haven't been fulfilled or at least not fully fulfilled
   const unfulfilledItems = order.items.filter(
-    (i) =>
-      !fulfillmentItems?.some((fi) =>
-        fi.some((f) => f.id === i.id && f.quantity === i.quantity)
-      )
+    (i) => (i.fulfilled_quantity || 0) < i.quantity
   )
 
   if (!unfulfilledItems.length) {
@@ -247,7 +239,7 @@ const Fulfillment = ({
           {fulfillment.items.map((f_item) => (
             <li key={f_item.item_id}>
               <Text size="small" leading="compact">
-                {f_item.item.quantity}x {f_item.item.title}
+                {f_item.quantity}x {f_item.item.title}
               </Text>
             </li>
           ))}

@@ -21,6 +21,10 @@ type OrderCreateFulfillmentFormProps = {
   order: Order
 }
 
+/**
+ * TODO: support fulfilllments for Claims and Swaps
+ */
+
 export function OrderCreateFulfillmentForm({
   order,
 }: OrderCreateFulfillmentFormProps) {
