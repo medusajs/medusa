@@ -129,6 +129,11 @@ export const v1Routes: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/orders/order-create-return"),
                   },
+                  {
+                    path: "fulfillment",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-fulfillment"),
+                  },
                 ],
               },
             ],

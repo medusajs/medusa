@@ -138,7 +138,9 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
         ))}
       </div>
       <div className="px-5 py-4 text-right">
-        <Button>{t("orders.fulfillment.fulfillItems")}</Button>
+        <Link to={`/orders/${order.id}/fulfillment`}>
+          <Button>{t("orders.fulfillment.fulfillItems")}</Button>
+        </Link>
       </div>
     </Container>
   )

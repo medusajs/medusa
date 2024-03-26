@@ -314,6 +314,9 @@
       "statusLabel": "Fulfillment status",
       "fulfillItems": "Fulfill items",
       "statusTitle": "Fulfillment Status",
+      "itemsToFulfill": "Items to fulfill",
+      "itemsToFulfillDesc": "Choose items and quantities to fulfill",
+      "locationDescription": "Choose which location you want to fulfill items from.",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
       "status": {
