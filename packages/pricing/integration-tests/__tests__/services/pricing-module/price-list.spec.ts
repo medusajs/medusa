@@ -769,11 +769,15 @@ moduleIntegrationTestRunner({
               relations: [
                 "prices",
                 "prices.price_set",
+                "prices.price_rules",
+                "prices.price_rules.rule_type",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
+                "prices.price_rules.value",
+                "prices.price_rules.rule_type.rule_attribute",
                 "prices.rules_count",
                 "prices.amount",
                 "prices.currency_code",
