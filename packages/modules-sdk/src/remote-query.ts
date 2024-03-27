@@ -13,8 +13,9 @@ import {
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isDefined, isString, toPascalCase } from "@medusajs/utils"
+import { isString, toPascalCase } from "@medusajs/utils"
 
+import { RemoteJoinerOptions } from "@medusajs/types"
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -160,7 +161,7 @@ export class RemoteQuery {
     const serviceConfig = expand.serviceConfig
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
-    let filters: Record<string, unknown> | unknown = {}
+    let filters = {}
     const options = {
       ...RemoteQuery.getAllFieldsAndRelations(expand),
     }
@@ -191,19 +192,12 @@ export class RemoteQuery {
     }
 
     if (ids) {
-      ;(filters as Record<string, unknown>)[keyField] = ids
+      filters[keyField] = ids
     }
 
     const hasPagination = this.hasPagination(options)
 
     let methodName = hasPagination ? "listAndCount" : "list"
-
-    // If it's retrieving a single item of the entry point
-    const isRetrieve = ids?.length === 1 && !isDefined(relationship)
-    if (isRetrieve) {
-      methodName = "retrieve"
-      filters = ids[0]
-    }
 
     if (relationship?.args?.methodSuffix) {
       methodName += toPascalCase(relationship.args.methodSuffix)
@@ -231,13 +225,14 @@ export class RemoteQuery {
     }
 
     return {
-      data: isRetrieve ? [result] : result,
+      data: result,
     }
   }
 
   public async query(
     query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
   ): Promise<any> {
     let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
 
@@ -247,6 +242,6 @@ export class RemoteQuery {
       finalQuery = toRemoteJoinerQuery(query, variables)
     }
 
-    return await this.remoteJoiner.query(finalQuery)
+    return await this.remoteJoiner.query(finalQuery, options)
   }
 }
