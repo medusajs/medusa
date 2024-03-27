@@ -17,7 +17,7 @@ const DetailedFeedback = () => {
         <div className="flex flex-col gap-1 ">
           <Label>What should be improved in this API reference?</Label>
           <TextArea
-            rows={4}
+            rows={3}
             value={improvementFeedback}
             onChange={(e) => setImprovementFeedback(e.target.value)}
           />
