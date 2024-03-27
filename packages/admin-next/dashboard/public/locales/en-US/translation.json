@@ -56,6 +56,7 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "complete": "Complete",
     "back": "Back",
     "continue": "Continue",
     "confirm": "Confirm",
@@ -329,6 +330,10 @@
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
       "itemsLabel": "Items"
+    },
+    "refund": {
+      "title": "Create Refund",
+      "sendNotificationHint": "Notify customers about the created refund."
     },
     "customer": {
       "contactLabel": "Contact",
