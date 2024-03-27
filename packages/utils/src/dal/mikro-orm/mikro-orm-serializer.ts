@@ -82,7 +82,7 @@ function filterEntityPropToSerialize(
   if (options.preventCircularRef && isVisibleRes && parent) {
     return (
       // mapToPk would represent a foreign key and we want to keep them
-      meta.properties[prop].mapToPk ||
+      !!meta.properties[prop]?.mapToPk ||
       parent.constructor.name !== meta.properties[prop].type
     )
   }
