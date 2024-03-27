@@ -9,11 +9,12 @@ const DetailedFeedback = () => {
   const [additionalFeedback, setAdditionalFeedback] = useState("")
   const { loaded, track } = useAnalytics()
   const { closeModal } = useModal()
+  // comment
 
   return (
     <>
       <div className="flex flex-col gap-1 overflow-auto py-1.5 px-2 lg:min-h-[400px]">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 ">
           <Label>What should be improved in this API reference?</Label>
           <TextArea
             rows={4}
