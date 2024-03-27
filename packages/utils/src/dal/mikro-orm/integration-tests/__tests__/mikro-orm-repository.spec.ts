@@ -12,8 +12,25 @@ import {
   Property,
   wrap,
 } from "@mikro-orm/core"
-import { mikroOrmBaseRepositoryFactory } from "../mikro-orm-repository"
+import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
 import { dropDatabase } from "pg-god"
+
+const DB_HOST = process.env.DB_HOST ?? "localhost"
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = "mikroorm-integration-1"
+
+const pgGodCredentials = {
+  user: DB_USERNAME,
+  password: DB_PASSWORD,
+  host: DB_HOST,
+}
+
+export function getDatabaseURL(): string {
+  return `postgres://${DB_USERNAME}${
+    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+  }@${DB_HOST}/${DB_NAME}`
+}
 
 jest.setTimeout(300000)
 @Entity()
@@ -122,13 +139,13 @@ describe("mikroOrmRepository", () => {
 
     beforeEach(async () => {
       await dropDatabase(
-        { databaseName: `mikroorm-1`, errorIfNonExist: false },
-        { user: "postgres" }
+        { databaseName: DB_NAME, errorIfNonExist: false },
+        pgGodCredentials
       )
 
       orm = await MikroORM.init({
         entities: [Entity1, Entity2],
-        dbName: `mikroorm-1`,
+        clientUrl: getDatabaseURL(),
         type: "postgresql",
       })
 
