@@ -13,7 +13,7 @@ import {
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isString, toPascalCase } from "@medusajs/utils"
+import { isDefined, isString, toPascalCase } from "@medusajs/utils"
 
 import { MedusaModule } from "./medusa-module"
 
@@ -160,7 +160,7 @@ export class RemoteQuery {
     const serviceConfig = expand.serviceConfig
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
-    let filters = {}
+    let filters: Record<string, unknown> | unknown = {}
     const options = {
       ...RemoteQuery.getAllFieldsAndRelations(expand),
     }
@@ -191,12 +191,19 @@ export class RemoteQuery {
     }
 
     if (ids) {
-      filters[keyField] = ids
+      ;(filters as Record<string, unknown>)[keyField] = ids
     }
 
     const hasPagination = this.hasPagination(options)
 
     let methodName = hasPagination ? "listAndCount" : "list"
+
+    // If it's retrieving a single item of the entry point
+    const isRetrieve = ids?.length === 1 && !isDefined(relationship)
+    if (isRetrieve) {
+      methodName = "retrieve"
+      filters = ids[0]
+    }
 
     if (relationship?.args?.methodSuffix) {
       methodName += toPascalCase(relationship.args.methodSuffix)
@@ -224,7 +231,7 @@ export class RemoteQuery {
     }
 
     return {
-      data: result,
+      data: isRetrieve ? [result] : result,
     }
   }
 
