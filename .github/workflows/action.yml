@@ -234,7 +234,6 @@ jobs:
           CHUNKS: ${{ needs.setup.outputs.api-chunks }}
 
   integration-tests-api:
-    if: ${{ always() }}
     runs-on: ubuntu-latest
     needs: [integration-tests-api-matrix, check_commit]
     if: ${{ needs.check_commit.outputs.match != 'true' }}
