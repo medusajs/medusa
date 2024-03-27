@@ -36,13 +36,6 @@ export default async function ({ port, directory }) {
         })
       )
 
-      try {
-        const adminNext = require("@medusajs/admin-next")
-        adminNext.default(app, server, configModule)
-      } catch (_err) {
-        // no-op `@medusajs/admin-next` is not installed
-      }
-
       // Handle graceful shutdown
       const gracefulShutDown = () => {
         server
