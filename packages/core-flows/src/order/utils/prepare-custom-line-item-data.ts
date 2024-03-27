@@ -11,7 +11,17 @@ interface Input {
   }
 }
 
-export function prepareCustomLineItemData(data: Input) {
+interface Output {
+  quantity: BigNumberInput
+  title: string
+  variant_sku?: string
+  variant_barcode?: string
+  variant_title?: string
+  unit_price: BigNumberInput
+  metadata?: Record<string, any>
+}
+
+export function prepareCustomLineItemData(data: Input): Output {
   const { variant, unitPrice, quantity, metadata } = data
 
   const lineItem: any = {
