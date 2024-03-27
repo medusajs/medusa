@@ -1,34 +1,32 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS } from "../links"
-import { Modules } from "@medusajs/modules-sdk"
 
 export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.PublishableApiKeySalesChannel,
   isLink: true,
   databaseConfig: {
-    tableName: "publishable_api_key_sales_channel",
+    tableName: "pub_api_key_sales_channel",
     idPrefix: "pksc",
   },
   alias: [
     {
-      name: "publishable_api_key_sales_channel",
+      name: "pub_api_key_sales_channel",
     },
     {
-      name: "publishable_api_key_sales_channels",
+      name: "pub_api_key_sales_channels",
     },
   ],
-  primaryKeys: ["id", "publishable_key_id", "sales_channel_id"],
+  primaryKeys: ["id", "api_key_id", "sales_channel_id"],
   relationships: [
     {
       serviceName: Modules.API_KEY,
-      isInternalService: true,
       primaryKey: "id",
-      foreignKey: "publishable_key_id",
+      foreignKey: "api_key_id",
       alias: "api_key",
     },
     {
       serviceName: Modules.SALES_CHANNEL,
-      isInternalService: true,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
@@ -42,8 +40,7 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
-        isInternalService: true,
-        primaryKey: "publishable_key_id",
+        primaryKey: "api_key_id",
         foreignKey: "id",
         alias: "sales_channels_link",
         isList: true,
@@ -56,7 +53,6 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
-        isInternalService: true,
         primaryKey: "sales_channel_id",
         foreignKey: "id",
         alias: "api_keys_link",

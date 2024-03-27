@@ -1,15 +1,15 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
   deleteApiKeysWorkflow,
   updateApiKeysWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 import { UpdateApiKeyDTO } from "@medusajs/types"
-import { defaultAdminApiKeyFields } from "../query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { defaultAdminApiKeyFields } from "../query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -46,7 +46,19 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ apiKey: result[0] })
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "api_key",
+    variables: {
+      id: req.params.id,
+    },
+    fields: defaultAdminApiKeyFields,
+  })
+
+  const [apiKey] = await remoteQuery(queryObject)
+
+  res.status(200).json({ api_key: apiKey })
 }
 
 export const DELETE = async (

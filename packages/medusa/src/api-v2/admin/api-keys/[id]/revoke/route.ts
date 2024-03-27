@@ -1,18 +1,17 @@
+import { revokeApiKeysWorkflow } from "@medusajs/core-flows"
+import { RevokeApiKeyDTO } from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-
-import { RevokeApiKeyDTO } from "@medusajs/types"
-import { revokeApiKeysWorkflow } from "@medusajs/core-flows"
+import { defaultAdminApiKeyFields } from "../../query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const id = req.params.id
-
-  const { result, errors } = await revokeApiKeysWorkflow(req.scope).run({
+  const { errors } = await revokeApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       revoke: {
@@ -27,5 +26,17 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ apiKey: result[0] })
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "api_key",
+    variables: {
+      id: req.params.id,
+    },
+    fields: defaultAdminApiKeyFields,
+  })
+
+  const [apiKey] = await remoteQuery(queryObject)
+
+  res.status(200).json({ api_key: apiKey })
 }
