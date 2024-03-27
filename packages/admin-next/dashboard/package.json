@@ -10,22 +10,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "main": "index.html",
-  "exports": {
-    ".": {
-      "import": "./index.html",
-      "require": "./index.html"
-    },
-    "./config": {
-      "import": "./vite.config.mts",
-      "require": "./vite.config.mts"
-    }
-  },
   "files": [
     "index.html",
     "public",
     "src",
-    "package.json",
-    "vite.config.mts"
+    "package.json"
   ],
   "dependencies": {
     "@ariakit/react": "^0.4.1",
