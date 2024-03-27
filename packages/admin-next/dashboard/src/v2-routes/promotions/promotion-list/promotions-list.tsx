@@ -1,7 +1,5 @@
-// TODO: This needs to be replaced with promotions
-// Question: Where is this being initialized?
-import after from "medusa-admin:widgets/discount/list/after"
-import before from "medusa-admin:widgets/discount/list/before"
+import after from "medusa-admin:widgets/promotion/list/after"
+import before from "medusa-admin:widgets/promotion/list/before"
 
 import { PromotionListTable } from "./components/promotion-list-table"
 
