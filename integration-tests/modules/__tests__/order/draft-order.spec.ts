@@ -25,6 +25,7 @@ jest.setTimeout(50000)
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
+  debug: true,
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -41,8 +42,6 @@ medusaIntegrationTestRunner({
     let locationModule: IStockLocationServiceNext
     let taxModule: ITaxModuleService
     let remoteLink, remoteQuery
-
-    let defaultRegion
 
     beforeAll(async () => {
       appContainer = getContainer()
@@ -72,12 +71,6 @@ medusaIntegrationTestRunner({
 
     beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
-
-      // Here, so we don't have to create a region for each test
-      defaultRegion = await regionModuleService.create({
-        name: "Default Region",
-        currency_code: "dkk",
-      })
     })
 
     describe("Draft Orders - Admin", () => {
@@ -187,6 +180,8 @@ medusaIntegrationTestRunner({
         const payload = {
           email: "oli@test.dk",
           region_id: region.id,
+          sales_channel_id: salesChannel.id,
+          currency_code: "usd",
           shipping_address: {
             first_name: "Test",
             last_name: "Test",
@@ -204,15 +199,12 @@ medusaIntegrationTestRunner({
             country_code: "US",
             postal_code: "12345",
           },
-          discounts: [{ code: "testytest" }],
+          promo_codes: ["testytest"],
           items: [
-            /*
             {
               variant_id: product.variants[0].id,
               quantity: 2,
-              metadata: {},
             },
-            */
             {
               variant_id: product_2.variants[0].id,
               unit_price: 200,
@@ -225,12 +217,10 @@ medusaIntegrationTestRunner({
               title: "Custom Item",
               sku: "sku123",
               barcode: "barcode123",
-              unit_price: 3000,
+              unit_price: 2200,
               quantity: 1,
-              metadata: {},
             },
           ],
-          currency_code: "USD",
           shipping_methods: [
             {
               name: "test-method",
@@ -244,6 +234,138 @@ medusaIntegrationTestRunner({
           "/admin/draft-orders",
           payload,
           adminHeaders
+        )
+
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            draft_order: expect.objectContaining({
+              status: "draft",
+              version: 1,
+              summary: {
+                total: 8400,
+              },
+              items: [
+                expect.objectContaining({
+                  title: "Test variant",
+                  subtitle: "Test product",
+                  product_title: "Test product",
+                  product_description: null,
+                  product_subtitle: null,
+                  product_type: null,
+                  product_collection: null,
+                  product_handle: "test-product",
+                  variant_sku: null,
+                  variant_barcode: null,
+                  variant_title: "Test variant",
+                  variant_option_values: null,
+                  requires_shipping: true,
+                  is_discountable: true,
+                  is_tax_inclusive: false,
+                  raw_compare_at_unit_price: null,
+                  raw_unit_price: expect.objectContaining({
+                    value: "3000",
+                  }),
+                  metadata: {},
+                  tax_lines: [],
+                  adjustments: [],
+                  unit_price: 3000,
+                  quantity: 2,
+                  raw_quantity: expect.objectContaining({
+                    value: "2",
+                  }),
+                  detail: expect.objectContaining({
+                    raw_quantity: expect.objectContaining({
+                      value: "2",
+                    }),
+                    raw_fulfilled_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    raw_shipped_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    raw_return_requested_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    raw_return_received_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    raw_return_dismissed_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    raw_written_off_quantity: expect.objectContaining({
+                      value: "0",
+                    }),
+                    quantity: 2,
+                    fulfilled_quantity: 0,
+                    shipped_quantity: 0,
+                    return_requested_quantity: 0,
+                    return_received_quantity: 0,
+                    return_dismissed_quantity: 0,
+                    written_off_quantity: 0,
+                  }),
+                }),
+                expect.objectContaining({
+                  title: "Variant variable",
+                  subtitle: "Another product",
+                  raw_unit_price: expect.objectContaining({
+                    value: "200",
+                  }),
+                  metadata: {
+                    note: "reduced price",
+                  },
+                  unit_price: 200,
+                  quantity: 1,
+                  raw_quantity: expect.objectContaining({
+                    value: "1",
+                  }),
+                }),
+                expect.objectContaining({
+                  title: "Custom Item",
+                  variant_sku: "sku123",
+                  variant_barcode: "barcode123",
+                  variant_title: "Custom Item",
+                  raw_unit_price: expect.objectContaining({
+                    value: "2200",
+                  }),
+                  unit_price: 2200,
+                  quantity: 1,
+                  raw_quantity: expect.objectContaining({
+                    value: "1",
+                  }),
+                }),
+              ],
+              shipping_address: expect.objectContaining({
+                last_name: "Test",
+                address_1: "Test",
+                city: "Test",
+                country_code: "US",
+                postal_code: "12345",
+                phone: "12345",
+              }),
+              billing_address: expect.objectContaining({
+                first_name: "Test",
+                last_name: "Test",
+                address_1: "Test",
+                city: "Test",
+                country_code: "US",
+                postal_code: "12345",
+              }),
+              shipping_methods: [
+                expect.objectContaining({
+                  name: "test-method",
+                  raw_amount: expect.objectContaining({
+                    value: "100",
+                  }),
+                  is_tax_inclusive: false,
+                  shipping_option_id: null,
+                  data: {},
+                  tax_lines: [],
+                  adjustments: [],
+                  amount: 100,
+                }),
+              ],
+            }),
+          })
         )
 
         expect(response.status).toEqual(200)

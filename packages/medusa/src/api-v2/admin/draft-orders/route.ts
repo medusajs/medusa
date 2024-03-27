@@ -10,7 +10,6 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { defaultAdminOrderFields } from "./query-config"
 import { AdminPostDraftOrdersReq } from "./validators"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -23,11 +22,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
         ...req.filterableFields,
         status: OrderStatus.DRAFT,
       },
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: defaultAdminOrderFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: draft_orders, metadata } = await remoteQuery(queryObject)
@@ -72,5 +69,19 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ draft_order: result })
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "order",
+    variables: {
+      filters: {
+        id: result.id,
+      },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const draftOrder = await remoteQuery(queryObject)
+
+  res.status(200).json({ draft_order: draftOrder[0] })
 }

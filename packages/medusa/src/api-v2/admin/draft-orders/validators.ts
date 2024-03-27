@@ -91,7 +91,6 @@ export class AdminPostDraftOrdersReq {
 
   @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
   promo_codes?: string[]
 
   @IsString()

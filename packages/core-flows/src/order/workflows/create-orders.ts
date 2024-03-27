@@ -169,7 +169,8 @@ export const createOrdersWorkflow = createWorkflow(
           variant: variant,
           unitPrice: MathBN.max(
             0,
-            item.unit_price ?? data.priceSets[item.variant_id!]?.amount
+            item.unit_price ??
+              data.priceSets[item.variant_id!]?.calculated_amount
           ),
           quantity: item.quantity as number,
           metadata: item?.metadata ?? {},
