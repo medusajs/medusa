@@ -1,14 +1,16 @@
+import { createUserAccountWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { CreateUserDTO, IAuthModuleService } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import jwt from "jsonwebtoken"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-
-import { CreateUserDTO } from "@medusajs/types"
-import { createUsersWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -43,16 +45,30 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<CreateUserDTO>,
   res: MedusaResponse
 ) => {
-  const workflow = createUsersWorkflow(req.scope)
+  const authModuleService = req.scope.resolve<IAuthModuleService>(
+    ModuleRegistrationName.AUTH
+  )
+
+  // If `actor_id` is present, the request carries authentication for an existing user
+  if (req.auth.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Request carries authentication for an existing user"
+    )
+  }
 
   const input = {
     input: {
-      users: [req.validatedBody],
+      userData: req.validatedBody,
+      authUserId: req.auth.auth_user_id,
     },
   }
 
-  const { result } = await workflow.run(input)
+  const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
-  const [user] = result
-  res.status(200).json({ user })
+  const { jwt_secret } = req.scope.resolve("configModule").projectConfig
+  const authUser = await authModuleService.retrieve(req.auth.auth_user_id)
+  const token = jwt.sign(authUser, jwt_secret)
+
+  res.status(200).json({ user: result, token })
 }

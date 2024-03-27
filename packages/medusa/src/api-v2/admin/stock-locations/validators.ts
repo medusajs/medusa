@@ -60,7 +60,7 @@ import { IsType } from "../../../utils"
  *     description: Stock location address' province
  *     example: Sinaloa
  */
-class StockLocationAddress {
+class StockLocationCreateAddress {
   @IsString()
   address_1: string
 
@@ -124,8 +124,8 @@ export class AdminPostStockLocationsReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => StockLocationAddress)
-  address?: StockLocationAddress
+  @Type(() => StockLocationCreateAddress)
+  address?: StockLocationCreateAddress
 
   @IsOptional()
   @IsString()
@@ -187,3 +187,106 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   @IsOptional()
   order?: string
 }
+/**
+ * The attributes of a stock location address to create or update.
+ */
+class StockLocationUpdateAddress {
+  /**
+   * First line address.
+   */
+  @IsString()
+  address_1: string
+
+  /**
+   * Second line address.
+   */
+  @IsOptional()
+  @IsString()
+  address_2?: string
+
+  /**
+   * Company.
+   */
+  @IsOptional()
+  @IsString()
+  company?: string
+
+  /**
+   * City.
+   */
+  @IsOptional()
+  @IsString()
+  city?: string
+
+  /**
+   * Country code.
+   */
+  @IsString()
+  country_code: string
+
+  /**
+   * Phone.
+   */
+  @IsOptional()
+  @IsString()
+  phone?: string
+
+  /**
+   * Postal code.
+   */
+  @IsOptional()
+  @IsString()
+  postal_code?: string
+
+  /**
+   * Province.
+   */
+  @IsOptional()
+  @IsString()
+  province?: string
+}
+
+/**
+ * @schema AdminPostStockLocationsLocationReq
+ * type: object
+ * description: "The details to update of the stock location."
+ * properties:
+ *   name:
+ *     description: the name of the stock location
+ *     type: string
+ *   address_id:
+ *     description: the stock location address ID
+ *     type: string
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *   address:
+ *     description: The data of an associated address to create or update.
+ *     $ref: "#/components/schemas/StockLocationAddressInput"
+ */
+export class AdminPostStockLocationsLocationReq {
+  @IsOptional()
+  @IsString()
+  name?: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => StockLocationUpdateAddress)
+  address?: StockLocationUpdateAddress
+
+  @IsOptional()
+  @IsString()
+  address_id?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
+}
+
+export class AdminPostStockLocationsLocationParams extends FindParams {}
+
+export class AdminGetStockLocationsLocationParams extends FindParams {}

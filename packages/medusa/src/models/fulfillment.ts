@@ -6,17 +6,18 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { ClaimOrder } from "./claim-order"
 import { FulfillmentItem } from "./fulfillment-item"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { Order } from "./order"
 import { Swap } from "./swap"
 import { TrackingLink } from "./tracking-link"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Fulfillment extends BaseEntity {
@@ -26,7 +27,7 @@ export class Fulfillment extends BaseEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.fulfillments)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @Index()
   @Column({ nullable: true })
@@ -42,7 +43,7 @@ export class Fulfillment extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.fulfillments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column({ type: "boolean", nullable: true })
   no_notification: boolean
@@ -56,18 +57,18 @@ export class Fulfillment extends BaseEntity {
 
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: FulfillmentProvider
+  provider: Relation<FulfillmentProvider>
 
   @OneToMany(() => FulfillmentItem, (i) => i.fulfillment, {
     eager: true,
     cascade: true,
   })
-  items: FulfillmentItem[]
+  items: Relation<FulfillmentItem>[]
 
   @OneToMany(() => TrackingLink, (tl) => tl.fulfillment, {
     cascade: ["insert"],
   })
-  tracking_links: TrackingLink[]
+  tracking_links: Relation<TrackingLink>[]
 
   @DbAwareColumn({ type: "jsonb", default: [] })
   tracking_numbers: string[]

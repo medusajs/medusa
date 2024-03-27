@@ -8,15 +8,15 @@ import {
   ManyToMany,
   OneToMany,
   OneToOne,
-  Unique,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Index(["email", "has_account"], { unique: true, where: "deleted_at IS NULL" })
@@ -37,10 +37,10 @@ export class Customer extends SoftDeletableEntity {
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address: Relation<Address>
 
   @OneToMany(() => Address, (address) => address.customer)
-  shipping_addresses: Address[]
+  shipping_addresses: Relation<Address>[]
 
   /**
    * @apiIgnore
@@ -55,7 +55,7 @@ export class Customer extends SoftDeletableEntity {
   has_account: boolean
 
   @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[]
+  orders: Relation<Order>[]
 
   @JoinTable({
     name: "customer_group_customers",
@@ -71,7 +71,7 @@ export class Customer extends SoftDeletableEntity {
   @ManyToMany(() => CustomerGroup, (cg) => cg.customers, {
     onDelete: "CASCADE",
   })
-  groups: CustomerGroup[]
+  groups: Relation<CustomerGroup>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>

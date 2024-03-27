@@ -1,5 +1,4 @@
 import { BaseFilterable } from "../../dal"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 
 /**
  * @interface
@@ -27,10 +26,6 @@ export interface MoneyAmountDTO {
    * The maximum quantity required to be purchased for this price to be applied.
    */
   max_quantity?: number
-  /**
-   * The details of the relation between the money amount and its associated price set.
-   */
-  price_set_money_amount?: PriceSetMoneyAmountDTO
   /**
    * When the money_amount was created.
    */

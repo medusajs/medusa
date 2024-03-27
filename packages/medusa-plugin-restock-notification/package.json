@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "test": "jest --passWithNoTests src",
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit",
     "build": "babel src --out-dir . --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
   },
