@@ -35,6 +35,11 @@ get:
       schema:
         type: string
     - in: query
+      name: order
+      description: A field to sort-order the retrieved collections by.
+      schema:
+        type: string
+    - in: query
       name: discount_condition_id
       description: Filter collections by a discount condition ID associated with them.
       schema:

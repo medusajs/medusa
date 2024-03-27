@@ -25,6 +25,77 @@ get:
         order's cart
       schema:
         type: string
+    - in: query
+      name: order
+      description: Field to sort retrieved draft orders by.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: A comma-separated list of fields to expand.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: A comma-separated list of fields to include in the response.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Filter by a creation date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Filter by an update date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: status
+      style: form
+      explode: false
+      description: Filter by status
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - open
+            - completed
   x-codegen:
     method: list
     queryParams: AdminGetDraftOrdersParams

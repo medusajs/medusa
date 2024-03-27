@@ -217,7 +217,7 @@ get:
         type: string
     - in: query
       name: order
-      description: A order field to sort-order the retrieved orders by.
+      description: Field to sort retrieved orders by.
       schema:
         type: string
   x-codegen:
