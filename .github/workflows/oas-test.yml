@@ -3,7 +3,29 @@ on:
   pull_request:
 
 jobs:
+  check_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: check if message contain keywords
+        id: check_commit
+        run: |
+          message=$(git log -1 --pretty=format:'%s')
+          re="\[style/skip\]"
+          if [[ $message =~ $re ]]; then
+            echo "::set-output name=match::true"
+            echo "$message -> Match is true"
+          else
+            echo "$message -> Match is false"
+          fi
+    outputs:
+      match: ${{ steps.check_commit.outputs.match }}
   docs-test:
+    needs: check_commit
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
