@@ -82,6 +82,7 @@ class Entity2 {
     this.id = props.id
     this.deleted_at = props.deleted_at
     this.entity1 = props.entity1
+    this.entity1_id = props.entity1.id
   }
 
   @PrimaryKey()
@@ -90,7 +91,10 @@ class Entity2 {
   @Property()
   deleted_at: Date | null
 
-  @ManyToOne(() => Entity1)
+  @ManyToOne(() => Entity1, { mapToPk: true })
+  entity1_id: string
+
+  @ManyToOne(() => Entity1, { persist: false })
   entity1: Entity1
 }
 
