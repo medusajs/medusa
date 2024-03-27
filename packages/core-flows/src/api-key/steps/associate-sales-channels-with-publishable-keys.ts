@@ -21,7 +21,7 @@ export const associateApiKeysWithSalesChannelsStep = createStep(
         return link.sales_channel_ids.map((id) => {
           return {
             [Modules.API_KEY]: {
-              api_key_id: link.api_key_id,
+              publishable_key_id: link.api_key_id,
             },
             [Modules.SALES_CHANNEL]: {
               sales_channel_id: id,

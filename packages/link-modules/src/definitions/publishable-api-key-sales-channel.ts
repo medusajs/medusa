@@ -6,23 +6,23 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.PublishableApiKeySalesChannel,
   isLink: true,
   databaseConfig: {
-    tableName: "pub_api_key_sales_channel",
+    tableName: "publishable_api_key_sales_channel",
     idPrefix: "pksc",
   },
   alias: [
     {
-      name: "pub_api_key_sales_channel",
+      name: "publishable_api_key_sales_channel",
     },
     {
-      name: "pub_api_key_sales_channels",
+      name: "publishable_api_key_sales_channels",
     },
   ],
-  primaryKeys: ["id", "api_key_id", "sales_channel_id"],
+  primaryKeys: ["id", "publishable_key_id", "sales_channel_id"],
   relationships: [
     {
       serviceName: Modules.API_KEY,
       primaryKey: "id",
-      foreignKey: "api_key_id",
+      foreignKey: "publishable_key_id",
       alias: "api_key",
     },
     {
@@ -40,7 +40,7 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
-        primaryKey: "api_key_id",
+        primaryKey: "publishable_key_id",
         foreignKey: "id",
         alias: "sales_channels_link",
         isList: true,
