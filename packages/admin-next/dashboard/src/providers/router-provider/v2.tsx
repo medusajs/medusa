@@ -1,13 +1,14 @@
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
+import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
 import { Outlet } from "react-router-dom"
 
-import { SidebarProvider } from "../sidebar-provider"
-import { SearchProvider } from "../search-provider"
-import { ErrorBoundary } from "../../components/error/error-boundary"
 import { Spinner } from "@medusajs/icons"
+import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
+import { SearchProvider } from "../search-provider"
+import { SidebarProvider } from "../sidebar-provider"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useV2Session()
@@ -51,6 +52,30 @@ export const v2Routes: RouteObject[] = [
   {
     path: "*",
     lazy: () => import("../../routes/no-match"),
+  },
+  {
+    element: <ProtectedRoute />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+          {
+            path: "/orders",
+            handle: {
+              crumb: () => "Orders",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/orders/order-list"),
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     element: <ProtectedRoute />,
