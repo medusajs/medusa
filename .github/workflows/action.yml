@@ -6,9 +6,30 @@ on:
         
 
 jobs:
-  setup:
+  check_commit:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[comment/skip]') && !contains(github.event.head_commit.message, '[style/skip]')}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: check if message contain keywords
+        id: check_commit
+        run: |
+          message=$(git log -1 --pretty=format:'%s')
+          re="\[(comment|style)/skip\]"
+          if [[ $message =~ $re ]]; then
+            echo "::set-output name=match::true"
+            echo "$message -> Match is true"
+          else
+            echo "$message -> Match is false"
+          fi
+    outputs:
+      match: ${{ steps.check_commit.outputs.match }}
+  setup:
+    needs: check_commit
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
+    runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -77,7 +98,8 @@ jobs:
           CHUNKS: ${{ steps.set-unit-tests-chunks.outputs.chunks }}
 
   unit-tests-matrix:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     runs-on: ubuntu-latest
     name: Shard (${{ matrix.chunk }}) Unit Tests
     strategy:
@@ -108,7 +130,8 @@ jobs:
           CHUNKS: ${{ needs.setup.outputs.unit-tests-chunks }}
 
   integration-tests-packages:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -155,7 +178,8 @@ jobs:
           DB_USERNAME: postgres
 
   integration-tests-api-matrix:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     name: Shard (${{ matrix.chunk }}) API Integration Tests
     runs-on: ubuntu-latest
     strategy:
@@ -212,7 +236,8 @@ jobs:
   integration-tests-api:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: integration-tests-api-matrix
+    needs: [integration-tests-api-matrix, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     steps:
       - run: exit 1
         if: >-
@@ -225,9 +250,9 @@ jobs:
         if: ${{ contains(needs.integration-tests-api-matrix.result, 'success') }}
 
   unit-tests:
-    if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: unit-tests-matrix
+    needs: [unit-tests-matrix, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     steps:
       - run: exit 1
         if: >-
@@ -240,7 +265,8 @@ jobs:
         if: ${{ contains(needs.unit-tests-matrix.result, 'success') }}
 
   integration-tests-plugins:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -285,7 +311,8 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-modules-matrix:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     name: Shard (${{ matrix.chunk }}) Module Integration Tests
     strategy:
       matrix:
@@ -330,9 +357,9 @@ jobs:
           CHUNKS: ${{ needs.setup.outputs.module-chunks }}
 
   integration-tests-modules:
-    if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: integration-tests-modules-matrix
+    needs: [integration-tests-modules-matrix, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     steps:
       - run: exit 1
         if: >-
@@ -345,7 +372,8 @@ jobs:
         if: ${{ contains(needs.integration-tests-modules-matrix.result, 'success') }}
 
   integration-tests-repositories:
-    needs: setup
+    needs: [setup, check_commit]
+    if: ${{ needs.check_commit.outputs.match != 'true' }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
