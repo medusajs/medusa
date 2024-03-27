@@ -364,8 +364,7 @@ export default class PricingModuleService<
     const priceSets = await this.priceSetService_.update(data, sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-      priceSets,
-      { populate: true }
+      priceSets
     )
   }
 
@@ -377,8 +376,7 @@ export default class PricingModuleService<
     const priceLists = await this.createPriceLists_(data, sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
-      priceLists,
-      { populate: true }
+      priceLists
     )
   }
 
@@ -390,8 +388,7 @@ export default class PricingModuleService<
     const priceLists = await this.updatePriceLists_(data, sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
-      priceLists,
-      { populate: true }
+      priceLists
     )
   }
 
@@ -466,8 +463,7 @@ export default class PricingModuleService<
     const [priceList] = await this.setPriceListRules_([data], sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
-      priceList,
-      { populate: true }
+      priceList
     )
   }
 
@@ -479,8 +475,7 @@ export default class PricingModuleService<
     const [priceList] = await this.removePriceListRules_([data], sharedContext)
 
     return await this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
-      priceList,
-      { populate: true }
+      priceList
     )
   }
 
