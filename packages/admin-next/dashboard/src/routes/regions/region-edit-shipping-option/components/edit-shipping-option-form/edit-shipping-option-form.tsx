@@ -321,7 +321,7 @@ export const EditShippingOptionForm = ({
                 control={form.control}
                 name="amount"
                 shouldUnregister
-                render={({ field }) => {
+                render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
                       <Form.Label
@@ -333,6 +333,7 @@ export const EditShippingOptionForm = ({
                         <CurrencyInput
                           code={region.currency_code}
                           symbol={region.currency.symbol_native}
+                          onValueChange={onChange}
                           {...field}
                         />
                       </Form.Control>
@@ -358,7 +359,7 @@ export const EditShippingOptionForm = ({
                 control={form.control}
                 name="min_subtotal"
                 shouldUnregister
-                render={({ field }) => {
+                render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
                       <Form.Label
@@ -371,6 +372,7 @@ export const EditShippingOptionForm = ({
                         <CurrencyInput
                           code={region.currency_code}
                           symbol={region.currency.symbol_native}
+                          onValueChange={onChange}
                           {...field}
                         />
                       </Form.Control>
@@ -383,7 +385,7 @@ export const EditShippingOptionForm = ({
                 control={form.control}
                 name="max_subtotal"
                 shouldUnregister
-                render={({ field }) => {
+                render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
                       <Form.Label
@@ -396,6 +398,7 @@ export const EditShippingOptionForm = ({
                         <CurrencyInput
                           code={region.currency_code}
                           symbol={region.currency.symbol_native}
+                          onValueChange={onChange}
                           {...field}
                         />
                       </Form.Control>

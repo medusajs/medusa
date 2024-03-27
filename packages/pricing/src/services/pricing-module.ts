@@ -42,6 +42,8 @@ import {
 import {PriceListService, RuleTypeService} from "@services"
 import {validatePriceListDates} from "@utils"
 import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {PriceSetIdPrefix} from "../models/price-set";
+import {PriceListIdPrefix} from "../models/price-list";
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -299,7 +301,7 @@ export default class PricingModuleService<
     const toCreate = input.map((inputData) => {
       const id = generateEntityId(
         (inputData as unknown as TPriceSet).id,
-        "pset"
+        PriceSetIdPrefix
       )
 
       const { prices, rules = [], ...rest } = inputData
@@ -713,79 +715,62 @@ export default class PricingModuleService<
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
 
-    const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = []
+    const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = data.map(
+      (priceListData) => {
+        const id = generateEntityId(
+          (priceListData as unknown as TPriceList).id,
+          PriceListIdPrefix
+        )
 
-    for (const priceListData of data) {
-      const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
+        const { prices = [], rules = {}, ...rest } = priceListData
 
-      validatePriceListDates(priceListData)
+        validatePriceListDates(priceListData)
 
-      priceListsToCreate.push({
-        ...priceListOnlyData,
-        rules_count: Object.keys(rules).length,
-      })
-    }
+        const priceListRules = Object.entries(rules).map(
+          ([attribute, value]) => {
+            const ruleType = ruleTypeMap.get(attribute)!
+            return {
+              price_list_id: id,
+              rule_type_id: ruleType.id,
+              price_list_rule_values: value.map((v) => ({ value: v }))
+            }
+          }
+        )
 
-    const priceLists = await this.priceListService_.create(
+        const pricesData = prices.map((price) => {
+          const priceRules = Object.entries(price.rules ?? {}).map(
+            ([ruleAttribute, ruleValue]) => {
+              return {
+                price_set_id: price.price_set_id,
+                rule_type_id: ruleTypeMap.get(ruleAttribute)!?.id,
+                value: ruleValue,
+              }
+            }
+          )
+
+          return {
+            price_list_id: id,
+            title: "test",
+            rules_count: Object.keys(price.rules ?? {}).length,
+            price_rules: priceRules,
+            ...price,
+          }
+        })
+
+        return {
+          id,
+          ...rest,
+          rules_count: Object.keys(rules).length,
+          price_list_rules: priceListRules,
+          prices: pricesData,
+        }
+      }
+    )
+
+    return await this.priceListService_.create(
       priceListsToCreate,
       sharedContext
     )
-
-    for (let i = 0; i < data.length; i++) {
-      const { rules = {}, prices = [] } = data[i]
-      const priceList = priceLists[i]
-
-      for (const [ruleAttribute, ruleValues = []] of Object.entries(rules)) {
-        let ruleType = ruleTypeMap.get(ruleAttribute)!
-
-        // Create the rule
-        const [priceListRule] = await this.priceListRuleService_.create(
-          [{ price_list_id: priceList.id, rule_type_id: ruleType.id }],
-          sharedContext
-        )
-
-        // Create the values for the rule
-        for (const ruleValue of ruleValues) {
-          await this.priceListRuleValueService_.create(
-            [{ price_list_rule_id: priceListRule.id, value: ruleValue }],
-            sharedContext
-          )
-        }
-      }
-
-      for (const priceData of prices) {
-        const {
-          price_set_id: priceSetId,
-          rules: priceRules = {},
-          ...rest
-        } = priceData
-
-        const createdPrice = await this.priceService_.create(
-          {
-            price_set_id: priceSetId,
-            price_list_id: priceList.id,
-            title: "test",
-            rules_count: Object.keys(priceRules).length,
-            ...rest,
-          },
-          sharedContext
-        )
-
-        await this.priceRuleService_.create(
-          Object.entries(priceRules).map(([ruleAttribute, ruleValue]) => {
-            return {
-              price_set_id: priceSetId,
-              rule_type_id: ruleTypeMap.get(ruleAttribute)!?.id,
-              value: ruleValue,
-              price_id: createdPrice.id,
-            }
-          }),
-          sharedContext
-        )
-      }
-    }
-
-    return priceLists
   }
 
   @InjectTransactionManager("baseRepository_")
