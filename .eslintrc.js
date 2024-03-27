@@ -81,7 +81,6 @@ module.exports = {
       parserOptions: {
         project: [
           "./packages/medusa/tsconfig.json",
-          "./packages/admin-next/plugin/tsconfig.json",
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
           "./packages/medusa-payment-paypal/tsconfig.spec.json",
           "./packages/admin-ui/tsconfig.json",
