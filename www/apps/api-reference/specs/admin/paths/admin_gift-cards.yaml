@@ -23,6 +23,11 @@ get:
       description: a term to search gift cards' code or display ID
       schema:
         type: string
+    - in: query
+      name: order
+      description: A gift card field to sort-order the retrieved gift cards by.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetGiftCardsParams

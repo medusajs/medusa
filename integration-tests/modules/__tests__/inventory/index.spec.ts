@@ -1,9 +1,11 @@
 import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../helpers/create-admin-user"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -202,6 +204,80 @@ medusaIntegrationTestRunner({
             stocked_quantity: 10,
           })
         )
+      })
+
+      describe("List inventory levels", () => {
+        let inventoryItemId
+        let stockLocation1Id
+        let stockLocation2Id
+
+        beforeEach(async () => {
+          const inventoryItem = await api.post(
+            `/admin/inventory-items`,
+            { sku: "test-sku" },
+            adminHeaders
+          )
+          inventoryItemId = inventoryItem.data.inventory_item.id
+
+          const locationService = appContainer.resolve(
+            ModuleRegistrationName.STOCK_LOCATION
+          )
+          const stockLocation1 = await locationService.create({
+            name: "loc-1",
+          })
+          stockLocation1Id = stockLocation1.id
+
+          const stockLocation2 = await locationService.create({
+            name: "loc-2",
+          })
+          stockLocation2Id = stockLocation2.id
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: stockLocation1Id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            {
+              location_id: stockLocation2Id,
+              stocked_quantity: 15,
+            },
+            adminHeaders
+          )
+        })
+
+        it("should list the inventory levels", async () => {
+          const response = await api.get(
+            `/admin/inventory-items/${inventoryItemId}/location-levels`,
+            adminHeaders
+          )
+
+          expect(response.data).toEqual(
+            expect.objectContaining({
+              count: 2,
+              offset: 0,
+              limit: 50,
+            })
+          )
+
+          expect(response.data.inventory_levels).toHaveLength(2)
+          expect(response.data.inventory_levels).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: stockLocation1Id,
+                stocked_quantity: 10,
+              }),
+              expect.objectContaining({
+                location_id: stockLocation2Id,
+                stocked_quantity: 15,
+              }),
+            ])
+          )
+        })
       })
 
       describe("Update inventory item", () => {
