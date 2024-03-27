@@ -80,6 +80,7 @@ export const PromotionListTable = () => {
 const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  // TODO: change to promotions delete endpoint
   const { mutateAsync } = useAdminDeleteDiscount(promotion.id)
 
   const handleDelete = async () => {
@@ -96,6 +97,7 @@ const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
       return
     }
 
+    // TODO: handle error scenario here
     await mutateAsync()
   }
 
