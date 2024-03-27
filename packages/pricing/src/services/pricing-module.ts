@@ -25,6 +25,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   PriceListType,
+  promiseAll,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -39,11 +40,11 @@ import {
   RuleType,
 } from "@models"
 
-import {PriceListService, RuleTypeService} from "@services"
-import {validatePriceListDates} from "@utils"
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
-import {PriceSetIdPrefix} from "../models/price-set";
-import {PriceListIdPrefix} from "../models/price-list";
+import { PriceListService, RuleTypeService } from "@services"
+import { validatePriceListDates } from "@utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { PriceSetIdPrefix } from "../models/price-set"
+import { PriceListIdPrefix } from "../models/price-list"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -398,10 +399,16 @@ export default class PricingModuleService<
 
     const priceSets = await this.addRules_(inputs, sharedContext)
 
-    return await this.list(
+    const dbPriceSets = await this.list(
       { id: priceSets.map(({ id }) => id) },
       { relations: ["rule_types"] }
     )
+
+    const orderedPriceSets = priceSets.map((priceSet) => {
+      return dbPriceSets.find((p) => p.id === priceSet.id)!
+    })
+
+    return Array.isArray(data) ? orderedPriceSets : orderedPriceSets[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -506,11 +513,17 @@ export default class PricingModuleService<
 
     await this.addPrices_(input, sharedContext)
 
-    return await this.list(
+    const dbPrices = await this.list(
       { id: input.map((d) => d.priceSetId) },
       { relations: ["prices"] },
       sharedContext
     )
+
+    const orderedPriceSets = input.map((inputItem) => {
+      return dbPrices.find((p) => p.id === inputItem.priceSetId)!
+    })
+
+    return Array.isArray(data) ? orderedPriceSets : orderedPriceSets[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -732,7 +745,7 @@ export default class PricingModuleService<
             return {
               price_list_id: id,
               rule_type_id: ruleType.id,
-              price_list_rule_values: value.map((v) => ({ value: v }))
+              price_list_rule_values: value.map((v) => ({ value: v })),
             }
           }
         )
@@ -1075,7 +1088,7 @@ export default class PricingModuleService<
         )
       }
 
-      await Promise.all([
+      await promiseAll([
         this.priceRuleService_.delete(priceRuleIdsToDelete),
         this.priceRuleService_.create(priceRulesToCreate),
         this.priceService_.update(pricesToUpdate),
@@ -1201,7 +1214,7 @@ export default class PricingModuleService<
         )
       }
 
-      await Promise.all(
+      await promiseAll(
         prices.map(async (priceData) => {
           const priceRules = priceData.rules || {}
           const noOfRules = Object.keys(priceRules).length
@@ -1286,7 +1299,7 @@ export default class PricingModuleService<
       )
 
       const priceListRuleValues = new Map<string, string[]>()
-      await Promise.all(
+      await promiseAll(
         Object.entries(rules).map(async ([key, value]) => {
           const ruleType = ruleTypeMap.get(key)
           if (!ruleType) {
@@ -1317,7 +1330,7 @@ export default class PricingModuleService<
       priceRuleValues.set(priceListId, priceListRuleValues)
     }
 
-    const [createdRules, priceListValuesToDelete] = await Promise.all([
+    const [createdRules, priceListValuesToDelete] = await promiseAll([
       this.priceListRuleService_.create(rulesToCreate),
       this.priceListRuleValueService_.list(
         { price_list_rule_id: ruleIdsToUpdate },
@@ -1348,7 +1361,7 @@ export default class PricingModuleService<
       })
     }
 
-    await Promise.all([
+    await promiseAll([
       this.priceListRuleValueService_.delete(
         priceListValuesToDelete.map((p) => p.id),
         sharedContext
@@ -1403,7 +1416,7 @@ export default class PricingModuleService<
         priceList.price_list_rules.map((p) => [p.rule_type.rule_attribute, p])
       )
 
-      await Promise.all(
+      await promiseAll(
         rules.map(async (rule_attribute) => {
           const rule = priceListRulesMap.get(rule_attribute)
 
