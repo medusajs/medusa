@@ -80,9 +80,7 @@ describe("mikroOrmSerializer", () => {
     })
     entity1.entity2.add(entity2)
 
-    const serialized = await mikroOrmSerializer(entity1, {
-      preventCircularRef: false,
-    })
+    const serialized = await mikroOrmSerializer(entity1)
 
     expect(serialized).toEqual({
       id: "1",
@@ -91,10 +89,6 @@ describe("mikroOrmSerializer", () => {
         {
           id: "2",
           deleted_at: null,
-          entity1: {
-            id: "1",
-            deleted_at: null,
-          },
         },
       ],
     })
