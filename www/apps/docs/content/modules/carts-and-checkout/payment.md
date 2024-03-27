@@ -141,4 +141,4 @@ You can learn more about idempotency keys [here](../../development/idempotency-k
 ## See Also
 
 - [Available Payment Plugins](../../plugins/payment/index.mdx)
-- [Create a Payment Processor](../../references/payment/classes/payment.AbstractPaymentProcessor.mdx)
+- [Create a Payment Processor](../../references/payment_provider/classes/payment_provider.AbstractPaymentProcessor.mdx)

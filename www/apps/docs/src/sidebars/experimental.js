@@ -312,6 +312,97 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Payment Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/payment/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/payment/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Payment Collection",
+          id: "experimental/payment/payment-collection/index",
+        },
+        {
+          type: "doc",
+          label: "Payment Session",
+          id: "experimental/payment/payment-session/index",
+        },
+        {
+          type: "doc",
+          label: "Payment",
+          id: "experimental/payment/payment/index",
+        },
+        {
+          type: "doc",
+          label: "Payment Provider",
+          id: "experimental/payment/payment-provider/index",
+        },
+        {
+          type: "doc",
+          label: "Payment Flow",
+          id: "experimental/payment/payment-flow/index",
+        },
+        {
+          type: "doc",
+          label: "Webhook Events",
+          id: "experimental/payment/webhook-events/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/payment/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "Payment Providers",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "experimental/payment/payment-provider/stripe/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/payment/interfaces/payment.IPaymentModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/payment_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Pricing Module",
       customProps: {
         sidebar_is_group_headline: true,

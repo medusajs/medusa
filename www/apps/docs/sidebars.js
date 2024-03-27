@@ -767,7 +767,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "references/payment/classes/payment.AbstractPaymentProcessor",
+          id: "references/payment_provider/classes/payment_provider.AbstractPaymentProcessor",
           label: "Backend: Create Payment Processor",
         },
         {

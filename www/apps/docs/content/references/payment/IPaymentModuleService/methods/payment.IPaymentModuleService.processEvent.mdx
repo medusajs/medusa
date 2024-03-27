@@ -1,0 +1,19 @@
+---
+displayed_sidebar: paymentReference
+slug: /references/payment/processEvent
+sidebar_label: processEvent
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# processEvent - Payment Module Reference
+
+This documentation provides a reference to the `processEvent` method. This belongs to the Payment Module.
+
+## Parameters
+
+<TypeList types={[{"name":"data","type":"[ProviderWebhookPayload](../../interfaces/payment.ProviderWebhookPayload.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"Parsed webhook body","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"Raw request body","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="processEvent"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="processEvent"/>

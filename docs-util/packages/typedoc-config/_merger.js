@@ -65,6 +65,7 @@ module.exports = {
     "customer",
     "inventory",
     "inventory-next",
+    "payment",
     "pricing",
     "product",
     "promotion",
@@ -883,12 +884,79 @@ To test resending a notification:
 
     // PAYMENT CONFIG
     "^payment": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+      },
+    },
+    "^payment/IPaymentModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Payment Module.",
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+        slug: "/references/payment/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Payment Module Reference",
+      },
+    },
+    "^payment/.*IPaymentModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IPaymentModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Payment Module.",
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+        slug: "/references/payment",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // PAYMENT MODELS CONFIG
+    "^payment_models": {
+      frontmatterData: {
+        displayed_sidebar: "paymentModelReference",
+        slug: "/references/payment/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Payment Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Payment Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/payment_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Payment Module",
+      frontmatterData: {
+        displayed_sidebar: "paymentModelReference",
+        slug: "/references/payment/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Payment Module Data Models Reference",
+      },
+    },
+
+    // PAYMENT PROVIDER CONFIG
+    "^payment_provider": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
       maxLevel: 2,
     },
-    "^payment/.*AbstractPaymentProcessor": {
+    "^payment_provider/.*AbstractPaymentProcessor": {
       reflectionDescription: `In this document, you’ll learn how to create a Payment Processor in your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](https://docs.medusajs.com/modules/carts-and-checkout/payment) first.`,
       frontmatterData: {
         displayed_sidebar: "modules",

@@ -1,0 +1,75 @@
+# Payment Provider
+
+In this document, you’ll learn what a payment provider is.
+
+## What's a Payment Provider?
+
+A payment provider handles payment processing. It can integrate third-party payment providers, such as Stripe or PayPal.
+
+To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
+
+After the payment session is authorized, the payment provider is associated with the resulting payment and handles its payment processing, such as to capture or refund payment.
+
+---
+
+## System Payment Provider
+
+The Payment Module provides a `system` payment provider that acts as a placeholder payment provider. It doesn’t handle payment processing and delegates that to the merchant. It acts similarly to a cash-on-delivery (COD) payment method.
+
+---
+
+## How are Payment Providers Created?
+
+A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` imported from `@medusajs/utils`. It can then be used in a payment plugin or exported in a provider module.
+
+<Note title="Tip">
+
+Refer to [this guide](../../../modules/carts-and-checkout/payment.md) on how to create a payment provider. Although it's a guide for Medusa V1 payment providers, the implementation still applies for V2 payment providers.
+
+</Note>
+
+---
+
+## Configure Payment Providers
+
+The Payment Module accepts a `providers` option. Its value is an array of either provider modules or payment plugins.
+
+When the Medusa application starts, these providers are registered and can be used to process payments.
+
+For example:
+
+```js title="medusa-config.js"
+const modules = {
+  // ...
+  payment: {
+    resolve: "@medusajs/payment",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/payment-stripe",
+          options: {
+            // ...
+          },
+        },
+        {
+          resolve: "medusa-payment-paypal",
+          options: {
+            // ...
+          },
+        },
+      ],
+    },
+  },
+}
+```
+
+The `providers` option is an array of objects that accept the following properties:
+
+- `resolve`: A string indicating the package name of the payment provider module or the payment plugin.
+- `options`: An object of options to pass to the payment provider module or the payment plugin.
+
+---
+
+## PaymentProvider Data Model
+
+When the Medusa application starts and registers the payment providers, it also creates a record of the `PaymentProvider` data model if none exists. This data model is used to reference a payment provider and determine whether it’s installed in the application.
