@@ -40,7 +40,10 @@ export const CreateCollectionForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="flex h-full flex-col overflow-hidden"
+      >
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>

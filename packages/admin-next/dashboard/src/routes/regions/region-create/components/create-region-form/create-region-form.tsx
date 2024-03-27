@@ -32,9 +32,9 @@ import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { countries as staticCountries } from "../../../../../lib/countries"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { useCountries } from "../../../shared/hooks/use-countries"
-import { useCountryTableColumns } from "../../../shared/hooks/use-country-table-columns"
-import { useCountryTableQuery } from "../../../shared/hooks/use-country-table-query"
+import { useCountries } from "../../../common/hooks/use-countries"
+import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
+import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
 
 type CreateRegionFormProps = {
   currencies: Currency[]

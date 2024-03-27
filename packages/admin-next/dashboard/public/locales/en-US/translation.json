@@ -193,7 +193,39 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "deleteWarning": "You are about to delete the category {{name}}. This action cannot be undone.",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from the category. This action cannot be undone.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from the category. This action cannot be undone.",
+    "removeProductWarning": "You are about to remove the product {{title}} from the category. This action cannot be undone.",
+    "createChildCategoryLabel": "Create child category",
+    "organization": {
+      "header": "Organization",
+      "parentLabel": "Parent",
+      "childrenLabel": "Children",
+      "editRankLabel": "Edit rank"
+    },
+    "create": {
+      "header": "Create Category",
+      "hint": "Create a new category to organize your products.",
+      "newPlaceholder": "New"
+    },
+    "edit": {
+      "header": "Edit Category"
+    },
+    "visibility": {
+      "label": "Visibility",
+      "public": "Public",
+      "internal": "Internal"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "products": {
+      "addProductsLabel": "Add products",
+      "alreadyAddedTooltip": "The product has already been added to the category."
+    }
   },
   "inventory": {
     "domain": "Inventory",

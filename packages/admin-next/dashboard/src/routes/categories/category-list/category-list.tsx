@@ -1,6 +1,7 @@
 import after from "medusa-admin:widgets/product_category/list/after"
 import before from "medusa-admin:widgets/product_category/list/before"
-import { CategoryTree } from "./components/category-tree"
+import { Outlet } from "react-router-dom"
+import { CategoryOverview } from "./components/category-overview"
 
 export const CategoryList = () => {
   return (
@@ -12,7 +13,7 @@ export const CategoryList = () => {
           </div>
         )
       })}
-      <CategoryTree />
+      <CategoryOverview />
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -20,6 +21,7 @@ export const CategoryList = () => {
           </div>
         )
       })}
+      <Outlet />
     </div>
   )
 }

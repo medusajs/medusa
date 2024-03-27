@@ -28,7 +28,7 @@ import {
 } from "../../../../../components/route-modal"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-import { ShippingOptionPriceType } from "../../../shared/constants"
+import { ShippingOptionPriceType } from "../../../common/constants"
 
 type CreateShippingOptionProps = {
   region: Region
