@@ -1,5 +1,19 @@
 # @medusajs/types
 
+## 1.11.15
+
+### Patch Changes
+
+- [#6801](https://github.com/medusajs/medusa/pull/6801) [`deab12e27e`](https://github.com/medusajs/medusa/commit/deab12e27e8249e26d24d7bc904c18195679ff24) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(types, medusa, core-flows): add delete-stock-location endpoint to api-v2
+
+- [#6739](https://github.com/medusajs/medusa/pull/6739) [`56481e683d`](https://github.com/medusajs/medusa/commit/56481e683d33ff98f0d4c4e144873bb23f993c9c) Thanks [@srindom](https://github.com/srindom)! - feat: v2 - add worker mode
+
+- [#6796](https://github.com/medusajs/medusa/pull/6796) [`9073d7aba3`](https://github.com/medusajs/medusa/commit/9073d7aba3419e4dc0a206473291a46ebd79b8c1) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types,utils): rename psma to prices
+
+- [#6748](https://github.com/medusajs/medusa/pull/6748) [`05e857d256`](https://github.com/medusajs/medusa/commit/05e857d25657b5576a891c9b48c19c1759c70701) Thanks [@sradevski](https://github.com/sradevski)! - Updated the signature of the product module variant and options endpoints to follow our conventions
+
+- [#6772](https://github.com/medusajs/medusa/pull/6772) [`1ef9c78cea`](https://github.com/medusajs/medusa/commit/1ef9c78cea080c3b7c136f909c6cddec9d8f0c62) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: v2 - deprecate extra in favor of driver options
+
 ## 1.11.14
 
 ### Patch Changes
