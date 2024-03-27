@@ -1278,6 +1278,7 @@ export default class PricingModuleService<
     )
 
     const ruleTypeMap = new Map(ruleTypes.map((rt) => [rt.rule_attribute, rt]))
+
     const ruleIdsToUpdate: string[] = []
     const rulesToCreate: CreatePriceListRuleDTO[] = []
     const priceRuleValues = new Map<string, Map<string, string[]>>()
@@ -1297,33 +1298,32 @@ export default class PricingModuleService<
       )
 
       const priceListRuleValues = new Map<string, string[]>()
-      await promiseAll(
-        Object.entries(rules).map(async ([key, value]) => {
-          const ruleType = ruleTypeMap.get(key)
-          if (!ruleType) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Rule type with attribute: ${key} not found`
-            )
-          }
 
-          const rule = priceListRulesMap.get(key)
-
-          priceListRuleValues.set(
-            ruleType.id,
-            Array.isArray(value) ? value : [value]
+      Object.entries(rules).map(async ([key, value]) => {
+        const ruleType = ruleTypeMap.get(key)
+        if (!ruleType) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Rule type with attribute: ${key} not found`
           )
+        }
 
-          if (!rule) {
-            rulesToCreate.push({
-              rule_type_id: ruleType.id,
-              price_list_id: priceListId,
-            })
-          } else {
-            ruleIdsToUpdate.push(rule.id)
-          }
-        })
-      )
+        const rule = priceListRulesMap.get(key)
+
+        priceListRuleValues.set(
+          ruleType.id,
+          Array.isArray(value) ? value : [value]
+        )
+
+        if (!rule) {
+          rulesToCreate.push({
+            rule_type_id: ruleType.id,
+            price_list_id: priceListId,
+          })
+        } else {
+          ruleIdsToUpdate.push(rule.id)
+        }
+      })
 
       priceRuleValues.set(priceListId, priceListRuleValues)
     }
