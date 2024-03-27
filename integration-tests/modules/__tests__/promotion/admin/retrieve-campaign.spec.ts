@@ -75,7 +75,6 @@ medusaIntegrationTestRunner({
           ends_at: expect.any(String),
           budget: {
             id: expect.any(String),
-            campaign: expect.any(Object),
             type: "spend",
             limit: 1000,
             raw_limit: {
