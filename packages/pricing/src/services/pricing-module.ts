@@ -40,11 +40,11 @@ import {
   RuleType,
 } from "@models"
 
-import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { PriceSetIdPrefix } from "../models/price-set"
-import { PriceListIdPrefix } from "../models/price-list"
+import {PriceListService, RuleTypeService} from "@services"
+import {validatePriceListDates} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {PriceSetIdPrefix} from "../models/price-set"
+import {PriceListIdPrefix} from "../models/price-list"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -579,40 +579,26 @@ export default class PricingModuleService<
         prices.map((price) => {
           const numberOfRules = Object.entries(price?.rules ?? {}).length
 
+          const priceRules = Object.entries(price.rules ?? {}).map(([attribute, value]) => ({
+            rule_type_id: ruleTypeMap.get(priceSetId)!.get(attribute)!.id,
+            price_set_id: priceSetId,
+            value,
+          }))
+
           return {
             ...price,
             price_set_id: priceSetId,
             title: "test", // TODO: accept title
             rules_count: numberOfRules,
+            priceRules
           }
         })
     )
 
-    const createdPrices = await this.priceService_.create(
+    await this.priceService_.create(
       pricesToCreate,
       sharedContext
     )
-
-    // Price rules
-    let rulesCursor = 0
-    const priceRulesBulkData = input.flatMap(({ priceSetId, prices }) =>
-      prices.flatMap((ma) => {
-        const rules = ma.rules ?? {}
-        const price = createdPrices[rulesCursor]
-        rulesCursor++
-
-        return Object.entries(rules).map(([k, v]) => ({
-          price_id: price.id,
-          rule_type_id: ruleTypeMap.get(priceSetId)!.get(k)!.id,
-          price_set_id: priceSetId,
-          value: v,
-        }))
-      })
-    )
-
-    if (priceRulesBulkData.length > 0) {
-      await this.priceRuleService_.create(priceRulesBulkData, sharedContext)
-    }
   }
 
   @InjectTransactionManager("baseRepository_")
