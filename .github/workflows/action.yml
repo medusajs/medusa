@@ -1,6 +1,9 @@
 name: Medusa Pipeline
 on:
   pull_request:
+    paths-ignore:
+        - '**.md'
+        
 
 jobs:
   setup:
