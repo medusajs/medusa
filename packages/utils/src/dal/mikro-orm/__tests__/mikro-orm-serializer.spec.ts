@@ -1,19 +1,27 @@
 import { MikroORM } from "@mikro-orm/core"
-import { Entity1, Entity2 } from "../__fixtures__/utils"
+import {
+  Entity1WithUnDecoratedProp,
+  Entity2WithUnDecoratedProp,
+} from "../__fixtures__/utils"
 import { mikroOrmSerializer } from "../mikro-orm-serializer"
 
 describe("mikroOrmSerializer", () => {
   beforeEach(async () => {
     await MikroORM.init({
-      entities: [Entity1, Entity2],
+      entities: [Entity1WithUnDecoratedProp, Entity2WithUnDecoratedProp],
       dbName: "test",
       type: "postgresql",
     })
   })
 
   it("should serialize an entity", async () => {
-    const entity1 = new Entity1({ id: "1", deleted_at: null })
-    const entity2 = new Entity2({
+    const entity1 = new Entity1WithUnDecoratedProp({
+      id: "1",
+      deleted_at: null,
+    })
+    entity1.unknownProp = "calculated"
+
+    const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
       entity1: entity1,
@@ -27,6 +35,7 @@ describe("mikroOrmSerializer", () => {
     expect(serialized).toEqual({
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",
@@ -34,6 +43,7 @@ describe("mikroOrmSerializer", () => {
           entity1: {
             id: "1",
             deleted_at: null,
+            unknownProp: "calculated",
           },
           entity1_id: "1",
         },
@@ -42,8 +52,13 @@ describe("mikroOrmSerializer", () => {
   })
 
   it("should serialize an array of entities", async () => {
-    const entity1 = new Entity1({ id: "1", deleted_at: null })
-    const entity2 = new Entity2({
+    const entity1 = new Entity1WithUnDecoratedProp({
+      id: "1",
+      deleted_at: null,
+    })
+    entity1.unknownProp = "calculated"
+
+    const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
       entity1: entity1,
@@ -57,6 +72,7 @@ describe("mikroOrmSerializer", () => {
     const expectation = {
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",
@@ -64,6 +80,7 @@ describe("mikroOrmSerializer", () => {
           entity1: {
             id: "1",
             deleted_at: null,
+            unknownProp: "calculated",
           },
           entity1_id: "1",
         },
@@ -74,8 +91,13 @@ describe("mikroOrmSerializer", () => {
   })
 
   it("should serialize an entity preventing circular relation reference", async () => {
-    const entity1 = new Entity1({ id: "1", deleted_at: null })
-    const entity2 = new Entity2({
+    const entity1 = new Entity1WithUnDecoratedProp({
+      id: "1",
+      deleted_at: null,
+    })
+    entity1.unknownProp = "calculated"
+
+    const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
       entity1: entity1,
@@ -87,6 +109,7 @@ describe("mikroOrmSerializer", () => {
     expect(serialized).toEqual({
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",
