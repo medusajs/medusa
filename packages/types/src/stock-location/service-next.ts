@@ -4,6 +4,7 @@ import {
   StockLocationDTO,
   UpdateStockLocationInput,
   UpdateStockLocationNextInput,
+  UpsertStockLocationInput,
 } from "./common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
@@ -251,6 +252,15 @@ export interface IStockLocationServiceNext extends IModuleService {
     context?: Context
   ): Promise<StockLocationDTO[]>
 
+  upsert(
+    data: UpsertStockLocationInput[],
+    sharedContext?: Context
+  ): Promise<StockLocationDTO[]>
+  upsert(
+    data: UpsertStockLocationInput,
+    sharedContext?: Context
+  ): Promise<StockLocationDTO>
+
   /**
    * This method is used to update a stock location.
    *
@@ -275,13 +285,15 @@ export interface IStockLocationServiceNext extends IModuleService {
    * }
    */
   update(
-    input: UpdateStockLocationNextInput[],
-    context?: Context
-  ): Promise<StockLocationDTO[]>
-  update(
-    input: UpdateStockLocationNextInput,
+    id: string,
+    input: UpdateStockLocationInput,
     context?: Context
   ): Promise<StockLocationDTO>
+  update(
+    selector: FilterableStockLocationProps,
+    input: UpdateStockLocationInput,
+    context?: Context
+  ): Promise<StockLocationDTO[]>
 
   /**
    * This method is used to delete a stock location.
