@@ -73,12 +73,18 @@ function isPopulated<T extends object>(
 function filterEntityPropToSerialize(
   prop: string,
   meta: EntityMetadata,
-  options: SerializeOptions<object, any> & { preventCircularRef?: boolean } = {},
+  options: SerializeOptions<object, any> & {
+    preventCircularRef?: boolean
+  } = {},
   parent?: object
 ): boolean {
   const isVisibleRes = isVisible(meta, prop, options)
   if (options.preventCircularRef && isVisibleRes && parent) {
-    return parent.constructor.name !== meta.properties[prop].type
+    return (
+      // mapToPk would represent a foreign key and we want to keep them
+      meta.properties[prop].mapToPk ||
+      parent.constructor.name !== meta.properties[prop].type
+    )
   }
   return isVisibleRes
 }
@@ -116,7 +122,9 @@ export class EntitySerializer {
 
     ;[...keys]
       /** Medusa Custom properties filtering **/
-      .filter((prop) => filterEntityPropToSerialize(prop, meta, options, parent))
+      .filter((prop) =>
+        filterEntityPropToSerialize(prop, meta, options, parent)
+      )
       .map((prop) => {
         const cycle = root.visit(meta.className, prop)
 
@@ -127,7 +135,7 @@ export class EntitySerializer {
         const val = this.processProperty<T>(
           prop as keyof T & string,
           entity,
-          options,
+          options
         )
 
         if (!cycle) {
@@ -219,7 +227,7 @@ export class EntitySerializer {
   private static processProperty<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>,
+    options: SerializeOptions<T, any>
   ): T[keyof T] | undefined {
     const parts = prop.split(".")
     prop = parts[0] as string & keyof T
@@ -248,12 +256,7 @@ export class EntitySerializer {
     }
 
     if (Utils.isEntity(entity[prop], true)) {
-      return this.processEntity(
-        prop,
-        entity,
-        wrapped.__platform,
-        options,
-      )
+      return this.processEntity(prop, entity, wrapped.__platform, options)
     }
 
     /* istanbul ignore next */
@@ -305,7 +308,7 @@ export class EntitySerializer {
     prop: keyof T & string,
     entity: T,
     platform: Platform,
-    options: SerializeOptions<T, any>,
+    options: SerializeOptions<T, any>
   ): T[keyof T] | undefined {
     const child = Reference.unwrapReference(entity[prop] as T)
     const wrapped = helper(child)
@@ -330,7 +333,7 @@ export class EntitySerializer {
   private static processCollection<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>,
+    options: SerializeOptions<T, any>
   ): T[keyof T] | undefined {
     const col = entity[prop] as unknown as Collection<T>
 
