@@ -440,6 +440,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     // For each entry of your base entity, it will go through all relations, and it will do a diff between what is passed and what is in the database.
     // For each relation, it create new entries (without an ID), it will associate existing entries (with only an ID), and it will update existing entries (with an ID and other fields).
     // Finally, it will delete the relation entries that were omitted in the new data.
+    // The response is a POJO of the data that was written to the DB, including all new IDs. The order is preserved with the input.
     // Limitations: We expect that IDs are used as primary keys, and we don't support composite keys. Also, we only support 1-level depth of upserts
     async upsertWithReplace(
       data: any[],
@@ -452,6 +453,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       if (!data.length) {
         return []
       }
+      // We want to convert a potential ORM model to a POJO
+      const normalizedData: any[] = await this.serialize(data)
 
       const manager = this.getActiveManager<SqlEntityManager>(context)
       const allRelationsToHandle = [
@@ -475,16 +478,20 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           `Nonexistent relations were passed during upsert: ${nonexistentRelations}`
         )
       }
-      const entryUpsertedMap = new Map<string, T>()
+
+      // We want to response with all the data including the IDs in the same order as the input. We also include data that was passed but not processed.
+      const reconstructedResponse: any[] = []
+      const originalDataMap = new Map<string, T>()
       const upsertsPerType: Record<string, any[]> = {}
 
       // Create only the top-level entity without the relations first
-      const toUpsert = data.map((entry) => {
-        // Make a copy of the data. We also convert an ORM model to a POJO in case that's what we got passed
+      const toUpsert = normalizedData.map((entry) => {
+        // Make a copy of the data and remove undefined fields. The data is already a POJO due to the serialization above
         const entryCopy = JSON.parse(JSON.stringify(entry))
+        const reconstructedEntry: any = {}
 
         allRelations?.forEach((relation) => {
-          this.handleRelationAssignment_(
+          reconstructedEntry[relation.name] = this.handleRelationAssignment_(
             manager,
             upsertConfig,
             allRelationsToHandle,
@@ -495,8 +502,9 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         })
 
         const mainEntity = this.getEntityWithId(manager, entity.name, entryCopy)
+        reconstructedResponse.push({ ...mainEntity, ...reconstructedEntry })
+        originalDataMap.set(mainEntity.id, entry)
 
-        entryUpsertedMap.set(mainEntity.id, entry)
         return mainEntity
       })
 
@@ -509,8 +517,9 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       )
 
       await promiseAll(
-        upsertedTopLevelEntities.map(async (entityEntry) => {
-          const originalEntry = entryUpsertedMap.get((entityEntry as any).id)!
+        upsertedTopLevelEntities.map(async (entityEntry, i) => {
+          const originalEntry = originalDataMap.get((entityEntry as any).id)!
+          const reconstructedEntry = reconstructedResponse[i]
 
           await promiseAll(
             allRelations?.map(async (relation) => {
@@ -528,23 +537,27 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
                 return
               }
 
-              await this.assignCollectionRelation_(
-                manager,
-                { ...originalEntry, id: (entityEntry as any).id },
-                relation
-              )
+              reconstructedEntry[relationName] =
+                await this.assignCollectionRelation_(
+                  manager,
+                  { ...originalEntry, id: (entityEntry as any).id },
+                  relation
+                )
               return
             })
           )
-
-          return originalEntry
         })
       )
 
-      return upsertedTopLevelEntities
+      // // We want to populate the identity map with the data that was written to the DB, and return an entity object
+      // return reconstructedResponse.map((r) =>
+      //   manager.create(entity, r, { persist: false })
+      // )
+
+      return reconstructedResponse
     }
 
-    // TODO: We can make this performant by only aggregating the operations, but only executing them at the end.
+    // FUTURE: We can make this performant by only aggregating the operations, but only executing them at the end.
     protected async assignCollectionRelation_(
       manager: SqlEntityManager,
       data: T,
@@ -664,12 +677,14 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         }
         upsertsPerType[relation.type].push(newEntity)
 
-        return
+        return newEntity
       }
 
       if (allRelationsToHandle.includes(relation.name)) {
         delete entryCopy[relation.name]
       }
+
+      return
     }
 
     // Returns a POJO object with the ID populated from the entity model hooks
@@ -725,9 +740,11 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       const createdEntities: T[] = []
       const updatedEntities: T[] = []
+      const orderedEntities: T[] = []
 
       await promiseAll(
         entries.map(async (data) => {
+          orderedEntities.push(data)
           const existingEntity = existingEntitiesMap.get(data.id)
           if (existingEntity) {
             await manager.nativeUpdate(entityName, { id: data.id }, data)
@@ -739,7 +756,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         })
       )
 
-      return [...createdEntities, ...updatedEntities]
+      return orderedEntities
     }
   }
 

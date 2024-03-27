@@ -758,5 +758,70 @@ describe("mikroOrmRepository", () => {
         ])
       )
     })
+
+    it("should return the complete dependency tree as a response, with IDs populated", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ title: "en2" }],
+        entity3: [{ title: "en3-1" }, { title: "en3-2" }] as any,
+      }
+
+      const [createResp] = await manager1().upsertWithReplace([entity1], {
+        relationsToUpsert: ["entity2", "entity3"],
+        relationsToSkip: [],
+      })
+      createResp.title = "newen1"
+      const [updateResp] = await manager1().upsertWithReplace([createResp], {
+        relationsToUpsert: ["entity2", "entity3"],
+        relationsToSkip: [],
+      })
+
+      expect(createResp.id).toEqual("1")
+      expect(createResp.title).toEqual("newen1")
+      expect(createResp.entity2).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en2",
+          }),
+        ])
+      )
+      expect(createResp.entity3).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en3-1",
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en3-2",
+          }),
+        ])
+      )
+
+      expect(updateResp.id).toEqual("1")
+      expect(updateResp.title).toEqual("newen1")
+      expect(updateResp.entity2).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en2",
+          }),
+        ])
+      )
+      expect(updateResp.entity3).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en3-1",
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "en3-2",
+          }),
+        ])
+      )
+    })
   })
 })
