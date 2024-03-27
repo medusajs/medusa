@@ -8169,7 +8169,7 @@ __metadata:
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
-    date-fns: ^3.2.0
+    date-fns: ^3.6.0
     framer-motion: ^11.0.3
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
@@ -8185,6 +8185,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
+    react-nestable: ^3.0.2
     react-resizable-panels: ^2.0.9
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
@@ -9052,7 +9053,7 @@ __metadata:
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
-    date-fns: ^2.30.0
+    date-fns: ^3.6.0
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
     jsdom: ^22.1.0
@@ -23242,6 +23243,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.3.2":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^4.2.3":
   version: 4.2.4
   resolution: "clean-css@npm:4.2.4"
@@ -25112,7 +25120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.25.0, date-fns@npm:^2.29.3":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -25121,10 +25129,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "date-fns@npm:3.2.0"
-  checksum: f93e987f785d7f2b7349986d150b014ce21fa6425e2e1edea6f0e01731dceef68deabf0f723689c28604e857648ac708a52b924cb7584e4321835686aa665371
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -44323,6 +44331,19 @@ __metadata:
     react-addons-update: ^15.6.3
     react-dom: ^15.7.0
   checksum: 3014464e5e3b1535ffc6dfa3375c29d34579e6daafbe13c8a100c97b848f1a790ac356988cf97e266997b8e4671eaa19ffc7c628e14d926c581f769f316e6728
+  languageName: node
+  linkType: hard
+
+"react-nestable@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-nestable@npm:3.0.2"
+  dependencies:
+    classnames: ^2.3.2
+    react: ^18.2.0
+    react-addons-shallow-compare: ^15.6.3
+    react-addons-update: ^15.6.3
+    react-dom: ^18.2.0
+  checksum: e2a7947382ca28e12048c534a2ad6e544dff60a56e712b7a1b00838434c5b5444b4c50c1fd652e032710b567674b4eff36ee4c3a5021c02f933d11c7b88ce7b9
   languageName: node
   linkType: hard
 

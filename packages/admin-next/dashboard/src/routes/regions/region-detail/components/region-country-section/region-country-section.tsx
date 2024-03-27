@@ -12,9 +12,9 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCountries } from "../../../shared/hooks/use-countries"
-import { useCountryTableColumns } from "../../../shared/hooks/use-country-table-columns"
-import { useCountryTableQuery } from "../../../shared/hooks/use-country-table-query"
+import { useCountries } from "../../../common/hooks/use-countries"
+import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
+import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
 
 type RegionCountrySectionProps = {
   region: Region

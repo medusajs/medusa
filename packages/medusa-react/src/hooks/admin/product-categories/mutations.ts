@@ -1,10 +1,4 @@
 import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
-import { Response } from "@medusajs/medusa-js"
-import {
   AdminDeleteProductCategoriesCategoryProductsBatchReq,
   AdminPostProductCategoriesCategoryProductsBatchReq,
   AdminPostProductCategoriesCategoryReq,
@@ -12,23 +6,29 @@ import {
   AdminProductCategoriesCategoryDeleteRes,
   AdminProductCategoriesCategoryRes,
 } from "@medusajs/medusa"
+import { Response } from "@medusajs/medusa-js"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
-import { adminProductCategoryKeys } from "./queries"
 import { adminProductKeys } from "../products"
+import { adminProductCategoryKeys } from "./queries"
 
 /**
  * This hook creates a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCreateProductCategory } from "medusa-react"
- * 
+ *
  * const CreateCategory = () => {
  *   const createCategory = useAdminCreateProductCategory()
  *   // ...
- * 
+ *
  *   const handleCreate = (
  *     name: string
  *   ) => {
@@ -40,12 +40,12 @@ import { adminProductKeys } from "../products"
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default CreateCategory
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -64,7 +64,7 @@ export const useAdminCreateProductCategory = (
       client.admin.productCategories.create(payload),
     buildOptions(
       queryClient,
-      [adminProductCategoryKeys.list(), adminProductKeys.details()],
+      [adminProductCategoryKeys.lists(), adminProductKeys.details()],
       options
     )
   )
@@ -72,15 +72,15 @@ export const useAdminCreateProductCategory = (
 
 /**
  * This hook updates a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminUpdateProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -88,7 +88,7 @@ export const useAdminCreateProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleUpdate = (
  *     name: string
  *   ) => {
@@ -100,12 +100,12 @@ export const useAdminCreateProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -125,29 +125,29 @@ export const useAdminUpdateProductCategory = (
   return useMutation(
     (payload: AdminPostProductCategoriesCategoryReq) =>
       client.admin.productCategories.update(id, payload),
-      buildOptions(
-        queryClient,
-        [
-          adminProductCategoryKeys.lists(),
-          adminProductCategoryKeys.detail(id),
-          adminProductKeys.details(),
-        ],
-        options
-      )
+    buildOptions(
+      queryClient,
+      [
+        adminProductCategoryKeys.lists(),
+        adminProductCategoryKeys.detail(id),
+        adminProductKeys.details(),
+      ],
+      options
     )
+  )
 }
 
 /**
  * This hook deletes a product category. This does not delete associated products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteProductCategory } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -155,7 +155,7 @@ export const useAdminUpdateProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleDelete = () => {
  *     deleteCategory.mutate(void 0, {
  *       onSuccess: ({ id, object, deleted }) => {
@@ -163,12 +163,12 @@ export const useAdminUpdateProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -193,7 +193,7 @@ export const useAdminDeleteProductCategory = (
       [
         adminProductCategoryKeys.lists(),
         adminProductCategoryKeys.detail(id),
-        adminProductKeys.all
+        adminProductKeys.all,
       ],
       options
     )
@@ -202,19 +202,19 @@ export const useAdminDeleteProductCategory = (
 
 /**
  * This hook adds a list of products to a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminAddProductsToCategory } from "medusa-react"
- * 
+ *
  * type ProductsData = {
  *   id: string
  * }
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -222,7 +222,7 @@ export const useAdminDeleteProductCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleAddProducts = (
  *     productIds: ProductsData[]
  *   ) => {
@@ -234,12 +234,12 @@ export const useAdminDeleteProductCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
@@ -274,19 +274,19 @@ export const useAdminAddProductsToCategory = (
 
 /**
  * This hook removes a list of products from a product category.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDeleteProductsFromCategory } from "medusa-react"
- * 
+ *
  * type ProductsData = {
  *   id: string
  * }
- * 
+ *
  * type Props = {
  *   productCategoryId: string
  * }
- * 
+ *
  * const Category = ({
  *   productCategoryId
  * }: Props) => {
@@ -294,7 +294,7 @@ export const useAdminAddProductsToCategory = (
  *     productCategoryId
  *   )
  *   // ...
- * 
+ *
  *   const handleDeleteProducts = (
  *     productIds: ProductsData[]
  *   ) => {
@@ -306,12 +306,12 @@ export const useAdminAddProductsToCategory = (
  *       }
  *     })
  *   }
- * 
+ *
  *   // ...
  * }
- * 
+ *
  * export default Category
- * 
+ *
  * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */

@@ -27,7 +27,7 @@ import {
   getDbAmount,
   getPresentationalAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { ShippingOptionPriceType } from "../../../shared/constants"
+import { ShippingOptionPriceType } from "../../../common/constants"
 
 type EditShippingOptionFormProps = {
   region: Region

@@ -10,10 +10,12 @@ type Action = {
 } & (
   | {
       to: string
+      state?: any
       onClick?: never
     }
   | {
       onClick: () => void
+      state?: never
       to?: never
     }
 )
@@ -54,7 +56,7 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
                         e.stopPropagation()
                         action.onClick()
                       }}
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {action.icon}
                       <span>{action.label}</span>
@@ -65,11 +67,15 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
                 return (
                   <div key={index}>
                     <DropdownMenu.Item
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:cursor-not-allowed disabled:opacity-50"
                       asChild
                       disabled={action.disabled}
                     >
-                      <Link to={action.to} onClick={(e) => e.stopPropagation()}>
+                      <Link
+                        to={action.to}
+                        state={action.state}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {action.icon}
                         <span>{action.label}</span>
                       </Link>

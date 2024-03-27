@@ -8,7 +8,11 @@ import {
 import { useTranslation } from "react-i18next"
 import { Filter } from "../../../components/table/data-table"
 
-const excludeableFields = ["sales_channel_id", "collections"] as const
+const excludeableFields = [
+  "sales_channel_id",
+  "collections",
+  "categories",
+] as const
 
 export const useProductTableFilters = (
   exclude?: (typeof excludeableFields)[number][]
@@ -38,12 +42,19 @@ export const useProductTableFilters = (
     }
   )
 
-  const { product_categories } = useAdminProductCategories({
-    limit: 1000,
-    offset: 0,
-    fields: "id,name",
-    expand: "",
-  })
+  const isCategoriesExcluded = exclude?.includes("categories")
+
+  const { product_categories } = useAdminProductCategories(
+    {
+      limit: 1000,
+      offset: 0,
+      fields: "id,name",
+      expand: "",
+    },
+    {
+      enabled: !isCategoriesExcluded,
+    }
+  )
 
   const isCollectionExcluded = exclude?.includes("collections")
 

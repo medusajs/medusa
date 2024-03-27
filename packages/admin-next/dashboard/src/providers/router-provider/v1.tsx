@@ -6,6 +6,7 @@ import type {
   AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
+  AdminProductCategoriesCategoryRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -246,12 +247,44 @@ export const v1Routes: RouteObject[] = [
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/categories/list"),
+                path: "",
+                lazy: () => import("../../routes/categories/category-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/categories/category-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/categories/details"),
+                lazy: () => import("../../routes/categories/category-detail"),
+                handle: {
+                  crumb: (data: AdminProductCategoriesCategoryRes) =>
+                    data.product_category.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/categories/category-edit"),
+                  },
+                  {
+                    path: "rank",
+                    lazy: () =>
+                      import("../../routes/categories/category-edit-rank"),
+                  },
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/categories/category-create"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import("../../routes/categories/category-add-products"),
+                  },
+                ],
               },
             ],
           },

@@ -1,0 +1,31 @@
+.nestable-item {
+  margin: 0 !important;
+}
+
+.nestable-item.is-dragging:before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: transparent !important;
+
+  transition: 0.3s all !important;
+
+  border-radius: 0 !important;
+  border: 1px dashed var(--border-interactive) !important;
+  z-index: 1000 !important;
+}
+
+.nestable-item.is-dragging * {
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background: var(--bg-subtle) !important;
+}
+
+.nestable-list {
+  padding: 0 !important;
+  margin: 0 !important;
+}
