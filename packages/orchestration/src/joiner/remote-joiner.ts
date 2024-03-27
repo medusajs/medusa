@@ -374,36 +374,14 @@ export class RemoteJoiner {
 
     resData = Array.isArray(resData) ? resData : [resData]
 
-    if (
-      isDefined(uniqueIds) &&
-      ((options?.throwIfKeyNotFound && !isDefined(relationship)) ||
-        (options?.throwIfRelationNotFound && isDefined(relationship)))
-    ) {
-      let check = true
-      if (isDefined(relationship)) {
-        if (
-          Array.isArray(options?.throwIfRelationNotFound) &&
-          !options?.throwIfRelationNotFound.includes(relationship.serviceName)
-        ) {
-          check = false
-        }
-      }
-
-      if (check) {
-        const notFound = new Set(uniqueIds)
-        resData.forEach((data) => {
-          notFound.delete(data[pkField])
-        })
-
-        if (notFound.size > 0) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `${expand.serviceConfig.serviceName} ${pkField} not found: ` +
-              Array.from(notFound).join(", ")
-          )
-        }
-      }
-    }
+    this.checkIfKeysExist(
+      uniqueIds,
+      resData,
+      expand,
+      pkField,
+      relationship,
+      options
+    )
 
     const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)
@@ -416,6 +394,47 @@ export class RemoteJoiner {
     }
 
     return response
+  }
+
+  private checkIfKeysExist(
+    uniqueIds: unknown[] | undefined,
+    resData: any[],
+    expand: RemoteExpandProperty,
+    pkField: string,
+    relationship?: any,
+    options?: RemoteJoinerOptions
+  ) {
+    if (
+      !(
+        isDefined(uniqueIds) &&
+        ((options?.throwIfKeyNotFound && !isDefined(relationship)) ||
+          (options?.throwIfRelationNotFound && isDefined(relationship)))
+      )
+    ) {
+      return
+    }
+
+    if (isDefined(relationship)) {
+      if (
+        Array.isArray(options?.throwIfRelationNotFound) &&
+        !options?.throwIfRelationNotFound.includes(relationship.serviceName)
+      ) {
+        return
+      }
+    }
+
+    const notFound = new Set(uniqueIds)
+    resData.forEach((data) => {
+      notFound.delete(data[pkField])
+    })
+
+    if (notFound.size > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `${expand.serviceConfig.serviceName} ${pkField} not found: ` +
+          Array.from(notFound).join(", ")
+      )
+    }
   }
 
   private handleFieldAliases(
