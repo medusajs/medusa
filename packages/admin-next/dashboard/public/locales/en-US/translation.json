@@ -333,7 +333,13 @@
     },
     "refund": {
       "title": "Create Refund",
-      "sendNotificationHint": "Notify customers about the created refund."
+      "sendNotificationHint": "Notify customers about the created refund.",
+      "systemPayment": "System payment",
+      "systemPaymentDesc": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
+      "error": {
+        "amountToLarge": "Cannot refund more than the original order amount.",
+        "amountNegative": "Refund amount must be a positive number."
+      }
     },
     "customer": {
       "contactLabel": "Contact",
@@ -807,6 +813,7 @@
   },
   "fields": {
     "amount": "Amount",
+    "refundAmount": "Refund amount",
     "name": "Name",
     "lastName": "Last Name",
     "firstName": "First Name",

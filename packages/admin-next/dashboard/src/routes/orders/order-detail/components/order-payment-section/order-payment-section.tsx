@@ -20,6 +20,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { useMemo } from "react"
 
 type OrderPaymentSectionProps = {
   order: Order
@@ -42,6 +43,10 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
 const Header = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
+  const refundable = useMemo(() => {
+    return order.paid_total - order.refunded_total
+  }, [order])
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("orders.payment.title")}</Heading>
@@ -53,6 +58,7 @@ const Header = ({ order }: { order: Order }) => {
                 label: t("orders.payment.refund"),
                 icon: <ArrowDownRightMini />,
                 to: `/orders/${order.id}/refund`,
+                disabled: refundable <= 0,
               },
             ],
           },
@@ -160,13 +166,7 @@ const Payment = ({
         <ActionMenu
           groups={[
             {
-              actions: [
-                {
-                  label: t("orders.payment.refund"),
-                  icon: <XCircle />,
-                  // to: `/orders/${order.id}/refund`,
-                },
-              ],
+              actions: [],
             },
           ]}
         />

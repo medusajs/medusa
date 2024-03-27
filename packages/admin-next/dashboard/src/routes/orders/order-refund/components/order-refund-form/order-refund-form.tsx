@@ -1,10 +1,18 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Order } from "@medusajs/medusa"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { Button, Select, Switch, Text, Textarea } from "@medusajs/ui"
+import {
+  Alert,
+  Button,
+  CurrencyInput,
+  Select,
+  Switch,
+  Text,
+  Textarea,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useForm } from "react-hook-form"
 import { useAdminRefundPayment } from "medusa-react"
@@ -13,6 +21,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { CreateRefundSchema } from "../../schema"
 import { Form } from "../../../../../components/common/form"
+import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { castNumber } from "../../../../../lib/cast-number"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+
+const reasonOptions = [
+  { label: "Discount", value: "discount" },
+  { label: "Other", value: "other" },
+]
 
 type OrderRefundFormProps = {
   order: Order
@@ -22,28 +38,92 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const refundable = useMemo(() => {
+    return order.paid_total - order.refunded_total
+  }, [order])
+
   const form = useForm<z.infer<typeof CreateRefundSchema>>({
     defaultValues: {
-      amount: 0,
+      amount: "",
+      note: "",
+      reason: "",
+      notification_enabled: !order.no_notification,
     },
     resolver: zodResolver(CreateRefundSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminRefundPayment()
+  const { mutateAsync, isLoading } = useAdminRefundPayment(order.id)
 
-  const handleSumbit = form.handleSubmit(async (values) => {
-    // await mutateAsync(values)
+  const handleSubmit = form.handleSubmit(async (values) => {
+    if (values.amount === "" || values.amount === undefined) {
+      form.setError("amount", {
+        type: "manual",
+        message: t("Please enter an amount for refund"),
+      })
+      return
+    }
+
+    const amount = castNumber(values.amount)
+    const dbAmount = getDbAmount(amount, order.currency_code)
+
+    if (dbAmount > refundable) {
+      form.setError("amount", {
+        type: "manual",
+        message: t("orders.refund.error.amountToLarge"),
+      })
+      return
+    }
+
+    if (amount < 0) {
+      form.setError("amount", {
+        type: "manual",
+        message: t("orders.refund.error.amountNegative"),
+      })
+      return
+    }
+
+    await mutateAsync({
+      amount: dbAmount,
+      note: values.note,
+      reason: values.reason,
+      no_notification: !values.notification_enabled,
+    })
 
     handleSuccess()
   })
+
+  const isSystemPayment = order.payments.some((p) => p.provider_id === "system")
+
   return (
     <RouteDrawer.Form form={form}>
       <form
-        onSubmit={handleSumbit}
+        onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="size-full flex-1 overflow-auto">
           <div className="flex flex-col gap-y-4">
+            <Form.Field
+              control={form.control}
+              name="amount"
+              render={({ field: { onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.refundAmount")}</Form.Label>
+                    <Form.Control>
+                      <CurrencyInput
+                        min={0}
+                        max={refundable}
+                        onValueChange={onChange}
+                        code={order.currency_code}
+                        symbol={getCurrencySymbol(order.currency_code)}
+                        {...field}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
             <Form.Field
               control={form.control}
               name="reason"
@@ -53,15 +133,12 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
                     <Form.Label>{t("fields.reason")}</Form.Label>
                     <Form.Control>
                       <Select onValueChange={onChange} {...field}>
-                        <Select.Trigger
-                          className="bg-ui-bg-base txt-small"
-                          ref={ref}
-                        >
+                        <Select.Trigger className="txt-small" ref={ref}>
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {[].map((i) => (
-                            <Select.Item key={i.id} value={i.id}>
+                          {reasonOptions.map((i) => (
+                            <Select.Item key={i.value} value={i.value}>
                               {i.label}
                             </Select.Item>
                           ))}
@@ -117,6 +194,17 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
                 )
               }}
             />
+
+            {isSystemPayment && (
+              <Alert variant="warning" dismissible className="mt-8 p-5">
+                <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+                  {t("orders.refund.systemPayment")}
+                </div>
+                <Text className="text-ui-fg-subtle txt-small leading-normal">
+                  {t("orders.refund.systemPaymentDesc")}
+                </Text>
+              </Alert>
+            )}
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
