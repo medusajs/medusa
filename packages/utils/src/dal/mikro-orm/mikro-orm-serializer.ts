@@ -11,7 +11,7 @@ import {
   SerializationContext,
   Utils,
 } from "@mikro-orm/core"
-import { SerializeOptions } from "@mikro-orm/core/serialization/EntitySerializer"
+import {SerializeOptions} from "@mikro-orm/core/serialization/EntitySerializer"
 
 function isVisible<T extends object>(
   meta: EntityMetadata<T>,
@@ -81,9 +81,11 @@ function filterEntityPropToSerialize(
   const isVisibleRes = isVisible(meta, prop, options)
   if (options.preventCircularRef && isVisibleRes && parent) {
     return (
-      // mapToPk would represent a foreign key and we want to keep them
-      !!meta.properties[prop]?.mapToPk ||
-      parent.constructor.name !== meta.properties[prop].type
+      !!meta.properties[prop] && (
+        // mapToPk would represent a foreign key and we want to keep them
+        !!meta.properties[prop]?.mapToPk ||
+        parent.constructor.name !== meta.properties[prop].type
+      )
     )
   }
   return isVisibleRes
@@ -160,7 +162,7 @@ export class EntitySerializer {
               prop as keyof T & string,
               wrapped.__platform
             )
-          ] = value as T[keyof T & string])
+            ] = value as T[keyof T & string])
       )
 
     if (contextCreated) {
