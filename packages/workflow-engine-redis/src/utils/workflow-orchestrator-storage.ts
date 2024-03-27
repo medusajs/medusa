@@ -26,6 +26,9 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
   private queue: Queue
   private worker: Worker
 
+  private workerConnection: Redis
+  private queueName: string
+
   constructor({
     workflowExecutionService,
     redisConnection,
@@ -38,14 +41,17 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     redisQueueName: string
   }) {
     super()
-
+    this.workerConnection = redisWorkerConnection
+    this.queueName = redisQueueName
     this.workflowExecutionService_ = workflowExecutionService
-
     this.redisClient = redisConnection
-
     this.queue = new Queue(redisQueueName, { connection: this.redisClient })
+    this.workerConnection = redisWorkerConnection
+  }
+
+  startWorker() {
     this.worker = new Worker(
-      redisQueueName,
+      this.queueName,
       async (job) => {
         const allJobs = [
           JobType.RETRY,
@@ -60,7 +66,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
           )
         }
       },
-      { connection: redisWorkerConnection }
+      { connection: this.workerConnection }
     )
   }
 
