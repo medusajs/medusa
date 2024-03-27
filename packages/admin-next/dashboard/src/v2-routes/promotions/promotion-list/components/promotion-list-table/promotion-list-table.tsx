@@ -6,7 +6,6 @@ import { useAdminDeleteDiscount } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData } from "react-router-dom"
-import { useV2Promotions } from "../../../../../lib/api-v2"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -14,14 +13,13 @@ import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters-v2/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useV2Promotions } from "../../../../../lib/api-v2"
 import { promotionsLoader } from "../../loader"
 
 const PAGE_SIZE = 20
 
 export const PromotionListTable = () => {
   const { t } = useTranslation()
-
-  // Question: what is this?
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof promotionsLoader>>
   >
@@ -31,9 +29,7 @@ export const PromotionListTable = () => {
     { ...searchParams },
     {
       initialData,
-      // Question: what is this?
-      // TODO: reenable this once its figured out
-      // keepPreviousData: true,
+      keepPreviousData: true,
     }
   )
 
@@ -74,7 +70,7 @@ export const PromotionListTable = () => {
         isLoading={isLoading}
         queryObject={raw}
         navigateTo={(row) => `${row.original.id}`}
-        orderBy={["code", "created_at", "updated_at"]}
+        orderBy={["created_at", "updated_at"]}
       />
       <Outlet />
     </Container>

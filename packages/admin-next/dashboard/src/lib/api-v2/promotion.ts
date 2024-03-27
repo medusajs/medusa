@@ -1,34 +1,23 @@
-import { AdminPromotionsListRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
-import { FilterablePromotionProps } from "@medusajs/types"
 import {
-  queryKeysFactory,
-  useAdminCustomQuery,
-  UseQueryOptionsWrapper,
-} from "medusa-react"
+  AdminGetPromotionsParams,
+  AdminPromotionsListRes,
+} from "@medusajs/medusa"
+import { queryKeysFactory, useAdminCustomQuery } from "medusa-react"
 
-export const adminPromotionKeys = queryKeysFactory("promotions")
-type PromotionQueryKeys = typeof adminPromotionKeys
+const QUERY_KEY = "admin_promotions"
+export const adminPromotionKeys = queryKeysFactory<
+  typeof QUERY_KEY,
+  AdminGetPromotionsParams
+>(QUERY_KEY)
 
 export const useV2Promotions = (
-  query?: FilterablePromotionProps,
-  options?: UseQueryOptionsWrapper<
-    Response<AdminPromotionsListRes>,
-    Error,
-    ReturnType<PromotionQueryKeys["list"]>
-  >
+  query?: AdminGetPromotionsParams,
+  options?: object
 ) => {
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    "/admin/promotions",
-    adminPromotionKeys.list(query),
-    options
-  )
+  const { data, ...rest } = useAdminCustomQuery<
+    AdminGetPromotionsParams,
+    AdminPromotionsListRes
+  >("/admin/promotions", adminPromotionKeys.list(query), query, options)
 
-  return {
-    promotions: data?.promotions,
-    count: data?.count,
-    isLoading,
-    isError,
-    error,
-  }
+  return { ...data, ...rest }
 }

@@ -185,6 +185,23 @@
       },
       "required": ["domain", "role", "roles"]
     },
+    "statuses": {
+      "type": "object",
+      "properties": {
+        "scheduled": {
+          "type": "string"
+        },
+        "expired": {
+          "type": "string"
+        },
+        "active": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "string"
+        }
+      }
+    },
     "fields": {
       "type": "object",
       "properties": {
