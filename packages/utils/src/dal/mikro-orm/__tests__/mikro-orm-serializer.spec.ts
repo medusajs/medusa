@@ -19,6 +19,8 @@ describe("mikroOrmSerializer", () => {
       id: "1",
       deleted_at: null,
     })
+    entity1.unknownProp = "calculated"
+
     const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
@@ -33,6 +35,7 @@ describe("mikroOrmSerializer", () => {
     expect(serialized).toEqual({
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",
@@ -40,6 +43,7 @@ describe("mikroOrmSerializer", () => {
           entity1: {
             id: "1",
             deleted_at: null,
+            unknownProp: "calculated",
           },
           entity1_id: "1",
         },
@@ -52,6 +56,8 @@ describe("mikroOrmSerializer", () => {
       id: "1",
       deleted_at: null,
     })
+    entity1.unknownProp = "calculated"
+
     const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
@@ -66,6 +72,7 @@ describe("mikroOrmSerializer", () => {
     const expectation = {
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",
@@ -73,6 +80,7 @@ describe("mikroOrmSerializer", () => {
           entity1: {
             id: "1",
             deleted_at: null,
+            unknownProp: "calculated",
           },
           entity1_id: "1",
         },
@@ -87,6 +95,8 @@ describe("mikroOrmSerializer", () => {
       id: "1",
       deleted_at: null,
     })
+    entity1.unknownProp = "calculated"
+
     const entity2 = new Entity2WithUnDecoratedProp({
       id: "2",
       deleted_at: null,
@@ -99,6 +109,7 @@ describe("mikroOrmSerializer", () => {
     expect(serialized).toEqual({
       id: "1",
       deleted_at: null,
+      unknownProp: "calculated",
       entity2: [
         {
           id: "2",

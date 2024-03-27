@@ -79,10 +79,17 @@ function filterEntityPropToSerialize(
   parent?: object
 ): boolean {
   const isVisibleRes = isVisible(meta, propName, options)
-  if (options.preventCircularRef && isVisibleRes && parent) {
-    const prop = meta.properties[propName]
+  const prop = meta.properties[propName]
+
+  if (
+    prop &&
+    prop.reference !== ReferenceType.SCALAR &&
+    options.preventCircularRef &&
+    isVisibleRes &&
+    parent
+  ) {
     // mapToPk would represent a foreign key and we want to keep them
-    return prop && (!!prop.mapToPk || parent.constructor.name !== prop.type)
+    return !!prop.mapToPk || parent.constructor.name !== prop.type
   }
   return isVisibleRes
 }
