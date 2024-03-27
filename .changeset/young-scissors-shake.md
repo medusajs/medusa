@@ -1,5 +1,7 @@
 ---
 "@medusajs/modules-sdk": patch
+"@medusajs/orchestration": patch
+"@medusajs/types": patch
 ---
 
-Remote Query use retrieve method to fetch single key from entry points
+Remote Joiner options to check if keys exist on entrypoints or relations
