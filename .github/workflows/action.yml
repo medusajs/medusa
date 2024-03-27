@@ -40,6 +40,11 @@ jobs:
         with:
           extension: pipeline
 
+      - name: yarn build
+        uses: ./.github/actions/cache-build
+        with:
+          extension: pipeline
+
       - id: set-module-chunks
         name: Set Module Chunks
         working-directory: integration-tests/modules
@@ -97,6 +102,11 @@ jobs:
         with:
           extension: pipeline
 
+      - name: yarn build
+        uses: ./.github/actions/cache-build
+        with:
+          extension: pipeline
+
       - name: Run unit tests
         run: yarn test:chunk
         env:
@@ -141,6 +151,11 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: yarn build
+        uses: ./.github/actions/cache-build
         with:
           extension: pipeline
 
@@ -193,6 +208,11 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: yarn build
+        uses: ./.github/actions/cache-build
         with:
           extension: pipeline
 
@@ -273,6 +293,11 @@ jobs:
         with:
           extension: pipeline
 
+      - name: yarn build
+        uses: ./.github/actions/cache-build
+        with:
+          extension: pipeline
+
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
         env:
@@ -313,6 +338,11 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: yarn build
+        uses: ./.github/actions/cache-build
         with:
           extension: pipeline
 
@@ -369,6 +399,11 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: yarn build
+        uses: ./.github/actions/cache-build
         with:
           extension: pipeline
 

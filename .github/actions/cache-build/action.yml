@@ -1,0 +1,19 @@
+name: cache-deps
+description: Creates a cache with the given extension for monorepo builds
+inputs:
+  extension:
+    description: Extension for cache name
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: |
+          **/dist
+        key: ${{ runner.os }}-yarn-build-${{inputs.extension}}
+        restore-keys: |
+          ${{ runner.os }}-yarn-build-${{inputs.extension}}
+      # We want to only run yarn build only if no cache is found.
+    - run: yarn build
+      shell: bash
