@@ -30,7 +30,7 @@ import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
 import { useV2Session } from "../../../lib/api-v2"
 
-const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || false
+const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || "false"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -119,19 +119,21 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  // Comment: Only place where we switch between the two modes inline.
-  //  This is to avoid having to rebuild the shell for the app.
-  let { user, isLoading, isError, error } = {} as any
+  const isV2Enabled = V2_ENABLED === "true"
 
   // Medusa V2 disabled
-  ;({ user, isLoading, isError, error } = useAdminGetSession({
-    enabled: V2_ENABLED == "false",
-  }))
+  const v1 = useAdminGetSession({
+    enabled: !isV2Enabled,
+  })
 
   // Medusa V2 enabled
-  ;({ user, isLoading, isError, error } = useV2Session({
-    enabled: V2_ENABLED == "true",
-  }))
+  const v2 = useV2Session({
+    enabled: isV2Enabled,
+  })
+
+  // Comment: Only place where we switch between the two modes inline.
+  //  This is to avoid having to rebuild the shell for the app.
+  const { user, isLoading, isError, error } = !isV2Enabled ? v1 : v2
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email
