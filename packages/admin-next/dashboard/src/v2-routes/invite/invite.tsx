@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 
+import i18n from "i18next"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { decodeToken } from "react-jwt"
@@ -26,7 +27,7 @@ const CreateAccountSchema = z
     if (password !== repeat_password) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Passwords do not match",
+        message: i18n.t("invite.passwordMismatch"),
         path: ["repeat_password"],
       })
     }
@@ -210,40 +211,38 @@ const CreateView = ({
     useV2AcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createAuthUser(
-      {
+    try {
+      const { token: authToken } = await createAuthUser({
         email: data.email,
         password: data.password,
-      },
-      {
-        onSuccess: async ({ token: authToken }) => {
-          await acceptInvite({
-            payload: {
-              first_name: data.first_name,
-              last_name: data.last_name,
-            },
-            token: authToken,
-          })
+      })
 
-          onSuccess()
-        },
-        onError: (error) => {
-          if (isAxiosError(error) && error.response?.status === 400) {
-            form.setError("root", {
-              type: "manual",
-              message: t("invite.invalidInvite"),
-            })
-            setInvalid(true)
-            return
-          }
-
-          form.setError("root", {
-            type: "manual",
-            message: t("errors.serverError"),
-          })
-        },
+      const invitePayload = {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
       }
-    )
+
+      await acceptInvite({
+        payload: invitePayload,
+        token: authToken,
+      })
+      onSuccess()
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 400) {
+        form.setError("root", {
+          type: "manual",
+          message: t("invite.invalidInvite"),
+        })
+        setInvalid(true)
+        return
+      }
+
+      form.setError("root", {
+        type: "manual",
+        message: t("errors.serverError"),
+      })
+    }
   })
 
   return (

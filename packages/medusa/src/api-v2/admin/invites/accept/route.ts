@@ -16,7 +16,7 @@ export const POST = async (
     const moduleService: IUserModuleService = req.scope.resolve(
       ModuleRegistrationName.USER
     )
-    const user = moduleService.retrieve(req.auth.actor_id)
+    const user = await moduleService.retrieve(req.auth.actor_id)
     res.status(200).json({ user })
     return
   }
