@@ -29,11 +29,6 @@ runs:
       with:
         extension: ${{ inputs.cache-extension }}
 
-    - name: yarn build
-        uses: ./.github/actions/cache-build
-        with:
-          extension: pipeline
-
     - name: Install dev cli
       shell: "bash"
       run: sudo npm i -g medusa-dev-cli
