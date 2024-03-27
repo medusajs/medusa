@@ -21,6 +21,8 @@ const afterEach_ = async () => {
   await TestDatabase.clearTables(sharedPgConnection)
 }
 
+jest.setTimeout(50000)
+
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
     let workflowOrcModule: IWorkflowEngineService

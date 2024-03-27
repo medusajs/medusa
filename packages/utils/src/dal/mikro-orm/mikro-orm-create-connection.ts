@@ -75,7 +75,7 @@ export async function mikroOrmCreateConnection(
   let schema = database.schema || "public"
 
   let driverOptions = database.driverOptions ?? {
-    connection: { ssl: true },
+    connection: { ssl: false },
   }
 
   let clientUrl = database.clientUrl

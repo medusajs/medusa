@@ -13,6 +13,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  Min,
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
@@ -266,6 +267,31 @@ export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {
   @IsString({ each: true })
   location_id?: string[]
 }
+/**
+ * @schema AdminPostInventoryItemsItemLocationLevelsLevelReq
+ * type: object
+ * properties:
+ *   stocked_quantity:
+ *     description: the total stock quantity of an inventory item at the given location ID
+ *     type: number
+ *   incoming_quantity:
+ *     description: the incoming stock quantity of an inventory item at the given location ID
+ *     type: number
+ */
+export class AdminPostInventoryItemsItemLocationLevelsLevelReq {
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  incoming_quantity?: number
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  stocked_quantity?: number
+}
+
+// eslint-disable-next-line
+export class AdminPostInventoryItemsItemLocationLevelsLevelParams extends FindParams {}
 /**
  * @schema AdminPostInventoryItemsInventoryItemReq
  * type: object

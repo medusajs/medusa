@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -41,9 +41,14 @@ export default class PriceListRuleValue {
 
   @PriceListPriceListRuleIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceListRule, {
-    onDelete: "cascade",
+    columnType: "text",
+    mapToPk: true,
     fieldName: "price_list_rule_id",
+    onDelete: "cascade",
   })
+  price_list_rule_id: string
+
+  @ManyToOne(() => PriceListRule, { persist: false })
   price_list_rule: PriceListRule
 
   @Property({ columnType: "text" })
@@ -71,10 +76,12 @@ export default class PriceListRuleValue {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "plrv")
+    this.price_list_rule_id ??= this.price_list_rule?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "plrv")
+    this.price_list_rule_id ??= this.price_list_rule?.id
   }
 }

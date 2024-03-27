@@ -55,6 +55,7 @@ export const listLocationLevelsTransformQueryConfig = {
   ...retrieveLocationLevelsTransformQueryConfig,
   isList: true,
 }
+
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,

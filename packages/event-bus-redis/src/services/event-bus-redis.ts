@@ -42,11 +42,14 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
-      prefix: `${this.constructor.name}`,
-      ...(moduleOptions.workerOptions ?? {}),
-      connection: eventBusRedisConnection,
-    })
+    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
+    if (shouldStartWorker) {
+      new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
+        prefix: `${this.constructor.name}`,
+        ...(moduleOptions.workerOptions ?? {}),
+        connection: eventBusRedisConnection,
+      })
+    }
   }
 
   /**

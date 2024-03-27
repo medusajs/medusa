@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -11,8 +11,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -52,20 +52,31 @@ export default class PriceListRule {
   id!: string
 
   @PriceListRuleRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne({ entity: () => RuleType, fieldName: "rule_type_id" })
+  @ManyToOne(() => RuleType, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "rule_type_id",
+  })
+  rule_type_id: string
+
+  @ManyToOne(() => RuleType, { persist: false })
   rule_type: RuleType
 
   @OneToMany(() => PriceListRuleValue, (plrv) => plrv.price_list_rule, {
-    cascade: ["soft-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   price_list_rule_values = new Collection<PriceListRuleValue>(this)
 
   @PriceListRulePriceListIdIndex.MikroORMIndex()
-  @ManyToOne({
-    entity: () => PriceList,
+  @ManyToOne(() => PriceList, {
+    columnType: "text",
+    mapToPk: true,
     fieldName: "price_list_id",
     onDelete: "cascade",
   })
+  price_list_id: string
+
+  @ManyToOne(() => PriceList, { persist: false })
   price_list: PriceList
 
   @Property({
@@ -90,10 +101,14 @@ export default class PriceListRule {
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "plrule")
+    this.price_list_id ??= this.price_list?.id!
+    this.rule_type_id ??= this.rule_type?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "plrule")
+    this.price_list_id ??= this.price_list?.id!
+    this.rule_type_id ??= this.rule_type?.id!
   }
 }

@@ -12,7 +12,7 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transformIgnorePatterns: [`/dist`],
+  transformIgnorePatterns: ["/dist", "/node_modules/"],
   transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
   setupFiles: ["../setup-env.js"],
   setupFilesAfterEnv: ["../setup.js"],
