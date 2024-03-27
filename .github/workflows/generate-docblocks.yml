@@ -2,6 +2,8 @@ name: Generate Docblocks [Automated]
 
 on:
   push:
+    paths-ignore:
+      - '**.md'
     branches:
       - develop
   workflow_dispatch:
