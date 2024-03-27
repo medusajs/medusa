@@ -41,9 +41,11 @@ Learn about the parameters and return type of the `IAuthModuleService`'s `authen
 If the `authenticate` method returns the following object:
 
 ```ts
-{
+data = {
 	success: true,
-	authUser: { ... }
+	authUser: {
+    // ...
+  },
 }
 ```
 
@@ -64,9 +66,9 @@ Learn more about the `authUser` in [this guide](../persisting-auth-user/index.md
 If the `authenticate` method returns the following object:
 
 ```ts
-{
+data = {
 	success: true,
-	location: "https://...."
+	location: "https://....",
 }
 ```
 
@@ -99,9 +101,11 @@ Learn more about the parameters and return type of the `IAuthModuleService`'s `v
 If the authentication is successful, the auth provider’s `validateCallback` method returns the same data as the basic authentication:
 
 ```ts
-{
+data = {
 	success: true,
-	authUser: { ... }
+	authUser: {
+    // ...
+  },
 }
 ```
 

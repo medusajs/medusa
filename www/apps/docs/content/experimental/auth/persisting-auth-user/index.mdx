@@ -36,12 +36,12 @@ For example, the Medusa application’s authentication route signs the `authUser
 ```ts
 const { 
   success, 
-  authUser
+  authUser,
 } = await service.authenticate(auth_provider, authData)
 
 // ...
 const { 
-  jwt_secret
+  jwt_secret,
 } = req.scope.resolve("configModule").projectConfig
 
 const token = jwt.sign(authUser, jwt_secret)

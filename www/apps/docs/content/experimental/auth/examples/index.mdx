@@ -96,9 +96,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const token = jwt.sign(authUser, "supersecret")
 
     return NextResponse.json({
-      token
+      token,
     }, {
-      status: 200
+      status: 200,
     })
   }
   ```
@@ -203,9 +203,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     }
 
     return NextResponse.json({
-      token
+      token,
     }, {
-      status: 200
+      status: 200,
     })
   }
   ```
