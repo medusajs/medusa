@@ -65,7 +65,7 @@ function isPopulated<T extends object>(
 
 /**
  * Customer property filtering for the serialization which takes into account the parent entity to filter out circular references if configured for.
- * @param prop
+ * @param propName
  * @param meta
  * @param options
  * @param parent
