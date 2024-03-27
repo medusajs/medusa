@@ -78,7 +78,6 @@ medusaIntegrationTestRunner({
               ends_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
                 type: "spend",
                 limit: 1000,
                 used: 0,
@@ -108,7 +107,6 @@ medusaIntegrationTestRunner({
               ends_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
                 type: "usage",
                 limit: 1000,
                 used: 0,
@@ -148,7 +146,6 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
               },
             },
             {
@@ -157,7 +154,6 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
               },
             },
           ])
