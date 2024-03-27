@@ -8550,7 +8550,6 @@ __metadata:
     uuid: ^9.0.0
     winston: ^3.8.2
   peerDependencies:
-    "@medusajs/admin-next": ^0.0.1
     medusa-interfaces: ^1.3.7
     typeorm: ^0.3.16
   bin:
