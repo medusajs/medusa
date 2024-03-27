@@ -142,36 +142,3 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     await performCascadingSoftDeletion(manager, entity, value)
   }
 }
-
-export const mikroOrmSerializer = async <TOutput extends object>(
-  data: any,
-  options?: any
-): Promise<TOutput> => {
-  options ??= {}
-
-  const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
-
-  const forSerialization: unknown[] = []
-  const notForSerialization: unknown[] = []
-
-  data_.forEach((object) => {
-    if (object.__meta) {
-      return forSerialization.push(object)
-    }
-
-    return notForSerialization.push(object)
-  })
-
-  const { serialize } = await import("@mikro-orm/core")
-  let result: any = serialize(forSerialization, {
-    forceObject: true,
-    populate: true,
-    ...options,
-  }) as TOutput[]
-
-  if (notForSerialization.length) {
-    result = result.concat(notForSerialization)
-  }
-
-  return Array.isArray(data) ? result : result[0]
-}

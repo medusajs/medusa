@@ -10,16 +10,20 @@ import {
   ModulesSdkTypes,
   DAL,
   IStockLocationServiceNext,
+  FilterableStockLocationProps,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
 import { UpdateStockLocationNextInput } from "@medusajs/types"
+import { UpsertStockLocationInput } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -117,13 +121,65 @@ export default class StockLocationModuleService<
     return await this.stockLocationService_.create(data, context)
   }
 
+  async upsert(
+    data: UpsertStockLocationInput,
+    context?: Context
+  ): Promise<StockLocationTypes.StockLocationDTO>
+  async upsert(
+    data: UpsertStockLocationInput[],
+    context?: Context
+  ): Promise<StockLocationTypes.StockLocationDTO[]>
+
+  @InjectManager("baseRepository_")
+  async upsert(
+    data: UpsertStockLocationInput | UpsertStockLocationInput[],
+    @MedusaContext() context: Context = {}
+  ): Promise<
+    StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
+  > {
+    const input = Array.isArray(data) ? data : [data]
+
+    const result = await this.upsert_(input, context)
+
+    return await this.baseRepository_.serialize<
+      | StockLocationTypes.StockLocationDTO[]
+      | StockLocationTypes.StockLocationDTO
+    >(Array.isArray(data) ? result : result[0])
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsert_(
+    input: UpsertStockLocationInput[],
+    @MedusaContext() context: Context = {}
+  ) {
+    const toUpdate = input.filter(
+      (location): location is UpdateStockLocationNextInput => !!location.id
+    ) as UpdateStockLocationNextInput[]
+    const toCreate = input.filter(
+      (location) => !location.id
+    ) as CreateStockLocationInput[]
+
+    const operations: Promise<StockLocation[] | StockLocation>[] = []
+
+    if (toCreate.length) {
+      operations.push(this.create_(toCreate, context))
+    }
+    if (toUpdate.length) {
+      operations.push(this.update_(toUpdate, context))
+    }
+
+    return (await promiseAll(operations)).flat()
+  }
+
   update(
-    data: UpdateStockLocationNextInput,
-    context: Context
+    id: string,
+    input: UpdateStockLocationNextInput,
+    context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO>
   update(
-    data: UpdateStockLocationNextInput[],
-    context: Context
+    selector: FilterableStockLocationProps,
+    input: UpdateStockLocationNextInput,
+    context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
   /**
    * Updates an existing stock location.
@@ -134,14 +190,21 @@ export default class StockLocationModuleService<
    */
   @InjectManager("baseRepository_")
   async update(
+    idOrSelector: string | FilterableStockLocationProps,
     data: UpdateStockLocationNextInput | UpdateStockLocationNextInput[],
     @MedusaContext() context: Context = {}
   ): Promise<
     StockLocationTypes.StockLocationDTO | StockLocationTypes.StockLocationDTO[]
   > {
-    const input = Array.isArray(data) ? data : [data]
-
-    const updated = await this.update_(input, context)
+    let normalizedInput:
+      | (UpdateStockLocationNextInput & { id: string })[]
+      | { data: any; selector: FilterableStockLocationProps } = []
+    if (isString(idOrSelector)) {
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      normalizedInput = { data, selector: idOrSelector }
+    }
+    const updated = await this.update_(normalizedInput, context)
 
     const serialized = await this.baseRepository_.serialize<
       | StockLocationTypes.StockLocationDTO
@@ -153,9 +216,12 @@ export default class StockLocationModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async update_(
-    data: (UpdateStockLocationInput & { id: string })[],
+    data:
+      | UpdateStockLocationNextInput[]
+      | UpdateStockLocationNextInput
+      | { data: any; selector: FilterableStockLocationProps },
     @MedusaContext() context: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<TEntity[] | TEntity> {
     return await this.stockLocationService_.update(data, context)
   }
 
