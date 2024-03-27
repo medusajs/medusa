@@ -1,5 +1,14 @@
 # @medusajs/oas-github-ci
 
+## 1.0.27
+
+### Patch Changes
+
+- [#6812](https://github.com/medusajs/medusa/pull/6812) [`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli): fix tool not working in Medusa backends
+
+- Updated dependencies [[`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad)]:
+  - @medusajs/medusa-oas-cli@0.3.2
+
 ## 1.0.26
 
 ### Patch Changes

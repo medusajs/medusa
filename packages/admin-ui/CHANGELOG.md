@@ -1,5 +1,15 @@
 # @medusajs/admin-ui
 
+## 2.1.13
+
+### Patch Changes
+
+- [#6824](https://github.com/medusajs/medusa/pull/6824) [`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui, admin): Add missing regions relation
+
+- Updated dependencies [[`247ca3c3fa`](https://github.com/medusajs/medusa/commit/247ca3c3fadd69a1e90415041643727b53458e41), [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713)]:
+  - @medusajs/ui@2.4.3
+  - @medusajs/ui-preset@1.1.3
+
 ## 2.1.12
 
 ### Patch Changes

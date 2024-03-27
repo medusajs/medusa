@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -20,7 +21,7 @@ import { Swap } from "./swap"
 
 /**
  * @enum
- * 
+ *
  * The return's status.
  */
 export enum ReturnStatus {
@@ -55,7 +56,7 @@ export class Return extends BaseEntity {
     eager: true,
     cascade: ["insert", "update"],
   })
-  items: ReturnItem[]
+  items: Relation<ReturnItem>[]
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -63,7 +64,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap: Relation<Swap>
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -71,7 +72,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -79,12 +80,12 @@ export class Return extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToOne(() => ShippingMethod, (method) => method.return_order, {
     cascade: true,
   })
-  shipping_method: ShippingMethod
+  shipping_method: Relation<ShippingMethod>
 
   @Index()
   @Column({ nullable: true, type: "text" })

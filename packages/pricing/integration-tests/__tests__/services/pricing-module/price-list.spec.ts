@@ -273,17 +273,17 @@ moduleIntegrationTestRunner({
             { id: [createdId] },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
+                "prices",
+                "prices.price_set",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
                 "starts_at",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -294,11 +294,8 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               id: expect.any(String),
               starts_at: updateDate,
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
@@ -428,16 +425,16 @@ moduleIntegrationTestRunner({
             },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
+                "prices",
+                "prices.price_set",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -447,11 +444,8 @@ moduleIntegrationTestRunner({
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
@@ -534,19 +528,19 @@ moduleIntegrationTestRunner({
             },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
-                "price_set_money_amounts.price_rules",
+                "prices",
+                "prices.price_set",
+                "prices.price_rules",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
-                "price_set_money_amounts.price_rules.value",
-                "price_set_money_amounts.rules_count",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.price_rules.value",
+                "prices.rules_count",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -556,7 +550,7 @@ moduleIntegrationTestRunner({
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 1,
                   price_rules: expect.arrayContaining([
@@ -565,18 +559,12 @@ moduleIntegrationTestRunner({
                       value: "DE",
                     }),
                   ]),
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
                 expect.objectContaining({
                   rules_count: 0,
                   price_rules: [],
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 600,
                   currency_code: "EUR",
                 }),
@@ -673,19 +661,19 @@ moduleIntegrationTestRunner({
             },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
-                "price_set_money_amounts.price_rules",
+                "prices",
+                "prices.price_set",
+                "prices.price_rules",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
-                "price_set_money_amounts.price_rules.value",
-                "price_set_money_amounts.rules_count",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.price_rules.value",
+                "prices.rules_count",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -695,12 +683,9 @@ moduleIntegrationTestRunner({
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 0,
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 123,
                   currency_code: "EUR",
                 }),
@@ -782,21 +767,21 @@ moduleIntegrationTestRunner({
             },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
-                "price_set_money_amounts.price_rules",
-                "price_set_money_amounts.price_rules.rule_type",
+                "prices",
+                "prices.price_set",
+                "prices.price_rules",
+                "prices.price_rules.rule_type",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
-                "price_set_money_amounts.price_rules.value",
-                "price_set_money_amounts.price_rules.rule_type.rule_attribute",
-                "price_set_money_amounts.rules_count",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.price_rules.value",
+                "prices.price_rules.rule_type.rule_attribute",
+                "prices.rules_count",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -806,12 +791,9 @@ moduleIntegrationTestRunner({
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 1,
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   price_rules: [
                     expect.objectContaining({
                       value: "EU",
@@ -878,21 +860,21 @@ moduleIntegrationTestRunner({
             { id: ["price-list-1"] },
             {
               relations: [
-                "price_set_money_amounts",
-                "price_set_money_amounts.price_set",
-                "price_set_money_amounts.price_rules",
-                "price_set_money_amounts.price_rules.rule_type",
+                "prices",
+                "prices.price_set",
+                "prices.price_rules",
+                "prices.price_rules.rule_type",
                 "price_list_rules.price_list_rule_values",
                 "price_list_rules.rule_type",
               ],
               select: [
                 "id",
-                "price_set_money_amounts.price_rules.value",
-                "price_set_money_amounts.price_rules.rule_type.rule_attribute",
-                "price_set_money_amounts.rules_count",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.currency_code",
-                "price_set_money_amounts.price_list_id",
+                "prices.price_rules.value",
+                "prices.price_rules.rule_type.rule_attribute",
+                "prices.rules_count",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.price_list_id",
                 "price_list_rules.price_list_rule_values.value",
                 "price_list_rules.rule_type.rule_attribute",
               ],
@@ -902,7 +884,7 @@ moduleIntegrationTestRunner({
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 2,
                   price_rules: expect.arrayContaining([
@@ -919,9 +901,6 @@ moduleIntegrationTestRunner({
                       }),
                     }),
                   ]),
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 123,
                   currency_code: "EUR",
                 }),
@@ -1000,26 +979,24 @@ moduleIntegrationTestRunner({
           let [priceList] = await service.listPriceLists(
             { id: ["price-list-1"] },
             {
-              relations: ["price_set_money_amounts"],
-              select: ["price_set_money_amounts.id"],
+              relations: ["prices"],
+              select: ["prices.id"],
             }
           )
 
-          await service.removePrices(
-            priceList.price_set_money_amounts!.map((psma) => psma.id)
-          )
+          await service.removePrices(priceList.prices!.map((price) => price.id))
           ;[priceList] = await service.listPriceLists(
             { id: ["price-list-1"] },
             {
-              relations: ["price_set_money_amounts"],
-              select: ["id", "price_set_money_amounts.id"],
+              relations: ["prices"],
+              select: ["id", "prices.id"],
             }
           )
 
           expect(priceList).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              price_set_money_amounts: [],
+              prices: [],
             })
           )
         })

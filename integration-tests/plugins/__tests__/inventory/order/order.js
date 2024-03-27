@@ -178,7 +178,7 @@ describe("/store/carts", () => {
         })
 
         const customer = await simpleCustomerFactory(dbConnection, {}, 100)
-
+        const items = []
         const cart = await simpleCartFactory(dbConnection, {
           email: "testme@email.com",
           region: regionId,
@@ -194,7 +194,6 @@ describe("/store/carts", () => {
           ],
         })
 
-        const items = []
         for (let i = 0; i < 13; i++) {
           const product = await simpleProductFactory(dbConnection, {})
           await prodVarInventoryService.attachInventoryItem(

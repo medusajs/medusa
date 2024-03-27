@@ -1,6 +1,9 @@
 import * as QueryConfig from "./query-config"
 
 import {
+  AdminGetStockLocationsLocationParams,
+  AdminPostStockLocationsLocationParams,
+  AdminPostStockLocationsLocationReq,
   AdminPostStockLocationsParams,
   AdminPostStockLocationsReq,
 } from "./validators"
@@ -22,6 +25,27 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
       transformBody(AdminPostStockLocationsReq),
       transformQuery(
         AdminPostStockLocationsParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id",
+    middlewares: [
+      transformBody(AdminPostStockLocationsLocationReq),
+      transformQuery(
+        AdminPostStockLocationsLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/stock-locations/:id",
+    middlewares: [
+      transformQuery(
+        AdminGetStockLocationsLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],

@@ -1,11 +1,10 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   CreatePriceSetRuleTypeDTO,
   IPricingModuleService,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
@@ -39,14 +38,14 @@ moduleIntegrationTestRunner({
         await seedPriceData(testManager)
         await createPriceSetPriceRules(testManager, [
           {
-            price_set: "price-set-1",
-            rule_type: "rule-type-1",
+            price_set_id: "price-set-1",
+            rule_type_id: "rule-type-1",
           },
           {
-            price_set: "price-set-2",
-            rule_type: "rule-type-2",
+            price_set_id: "price-set-2",
+            rule_type_id: "rule-type-2",
           },
-        ] as unknown as CreatePriceSetRuleTypeDTO[])
+        ])
       })
 
       describe("list", () => {
@@ -84,12 +83,8 @@ moduleIntegrationTestRunner({
               id: ["price-set-1"],
             },
             {
-              select: [
-                "id",
-                "price_set_money_amounts.id",
-                "price_set_money_amounts.amount",
-              ],
-              relations: ["price_set_money_amounts"],
+              select: ["id", "prices.id", "prices.amount"],
+              relations: ["prices"],
             }
           )
 
@@ -98,7 +93,7 @@ moduleIntegrationTestRunner({
           expect(serialized).toEqual([
             {
               id: "price-set-1",
-              price_set_money_amounts: [
+              prices: [
                 expect.objectContaining({
                   id: "price-set-money-amount-USD",
                   amount: 500,
@@ -146,12 +141,8 @@ moduleIntegrationTestRunner({
               id: ["price-set-1"],
             },
             {
-              select: [
-                "id",
-                "price_set_money_amounts.amount",
-                "price_set_money_amounts.id",
-              ],
-              relations: ["price_set_money_amounts"],
+              select: ["id", "prices.amount", "prices.id"],
+              relations: ["prices"],
             }
           )
 
@@ -161,7 +152,7 @@ moduleIntegrationTestRunner({
           expect(serialized).toEqual([
             {
               id: "price-set-1",
-              price_set_money_amounts: [
+              prices: [
                 expect.objectContaining({
                   id: "price-set-money-amount-USD",
                   amount: 500,
@@ -379,7 +370,7 @@ moduleIntegrationTestRunner({
                   rule_attribute: "region_id",
                 }),
               ],
-              price_set_money_amounts: [
+              prices: [
                 expect.objectContaining({
                   amount: 100,
                   currency_code: "USD",
@@ -417,7 +408,7 @@ moduleIntegrationTestRunner({
                   rule_attribute: "region_id",
                 }),
               ],
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 100,
                   currency_code: "USD",
@@ -431,7 +422,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a price set with rule types and money amountss", async () => {
+        it("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.create([
             {
               rules: [{ rule_attribute: "region_id" }],
@@ -454,7 +445,7 @@ moduleIntegrationTestRunner({
                   rule_attribute: "region_id",
                 }),
               ],
-              price_set_money_amounts: [
+              prices: [
                 expect.objectContaining({
                   amount: 100,
                   currency_code: "USD",
@@ -493,12 +484,8 @@ moduleIntegrationTestRunner({
           const createdPriceSet = await service.create([
             {
               rules: [
-                {
-                  rule_attribute: "region_id",
-                },
-                {
-                  rule_attribute: "currency_code",
-                },
+                { rule_attribute: "region_id" },
+                { rule_attribute: "currency_code" },
               ],
               prices: [
                 {
@@ -521,23 +508,12 @@ moduleIntegrationTestRunner({
           ])
 
           await service.removeRules([
-            {
-              id: createdPriceSet[0].id,
-              rules: ["region_id"],
-            },
+            { id: createdPriceSet[0].id, rules: ["region_id"] },
           ])
 
           let priceSet = await service.list(
-            {
-              id: [createdPriceSet[0].id],
-            },
-            {
-              relations: [
-                "rule_types",
-                "price_set_money_amounts",
-                "price_rules",
-              ],
-            }
+            { id: [createdPriceSet[0].id] },
+            { relations: ["rule_types", "prices", "price_rules"] }
           )
 
           expect(
@@ -552,7 +528,7 @@ moduleIntegrationTestRunner({
                     }),
                   },
                 ],
-                price_set_money_amounts: [
+                prices: [
                   expect.objectContaining({
                     amount: 500,
                     currency_code: "EUR",
@@ -568,29 +544,18 @@ moduleIntegrationTestRunner({
           )
 
           await service.removeRules([
-            {
-              id: createdPriceSet[0].id,
-              rules: ["currency_code"],
-            },
+            { id: createdPriceSet[0].id, rules: ["currency_code"] },
           ])
 
           priceSet = await service.list(
-            {
-              id: [createdPriceSet[0].id],
-            },
-            {
-              relations: [
-                "rule_types",
-                "price_set_money_amounts",
-                "price_rules",
-              ],
-            }
+            { id: [createdPriceSet[0].id] },
+            { relations: ["rule_types", "prices", "price_rules"] }
           )
           expect(priceSet).toEqual([
             {
               id: expect.any(String),
               price_rules: [],
-              price_set_money_amounts: [],
+              prices: [],
               rule_types: [],
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
@@ -617,13 +582,13 @@ moduleIntegrationTestRunner({
 
           const [priceSet] = await service.list(
             { id: ["price-set-1"] },
-            { relations: ["price_set_money_amounts"] }
+            { relations: ["prices"] }
           )
 
           expect(priceSet).toEqual(
             expect.objectContaining({
               id: "price-set-1",
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 100,
                   currency_code: "USD",
@@ -659,13 +624,13 @@ moduleIntegrationTestRunner({
 
           const priceSets = await service.list(
             { id: ["price-set-1", "price-set-2"] },
-            { relations: ["price_set_money_amounts"] }
+            { relations: ["prices"] }
           )
 
           expect(priceSets).toEqual([
             expect.objectContaining({
               id: "price-set-1",
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 100,
                   currency_code: "USD",
@@ -674,7 +639,7 @@ moduleIntegrationTestRunner({
             }),
             expect.objectContaining({
               id: "price-set-2",
-              price_set_money_amounts: expect.arrayContaining([
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 150,
                   currency_code: "EUR",
@@ -707,17 +672,14 @@ moduleIntegrationTestRunner({
 
       describe("addRules", () => {
         it("should add rules to existing price set", async () => {
+          console.log("1")
           await service.addRules([
             {
               priceSetId: "price-set-1",
-              rules: [
-                {
-                  attribute: "region_id",
-                },
-              ],
+              rules: [{ attribute: "region_id" }],
             },
           ])
-
+          console.log("2")
           const [priceSet] = await service.list(
             { id: ["price-set-1"] },
             { relations: ["rule_types"] }
@@ -745,11 +707,7 @@ moduleIntegrationTestRunner({
             await service.addRules([
               {
                 priceSetId: "price-set-doesn't-exist",
-                rules: [
-                  {
-                    attribute: "region_id",
-                  },
-                ],
+                rules: [{ attribute: "region_id" }],
               },
             ])
           } catch (e) {
@@ -766,14 +724,7 @@ moduleIntegrationTestRunner({
 
           try {
             await service.addRules([
-              {
-                priceSetId: "price-set-1",
-                rules: [
-                  {
-                    attribute: "city",
-                  },
-                ],
-              },
+              { priceSetId: "price-set-1", rules: [{ attribute: "city" }] },
             ])
           } catch (e) {
             error = e
