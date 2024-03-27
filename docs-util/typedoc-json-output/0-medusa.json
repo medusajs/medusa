@@ -121472,7 +121472,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Configure the application's worker mode. The default value is "
+								"text": "Configure the application's worker mode. Default is "
 							},
 							{
 								"kind": "code",
@@ -121480,7 +121480,7 @@
 							},
 							{
 								"kind": "text",
-								"text": ".\n- Use "
+								"text": ".\n\n- Use "
 							},
 							{
 								"kind": "code",
@@ -121488,7 +121488,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " if you want to run the application in a single process.\n- Use "
+								"text": " to run the application in a single process.\n- Use "
 							},
 							{
 								"kind": "code",
@@ -121496,7 +121496,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " if you want to run the a worker process only.\n- Use "
+								"text": " to run the a worker process only.\n- Use "
 							},
 							{
 								"kind": "code",
@@ -121504,7 +121504,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " if you want to run the application server only."
+								"text": " to run the application server only.\n\nLearn more in [this guide](https://docs.medusajs.com/development/medusa-worker)."
 							}
 						],
 						"blockTags": [

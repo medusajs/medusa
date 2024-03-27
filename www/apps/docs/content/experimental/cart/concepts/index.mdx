@@ -1,0 +1,33 @@
+# Cart Concepts
+
+In this document, you’ll get an overview of the main concepts of a cart.
+
+## Shipping and Billing Addresses
+
+A cart has a shipping and billing address. Both of these addresses are represented by the `Address` data model.
+
+![A diagram showcasing the relation between the Cart and Address data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711532392/Medusa%20Resources/cart-addresses_ls6qmv.jpg)
+
+---
+
+## Line Items
+
+A line item, represented by the `LineItem` data model, is a product added to the cart. A cart has multiple line items.
+
+A line item stores some of the product’s fields, such as the `product_title` and `product_description`. It also stores data related to the item’s quantity and price.
+
+<Note>
+
+A product can be from the [Product Module](../../product/index.mdx) but can also be a custom item used only in this cart.
+
+</Note>
+
+---
+
+## Shipping Methods
+
+A shipping method is the method used to fulfill the items in the cart after the order is placed. A cart can have more than one shipping method.
+
+If the shipping method is created from a shipping option, typically available through the Fulfillment Module, its ID is stored in the `shipping_option_id`.
+
+A shipping method can also be a custom method associated with this cart only.

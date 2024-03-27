@@ -1,0 +1,482 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Cart Module
+
+In this guide, you’ll find common examples of how you can use the Cart Module in your application.
+
+## Create a Cart
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const cart = await cartModuleService.create({
+      currency_code: "usd",
+      shipping_address: {
+        address_1: "1512 Barataria Blvd",
+        country_code: "us",
+      },
+      items: [
+        {
+          title: "Shirt",
+          unit_price: 1000,
+          quantity: 1,
+        },
+      ],
+    })
+
+    res.json({ cart })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function POST(request: Request) {
+    const cartModuleService = await initializeCartModule()
+
+    const cart = await cartModuleService.create({
+      currency_code: "usd",
+      shipping_address: {
+        address_1: "1512 Barataria Blvd",
+        country_code: "us",
+      },
+      items: [
+        {
+          title: "Shirt",
+          unit_price: 1000,
+          quantity: 1,
+        },
+      ],
+    })
+
+    return NextResponse.json({
+      cart
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Retrieve Cart by ID
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const cart = await cartModuleService.retrieve("cart_123")
+
+    res.json({ cart })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function GET(request: Request) {
+    const cartModuleService = await initializeCartModule()
+
+    const cart = await cartModuleService.retrieve("cart_123")
+
+    return NextResponse.json({
+      cart
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Item to Cart
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const lineItem = await cartModuleService.addLineItems({
+      cart_id: "cart_123",
+      title: "Shirt",
+      quantity: 2,
+      unit_price: 5000,
+    })
+
+    res.json({
+      line_item: lineItem,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function POST(
+    request: Request
+  ) {
+    const cartModuleService = await initializeCartModule()
+
+    const lineItem = await cartModuleService.addLineItems({
+      cart_id: "cart_123",
+      title: "Shirt",
+      quantity: 2,
+      unit_price: 5000,
+    })
+
+    return NextResponse.json({
+      line_item: lineItem,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Shipping Method to Cart
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const shippingMethod =
+      await cartModuleService.addShippingMethods({
+        cart_id: "cart_123",
+        name: "Custom shipping",
+        amount: 1000,
+      })
+
+    res.json({
+      shipping_method: shippingMethod,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function POST(
+    request: Request
+  ) {
+    const cartModuleService = await initializeCartModule()
+
+    const shippingMethod =
+      await cartModuleService.addShippingMethods({
+        cart_id: "cart_123",
+        name: "Custom shipping",
+        amount: 1000,
+      })
+
+    return NextResponse.json({
+      shipping_method: shippingMethod,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Item Adjustment Line
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const itemAdjustment =
+      await cartModuleService.addLineItemAdjustments({
+        item_id: "cali_123",
+        amount: 500,
+        code: "50%OFF",
+      })
+
+    res.json({
+      adjustment: itemAdjustment,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function POST(
+    request: Request
+  ) {
+    const cartModuleService = await initializeCartModule()
+
+    const itemAdjustment =
+      await cartModuleService.addLineItemAdjustments({
+        item_id: "cali_123",
+        amount: 500,
+        code: "50%OFF",
+      })
+
+    return NextResponse.json({
+      adjustment: itemAdjustment,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Shipping Method Adjustment Line
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    const shippingMethodAdjustment =
+      await cartModuleService.addShippingMethodAdjustments({
+        shipping_method_id: "casm_123",
+        amount: 500,
+        code: "FREESHIPPING",
+      })
+
+    res.json({
+      adjustment: shippingMethodAdjustment,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function POST(
+    request: Request
+  ) {
+    const cartModuleService = await initializeCartModule()
+
+    const shippingMethodAdjustment =
+      await cartModuleService.addShippingMethodAdjustments({
+        shipping_method_id: "casm_123",
+        amount: 500,
+        code: "FREESHIPPING",
+      })
+
+    return NextResponse.json({
+      adjustment: shippingMethodAdjustment,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Remove Line Item from Cart
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    await cartModuleService.deleteLineItems(["cali_123"])
+
+    res.status(200)
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCartModule,
+  } from "@medusajs/cart"
+
+  export async function DELETE(
+    request: Request
+  ) {
+    const cartModuleService = await initializeCartModule()
+
+    await cartModuleService.deleteLineItems(["cali_123"])
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Remove Shipping Method from Cart
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    await cartModuleService.deleteLineItems(["cali_123"])
+
+    res.status(200)
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    await cartModuleService.deleteShippingMethods(["casm_123"])
+
+    res.status(200)
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [module interface reference](../../../references/cart/interfaces/cart.ICartModuleService.mdx) provides a reference to all the methods available for use with examples for each.

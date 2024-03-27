@@ -61,6 +61,7 @@ module.exports = {
   allReflectionsHaveOwnDocument: [
     "api-key",
     "auth",
+    "cart",
     "customer",
     "inventory",
     "inventory-next",
@@ -220,6 +221,73 @@ module.exports = {
       },
       reflectionTitle: {
         fullReplacement: "Auth Module Data Models Reference",
+      },
+    },
+
+    // CART CONFIG
+    "^cart": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+      },
+    },
+    "^cart/ICartModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Cart Module.",
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+        slug: "/references/cart/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Cart Module Reference",
+      },
+    },
+    "^cart/.*ICartModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ICartModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Cart Module.",
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+        slug: "/references/cart",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // CART MODELS CONFIG
+    "^cart_models": {
+      frontmatterData: {
+        displayed_sidebar: "cartModelReference",
+        slug: "/references/cart/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Cart Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Cart Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/cart_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Cart Module",
+      frontmatterData: {
+        displayed_sidebar: "cartModelReference",
+        slug: "/references/cart/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Cart Module Data Models Reference",
       },
     },
 

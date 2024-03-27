@@ -134,6 +134,69 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Cart Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/cart/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/cart/examples/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Cart Concepts",
+          id: "experimental/cart/concepts/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/cart/promotions/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/cart/tax-lines/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/cart/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/cart/interfaces/cart.ICartModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/cart_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Customer Module",
       customProps: {
         sidebar_is_group_headline: true,
