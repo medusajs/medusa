@@ -26,7 +26,8 @@ import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
-import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
+import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
+import { mikroOrmSerializer } from "./mikro-orm-serializer"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
