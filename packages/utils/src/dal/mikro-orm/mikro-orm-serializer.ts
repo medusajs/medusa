@@ -65,26 +65,24 @@ function isPopulated<T extends object>(
 
 /**
  * Customer property filtering for the serialization which takes into account the parent entity to filter out circular references if configured for.
- * @param prop
+ * @param propName
  * @param meta
  * @param options
  * @param parent
  */
 function filterEntityPropToSerialize(
-  prop: string,
+  propName: string,
   meta: EntityMetadata,
   options: SerializeOptions<object, any> & {
     preventCircularRef?: boolean
   } = {},
   parent?: object
 ): boolean {
-  const isVisibleRes = isVisible(meta, prop, options)
+  const isVisibleRes = isVisible(meta, propName, options)
   if (options.preventCircularRef && isVisibleRes && parent) {
-    return (
-      // mapToPk would represent a foreign key and we want to keep them
-      meta.properties[prop].mapToPk ||
-      parent.constructor.name !== meta.properties[prop].type
-    )
+    const prop = meta.properties[propName]
+    // mapToPk would represent a foreign key and we want to keep them
+    return prop && (!!prop.mapToPk || parent.constructor.name !== prop.type)
   }
   return isVisibleRes
 }
