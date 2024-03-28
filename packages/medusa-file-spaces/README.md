@@ -34,6 +34,7 @@ Store uploaded files to your Medusa backend on Spaces.
   SPACE_ENDPOINT=<YOUR_SPACE_ENDPOINT>
   SPACE_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
   SPACE_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+  SPACE_PREFIX=<YOUR_PREFIX> # optionally prefix all file keys
   ```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -49,6 +50,7 @@ Store uploaded files to your Medusa backend on Spaces.
           endpoint: process.env.SPACE_ENDPOINT,
           access_key_id: process.env.SPACE_ACCESS_KEY_ID,
           secret_access_key: process.env.SPACE_SECRET_ACCESS_KEY,
+          prefix: process.env.SPACE_PREFIX, // optional
       },
     },
   ]

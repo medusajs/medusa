@@ -15,6 +15,7 @@ class DigitalOceanService extends AbstractFileService {
     this.region_ = options.region
     this.endpoint_ = options.endpoint
     this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
+    this.prefix_ = options.prefix ? `${options.prefix}/` : '' // optional prefix for the file key
   }
 
   upload(file) {
@@ -31,7 +32,7 @@ class DigitalOceanService extends AbstractFileService {
 
   uploadFile(file, options = { isProtected: false, acl: undefined }) {
     const parsedFilename = parse(file.originalname)
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileKey = `${this.prefix_}${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const s3 = new aws.S3()
     const params = {
@@ -86,7 +87,7 @@ class DigitalOceanService extends AbstractFileService {
     const isPrivate =
       typeof fileData.isPrivate === "undefined" ? true : fileData.isPrivate
 
-    const fileKey = `${fileData.name}.${fileData.ext}`
+    const fileKey = `${this.prefix_}${fileData.name}.${fileData.ext}`
     const params = {
       ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
