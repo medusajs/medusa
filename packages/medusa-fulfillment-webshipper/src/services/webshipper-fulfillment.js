@@ -1,7 +1,7 @@
 import { humanizeAmount } from "medusa-core-utils"
 import Webshipper from "../utils/webshipper"
 import { AbstractFulfillmentService } from "@medusajs/medusa"
-import { promiseAll } from "@medusajs/utils"
+import { promiseAll, isDefined } from "@medusajs/utils"
 
 class WebshipperFulfillmentService extends AbstractFulfillmentService {
   static identifier = "webshipper"
@@ -697,6 +697,13 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
 
     if (tarifNumber) {
       webShipperItem.tarif_number = tarifNumber
+    }
+
+    const weight = item?.variant?.weight ?? item?.variant?.product?.weight
+
+    if (isDefined(weight)) {
+      webShipperItem.weight = weight
+      webShipperItem.weight_unit = "g"
     }
 
     return webShipperItem

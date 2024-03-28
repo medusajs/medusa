@@ -323,5 +323,86 @@ describe("WebshipperFulfillmentService", () => {
         tarif_number: "test",
       })
     })
+
+    it("builds a webshipper item with weight from product variant", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {
+        weight: 1234,
+        product: {}
+      }
+
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 1234,
+        weight_unit: "g"
+      })
+    })
+
+    it("builds a webshipper item with weight from product", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {
+        product: {
+          weight: 4321,
+        }
+      }
+
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 4321,
+        weight_unit: "g"
+      })
+    })
+
+    it("builds a webshipper item with weight where product variant overrides product", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          totalsService,
+        },
+        {}
+      )
+
+      medusaItem.variant = {
+        weight: 1,
+        product: {
+          weight: 2,
+        }
+      }
+
+      const item = await webshipper.buildWebshipperItem(medusaItem, 1, order)
+
+      expect(item).toEqual({
+        ext_ref: "item_id",
+        description: "item_title",
+        quantity: 1,
+        unit_price: 10,
+        vat_percent: 20,
+        weight: 1,
+        weight_unit: "g"
+      })
+    })
   })
 })
