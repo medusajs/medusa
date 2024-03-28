@@ -38,10 +38,7 @@ export function OrderCreateFulfillmentItem({
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (!variant || !locationId) {
-      return {
-        availableQuantity: item.variant.inventory_quantity,
-        inStockQuantity: item.variant.inventory_quantity,
-      }
+      return {}
     }
 
     const { inventory } = variant
@@ -61,7 +58,10 @@ export function OrderCreateFulfillmentItem({
   }, [variant, locationId])
 
   const minValue = 0
-  const maxValue = getFulfillableQuantity(item) // TODO: stock location qunatities
+  const maxValue = Math.min(
+    getFulfillableQuantity(item),
+    availableQuantity || Number.MAX_SAFE_INTEGER
+  )
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
@@ -89,8 +89,8 @@ export function OrderCreateFulfillmentItem({
           />
           {hasInventoryItem && (
             <span>
-              {t("orders.fulfillment.available")}: {availableQuantity} ·{" "}
-              {t("orders.fulfillment.inStock")}: {inStockQuantity}
+              {t("orders.fulfillment.available")}: {availableQuantity || "N/A"}{" "}
+              · {t("orders.fulfillment.inStock")}: {inStockQuantity || "N/A"}
             </span>
           )}
         </div>
@@ -120,6 +120,7 @@ export function OrderCreateFulfillmentItem({
           <Form.Field
             control={form.control}
             name={`quantity.${item.id}`}
+            rules={{ required: true, min: minValue, max: maxValue }}
             render={({ field }) => {
               return (
                 <Form.Item>
