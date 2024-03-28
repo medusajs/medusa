@@ -204,7 +204,6 @@ enum Status {
  * type: object
  * description: "The details of the draft order to create."
  * required:
- *   - email
  *   - region_id
  *   - shipping_methods
  * properties:
@@ -303,7 +302,8 @@ export class AdminPostDraftOrdersReq {
   status?: string
 
   @IsEmail()
-  email: string
+  @IsOptional()
+  email?: string
 
   @IsOptional()
   @IsType([AddressPayload, String])
