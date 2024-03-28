@@ -116,7 +116,8 @@ export function medusaIntegrationTestRunner({
 
   const cwd = process.cwd()
 
-  let shutdown: () => Promise<void>
+  let shutdown = async () => void 0
+  let afterEachShutdown = async () => void 0
   let dbUtils = dbTestUtilFactory()
   let container: ContainerLike
   let apiUtils: any
@@ -191,15 +192,18 @@ export function medusaIntegrationTestRunner({
 
     const medusaAppLoaderRunner =
       require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
-    await medusaAppLoaderRunner({
+    const { onApplicationShutdown } = await medusaAppLoaderRunner({
       container: copiedContainer,
       configModule: container.resolve("configModule"),
     })
+
+    afterEachShutdown = onApplicationShutdown
   }
 
   const afterEach_ = async () => {
     try {
       await dbUtils.teardown({ schema })
+      await afterEachShutdown()
     } catch (error) {
       console.error("Error tearing down database:", error)
     }
