@@ -19,7 +19,7 @@ module.exports = {
     database_extra,
     env,
     force_modules_migration,
-    dbUrl = DB_URL,
+    dbUrl = "",
     dbSchema = "public",
   }) {
     if (isObject(env)) {
@@ -67,7 +67,7 @@ module.exports = {
 
     const dbDataSource = new DataSource({
       type: "postgres",
-      url: dbUrl,
+      url: dbUrl || configModule.projectConfig.database_url,
       entities: enabledEntities.concat(moduleModels),
       migrations: enabledMigrations.concat(moduleMigrations),
       extra: database_extra ?? {},
@@ -93,7 +93,16 @@ module.exports = {
 
       const featureFlagRouter = await featureFlagLoader(configModule)
 
-      const pgConnection = await pgConnectionLoader({ configModule, container })
+      const pgConnection = await pgConnectionLoader({
+        configModule: {
+          ...configModule,
+          projectConfig: {
+            ...configModule.projectConfig,
+            database_url: dbUrl || configModule.projectConfig.database_url,
+          },
+        },
+        container,
+      })
 
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
