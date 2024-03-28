@@ -81,8 +81,18 @@ export function OrderCreateFulfillmentItem({
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
-          <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
+        <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0 flex-col items-center">
+          <MoneyAmountCell
+            className="justify-end"
+            currencyCode={currencyCode}
+            amount={item.total}
+          />
+          {hasInventoryItem && (
+            <span>
+              {t("orders.fulfillment.available")}: {availableQuantity} ·{" "}
+              {t("orders.fulfillment.inStock")}: {inStockQuantity}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center">

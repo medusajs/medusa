@@ -320,6 +320,8 @@
       "locationDescription": "Choose which location you want to fulfill items from.",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
+      "available": "Available",
+      "inStock": "In stock",
       "status": {
         "notFulfilled": "Not fulfilled",
         "partiallyFulfilled": "Partially fulfilled",
