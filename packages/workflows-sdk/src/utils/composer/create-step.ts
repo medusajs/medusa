@@ -121,6 +121,9 @@ function applyStep<
 
     const handler = {
       invoke: async (transactionContext) => {
+        transactionContext.context.idempotencyKey =
+          transactionContext.idempotency_key
+
         const executionContext: StepExecutionContext = {
           workflowId: transactionContext.model_id,
           stepName: transactionContext.action,
@@ -152,6 +155,9 @@ function applyStep<
       },
       compensate: compensateFn
         ? async (transactionContext) => {
+            transactionContext.context.idempotencyKey =
+              transactionContext.idempotency_key
+
             const executionContext: StepExecutionContext = {
               workflowId: transactionContext.model_id,
               stepName: transactionContext.action,
