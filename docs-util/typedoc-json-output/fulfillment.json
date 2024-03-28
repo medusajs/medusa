@@ -67,7 +67,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n\nexport default MyFulfillmentService\n```"
+						"text": "```ts title=\"src/services/my-fulfillment.ts\"\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n\nexport default MyFulfillmentService\n```"
 					},
 					{
 						"kind": "text",

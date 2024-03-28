@@ -4,6 +4,9 @@ declare module "@theme/CodeBlock" {
   export interface Props extends DocusaurusProps {
     readonly noReport?: boolean
     readonly noCopy?: boolean
+    readonly noLineNumbers?: boolean
+    readonly badgeLabel?: string
+    readonly badgeColor?: string
   }
 }
 

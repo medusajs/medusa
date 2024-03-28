@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Custom sidebar definitions:
  * - To declare a sidebar element as part of the homepage sidebar, add className: 'homepage-sidebar-item'
@@ -14,6 +15,9 @@
  * - To add a coming soon link (with a badge), add in customProps sidebar_is_soon: true
  * - To add a badge, add in customProps sidebar_badge with its value being the props to pass to the Badge component.
  */
+
+const referencesSidebar = require("./src/sidebars/references")
+const experimentalSidebar = require("./src/sidebars/experimental")
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
@@ -763,7 +767,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "references/payment/classes/payment.AbstractPaymentProcessor",
+          id: "references/payment_provider/classes/payment_provider.AbstractPaymentProcessor",
           label: "Backend: Create Payment Processor",
         },
         {
@@ -1037,7 +1041,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "references/tax/classes/tax.AbstractTaxService",
+          id: "references/tax_provider/classes/tax_provider.AbstractTaxService",
           label: "Backend: Create Tax Provider",
         },
         {
@@ -2694,129 +2698,7 @@ module.exports = {
       dirName: "user-guide",
     },
   ],
-  experimentalSidebar: [
-    {
-      type: "ref",
-      id: "development/overview",
-      label: "Back to Medusa Development",
-      customProps: {
-        sidebar_is_back_link: true,
-        sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "experimental/index",
-      label: "Experimental",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "beaker",
-      },
-    },
-    {
-      type: "category",
-      label: "Pricing Module",
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          label: "Overview",
-          id: "experimental/pricing/overview",
-        },
-        {
-          type: "doc",
-          label: "Install in Medusa",
-          id: "experimental/pricing/install-medusa",
-        },
-        {
-          type: "doc",
-          label: "Install in Node.js",
-          id: "experimental/pricing/install-nodejs",
-        },
-        {
-          type: "doc",
-          label: "Examples",
-          id: "experimental/pricing/examples",
-        },
-        {
-          type: "html",
-          value: "Architecture",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "doc",
-          label: "Pricing Concepts",
-          id: "experimental/pricing/concepts",
-        },
-        {
-          type: "doc",
-          label: "Prices Calculation",
-          id: "experimental/pricing/prices-calculation",
-        },
-        {
-          type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/pricing/interfaces/pricing.IPricingModuleService",
-          label: "Interface Reference",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Product Module",
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          label: "Overview",
-          id: "experimental/product/overview",
-        },
-        {
-          type: "doc",
-          label: "Install in Medusa",
-          id: "experimental/product/install-medusa",
-        },
-        {
-          type: "doc",
-          label: "Install in Node.js",
-          id: "experimental/product/install-nodejs",
-        },
-        {
-          type: "doc",
-          label: "Examples",
-          id: "experimental/product/examples",
-        },
-        {
-          type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/product/interfaces/product.IProductModuleService",
-          label: "Interface Reference",
-        },
-      ],
-    },
-  ],
+  ...experimentalSidebar,
   servicesSidebar: [
     {
       type: "ref",
@@ -3227,7 +3109,7 @@ module.exports = {
       dirName: "references/entities/classes",
     },
   ],
-  pricingReference: [
+  apiKeyReference: [
     {
       type: "ref",
       id: "experimental/index",
@@ -3239,8 +3121,8 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/pricing/interfaces/pricing.IPricingModuleService",
-      label: "Pricing Module Interface Reference",
+      id: "references/api_key/interfaces/api_key.IApiKeyModuleService",
+      label: "IApiKeyModuleService Reference",
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: "folder-open",
@@ -3256,12 +3138,12 @@ module.exports = {
       items: [
         {
           type: "autogenerated",
-          dirName: "references/pricing/IPricingModuleService/methods",
+          dirName: "references/api_key/IApiKeyModuleService/methods",
         },
       ],
     },
   ],
-  productReference: [
+  apiKeyModelReference: [
     {
       type: "ref",
       id: "experimental/index",
@@ -3273,8 +3155,8 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/product/interfaces/product.IProductModuleService",
-      label: "Product Module Interface Reference",
+      id: "references/modules/api_key_models",
+      label: "API Key - Data Models Reference",
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: "folder-open",
@@ -3282,7 +3164,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Methods",
+      label: "Data Models",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
@@ -3290,79 +3172,12 @@ module.exports = {
       items: [
         {
           type: "autogenerated",
-          dirName: "references/product/IProductModuleService/methods",
+          dirName: "references/api_key_models/classes",
         },
       ],
     },
   ],
-  inventoryReference: [
-    {
-      type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
-      customProps: {
-        sidebar_is_back_link: true,
-        sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "references/inventory/interfaces/inventory.IInventoryService",
-      label: "Inventory Module Interface Reference",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "folder-open",
-      },
-    },
-    {
-      type: "category",
-      label: "Methods",
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "references/inventory/IInventoryService/methods",
-        },
-      ],
-    },
-  ],
-  stockLocationReference: [
-    {
-      type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
-      customProps: {
-        sidebar_is_back_link: true,
-        sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "references/stock_location/interfaces/stock_location.IStockLocationService",
-      label: "Stock Location Module Interface Reference",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "folder-open",
-      },
-    },
-    {
-      type: "category",
-      label: "Methods",
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true,
-      },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "references/stock_location/IStockLocationService/methods",
-        },
-      ],
-    },
-  ],
+  ...referencesSidebar,
   workflowsSidebar: [
     {
       type: "ref",

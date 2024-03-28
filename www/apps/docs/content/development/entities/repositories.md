@@ -72,7 +72,7 @@ Repositories are created under the `src/repositories` directory of your Medusa b
 
 For example, to create a repository for a `Post` entity, create the file `src/repositories/post.ts` with the following content:
 
-```ts src=src/repositories/post.ts
+```ts title="src/repositories/post.ts"
 import { Post } from "../models/post"
 import { 
   dataSource,

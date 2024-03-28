@@ -1,0 +1,29 @@
+---
+displayed_sidebar: authReference
+slug: /references/auth/authenticate
+sidebar_label: authenticate
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# authenticate - Auth Module Reference
+
+This documentation provides a reference to the authenticate method. This belongs to the Auth Module.
+
+This method is the first invoked method of the authentication flow. It handles the incoming authentication request.
+
+## Example
+
+```ts
+{
+  example - code
+}
+```
+
+## Parameters
+
+<TypeList types={[{"name":"provider","type":"`string`","description":"The provider to use for authentication.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerData","type":"[AuthenticationInput](../../interfaces/auth.AuthenticationInput.mdx)","description":"The authentication data necessary to pass to the provider","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"url of incoming authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of incoming authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of incoming authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authScope","type":"`string`","description":"Scope for authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of incoming authentication request (For example, `https`).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="authenticate"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../interfaces/auth.AuthenticationResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"The authentication's result.","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../interfaces/auth.AuthenticationResponse.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authUser","type":"`any`","description":"The authenticated user's details. The details shape\ndepends on the used provider ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string`","description":"The error message, if an error occurs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"Redirect location. Location takes precedence over success.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"successRedirectUrl","type":"`string`","description":"Redirect url for successful authentication.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="authenticate"/>

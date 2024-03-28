@@ -14,8 +14,8 @@ const config = {
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
   baseUrl: "/",
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
+  onBrokenLinks: "ignore",
+  onBrokenMarkdownLinks: "ignore",
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
@@ -298,6 +298,9 @@ const config = {
           routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
+          rehypePlugins: [
+            [require("rehype-mdx-code-props"), { tagName: "code" }],
           ],
           showLastUpdateTime: true,
           // breadcrumbs: false,

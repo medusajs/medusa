@@ -1,0 +1,374 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Payment Module
+
+In this guide, you’ll find common examples of how you can use the Payment Module in your application.
+
+## Create a Payment Collection
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const paymentCollection =
+      await paymentModuleService.createPaymentCollections({
+        region_id: "reg_123",
+        currency_code: "usd",
+        amount: 4000,
+      })
+
+    res.json({
+      payment_collection: paymentCollection,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function POST(request: Request) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const paymentCollection =
+      await paymentModuleService.createPaymentCollections({
+        region_id: "reg_123",
+        currency_code: "usd",
+        amount: 4000,
+      })
+
+    return NextResponse.json({
+      payment_collection: paymentCollection,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Create Payment Session
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const paymentSession =
+      await paymentModuleService.createPaymentSession(
+        "pay_col_123",
+        {
+          currency_code: "usd",
+          provider_id: "system",
+          amount: 4000,
+          data: {},
+        }
+      )
+
+    res.json({
+      payment_session: paymentSession,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function POST(request: Request) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const paymentSession =
+      await paymentModuleService.createPaymentSession(
+        "pay_col_123",
+        {
+          currency_code: "usd",
+          provider_id: "system",
+          amount: 4000,
+          data: {},
+        }
+      )
+
+    return NextResponse.json({
+      payment_session: paymentSession,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Payment Sessions of Payment Collection
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const paymentSessions =
+      await paymentModuleService.listPaymentSessions({
+        payment_collection_id: ["pay_col_123"],
+      })
+
+    res.json({
+      payment_sessions: paymentSessions,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function POST(
+    request: Request
+  ) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const paymentSessions =
+      await paymentModuleService.listPaymentSessions({
+        payment_collection_id: ["pay_col_123"],
+      })
+
+    return NextResponse.json({
+      payment_sessions: paymentSessions,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Authorize Payment Session
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const payment =
+      await paymentModuleService.authorizePaymentSession(
+        "payses_123",
+        {}
+      )
+
+    res.json({
+      payment,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function POST(
+    request: Request
+  ) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const payment =
+      await paymentModuleService.authorizePaymentSession(
+        "payses_123",
+        {}
+      )
+
+    return NextResponse.json({
+      payment,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## List Payments of Payment Session
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const payments = await paymentModuleService.listPayments({
+      session_id: "payses_123",
+    })
+
+    res.json({
+      payments,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function GET(
+    request: Request
+  ) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const payments = await paymentModuleService.listPayments({
+      session_id: "payses_123",
+    })
+
+    return NextResponse.json({
+      payments,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Capture Payment
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPaymentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const paymentModuleService: IPaymentModuleService =
+      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+
+    const payment = await paymentModuleService.capturePayment({
+      payment_id: "pay_123",
+    })
+
+    res.json({
+      payment,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePaymentModule,
+  } from "@medusajs/payment"
+
+  export async function POST(
+    request: Request
+  ) {
+    const paymentModuleService = await initializePaymentModule()
+
+    const payment = await paymentModuleService.capturePayment({
+      payment_id: "pay_123",
+    })
+
+    return NextResponse.json({
+      payment,
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [module interface reference](../../../references/payment/interfaces/payment.IPaymentModuleService.mdx) provides a reference to all the methods available for use with examples for each.

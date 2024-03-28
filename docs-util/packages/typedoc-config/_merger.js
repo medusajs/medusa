@@ -59,10 +59,23 @@ module.exports = {
   mdxOutput: true,
   maxLevel: 3,
   allReflectionsHaveOwnDocument: [
+    "api-key",
+    "auth",
+    "cart",
+    "customer",
     "inventory",
+    "inventory-next",
+    "payment",
     "pricing",
     "product",
+    "promotion",
+    "region",
+    "sales-channel",
     "stock-location",
+    "stock-location-next",
+    "store",
+    "tax",
+    "user",
     "workflows",
   ],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
@@ -76,6 +89,274 @@ module.exports = {
     },
     internal: {
       maxLevel: 1,
+    },
+
+    // API KEY CONFIG
+    "^api_key": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+      },
+    },
+    "^api_key/IApiKeyModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the API Key Module.",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+        slug: "/references/api-key/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- API Key Module Reference",
+      },
+    },
+    "^api_key/.*IApiKeyModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IApiKeyModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the API Key Module.",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyReference",
+        slug: "/references/api-key",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // API KEY MODELS CONFIG
+    "^api_key_models": {
+      frontmatterData: {
+        displayed_sidebar: "apiKeyModelReference",
+        slug: "/references/api-key/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the API Key Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- API Key Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/api_key_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the API Key Module",
+      frontmatterData: {
+        displayed_sidebar: "apiKeyModelReference",
+        slug: "/references/api-key/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "API Key Module Data Models Reference",
+      },
+    },
+
+    // AUTH CONFIG
+    "^auth": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+      },
+    },
+    "^auth/IAuthModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Auth Module.",
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+        slug: "/references/auth/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Auth Module Reference",
+      },
+    },
+    "^auth/.*IAuthModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IAuthModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Auth Module.",
+      frontmatterData: {
+        displayed_sidebar: "authReference",
+        slug: "/references/auth",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // AUTH MODELS CONFIG
+    "^auth_models": {
+      frontmatterData: {
+        displayed_sidebar: "authModelReference",
+        slug: "/references/auth/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Auth Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Auth Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/auth_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Auth Module",
+      frontmatterData: {
+        displayed_sidebar: "authModelReference",
+        slug: "/references/auth/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Auth Module Data Models Reference",
+      },
+    },
+
+    // CART CONFIG
+    "^cart": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+      },
+    },
+    "^cart/ICartModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Cart Module.",
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+        slug: "/references/cart/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Cart Module Reference",
+      },
+    },
+    "^cart/.*ICartModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ICartModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Cart Module.",
+      frontmatterData: {
+        displayed_sidebar: "cartReference",
+        slug: "/references/cart",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // CART MODELS CONFIG
+    "^cart_models": {
+      frontmatterData: {
+        displayed_sidebar: "cartModelReference",
+        slug: "/references/cart/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Cart Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Cart Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/cart_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Cart Module",
+      frontmatterData: {
+        displayed_sidebar: "cartModelReference",
+        slug: "/references/cart/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Cart Module Data Models Reference",
+      },
+    },
+
+    // CUSTOMER CONFIG
+    "^customer": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+      },
+    },
+    "^customer/ICustomerModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Customer Module.",
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+        slug: "/references/customer/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Customer Module Reference",
+      },
+    },
+    "^customer/.*ICustomerModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ICustomerModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Customer Module.",
+      frontmatterData: {
+        displayed_sidebar: "customerReference",
+        slug: "/references/customer",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // CUSTOMER MODELS CONFIG
+    "^customer_models": {
+      frontmatterData: {
+        displayed_sidebar: "customerModelReference",
+        slug: "/references/customer/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Customer Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Customer Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/customer_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Customer Module",
+      frontmatterData: {
+        displayed_sidebar: "customerModelReference",
+        slug: "/references/customer/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Customer Module Data Models Reference",
+      },
     },
 
     // ENTITIES CONFIG
@@ -230,6 +511,105 @@ npx medusa develop
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // INVENTORY MODELS CONFIG
+    "^inventory_models": {
+      frontmatterData: {
+        displayed_sidebar: "inventoryModelReference",
+        slug: "/references/inventory/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Inventory Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/inventory_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Inventory Module",
+      frontmatterData: {
+        displayed_sidebar: "inventoryModelReference",
+        slug: "/references/inventory/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Inventory Module Data Models Reference",
+      },
+    },
+
+    // INVENTORY NEXT CONFIG
+    "^inventory_next": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+      },
+    },
+    "^inventory_next/IInventoryServiceNext/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Inventory Module.",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+        slug: "/references/inventory-next/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Reference",
+      },
+    },
+    "^inventory_next/.*IInventoryServiceNext\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IInventoryServiceNext` interface’s methods. This is the interface developers use to use the functionalities provided by the Inventory Module.",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextReference",
+        slug: "/references/inventory-next",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // INVENTORY NEXT MODELS CONFIG
+    "^inventory_next_models": {
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextModelReference",
+        slug: "/references/inventory-next/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Inventory Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Inventory Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/inventory_next_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Inventory Module",
+      frontmatterData: {
+        displayed_sidebar: "inventoryNextModelReference",
+        slug: "/references/inventory-next/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Inventory Module Data Models Reference",
       },
     },
 
@@ -504,12 +884,79 @@ To test resending a notification:
 
     // PAYMENT CONFIG
     "^payment": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+      },
+    },
+    "^payment/IPaymentModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Payment Module.",
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+        slug: "/references/payment/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Payment Module Reference",
+      },
+    },
+    "^payment/.*IPaymentModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IPaymentModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Payment Module.",
+      frontmatterData: {
+        displayed_sidebar: "paymentReference",
+        slug: "/references/payment",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // PAYMENT MODELS CONFIG
+    "^payment_models": {
+      frontmatterData: {
+        displayed_sidebar: "paymentModelReference",
+        slug: "/references/payment/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Payment Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Payment Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/payment_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Payment Module",
+      frontmatterData: {
+        displayed_sidebar: "paymentModelReference",
+        slug: "/references/payment/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Payment Module Data Models Reference",
+      },
+    },
+
+    // PAYMENT PROVIDER CONFIG
+    "^payment_provider": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
       maxLevel: 2,
     },
-    "^payment/.*AbstractPaymentProcessor": {
+    "^payment_provider/.*AbstractPaymentProcessor": {
       reflectionDescription: `In this document, you’ll learn how to create a Payment Processor in your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](https://docs.medusajs.com/modules/carts-and-checkout/payment) first.`,
       frontmatterData: {
         displayed_sidebar: "modules",
@@ -609,10 +1056,6 @@ npx medusa develop
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
       frontmatterData: {
         displayed_sidebar: "pricingReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/pricing/{{alias}}",
         sidebar_label: "{{alias}}",
       },
@@ -627,16 +1070,44 @@ npx medusa develop
         "This section of the documentation provides a reference to the `IPricingModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Pricing Module.",
       frontmatterData: {
         displayed_sidebar: "pricingReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/pricing",
       },
       reflectionTitle: {
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // PRICING MODELS CONFIG
+    "^pricing_models": {
+      frontmatterData: {
+        displayed_sidebar: "pricingModelReference",
+        slug: "/references/pricing/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Pricing Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Pricing Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/pricing_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Pricing Module",
+      frontmatterData: {
+        displayed_sidebar: "pricingModelReference",
+        slug: "/references/pricing/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Pricing Module Data Models Reference",
       },
     },
 
@@ -652,10 +1123,6 @@ npx medusa develop
         "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
       frontmatterData: {
         displayed_sidebar: "productReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/product/{{alias}}",
         sidebar_label: "{{alias}}",
       },
@@ -670,16 +1137,243 @@ npx medusa develop
         "This section of the documentation provides a reference to the `IProductModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Product Module.",
       frontmatterData: {
         displayed_sidebar: "productReference",
-        badge: {
-          variant: "orange",
-          text: "Beta",
-        },
         slug: "/references/product",
       },
       reflectionTitle: {
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // PRODUCT MODELS CONFIG
+    "^product_models": {
+      frontmatterData: {
+        slug: "/references/product/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Product Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/product_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Product Module",
+      frontmatterData: {
+        slug: "/references/product/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Product Module Data Models Reference",
+      },
+    },
+
+    // PROMOTION CONFIG
+    "^promotion": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+      },
+    },
+    "^promotion/IPromotionModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Promotion Module.",
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+        slug: "/references/promotion/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Promotion Module Reference",
+      },
+    },
+    "^promotion/.*IPromotionModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IPromotionModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Promotion Module.",
+      frontmatterData: {
+        displayed_sidebar: "promotionReference",
+        slug: "/references/promotion",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // PROMOTION MODELS CONFIG
+    "^promotion_models": {
+      frontmatterData: {
+        displayed_sidebar: "promotionModelReference",
+        slug: "/references/promotion/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Promotion Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Promotion Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/promotion_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Promotion Module",
+      frontmatterData: {
+        displayed_sidebar: "promotionModelReference",
+        slug: "/references/promotion/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Promotion Module Data Models Reference",
+      },
+    },
+
+    // REGION CONFIG
+    "^region": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+      },
+    },
+    "^region/IRegionModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Region Module.",
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+        slug: "/references/region/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Region Module Reference",
+      },
+    },
+    "^region/.*IRegionModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IRegionModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Region Module.",
+      frontmatterData: {
+        displayed_sidebar: "regionReference",
+        slug: "/references/region",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // REGION MODELS CONFIG
+    "^region_models": {
+      frontmatterData: {
+        displayed_sidebar: "regionModelReference",
+        slug: "/references/region/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Region Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Region Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/region_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Region Module",
+      frontmatterData: {
+        displayed_sidebar: "regionModelReference",
+        slug: "/references/region/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Region Module Data Models Reference",
+      },
+    },
+
+    // SALES CHANNEL CONFIG
+    "^sales_channel": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+      },
+    },
+    "^sales_channel/ISalesChannelModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Sales Channel Module.",
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+        slug: "/commerce-modules/sales-channel/reference/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Sales Channel Module Reference",
+      },
+    },
+    "^sales_channel/.*ISalesChannelModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ISalesChannelModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Sales Channel Module.",
+      frontmatterData: {
+        displayed_sidebar: "salesChannelReference",
+        slug: "/commerce-modules/sales-channel/reference",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // SALES CHANNEL MODELS CONFIG
+    "^sales_channel_models": {
+      frontmatterData: {
+        slug: "/commerce-modules/sales-channel/reference/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+        displayed_sidebar: "salesChannelModelReference",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Sales Channel Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Sales Channel Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/sales_channel_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Sales Channel Module",
+      frontmatterData: {
+        slug: "/commerce-modules/sales-channel/reference/models",
+        displayed_sidebar: "salesChannelModelReference",
+      },
+      reflectionTitle: {
+        fullReplacement: "Sales Channel Module Data Models Reference",
       },
     },
 
@@ -748,13 +1442,13 @@ npx medusa develop
     },
 
     // STOCK LOCATION CONFIG
-    "^stock-location": {
+    "^stock_location": {
       ...modulesOptions,
       frontmatterData: {
         displayed_sidebar: "stockLocationReference",
       },
     },
-    "^stock-location/IStockLocationService/methods": {
+    "^stock_location/IStockLocationService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
       frontmatterData: {
@@ -768,7 +1462,7 @@ npx medusa develop
         suffix: "- Stock Location Module Reference",
       },
     },
-    "^stock-location/.*IStockLocationService\\.md": {
+    "^stock_location/.*IStockLocationService\\.md": {
       reflectionDescription:
         "This section of the documentation provides a reference to the `IStockLocationService` interface’s methods. This is the interface developers use to use the functionalities provided by the Stock Location Module.",
       frontmatterData: {
@@ -779,6 +1473,237 @@ npx medusa develop
         kind: false,
         typeParameters: false,
         suffix: "Reference",
+      },
+    },
+
+    // STOCK LOCATION MODELS CONFIG
+    "^stock_location_models": {
+      frontmatterData: {
+        displayed_sidebar: "stockLocationModelReference",
+        slug: "/references/stock-location/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Stock Location Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/stock_location_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Stock Location Module",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationModelReference",
+        slug: "/references/stock-location/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Stock Location Module Data Models Reference",
+      },
+    },
+
+    // STOCK LOCATION NEXT CONFIG
+    "^stock_location_next": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+      },
+    },
+    "^stock-location/IStockLocationServiceNext/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+        slug: "/references/stock-location-next/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Reference",
+      },
+    },
+    "^stock_location_next/.*IStockLocationServiceNext\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IStockLocationServiceNext` interface’s methods. This is the interface developers use to use the functionalities provided by the Stock Location Module.",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextReference",
+        slug: "/references/stock-location-next",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // STOCK LOCATION NEXT MODELS CONFIG
+    "^stock_location_next_models": {
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextModelReference",
+        slug: "/references/stock-location-next/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Stock Location Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Stock Location Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/stock_location_next_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Stock Location Module",
+      frontmatterData: {
+        displayed_sidebar: "stockLocationNextModelReference",
+        slug: "/references/stock-location-next/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Stock Location Module Data Models Reference",
+      },
+    },
+
+    // STORE CONFIG
+    "^store": {
+      ...modulesOptions,
+      displayed_sidebar: "storeReference",
+    },
+    "^store/IStoreModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Store Module.",
+      frontmatterData: {
+        displayed_sidebar: "storeReference",
+        slug: "/references/store/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Store Module Reference",
+      },
+    },
+    "^store/.*IStoreModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IStoreModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Store Module.",
+      frontmatterData: {
+        displayed_sidebar: "storeReference",
+        slug: "/references/store",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // STORE MODELS CONFIG
+    "^store_models": {
+      frontmatterData: {
+        displayed_sidebar: "storeModelReference",
+        slug: "/references/store/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Store Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Store Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/store_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Store Module",
+      frontmatterData: {
+        displayed_sidebar: "storeModelReference",
+        slug: "/references/store/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Store Module Data Models Reference",
+      },
+    },
+
+    // TAX CONFIG
+    "^tax": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+      },
+    },
+    "^tax/ITaxModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Tax Module.",
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+        slug: "/references/tax/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Tax Module Reference",
+      },
+    },
+    "^tax/.*ITaxModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ITaxModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Tax Module.",
+      frontmatterData: {
+        displayed_sidebar: "taxReference",
+        slug: "/references/tax",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // TAX MODELS CONFIG
+    "^tax_models": {
+      frontmatterData: {
+        displayed_sidebar: "taxModelReference",
+        slug: "/references/tax/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Tax Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Tax Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/tax_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Tax Module",
+      frontmatterData: {
+        displayed_sidebar: "taxModelReference",
+        slug: "/references/tax/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Tax Module Data Models Reference",
       },
     },
 
@@ -829,12 +1754,12 @@ npx medusa develop
     },
 
     // TAX PROVIDER CONFIG
-    "^tax/": {
+    "^tax_provider/": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
     },
-    "^tax/.*AbstractTaxService": {
+    "^tax_provider/.*AbstractTaxService": {
       reflectionGroups: {
         Properties: false,
       },
@@ -874,6 +1799,73 @@ npx medusa develop
 4\\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
       `,
       ],
+    },
+
+    // USER CONFIG
+    "^user": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+      },
+    },
+    "^user/IUserModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the User Module.",
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+        slug: "/references/user/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- User Module Reference",
+      },
+    },
+    "^user/.*IUserModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `IUserModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the User Module.",
+      frontmatterData: {
+        displayed_sidebar: "userReference",
+        slug: "/references/user",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // USER MODELS CONFIG
+    "^user_models": {
+      frontmatterData: {
+        displayed_sidebar: "userModelReference",
+        slug: "/references/user/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the User Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- User Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/user_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the User Module",
+      frontmatterData: {
+        displayed_sidebar: "userModelReference",
+        slug: "/references/user/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "User Module Data Models Reference",
+      },
     },
 
     // WORKFLOWS CONFIG

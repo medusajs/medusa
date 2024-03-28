@@ -15,7 +15,7 @@ All features guarded by the `medusa_v2` flag are not ready for production and wi
 To enable the experimental features:
 
 1. [Enable the `medusa_v2` feature flag](../development/feature-flags/toggle.md) in your backend.
-2. Install the [Product](./product/install-medusa.mdx) and [Pricing](./pricing/install-medusa.mdx) modules and add them to the Medusa configurations.
+2. Install the commerce modules and add them to the Medusa configurations.
 3. Finally, run migrations in your backend with the following command:
 
 ```bash

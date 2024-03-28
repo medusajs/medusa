@@ -10,17 +10,11 @@ import Icons from '@theme/Icon';
 
 Gift cards are prepaid codes that can be purchased and used during checkout as an alternative to payment methods or to receive a discount. This overview introduces the available features related to gift cards.
 
-:::note
-
-Not a developer? Check out the [Gift Cards user guide](../../user-guide/gift-cards/index.md).
-
-:::
-
 ## Features
 
 ### Gift Card Management
 
-Admins can manage their main gift card with unlimited denominations.
+Admins can manage their main gift card with unlimited denominations as a regular product.
 
 <DocCardList colSize={6} items={[
   {
@@ -34,11 +28,11 @@ Admins can manage their main gift card with unlimited denominations.
   },
   {
     type: 'link',
-    href: '/user-guide/gift-cards/manage',
-    label: 'User Guide: Manage Discounts',
+    href: '/user-guide/products/gift-cards/product-gift-card',
+    label: 'User Guide: Manage Product Gift Cards',
     customProps: {
       icon: Icons['users-solid'],
-      description: 'Learn how to manage gift cards using Medusa Admin.'
+      description: 'Learn how to manage product gift cards using Medusa Admin.'
     }
   },
 ]} />
@@ -70,27 +64,27 @@ Developers can implement custom logic to send the gift card to the customer. The
   },
 ]} />
 
-### Custom Gift Cards
+### Customer Gift Cards
 
-Admins can create custom gift cards that are sent to specific customers. These customers can then use the gift card during checkout, the same way they would if they purchased one.
+Admins can create customer gift cards that are sent to specific customers. These customers can then use the gift card during checkout, the same way they would if they purchased one.
 
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/user-guide/gift-cards/custom',
-    label: 'User Guide: Custom Gift Cards',
+    href: '/user-guide/products/gift-cards/customer-gift-card',
+    label: 'User Guide: Customer Gift Cards',
     customProps: {
       icon: Icons['users-solid'],
-      description: 'Learn how to manage custom gift cards using Medusa Admin.'
+      description: 'Learn how to manage customer gift cards using Medusa Admin.'
     }
   },
   {
     type: 'link',
-    href: '/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards',
-    label: 'Admin: Manage Custom Gift Cards',
+    href: '/modules/gift-cards/admin/manage-gift-cards#manage-customer-gift-cards',
+    label: 'Admin: Manage Customer Gift Cards',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to manage custom gift cards using Admin APIs.'
+      description: 'Learn how to manage customer gift cards using Admin APIs.'
     }
   },
   {
@@ -99,7 +93,7 @@ Admins can create custom gift cards that are sent to specific customers. These c
     label: 'Backend: Send Gift Card Code',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to use send a custom gift card code to a customer.'
+      description: 'Learn how to use send a customer gift card code to a customer.'
     }
   },
 ]} />

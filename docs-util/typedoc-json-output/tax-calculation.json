@@ -155,19 +155,19 @@
 												{
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../packages/medusa/src/models/line-item-tax-line.ts",
-														"qualifiedName": "LineItemTaxLine"
+														"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
+														"qualifiedName": "ShippingMethodTaxLine"
 													},
-													"name": "LineItemTaxLine",
+													"name": "ShippingMethodTaxLine",
 													"package": "@medusajs/medusa"
 												},
 												{
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
-														"qualifiedName": "ShippingMethodTaxLine"
+														"sourceFileName": "../../../packages/medusa/src/models/line-item-tax-line.ts",
+														"qualifiedName": "LineItemTaxLine"
 													},
-													"name": "ShippingMethodTaxLine",
+													"name": "LineItemTaxLine",
 													"package": "@medusajs/medusa"
 												}
 											]
@@ -564,19 +564,19 @@
 												{
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../packages/medusa/src/models/line-item-tax-line.ts",
-														"qualifiedName": "LineItemTaxLine"
+														"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
+														"qualifiedName": "ShippingMethodTaxLine"
 													},
-													"name": "LineItemTaxLine",
+													"name": "ShippingMethodTaxLine",
 													"package": "@medusajs/medusa"
 												},
 												{
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
-														"qualifiedName": "ShippingMethodTaxLine"
+														"sourceFileName": "../../../packages/medusa/src/models/line-item-tax-line.ts",
+														"qualifiedName": "LineItemTaxLine"
 													},
-													"name": "ShippingMethodTaxLine",
+													"name": "LineItemTaxLine",
 													"package": "@medusajs/medusa"
 												}
 											]

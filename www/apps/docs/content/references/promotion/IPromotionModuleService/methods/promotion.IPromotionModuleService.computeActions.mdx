@@ -1,0 +1,19 @@
+---
+displayed_sidebar: promotionReference
+slug: /references/promotion/computeActions
+sidebar_label: computeActions
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# computeActions - Promotion Module Reference
+
+This documentation provides a reference to the computeActions method. This belongs to the Promotion Module.
+
+## Parameters
+
+<TypeList types={[{"name":"promotionCodesToApply","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"applicationContext","type":"[ComputeActionContext](../../interfaces/promotion.ComputeActionContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[ComputeActionItemLine](../../interfaces/promotion.ComputeActionItemLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"[ComputeActionShippingLine](../../interfaces/promotion.ComputeActionShippingLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"options","type":"`Record<string, any>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="computeActions"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ComputeActions](../../types/promotion.ComputeActions.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeActions[]","type":"[ComputeActions](../../types/promotion.ComputeActions.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeActions","type":"[AddItemAdjustmentAction](../../interfaces/promotion.AddItemAdjustmentAction.mdx) \\| [RemoveItemAdjustmentAction](../../interfaces/promotion.RemoveItemAdjustmentAction.mdx) \\| [AddShippingMethodAdjustment](../../interfaces/promotion.AddShippingMethodAdjustment.mdx) \\| [RemoveShippingMethodAdjustment](../../interfaces/promotion.RemoveShippingMethodAdjustment.mdx) \\| [CampaignBudgetExceededAction](../../interfaces/promotion.CampaignBudgetExceededAction.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="computeActions"/>

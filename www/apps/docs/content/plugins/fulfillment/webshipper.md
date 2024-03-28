@@ -108,9 +108,9 @@ To test the plugin, run the following command in the directory of the Medusa bac
 npx medusa develop
 ```
 
-Then, you must enable the Webshipper Fulfillment Provider in at least one region to use it. You can do that using either the [Medusa Admin](../../user-guide/regions/providers.mdx), which is available at `http://localhost:7001` after you run the above command, or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx).
+Then, you must enable the Webshipper Fulfillment Provider in at least one region to use it. You can do that using either the [Medusa Admin](../../user-guide/settings/regions/providers/index.mdx), which is available at `http://localhost:7001` after you run the above command, or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx).
 
-After enabling the provider, you must add shipping options for that provider. You can also do that using either the [Medusa Admin](../../user-guide/regions/shipping-options.mdx) or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx#add-a-shipping-option-to-a-region).
+After enabling the provider, you must add shipping options for that provider. You can also do that using either the [Medusa Admin](../../user-guide/settings/regions/shipping-options/index.mdx) or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx#add-a-shipping-option-to-a-region).
 
 Finally, try to place an order using either a [storefront](../../starters/nextjs-medusa-starter.mdx) or the [Store APIs](https://docs.medusajs.com/api/store). You should be able to use the shipping options you created for the fulfillment provider.
 

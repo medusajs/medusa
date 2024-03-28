@@ -116,11 +116,11 @@ Persists the tax lines relevant for an order to the database.
 
 #### Parameters
 
-<TypeList types={[{"name":"cartOrLineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[] \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart or line items to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
+<TypeList types={[{"name":"cartOrLineItems","type":"[Cart](../../entities/classes/entities.Cart.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the cart or line items to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;([ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx) \\| [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
 
 ### createShippingTaxLines
 
@@ -133,7 +133,7 @@ for return shipping methods.
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]}  sectionTitle="createShippingTaxLines"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;([ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx) \\| [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]}  sectionTitle="createShippingTaxLines"/>
 
 ### getShippingTaxLines
 
@@ -163,7 +163,7 @@ wish to persist the tax lines to the DB layer.
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the computed tax lines","expandable":false,"children":[]}]}  sectionTitle="getTaxLines"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;([ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx) \\| [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the computed tax lines","expandable":false,"children":[]}]}  sectionTitle="getTaxLines"/>
 
 ### getTaxLinesMap
 

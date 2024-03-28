@@ -2,6 +2,8 @@ import TypeList from "@site/src/components/TypeList"
 
 # CreateUserDTO
 
+The user to be created.
+
 ## Properties
 
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CreateUserDTO"/>
+<TypeList types={[{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CreateUserDTO"/>

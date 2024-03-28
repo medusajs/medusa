@@ -9,7 +9,7 @@ import TypeList from "@site/src/components/TypeList"
 
 Queries and Mutations listed here are used to send requests to the [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards).
 
-All hooks listed require [user authentication](medusa_react.Hooks.Admin.Auth.mdx#useadminlogin).
+All hooks listed require [authentication](../../../modules/user.mdx).
 
 Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
 These gift cards are different than the saleable gift cards in a store, which are created and managed through [useAdminCreateProduct](medusa_react.Hooks.Admin.Products.mdx#useadmincreateproduct).
@@ -229,7 +229,7 @@ export default CustomGiftCards
 
 #### Hook Parameters
 
-<TypeList types={[{"name":"query","type":"[AdminGetGiftCardsParams](../../../medusa/classes/medusa.AdminGetGiftCardsParams.mdx)","description":"Filters and pagination configurations to apply on the retrieved gift cards.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search gift cards by their code and display ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminGiftCards"/>
+<TypeList types={[{"name":"query","type":"[AdminGetGiftCardsParams](../../../medusa/classes/medusa.AdminGetGiftCardsParams.mdx)","description":"Filters and pagination configurations to apply on the retrieved gift cards.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search gift cards by their code and display ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminGiftCards"/>
 
 #### Query Returned Data
 

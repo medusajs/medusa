@@ -1,0 +1,163 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Tax Module
+
+The Tax Module is the `@medusajs/tax` NPM package that provides tax-related features in your Medusa and Node.js applications.
+
+---
+
+## Features
+
+### Tax Settings Per Region
+
+Set different tax settings for each region. This is especially useful with the [Region Module](../region/index.mdx).
+
+```ts
+const taxRegion = await taxModuleService.createTaxRegions({
+  country_code: "us",
+})
+```
+
+### Tax Rates and Rules
+
+Manage each region's default tax rates and override them with conditioned tax rates.
+
+```ts
+const taxRates = await taxModuleService.create([
+  {
+    tax_region_id: "txreg_123",
+    name: "Default tax rate",
+    is_default: true,
+    rate: 10,
+  },
+  {
+    tax_region_id: "txreg_123",
+    name: "Shirt product type",
+    is_default: false,
+    rate: 15,
+    rules: [
+      {
+        reference: "product_type",
+        reference_id: "ptyp_1",
+      },
+    ],
+  },
+])
+```
+
+### Retrieve Cart's Tax Lines
+
+Calculate and retrieve the tax lines of a cart's line items and shipping methods with tax providers. Use different tax providers for each region to handle tax-line retrieval differently.
+
+```ts
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    {
+      id: "cali_123",
+      product_id: "prod_123",
+      unit_price: 1000,
+      quantity: 1,
+    },
+    {
+      id: "casm_123",
+      shipping_option_id: "so_123",
+      unit_price: 2000,
+    },
+  ],
+  {
+    address: {
+      country_code: "us",
+    },
+  }
+)
+```
+
+---
+
+## Configure Tax Module
+
+After installing the `@medusajs/tax` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+
+```js
+const modules = {
+  // ...
+  tax: {
+    resolve: "@medusajs/tax",
+  },
+}
+```
+
+---
+
+## How to Use Tax Module's Service
+
+You can use the Tax Module's main service by resolving from the dependency container the resource `ModuleRegistrationName.TAX` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<Tabs groupId="resource-type" isCodeTabs={true}>
+  <TabItem label="API Route" value="api-route" attributes={{
+    title: "src/api/store/custom/route.ts"
+  }}>
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    res.json({
+      tax_regions: await taxModuleService.listTaxRegions(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Subscriber" value="subscribers" attributes={{
+    title: "src/subscribers/custom-handler.ts"
+  }}>
+
+  ```ts
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const taxModuleService: ITaxModuleService =
+      container.resolve(ModuleRegistrationName.TAX)
+
+    const taxRegions = await taxModuleService.listTaxRegions()
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Workflow Step" value="workflow-step" attributes={{
+    title: "src/workflows/hello-world/step1.ts"
+  }}>
+
+  ```ts
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep("step-1", async (_, context) => {
+    const taxModuleService: ITaxModuleService =
+      context.container.resolve(
+        ModuleRegistrationName.TAX
+      )
+    const taxRegions = await taxModuleService.listTaxRegions()
+  })
+  ```
+
+  </TabItem>
+</Tabs>

@@ -496,6 +496,66 @@
     {
       "source": "/modules/price-lists/backend/override-price-selection-strategy",
       "destination": "/modules/price-lists/price-selection-strategy"
+    },
+    {
+      "source": "/user-guide/gift-cards",
+      "destination": "/user-guide/products/gift-cards"
+    },
+    {
+      "source": "/user-guide/gift-cards/custom",
+      "destination": "/user-guide/products/gift-cards/customer-gift-cards"
+    },
+    {
+      "source": "/user-guide/gift-cards/manage",
+      "destination": "/user-guide/products/gift-cards/product-gift-cards"
+    },
+    {
+      "source": "/user-guide/multiwarehouse/inventory",
+      "destination": "/user-guide/inventory"
+    },
+    {
+      "source": "/user-guide/multiwarehouse/locations",
+      "destination": "/user-guide/settings/locations"
+    },
+    {
+      "source": "/user-guide/multiwarehouse/reservations",
+      "destination": "/user-guide/inventory/reservations"
+    },
+    {
+      "source": "/user-guide/price-lists/:path*",
+      "destination": "/user-guide/pricing/:path*"
+    },
+    {
+      "source": "/user-guide/regions/:path*",
+      "destination": "/user-guide/settings/regions/:path*"
+    },
+    {
+      "source": "/user-guide/sales-channels/:path*",
+      "destination": "/user-guide/settings/sales-channels/:path*"
+    },
+    {
+      "source": "/user-guide/taxes/tax-inclusive",
+      "destination": "/user-guide/settings/taxes/manage"
+    },
+    {
+      "source": "/user-guide/taxes/tax-overrides",
+      "destination": "/user-guide/settings/taxes/tax-rates"
+    },
+    {
+      "source": "/user-guide/taxes/:path*",
+      "destination": "/user-guide/settings/taxes/:path*"
+    },
+    {
+      "source": "/user-guide/users",
+      "destination": "/user-guide/settings/users"
+    },
+    {
+      "source": "/user-guide/users/profile",
+      "destination": "/user-guide/settings/profile"
+    },
+    {
+      "source": "/user-guide/users/team",
+      "destination": "/user-guide/settings/users/invites"
     }
   ],
   "framework": "docusaurus-2",

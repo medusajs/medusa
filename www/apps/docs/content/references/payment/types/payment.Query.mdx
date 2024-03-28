@@ -1,0 +1,9 @@
+---
+displayed_sidebar: paymentReference
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# Query
+
+ **Query**: T extends `object` ? T extends [Scalar](payment.Scalar.mdx) ? `never` : [FilterQuery](payment.FilterQuery.mdx)&#60;T&#62; : [FilterValue](payment.FilterValue.mdx)&#60;T&#62;

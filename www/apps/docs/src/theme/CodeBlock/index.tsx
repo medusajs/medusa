@@ -22,8 +22,9 @@ function maybeStringifyChildren(children: ReactNode): ReactNode {
 
 export default function CodeBlock({
   children: rawChildren,
-  noReport = false,
-  noCopy = false,
+  title,
+  badgeLabel,
+  badgeColor,
   ...props
 }: Props): JSX.Element {
   // The Prism theme on SSR is always the default theme but the site theme can
@@ -35,57 +36,25 @@ export default function CodeBlock({
   const CodeBlockComp =
     typeof children === "string" ? StringContent : ElementContent
 
-  const metastringTitleRegex = /title="?([^"]*)"?/
-  const metastringBadgeLabelRegex = /badgeLabel="?([^"]*)"?/
-  const metastringBadgeColorRegex = /badgeColor="?([^"]*)"?/
-
-  let title = props.title
-  delete props.title
-
-  function extractFromMetastring(regex: RegExp): string {
-    if (!props.metastring) {
-      return ""
-    }
-
-    let value = ""
-
-    const matched = props.metastring.match(regex)
-    if (matched?.length) {
-      value = matched[1].replace(/^"/, "").replace(/"$/, "")
-      props.metastring = props.metastring.replace(regex, "")
-    }
-
-    return value
-  }
-
-  if (!title) {
-    title = extractFromMetastring(metastringTitleRegex)
-  }
-
-  const badge = {
-    label: extractFromMetastring(metastringBadgeLabelRegex),
-    color: extractFromMetastring(metastringBadgeColorRegex),
-  }
+  props.metastring = props.metastring?.replace(/title="?([^"]*)"?/, "")
 
   return (
     <div className="code-wrapper">
-      {(title || badge.label) && (
+      {(title || badgeLabel) && (
         <div className="code-header">
           {title}
-          {badge.label && (
+          {badgeLabel && (
             <Badge
-              variant={(badge.color as BadgeVariant) || "green"}
+              variant={(badgeColor as BadgeVariant) || "green"}
               className="justify-end"
             >
-              {badge.label}
+              {badgeLabel}
             </Badge>
           )}
         </div>
       )}
       <CodeBlockComp
         key={String(isBrowser)}
-        noReport={noReport}
-        noCopy={noCopy}
         {...props}
         className={clsx(
           !title && "rounded",

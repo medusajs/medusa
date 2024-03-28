@@ -10,7 +10,7 @@ import TypeList from "@site/src/components/TypeList"
 This class is used to send requests to [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards). All its method
 are available in the JS Client under the `medusa.admin.giftCards` property.
 
-All methods in this class require [user authentication](js_client.AdminAuthResource.mdx#createsession).
+All methods in this class require [authentication](../../modules/user.mdx).
 
 Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
 These gift cards are different than the saleable gift cards in a store, which are created and managed through [AdminProductsResource](js_client.AdminProductsResource.mdx).
@@ -154,7 +154,7 @@ medusa.admin.giftCards.list({
 
 #### Parameters
 
-<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetGiftCardsParams](../../medusa/classes/medusa.AdminGetGiftCardsParams.mdx)","description":"Filters and pagination configurations to apply on the retrieved gift cards.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search gift cards by their code and display ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetGiftCardsParams](../../medusa/classes/medusa.AdminGetGiftCardsParams.mdx)","description":"Filters and pagination configurations to apply on the retrieved gift cards.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search gift cards by their code and display ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
 
 #### Returns
 

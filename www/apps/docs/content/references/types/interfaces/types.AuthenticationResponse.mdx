@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# AuthenticationResponse
+
+The details of the authentication response.
+
+## Properties
+
+<TypeList types={[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authUser","type":"`any`","description":"The authenticated user's details. The details shape\ndepends on the used provider ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string`","description":"The error message, if an error occurs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"Redirect location. Location takes precedence over success.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"successRedirectUrl","type":"`string`","description":"Redirect url for successful authentication.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AuthenticationResponse"/>

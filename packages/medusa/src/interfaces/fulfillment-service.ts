@@ -17,7 +17,7 @@ type ShippingMethodData = Record<string, unknown>
  * A fulfillment provider is a service that extends the `AbstractFulfillmentService` and implements its methods. So, adding a fulfillment provider is as simple as creating a service file in `src/services`.
  * The file's name is the fulfillment provider's class name as a slug and without the word `Service`. For example, if you're creating a `MyFulfillmentService` class, the file name is `src/services/my-fulfillment.ts`.
  *
- * ```ts title=src/services/my-fulfillment.ts
+ * ```ts title="src/services/my-fulfillment.ts"
  * import { AbstractFulfillmentService } from "@medusajs/medusa"
  *
  * class MyFulfillmentService extends AbstractFulfillmentService {

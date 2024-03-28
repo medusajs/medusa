@@ -34,6 +34,7 @@ export default function CodeBlockString({
   language: languageProp,
   noReport = false,
   noCopy = false,
+  noLineNumbers = false,
 }: Props): JSX.Element {
   const {
     prism: { defaultLanguage, magicComments },
@@ -57,7 +58,8 @@ export default function CodeBlockString({
     language,
     magicComments,
   })
-  const showLineNumbers = showLineNumbersProp ?? containsLineNumbers(metastring)
+  const showLineNumbers =
+    !noLineNumbers && (showLineNumbersProp || containsLineNumbers(metastring))
 
   return (
     <Container

@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const getConfig = require("./utils/get-config")
+const modulesConfig = require("./_modules")
 
-module.exports = getConfig({
-  entryPointPath: "packages/medusa/src/interfaces/tax-service.ts",
-  tsConfigName: "medusa.json",
+module.exports = modulesConfig({
+  entryPointPath: "packages/types/src/tax/service.ts",
   name: "tax",
-  parentIgnore: true,
 })

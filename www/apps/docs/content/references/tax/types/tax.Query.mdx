@@ -1,0 +1,9 @@
+---
+displayed_sidebar: taxReference
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# Query
+
+ **Query**: T extends `object` ? T extends [Scalar](tax.Scalar.mdx) ? `never` : [FilterQuery](tax.FilterQuery.mdx)&#60;T&#62; : [FilterValue](tax.FilterValue.mdx)&#60;T&#62;

@@ -1,0 +1,365 @@
+{
+	"id": 0,
+	"name": "api-key-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "ApiKey",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3,
+							"name": "new ApiKey",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "default",
+								"package": "@medusajs/api-key"
+							}
+						}
+					]
+				},
+				{
+					"id": 4,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 5,
+					"name": "token",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 6,
+					"name": "salt",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 7,
+					"name": "redacted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 8,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 9,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "publishable"
+							},
+							{
+								"type": "literal",
+								"value": "secret"
+							}
+						]
+					}
+				},
+				{
+					"id": 10,
+					"name": "last_used_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 11,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 13,
+					"name": "revoked_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 14,
+					"name": "revoked_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 15,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 16,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 17,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 18,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						15,
+						17
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/api-key",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/api-key/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.id"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.token"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.salt"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.redacted"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.title"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.type"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.last_used_at"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"12": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"13": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.revoked_by"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.revoked_at"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/api-key/src/models/api-key.ts",
+			"qualifiedName": "default.onInit"
+		}
+	}
+}

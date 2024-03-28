@@ -90,7 +90,7 @@ const plugins = [
 
 To use Klarna in your store, you must enable it in at least one region.
 
-You can follow [this user guide to learn how to enable a payment provider in a region](../../user-guide/regions/providers#manage-payment-providers). You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
+You can follow [this user guide to learn how to enable a payment provider in a region](../../user-guide/settings/regions/providers/index.mdx#manage-payment-providers). You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
 
 ---
 

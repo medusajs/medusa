@@ -1,0 +1,4653 @@
+{
+	"id": 0,
+	"name": "cart-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"text": "## Relations Overview\n\n",
+				"kind": "text"
+			},
+			{
+				"text": "```mermaid\nerDiagram\n\tCart }|--|{ Address : shipping_address\n\tCart ||--|| LineItem : items\n\tCart ||--|| ShippingMethod : shipping_methods\n\tLineItem ||--|| LineItemTaxLine : tax_lines\n\tLineItem ||--|| LineItemAdjustment : adjustments\n\tShippingMethod ||--|| ShippingMethodTaxLine : tax_lines\n\tShippingMethod ||--|| ShippingMethodAdjustment : adjustments\n\n```",
+				"kind": "code"
+			}
+		]
+	},
+	"children": [
+		{
+			"id": 1,
+			"name": "Address",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3,
+							"name": "new Address",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						}
+					]
+				},
+				{
+					"id": 24,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 5,
+					"name": "customer_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 6,
+					"name": "company",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 7,
+					"name": "first_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 8,
+					"name": "last_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 9,
+					"name": "address_1",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 10,
+					"name": "address_2",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 11,
+					"name": "city",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12,
+					"name": "country_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 13,
+					"name": "province",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 14,
+					"name": "postal_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 15,
+					"name": "phone",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 16,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 17,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 18,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 19,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 20,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 21,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 22,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 23,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						24,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						20,
+						22
+					]
+				}
+			]
+		},
+		{
+			"id": 25,
+			"name": "Cart",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 26,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 27,
+							"name": "new Cart",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 25,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						}
+					]
+				},
+				{
+					"id": 48,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+							"qualifiedName": "OptionalCartProps"
+						},
+						"name": "OptionalCartProps",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 28,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 29,
+					"name": "region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 30,
+					"name": "customer_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 31,
+					"name": "sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 32,
+					"name": "email",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 33,
+					"name": "currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 34,
+					"name": "shipping_address_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 35,
+					"name": "shipping_address",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 1,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						]
+					}
+				},
+				{
+					"id": 36,
+					"name": "billing_address_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 37,
+					"name": "billing_address",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 1,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						]
+					}
+				},
+				{
+					"id": 38,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 39,
+					"name": "items",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 49,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 40,
+					"name": "shipping_methods",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 130,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 41,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 42,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 43,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 44,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 45,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 46,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 47,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						26
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						48,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36,
+						37,
+						38,
+						39,
+						40,
+						41,
+						42,
+						43
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						44,
+						46
+					]
+				}
+			]
+		},
+		{
+			"id": 89,
+			"name": "LineItemAdjustment",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 90,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 91,
+							"name": "new LineItemAdjustment",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 89,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "AdjustmentLine.constructor"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.constructor"
+					}
+				},
+				{
+					"id": 109,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.[OptionalProps]"
+					}
+				},
+				{
+					"id": 100,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.id"
+					}
+				},
+				{
+					"id": 101,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.description"
+					}
+				},
+				{
+					"id": 102,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.code"
+					}
+				},
+				{
+					"id": 103,
+					"name": "amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.amount"
+					}
+				},
+				{
+					"id": 104,
+					"name": "raw_amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.raw_amount"
+					}
+				},
+				{
+					"id": 105,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.provider_id"
+					}
+				},
+				{
+					"id": 106,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.metadata"
+					}
+				},
+				{
+					"id": 107,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.created_at"
+					}
+				},
+				{
+					"id": 108,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.updated_at"
+					}
+				},
+				{
+					"id": 92,
+					"name": "item",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 49,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 93,
+					"name": "item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 94,
+					"name": "promotion_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 95,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 96,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 97,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 98,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 99,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						90
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						109,
+						100,
+						101,
+						102,
+						103,
+						104,
+						105,
+						106,
+						107,
+						108,
+						92,
+						93,
+						94,
+						95
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						96,
+						98
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+						"qualifiedName": "default"
+					},
+					"name": "default",
+					"package": "@medusajs/cart"
+				}
+			]
+		},
+		{
+			"id": 110,
+			"name": "LineItemTaxLine",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 111,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 112,
+							"name": "new LineItemTaxLine",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 110,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TaxLine.constructor"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.constructor"
+					}
+				},
+				{
+					"id": 113,
+					"name": "item",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 49,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 114,
+					"name": "item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 115,
+					"name": "tax_rate_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 116,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 117,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 118,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 119,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 120,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 129,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.[OptionalProps]"
+					}
+				},
+				{
+					"id": 121,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.id"
+					}
+				},
+				{
+					"id": 122,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.description"
+					}
+				},
+				{
+					"id": 123,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.code"
+					}
+				},
+				{
+					"id": 124,
+					"name": "rate",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.rate"
+					}
+				},
+				{
+					"id": 125,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.provider_id"
+					}
+				},
+				{
+					"id": 126,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.metadata"
+					}
+				},
+				{
+					"id": 127,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.created_at"
+					}
+				},
+				{
+					"id": 128,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.updated_at"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						111
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						113,
+						114,
+						115,
+						116,
+						129,
+						121,
+						122,
+						123,
+						124,
+						125,
+						126,
+						127,
+						128
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						117,
+						119
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+						"qualifiedName": "default"
+					},
+					"name": "default",
+					"package": "@medusajs/cart"
+				}
+			]
+		},
+		{
+			"id": 49,
+			"name": "LineItem",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 50,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 51,
+							"name": "new LineItem",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 49,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						}
+					]
+				},
+				{
+					"id": 88,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+							"qualifiedName": "OptionalLineItemProps"
+						},
+						"name": "OptionalLineItemProps",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 52,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 53,
+					"name": "cart_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 54,
+					"name": "cart",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 25,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 55,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 56,
+					"name": "subtitle",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 57,
+					"name": "thumbnail",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 58,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 59,
+					"name": "variant_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 60,
+					"name": "product_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 61,
+					"name": "product_title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 62,
+					"name": "product_description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 63,
+					"name": "product_subtitle",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 64,
+					"name": "product_type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 65,
+					"name": "product_collection",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 66,
+					"name": "product_handle",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 67,
+					"name": "variant_sku",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 68,
+					"name": "variant_barcode",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 69,
+					"name": "variant_title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 70,
+					"name": "variant_option_values",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 71,
+					"name": "requires_shipping",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 72,
+					"name": "is_discountable",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 73,
+					"name": "is_tax_inclusive",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 74,
+					"name": "compare_at_unit_price",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 75,
+					"name": "raw_compare_at_unit_price",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+									"qualifiedName": "BigNumberRawValue"
+								},
+								"name": "BigNumberRawValue",
+								"package": "@medusajs/types"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 76,
+					"name": "unit_price",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 77,
+					"name": "raw_unit_price",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 78,
+					"name": "tax_lines",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 110,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 79,
+					"name": "adjustments",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 89,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 80,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 81,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 82,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 83,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 84,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 85,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 86,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 87,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						50
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						88,
+						52,
+						53,
+						54,
+						55,
+						56,
+						57,
+						58,
+						59,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65,
+						66,
+						67,
+						68,
+						69,
+						70,
+						71,
+						72,
+						73,
+						74,
+						75,
+						76,
+						77,
+						78,
+						79,
+						80,
+						81,
+						82,
+						83
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						84,
+						86
+					]
+				}
+			]
+		},
+		{
+			"id": 154,
+			"name": "ShippingMethodAdjustment",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 155,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 156,
+							"name": "new ShippingMethodAdjustment",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 154,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "AdjustmentLine.constructor"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.constructor"
+					}
+				},
+				{
+					"id": 174,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.[OptionalProps]"
+					}
+				},
+				{
+					"id": 165,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.id"
+					}
+				},
+				{
+					"id": 166,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.description"
+					}
+				},
+				{
+					"id": 167,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.code"
+					}
+				},
+				{
+					"id": 168,
+					"name": "amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.amount"
+					}
+				},
+				{
+					"id": 169,
+					"name": "raw_amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.raw_amount"
+					}
+				},
+				{
+					"id": 170,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.provider_id"
+					}
+				},
+				{
+					"id": 171,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.metadata"
+					}
+				},
+				{
+					"id": 172,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.created_at"
+					}
+				},
+				{
+					"id": 173,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "AdjustmentLine.updated_at"
+					}
+				},
+				{
+					"id": 157,
+					"name": "shipping_method",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 130,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 158,
+					"name": "shipping_method_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 159,
+					"name": "promotion_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 160,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 161,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 162,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 163,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 164,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						155
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						174,
+						165,
+						166,
+						167,
+						168,
+						169,
+						170,
+						171,
+						172,
+						173,
+						157,
+						158,
+						159,
+						160
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						161,
+						163
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+						"qualifiedName": "default"
+					},
+					"name": "default",
+					"package": "@medusajs/cart"
+				}
+			]
+		},
+		{
+			"id": 175,
+			"name": "ShippingMethodTaxLine",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 176,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 177,
+							"name": "new ShippingMethodTaxLine",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 175,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TaxLine.constructor"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.constructor"
+					}
+				},
+				{
+					"id": 178,
+					"name": "shipping_method",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 130,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 179,
+					"name": "shipping_method_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 180,
+					"name": "tax_rate_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 181,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 182,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 183,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 184,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 185,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 194,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.[OptionalProps]"
+					}
+				},
+				{
+					"id": 186,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.id"
+					}
+				},
+				{
+					"id": 187,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.description"
+					}
+				},
+				{
+					"id": 188,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.code"
+					}
+				},
+				{
+					"id": 189,
+					"name": "rate",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.rate"
+					}
+				},
+				{
+					"id": 190,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.provider_id"
+					}
+				},
+				{
+					"id": 191,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null",
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.metadata"
+					}
+				},
+				{
+					"id": 192,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.created_at"
+					}
+				},
+				{
+					"id": 193,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TaxLine.updated_at"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						176
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						178,
+						179,
+						180,
+						181,
+						194,
+						186,
+						187,
+						188,
+						189,
+						190,
+						191,
+						192,
+						193
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						182,
+						184
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+						"qualifiedName": "default"
+					},
+					"name": "default",
+					"package": "@medusajs/cart"
+				}
+			]
+		},
+		{
+			"id": 130,
+			"name": "ShippingMethod",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 131,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 132,
+							"name": "new ShippingMethod",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 130,
+								"name": "default",
+								"package": "@medusajs/cart"
+							}
+						}
+					]
+				},
+				{
+					"id": 153,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+							"qualifiedName": "OptionalShippingMethodProps"
+						},
+						"name": "OptionalShippingMethodProps",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 133,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 134,
+					"name": "cart_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 135,
+					"name": "cart",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 25,
+						"name": "default",
+						"package": "@medusajs/cart"
+					}
+				},
+				{
+					"id": 136,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 137,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 138,
+					"name": "amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 139,
+					"name": "raw_amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 140,
+					"name": "is_tax_inclusive",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 141,
+					"name": "shipping_option_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 142,
+					"name": "data",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 143,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 144,
+					"name": "tax_lines",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 175,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 145,
+					"name": "adjustments",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 154,
+								"name": "default",
+								"package": "@medusajs/cart"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 146,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 147,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 148,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 149,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 150,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 151,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 152,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						131
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						153,
+						133,
+						134,
+						135,
+						136,
+						137,
+						138,
+						139,
+						140,
+						141,
+						142,
+						143,
+						144,
+						145,
+						146,
+						147,
+						148
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						149,
+						151
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1,
+				25,
+				89,
+				110,
+				49,
+				154,
+				175,
+				130
+			]
+		}
+	],
+	"packageName": "@medusajs/cart",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/cart/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.id"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.customer_id"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.company"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.first_name"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.last_name"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.address_1"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.address_2"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.city"
+		},
+		"12": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.country_code"
+		},
+		"13": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.province"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.postal_code"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.phone"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"19": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"20": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"21": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"22": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"23": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"24": {
+			"sourceFileName": "../../../packages/cart/src/models/address.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"25": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default"
+		},
+		"28": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.id"
+		},
+		"29": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.region_id"
+		},
+		"30": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.customer_id"
+		},
+		"31": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.sales_channel_id"
+		},
+		"32": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.email"
+		},
+		"33": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.currency_code"
+		},
+		"34": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.shipping_address_id"
+		},
+		"35": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.shipping_address"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.billing_address_id"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.billing_address"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.items"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.shipping_methods"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"43": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"44": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"45": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"46": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"47": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"48": {
+			"sourceFileName": "../../../packages/cart/src/models/cart.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"49": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default"
+		},
+		"52": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.id"
+		},
+		"53": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.cart_id"
+		},
+		"54": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.cart"
+		},
+		"55": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.title"
+		},
+		"56": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.subtitle"
+		},
+		"57": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.thumbnail"
+		},
+		"58": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.quantity"
+		},
+		"59": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.variant_id"
+		},
+		"60": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_id"
+		},
+		"61": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_title"
+		},
+		"62": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_description"
+		},
+		"63": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_subtitle"
+		},
+		"64": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_type"
+		},
+		"65": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_collection"
+		},
+		"66": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.product_handle"
+		},
+		"67": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.variant_sku"
+		},
+		"68": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.variant_barcode"
+		},
+		"69": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.variant_title"
+		},
+		"70": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.variant_option_values"
+		},
+		"71": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.requires_shipping"
+		},
+		"72": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.is_discountable"
+		},
+		"73": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.is_tax_inclusive"
+		},
+		"74": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.compare_at_unit_price"
+		},
+		"75": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.raw_compare_at_unit_price"
+		},
+		"76": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.unit_price"
+		},
+		"77": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.raw_unit_price"
+		},
+		"78": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.tax_lines"
+		},
+		"79": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.adjustments"
+		},
+		"80": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"81": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"82": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"83": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"84": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"85": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"86": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"87": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"88": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"89": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default"
+		},
+		"92": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.item"
+		},
+		"93": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.item_id"
+		},
+		"94": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.promotion_id"
+		},
+		"95": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"96": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"97": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"98": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"99": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-adjustment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"100": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.id"
+		},
+		"101": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.description"
+		},
+		"102": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.code"
+		},
+		"103": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.amount"
+		},
+		"104": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.raw_amount"
+		},
+		"105": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"106": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"107": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"108": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"109": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"110": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default"
+		},
+		"113": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.item"
+		},
+		"114": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.item_id"
+		},
+		"115": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.tax_rate_id"
+		},
+		"116": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"117": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"118": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"119": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"120": {
+			"sourceFileName": "../../../packages/cart/src/models/line-item-tax-line.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"121": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.id"
+		},
+		"122": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.description"
+		},
+		"123": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.code"
+		},
+		"124": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.rate"
+		},
+		"125": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"126": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"127": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"128": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"129": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"130": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default"
+		},
+		"133": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.id"
+		},
+		"134": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.cart_id"
+		},
+		"135": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.cart"
+		},
+		"136": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.name"
+		},
+		"137": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.description"
+		},
+		"138": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.amount"
+		},
+		"139": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.raw_amount"
+		},
+		"140": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.is_tax_inclusive"
+		},
+		"141": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.shipping_option_id"
+		},
+		"142": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.data"
+		},
+		"143": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"144": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.tax_lines"
+		},
+		"145": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.adjustments"
+		},
+		"146": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"147": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"148": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"149": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"150": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"151": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"152": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"153": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"154": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default"
+		},
+		"157": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.shipping_method"
+		},
+		"158": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.shipping_method_id"
+		},
+		"159": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.promotion_id"
+		},
+		"160": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"161": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"162": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"163": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"164": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"165": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.id"
+		},
+		"166": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.description"
+		},
+		"167": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.code"
+		},
+		"168": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.amount"
+		},
+		"169": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.raw_amount"
+		},
+		"170": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"171": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"172": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"173": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"174": {
+			"sourceFileName": "../../../packages/cart/src/models/adjustment-line.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"175": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default"
+		},
+		"178": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.shipping_method"
+		},
+		"179": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.shipping_method_id"
+		},
+		"180": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.tax_rate_id"
+		},
+		"181": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"182": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"183": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"184": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"185": {
+			"sourceFileName": "../../../packages/cart/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"186": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.id"
+		},
+		"187": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.description"
+		},
+		"188": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.code"
+		},
+		"189": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.rate"
+		},
+		"190": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"191": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"192": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"193": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"194": {
+			"sourceFileName": "../../../packages/cart/src/models/tax-line.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}
