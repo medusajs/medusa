@@ -1,4 +1,4 @@
-import { PencilSquare } from "@medusajs/icons"
+import { Plus } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import { useAdminProductVariants } from "medusa-react"
@@ -64,9 +64,9 @@ export const ProductVariantSection = ({
             {
               actions: [
                 {
-                  label: t("actions.edit"),
-                  to: "variants",
-                  icon: <PencilSquare />,
+                  label: t("actions.create"),
+                  to: `variants/create`,
+                  icon: <Plus />,
                 },
               ],
             },
