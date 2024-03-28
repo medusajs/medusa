@@ -475,9 +475,10 @@ export class WorkflowOrchestratorService {
       },
       onStepFailure: ({ step, transaction }) => {
         const stepName = step.definition.action!
-        const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          stepName
-        ]
+        const errors = transaction
+          .getErrors(TransactionHandlerType.INVOKE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         notify({ eventType: "onStepFailure", step, errors })
@@ -492,9 +493,10 @@ export class WorkflowOrchestratorService {
       },
       onCompensateStepFailure: ({ step, transaction }) => {
         const stepName = step.definition.action!
-        const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          stepName
-        ]
+        const errors = transaction
+          .getErrors(TransactionHandlerType.COMPENSATE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         notify({ eventType: "onCompensateStepFailure", step, errors })
