@@ -1,5 +1,15 @@
 # @medusajs/api-key
 
+## 0.1.2
+
+### Patch Changes
+
+- [#6851](https://github.com/medusajs/medusa/pull/6851) [`ea8d9d4d42`](https://github.com/medusajs/medusa/commit/ea8d9d4d42210a5598b308656922c0e93c90b7c8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: API key sales channel link
+
+- Updated dependencies [[`e0b02a1012`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137), [`5d9aea053c`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b), [`45c49e89f2`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875), [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f), [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5)]:
+  - @medusajs/utils@1.12.0
+  - @medusajs/types@1.12.0
+
 ## 0.1.1
 
 ### Patch Changes

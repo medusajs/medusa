@@ -1,5 +1,20 @@
 # @medusajs/utils
 
+## 1.12.0
+
+### Minor Changes
+
+- [#6813](https://github.com/medusajs/medusa/pull/6813) [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5) Thanks [@sradevski](https://github.com/sradevski)! - Added an upsertWithReplace method to the mikro orm repository
+
+### Patch Changes
+
+- [#6836](https://github.com/medusajs/medusa/pull/6836) [`e0b02a1012`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): custom serialization that allows for non self ref
+
+- [#6842](https://github.com/medusajs/medusa/pull/6842) [`5d9aea053c`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(utils): Mikro orm prop filtering should check existence
+
+- Updated dependencies [[`45c49e89f2`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875), [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f), [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5)]:
+  - @medusajs/types@1.12.0
+
 ## 1.11.8
 
 ### Patch Changes
