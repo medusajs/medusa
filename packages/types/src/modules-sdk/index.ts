@@ -1,6 +1,7 @@
 import {
   JoinerRelationship,
   JoinerServiceConfig,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "../joiner"
 
@@ -278,7 +279,8 @@ export type ModuleBootstrapDeclaration =
 
 export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  options?: RemoteJoinerOptions
 ) => Promise<any> | null
 
 export interface IModuleService {

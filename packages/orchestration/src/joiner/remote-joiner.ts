@@ -8,7 +8,8 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 
-import { deduplicate, isDefined, isString } from "@medusajs/utils"
+import { RemoteJoinerOptions } from "@medusajs/types"
+import { MedusaError, deduplicate, isDefined, isString } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
@@ -331,7 +332,8 @@ export class RemoteJoiner {
     expand: RemoteExpandProperty,
     pkField: string,
     ids?: (unknown | unknown[])[],
-    relationship?: any
+    relationship?: any,
+    options?: RemoteJoinerOptions
   ): Promise<{
     data: unknown[] | { [path: string]: unknown }
     path?: string
@@ -372,6 +374,15 @@ export class RemoteJoiner {
 
     resData = Array.isArray(resData) ? resData : [resData]
 
+    this.checkIfKeysExist(
+      uniqueIds,
+      resData,
+      expand,
+      pkField,
+      relationship,
+      options
+    )
+
     const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)
     )
@@ -383,6 +394,47 @@ export class RemoteJoiner {
     }
 
     return response
+  }
+
+  private checkIfKeysExist(
+    uniqueIds: unknown[] | undefined,
+    resData: any[],
+    expand: RemoteExpandProperty,
+    pkField: string,
+    relationship?: any,
+    options?: RemoteJoinerOptions
+  ) {
+    if (
+      !(
+        isDefined(uniqueIds) &&
+        ((options?.throwIfKeyNotFound && !isDefined(relationship)) ||
+          (options?.throwIfRelationNotFound && isDefined(relationship)))
+      )
+    ) {
+      return
+    }
+
+    if (isDefined(relationship)) {
+      if (
+        Array.isArray(options?.throwIfRelationNotFound) &&
+        !options?.throwIfRelationNotFound.includes(relationship.serviceName)
+      ) {
+        return
+      }
+    }
+
+    const notFound = new Set(uniqueIds)
+    resData.forEach((data) => {
+      notFound.delete(data[pkField])
+    })
+
+    if (notFound.size > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `${expand.serviceConfig.serviceName} ${pkField} not found: ` +
+          Array.from(notFound).join(", ")
+      )
+    }
   }
 
   private handleFieldAliases(
@@ -466,7 +518,8 @@ export class RemoteJoiner {
   private async handleExpands(
     items: any[],
     parsedExpands: Map<string, RemoteExpandProperty>,
-    implodeMapping: InternalImplodeMapping[] = []
+    implodeMapping: InternalImplodeMapping[] = [],
+    options?: RemoteJoinerOptions
   ): Promise<void> {
     if (!parsedExpands) {
       return
@@ -488,7 +541,12 @@ export class RemoteJoiner {
       }
 
       if (nestedItems.length > 0) {
-        await this.expandProperty(nestedItems, expand.parentConfig!, expand)
+        await this.expandProperty(
+          nestedItems,
+          expand.parentConfig!,
+          expand,
+          options
+        )
       }
     }
 
@@ -498,7 +556,8 @@ export class RemoteJoiner {
   private async expandProperty(
     items: any[],
     parentServiceConfig: JoinerServiceConfig,
-    expand?: RemoteExpandProperty
+    expand?: RemoteExpandProperty,
+    options?: RemoteJoinerOptions
   ): Promise<void> {
     if (!expand) {
       return
@@ -509,14 +568,20 @@ export class RemoteJoiner {
     )
 
     if (relationship) {
-      await this.expandRelationshipProperty(items, expand, relationship)
+      await this.expandRelationshipProperty(
+        items,
+        expand,
+        relationship,
+        options
+      )
     }
   }
 
   private async expandRelationshipProperty(
     items: any[],
     expand: RemoteExpandProperty,
-    relationship: JoinerRelationship
+    relationship: JoinerRelationship,
+    options?: RemoteJoinerOptions
   ): Promise<void> {
     const field = relationship.inverse
       ? relationship.primaryKey
@@ -552,7 +617,8 @@ export class RemoteJoiner {
       expand,
       field,
       idsToFetch,
-      relationship
+      relationship,
+      options
     )
 
     const joinFields = relationship.inverse
@@ -602,14 +668,16 @@ export class RemoteJoiner {
     query: RemoteJoinerQuery,
     serviceConfig: JoinerServiceConfig,
     expands: RemoteJoinerQuery["expands"],
-    implodeMapping: InternalImplodeMapping[]
+    implodeMapping: InternalImplodeMapping[],
+    options?: RemoteJoinerOptions
   ): Map<string, RemoteExpandProperty> {
     const parsedExpands = this.parseProperties(
       initialService,
       query,
       serviceConfig,
       expands,
-      implodeMapping
+      implodeMapping,
+      options
     )
 
     const groupedExpands = this.groupExpands(parsedExpands)
@@ -622,7 +690,8 @@ export class RemoteJoiner {
     query: RemoteJoinerQuery,
     serviceConfig: JoinerServiceConfig,
     expands: RemoteJoinerQuery["expands"],
-    implodeMapping: InternalImplodeMapping[]
+    implodeMapping: InternalImplodeMapping[],
+    options?: RemoteJoinerOptions
   ): Map<string, RemoteExpandProperty> {
     const aliasRealPathMap = new Map<string, string[]>()
     const parsedExpands = new Map<string, any>()
@@ -913,7 +982,10 @@ export class RemoteJoiner {
     return mergedExpands
   }
 
-  async query(queryObj: RemoteJoinerQuery): Promise<any> {
+  async query(
+    queryObj: RemoteJoinerQuery,
+    options?: RemoteJoinerOptions
+  ): Promise<any> {
     const serviceConfig = this.getServiceConfig(
       queryObj.service,
       queryObj.alias
@@ -960,7 +1032,8 @@ export class RemoteJoiner {
       root,
       pkName,
       primaryKeyArg?.value,
-      undefined
+      undefined,
+      options
     )
 
     const data = response.path ? response.data[response.path!] : response.data
@@ -968,7 +1041,8 @@ export class RemoteJoiner {
     await this.handleExpands(
       Array.isArray(data) ? data : [data],
       parsedExpands,
-      implodeMapping
+      implodeMapping,
+      options
     )
 
     return response.data
