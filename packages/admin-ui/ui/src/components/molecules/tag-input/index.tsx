@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react"
 import Tooltip from "../../atoms/tooltip"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import InputHeader from "../../fundamentals/input-header"
+import { useTranslation } from "react-i18next"
 
 const ENTER_KEY = 13
 const TAB_KEY = 9
@@ -39,6 +40,7 @@ const TagInput: React.FC<TagInputProps> = ({
   invalidMessage = "is not a valid tag",
   ...props
 }) => {
+  const { t } = useTranslation()
   const [invalid, setInvalid] = useState(false)
   const [highlighted, setHighlighted] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -158,7 +160,7 @@ const TagInput: React.FC<TagInputProps> = ({
     <div className={className}>
       {showLabel && (
         <InputHeader
-          label={label || "Tags (comma separated)"}
+          label={label || t("tag-input-label", "Tags (comma separated)")}
           {...{ required, tooltipContent, tooltip }}
           className="mb-2"
         />

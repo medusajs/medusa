@@ -1638,6 +1638,7 @@
   "new-general-information-title": "General information",
   "new-to-start-selling-all-you-need-is-a-name-and-a-price": "To start selling, all you need is a name and a price.",
   "new-organize-product": "Organize Product",
+  "new-organize-title": "Organize",
   "new-add-variations-of-this-product": "Add variations of this product.",
   "new-offer-your-customers-different-options-for-color-format-size-shape-etc": "Offer your customers different options for color, format, size, shape, etc.",
   "new-used-for-shipping-and-customs-purposes": "Used for shipping and customs purposes.",
@@ -2007,5 +2008,16 @@
   "users-the-team": "The Team",
   "users-manage-users-of-your-medusa-store": "Manage users of your Medusa Store",
   "users-count_one": "{{count}}",
-  "users-count_other": "{{count}}"
+  "users-count_other": "{{count}}",
+  "discountable-form-discountable": "Discountable",
+  "discountable-form-hint-gift-card": "When unchecked discounts will not be applied to this gift card.",
+  "discountable-form-hint-product": "When unchecked discounts will not be applied to this product.",
+  "organize-form-type-label": "Type",
+  "organize-form-type-placeholder": "Choose a type",
+  "organize-form-collection-label": "Collection",
+  "organize-form-collection-placeholder": "Choose a collection",
+  "organize-form-categories-label": "Categories",
+  "organize-form-categories-placeholder": "Choose categories",
+  "organize-form-categories-placeholder-no-categories": "No categories available",
+  "tag-input-label": "Tags (comma separated)"
 }
