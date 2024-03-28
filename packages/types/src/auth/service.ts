@@ -6,7 +6,6 @@ import {
   FilterableAuthUserProps,
   UpdateAuthUserDTO,
 } from "./common"
-
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
@@ -17,19 +16,37 @@ import { IModuleService } from "../modules-sdk"
 export type JWTGenerationOptions = {
   expiresIn?: string | number
 }
+
 /**
- * The main service interface for the authentication module.
+ * The main service interface for the Auth Module.
  */
 export interface IAuthModuleService extends IModuleService {
   /**
-   * This method is the first invoked method of the authentication flow. It handles the incoming authentication request.
+   * This method is used to authenticate a user using a provider. The `authenticate` method of the
+   * underlying provider is called, passing it the `providerData` parameter as a parameter. The method
+   * returns the data returned by the provider.
    *
-   * @param {string} provider - The provider to use for authentication.
-   * @param {AuthenticationInput} providerData - The authentication data necessary to pass to the provider
-   * @returns {Promise<AuthenticationResponse>} The authentication's result.
+   * Refer to [this guide](https://docs.medusajs.com/experimental/auth/auth-flows) to learn more about the authentication flows.
+   *
+   * @param {string} provider - The ID of the provider to authenticate the user with.
+   * @param {AuthenticationInput} providerData - The data to pass to the provider to authenticate the user.
+   * @returns {Promise<AuthenticationResponse>} The details of the authentication result.
    *
    * @example
-   * {example-code}
+   * The following example is in the context of an API route, where
+   * `req` is an instance of the `MedusaRequest` object:
+   *
+   * ```ts
+   * const { success, authUser, location, error } =
+   *   await authModuleService.authenticate("emailpass", {
+   *     url: req.url,
+   *     headers: req.headers,
+   *     query: req.query,
+   *     body: req.body,
+   *     authScope: "admin",
+   *     protocol: req.protocol,
+   *   } as AuthenticationInput)
+   * ```
    */
   authenticate(
     provider: string,
@@ -37,14 +54,38 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method handles the callback from an authentication provider when an authentication has been initialized and the user is redirected.
+   * When authenticating users with a third-party provider, such as Google, the user performs an
+   * action to finish the authentication, such as enter their credentials in Google's sign-in
+   * form.
    *
-   * @param {string} provider - The provider to use for callback validation.
-   * @param {AuthenticationInput} providerData - The authentication data necessary to pass to the provider
-   * @returns {Promise<AuthenticationResponse>} The authentication's result.
+   * In those cases, you must create an API route or endpoint that's called by the third-party
+   * provider when the user finishes performing the required action.
+   *
+   * In that API route, you can call this method to validate the third-party provider's
+   * callback and authenticate the user.
+   *
+   * Learn more about this authentication flow in [this guide](https://docs.medusajs.com/experimental/auth/auth-flows#authentication-with-third-party-service).
+   *
+   * @param {string} provider - The ID of the provider to use to validate the callback.
+   * @param {AuthenticationInput} providerData - The data to pass to the provider to validate the callback.
+   * @returns {Promise<AuthenticationResponse>} The details of the authentication result.
    *
    * @example
-   * {example-code}
+   * The following example is in the context of an API route, where
+   * `req` is an instance of the `MedusaRequest` object:
+   *
+   * ```ts
+   * const { success, authUser, error, successRedirectUrl } =
+   *   await authModuleService.validateCallback("google", {
+   *     url: req.url,
+   *     headers: req.headers,
+   *     query: req.query,
+   *     body: req.body,
+   *     authScope: "admin",
+   *     protocol: req.protocol,
+   *   } as AuthenticationInput)
+   * ```
+   *
    */
   validateCallback(
     provider: string,
@@ -52,28 +93,16 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method retrieves the user by its ID.
+   * This method retrieves an auth user by its ID.
    *
-   * @param {string} id - The ID of the retrieve.
+   * @param {string} id - The ID of the auth user.
    * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a auth user.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The retrieved user.
+   * @returns {Promise<AuthUserDTO>} The retrieved auth user.
    *
    * @example
-   * A simple example that retrieves a {type name} by its ID:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
+   * const authUser = await authModuleService.retrieve("authusr_1")
    */
   retrieve(
     id: string,
@@ -82,34 +111,36 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthUserDTO>
 
   /**
-   * This method retrieves a paginated list of users based on optional filters and configuration.
+   * This method retrieves a paginated list of auth users based on optional filters and configuration.
    *
-   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth user.
+   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth users.
    * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a auth user.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The list of users.
+   * @returns {Promise<AuthUserDTO[]>} The list of auth users.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of auth users using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const authUsers = await authModuleService.list({
+   *   id: ["authusr_123", "authusr_321"],
+   * })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const authUsers = await authModuleService.list(
+   *   {
+   *     id: ["authusr_123", "authusr_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
-   *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
    */
   list(
     filters?: FilterableAuthUserProps,
@@ -118,34 +149,38 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthUserDTO[]>
 
   /**
-   * This method retrieves a paginated list of user along with the total count of available users satisfying the provided filters.
+   * This method retrieves a paginated list of auth users along with the total count of available auth users satisfying the provided filters.
    *
-   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth user.
+   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth users.
    * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a auth user.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[AuthUserDTO[], number]>} The list of users along with their total count.
+   * @returns {Promise<[AuthUserDTO[], number]>} The list of auth users along with their total count.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of auth users using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const [authUsers, count] =
+   *   await authModuleService.listAndCount({
+   *     id: ["authusr_123", "authusr_321"],
+   *   })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const [authUsers, count] =
+   *   await authModuleService.listAndCount(
+   *     {
+   *       id: ["authusr_123", "authusr_321"],
+   *     },
+   *     {
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
-   *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * {example-code}
-   * ```
-   *
-   *
    */
   listAndCount(
     filters?: FilterableAuthUserProps,
@@ -154,14 +189,25 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<[AuthUserDTO[], number]>
 
   /**
-   * This method creates users
+   * This method creates auth users.
    *
-   * @param {CreateAuthUserDTO[]} data - The auth user to be created.
+   * @param {CreateAuthUserDTO[]} data - The auth users to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The created users.
+   * @returns {Promise<AuthUserDTO[]>} The created auth users.
    *
    * @example
-   * {example-code}
+   * const authUsers = await authModuleService.create([
+   *   {
+   *     provider: "emailpass",
+   *     entity_id: "user@example.com",
+   *     scope: "admin",
+   *   },
+   *   {
+   *     provider: "google",
+   *     entity_id: "user@gmail.com",
+   *     scope: "email profile",
+   *   },
+   * ])
    */
   create(
     data: CreateAuthUserDTO[],
@@ -169,26 +215,37 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthUserDTO[]>
 
   /**
-   * This method creates a user
+   * This method creates an auth user.
    *
    * @param {CreateAuthUserDTO} data - The auth user to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The created user.
+   * @returns {Promise<AuthUserDTO>} The created auth user.
    *
    * @example
-   * {example-code}
+   * const authUser = await authModuleService.create({
+   *   provider: "emailpass",
+   *   entity_id: "user@example.com",
+   *   scope: "admin",
+   * })
    */
   create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
   /**
-   * This method updates existing users.
+   * This method updates existing auths.
    *
-   * @param {UpdateAuthUserDTO[]} data - The attributes to update in the auth user.
+   * @param {UpdateAuthUserDTO[]} data - The attributes to update in the auth users.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The updated users.
+   * @returns {Promise<AuthUserDTO[]>} The updated auths.
    *
    * @example
-   * {example-code}
+   * const authUsers = await authModuleService.update([
+   *   {
+   *     id: "authusr_123",
+   *     app_metadata: {
+   *       test: true,
+   *     },
+   *   },
+   * ])
    */
   update(
     data: UpdateAuthUserDTO[],
@@ -196,26 +253,31 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthUserDTO[]>
 
   /**
-   * This method updates existing user.
+   * This method updates an existing auth.
    *
    * @param {UpdateAuthUserDTO} data - The attributes to update in the auth user.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The updated user.
+   * @returns {Promise<AuthUserDTO>} The updated auth.
    *
    * @example
-   * {example-code}
+   * const authUser = await authModuleService.update({
+   *   id: "authusr_123",
+   *   app_metadata: {
+   *     test: true,
+   *   },
+   * })
    */
   update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
   /**
-   * This method deletes users by their IDs.
+   * This method deletes a auth by its ID.
    *
-   * @param {string[]} ids - The list of IDs of users to delete.
+   * @param {string[]} ids - The IDs of the auth.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the users are deleted.
+   * @returns {Promise<void>} Resolves when {summary}
    *
    * @example
-   * {example-code}
+   * await authModuleService.delete(["authusr_123", "authusr_321"])
    */
   delete(ids: string[], sharedContext?: Context): Promise<void>
 }
