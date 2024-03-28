@@ -224,6 +224,60 @@ export const carts = {
       },
     ],
   },
+  cartWithCustomer: {
+    id: IdMap.getId("customer-cart"),
+    discounts: [],
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        id: IdMap.getId("line"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: [
+          {
+            unit_price: 8,
+            variant: {
+              id: IdMap.getId("eur-8-us-10"),
+            },
+            product: {
+              id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+          {
+            unit_price: 10,
+            variant: {
+              id: IdMap.getId("eur-10-us-12"),
+            },
+            product: {
+              id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+        ],
+        quantity: 10,
+      },
+      {
+        id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 10,
+          variant: {
+            id: IdMap.getId("eur-10-us-12"),
+          },
+          product: {
+            id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    customer_id: IdMap.getId("test-customer")
+  },
 }
 
 export const CartServiceMock = {

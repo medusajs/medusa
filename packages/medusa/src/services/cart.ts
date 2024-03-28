@@ -1590,9 +1590,16 @@ class CartService extends TransactionBaseService {
             relations: ["rule", "rule.conditions", "regions"],
           })
 
-        await this.discountService_
-          .withTransaction(transactionManager)
-          .validateDiscountForCartOrThrow(cart, discounts)
+        for (const discount of discounts) {
+          try {
+            await this.discountService_
+              .withTransaction(transactionManager)
+              .validateDiscountForCartOrThrow(cart, discount)
+          } catch (err) {
+            await this.removeDiscount(cart.id, discount.code)
+            throw new MedusaError(err.type, err.message)
+          }
+        }
 
         const rules: Map<string, DiscountRule> = new Map()
         const discountsMap = new Map(

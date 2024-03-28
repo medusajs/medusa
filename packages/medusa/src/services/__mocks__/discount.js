@@ -123,6 +123,17 @@ export const discounts = {
     },
     regions: [IdMap.getId("fr-cart")],
   },
+  customerUsageLimit: {
+    code: IdMap.getId("customer-usage-limit"),
+    rule: {
+      id: IdMap.getId("customer-usage-limit_rule"),
+      type: "percentage",
+      allocation: "total",
+      value: 20,
+    },
+    regions: [IdMap.getId("fr-cart")],
+    usage_limit_per_customer: 1
+  },
 }
 
 export const DiscountServiceMock = {

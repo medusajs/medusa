@@ -90,6 +90,10 @@ export interface AdminPostDiscountsReq {
    */
   usage_limit?: number
   /**
+   * Maximum number of times the discount can be used per customer
+   */
+  usage_limit_per_customer?: number
+  /**
    * An optional set of key-value pairs to hold additional information.
    */
   metadata?: Record<string, any>

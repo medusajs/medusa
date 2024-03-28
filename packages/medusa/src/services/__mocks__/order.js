@@ -129,6 +129,77 @@ export const orders = {
     payment_status: "captured",
     status: "completed",
   },
+  discountOrder: {
+    id: IdMap.getId("discount-order"),
+    email: "tester@test.dk",
+    billing_address: {
+      first_name: "Test",
+      last_name: "Tester",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    shipping_address: {
+      first_name: "Test",
+      last_name: "Tester",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    items: [
+      {
+        id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            id: IdMap.getId("can-cover"),
+          },
+          product: {
+            id: IdMap.getId("validId"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    regionid: IdMap.getId("region-france"),
+    currency_code: "EUR",
+    customerid: IdMap.getId("test-customer"),
+    payment_method: {
+      providerid: "default_provider",
+    },
+    no_notification: false,
+    shipping_methods: [
+      {
+        id: IdMap.getId("expensiveShipping"),
+        name: "Expensive Shipping",
+        price: 100,
+        providerid: "default_provider",
+        profileid: IdMap.getId("default"),
+      },
+      {
+        id: IdMap.getId("freeShipping"),
+        name: "Free Shipping",
+        price: 10,
+        providerid: "default_provider",
+        profileid: IdMap.getId("profile1"),
+      },
+    ],
+    tax_rate: 0,
+    fulfillment_status: "fulfilled",
+    payment_status: "captured",
+    status: "completed",
+    discounts: [
+      {
+        code: IdMap.getId("customer-usage-limit")
+      }
+    ]
+  },
 }
 
 export const OrderServiceMock = {

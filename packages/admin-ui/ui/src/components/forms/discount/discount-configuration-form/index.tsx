@@ -10,6 +10,7 @@ export type DiscountConfigurationFormType = {
   starts_at: Date
   ends_at: Date | null
   usage_limit: number | null
+  usage_limit_per_customer: number | null
   valid_duration: string | null
 }
 
@@ -109,8 +110,37 @@ const DiscountConfigurationForm = ({
                     onChange(10)
                   }
                 }}
-                title="Limit the number of redemtions?"
+                title="Limit the number of redemptions?"
                 description="Limit applies across all customers, not per customer."
+              >
+                <InputField
+                  label="Number of redemptions"
+                  type="number"
+                  placeholder="5"
+                  min={1}
+                  defaultValue={value ?? undefined}
+                  onChange={(value) => onChange(value.target.valueAsNumber)}
+                />
+              </SwitchableItem>
+            )
+          }}
+        />
+        <Controller
+          name={path("usage_limit_per_customer")}
+          control={control}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <SwitchableItem
+                open={!!value}
+                onSwitch={() => {
+                  if (value) {
+                    onChange(null)
+                  } else {
+                    onChange(10)
+                  }
+                }}
+                title="Limit the number of redemptions?"
+                description="Limit applies per customer."
               >
                 <InputField
                   label="Number of redemptions"

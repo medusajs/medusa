@@ -86,6 +86,10 @@ export interface AdminPostDiscountsDiscountReq {
    */
   usage_limit?: number
   /**
+   * Maximum number of times the discount can be used per customer
+   */
+  usage_limit_per_customer?: number
+  /**
    * A list of region IDs representing the Regions in which the Discount can be used.
    */
   regions?: Array<string>

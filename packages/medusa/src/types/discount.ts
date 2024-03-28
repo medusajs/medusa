@@ -189,6 +189,7 @@ export type CreateDiscountInput = {
   ends_at?: Date
   valid_duration?: string
   usage_limit?: number
+  usage_limit_per_customer?: number
   regions?: string[] | Region[]
   metadata?: Record<string, unknown>
 }
@@ -209,6 +210,7 @@ export type UpdateDiscountInput = {
   ends_at?: Date | null
   valid_duration?: string | null
   usage_limit?: number | null
+  usage_limit_per_customer?: number | null
   regions?: string[]
   metadata?: Record<string, unknown>
 }
@@ -217,5 +219,6 @@ export type CreateDynamicDiscountInput = {
   code: string
   ends_at?: Date
   usage_limit: number
+  usage_limit_per_customer: number
   metadata?: Record<string, unknown>
 }

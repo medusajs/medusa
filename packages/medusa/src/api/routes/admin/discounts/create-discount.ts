@@ -311,6 +311,9 @@ export class AdminPostDiscountsDiscountRule {
  *   usage_limit:
  *     type: number
  *     description: Maximum number of times the discount can be used
+ *   usage_limit_per_customer:
+ *     type: number
+ *     description: Maximum number of times the discount can be used per customer
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
@@ -355,6 +358,11 @@ export class AdminPostDiscountsReq {
   @IsOptional()
   @IsPositive()
   usage_limit?: number
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  usage_limit_per_customer?: number
 
   @IsArray()
   @IsString({ each: true })
