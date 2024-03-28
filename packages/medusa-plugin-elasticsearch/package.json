@@ -1,0 +1,51 @@
+{
+    "name": "medusa-plugin-elasticsearch",
+    "version": "1.0.0",
+    "description": "Elasticsearch Plugin for Medusa to search for Products",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/medusajs/medusa.git",
+        "directory": "packages/medusa-plugin-elasticsearch"
+    },
+    "keywords": [
+        "Search",
+        "Search-service",
+        "Elasticsearch"
+    ],
+    "author": "Sukriti-sood",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/medusajs/medusa/issues"
+    },
+    "homepage": "https://github.com/medusajs/medusa#readme",
+    "peerDependencies": {
+        "medusa-interfaces": "1.x",
+        "typeorm": "0.x"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "lodash": "^4.17.21",
+        "medusa-core-utils": "^1.1.26",
+        "medusa-interfaces": "^1.1.27",
+        "elasticsearch": "^16.7.2"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.7.5",
+        "@babel/core": "^7.7.5",
+        "@babel/node": "^7.7.4",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/plugin-transform-instanceof": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.7.6",
+        "@babel/preset-env": "^7.7.5",
+        "@babel/register": "^7.7.4",
+        "@babel/runtime": "^7.9.6",
+        "client-sessions": "^0.8.0",
+        "cross-env": "^5.2.1",
+        "eslint": "^6.8.0",
+        "jest": "^25.5.2"
+    }
+}
