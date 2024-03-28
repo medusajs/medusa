@@ -173,7 +173,7 @@ async function getOASFromCodebase(
       path.resolve(medusaPackagePath, "dist", "types"),
       path.resolve(medusaPackagePath, "dist", "api/middlewares"),
       path.resolve(medusaPackagePath, "dist", `api/routes/${apiType}`),
-    ],
+    ].map((resolvedPath) => resolvedPath.split(path.win32.sep).join(path.posix.sep)),
     {
       base: path.resolve(oasOutputPath, v2 ? "base-v2" : "base", `${apiType}.oas.base.yaml`),
       format: ".json",
@@ -195,7 +195,7 @@ async function getOASFromPaths(
   customBaseFile?: string
 ): Promise<OpenAPIObject> {
   console.log(`🔵 Gathering custom OAS`)
-  const gen = await swaggerInline(additionalPaths, {
+  const gen = await swaggerInline(additionalPaths.map((additionalPath) => additionalPath.split(path.win32.sep).join(path.posix.sep)), {
     base:
       customBaseFile ?? path.resolve(basePath, "oas", "default.oas.base.yaml"),
     format: ".json",
