@@ -1,11 +1,13 @@
 import { revokeApiKeysWorkflow } from "@medusajs/core-flows"
 import { RevokeApiKeyDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { defaultAdminApiKeyFields } from "../../query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -26,14 +28,14 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "api_key",
     variables: {
       id: req.params.id,
     },
-    fields: defaultAdminApiKeyFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [apiKey] = await remoteQuery(queryObject)

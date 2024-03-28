@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ISalesChannelModuleService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
@@ -21,19 +21,17 @@ export const validateSalesChannelsExistStep = createStep(
       { select: ["id"] }
     )
 
-    const scIdsInDb = new Set(salesChannels.map((v) => v.id))
+    const salesChannelIds = salesChannels.map((v) => v.id)
 
-    const notFound = new Set(
-      [...data.sales_channel_ids].filter((x) => !scIdsInDb.has(x))
-    )
+    const notFound = arrayDifference(data.sales_channel_ids, salesChannelIds)
 
-    if (notFound.size) {
+    if (notFound.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Sales channels with IDs ${[...notFound].join(", ")} do not exist`
+        `Sales channels with IDs ${notFound.join(", ")} do not exist`
       )
     }
 
-    return new StepResponse(Array.from(salesChannels.map((v) => v.id)))
+    return new StepResponse(salesChannelIds)
   }
 )

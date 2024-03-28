@@ -8,14 +8,17 @@ import {
 } from "../../../../types/routing"
 
 import { UpdateApiKeyDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { defaultAdminApiKeyFields } from "../query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const variables = { id: req.params.id }
 
@@ -46,14 +49,14 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "api_key",
     variables: {
       id: req.params.id,
     },
-    fields: defaultAdminApiKeyFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [apiKey] = await remoteQuery(queryObject)
