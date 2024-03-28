@@ -7,7 +7,7 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { useV2LoginWithSession } from "../../lib/api-v2"
+import { useV2LoginAndSetSession } from "../../lib/api-v2"
 import { isAxiosError } from "../../lib/is-axios-error"
 
 const LoginSchema = z.object({
@@ -31,7 +31,7 @@ export const Login = () => {
   })
 
   //  TODO: Update when more than emailpass is supported
-  const { mutateAsync, isLoading } = useV2LoginWithSession()
+  const { mutateAsync, isLoading } = useV2LoginAndSetSession()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     await mutateAsync(

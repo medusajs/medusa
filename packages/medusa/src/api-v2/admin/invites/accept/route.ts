@@ -5,6 +5,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+
 import { AdminPostInvitesInviteAcceptReq } from "../validators"
 
 export const POST = async (
@@ -15,7 +16,7 @@ export const POST = async (
     const moduleService: IUserModuleService = req.scope.resolve(
       ModuleRegistrationName.USER
     )
-    const user = moduleService.retrieve(req.auth.actor_id)
+    const user = await moduleService.retrieve(req.auth.actor_id)
     res.status(200).json({ user })
     return
   }
@@ -27,6 +28,7 @@ export const POST = async (
   } as InviteWorkflow.AcceptInviteWorkflowInputDTO
 
   let users
+
   try {
     const { result } = await acceptInviteWorkflow(req.scope).run({ input })
     users = result

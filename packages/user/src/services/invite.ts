@@ -6,7 +6,6 @@ import {
   MedusaError,
   ModulesSdkUtils,
   arrayDifference,
-  isString,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 

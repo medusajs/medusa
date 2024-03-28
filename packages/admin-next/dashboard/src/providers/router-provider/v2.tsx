@@ -54,6 +54,10 @@ export const v2Routes: RouteObject[] = [
     lazy: () => import("../../routes/no-match"),
   },
   {
+    path: "/invite",
+    lazy: () => import("../../v2-routes/invite"),
+  },
+  {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
     children: [
