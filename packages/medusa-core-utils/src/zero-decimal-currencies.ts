@@ -8,6 +8,7 @@ const zeroDecimalCurrencies = [
   "krw",
   "mga",
   "pyg",
+  "pkr",
   "rwf",
   "ugx",
   "vnd",
