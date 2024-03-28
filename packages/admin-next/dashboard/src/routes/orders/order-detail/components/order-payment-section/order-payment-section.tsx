@@ -52,7 +52,7 @@ const Header = ({ order }: { order: Order }) => {
               {
                 label: t("orders.payment.refund"),
                 icon: <ArrowDownRightMini />,
-                to: "#", // TODO: Go to general refund modal
+                to: `/orders/${order.id}/refund`,
               },
             ],
           },
@@ -165,6 +165,7 @@ const Payment = ({
                   label: t("orders.payment.refund"),
                   icon: <XCircle />,
                   to: `/orders/${payment.order_id}/refund?paymentId=${payment.id}`,
+                  disabled: !payment.captured_at,
                 },
               ],
             },

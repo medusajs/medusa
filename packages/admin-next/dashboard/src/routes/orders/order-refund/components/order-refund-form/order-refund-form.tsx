@@ -1,5 +1,5 @@
 import React, { useMemo } from "react"
-import { Order } from "@medusajs/medusa"
+import { Order, Payment } from "@medusajs/medusa"
 import {
   RouteDrawer,
   useRouteModal,
@@ -15,7 +15,10 @@ import {
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useForm } from "react-hook-form"
-import { useAdminRefundPayment } from "medusa-react"
+import {
+  useAdminPaymentsRefundPayment,
+  useAdminRefundPayment,
+} from "medusa-react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -23,7 +26,10 @@ import { CreateRefundSchema } from "../../schema"
 import { castNumber } from "../../../../../lib/cast-number"
 import { Form } from "../../../../../components/common/form"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import {
+  getDbAmount,
+  getPresentationalAmount,
+} from "../../../../../lib/money-amount-helpers"
 
 const reasonOptions = [
   { label: "Discount", value: "discount" },
@@ -32,11 +38,14 @@ const reasonOptions = [
 
 type OrderRefundFormProps = {
   order: Order
+  payment?: Payment
 }
 
-export function OrderRefundForm({ order }: OrderRefundFormProps) {
+export function OrderRefundForm({ order, payment }: OrderRefundFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const isSpecificPaymentRefund = !!payment
 
   const refundable = useMemo(() => {
     return order.paid_total - order.refunded_total
@@ -44,7 +53,9 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
 
   const form = useForm<z.infer<typeof CreateRefundSchema>>({
     defaultValues: {
-      amount: "",
+      amount: isSpecificPaymentRefund
+        ? getPresentationalAmount(payment!.amount, order.currency_code)
+        : "",
       note: "",
       reason: "",
       notification_enabled: !order.no_notification,
@@ -52,7 +63,10 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
     resolver: zodResolver(CreateRefundSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminRefundPayment(order.id)
+  let { mutateAsync: createOrderRefund, isLoading: isOrderRefundLoading } =
+    useAdminRefundPayment(order.id)
+  let { mutateAsync: createPaymentRefund, isLoading: isPaymentRefundLoading } =
+    useAdminPaymentsRefundPayment(payment?.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     if (values.amount === "" || values.amount === undefined) {
@@ -82,12 +96,22 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
       return
     }
 
-    await mutateAsync({
+    const payload = {
       amount: dbAmount,
       note: values.note,
       reason: values.reason,
       no_notification: !values.notification_enabled,
-    })
+    }
+
+    const mutate = isSpecificPaymentRefund
+      ? createPaymentRefund
+      : createOrderRefund
+
+    if (isSpecificPaymentRefund) {
+      delete payload.no_notification
+    }
+
+    await mutate(payload)
 
     handleSuccess()
   })
@@ -105,6 +129,7 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
             <Form.Field
               control={form.control}
               name="amount"
+              led={isSpecificPaymentRefund}
               render={({ field: { onChange, ...field } }) => {
                 return (
                   <Form.Item>
@@ -117,6 +142,7 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
                         code={order.currency_code}
                         symbol={getCurrencySymbol(order.currency_code)}
                         {...field}
+                        disabled={isSpecificPaymentRefund}
                       />
                     </Form.Control>
                     <Form.ErrorMessage />
@@ -214,7 +240,11 @@ export function OrderRefundForm({ order }: OrderRefundFormProps) {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" isLoading={isLoading} size="small">
+            <Button
+              type="submit"
+              isLoading={isOrderRefundLoading || isPaymentRefundLoading}
+              size="small"
+            >
               {t("actions.complete")}
             </Button>
           </div>
