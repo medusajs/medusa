@@ -1,6 +1,6 @@
 {
-  "name": "@medusajs/admin",
-  "version": "7.1.12",
+  "name": "@nelomobile/medusa-admin",
+  "version": "0.0.1",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "https://github.com/nelo/medusa",
     "directory": "packages/admin"
   },
   "dependencies": {
-    "@medusajs/admin-ui": "^2.1.13",
+    "@medusajs/admin-ui": "npm:@nelomobile/medusa-admin-ui@latest",
     "@rollup/plugin-alias": "5.0.0",
     "@rollup/plugin-commonjs": "24.1.0",
     "@rollup/plugin-json": "6.0.0",

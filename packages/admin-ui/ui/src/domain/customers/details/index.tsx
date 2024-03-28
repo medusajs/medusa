@@ -1,4 +1,4 @@
-import { useAdminCustomer } from "medusa-react"
+import { useAdminCustomer, useAdminGetSession } from "medusa-react"
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -28,6 +28,8 @@ const CustomerDetail = () => {
   const { t } = useTranslation()
   const [showEdit, setShowEdit] = useState(false)
 
+  const { user } = useAdminGetSession()
+
   const customerName = () => {
     if (customer?.first_name && customer?.last_name) {
       return `${customer.first_name} ${customer.last_name}`
@@ -41,6 +43,7 @@ const CustomerDetail = () => {
       label: t("details-edit", "Edit"),
       onClick: () => setShowEdit(true),
       icon: <EditIcon size={20} />,
+      disabled: user?.store_id != undefined,
     },
   ]
 

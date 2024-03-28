@@ -1,4 +1,4 @@
-import { useAdminRegions } from "medusa-react"
+import { useAdminRegions, useAdminGetSession } from "medusa-react"
 import React, { useCallback, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -53,21 +53,25 @@ const RegionOverview = ({ id }: Props) => {
 
   const { state, toggle, close } = useToggleState()
 
+  const { user } = useAdminGetSession()
+
   return (
     <>
       <Section
         title={t("region-overview-regions", "Regions")}
         customActions={
-          <div>
-            <Button
-              variant="ghost"
-              size="small"
-              className="h-xlarge w-xlarge"
-              onClick={toggle}
-            >
-              <PlusIcon />
-            </Button>
-          </div>
+          !user?.store_id && (
+            <div>
+              <Button
+                variant="ghost"
+                size="small"
+                className="h-xlarge w-xlarge"
+                onClick={toggle}
+              >
+                <PlusIcon />
+              </Button>
+            </div>
+          )
         }
         className="h-full"
       >

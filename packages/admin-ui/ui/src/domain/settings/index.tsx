@@ -24,6 +24,7 @@ import Regions from "./regions"
 import ReturnReasons from "./return-reasons"
 import Taxes from "./taxes"
 import Users from "./users"
+import { useAdminGetSession } from "medusa-react"
 
 type SettingsCardType = {
   heading: string
@@ -31,66 +32,8 @@ type SettingsCardType = {
   icon?: React.ComponentType
   to: string
   feature_flag?: string
+  hide?: boolean
 }
-
-const settings: SettingsCardType[] = [
-  {
-    heading: "API Key Management",
-    description: "Create and manage API keys",
-    icon: KeyIcon,
-    to: "/a/publishable-api-keys",
-    feature_flag: "publishable_api_keys",
-  },
-  {
-    heading: "Currencies",
-    description: "Manage the currencies of your store",
-    icon: CoinsIcon,
-    to: "/a/settings/currencies",
-  },
-  {
-    heading: "Personal Information",
-    description: "Manage your Medusa profile",
-    icon: HappyIcon,
-    to: "/a/settings/personal-information",
-  },
-  {
-    heading: "Regions",
-    description: "Manage shipping, payment, and fulfillment across regions",
-    icon: MapPinIcon,
-    to: "/a/settings/regions",
-  },
-  {
-    heading: "Return Reasons",
-    description: "Manage reasons for returned items",
-    icon: ArrowUTurnLeft,
-    to: "/a/settings/return-reasons",
-  },
-  {
-    heading: "Sales Channels",
-    description: "Control which product are available in which channels",
-    icon: ChannelsIcon,
-    feature_flag: "sales_channels",
-    to: "/a/sales-channels",
-  },
-  {
-    heading: "Store Details",
-    description: "Manage your business details",
-    icon: CrosshairIcon,
-    to: "/a/settings/details",
-  },
-  {
-    heading: "Taxes",
-    description: "Manage taxes across regions and products",
-    icon: TaxesIcon,
-    to: "/a/settings/taxes",
-  },
-  {
-    heading: "The Team",
-    description: "Manage users of your Medusa Store",
-    icon: UsersIcon,
-    to: "/a/settings/team",
-  },
-]
 
 const renderCard = ({
   heading,
@@ -124,6 +67,72 @@ const SettingsIndex = () => {
 
   const { t } = useTranslation()
 
+  const { user } = useAdminGetSession()
+
+  const settings: SettingsCardType[] = [
+    {
+      heading: "API Key Management",
+      description: "Create and manage API keys",
+      icon: KeyIcon,
+      to: "/a/publishable-api-keys",
+      feature_flag: "publishable_api_keys",
+      hide: user?.store_id != undefined,
+    },
+    {
+      heading: "Currencies",
+      description: "Manage the currencies of your store",
+      icon: CoinsIcon,
+      to: "/a/settings/currencies",
+      hide: user?.store_id != undefined,
+    },
+    {
+      heading: "Personal Information",
+      description: "Manage your Medusa profile",
+      icon: HappyIcon,
+      to: "/a/settings/personal-information",
+    },
+    {
+      heading: "Regions",
+      description: "Manage shipping, payment, and fulfillment across regions",
+      icon: MapPinIcon,
+      to: "/a/settings/regions",
+    },
+    {
+      heading: "Return Reasons",
+      description: "Manage reasons for returned items",
+      icon: ArrowUTurnLeft,
+      to: "/a/settings/return-reasons",
+      hide: user?.store_id != undefined,
+    },
+    {
+      heading: "Sales Channels",
+      description: "Control which product are available in which channels",
+      icon: ChannelsIcon,
+      feature_flag: "sales_channels",
+      to: "/a/sales-channels",
+      hide: user?.store_id != undefined,
+    },
+    {
+      heading: "Store Details",
+      description: "Manage your business details",
+      icon: CrosshairIcon,
+      to: "/a/settings/details",
+    },
+    {
+      heading: "Taxes",
+      description: "Manage taxes across regions and products",
+      icon: TaxesIcon,
+      to: "/a/settings/taxes",
+      hide: user?.store_id != undefined,
+    },
+    {
+      heading: "The Team",
+      description: "Manage users of your Medusa Store",
+      icon: UsersIcon,
+      to: "/a/settings/team",
+    },
+  ]
+
   return (
     <div className="gap-y-xlarge flex flex-col">
       <div className="gap-y-large flex flex-col">
@@ -137,7 +146,7 @@ const SettingsIndex = () => {
           </p>
         </div>
         <div className="medium:grid-cols-2 gap-y-xsmall grid grid-cols-1 gap-x-4">
-          {settings.map((s) => renderCard(s))}
+          {settings.filter((it) => !it.hide).map((s) => renderCard(s))}
         </div>
       </div>
       {extensionCards.length > 0 && (

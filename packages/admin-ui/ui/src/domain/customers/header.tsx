@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import { useAdminGetSession } from "medusa-react"
 
 type P = {
   activeView: "customers" | "groups"
@@ -10,6 +11,14 @@ type P = {
  */
 function CustomersPageTableHeader(props: P) {
   const navigate = useNavigate()
+  const { user } = useAdminGetSession()
+
+  const VIEWS = ["customers"]
+
+  if (!user?.store_id) {
+    VIEWS.push("groups")
+  }
+
   return (
     <TableViewHeader
       setActiveView={(v) => {
@@ -19,7 +28,7 @@ function CustomersPageTableHeader(props: P) {
           navigate(`/a/customers/groups`)
         }
       }}
-      views={["customers", "groups"]}
+      views={VIEWS}
       activeView={props.activeView}
     />
   )

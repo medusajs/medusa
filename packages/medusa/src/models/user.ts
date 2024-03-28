@@ -6,7 +6,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 /**
  * @enum
- * 
+ *
  * The user's role. These roles don't change the user's capabilities or provide access-control features.
  */
 export enum UserRoles {
