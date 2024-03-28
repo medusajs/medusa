@@ -55,16 +55,34 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install docs-util Dependencies
+        run: yarn
+        working-directory: docs-util
+
+      - name: Build packages
+        run: yarn build
+        working-directory: docs-util
+
       - name: Get Directories to Scan
         working-directory: www/vale
         run: ./get-files.sh docs content references
         id: directories
 
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only enable the `fail_on_error` option
+      # if the number is less than 300
+      - name: Get PR files number
+        working-directory: docs-util/packages/script
+        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        id: pr-files
+
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: true
+          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
@@ -86,16 +104,34 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install docs-util Dependencies
+        run: yarn
+        working-directory: docs-util
+
+      - name: Build packages
+        run: yarn build
+        working-directory: docs-util
+
       - name: Get Directories to Scan
         working-directory: www/vale
         run: ./get-files.sh ui src/content/docs
         id: directories
 
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only enable the `fail_on_error` option
+      # if the number is less than 300
+      - name: Get PR files number
+        working-directory: docs-util/packages/script
+        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        id: pr-files
+
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: true
+          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
@@ -117,16 +153,34 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install docs-util Dependencies
+        run: yarn
+        working-directory: docs-util
+
+      - name: Build packages
+        run: yarn build
+        working-directory: docs-util
+
       - name: Get Directories to Scan
         working-directory: www/vale
         run: ./get-files.sh api-reference app/_mdx
         id: directories
 
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only enable the `fail_on_error` option
+      # if the number is less than 300
+      - name: Get PR files number
+        working-directory: docs-util/packages/script
+        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        id: pr-files
+
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: true
+          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
