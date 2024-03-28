@@ -1,7 +1,7 @@
 const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
-const { isObject } = require("@medusajs/utils")
+const { isObject, promiseAll } = require("@medusajs/utils")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()
@@ -12,17 +12,16 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
 
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
-  const { container, dbConnection, pgConnection, disposeResources } =
-    await loaders({
-      directory: path.resolve(cwd || process.cwd()),
-      expressApp: app,
-      isTest: false,
-    })
+  const { container, dbConnection, pgConnection, shutdown } = await loaders({
+    directory: path.resolve(cwd || process.cwd()),
+    expressApp: app,
+    isTest: false,
+  })
 
   const PORT = await getPort()
 
   return {
-    disposeResources,
+    shutdown,
     container,
     db: dbConnection,
     pgConnection,
@@ -37,7 +36,14 @@ module.exports = {
     env = {},
     skipExpressListen = false,
   } = {}) => {
-    const { app, port, container, db, pgConnection } = await bootstrapApp({
+    const {
+      app,
+      port,
+      container,
+      db,
+      pgConnection,
+      shutdown: medusaShutdown,
+    } = await bootstrapApp({
       cwd,
       env,
     })
@@ -48,12 +54,13 @@ module.exports = {
     }
 
     const shutdown = async () => {
-      await Promise.all([
+      await promiseAll([
         container.dispose(),
         expressServer.close(),
         db?.destroy(),
         pgConnection?.context?.destroy(),
         container.dispose(),
+        medusaShutdown(),
       ])
 
       if (typeof global !== "undefined" && global?.gc) {

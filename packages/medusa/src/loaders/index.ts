@@ -6,8 +6,8 @@ import {
 import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  MedusaV2Flag,
   isString,
+  MedusaV2Flag,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -97,9 +97,9 @@ async function loadMedusaV2({
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
-    featureFlagRouter: asValue(featureFlagRouter),
+    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
-    ["remoteQuery"]: asValue(null),
+    [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
   await loadMedusaApp({
@@ -150,6 +150,7 @@ async function loadMedusaV2({
     container,
     app: expressApp,
     pgConnection,
+    shutdown: async () => {},
   }
 }
 
@@ -163,6 +164,7 @@ export default async ({
   dbConnection?: Connection
   app: Express
   pgConnection: unknown
+  shutdown: () => Promise<void>
 }> => {
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
@@ -197,7 +199,7 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  await redisLoader({ container, configModule, logger: Logger })
+  const { shutdown: redisShutdown } = await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
@@ -324,11 +326,16 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
+  async function shutdown() {
+    await redisShutdown()
+  }
+
   return {
     configModule,
     container,
     dbConnection,
     app: expressApp,
     pgConnection,
+    shutdown,
   }
 }

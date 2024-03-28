@@ -156,7 +156,7 @@ export function medusaIntegrationTestRunner({
     dbUtils.pgConnection_ = pgConnection
 
     const {
-      shutdown: shutdown_,
+      shutdown: serverShutdown,
       container: container_,
       port,
     } = await startBootstrapApp({
@@ -164,10 +164,17 @@ export function medusaIntegrationTestRunner({
       env,
     })
 
-    apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
+    const cancelTokenSource = axios.CancelToken.source()
+    apiUtils = axios.create({
+      baseURL: `http://localhost:${port}`,
+      cancelToken: cancelTokenSource.token,
+    })
 
     container = container_
-    shutdown = shutdown_
+    shutdown = async () => {
+      await serverShutdown()
+      cancelTokenSource.cancel("Request canceled by shutdown")
+    }
   }
 
   const beforeEach_ = async () => {
