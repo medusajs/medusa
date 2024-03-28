@@ -36,7 +36,7 @@ export default () => {
       const lineItem = await lineItemService.generate(
         req.body.variant_id,
         regions[0].id,
-        req.body.quantity,
+        req.body.quantity || 1,
         { metadata: req.body.metadata }
       )
 
