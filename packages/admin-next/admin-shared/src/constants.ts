@@ -46,6 +46,11 @@ export const injectionZones = [
   "discount.details.after",
   "discount.list.before",
   "discount.list.after",
+  // Promotion injection zones
+  "promotion.details.before",
+  "promotion.details.after",
+  "promotion.list.before",
+  "promotion.list.after",
   // Gift card injection zones
   "gift_card.details.before",
   "gift_card.details.after",

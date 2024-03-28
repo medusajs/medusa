@@ -1,4 +1,5 @@
 export * from "./api"
+export * from "./api-v2"
 export * from "./api/middlewares"
 export * from "./interfaces"
 export * from "./joiner-config"
