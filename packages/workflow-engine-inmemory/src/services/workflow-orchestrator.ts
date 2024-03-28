@@ -5,11 +5,11 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
+import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
 import {
-  type FlowRunOptions,
   MedusaWorkflow,
   ReturnWorkflow,
+  type FlowRunOptions,
 } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
@@ -463,14 +463,16 @@ export class WorkflowOrchestratorService {
         notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+        const stepName = step.definition.action!
+        const response = transaction.getContext().invoke[stepName]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: ({ step, transaction }) => {
+        const stepName = step.definition.action!
         const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
+          stepName
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
@@ -478,14 +480,16 @@ export class WorkflowOrchestratorService {
       },
 
       onCompensateStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
+        const stepName = step.definition.action!
+        const response = transaction.getContext().compensate[stepName]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: ({ step, transaction }) => {
+        const stepName = step.definition.action!
         const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
+          stepName
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
