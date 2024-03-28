@@ -1,23 +1,13 @@
+import { FindParams } from "../../../types/common"
 import {
-  DateComparisonOperator,
-  FindParams,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import {
-  IsBoolean,
-  IsEmail,
+  IsArray,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-
-import { IsType } from "../../../utils"
 
 /**
  * @schema AdminPostStockLocationsReqAddress
@@ -241,3 +231,8 @@ export class AdminPostStockLocationsLocationReq {
 export class AdminPostStockLocationsLocationParams extends FindParams {}
 
 export class AdminGetStockLocationsLocationParams extends FindParams {}
+
+export class AdminPostStockLocationsLocationSalesChannelBatchReq {
+  @IsString({ each: true })
+  sales_channel_ids: string[]
+}

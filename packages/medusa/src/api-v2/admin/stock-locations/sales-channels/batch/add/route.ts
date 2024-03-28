@@ -2,25 +2,19 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "../../../../../../../types/routing"
-import { AdminPostSalesChannelsChannelStockLocationsBatchReq } from "../../../../validators"
-import { defaultAdminSalesChannelFields } from "../../../../query-config"
+import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 import { addLocationsToSalesChannelWorkflow } from "@medusajs/core-flows"
+import { AdminPostStockLocationsLocationSalesChannelBatchReq } from "../../../validators"
 
 export const POST = async (
-  req: MedusaRequest<AdminPostSalesChannelsChannelStockLocationsBatchReq>,
+  req: MedusaRequest<AdminPostStockLocationsLocationSalesChannelBatchReq>,
   res: MedusaResponse
 ) => {
   const workflowInput = {
-    data: [
-      {
-        sales_channel_id: req.params.id,
-        location_ids: req.validatedBody.location_ids,
-      },
-    ],
+    data: req.validatedBody.sales_channel_ids.map((id) => ({
+      sales_channel_id: id,
+      location_ids: [req.params.id],
+    })),
   }
 
   const { errors } = await addLocationsToSalesChannelWorkflow(req.scope).run({

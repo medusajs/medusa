@@ -6,7 +6,6 @@ import {
   AdminGetSalesChannelsParams,
   AdminGetSalesChannelsSalesChannelParams,
   AdminPostSalesChannelsChannelProductsBatchReq,
-  AdminPostSalesChannelsChannelStockLocationsBatchReq,
   AdminPostSalesChannelsReq,
   AdminPostSalesChannelsSalesChannelReq,
 } from "./validators"
@@ -62,16 +61,5 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/sales-channels/:id/products/batch/add",
     middlewares: [transformBody(AdminPostSalesChannelsChannelProductsBatchReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/sales-channels/:id/stock-locations/batch/add",
-    middlewares: [
-      transformQuery(
-        AdminGetSalesChannelsSalesChannelParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-      transformBody(AdminPostSalesChannelsChannelStockLocationsBatchReq),
-    ],
   },
 ]

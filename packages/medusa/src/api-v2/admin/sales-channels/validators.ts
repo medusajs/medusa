@@ -106,8 +106,3 @@ export class AdminPostSalesChannelsChannelProductsBatchReq {
   @IsArray()
   product_ids: string[]
 }
-
-export class AdminPostSalesChannelsChannelStockLocationsBatchReq {
-  @IsArray()
-  location_ids: string[]
-}

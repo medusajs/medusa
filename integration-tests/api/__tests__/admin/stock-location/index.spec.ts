@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("create stock location", () => {
-      it.only("should create a stock location with a name and address", async () => {
+      it("should create a stock location with a name and address", async () => {
         const address = {
           address_1: "Test Address",
           country_code: "US",
@@ -182,6 +182,46 @@ medusaIntegrationTestRunner({
 
         const stockLocationLinks = await linkService.list()
         expect(stockLocationLinks).toHaveLength(0)
+      })
+    })
+
+    describe("Add sales channels", () => {
+      let salesChannel
+      let location
+
+      beforeEach(async () => {
+        const salesChannelResponse = await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name",
+            description: "test description",
+          },
+          adminHeaders
+        )
+        salesChannel = salesChannelResponse.data.sales_channel
+
+        const locationResponse = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "test location",
+          },
+          adminHeaders
+        )
+
+        location = locationResponse.data.stock_location
+      })
+
+      it("should add sales channels to a location", async () => {
+        const salesChannelResponse = await api
+          .post(
+            `/admin/stock-locations/${location.id}/sales-channels/batch/add`,
+            { sales_channel_ids: ["test"] },
+            adminHeaders
+          )
+          .catch(console.log)
+        expect(
+          salesChannelResponse.data.stock_location.sales_channels
+        ).toHaveLength(1)
       })
     })
   },
