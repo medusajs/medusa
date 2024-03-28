@@ -2007,5 +2007,8 @@
   "users-the-team": "The Team",
   "users-manage-users-of-your-medusa-store": "Manage users of your Medusa Store",
   "users-count_one": "{{count}}",
-  "users-count_other": "{{count}}"
+  "users-count_other": "{{count}}",
+  "discountable-form-discountable": "Discountable",
+  "discountable-form-hint-gift-card": "When unchecked discounts will not be applied to this gift card.",
+  "discountable-form-hint-product": "When unchecked discounts will not be applied to this product."
 }
