@@ -1,40 +1,45 @@
-import { LineItem } from "@medusajs/medusa"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
+import { LineItem } from "@medusajs/medusa"
 
 import { DataTable } from "../../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
 
+import { useClaimItemTableColumns } from "./use-claim-item-table-columns"
+import { useClaimItemTableFilters } from "./use-claim-item-table-filters"
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
 } from "@medusajs/types"
 import { getPresentationalAmount } from "../../../../../../lib/money-amount-helpers"
-import { useReturnItemTableColumns } from "./use-return-item-table-columns"
-import { useReturnItemTableFilters } from "./use-return-item-table-filters"
-import { useReturnItemTableQuery } from "./use-return-item-table-query"
+import { useClaimItemTableQuery } from "./use-claim-item-table-query"
 
 const PAGE_SIZE = 50
-const PREFIX = "rit"
+const PREFIX = "cit"
 
-type CreateReturnItemTableProps = {
-  onSelectionChange: (ids: string[]) => void
+export type Option = {
+  value: string
+  label: string
+}
+
+type ItemsTableProps = {
+  onSelectionChange: (ids: string[]) => Promise<void>
   selectedItems: string[]
   items: LineItem[]
   currencyCode: string
 }
 
-export const CreateReturnItemTable = ({
+export const OrderCreateClaimItemTable = ({
   onSelectionChange,
   selectedItems,
   items,
   currencyCode,
-}: CreateReturnItemTableProps) => {
+}: ItemsTableProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     selectedItems.reduce((acc, id) => {
       acc[id] = true
       return acc
-    }, {} as RowSelectionState)
+    }, {})
   )
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
@@ -45,7 +50,7 @@ export const CreateReturnItemTable = ({
     onSelectionChange(Object.keys(newState))
   }
 
-  const { searchParams, raw } = useReturnItemTableQuery({
+  const { searchParams, raw } = useClaimItemTableQuery({
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
   })
@@ -110,8 +115,8 @@ export const CreateReturnItemTable = ({
     return results.slice(offset, offset + limit)
   }, [items, currencyCode, searchParams])
 
-  const columns = useReturnItemTableColumns(currencyCode)
-  const filters = useReturnItemTableFilters()
+  const columns = useClaimItemTableColumns(currencyCode)
+  const filters = useClaimItemTableFilters()
 
   const { table } = useDataTable({
     data: queriedItems as LineItem[],

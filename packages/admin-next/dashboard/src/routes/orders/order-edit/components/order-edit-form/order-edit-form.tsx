@@ -20,7 +20,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
-import { VariantTable } from "../variant-table"
+import { VariantTable } from "../../../common/variant-table"
 
 import { medusa, queryClient } from "../../../../../lib/medusa.ts"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"

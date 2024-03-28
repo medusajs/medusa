@@ -1,6 +1,6 @@
 import { AdminGetVariantsParams } from "@medusajs/medusa"
 
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useQueryParams } from "../../../../hooks/use-query-params"
 
 export const useVariantTableQuery = ({
   pageSize = 50,
