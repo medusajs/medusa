@@ -665,7 +665,7 @@ class ProductVariantService extends TransactionBaseService {
         } else {
           const ma = moneyAmountRepo.create({
             ...price,
-            currency_code: price.currency_code.toLowerCase(),
+            currency_code: price.currency_code?.toLowerCase() || '',
           }) as QueryDeepPartialEntity<MoneyAmount>
           ma.variant = { id: variantId }
           dataToCreate.push(ma)
