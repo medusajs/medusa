@@ -71,17 +71,17 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
-        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
       - name: Get Directories to Scan
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
         run: ./get-files.sh docs content references
         id: directories
 
       - name: Vale Linter
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
@@ -123,18 +123,18 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
-        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
       - name: Get Directories to Scan
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
         run: ./get-files.sh ui src/content/docs
         id: directories
 
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
@@ -175,18 +175,18 @@ jobs:
       # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
-        run: 'yarn get:pr-files-count ${{ github.ref_name }}'
+        run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
       - name: Get Directories to Scan
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
         run: ./get-files.sh api-reference app/_mdx
         id: directories
 
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
-        if: ${{ steps.pr-files.outputs.count < 300 }}
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true

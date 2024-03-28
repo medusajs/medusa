@@ -6,6 +6,7 @@ const octokit = new Octokit({
 })
 
 let prNumber = process.argv.length >= 3 ? process.argv[2] : null
+const threshold = process.argv.length >= 4 ? parseInt(process.argv[3]) : 300
 
 async function getPrFilesCount() {
   if (!prNumber) {
@@ -26,7 +27,7 @@ async function getPrFilesCount() {
     }
   )
 
-  core.setOutput("count", pr.changed_files)
+  core.setOutput("files_lt_threshold", pr.changed_files < threshold)
 }
 
 void getPrFilesCount()
