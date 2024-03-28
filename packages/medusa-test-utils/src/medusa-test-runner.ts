@@ -143,6 +143,8 @@ export function medusaIntegrationTestRunner({
     getContainer: () => container,
   } as MedusaSuiteOptions
 
+  let isFirstTime = true
+
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
     const { dbDataSource, pgConnection } = await initDb({
@@ -179,6 +181,12 @@ export function medusaIntegrationTestRunner({
   }
 
   const beforeEach_ = async () => {
+    // The beforeAll already run everything, so lets not re run the loaders for the first iteration
+    if (isFirstTime) {
+      isFirstTime = false
+      return
+    }
+
     const container = options.getContainer()
     const copiedContainer = createMedusaContainer({}, container)
 
