@@ -9,9 +9,9 @@ import {
 import {
   InjectManager,
   InjectSharedContext,
+  isString,
   MedusaContext,
   MedusaError,
-  isString,
 } from "@medusajs/utils"
 import type {
   IWorkflowEngineService,
@@ -21,33 +21,44 @@ import type {
 } from "@medusajs/workflows-sdk"
 import { WorkflowOrchestratorService } from "@services"
 import { joinerConfig } from "../joiner-config"
+import Redis from "ioredis"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
+  redisConnection: Redis
 }
 
 export class WorkflowsModuleService implements IWorkflowEngineService {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
+  protected redisConnection_: Redis
 
   constructor(
     {
       baseRepository,
       workflowExecutionService,
       workflowOrchestratorService,
+      redisConnection,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
     this.workflowOrchestratorService_ = workflowOrchestratorService
+    this.redisConnection_ = redisConnection
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  __hooks = {
+    onApplicationShutdown: async () => {
+      this.redisConnection_.disconnect()
+    },
   }
 
   @InjectManager("baseRepository_")
@@ -191,7 +202,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     transactionId: string,
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.getRunningTransaction(
+    return await this.workflowOrchestratorService_.getRunningTransaction(
       workflowId,
       transactionId,
       context
@@ -211,7 +222,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     },
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.setStepSuccess(
+    return await this.workflowOrchestratorService_.setStepSuccess(
       {
         idempotencyKey,
         stepResponse,
@@ -234,7 +245,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     },
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.setStepFailure(
+    return await this.workflowOrchestratorService_.setStepFailure(
       {
         idempotencyKey,
         stepResponse,

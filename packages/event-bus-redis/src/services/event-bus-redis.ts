@@ -1,6 +1,10 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import { EmitData, Logger, Message } from "@medusajs/types"
-import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
+import {
+  AbstractEventBusModuleService,
+  isString,
+  promiseAll
+} from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -20,6 +24,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
   protected readonly moduleDeclaration_: InternalModuleDeclaration
+  protected readonly eventBusRedisConnection_: Redis
 
   protected queue_: Queue
 
@@ -31,6 +36,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
+
+    this.eventBusRedisConnection_ = eventBusRedisConnection
 
     this.moduleOptions_ = moduleOptions
     this.logger_ = logger
@@ -50,6 +57,13 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         connection: eventBusRedisConnection,
       })
     }
+  }
+
+  __hooks = {
+    onApplicationShutdown: async () => {
+      await this.queue_.close()
+      this.eventBusRedisConnection_.disconnect()
+    },
   }
 
   /**
