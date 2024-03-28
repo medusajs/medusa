@@ -70,14 +70,23 @@ const { success, authUser } =
 
 After installing the `@medusajs/auth` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
 
-```js
+```js title="medusa-config.js"
 const modules = {
   // ...
   auth: {
     resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        // ...
+      ]
+    }
   },
 }
 ```
+
+### Module Options
+
+Refer to [this documentation](./module-options/index.mdx) for details on the module's options.
 
 ---
 

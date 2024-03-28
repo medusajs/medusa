@@ -21,7 +21,7 @@ A workflow is made of a series of steps. A step is created using the `createStep
 
 Create the file `src/workflows/hello-world.ts` with the following content:
 
-```ts title=src/workflows/hello-world.ts
+```ts title="src/workflows/hello-world.ts"
 import { 
   createStep,
   StepResponse,
@@ -38,7 +38,7 @@ This creates one step that returns a hello message.
 
 Next, you can create a workflow using the `createWorkflow` function:
 
-```ts title=src/workflows/hello-world.ts
+```ts title="src/workflows/hello-world.ts"
 import {
   createStep,
   StepResponse,
@@ -180,7 +180,7 @@ Steps in a workflow can accept parameters.
 
 For example, create a new step that accepts an input and returns a message with that input:
 
-```ts title=src/workflows/hello-world.ts
+```ts title="src/workflows/hello-world.ts"
 type WorkflowInput = {
   name: string;
 };
@@ -195,7 +195,7 @@ const step2 = createStep(
 
 Then, update the workflow to accept input and pass it to the new step:
 
-```ts title=src/workflows/hello-world.ts
+```ts title="src/workflows/hello-world.ts"
 import {
   // previous imports 
   transform,
@@ -264,7 +264,7 @@ The compensation function only runs if an error occurs throughout the Workflow. 
 
 For example, change step one to add a compensation function and step two to throw an error:
 
-```ts title=src/workflows/hello-world.ts
+```ts title="src/workflows/hello-world.ts"
 const step1 = createStep(
   "step-1",
   async () => {

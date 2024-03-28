@@ -90,6 +90,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "experimental/auth/module-options/index",
+        },
+        {
+          type: "doc",
           label: "Examples",
           id: "experimental/auth/examples/index",
         },

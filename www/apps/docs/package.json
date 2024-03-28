@@ -47,6 +47,7 @@
     "react-dom": "^18.2.0",
     "react-tooltip": "5.7.4",
     "react-transition-group": "^4.4.5",
+    "rehype-mdx-code-props": "^3.0.0",
     "tailwind": "*",
     "tailwindcss": "^3.3.2",
     "tsconfig": "*",

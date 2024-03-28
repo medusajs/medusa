@@ -299,6 +299,9 @@ const config = {
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
+          rehypePlugins: [
+            [require("rehype-mdx-code-props"), { tagName: "code" }],
+          ],
           showLastUpdateTime: true,
           // breadcrumbs: false,
           async sidebarItemsGenerator({

@@ -12265,6 +12265,7 @@ __metadata:
     react-dom: ^18.2.0
     react-tooltip: 5.7.4
     react-transition-group: ^4.4.5
+    rehype-mdx-code-props: ^3.0.0
     swc-loader: ^0.2.3
     tailwind: "*"
     tailwindcss: ^3.3.2
@@ -13509,7 +13510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-util-value-to-estree@npm:^3.0.1":
+"estree-util-value-to-estree@npm:^3.0.0, estree-util-value-to-estree@npm:^3.0.1":
   version: 3.0.1
   resolution: "estree-util-value-to-estree@npm:3.0.1"
   dependencies:
@@ -15261,6 +15262,13 @@ __metadata:
   version: 0.1.1
   resolution: "inline-style-parser@npm:0.1.1"
   checksum: 08832a533f51a1e17619f2eabf2f5ec5e956d6dcba1896351285c65df022c9420de61d73256e1dca8015a52abf96cc84ddc3b73b898b22de6589d3962b5e501b
+  languageName: node
+  linkType: hard
+
+"inline-style-parser@npm:0.2.3":
+  version: 0.2.3
+  resolution: "inline-style-parser@npm:0.2.3"
+  checksum: 21b46d39a39c8aeaa738346650469388e8a412dd276ab75aa3d85b1883311e89c86a1fdbb8c2f1958f4c979bae74067f6ba0385455b125faf4fa77e1dbb94799
   languageName: node
   linkType: hard
 
@@ -20841,6 +20849,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rehype-mdx-code-props@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "rehype-mdx-code-props@npm:3.0.0"
+  dependencies:
+    "@types/hast": ^3.0.0
+    comma-separated-tokens: ^2.0.0
+    estree-util-value-to-estree: ^3.0.0
+    mdast-util-from-markdown: ^2.0.0
+    mdast-util-mdx: ^3.0.0
+    micromark-extension-mdxjs: ^3.0.0
+    property-information: ^6.0.0
+    space-separated-tokens: ^2.0.0
+    style-to-js: ^1.0.0
+    unified: ^11.0.0
+    unist-util-visit-parents: ^6.0.0
+  checksum: 9e9e808e93caf829e43a3782a664880186e3783a97360f91491ae3688389e3dbe994cc70ba20cd3b0d1b4d5df0e8ca2dff2800aab2a19fd7d929e7a2e92218fd
+  languageName: node
+  linkType: hard
+
 "rehype-raw@npm:^7.0.0":
   version: 7.0.0
   resolution: "rehype-raw@npm:7.0.0"
@@ -22118,6 +22145,24 @@ __metadata:
   version: 2.0.1
   resolution: "strip-json-comments@npm:2.0.1"
   checksum: b509231cbdee45064ff4f9fd73609e2bcc4e84a4d508e9dd0f31f70356473fde18abfb5838c17d56fb236f5a06b102ef115438de0600b749e818a35fbbc48c43
+  languageName: node
+  linkType: hard
+
+"style-to-js@npm:^1.0.0":
+  version: 1.1.12
+  resolution: "style-to-js@npm:1.1.12"
+  dependencies:
+    style-to-object: 1.0.6
+  checksum: 4b03ac3cec5d0e4c2578513dfbae9861eb9fb56825bccfd64bddcdf067e66805d6f160b93d2985aad4198893940fa162c4c85c3969e13ba2662a5824231c009c
+  languageName: node
+  linkType: hard
+
+"style-to-object@npm:1.0.6":
+  version: 1.0.6
+  resolution: "style-to-object@npm:1.0.6"
+  dependencies:
+    inline-style-parser: 0.2.3
+  checksum: be5e8e3f0e35c0338de4112b9d861db576a52ebbd97f2501f1fb2c900d05c8fc42c5114407fa3a7f8b39301146cd8ca03a661bf52212394125a9629d5b771aba
   languageName: node
   linkType: hard
 
