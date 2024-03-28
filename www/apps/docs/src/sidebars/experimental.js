@@ -107,6 +107,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "experimental/auth/auth-flows/index",
+        },
+        {
+          type: "doc",
           id: "experimental/auth/user-creation/index",
         },
         {
