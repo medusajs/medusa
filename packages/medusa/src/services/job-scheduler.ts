@@ -113,7 +113,7 @@ export default class JobSchedulerService {
     data: T,
     schedule: string,
     handler: ScheduledJobHandler,
-    options: CreateJobOptions
+    options?: CreateJobOptions
   ): Promise<Job> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
