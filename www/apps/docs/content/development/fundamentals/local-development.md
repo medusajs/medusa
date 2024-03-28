@@ -32,6 +32,30 @@ To customize Medusa’s core or contribute to it, you must first [fork](https://
 
 ### Install Dependencies and Build Packages
 
+:::note
+
+To avoid errors it is imporant to use the same version of yarn as the workspace. You can check this in the package.json file.
+
+```bash noCopy
+{
+  [...]
+  "packageManager": "yarn@3.2.1",
+  [...]
+}
+```
+
+Check your yarn's version and if it is different please install the needed version and recheck 
+
+```bash
+yarn --version
+4.0.2
+yarn set version 3.2.1
+yarn --version
+3.2.1
+```
+
+:::
+
 In the directory of the forked GitHub repository, run the following commands to install necessary dependencies then build all packages in the repository:
 
 ```bash
