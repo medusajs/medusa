@@ -161,7 +161,7 @@ async function loadMedusaV2({
     container,
     app: expressApp,
     pgConnection,
-    shutdown: async () => {},
+    shutdown,
   }
 }
 
