@@ -161,16 +161,21 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
       return []
     }
 
-    switch (type) {
-      case SearchUtils.indexTypes.PRODUCTS:
-        const productsTransformer =
-          this.config_.settings?.[SearchUtils.indexTypes.PRODUCTS]
-            ?.transformer ?? transformProduct
+    if (type === SearchUtils.indexTypes.PRODUCTS) {
+      const productsTransformer =
+        this.config_.settings?.[SearchUtils.indexTypes.PRODUCTS]?.transformer ??
+        transformProduct
 
-        return documents.map(productsTransformer)
-      default:
-        return documents
+      return documents.map(productsTransformer)
     }
+
+    const transformer = this.config_.settings?.[type]?.transformer
+
+    if (transformer) {
+      return documents.map(transformer)
+    }
+
+    return documents
   }
 }
 
