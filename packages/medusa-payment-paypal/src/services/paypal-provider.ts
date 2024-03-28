@@ -1,23 +1,24 @@
-import { EOL } from "os"
 import {
   AbstractPaymentProcessor,
-  isPaymentProcessorError,
   PaymentProcessorContext,
   PaymentProcessorError,
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
+  isPaymentProcessorError,
 } from "@medusajs/medusa"
+import { CreateOrder, PaypalSdk } from "../core"
 import {
   PaypalOptions,
   PaypalOrder,
   PaypalOrderStatus,
   PurchaseUnits,
 } from "../types"
-import { humanizeAmount } from "medusa-core-utils"
-import { roundToTwo } from "./utils/utils"
-import { CreateOrder, PaypalSdk } from "../core"
+
+import { EOL } from "os"
 import { Logger } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
+import { humanizeAmount } from "medusa-core-utils"
+import { roundToTwo } from "./utils/utils"
 
 class PayPalProviderService extends AbstractPaymentProcessor {
   static identifier = "paypal"
@@ -174,12 +175,14 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     const { purchase_units } = paymentSessionData as {
       purchase_units: PurchaseUnits
     }
-
-    const id = purchase_units[0].payments.authorizations[0].id
-
     try {
-      await this.paypal_.captureAuthorizedPayment(id)
-      return await this.retrievePayment(paymentSessionData)
+
+      const capture = this.options_.capture
+      if (!capture) {
+        const id = purchase_units[0].payments.authorizations[0].id
+        await this.paypal_.captureAuthorizedPayment(id)
+      }
+      return this.retrievePayment(paymentSessionData)
     } catch (error) {
       return this.buildError("An error occurred in capturePayment", error)
     }

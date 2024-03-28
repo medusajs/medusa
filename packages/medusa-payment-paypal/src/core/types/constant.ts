@@ -15,3 +15,8 @@ export const PaypalApiPath = {
   AUTHORIZATION_VOID: "/v2/payments/authorizations/{id}/void",
   VERIFY_WEBHOOK_SIGNATURE: "/v1/notifications/verify-webhook-signature",
 }
+
+export const PaypalWebhookEvents = {
+  PAYMENT_CAPTURE_COMPLETED: 'PAYMENT.CAPTURE.COMPLETED',
+  PAYMENT_AUTHORIZATION_CREATED: 'PAYMENT.AUTHORIZATION.CREATED'
+}
