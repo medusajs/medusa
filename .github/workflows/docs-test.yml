@@ -74,7 +74,7 @@ jobs:
       # and only enable the `fail_on_error` option
       # if the number is less than 300
       - name: Get PR files number
-        working-directory: docs-util/packages/script
+        working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -123,7 +123,7 @@ jobs:
       # and only enable the `fail_on_error` option
       # if the number is less than 300
       - name: Get PR files number
-        working-directory: docs-util/packages/script
+        working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -172,7 +172,7 @@ jobs:
       # and only enable the `fail_on_error` option
       # if the number is less than 300
       - name: Get PR files number
-        working-directory: docs-util/packages/script
+        working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
