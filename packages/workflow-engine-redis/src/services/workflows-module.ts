@@ -39,11 +39,16 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
       workflowExecutionService,
       workflowOrchestratorService,
     }: InjectedDependencies,
+    moduleOptions = {},
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
     this.workflowOrchestratorService_ = workflowOrchestratorService
+
+    if (moduleDeclaration.worker_mode !== "server") {
+      this.workflowOrchestratorService_.startWorker()
+    }
   }
 
   __joinerConfig(): ModuleJoinerConfig {

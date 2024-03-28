@@ -73,6 +73,7 @@ export class WorkflowOrchestratorService {
   private instanceId = ulid()
   protected redisPublisher: Redis
   protected redisSubscriber: Redis
+  protected redisDistributedTransactionStorage: RedisDistributedTransactionStorage
   private subscribers: Subscribers = new Map()
 
   constructor({
@@ -88,6 +89,7 @@ export class WorkflowOrchestratorService {
     this.redisPublisher = redisPublisher
     this.redisSubscriber = redisSubscriber
 
+    this.redisDistributedTransactionStorage = redisDistributedTransactionStorage
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
     DistributedTransaction.setStorage(redisDistributedTransactionStorage)
 
@@ -96,6 +98,10 @@ export class WorkflowOrchestratorService {
 
       await this.notify(data, false, instanceId)
     })
+  }
+
+  startWorker() {
+    this.redisDistributedTransactionStorage.startWorker()
   }
 
   @InjectSharedContext()
