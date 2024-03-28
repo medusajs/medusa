@@ -1,6 +1,10 @@
 import { ProductCategory } from "@medusajs/medusa"
 import { TFunction } from "i18next"
-import { CategoryFormData, CategoryStatus, CategoryVisibility } from "../modals/add-product-category"
+import {
+  CategoryFormData,
+  CategoryStatus,
+  CategoryVisibility,
+} from "../modals/add-product-category"
 export const flattenCategoryTree = (rootCategories) => {
   return rootCategories.reduce((acc, category) => {
     if (category?.category_children.length) {
@@ -33,31 +37,40 @@ export const getAncestors = (targetNode, nodes, acc = []) => {
   return acc
 }
 
-export const getDefaultCategoryValues = (t: TFunction, category?: ProductCategory): CategoryFormData => {
+export const getDefaultCategoryValues = (
+  t: TFunction,
+  category?: ProductCategory
+): CategoryFormData => {
   return {
     name: category?.name || "",
     handle: category?.handle || "",
     description: category?.description || "",
     metadata: {
-      entries: Object.entries(category?.metadata || {}).map(
-        ([key, value]) => ({
-          key,
-          value: value as string,
-          state: "existing",
-        })
-      ),
+      entries: Object.entries(category?.metadata || {}).map(([key, value]) => ({
+        key,
+        value: value as string,
+        state: "existing",
+      })),
     },
     is_active: {
-      value: category?.is_active ? (category?.is_active ? CategoryStatus.Active : CategoryStatus.Inactive) : CategoryStatus.Active,
+      value: category?.is_active
+        ? category?.is_active
+          ? CategoryStatus.Active
+          : CategoryStatus.Inactive
+        : CategoryStatus.Inactive,
       label: category?.is_active
-        ? t("modals-active", "Public") as string
-        : t("modals-inactive", "Inactive") as string,
+        ? (t("modals-active", "Public") as string)
+        : (t("modals-inactive", "Inactive") as string),
     },
     is_public: {
-      value: category?.is_internal ? (category?.is_internal ? CategoryVisibility.Private : CategoryVisibility.Public) : CategoryVisibility.Public,
+      value: category?.is_internal
+        ? category?.is_internal
+          ? CategoryVisibility.Private
+          : CategoryVisibility.Public
+        : CategoryVisibility.Public,
       label: category?.is_internal
-        ? t("modals-private", "Private") as string
-        : t("modals-public", "Public") as string,
+        ? (t("modals-private", "Private") as string)
+        : (t("modals-public", "Public") as string),
     },
   }
 }
