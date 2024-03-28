@@ -116,7 +116,8 @@ export function medusaIntegrationTestRunner({
 
   const cwd = process.cwd()
 
-  let shutdown: () => Promise<void>
+  let shutdown = async () => void 0
+  let afterEachShutdown = async () => void 0
   let dbUtils = dbTestUtilFactory()
   let container: ContainerLike
   let apiUtils: any
@@ -142,6 +143,8 @@ export function medusaIntegrationTestRunner({
     getContainer: () => container,
   } as MedusaSuiteOptions
 
+  let isFirstTime = true
+
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
     const { dbDataSource, pgConnection } = await initDb({
@@ -156,7 +159,7 @@ export function medusaIntegrationTestRunner({
     dbUtils.pgConnection_ = pgConnection
 
     const {
-      shutdown: shutdown_,
+      shutdown: serverShutdown,
       container: container_,
       port,
     } = await startBootstrapApp({
@@ -164,13 +167,26 @@ export function medusaIntegrationTestRunner({
       env,
     })
 
-    apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
+    const cancelTokenSource = axios.CancelToken.source()
+    apiUtils = axios.create({
+      baseURL: `http://localhost:${port}`,
+      cancelToken: cancelTokenSource.token,
+    })
 
     container = container_
-    shutdown = shutdown_
+    shutdown = async () => {
+      await serverShutdown()
+      cancelTokenSource.cancel("Request canceled by shutdown")
+    }
   }
 
   const beforeEach_ = async () => {
+    // The beforeAll already run everything, so lets not re run the loaders for the first iteration
+    if (isFirstTime) {
+      isFirstTime = false
+      return
+    }
+
     const container = options.getContainer()
     const copiedContainer = createMedusaContainer({}, container)
 
@@ -184,15 +200,18 @@ export function medusaIntegrationTestRunner({
 
     const medusaAppLoaderRunner =
       require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
-    await medusaAppLoaderRunner({
+    const { onApplicationShutdown } = await medusaAppLoaderRunner({
       container: copiedContainer,
       configModule: container.resolve("configModule"),
     })
+
+    afterEachShutdown = onApplicationShutdown
   }
 
   const afterEach_ = async () => {
     try {
       await dbUtils.teardown({ schema })
+      await afterEachShutdown()
     } catch (error) {
       console.error("Error tearing down database:", error)
     }

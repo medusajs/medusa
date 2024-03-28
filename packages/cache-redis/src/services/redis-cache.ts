@@ -23,6 +23,13 @@ class RedisCacheService implements ICacheService {
     this.TTL = options.ttl ?? DEFAULT_CACHE_TIME
     this.namespace = options.namespace || DEFAULT_NAMESPACE
   }
+
+  __hooks = {
+    onApplicationShutdown: async () => {
+      this.redis.disconnect()
+    },
+  }
+
   /**
    * Set a key/value pair to the cache.
    * If the ttl is 0 it will act like the value should not be cached at all.

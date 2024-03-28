@@ -4,7 +4,11 @@ import {
   MedusaModuleConfig,
   ModuleJoinerConfig,
 } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/utils"
 
 export interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
@@ -48,8 +52,11 @@ export async function initModules({
 
   async function shutdown() {
     if (shouldDestroyConnectionAutomatically) {
-      await (sharedPgConnection as any).context?.destroy()
-      await (sharedPgConnection as any).destroy()
+      await promiseAll([
+        (sharedPgConnection as any).context?.destroy(),
+        (sharedPgConnection as any).destroy(),
+        medusaApp.onApplicationShutdown(),
+      ])
     } else {
       if (!preventConnectionDestroyWarning) {
         console.info(
