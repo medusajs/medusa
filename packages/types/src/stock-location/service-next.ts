@@ -4,7 +4,9 @@ import {
   StockLocationDTO,
   UpdateStockLocationInput,
   UpdateStockLocationNextInput,
+  UpsertStockLocationInput,
 } from "./common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
 import { Context } from "../shared-context"
 import { FindConfig } from "../common/common"
@@ -250,6 +252,15 @@ export interface IStockLocationServiceNext extends IModuleService {
     context?: Context
   ): Promise<StockLocationDTO[]>
 
+  upsert(
+    data: UpsertStockLocationInput[],
+    sharedContext?: Context
+  ): Promise<StockLocationDTO[]>
+  upsert(
+    data: UpsertStockLocationInput,
+    sharedContext?: Context
+  ): Promise<StockLocationDTO>
+
   /**
    * This method is used to update a stock location.
    *
@@ -274,13 +285,15 @@ export interface IStockLocationServiceNext extends IModuleService {
    * }
    */
   update(
-    input: UpdateStockLocationNextInput[],
-    context?: Context
-  ): Promise<StockLocationDTO[]>
-  update(
-    input: UpdateStockLocationNextInput,
+    id: string,
+    input: UpdateStockLocationInput,
     context?: Context
   ): Promise<StockLocationDTO>
+  update(
+    selector: FilterableStockLocationProps,
+    input: UpdateStockLocationInput,
+    context?: Context
+  ): Promise<StockLocationDTO[]>
 
   /**
    * This method is used to delete a stock location.
@@ -301,4 +314,30 @@ export interface IStockLocationServiceNext extends IModuleService {
    * }
    */
   delete(id: string, context?: Context): Promise<void>
+
+  /**
+   * Soft delete stock locations
+   * @param stockLocationIds
+   * @param config
+   * @param sharedContext
+   */
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore a stock location or multiple stock locations that were previously deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} stockLocationIds - The ID(s) of the stock location(s) to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Restore config
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the stock location(s) are successfully restored.
+   */
+  restore<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

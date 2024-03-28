@@ -143,6 +143,13 @@ export const v1Routes: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import("../../routes/draft-orders/draft-order-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/draft-orders/draft-order-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -225,8 +232,8 @@ export const v1Routes: RouteObject[] = [
                     lazy: () => import("../../routes/products/product-options"),
                   },
                   {
-                    path: "gallery",
-                    lazy: () => import("../../routes/products/product-gallery"),
+                    path: "media",
+                    lazy: () => import("../../routes/products/product-media"),
                   },
                 ],
               },
