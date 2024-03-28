@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("create stock location", () => {
-      it("should create a stock location with a name and address", async () => {
+      it.only("should create a stock location with a name and address", async () => {
         const address = {
           address_1: "Test Address",
           country_code: "US",
