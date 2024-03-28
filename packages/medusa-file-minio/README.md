@@ -36,6 +36,8 @@ Store uploaded files to your Medusa backend on MinIO.
   MINIO_SECRET_KEY=<SECRET_KEY>
   ```
 
+If you need to have a different domain for your images, you can use the `MINIO_HOST` env variable.
+
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
   ```js
@@ -48,6 +50,7 @@ Store uploaded files to your Medusa backend on MinIO.
           bucket: process.env.MINIO_BUCKET,
           access_key_id: process.env.MINIO_ACCESS_KEY,
           secret_access_key: process.env.MINIO_SECRET_KEY,
+          host: process.env.MINIO_HOST, // optional
       },
     },
   ]

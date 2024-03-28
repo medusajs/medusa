@@ -21,6 +21,7 @@ class MinioService extends AbstractFileService implements IFileService {
   protected private_access_key_id_: string
   protected private_secret_access_key_: string
   protected endpoint_: string
+  protected host_: string
   protected s3ForcePathStyle_: boolean
   protected signatureVersion_: string
   protected downloadUrlDuration: string | number
@@ -37,13 +38,14 @@ class MinioService extends AbstractFileService implements IFileService {
     this.private_secret_access_key_ =
       options.private_secret_access_key ?? this.secretAccessKey_
     this.endpoint_ = options.endpoint
+    this.host_ = options.host ?? options.endpoint;
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
     this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
   protected buildUrl(bucket: string, key: string) {
-    return `${this.endpoint_}/${bucket}/${key}`
+    return `${this.host_}/${bucket}/${key}`
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
