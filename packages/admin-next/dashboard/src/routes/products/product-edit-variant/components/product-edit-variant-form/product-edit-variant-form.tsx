@@ -91,6 +91,10 @@ export const ProductEditVariantForm = ({
       inventory_quantity,
       allow_backorder,
       manage_inventory,
+      sku,
+      ean,
+      upc,
+      barcode,
       ...rest
     } = data
 
@@ -101,6 +105,10 @@ export const ProductEditVariantForm = ({
      */
     const conditionalPayload = !isStockAndInventoryEnabled
       ? {
+          sku,
+          ean,
+          upc,
+          barcode,
           inventory_quantity: parseNumber(inventory_quantity),
           allow_backorder,
           manage_inventory,
