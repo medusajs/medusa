@@ -91,7 +91,7 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
 
   const cart = await cartService.retrieve(id, {
-    select: ["id", "customer_id"],
+    select: ["id", "customer_id", "email"],
   })
 
   // If there is a logged in user add the user to the cart
