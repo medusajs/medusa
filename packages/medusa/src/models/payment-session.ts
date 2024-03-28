@@ -29,6 +29,10 @@ export enum PaymentSessionStatus {
    */
   PENDING = "pending",
   /**
+   * The payment is captured.
+   */
+  CAPTURED = "captured",
+  /**
    * The payment requires an action.
    */
   REQUIRES_MORE = "requires_more",

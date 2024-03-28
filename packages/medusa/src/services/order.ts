@@ -6,7 +6,8 @@ import {
   isDefined,
   MedusaError,
   MedusaV2Flag,
-  promiseAll, selectorConstraintsToString,
+  promiseAll,
+  selectorConstraintsToString,
 } from "@medusajs/utils"
 import {
   EntityManager,
@@ -49,6 +50,7 @@ import {
   Order,
   OrderStatus,
   Payment,
+  PaymentSessionStatus,
   PaymentStatus,
   Return,
   Swap,
@@ -650,6 +652,8 @@ class OrderService extends TransactionBaseService {
 
       const { payment, region, total } = cart
 
+      let paymentStatus: PaymentSessionStatus | undefined
+
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
@@ -660,11 +664,11 @@ class OrderService extends TransactionBaseService {
           )
         }
 
-        const paymentStatus = await this.paymentProviderService_
+        paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
           .getStatus(payment)
 
-        if (paymentStatus !== "authorized") {
+        if (paymentStatus !== "authorized" && paymentStatus !== "captured") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
             "Payment method is not authorized"
@@ -683,7 +687,7 @@ class OrderService extends TransactionBaseService {
       })
 
       const toCreate = {
-        payment_status: "awaiting",
+        payment_status: paymentStatus === "captured" ? "captured" : "awaiting",
         discounts: cart.discounts,
         gift_cards: cart.gift_cards,
         shipping_methods: shippingMethods,
@@ -738,6 +742,10 @@ class OrderService extends TransactionBaseService {
           .withTransaction(manager)
           .updatePayment(payment.id, {
             order_id: order.id,
+            captured_at:
+              paymentStatus === "captured"
+                ? new Date().toISOString()
+                : undefined,
           })
       }
 

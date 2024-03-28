@@ -511,7 +511,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async updatePayment(
     paymentId: string,
-    data: { order_id?: string; swap_id?: string }
+    data: { order_id?: string; swap_id?: string; captured_at?: string }
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
       return await this.paymentService_
