@@ -75,13 +75,13 @@ export async function updateProductVariantsPrepareData({
     }
 
     const variantsData: ProductWorkflow.UpdateProductVariantsInputDTO[] =
-      productVariantsMap.get(variantWithProductID.product_id) || []
+      productVariantsMap.get(variantWithProductID.product_id!) || []
 
     if (variantData) {
       variantsData.push(variantData)
     }
 
-    productVariantsMap.set(variantWithProductID.product_id, variantsData)
+    productVariantsMap.set(variantWithProductID.product_id!, variantsData)
   }
 
   return {

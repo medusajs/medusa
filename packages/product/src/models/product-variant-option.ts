@@ -31,20 +31,30 @@ class ProductVariantOption {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ProductOptionValue, {
+    columnType: "text",
+    nullable: true,
+    fieldName: "option_value_id",
+    mapToPk: true,
+  })
   option_value_id!: string
 
   @ManyToOne(() => ProductOptionValue, {
-    fieldName: "option_value_id",
+    persist: false,
     nullable: true,
   })
   option_value!: ProductOptionValue
 
-  @Property({ columnType: "text", nullable: true })
-  variant_id!: string
+  @ManyToOne(() => ProductVariant, {
+    columnType: "text",
+    nullable: true,
+    fieldName: "variant_id",
+    mapToPk: true,
+  })
+  variant_id: string | null
 
   @ManyToOne(() => ProductVariant, {
-    fieldName: "variant_id",
+    persist: false,
     nullable: true,
   })
   variant!: ProductVariant
@@ -71,11 +81,15 @@ class ProductVariantOption {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "varopt")
+    this.variant_id ??= this.variant?.id ?? null
+    this.option_value_id ??= this.option_value?.id ?? null
   }
 
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "varopt")
+    this.variant_id ??= this.variant?.id ?? null
+    this.option_value_id ??= this.option_value?.id ?? null
   }
 }
 

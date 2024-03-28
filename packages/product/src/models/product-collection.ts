@@ -65,13 +65,17 @@ class ProductCollection {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "pcol")
+
+    if (!this.handle && this.title) {
+      this.handle = kebabCase(this.title)
+    }
   }
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pcol")
 
-    if (!this.handle) {
+    if (!this.handle && this.title) {
       this.handle = kebabCase(this.title)
     }
   }

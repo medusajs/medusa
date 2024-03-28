@@ -287,9 +287,8 @@ export class AdminPostProductsReq {
   status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
@@ -400,9 +399,8 @@ export class AdminPostProductsProductReq {
   status?: ProductStatus
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
