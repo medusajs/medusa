@@ -95,6 +95,7 @@ export const allowedStoreCustomersRelations = [
   "shipping_addresses",
   "billing_address",
   "orders",
+  "groups",
 ]
 
 export const allowedStoreCustomersFields = [
