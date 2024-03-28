@@ -19,13 +19,12 @@ type Props = {
 }
 
 const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
     formState: { errors },
   } = form
-
-  const { t } = useTranslation()
 
   return (
     <div>
