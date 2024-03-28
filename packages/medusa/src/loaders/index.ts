@@ -7,7 +7,7 @@ import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   isString,
-  MedusaV2Flag,
+  MedusaV2Flag, promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -107,8 +107,11 @@ async function loadMedusaV2({
     container,
   })
 
+  let expressShutdown = async () => {}
+
   if (shouldStartAPI) {
-    await expressLoader({ app: expressApp, configModule })
+    const { shutdown } = await expressLoader({ app: expressApp, configModule })
+    expressShutdown = shutdown
 
     expressApp.use((req: Request, res: Response, next: NextFunction) => {
       req.scope = container.createScope() as MedusaContainer
@@ -144,6 +147,14 @@ async function loadMedusaV2({
   })
 
   await createDefaultsWorkflow(container).run()
+
+  const shutdown = async () => {
+    await promiseAll([
+      container.dispose(),
+      pgConnection?.context?.destroy(),
+      expressShutdown(),
+    ])
+  }
 
   return {
     configModule,
@@ -269,7 +280,7 @@ export default async ({
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
-  await expressLoader({ app: expressApp, configModule })
+  const { shutdown: expressShutdown } = await expressLoader({ app: expressApp, configModule })
   await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
@@ -327,7 +338,13 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   async function shutdown() {
-    await redisShutdown()
+    await promiseAll([
+      container.dispose(),
+      dbConnection?.destroy(),
+      pgConnection?.context?.destroy(),
+      redisShutdown(),
+      expressShutdown()
+    ])
   }
 
   return {
