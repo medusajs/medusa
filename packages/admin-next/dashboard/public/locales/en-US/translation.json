@@ -338,7 +338,8 @@
       "systemPaymentDesc": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
       "error": {
         "amountToLarge": "Cannot refund more than the original order amount.",
-        "amountNegative": "Refund amount must be a positive number."
+        "amountNegative": "Refund amount must be a positive number.",
+        "reasonRequired": "Please select a refund reason."
       }
     },
     "customer": {
