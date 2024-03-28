@@ -75,3 +75,5 @@ export default async (req, res) => {
   const collection = await productCollectionService.retrieve(id)
   res.status(200).json({ collection })
 }
+
+export class StoreGetCollectionsCollectionParams {}
