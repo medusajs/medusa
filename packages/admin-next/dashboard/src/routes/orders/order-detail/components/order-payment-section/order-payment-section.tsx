@@ -163,13 +163,6 @@ const Payment = ({
             {getLocaleAmount(payment.amount, payment.currency_code)}
           </Text>
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [],
-            },
-          ]}
-        />
       </div>
       {showCapture && (
         <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
