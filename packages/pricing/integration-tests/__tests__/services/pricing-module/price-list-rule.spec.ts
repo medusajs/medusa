@@ -230,7 +230,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("setPriceListRules", () => {
-        it("should add a priceListRule to a priceList", async () => {
+        it("should add a price list rule to a price list", async () => {
           await createRuleTypes(testManager, [
             {
               id: "rule-type-3",
@@ -247,9 +247,7 @@ moduleIntegrationTestRunner({
           })
 
           const [priceList] = await service.listPriceLists(
-            {
-              id: ["price-list-1"],
-            },
+            { id: ["price-list-1"] },
             {
               relations: [
                 "price_list_rules",
