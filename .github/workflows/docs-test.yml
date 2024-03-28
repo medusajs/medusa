@@ -63,26 +63,29 @@ jobs:
         run: yarn build
         working-directory: docs-util
 
-      - name: Get Directories to Scan
-        working-directory: www/vale
-        run: ./get-files.sh docs content references
-        id: directories
-
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
       # we retrieve the number of changed files
-      # and only enable the `fail_on_error` option
-      # if the number is less than 300
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
+      - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.count < 300 }}
+        working-directory: www/vale
+        run: ./get-files.sh docs content references
+        id: directories
+
       - name: Vale Linter
+        if: ${{ steps.pr-files.outputs.count < 300 }}
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
+          fail_on_error: true
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
@@ -112,26 +115,29 @@ jobs:
         run: yarn build
         working-directory: docs-util
 
-      - name: Get Directories to Scan
-        working-directory: www/vale
-        run: ./get-files.sh ui src/content/docs
-        id: directories
-
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
       # we retrieve the number of changed files
-      # and only enable the `fail_on_error` option
-      # if the number is less than 300
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
+      - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.count < 300 }}
+        working-directory: www/vale
+        run: ./get-files.sh ui src/content/docs
+        id: directories
+
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.count < 300 }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
+          fail_on_error: true
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
@@ -161,26 +167,29 @@ jobs:
         run: yarn build
         working-directory: docs-util
 
-      - name: Get Directories to Scan
-        working-directory: www/vale
-        run: ./get-files.sh api-reference app/_mdx
-        id: directories
-
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
       # we retrieve the number of changed files
-      # and only enable the `fail_on_error` option
-      # if the number is less than 300
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
       - name: Get PR files number
         working-directory: docs-util/packages/scripts
         run: 'yarn get:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
+      - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.count < 300 }}
+        working-directory: www/vale
+        run: ./get-files.sh api-reference app/_mdx
+        id: directories
+
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.count < 300 }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
-          fail_on_error: ${{ steps.pr-files.outputs.count < 300 }}
+          fail_on_error: true
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
