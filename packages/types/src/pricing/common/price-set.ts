@@ -55,7 +55,7 @@ export interface PriceSetDTO {
   /**
    * The prices that belong to this price set.
    */
-  money_amounts?: MoneyAmountDTO[]
+  prices?: MoneyAmountDTO[]
   /**
    * The rule types applied on this price set.
    */
@@ -282,13 +282,34 @@ export interface CreatePriceSetDTO {
 /**
  * @interface
  *
+ * The data to upsert in a price set. The `id` is used in the case we are doing an update.
+ */
+export interface UpsertPriceSetDTO extends UpdatePriceSetDTO {
+  /**
+   * A string indicating the ID of the price set to update.
+   */
+  id?: string
+}
+
+/**
+ * @interface
+ *
  * The data to update in a price set. The `id` is used to identify which price set to update.
  */
 export interface UpdatePriceSetDTO {
   /**
-   * A string indicating the ID of the price set to update.
+   * The rules to associate with the price set.
    */
-  id: string
+  rules?: {
+    /**
+     * the value of the rule's `rule_attribute` attribute.
+     */
+    rule_attribute: string
+  }[]
+  /**
+   * The prices to create and add to this price set.
+   */
+  prices?: CreatePricesDTO[]
 }
 
 /**
