@@ -4,6 +4,7 @@ import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
   WorkflowData,
+  WorkflowTransactionContext,
 } from "./type"
 
 /**
@@ -108,18 +109,20 @@ export function hook<TOutput>(
 
   return hookBinder(name, function (context) {
     return {
-      __value: async function (transactionContext) {
-        transactionContext.context.idempotencyKey =
-          transactionContext.idempotency_key
+      __value: async function (transactionContext: WorkflowTransactionContext) {
+        const metadata = transactionContext.metadata
+        const idempotencyKey = metadata.idempotency_key
+
+        transactionContext.context.idempotencyKey = idempotencyKey
 
         const executionContext: StepExecutionContext = {
-          workflowId: transactionContext.model_id,
+          workflowId: metadata.model_id,
           stepName: transactionContext.action,
-          action: transactionContext.action_type,
-          idempotencyKey: transactionContext.idempotency_key,
+          action: metadata.action_type,
+          idempotencyKey,
           attempt: transactionContext.attempt,
           container: transactionContext.container,
-          metadata: transactionContext.metadata,
+          metadata,
           context: transactionContext.context,
         }
 

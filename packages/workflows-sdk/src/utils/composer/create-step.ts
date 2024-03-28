@@ -12,6 +12,7 @@ import {
   StepFunction,
   StepFunctionResult,
   WorkflowData,
+  WorkflowTransactionContext,
 } from "./type"
 
 /**
@@ -120,18 +121,19 @@ function applyStep<
     }
 
     const handler = {
-      invoke: async (transactionContext) => {
-        transactionContext.context.idempotencyKey =
-          transactionContext.idempotency_key
+      invoke: async (transactionContext: WorkflowTransactionContext) => {
+        const metadata = transactionContext.metadata
+        const idempotencyKey = metadata.idempotency_key
 
+        transactionContext.context.idempotencyKey = idempotencyKey
         const executionContext: StepExecutionContext = {
-          workflowId: transactionContext.model_id,
+          workflowId: metadata.model_id,
           stepName: transactionContext.action,
           action: "invoke",
-          idempotencyKey: transactionContext.idempotency_key,
+          idempotencyKey,
           attempt: transactionContext.attempt,
           container: transactionContext.container,
-          metadata: transactionContext.metadata,
+          metadata,
           context: transactionContext.context,
         }
 
@@ -154,18 +156,20 @@ function applyStep<
         }
       },
       compensate: compensateFn
-        ? async (transactionContext) => {
-            transactionContext.context.idempotencyKey =
-              transactionContext.idempotency_key
+        ? async (transactionContext: WorkflowTransactionContext) => {
+            const metadata = transactionContext.metadata
+            const idempotencyKey = metadata.idempotency_key
+
+            transactionContext.context.idempotencyKey = idempotencyKey
 
             const executionContext: StepExecutionContext = {
-              workflowId: transactionContext.model_id,
+              workflowId: metadata.model_id,
               stepName: transactionContext.action,
               action: "compensate",
-              idempotencyKey: transactionContext.idempotency_key,
+              idempotencyKey,
               attempt: transactionContext.attempt,
               container: transactionContext.container,
-              metadata: transactionContext.metadata,
+              metadata,
               context: transactionContext.context,
             }
 
