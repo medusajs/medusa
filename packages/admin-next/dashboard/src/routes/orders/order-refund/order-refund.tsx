@@ -5,12 +5,15 @@ import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
 import { OrderRefundForm } from "./components/order-refund-form"
+import { orderExpand } from "../order-detail/constants"
 
 export const OrderRefund = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { order, isLoading, isError, error } = useAdminOrder(id!)
+  const { order, isLoading, isError, error } = useAdminOrder(id!, {
+    expand: orderExpand,
+  })
 
   const ready = !isLoading && order
 
