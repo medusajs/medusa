@@ -512,14 +512,16 @@ export class WorkflowOrchestratorService {
         await notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+        const stepName = step.definition.action!
+        const response = transaction.getContext().invoke[stepName]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         await notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: async ({ step, transaction }) => {
+        const stepName = step.definition.action!
         const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
+          stepName
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
@@ -527,14 +529,16 @@ export class WorkflowOrchestratorService {
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
+        const stepName = step.definition.action!
+        const response = transaction.getContext().compensate[stepName]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         await notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: async ({ step, transaction }) => {
+        const stepName = step.definition.action!
         const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
+          stepName
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
