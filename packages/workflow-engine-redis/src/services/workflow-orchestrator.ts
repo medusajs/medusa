@@ -10,6 +10,7 @@ import {
   FlowRunOptions,
   MedusaWorkflow,
   ReturnWorkflow,
+  resolveValue,
 } from "@medusajs/workflows-sdk"
 import Redis from "ioredis"
 import { ulid } from "ulid"
@@ -513,7 +514,10 @@ export class WorkflowOrchestratorService {
       },
       onStepSuccess: async ({ step, transaction }) => {
         const stepName = step.definition.action!
-        const response = transaction.getContext().invoke[stepName]
+        const response = await resolveValue(
+          transaction.getContext().invoke[stepName],
+          transaction
+        )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         await notify({ eventType: "onStepSuccess", step, response })

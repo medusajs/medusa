@@ -9,6 +9,7 @@ import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
 import {
   MedusaWorkflow,
   ReturnWorkflow,
+  resolveValue,
   type FlowRunOptions,
 } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
@@ -462,9 +463,12 @@ export class WorkflowOrchestratorService {
 
         notify({ eventType: "onStepBegin", step })
       },
-      onStepSuccess: ({ step, transaction }) => {
+      onStepSuccess: async ({ step, transaction }) => {
         const stepName = step.definition.action!
-        const response = transaction.getContext().invoke[stepName]
+        const response = await resolveValue(
+          transaction.getContext().invoke[stepName],
+          transaction
+        )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onStepSuccess", step, response })
