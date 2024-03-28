@@ -24,7 +24,7 @@ const LanguageSettings = () => {
       </div>
       <div className="mt-small">
         <a
-          href="/"
+          href="https://docs.medusajs.com/contribution/admin-translations"
           target="_blank"
           className="text-blue-500"
           rel="noopener noreferrer"
