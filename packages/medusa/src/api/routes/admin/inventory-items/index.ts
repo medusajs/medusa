@@ -29,6 +29,12 @@ import { AdminGetInventoryItemsParams } from "./list-inventory-items"
 import { ProductVariant } from "../../../../models"
 import { Router } from "express"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import {
+  AdminPostInventoryItemsItemVariantsParams,
+  AdminPostInventoryItemsItemVariantsReq,
+} from "./associate-with-variant"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+import { ManyToManyInventoryFeatureFlag } from "@medusajs/utils"
 
 const route = Router()
 
@@ -61,6 +67,24 @@ export default (app) => {
     }),
     transformBody(AdminPostInventoryItemsInventoryItemReq),
     middlewares.wrap(require("./update-inventory-item").default)
+  )
+
+  route.post(
+    "/:id/variants",
+    isFeatureFlagEnabled(ManyToManyInventoryFeatureFlag.key),
+    transformQuery(AdminPostInventoryItemsItemVariantsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsItemVariantsReq),
+    middlewares.wrap(require("./associate-with-variant").default)
+  )
+
+  route.delete(
+    "/:id/variants/:variant_id",
+    isFeatureFlagEnabled(ManyToManyInventoryFeatureFlag.key),
+    middlewares.wrap(require("./detach-from-variant").default)
   )
 
   route.delete(

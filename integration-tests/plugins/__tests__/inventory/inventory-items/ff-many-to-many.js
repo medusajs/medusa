@@ -82,5 +82,157 @@ describe("Inventory Items endpoints", () => {
       ])
       expect(variants.length).toEqual(0)
     })
+
+    it("should associate inventory item with variant id", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection)
+      const response = await api.post(
+        `/admin/inventory-items`,
+        {
+          sku: "TABLE_LEG",
+          description: "Table Leg",
+        },
+        adminHeaders
+      )
+
+      const variantId = product.variants[0].id
+      const inventoryItemId = response.data.inventory_item.id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/variants`,
+        {
+          variant_id: variantId,
+        },
+        adminHeaders
+      )
+
+      // Expect the inventory item to be associated with the variants
+
+      /** @type {ProductVariantInventoryService} */
+      const productVariantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const variants = await productVariantInventoryService.listByItem([
+        inventoryItemId,
+      ])
+
+      expect(variants.length).toEqual(1)
+      expect(variants[0].variant_id).toEqual(variantId)
+      expect(variants[0].required_quantity).toEqual(1)
+    })
+
+    it("should associate inventory item with variant id", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection)
+      const response = await api.post(
+        `/admin/inventory-items`,
+        {
+          sku: "TABLE_LEG",
+          description: "Table Leg",
+        },
+        adminHeaders
+      )
+
+      const variantId = product.variants[0].id
+      const inventoryItemId = response.data.inventory_item.id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/variants`,
+        {
+          variant_id: variantId,
+          required_quantity: 3,
+        },
+        adminHeaders
+      )
+
+      // Expect the inventory item to be associated with the variants
+
+      /** @type {ProductVariantInventoryService} */
+      const productVariantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const variants = await productVariantInventoryService.listByItem([
+        inventoryItemId,
+      ])
+
+      expect(variants.length).toEqual(1)
+      expect(variants[0].variant_id).toEqual(variantId)
+      expect(variants[0].required_quantity).toEqual(3)
+    })
+
+    it("should associate inventory item with 2 variants and detach 1", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "variant_one" }, { id: "variant_two" }],
+      })
+      const response = await api.post(
+        `/admin/inventory-items`,
+        {
+          sku: "TABLE_LEG",
+          description: "Table Leg",
+        },
+        adminHeaders
+      )
+
+      const firstVariantId = product.variants[0].id
+      const secondVariantId = product.variants[1].id
+      const inventoryItemId = response.data.inventory_item.id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/variants`,
+        {
+          variant_id: firstVariantId,
+          required_quantity: 3,
+        },
+        adminHeaders
+      )
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/variants`,
+        {
+          variant_id: secondVariantId,
+          required_quantity: 2,
+        },
+        adminHeaders
+      )
+
+      // Expect inventory items and variants to be associated
+
+      /** @type {ProductVariantInventoryService} */
+      const productVariantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const variants = await productVariantInventoryService.listByItem([
+        inventoryItemId,
+      ])
+
+      expect(variants.length).toEqual(2)
+      expect(variants[0].variant_id).toEqual(firstVariantId)
+      expect(variants[0].required_quantity).toEqual(3)
+      expect(variants[1].variant_id).toEqual(secondVariantId)
+      expect(variants[1].required_quantity).toEqual(2)
+
+      // Detach the first variant
+
+      await api.delete(
+        `/admin/inventory-items/${inventoryItemId}/variants/${firstVariantId}`,
+        adminHeaders
+      )
+
+      // Expect only the second variant to be associated
+
+      const variantsAfterDetach =
+        await productVariantInventoryService.listByItem([inventoryItemId])
+
+      expect(variantsAfterDetach.length).toEqual(1)
+      expect(variantsAfterDetach[0].variant_id).toEqual(secondVariantId)
+      expect(variantsAfterDetach[0].required_quantity).toEqual(2)
+    })
   })
 })

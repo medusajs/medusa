@@ -157,6 +157,7 @@ export type { AdminPostInventoryItemsItemLocationLevelsLevelParams } from "./Adm
 export type { AdminPostInventoryItemsItemLocationLevelsLevelReq } from "./AdminPostInventoryItemsItemLocationLevelsLevelReq"
 export type { AdminPostInventoryItemsItemLocationLevelsParams } from "./AdminPostInventoryItemsItemLocationLevelsParams"
 export type { AdminPostInventoryItemsItemLocationLevelsReq } from "./AdminPostInventoryItemsItemLocationLevelsReq"
+export type { AdminPostInventoryItemsItemVariantsReq } from "./AdminPostInventoryItemsItemVariantsReq"
 export type { AdminPostInventoryItemsParams } from "./AdminPostInventoryItemsParams"
 export type { AdminPostInventoryItemsReq } from "./AdminPostInventoryItemsReq"
 export type { AdminPostInvitesInviteAcceptReq } from "./AdminPostInvitesInviteAcceptReq"

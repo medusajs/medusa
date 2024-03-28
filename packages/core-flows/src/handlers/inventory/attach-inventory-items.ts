@@ -9,21 +9,29 @@ export async function attachInventoryItems({
   inventoryItems: {
     tag: string
     inventoryItem: InventoryItemDTO
+    requiredQuantity?: number
   }[]
 }>) {
-  const { manager } = context
-  const productVariantInventoryService = container
-    .resolve("productVariantInventoryService")
-    .withTransaction(manager)
+  let productVariantInventoryService = container.resolve(
+    "productVariantInventoryService"
+  )
+
+  if (context && context.manager) {
+    productVariantInventoryService =
+      productVariantInventoryService.withTransaction(context.manager)
+  }
 
   if (!data?.inventoryItems?.length) {
     return []
   }
 
-  const inventoryData = data.inventoryItems.map(({ tag, inventoryItem }) => ({
-    variantId: tag,
-    inventoryItemId: inventoryItem.id,
-  }))
+  const inventoryData = data.inventoryItems.map(
+    ({ tag, inventoryItem, requiredQuantity }) => ({
+      variantId: tag,
+      inventoryItemId: inventoryItem.id,
+      requiredQuantity,
+    })
+  )
 
   await productVariantInventoryService.attachInventoryItem(inventoryData)
 
