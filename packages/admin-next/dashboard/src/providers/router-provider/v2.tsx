@@ -1,14 +1,13 @@
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { SettingsLayout } from "../../components/layout/settings-layout"
 
-import { Outlet } from "react-router-dom"
-
-import { Spinner } from "@medusajs/icons"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { useV2Session } from "../../lib/api-v2"
+import { MainLayout } from "../../components/layout-v2/main-layout"
+import { Outlet } from "react-router-dom"
 import { SearchProvider } from "../search-provider"
+import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
+import { Spinner } from "@medusajs/icons"
+import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useV2Session()
@@ -120,6 +119,44 @@ export const v2Routes: RouteObject[] = [
                 path: "add-currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "locations",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Locations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/locations/location-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/locations/location-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/locations/location-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/locations/location-edit"),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/locations/location-add-sales-channels"
+                      ),
+                  },
+                ],
               },
             ],
           },
