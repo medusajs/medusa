@@ -1,14 +1,19 @@
 import { Heading } from "@medusajs/ui"
 import { useAdminOrder } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
+
 import { RouteDrawer } from "../../../components/route-modal"
-import { EditOrderEmailForm } from "./components/edit-order-email-form"
+import { OrderRefundForm } from "./components/order-refund-form"
 import { orderExpand } from "../order-detail/constants"
 
-export const OrderEmail = () => {
-  const { id } = useParams()
+export const OrderRefund = () => {
   const { t } = useTranslation()
+
+  const { id } = useParams()
+  const [searchParams] = useSearchParams()
+
+  const paymentId = searchParams.get("paymentId")
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
     expand: orderExpand,
@@ -20,12 +25,16 @@ export const OrderEmail = () => {
     throw error
   }
 
+  const payment = paymentId
+    ? order.payments.find((p) => p.id === paymentId)
+    : undefined
+
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("email.editHeader")}</Heading>
+        <Heading>{t("orders.refund.title")}</Heading>
       </RouteDrawer.Header>
-      {ready && <EditOrderEmailForm order={order} />}
+      {ready && <OrderRefundForm order={order} payment={payment} />}
     </RouteDrawer>
   )
 }
