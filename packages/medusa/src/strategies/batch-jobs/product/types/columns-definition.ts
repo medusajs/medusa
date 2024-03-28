@@ -278,6 +278,20 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
 
+  // PRODUCT METADATA
+
+  "Product Metadata": {
+    name: "Product Metadata",
+    importDescriptor: {
+      mapTo: "product.metadata",
+      transform: (value: string) => JSON.parse(value)
+    },
+    exportDescriptor: {
+      accessor: (product: Product): string => product?.metadata ? JSON.stringify(product.metadata) : "",
+      entityName: "product",
+    },
+  },
+
   // VARIANTS
 
   "Variant Id": {
