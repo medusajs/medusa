@@ -14,7 +14,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import {
-  createMedusaContainer, promiseAll,
+  createMedusaContainer,
   promiseAll,
   simpleHash,
   stringifyCircular,

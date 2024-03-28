@@ -102,7 +102,7 @@ async function loadMedusaV2({
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  await loadMedusaApp({
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
     configModule,
     container,
   })
@@ -153,6 +153,7 @@ async function loadMedusaV2({
       container.dispose(),
       pgConnection?.context?.destroy(),
       expressShutdown(),
+      medusaAppOnApplicationShutdown()
     ])
   }
 
@@ -270,7 +271,7 @@ export default async ({
   track("MODULES_INIT_STARTED")
 
   // Move before services init once all modules are migrated and do not rely on core resources anymore
-  await loadMedusaApp({
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
     configModule,
     container,
   })
@@ -343,7 +344,8 @@ export default async ({
       dbConnection?.destroy(),
       pgConnection?.context?.destroy(),
       redisShutdown(),
-      expressShutdown()
+      expressShutdown(),
+      medusaAppOnApplicationShutdown(),
     ])
   }
 
