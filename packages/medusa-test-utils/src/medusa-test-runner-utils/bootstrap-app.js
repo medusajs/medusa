@@ -2,6 +2,7 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject, promiseAll } = require("@medusajs/utils")
+const { GracefulShutdownServer } = require("medusa-core-utils")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()
@@ -43,6 +44,7 @@ module.exports = {
       cwd,
       env,
     })
+
     let expressServer
 
     if (skipExpressListen) {
@@ -50,7 +52,7 @@ module.exports = {
     }
 
     const shutdown = async () => {
-      await promiseAll([expressServer.close(), medusaShutdown()])
+      await promiseAll([expressServer.shutdown(), medusaShutdown()])
 
       if (typeof global !== "undefined" && global?.gc) {
         global.gc()
@@ -58,7 +60,7 @@ module.exports = {
     }
 
     return await new Promise((resolve, reject) => {
-      expressServer = app.listen(port, async (err) => {
+      const server = app.listen(port, async (err) => {
         if (err) {
           await shutdown()
           return reject(err)
@@ -70,6 +72,8 @@ module.exports = {
           port,
         })
       })
+
+      expressServer = GracefulShutdownServer.create(server)
     })
   },
 }
