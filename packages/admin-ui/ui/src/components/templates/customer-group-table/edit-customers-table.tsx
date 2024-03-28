@@ -92,7 +92,6 @@ function EditCustomersTable(props: EditCustomersTableProps) {
     isLoading,
   } = useAdminCustomers({
     ...queryObject,
-    groups: activeGroupId ? [activeGroupId] : null,
   })
 
   useEffect(() => {
