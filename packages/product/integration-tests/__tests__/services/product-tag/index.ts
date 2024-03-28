@@ -184,8 +184,11 @@ moduleIntegrationTestRunner({
               products: [
                 {
                   id: "test-1",
+                  collection_id: null,
+                  type_id: null,
                 },
               ],
+              value: "France",
             }),
           ])
         })

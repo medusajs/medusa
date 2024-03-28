@@ -11,6 +11,10 @@ interface Input {
 export function prepareLineItemData(data: Input) {
   const { variant, unitPrice, quantity, metadata, cartId } = data
 
+  if (!variant.product) {
+    throw new Error("Variant does not have a product")
+  }
+
   const lineItem: any = {
     quantity,
     title: variant.title,

@@ -210,6 +210,7 @@ moduleIntegrationTestRunner({
           expect(serialized).toEqual({
             id: optionId,
             title: optionValue,
+            product_id: null,
           })
         })
       })

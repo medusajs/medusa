@@ -47,14 +47,21 @@ class ProductOptionValue {
   @Property({ columnType: "text" })
   value: string
 
-  @Property({ columnType: "text", nullable: true })
-  option_id!: string
+  @ManyToOne(() => ProductOption, {
+    columnType: "text",
+    fieldName: "option_id",
+    mapToPk: true,
+    nullable: true,
+    index: "IDX_product_option_value_option_id",
+    onDelete: "cascade",
+  })
+  option_id: string | null
 
   @ManyToOne(() => ProductOption, {
-    index: "IDX_product_option_value_option_id",
-    fieldName: "option_id",
+    nullable: true,
+    persist: false,
   })
-  option: ProductOption
+  option: ProductOption | null
 
   @OneToMany(() => ProductVariantOption, (value) => value.option_value, {})
   variant_options = new Collection<ProductVariantOption>(this)
@@ -84,11 +91,13 @@ class ProductOptionValue {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "optval")
+    this.option_id ??= this.option?.id ?? null
   }
 
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "optval")
+    this.option_id ??= this.option?.id ?? null
   }
 }
 

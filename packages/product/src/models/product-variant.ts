@@ -119,16 +119,21 @@ class ProductVariant {
   })
   variant_rank?: number | null
 
-  @Property({ columnType: "text", nullable: true })
-  product_id!: string
+  @ManyToOne(() => Product, {
+    columnType: "text",
+    nullable: true,
+    onDelete: "cascade",
+    fieldName: "product_id",
+    index: "IDX_product_variant_product_id",
+    mapToPk: true,
+  })
+  product_id: string | null
 
   @ManyToOne(() => Product, {
-    onDelete: "cascade",
-    index: "IDX_product_variant_product_id",
-    fieldName: "product_id",
+    persist: false,
     nullable: true,
   })
-  product!: Product
+  product: Product | null
 
   @Property({
     onCreate: () => new Date(),
@@ -161,11 +166,13 @@ class ProductVariant {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "variant")
+    this.product_id ??= this.product?.id ?? null
   }
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "variant")
+    this.product_id ??= this.product?.id ?? null
   }
 }
 
