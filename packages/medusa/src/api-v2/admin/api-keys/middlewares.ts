@@ -1,13 +1,14 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetApiKeysApiKeyParams,
   AdminGetApiKeysParams,
   AdminPostApiKeysApiKeyReq,
+  AdminPostApiKeysApiKeySalesChannelsBatchReq,
   AdminPostApiKeysReq,
   AdminRevokeApiKeysApiKeyReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
@@ -40,12 +41,24 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/api-keys",
-    middlewares: [transformBody(AdminPostApiKeysReq)],
+    middlewares: [
+      transformQuery(
+        AdminGetApiKeysApiKeyParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminPostApiKeysReq),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/api-keys/:id",
-    middlewares: [transformBody(AdminPostApiKeysApiKeyReq)],
+    middlewares: [
+      transformQuery(
+        AdminGetApiKeysApiKeyParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminPostApiKeysApiKeyReq),
+    ],
   },
   {
     method: ["DELETE"],
@@ -55,6 +68,23 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/api-keys/:id/revoke",
-    middlewares: [transformBody(AdminRevokeApiKeysApiKeyReq)],
+    middlewares: [
+      transformQuery(
+        AdminGetApiKeysApiKeyParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminRevokeApiKeysApiKeyReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/api-keys/:id/sales-channels/batch/add",
+    middlewares: [
+      transformQuery(
+        AdminGetApiKeysApiKeyParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchReq),
+    ],
   },
 ]

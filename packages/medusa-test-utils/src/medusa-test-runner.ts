@@ -104,34 +104,14 @@ export function medusaIntegrationTestRunner({
     debug,
   }
 
-  // Intercept call to this utils to apply the unique client url for the current suite
-  const originalCreatePgConnection =
-    require("@medusajs/utils/dist/modules-sdk/create-pg-connection").createPgConnection
-  require("@medusajs/utils/dist/modules-sdk/create-pg-connection").createPgConnection =
-    (options: any) => {
-      return originalCreatePgConnection({
-        ...options,
-        clientUrl: dbConfig.clientUrl,
-      })
-    }
-
-  const originalDatabaseLoader =
-    require("@medusajs/medusa/dist/loaders/database").default
-  require("@medusajs/medusa/dist/loaders/database").default = (
-    options: any
+  const originalConfigLoader =
+    require("@medusajs/medusa/dist/loaders/config").default
+  require("@medusajs/medusa/dist/loaders/config").default = (
+    rootDirectory: string
   ) => {
-    options.configModule.projectConfig.database_url
-    return originalDatabaseLoader({
-      ...options,
-      configModule: {
-        ...options.configModule,
-        projectConfig: {
-          database_logging: debug, // Will be used for the debug flag of the database options
-          ...options.configModule.projectConfig,
-          database_url: dbConfig.clientUrl,
-        },
-      },
-    })
+    const config = originalConfigLoader(rootDirectory)
+    config.projectConfig.database_url = dbConfig.clientUrl
+    return config
   }
 
   const cwd = process.cwd()
