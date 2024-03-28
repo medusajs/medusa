@@ -5,7 +5,6 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -55,14 +54,11 @@ export default class OrderSummary {
     columnType: "text",
     fieldName: "order_id",
     mapToPk: true,
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
   })
   order_id: string
 
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order

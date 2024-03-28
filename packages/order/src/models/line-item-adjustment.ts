@@ -2,13 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
-import {
-  BeforeCreate,
-  Cascade,
-  Entity,
-  ManyToOne,
-  OnInit,
-} from "@mikro-orm/core"
+import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
@@ -28,7 +22,7 @@ export default class LineItemAdjustment extends AdjustmentLine {
     entity: () => LineItem,
     columnType: "text",
     fieldName: "item_id",
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
     mapToPk: true,
   })
   @ItemIdIndex.MikroORMIndex()

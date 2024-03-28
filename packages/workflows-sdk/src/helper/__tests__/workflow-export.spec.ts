@@ -1,4 +1,5 @@
 import { createMedusaContainer } from "@medusajs/utils"
+import { MedusaWorkflow } from "../../medusa-workflow"
 import { exportWorkflow } from "../workflow-export"
 
 jest.mock("@medusajs/orchestration", () => {
@@ -63,6 +64,10 @@ jest.mock("@medusajs/orchestration", () => {
 })
 
 describe("Export Workflow", function () {
+  afterEach(() => {
+    MedusaWorkflow.workflows = {}
+  })
+
   it("should prepare the input data before initializing the transaction", async function () {
     let transformedInput
     const prepare = jest.fn().mockImplementation(async (data) => {
@@ -98,6 +103,10 @@ describe("Export Workflow", function () {
   })
 
   describe("Using the exported workflow run", function () {
+    afterEach(() => {
+      MedusaWorkflow.workflows = {}
+    })
+
     it("should prepare the input data before initializing the transaction", async function () {
       let transformedInput
       const prepare = jest.fn().mockImplementation(async (data) => {

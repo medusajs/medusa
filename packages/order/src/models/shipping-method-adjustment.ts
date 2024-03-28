@@ -2,13 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
-import {
-  BeforeCreate,
-  Cascade,
-  Entity,
-  ManyToOne,
-  OnInit,
-} from "@mikro-orm/core"
+import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
 
@@ -29,7 +23,7 @@ export default class ShippingMethodAdjustment extends AdjustmentLine {
     columnType: "text",
     fieldName: "shipping_method_id",
     mapToPk: true,
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
   })
   @ShippingMethodIdIdIndex.MikroORMIndex()
   shipping_method_id: string

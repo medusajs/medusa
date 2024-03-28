@@ -33,16 +33,7 @@ export class Migration20240219102530 extends Migration {
           "customer_id" TEXT NULL,
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
-          "status" text check (
-              "status" IN (
-                  'pending',
-                  'completed',
-                  'draft',
-                  'archived',
-                  'canceled',
-                  'requires_action'
-              )
-          ) NOT NULL DEFAULT 'pending',
+          "status" text NOT NULL,
           "email" text NULL,
           "currency_code" text NOT NULL,
           "shipping_address_id" text NULL,
@@ -58,6 +49,25 @@ export class Migration20240219102530 extends Migration {
 
       ALTER TABLE "order"
       ADD COLUMN if NOT exists "deleted_at" timestamptz NULL;
+
+      ALTER TABLE "order"
+      ADD COLUMN if NOT exists "version" INTEGER NOT NULL DEFAULT 1;
+
+
+      ALTER TABLE "order" ALTER COLUMN status TYPE text;
+      DROP TYPE IF EXISTS  order_status_enum CASCADE;
+      CREATE TYPE order_status_enum AS ENUM (
+        'pending',
+        'completed',
+        'draft',
+        'archived',
+        'canceled',
+        'requires_action'
+      );
+      ALTER TABLE "order" ALTER COLUMN status DROP DEFAULT;
+      ALTER TABLE "order" ALTER COLUMN status TYPE order_status_enum USING (status::text::order_status_enum);
+	  ALTER TABLE "order" ALTER COLUMN status SET DEFAULT 'pending';
+    
 
       ALTER TABLE "order" DROP constraint if EXISTS "FK_6ff7e874f01b478c115fdd462eb" CASCADE;
 
@@ -284,6 +294,7 @@ export class Migration20240219102530 extends Migration {
           "raw_compare_at_unit_price" JSONB NULL,
           "unit_price" NUMERIC NOT NULL,
           "raw_unit_price" JSONB NOT NULL,
+          "metadata" JSONB NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           CONSTRAINT "order_line_item_pkey" PRIMARY KEY ("id")
@@ -423,14 +434,12 @@ export class Migration20240219102530 extends Migration {
       ALTER TABLE if exists "order"
       ADD CONSTRAINT "order_shipping_address_id_foreign" FOREIGN KEY ("shipping_address_id") REFERENCES "order_address" ("id") ON
       UPDATE CASCADE ON
-      DELETE
-      SET NULL;
+      DELETE CASCADE;
 
       ALTER TABLE if exists "order"
       ADD CONSTRAINT "order_billing_address_id_foreign" FOREIGN KEY ("billing_address_id") REFERENCES "order_address" ("id") ON
       UPDATE CASCADE ON
-      DELETE
-      SET NULL;
+      DELETE CASCADE;
 
       ALTER TABLE if exists "order_change"
       ADD CONSTRAINT "order_change_order_id_foreign" FOREIGN KEY ("order_id") REFERENCES "order" ("id") ON
