@@ -16,6 +16,7 @@ import {
 import { useTranslation } from "react-i18next"
 import { useForm } from "react-hook-form"
 import {
+  adminOrderKeys,
   useAdminPaymentsRefundPayment,
   useAdminRefundPayment,
 } from "medusa-react"
@@ -26,6 +27,7 @@ import { CreateRefundSchema } from "../../schema"
 import { castNumber } from "../../../../../lib/cast-number"
 import { Form } from "../../../../../components/common/form"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { queryClient } from "../../../../../lib/medusa"
 import {
   getDbAmount,
   getPresentationalAmount,
@@ -113,6 +115,10 @@ export function OrderRefundForm({ order, payment }: OrderRefundFormProps) {
 
     await mutate(payload)
 
+    if (isSpecificPaymentRefund) {
+      await queryClient.invalidateQueries(adminOrderKeys.detail(order.id))
+    }
+
     handleSuccess()
   })
 
@@ -142,7 +148,6 @@ export function OrderRefundForm({ order, payment }: OrderRefundFormProps) {
                         code={order.currency_code}
                         symbol={getCurrencySymbol(order.currency_code)}
                         {...field}
-                        disabled={isSpecificPaymentRefund}
                       />
                     </Form.Control>
                     <Form.ErrorMessage />
