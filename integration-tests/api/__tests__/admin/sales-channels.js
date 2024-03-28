@@ -1,6 +1,9 @@
 const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-const { createAdminUser } = require("../../../helpers/create-admin-user")
+const {
+  createAdminUser,
+  adminHeaders,
+} = require("../../../helpers/create-admin-user")
 const { breaking } = require("../../../helpers/breaking")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
@@ -343,7 +346,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete the requested sales channel", async () => {
-        let toDelete = await breaking(
+        const toDelete = await breaking(
           async () => {
             return await dbConnection.manager.findOne(SalesChannel, {
               where: { id: salesChannel.id },
@@ -1129,6 +1132,67 @@ medusaIntegrationTestRunner({
             "Sales Channels fake_id, fake_id_2 do not exist",
           ])
         })
+      })
+    })
+
+    describe("POST /admin/sales-channels/:id/locations/batch/add", () => {
+      let salesChannel
+      let location
+
+      beforeEach(async () => {
+        salesChannel = await breaking(
+          async () => {
+            return await simpleSalesChannelFactory(dbConnection, {
+              name: "test name",
+              description: "test description",
+            })
+          },
+          async () => {
+            return await salesChannelService.create({
+              name: "test name",
+              description: "test description",
+            })
+          }
+        )
+
+        location = await breaking(
+          async () => {
+            return {}
+          },
+          async () => {
+            const locationResponse = await api.post(
+              "/admin/stock-locations",
+              {
+                name: "test location",
+              },
+              adminReqConfig
+            )
+            return locationResponse.data.stock_location
+          }
+        )
+      })
+
+      it("should add locations to a sales channel", async () => {
+        const result = await breaking(
+          async () => {
+            return [{}]
+          },
+          async () => {
+            const payload = {
+              location_ids: [location.id],
+            }
+
+            const salesChannelResponse = await api.post(
+              `/admin/sales-channels/${salesChannel.id}/stock-locations/batch/add?fields=*stock_locations`,
+              payload,
+              adminReqConfig
+            )
+
+            return salesChannelResponse.data.sales_channel.stock_locations
+          }
+        )
+
+        expect(result).toHaveLength(1)
       })
     })
   },
