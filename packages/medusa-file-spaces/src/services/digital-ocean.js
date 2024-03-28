@@ -1,5 +1,7 @@
-import { AbstractFileService } from "@medusajs/medusa"
-import aws from "aws-sdk"
+import { AbstractFileService } from "@medusajs/medusa";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Upload } from "@aws-sdk/lib-storage";
+import { GetObjectCommand, S3 } from "@aws-sdk/client-s3";
 import fs from "fs"
 import { parse } from "path"
 import stream from "stream"
@@ -18,22 +20,18 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   upload(file) {
-    this.updateAwsConfig()
-
     return this.uploadFile(file)
   }
 
   uploadProtected(file) {
-    this.updateAwsConfig()
-
     return this.uploadFile(file, { acl: "private" })
   }
 
-  uploadFile(file, options = { isProtected: false, acl: undefined }) {
+  async uploadFile(file, options = { isProtected: false, acl: undefined }) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
-    const s3 = new aws.S3()
+    const s3 = new S3(this.getAwsConfig())
     const params = {
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
@@ -41,26 +39,15 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    return new Promise((resolve, reject) => {
-      s3.upload(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-
-        if (this.spacesUrl_) {
-          resolve({ url: `${this.spacesUrl_}/${data.Key}`, key: data.Key })
-        }
-
-        resolve({ url: data.Location, key: data.Key })
-      })
-    })
+    const data = await new Upload({ client: s3, params }).done();
+    if (this.spacesUrl_) {
+      return { url: `${this.spacesUrl_}/${data.Key}`, key: data.Key };
+    }
+    return { url: data.Location, key: data.Key };
   }
 
   async delete(file) {
-    this.updateAwsConfig()
-
-    const s3 = new aws.S3()
+    const s3 = new S3(this.getAwsConfig())
     const params = {
       Bucket: this.bucket_,
       Key: `${file}`,
@@ -78,8 +65,6 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor(fileData) {
-    this.updateAwsConfig()
-
     const pass = new stream.PassThrough()
 
     // default to private
@@ -94,19 +79,17 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    const s3 = new aws.S3()
+    const s3 = new S3(this.getAwsConfig())
     return {
       writeStream: pass,
-      promise: s3.upload(params).promise(),
+      promise: new Upload({ client: s3, params }).done(),
       url: `${this.spacesUrl_}/${fileKey}`,
       fileKey,
-    }
+    };
   }
 
   async getDownloadStream(fileData) {
-    this.updateAwsConfig()
-
-    const s3 = new aws.S3()
+    const s3 = new S3(this.getAwsConfig())
 
     const params = {
       Bucket: this.bucket_,
@@ -117,11 +100,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getPresignedDownloadUrl(fileData) {
-    this.updateAwsConfig({
-      signatureVersion: "v4",
-    })
-
-    const s3 = new aws.S3()
+    const s3 = new S3(this.getAwsConfig())
 
     const params = {
       Bucket: this.bucket_,
@@ -129,21 +108,20 @@ class DigitalOceanService extends AbstractFileService {
       Expires: this.downloadUrlDuration,
     }
 
-    return await s3.getSignedUrlPromise("getObject", params)
+    return await getSignedUrl(s3, new GetObjectCommand(params), {
+      expiresIn: "/* add value from 'Expires' from v2 call if present, else remove */"
+    });
   }
 
-  updateAwsConfig(additionalConfiguration = {}) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
+  getAwsConfig() {
+    return {
+      credentials: {
         accessKeyId: this.accessKeyId_,
         secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-        ...additionalConfiguration,
       },
-      true
-    )
+      region: this.region_,
+      endpoint: this.endpoint_,
+    };
   }
 }
 
