@@ -179,10 +179,7 @@ class MinioService extends AbstractFileService implements IFileService {
   }
 
   validatePrivateBucketConfiguration_(usePrivateBucket: boolean) {
-    if (
-      usePrivateBucket &&
-      (!this.private_access_key_id_ || !this.private_bucket_)
-    ) {
+    if (usePrivateBucket && !this.private_bucket_) {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
         "Private bucket is not configured"
