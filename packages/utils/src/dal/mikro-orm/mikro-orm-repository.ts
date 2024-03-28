@@ -24,7 +24,13 @@ import {
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { arrayDifference, deepCopy, isString, promiseAll } from "../../common"
+import {
+  MedusaError,
+  arrayDifference,
+  deepCopy,
+  isString,
+  promiseAll,
+} from "../../common"
 import { buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
@@ -122,9 +128,8 @@ export class MikroOrmBaseRepository<T extends object = object>
 
   upsertWithReplace(
     data: unknown[],
-    upsertConfig: UpsertWithReplaceConfig<T> = {
-      relationsToUpsert: [],
-      relationsToSkip: [],
+    config: UpsertWithReplaceConfig<T> = {
+      relations: [],
     },
     context: Context = {}
   ): Promise<T[]> {
@@ -437,16 +442,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     }
 
     // UpsertWithReplace does several things to simplify module implementation.
-    // For each entry of your base entity, it will go through all relations, and it will do a diff between what is passed and what is in the database.
+    // For each entry of your base entity, it will go through all one-to-many and many-to-many relations, and it will do a diff between what is passed and what is in the database.
     // For each relation, it create new entries (without an ID), it will associate existing entries (with only an ID), and it will update existing entries (with an ID and other fields).
     // Finally, it will delete the relation entries that were omitted in the new data.
     // The response is a POJO of the data that was written to the DB, including all new IDs. The order is preserved with the input.
-    // Limitations: We expect that IDs are used as primary keys, and we don't support composite keys. Also, we only support 1-level depth of upserts
+    // Limitations: We expect that IDs are used as primary keys, and we don't support composite keys.
+    // We only support 1-level depth of upserts. We don't support custom fields on the many-to-many pivot tables for now
     async upsertWithReplace(
       data: any[],
-      upsertConfig: UpsertWithReplaceConfig<T> = {
-        relationsToUpsert: [],
-        relationsToSkip: [],
+      config: UpsertWithReplaceConfig<T> = {
+        relations: [],
       },
       context: Context = {}
     ): Promise<T[]> {
@@ -457,11 +462,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       const normalizedData: any[] = await this.serialize(data)
 
       const manager = this.getActiveManager<SqlEntityManager>(context)
-      const allRelationsToHandle = [
-        ...(upsertConfig.relationsToUpsert ?? []),
-        ...(upsertConfig.relationsToSkip ?? []),
-      ] as string[]
-
       // Handle the relations
       const allRelations = manager
         .getDriver()
@@ -469,7 +469,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         .get(entity.name).relations
 
       const nonexistentRelations = arrayDifference(
-        allRelationsToHandle,
+        (config.relations as any) ?? [],
         allRelations.map((r) => r.name)
       )
 
@@ -482,7 +482,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       // We want to response with all the data including the IDs in the same order as the input. We also include data that was passed but not processed.
       const reconstructedResponse: any[] = []
       const originalDataMap = new Map<string, T>()
-      const upsertsPerType: Record<string, any[]> = {}
 
       // Create only the top-level entity without the relations first
       const toUpsert = normalizedData.map((entry) => {
@@ -492,12 +491,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
         allRelations?.forEach((relation) => {
           reconstructedEntry[relation.name] = this.handleRelationAssignment_(
-            manager,
-            upsertConfig,
-            allRelationsToHandle,
             relation,
-            entryCopy,
-            upsertsPerType
+            entryCopy
           )
         })
 
@@ -508,8 +503,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         return mainEntity
       })
 
-      // The order of insert is: many-to-one, main entity, one-to-many, many-to-many
-      await this.upsertManyToOneRelations_(manager, upsertsPerType)
       const upsertedTopLevelEntities = await this.upsertMany_(
         manager,
         entity.name,
@@ -517,14 +510,14 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       )
 
       await promiseAll(
-        upsertedTopLevelEntities.map(async (entityEntry, i) => {
-          const originalEntry = originalDataMap.get((entityEntry as any).id)!
-          const reconstructedEntry = reconstructedResponse[i]
+        upsertedTopLevelEntities
+          .map((entityEntry, i) => {
+            const originalEntry = originalDataMap.get((entityEntry as any).id)!
+            const reconstructedEntry = reconstructedResponse[i]
 
-          await promiseAll(
-            allRelations?.map(async (relation) => {
+            return allRelations?.map(async (relation) => {
               const relationName = relation.name as keyof T
-              if (!upsertConfig.relationsToUpsert?.includes(relationName)) {
+              if (!config.relations?.includes(relationName)) {
                 return
               }
 
@@ -545,8 +538,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
                 )
               return
             })
-          )
-        })
+          })
+          .flat()
       )
 
       // // We want to populate the identity map with the data that was written to the DB, and return an entity object
@@ -586,6 +579,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           return normalizedData
         }
 
+        // TODO: Currently we will also do an update of the data on the other side of the many-to-many relationship. Reevaluate if we should avoid that.
         await this.upsertMany_(manager, relation.type, normalizedData)
 
         const pivotData = normalizedData.map((currModel) => {
@@ -640,51 +634,44 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     }
 
     protected handleRelationAssignment_(
-      manager: SqlEntityManager,
-      upsertConfig: UpsertWithReplaceConfig<T>,
-      allRelationsToHandle: string[],
       relation: EntityProperty<any>,
-      entryCopy: T,
-      upsertsPerType: Record<string, any[]>
+      entryCopy: T
     ) {
-      if (
-        upsertConfig.relationsToUpsert?.includes(relation.name as keyof T) &&
-        relation.reference === ReferenceType.MANY_TO_ONE
-      ) {
-        // If it is undefined (not passed) then just return
-        if (entryCopy[relation.name] === undefined) {
-          return
-        }
+      const originalData = entryCopy[relation.name]
+      delete entryCopy[relation.name]
 
-        // If null is passed (to be unset) then we need to set that on the join column
-        if (entryCopy[relation.name] === null) {
-          delete entryCopy[relation.name]
+      if (originalData === undefined) {
+        return undefined
+      }
+
+      // If it is a many-to-one we ensure the ID is set for when we want to set/unset an association
+      if (relation.reference === ReferenceType.MANY_TO_ONE) {
+        if (originalData === null) {
           entryCopy[relation.joinColumns[0]] = null
-          return
+          return null
         }
 
-        const newEntity = this.getEntityWithId(
-          manager,
-          relation.type,
-          entryCopy[relation.name]
-        )
-
-        delete entryCopy[relation.name]
-        entryCopy[relation.joinColumns[0]] = newEntity.id
-
-        if (!upsertsPerType[relation.type]) {
-          upsertsPerType[relation.type] = []
+        // The relation can either be a primitive or the entity object, depending on how it's defined on the model
+        let relationId
+        if (isString(originalData)) {
+          relationId = originalData
+        } else if ("id" in originalData) {
+          relationId = originalData.id
         }
-        upsertsPerType[relation.type].push(newEntity)
 
-        return newEntity
+        // We don't support creating many-to-one relations, so we want to throw if someone doesn't pass the ID
+        if (!relationId) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Many-to-one relation ${relation.name} must be set with an ID`
+          )
+        }
+
+        entryCopy[relation.joinColumns[0]] = relationId
+        return originalData
       }
 
-      if (allRelationsToHandle.includes(relation.name)) {
-        delete entryCopy[relation.name]
-      }
-
-      return
+      return undefined
     }
 
     // Returns a POJO object with the ID populated from the entity model hooks
@@ -712,8 +699,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       return (
         await promiseAll(
-          typesToUpsert.map(async ([type, data]) => {
-            return await this.upsertMany_(manager, type, data)
+          typesToUpsert.map(([type, data]) => {
+            return this.upsertMany_(manager, type, data)
           })
         )
       ).flat()
@@ -738,8 +725,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         existingEntities.map((e) => [e.id, e])
       )
 
-      const createdEntities: T[] = []
-      const updatedEntities: T[] = []
       const orderedEntities: T[] = []
 
       await promiseAll(
@@ -748,10 +733,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           const existingEntity = existingEntitiesMap.get(data.id)
           if (existingEntity) {
             await manager.nativeUpdate(entityName, { id: data.id }, data)
-            updatedEntities.push(data)
           } else {
             await manager.insert(entityName, data)
-            createdEntities.push(data)
           }
         })
       )

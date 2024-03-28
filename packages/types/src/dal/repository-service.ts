@@ -74,7 +74,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
 
   upsertWithReplace(
     data: any[],
-    upsertConfig?: UpsertWithReplaceConfig<T>,
+    config?: UpsertWithReplaceConfig<T>,
     context?: Context
   ): Promise<T[]>
 }

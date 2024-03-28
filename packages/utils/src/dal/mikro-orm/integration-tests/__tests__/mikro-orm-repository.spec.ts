@@ -211,46 +211,30 @@ describe("mikroOrmRepository", () => {
       )
     })
 
-    // TODO: Should we support this
-    it("should successfully create an entity with a sub-entity many-to-one relation", async () => {
+    it("should throw if a sub-entity is passed in a many-to-one relation", async () => {
       const entity2 = {
         id: "2",
         title: "en2",
         entity1: { title: "en1" },
       }
 
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
-      const listedEntities = await manager2().find({
-        where: { id: "2" },
-        options: { populate: ["entity1"] },
-      })
+      const errMsg = await manager2()
+        .upsertWithReplace([entity2])
+        .catch((e) => e.message)
 
-      expect(listedEntities).toHaveLength(1)
-      expect(listedEntities[0]).toEqual(
-        expect.objectContaining({
-          id: "2",
-          title: "en2",
-          entity1: expect.objectContaining({
-            id: expect.any(String),
-            title: "en1",
-          }),
-        })
+      expect(errMsg).toEqual(
+        "Many-to-one relation entity1 must be set with an ID"
       )
     })
 
-    it("should only create the parent entity of a many-to-one if relation is not included", async () => {
+    it("should successfully create the parent entity of a many-to-one", async () => {
       const entity2 = {
         id: "2",
         title: "en2",
-        entity1: { title: "en1" },
       }
 
       await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity1"],
+        relations: [],
       })
       const listedEntities = await manager2().find({
         where: { id: "2" },
@@ -267,114 +251,76 @@ describe("mikroOrmRepository", () => {
       )
     })
 
-    it("should only update the parent entity of a many-to-one if relation is not included", async () => {
+    it("should set an entity to parent entity of a many-to-one relation", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+      }
+
       const entity2 = {
         id: "2",
         title: "en2",
-        entity1: { title: "en1" },
+        entity1: { id: "1" },
       }
 
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
+      await manager1().upsertWithReplace([entity1])
+      await manager2().upsertWithReplace([entity2])
 
-      entity2.title = "newen2"
-      entity2.entity1.title = "newen1"
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity1"],
-      })
       const listedEntities = await manager2().find({
         where: { id: "2" },
         options: { populate: ["entity1"] },
       })
 
       expect(listedEntities).toHaveLength(1)
-      expect(listedEntities[0]).toEqual(
+      expect(JSON.parse(JSON.stringify(listedEntities[0]))).toEqual(
         expect.objectContaining({
           id: "2",
-          title: "newen2",
+          title: "en2",
           entity1: expect.objectContaining({
             title: "en1",
-          }),
-        })
-      )
-    })
-
-    it("should successfully update an entity with a sub-entity many-to-one relation", async () => {
-      const entity2 = {
-        id: "2",
-        title: "en2",
-        entity1: { title: "en1" },
-      }
-
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
-
-      const [createEntity2] = await manager2().find({
-        where: { id: "2" },
-        options: { populate: ["entity1"] },
-      })
-
-      createEntity2.title = "newen2"
-      createEntity2.entity1!.title = "newen1"
-
-      await manager2().upsertWithReplace([createEntity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
-
-      const [updatedEntity2] = await manager2().find({
-        where: { id: "2" },
-        options: { populate: ["entity1"] },
-      })
-
-      expect(wrap(updatedEntity2).toPOJO()).toEqual(
-        expect.objectContaining({
-          id: "2",
-          title: "newen2",
-          entity1_id: expect.any(String),
-          entity1: expect.objectContaining({
-            id: expect.any(String),
-            title: "newen1",
           }),
         })
       )
     })
 
     it("should successfully unset an entity of a many-to-one relation", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+      }
+
       const entity2 = {
         id: "2",
         title: "en2",
-        entity1: { title: "en1" } as any,
+        entity1: { id: "1" },
       }
 
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
-      entity2.title = "newen2"
-      entity2.entity1 = null
-      await manager2().upsertWithReplace([entity2], {
-        relationsToUpsert: ["entity1"],
-        relationsToSkip: [],
-      })
+      await manager1().upsertWithReplace([entity1])
+      await manager2().upsertWithReplace([entity2])
+
+      entity2.entity1 = null as any
+      await manager2().upsertWithReplace([entity2])
+
       const listedEntities = await manager2().find({
         where: { id: "2" },
         options: { populate: ["entity1"] },
+      })
+
+      const listedEntity1 = await manager1().find({
+        where: {},
       })
 
       expect(listedEntities).toHaveLength(1)
       expect(listedEntities[0]).toEqual(
         expect.objectContaining({
           id: "2",
-          title: "newen2",
+          title: "en2",
           entity1: null,
         })
       )
+
+      expect(listedEntity1).toHaveLength(1)
+      expect(listedEntity1[0].title).toEqual("en1")
     })
 
     it("should only create the parent entity of a one-to-many if relation is not included", async () => {
@@ -385,8 +331,7 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity2"],
+        relations: [],
       })
       const listedEntities = await manager1().find({
         where: { id: "1" },
@@ -411,8 +356,7 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity2"],
-        relationsToSkip: [],
+        relations: ["entity2"],
       })
       const listedEntities = await manager1().find({
         where: { id: "1" },
@@ -447,13 +391,11 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity2"],
-        relationsToSkip: [],
+        relations: ["entity2"],
       })
       entity1.entity2.push({ title: "en2-3" })
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity2"],
+        relations: [],
       })
 
       const listedEntities = await manager1().find({
@@ -492,15 +434,13 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity2"],
-        relationsToSkip: [],
+        relations: ["entity2"],
       })
 
       entity1.entity2 = [{ id: "2", title: "newen2-1" }, { title: "en2-3" }]
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity2"],
-        relationsToSkip: [],
+        relations: ["entity2"],
       })
 
       const listedEntities = await manager1().find({
@@ -536,8 +476,7 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity3"],
+        relations: [],
       })
       const listedEntities = await manager1().find({
         where: { id: "1" },
@@ -562,8 +501,7 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
       const listedEntity1 = await manager1().find({
         where: { id: "1" },
@@ -618,14 +556,12 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
       entity1.title = "newen1"
       entity1.entity3.push({ title: "en3-3" })
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: [],
-        relationsToSkip: ["entity3"],
+        relations: [],
       })
 
       const listedEntities = await manager1().find({
@@ -660,19 +596,21 @@ describe("mikroOrmRepository", () => {
       }
 
       let resp = await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
       entity1.title = "newen1"
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
       resp = await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
 
       const listedEntities = await manager1().find({
         where: { id: "1" },
         options: { populate: ["entity3"] },
+      })
+
+      const listedEntity3 = await manager3().find({
+        where: {},
       })
 
       expect(listedEntities).toHaveLength(1)
@@ -688,6 +626,9 @@ describe("mikroOrmRepository", () => {
           }),
         ])
       )
+
+      // Many-to-many don't get deleted afterwards, even if they were disassociated
+      expect(listedEntity3).toHaveLength(3)
     })
 
     it("should successfully remove relationship when an empty array is passed in a many-to-many relation", async () => {
@@ -701,14 +642,12 @@ describe("mikroOrmRepository", () => {
       }
 
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
       entity1.title = "newen1"
       entity1.entity3 = []
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
 
       const listedEntities = await manager1().find({
@@ -732,21 +671,18 @@ describe("mikroOrmRepository", () => {
       }
 
       const mainEntity = await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: [],
+        relations: ["entity3"],
       })
       entity1.title = "newen1"
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
       await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity3"],
-        relationsToSkip: ["entity2"],
+        relations: ["entity3"],
       })
 
       // The sub-entity upsert should happen after the main was created
-      await manager2().upsertWithReplace(
-        [{ id: "2", title: "en2", entity1_id: mainEntity[0].id }],
-        { relationsToUpsert: [], relationsToSkip: [] }
-      )
+      await manager2().upsertWithReplace([
+        { id: "2", title: "en2", entity1_id: mainEntity[0].id },
+      ])
 
       const listedEntities = await manager1().find({
         where: { id: "1" },
@@ -785,13 +721,11 @@ describe("mikroOrmRepository", () => {
       }
 
       const [createResp] = await manager1().upsertWithReplace([entity1], {
-        relationsToUpsert: ["entity2", "entity3"],
-        relationsToSkip: [],
+        relations: ["entity2", "entity3"],
       })
       createResp.title = "newen1"
       const [updateResp] = await manager1().upsertWithReplace([createResp], {
-        relationsToUpsert: ["entity2", "entity3"],
-        relationsToSkip: [],
+        relations: ["entity2", "entity3"],
       })
 
       expect(createResp.id).toEqual("1")

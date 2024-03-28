@@ -475,8 +475,7 @@ export function internalModuleServiceFactory<
     async upsertWithReplace(
       data: any | any[],
       config: UpsertWithReplaceConfig<TEntity> = {
-        relationsToUpsert: [],
-        relationsToSkip: [],
+        relations: [],
       },
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity | TEntity[]> {

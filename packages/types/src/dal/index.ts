@@ -79,8 +79,7 @@ export type UpsertWithReplaceConfig<T> = {
   /**
    * The relationships that will be updated/created/deleted as part of the upsert
    */
-  relationsToUpsert?: (keyof T)[]
-  relationsToSkip?: (keyof T)[]
+  relations?: (keyof T)[]
 }
 
 export * from "./repository-service"
