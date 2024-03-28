@@ -1,10 +1,6 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import { EmitData, Logger, Message } from "@medusajs/types"
-import {
-  AbstractEventBusModuleService,
-  isString,
-  promiseAll
-} from "@medusajs/utils"
+import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -27,6 +23,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly eventBusRedisConnection_: Redis
 
   protected queue_: Queue
+  protected bullWorker_: Worker
 
   constructor(
     { logger, eventBusRedisConnection }: InjectedDependencies,
@@ -51,16 +48,21 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     // Register our worker to handle emit calls
     const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
     if (shouldStartWorker) {
-      new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
-        prefix: `${this.constructor.name}`,
-        ...(moduleOptions.workerOptions ?? {}),
-        connection: eventBusRedisConnection,
-      })
+      this.bullWorker_ = new Worker(
+        moduleOptions.queueName ?? "events-queue",
+        this.worker_,
+        {
+          prefix: `${this.constructor.name}`,
+          ...(moduleOptions.workerOptions ?? {}),
+          connection: eventBusRedisConnection,
+        }
+      )
     }
   }
 
   __hooks = {
     onApplicationShutdown: async () => {
+      await this.bullWorker_.close(true)
       await this.queue_.close()
       this.eventBusRedisConnection_.disconnect()
     },

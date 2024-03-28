@@ -64,6 +64,11 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     )
   }
 
+  async onApplicationShutdown() {
+    await this.queue.close()
+    await this.worker.close(true)
+  }
+
   setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }

@@ -21,34 +21,33 @@ import type {
 } from "@medusajs/workflows-sdk"
 import { WorkflowOrchestratorService } from "@services"
 import { joinerConfig } from "../joiner-config"
-import Redis from "ioredis"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
-  redisConnection: Redis
+  redisDisconnectHandler: () => Promise<void>
 }
 
 export class WorkflowsModuleService implements IWorkflowEngineService {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
-  protected redisConnection_: Redis
+  protected redisDisconnectHandler_: () => Promise<void>
 
   constructor(
     {
       baseRepository,
       workflowExecutionService,
       workflowOrchestratorService,
-      redisConnection,
+      redisDisconnectHandler,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
     this.workflowOrchestratorService_ = workflowOrchestratorService
-    this.redisConnection_ = redisConnection
+    this.redisDisconnectHandler_ = redisDisconnectHandler
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -57,7 +56,8 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
 
   __hooks = {
     onApplicationShutdown: async () => {
-      this.redisConnection_.disconnect()
+      await this.workflowOrchestratorService_.onApplicationShutdown()
+      await this.redisDisconnectHandler_()
     },
   }
 
