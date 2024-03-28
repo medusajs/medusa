@@ -21,10 +21,10 @@ export default async function develop({ backend, path, port }: DevelopArgs) {
     buildDir: config.outDir,
     plugins,
     options: {
-      backend: backend || config.backend,
-      path: path || config.path,
+      backend: config.backend || backend,
+      path: config.path || path,
       develop: {
-        port: port || config.develop.port,
+        port: config.develop.port || port,
         open: config.develop.open,
         allowedHosts: config.develop.allowedHosts,
         webSocketURL: config.develop.webSocketURL,
