@@ -28,7 +28,7 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
+    "test": "jest --runInBand --passWithNoTests --bail --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
