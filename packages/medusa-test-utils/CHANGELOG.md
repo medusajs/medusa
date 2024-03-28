@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.1.44
+
+### Patch Changes
+
+- [#6858](https://github.com/medusajs/medusa/pull/6858) [`6bf4d40856`](https://github.com/medusajs/medusa/commit/6bf4d40856839b755ce33f85ee30d046be7341ab) Thanks [@srindom](https://github.com/srindom)! - chore(medusa-test-utils): create declaration file
+
+- [#6857](https://github.com/medusajs/medusa/pull/6857) [`6ee2ee845c`](https://github.com/medusajs/medusa/commit/6ee2ee845c7044240c521345eb0e296843a67291) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(): medusa test runner
+
+- Updated dependencies [[`e0b02a1012`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137), [`5d9aea053c`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b), [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5)]:
+  - @medusajs/utils@1.12.0
+
 ## 1.1.43
 
 ### Patch Changes

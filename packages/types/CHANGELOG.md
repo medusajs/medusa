@@ -1,5 +1,17 @@
 # @medusajs/types
 
+## 1.12.0
+
+### Minor Changes
+
+- [#6813](https://github.com/medusajs/medusa/pull/6813) [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5) Thanks [@sradevski](https://github.com/sradevski)! - Added an upsertWithReplace method to the mikro orm repository
+
+### Patch Changes
+
+- [#6860](https://github.com/medusajs/medusa/pull/6860) [`45c49e89f2`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Add workflow idempotencyKey to shared context
+
+- [#6800](https://github.com/medusajs/medusa/pull/6800) [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(core-flows, medusa): add update stock location endpoint to api-v2
+
 ## 1.11.15
 
 ### Patch Changes
