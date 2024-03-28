@@ -125,6 +125,13 @@ get:
         customer groups.
       schema:
         type: string
+    - in: query
+      name: fields
+      description: >-
+        Comma-separated fields that should be included in the returned customer
+        groups.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetCustomerGroupsParams
