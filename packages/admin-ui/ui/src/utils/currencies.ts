@@ -836,7 +836,7 @@ export const currencies: CurrenciesType = {
     symbol: "din.",
     name: "Serbian Dinar",
     symbol_native: "дин.",
-    decimal_digits: 0,
+    decimal_digits: 2,
     rounding: 0,
     code: "RSD",
     name_plural: "Serbian dinars",
