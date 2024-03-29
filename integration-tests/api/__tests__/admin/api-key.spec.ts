@@ -1,4 +1,4 @@
-import { ApiKeyType } from "@medusajs/utils"
+import { ApiKeyType, ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 
@@ -267,6 +267,127 @@ medusaIntegrationTestRunner({
         expect(errorRes.response.data.message).toEqual(
           "Sales channels with IDs phony do not exist"
         )
+      })
+
+      it("should detach sales channels from a publishable API key", async () => {
+        const salesChannelRes = await api.post(
+          `/admin/sales-channels`,
+          {
+            name: "Test Sales Channel",
+          },
+          adminHeaders
+        )
+
+        const { sales_channel } = salesChannelRes.data
+
+        const apiKeyRes = await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test publishable KEY",
+            type: ApiKeyType.PUBLISHABLE,
+          },
+          adminHeaders
+        )
+
+        const { api_key } = apiKeyRes.data
+
+        const keyWithChannelsRes = await api.post(
+          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          {
+            sales_channel_ids: [sales_channel.id],
+          },
+          adminHeaders
+        )
+
+        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+
+        expect(keyWithChannelsRes.status).toEqual(200)
+        expect(keyWithChannels.title).toEqual("Test publishable KEY")
+        expect(keyWithChannels.sales_channels).toEqual([
+          expect.objectContaining({
+            id: sales_channel.id,
+            name: "Test Sales Channel",
+          }),
+        ])
+
+        const keyWithoutChannelsRes = await api.post(
+          `/admin/api-keys/${api_key.id}/sales-channels/batch/remove`,
+          {
+            sales_channel_ids: [sales_channel.id],
+          },
+          adminHeaders
+        )
+
+        const { api_key: keyWithoutChannels } = keyWithoutChannelsRes.data
+
+        expect(keyWithoutChannelsRes.status).toEqual(200)
+        expect(keyWithoutChannels.title).toEqual("Test publishable KEY")
+        expect(keyWithoutChannels.sales_channels).toEqual([])
+      })
+
+      it("should detach sales channels from a publishable API key on delete", async () => {
+        const salesChannelRes = await api.post(
+          `/admin/sales-channels`,
+          {
+            name: "Test Sales Channel",
+          },
+          adminHeaders
+        )
+
+        const { sales_channel } = salesChannelRes.data
+
+        const apiKeyRes = await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test publishable KEY",
+            type: ApiKeyType.PUBLISHABLE,
+          },
+          adminHeaders
+        )
+
+        const { api_key } = apiKeyRes.data
+
+        const keyWithChannelsRes = await api.post(
+          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          {
+            sales_channel_ids: [sales_channel.id],
+          },
+          adminHeaders
+        )
+
+        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+
+        expect(keyWithChannelsRes.status).toEqual(200)
+        expect(keyWithChannels.title).toEqual("Test publishable KEY")
+        expect(keyWithChannels.sales_channels).toEqual([
+          expect.objectContaining({
+            id: sales_channel.id,
+            name: "Test Sales Channel",
+          }),
+        ])
+
+        await api.delete(`/admin/api-keys/${api_key.id}`, adminHeaders)
+
+        const deletedApiKeys = await api.get(
+          `/admin/api-keys?id=${api_key.id}`,
+          adminHeaders
+        )
+
+        expect(deletedApiKeys.data.api_keys).toHaveLength(0)
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+
+        // Not the prettiest, but an easy way to check if the link was removed
+        const channels = await remoteQuery({
+          publishable_api_key_sales_channels: {
+            __args: { sales_channel_id: [sales_channel.id] },
+            fields: ["id", "sales_channel_id", "publishable_key_id"],
+          },
+        })
+
+        expect(channels).toHaveLength(0)
       })
     })
   },

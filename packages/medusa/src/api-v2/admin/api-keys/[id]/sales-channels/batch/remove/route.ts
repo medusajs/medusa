@@ -1,4 +1,4 @@
-import { addSalesChannelsToApiKeyWorkflow } from "@medusajs/core-flows"
+import { removeSalesChannelsFromApiKeyWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -9,14 +9,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostApiKeysApiKeySalesChannelsBatchAddReq } from "../../../../validators"
+import { AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq } from "../../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const body =
-    req.validatedBody as AdminPostApiKeysApiKeySalesChannelsBatchAddReq
+    req.validatedBody as AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq
 
   const apiKeyModule = req.scope.resolve(ModuleRegistrationName.API_KEY)
 
@@ -38,10 +38,12 @@ export const POST = async (
     ],
   }
 
-  const { errors } = await addSalesChannelsToApiKeyWorkflow(req.scope).run({
-    input: workflowInput,
-    throwOnError: false,
-  })
+  const { errors } = await removeSalesChannelsFromApiKeyWorkflow(req.scope).run(
+    {
+      input: workflowInput,
+      throwOnError: false,
+    }
+  )
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
