@@ -9,6 +9,7 @@ import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
+import { ApiKeyDTO } from "@medusajs/types"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useV2Session()
@@ -136,6 +137,57 @@ export const v2Routes: RouteObject[] = [
                 path: "add-currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "api-key-management",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "API Key Management",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: { api_key: ApiKeyDTO }) => data.api_key.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                      ),
+                  },
+                ],
               },
             ],
           },
