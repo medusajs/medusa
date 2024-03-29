@@ -63,6 +63,12 @@ export default async ({
     redisPublisher: asValue(redisPublisher),
     redisSubscriber: asValue(redisSubscriber),
     redisQueueName: asValue(queueName),
+    redisDisconnectHandler: asValue(async () => {
+      connection.disconnect()
+      workerConnection.disconnect()
+      redisPublisher.disconnect()
+      redisSubscriber.disconnect()
+    }),
   })
 }
 
