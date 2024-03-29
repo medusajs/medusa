@@ -48,6 +48,7 @@ type ParameterType = "query" | "path"
  * since API routes are functions.
  */
 class OasKindGenerator extends FunctionKindGenerator {
+  public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
   // we can't use `{summary}` because it causes an MDX error
@@ -166,12 +167,13 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param options - The options to get the OAS.
    * @returns The OAS as a string that can be used as a comment in a TypeScript file.
    */
-  getDocBlock(
+  async getDocBlock(
     node: ts.Node | FunctionOrVariableNode,
     options?: GetDocBlockOptions
-  ): string {
+  ): Promise<string> {
+    // TODO use AiGenerator to generate descriptions + examples
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
 
     const actualNode = ts.isVariableStatement(node)
@@ -179,7 +181,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       : node
 
     if (!actualNode) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
     const methodName = this.getHTTPMethodName(node)
 

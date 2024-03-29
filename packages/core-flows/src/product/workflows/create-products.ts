@@ -36,7 +36,7 @@ export const createProductsWorkflow = createWorkflow(
 
     const createdProducts = createProductsStep(productWithoutPrices)
 
-    // Note: We rely on the same order of input and output when creating products here, make sure that assumption holds
+    // Note: We rely on the same order of input and output when creating products here, ensure this always holds true
     const variantsWithAssociatedPrices = transform(
       { input, createdProducts },
       (data) => {
