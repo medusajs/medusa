@@ -27,15 +27,18 @@ export interface UpsertAndReplaceRegionPaymentProvidersStepInput {
     | {
         regions: { id: string }[]
         payment_providers: string[]
-      }
+      }[]
 }
+
+type LinkItems = {
+  [Modules.REGION]: { region_id: string }
+  [Modules.PAYMENT]: { payment_provider_id: string }
+}[]
 
 async function validatePaymentProvidersExists(
   paymentService: IPaymentModuleService,
-  data: UpsertAndReplaceRegionPaymentProvidersStepInput["input"]
+  paymentProviderIds: string[]
 ) {
-  const paymentProviderIds = Array.from(new Set(data.payment_providers))
-
   const paymentProviders = await paymentService.listPaymentProviders({
     id: { $in: paymentProviderIds },
     is_enabled: true,
@@ -94,6 +97,57 @@ async function getCurrentRegionPaymentProvidersLinks(
   })
 }
 
+async function validateAndNormalizeRegionsProvidersData(
+  input: UpsertAndReplaceRegionPaymentProvidersStepInput["input"],
+  {
+    regionService,
+  }: {
+    regionService: IRegionModuleService
+  }
+): Promise<Map<string, string[]>> {
+  const normalizedInput = Array.isArray(input) ? input : [input]
+  const predicate = "regions" in input[0] ? "regions" : "region_selector"
+
+  const regionPaymentProvidersMap = new Map()
+
+  for (const inputData of normalizedInput) {
+    if ("regions" in inputData) {
+      if (predicate === "region_selector") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Invalid input, all input must either be regions or region_selector"
+        )
+      }
+
+      inputData.regions.forEach((region) => {
+        regionPaymentProvidersMap.set(region.id, inputData.payment_providers)
+      })
+    } else if ("region_selector" in inputData) {
+      if (predicate === "regions") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Invalid input, all input must either be regions or region_selector"
+        )
+      }
+
+      const regions = await regionService.list(inputData.region_selector, {
+        select: ["id"],
+      })
+
+      regions.forEach((region) => {
+        regionPaymentProvidersMap.set(region.id, inputData.payment_providers)
+      })
+    } else {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid input, must provide either regions or region_selector"
+      )
+    }
+  }
+
+  return regionPaymentProvidersMap
+}
+
 export const upsertAndReplaceRegionPaymentProvidersStepId =
   "add-region-payment-providers-step"
 export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
@@ -102,11 +156,13 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
     data: UpsertAndReplaceRegionPaymentProvidersStepInput,
     { container }
   ) => {
-    if (!data.input?.payment_providers) {
+    const normalizedInput = Array.isArray(data.input)
+      ? data.input
+      : [data.input]
+
+    if (!normalizedInput.length) {
       return new StepResponse(void 0)
     }
-
-    const { input } = data
 
     const regionService = container.resolve<IRegionModuleService>(
       ModuleRegistrationName.REGION
@@ -114,25 +170,6 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
     const paymentService = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )
-
-    await validatePaymentProvidersExists(paymentService, input)
-
-    const paymentProviderIds = Array.from(new Set(input.payment_providers))
-    let regions: { id: string }[] = []
-
-    if ("regions" in input) {
-      regions = input.regions
-    } else if ("region_selector" in input) {
-      regions = await regionService.list(input.region_selector, {
-        select: ["id"],
-      })
-    } else {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Invalid input, must provide either regions or region_selector"
-      )
-    }
-
     const remoteLink = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK
     )
@@ -140,43 +177,71 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
+    const allPaymentProviderIds = normalizedInput
+      .map((inputData) => {
+        return inputData.payment_providers
+      })
+      .flat()
+    const uniquePaymentProviderIds = Array.from(new Set(allPaymentProviderIds))
+
+    await validatePaymentProvidersExists(
+      paymentService,
+      uniquePaymentProviderIds
+    )
+
+    const normalizedData = await validateAndNormalizeRegionsProvidersData(
+      data.input,
+      {
+        regionService,
+      }
+    )
+
     const currentExistingLinks = await getCurrentRegionPaymentProvidersLinks(
-      regions.map((r) => r.id),
+      [...normalizedData.keys()],
       { remoteQuery }
     )
 
-    const existingPaymentProviderIdLink = currentExistingLinks.map(
-      (existingLink) => existingLink[Modules.PAYMENT].payment_provider_id
-    )
+    const linksToRemove = currentExistingLinks
+      .filter((existingLink) => {
+        const providers =
+          normalizedData.get(existingLink[Modules.REGION].region_id) ?? []
+        return !providers.includes(
+          existingLink[Modules.PAYMENT].payment_provider_id
+        )
+      })
+      .map((link) => {
+        return {
+          [Modules.REGION]: { region_id: link[Modules.REGION].region_id },
+          [Modules.PAYMENT]: {
+            payment_provider_id: link[Modules.PAYMENT].payment_provider_id,
+          },
+        }
+      })
 
-    const linksToRemove = arrayDifference(
-      existingPaymentProviderIdLink,
-      paymentProviderIds
-    ).map((paymentProviderId) => {
-      return currentExistingLinks.find(
-        (existingLink) =>
-          existingLink[Modules.PAYMENT].payment_provider_id ===
-          paymentProviderId
-      )!
-    })
+    const linksToCreate = Array.from(normalizedData.entries())
+      .map(([regionId, providers]) => {
+        const toCreate: LinkItems = []
 
-    const linksToCreate = arrayDifference(
-      paymentProviderIds,
-      existingPaymentProviderIdLink
-    )
-      .map((paymentProviderId) => {
-        return regions.map((region) => {
-          return {
-            [Modules.REGION]: {
-              region_id: region.id,
-            },
-            [Modules.PAYMENT]: {
-              payment_provider_id: paymentProviderId as string,
-            },
+        for (const provider of providers) {
+          const exists = currentExistingLinks.some((existingLink) => {
+            return (
+              existingLink[Modules.REGION].region_id === regionId &&
+              existingLink[Modules.PAYMENT].payment_provider_id === provider
+            )
+          })
+
+          if (!exists) {
+            toCreate.push({
+              [Modules.REGION]: { region_id: regionId },
+              [Modules.PAYMENT]: { payment_provider_id: provider },
+            })
           }
-        })
+        }
+
+        return toCreate
       })
       .flat()
+      .filter(Boolean)
 
     await promiseAll([
       remoteLink.dismiss(linksToRemove),

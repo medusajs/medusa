@@ -43,7 +43,7 @@ export const POST = async (
   ]
 
   const { result, errors } = await createRegionsWorkflow(req.scope).run({
-    input: { regionsData: input },
+    input: { regions: input },
     throwOnError: false,
   })
 

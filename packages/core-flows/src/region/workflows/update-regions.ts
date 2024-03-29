@@ -1,19 +1,18 @@
-import { RegionDTO } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/types"
 import {
   createWorkflow,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
-import { UpdateRegionsWorkflowInput } from "@medusajs/types/dist/workflow/region"
 import { upsertAndReplaceRegionPaymentProvidersStep } from "../steps/upsert-and-replace-region-payment-providers"
 
 export const updateRegionsWorkflowId = "update-regions"
 export const updateRegionsWorkflow = createWorkflow(
   updateRegionsWorkflowId,
   (
-    input: WorkflowData<UpdateRegionsWorkflowInput>
-  ): WorkflowData<RegionDTO[]> => {
+    input: WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowInput>
+  ): WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
     const data = transform(input, (data) => {
       const { selector, update } = data
       const { payment_providers = [], ...rest } = update
@@ -26,11 +25,20 @@ export const updateRegionsWorkflow = createWorkflow(
 
     const regions = updateRegionsStep(data)
 
+    const upsertProvidersNormalizedInput = transform(
+      { data, regions },
+      (data) => {
+        return [
+          {
+            regions: data.regions,
+            payment_providers: data.data.payment_providers,
+          },
+        ]
+      }
+    )
+
     upsertAndReplaceRegionPaymentProvidersStep({
-      input: {
-        regions,
-        payment_providers: data.payment_providers,
-      },
+      input: upsertProvidersNormalizedInput,
     })
 
     return regions

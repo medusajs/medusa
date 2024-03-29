@@ -90,6 +90,11 @@ export class AdminPostRegionsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers?: string[]
 }
 
 export class AdminPostRegionsRegionReq {

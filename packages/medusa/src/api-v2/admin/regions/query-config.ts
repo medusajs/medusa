@@ -19,6 +19,7 @@ export const retrieveTransformQueryConfig = {
 }
 
 export const listTransformQueryConfig = {
+  defaults: defaultAdminRegionFields,
   defaultLimit: 20,
   isList: true,
 }
