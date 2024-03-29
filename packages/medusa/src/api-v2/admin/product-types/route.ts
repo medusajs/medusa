@@ -12,6 +12,7 @@ import {
   AdminPostProductTypesReq,
 } from "./validators"
 import { createProductTypesWorkflow } from "@medusajs/core-flows"
+import { refetchProductType } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTypesParams>,
@@ -52,5 +53,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_type: result[0] })
+  const productType = await refetchProductType(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ product_type: productType })
 }

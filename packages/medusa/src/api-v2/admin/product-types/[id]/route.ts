@@ -9,6 +9,7 @@ import {
 
 import { UpdateProductTypeDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { refetchProductType } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -45,7 +46,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product_type: result[0] })
+  const productType = await refetchProductType(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ product_type: productType })
 }
 
 export const DELETE = async (
