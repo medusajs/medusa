@@ -13,6 +13,7 @@ import InputField from "../../../../molecules/input"
 import { PricesFormType } from "../../../general/prices-form"
 import { nestedForm } from "../../../../../utils/nested-form"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { useTranslation } from "react-i18next"
 
 export type EditFlowVariantFormType = {
   /**
@@ -57,6 +58,7 @@ type Props = {
  * }
  */
 const EditFlowVariantForm = ({ form, isEdit }: Props) => {
+  const { t } = useTranslation()
   const { isFeatureEnabled } = useFeatureFlag()
   const { fields } = useFieldArray({
     control: form.control,
@@ -67,15 +69,24 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
 
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
-      <Accordion.Item title="General" value="general" required>
+      <Accordion.Item
+        title={t("edit-flow-variant-form-general-title", "General")}
+        value="general"
+        required
+      >
         <div>
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
             <div className="mb-base gap-x-2xsmall flex items-center">
-              <h3 className="inter-base-semibold">Options</h3>
+              <h3 className="inter-base-semibold">
+                {t("edit-flow-variant-form-options-title", "Options")}
+              </h3>
               <IconTooltip
                 type="info"
-                content="Options are used to define the color, size, etc. of the variant."
+                content={t(
+                  "edit-flow-variant-form-options-tooltip",
+                  "Options are used to define the color, size, etc. of the variant."
+                )}
               />
             </div>
             <div className="gap-large pb-2xsmall grid grid-cols-2">
@@ -86,7 +97,11 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
                     key={field.id}
                     label={field.title}
                     {...form.register(`options.${index}.value`, {
-                      required: `Option value for ${field.title} is required`,
+                      required: t(
+                        "edit-flow-variant-form-option-input-error",
+                        `Option value for {{field}} is required`,
+                        { field: field.title }
+                      ),
                     })}
                     errors={form.formState.errors}
                   />
@@ -97,36 +112,62 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
         </div>
       </Accordion.Item>
       {showStockAndInventory && (
-        <Accordion.Item title="Stock & Inventory" value="stock">
+        <Accordion.Item
+          title={t(
+            "edit-flow-variant-form-stock-inventory-title",
+            "Stock & Inventory"
+          )}
+          value="stock"
+        >
           <VariantStockForm form={nestedForm(form, "stock")} />
         </Accordion.Item>
       )}
-      <Accordion.Item title="Shipping" value="shipping">
+      <Accordion.Item
+        title={t("edit-flow-variant-form-shipping-title", "Shipping")}
+        value="shipping"
+      >
         <p className="inter-base-regular text-grey-50">
-          Shipping information can be required depending on your shipping
-          provider, and whether or not you are shipping internationally.
+          {t(
+            "edit-flow-variant-form-shipping-description",
+            "Shipping information can be required depending on your shipping provider, and whether or not you are shipping internationally."
+          )}
         </p>
         <div className="mt-large">
-          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">
+            {t("edit-flow-variant-form-dimensions-title", "Dimensions")}
+          </h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure to calculate the most accurate shipping rates.
+            {t(
+              "edit-flow-variant-form-dimensions-description",
+              "Configure to calculate the most accurate shipping rates."
+            )}
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
         {showStockAndInventory && (
           <div className="mt-xlarge">
-            <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+            <h3 className="inter-base-semibold mb-2xsmall">
+              {t("edit-flow-variant-form-customs-title", "Customs")}
+            </h3>
             <p className="inter-base-regular text-grey-50 mb-large">
-              Configure if you are shipping internationally.
+              {t(
+                "edit-flow-variant-form-customs-description",
+                "Configure if you are shipping internationally."
+              )}
             </p>
             <CustomsForm form={nestedForm(form, "customs")} />
           </div>
         )}
       </Accordion.Item>
-      <Accordion.Item title="Metadata" value="metadata">
+      <Accordion.Item
+        title={t("edit-flow-variant-form-metadata-title", "Metadata")}
+        value="metadata"
+      >
         <p className="inter-base-regular text-grey-50 mb-base">
-          Metadata can be used to store additional information about the
-          variant.
+          {t(
+            "edit-flow-variant-form-metadata-description",
+            "Metadata can be used to store additional information about the variant."
+          )}
         </p>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </Accordion.Item>

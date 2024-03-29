@@ -128,7 +128,10 @@ const ProductVariantsSection = ({ product }: Props) => {
 
   return (
     <OptionsProvider product={product}>
-      <Section title="Variants" actions={actions}>
+      <Section
+        title={t("product-variants-section-variants", "Variants")}
+        actions={actions}
+      >
         <ProductOptions />
         <div className="mt-xlarge">
           <h2 className="inter-large-semibold mb-base">
