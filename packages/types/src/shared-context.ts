@@ -76,4 +76,9 @@ export type Context<TManager = unknown> = {
    * A string indicating the ID of the current request.
    */
   requestId?: string
+
+  /**
+   * A string indicating the idempotencyKey of the current workflow execution.
+   */
+  idempotencyKey?: string
 }

@@ -38,7 +38,6 @@ export function getLinkRepository(model: EntitySchema) {
           this.joinerConfig_.databaseConfig?.idPrefix ?? "link"
         )
         link.deleted_at = null
-
         return manager.create(model, link)
       })
 
