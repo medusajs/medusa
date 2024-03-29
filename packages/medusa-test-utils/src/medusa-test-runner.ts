@@ -54,6 +54,7 @@ const dbTestUtilFactory = (): any => ({
   shutdown: async function (dbName: string) {
     await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
+    await this.pgConnection_?.destroy()
 
     return await dropDatabase(
       { databaseName: dbName, errorIfNonExist: false },
