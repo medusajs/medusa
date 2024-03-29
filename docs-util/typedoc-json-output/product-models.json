@@ -1054,8 +1054,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -1065,10 +1074,19 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "reference",
-						"target": 141,
-						"name": "ProductOption",
-						"package": "@medusajs/product"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 141,
+								"name": "ProductOption",
+								"package": "@medusajs/product"
+							}
+						]
 					}
 				},
 				{
@@ -1344,8 +1362,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -1355,10 +1382,19 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "reference",
-						"target": 1,
-						"name": "Product",
-						"package": "@medusajs/product"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 1,
+								"name": "Product",
+								"package": "@medusajs/product"
+							}
+						]
 					}
 				},
 				{
@@ -2109,8 +2145,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -2687,8 +2732,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -2698,10 +2752,19 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "reference",
-						"target": 1,
-						"name": "Product",
-						"package": "@medusajs/product"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 1,
+								"name": "Product",
+								"package": "@medusajs/product"
+							}
+						]
 					}
 				},
 				{
@@ -3310,8 +3373,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -3343,8 +3415,17 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
 					}
 				},
 				{
@@ -3354,10 +3435,19 @@
 					"kind": 1024,
 					"flags": {},
 					"type": {
-						"type": "reference",
-						"target": 94,
-						"name": "ProductType",
-						"package": "@medusajs/product"
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 94,
+								"name": "ProductType",
+								"package": "@medusajs/product"
+							}
+						]
 					}
 				},
 				{

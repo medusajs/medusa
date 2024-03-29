@@ -952,11 +952,32 @@ To test resending a notification:
     // PAYMENT PROVIDER CONFIG
     "^payment_provider": {
       frontmatterData: {
+        displayed_sidebar: "experimentalSidebar",
+      },
+      maxLevel: 2,
+    },
+    "^payment_provider/.*AbstractPaymentProvider": {
+      reflectionDescription: `In this document, you’ll learn how to create a Payment Provider to be used with the Payment Module.`,
+      frontmatterData: {
+        displayed_sidebar: "experimentalSidebar",
+        slug: "/references/payment/provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Payment Provider",
+      },
+      reflectionGroups: {
+        Properties: false,
+      },
+    },
+
+    // PAYMENT PROCESSOR CONFIG
+    "^payment_processor": {
+      frontmatterData: {
         displayed_sidebar: "modules",
       },
       maxLevel: 2,
     },
-    "^payment_provider/.*AbstractPaymentProcessor": {
+    "^payment_processor/.*AbstractPaymentProcessor": {
       reflectionDescription: `In this document, you’ll learn how to create a Payment Processor in your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](https://docs.medusajs.com/modules/carts-and-checkout/payment) first.`,
       frontmatterData: {
         displayed_sidebar: "modules",

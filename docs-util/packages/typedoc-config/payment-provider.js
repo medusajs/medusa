@@ -2,7 +2,7 @@
 const getConfig = require("./utils/get-config")
 
 module.exports = getConfig({
-  entryPointPath: "packages/medusa/src/interfaces/payment-processor.ts",
-  tsConfigName: "medusa.json",
+  entryPointPath: "packages/utils/src/payment/abstract-payment-provider.ts",
+  tsConfigName: "utils.json",
   name: "payment-provider",
 })
