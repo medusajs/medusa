@@ -1,6 +1,7 @@
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
+import { useTranslation } from "react-i18next"
 
 export type DimensionsFormType = {
   length: number | null
@@ -19,6 +20,7 @@ type DimensionsFormProps = {
  * <DimensionsForm form={nestedForm(form, "dimensions")} />
  */
 const DimensionsForm = ({ form }: DimensionsFormProps) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -28,7 +30,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
   return (
     <div className="gap-x-large grid grid-cols-4">
       <InputField
-        label="Width"
+        label={t("dimensions-form-width-input-label", "Width")}
         placeholder="100..."
         type="number"
         {...register(path("width"), {
@@ -38,7 +40,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Length"
+        label={t("dimensions-form-length-input-label", "Length")}
         placeholder="100..."
         type="number"
         {...register(path("length"), {
@@ -48,7 +50,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Height"
+        label={t("dimensions-form-height-input-label", "Height")}
         placeholder="100..."
         type="number"
         {...register(path("height"), {
@@ -58,7 +60,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Weight"
+        label={t("dimensions-form-weight-input-label", "Weight")}
         placeholder="100..."
         type="number"
         {...register(path("weight"), {
