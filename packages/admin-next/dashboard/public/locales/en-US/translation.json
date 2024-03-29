@@ -502,6 +502,16 @@
       "disabled": "Disabled"
     }
   },
+  "promotions": {
+    "domain": "Promotions",
+    "fields": {
+      "method": "Method",
+      "campaign": "Campaign"
+    },
+    "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
+    "createPromotionTitle": "Create Promotion",
+    "type": "Promotion type"
+  },
   "pricing": {
     "domain": "Pricing",
     "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
@@ -800,6 +810,12 @@
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
+  },
+  "statuses": {
+    "scheduled": "Scheduled",
+    "expired": "Expired",
+    "active": "Active",
+    "disabled": "Disabled"
   },
   "fields": {
     "amount": "Amount",

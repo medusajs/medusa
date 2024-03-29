@@ -77,6 +77,18 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/promotions",
+            handle: {
+              crumb: () => "Promotions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+            ],
+          },
         ],
       },
     ],

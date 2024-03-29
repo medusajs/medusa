@@ -32,6 +32,50 @@ let {
 
 jest.setTimeout(50000)
 
+const getProductFixture = () => ({
+  title: "Test fixture",
+  description: "test-product-description",
+  images: breaking(
+    () => ["test-image.png", "test-image-2.png"],
+    () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
+  ),
+  tags: [{ value: "123" }, { value: "456" }],
+  options: breaking(
+    () => [{ title: "size" }, { title: "color" }],
+    () => [
+      { title: "size", values: ["large"] },
+      { title: "color", values: ["green"] },
+    ]
+  ),
+  variants: [
+    {
+      title: "Test variant",
+      inventory_quantity: 10,
+      prices: [
+        {
+          currency_code: "usd",
+          amount: 100,
+        },
+        {
+          currency_code: "eur",
+          amount: 45,
+        },
+        {
+          currency_code: "dkk",
+          amount: 30,
+        },
+      ],
+      options: breaking(
+        () => [{ value: "large" }, { value: "green" }],
+        () => ({
+          size: "large",
+          color: "green",
+        })
+      ),
+    },
+  ],
+})
+
 medusaIntegrationTestRunner({
   env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -41,7 +85,6 @@ medusaIntegrationTestRunner({
     let scService
     let remoteLink
     let container
-    let productFixture
 
     beforeAll(() => {
       // Note: We have to lazily load everything because there are weird ordering issues when doing `require` of `@medusajs/medusa`
@@ -69,54 +112,12 @@ medusaIntegrationTestRunner({
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
-      productFixture = {
-        title: "Test fixture",
-        description: "test-product-description",
-        type: { value: "test-type" },
-        images: ["test-image.png", "test-image-2.png"],
-        tags: [{ value: "123" }, { value: "456" }],
-        options: breaking(
-          () => [{ title: "size" }, { title: "color" }],
-          () => [
-            { title: "size", values: ["large"] },
-            { title: "color", values: ["green"] },
-          ]
-        ),
-        variants: [
-          {
-            title: "Test variant",
-            inventory_quantity: 10,
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 100,
-              },
-              {
-                currency_code: "eur",
-                amount: 45,
-              },
-              {
-                currency_code: "dkk",
-                amount: 30,
-              },
-            ],
-            options: breaking(
-              () => [{ value: "large" }, { value: "green" }],
-              () => ({
-                size: "large",
-                color: "green",
-              })
-            ),
-          },
-        ],
-      }
-
       // We want to seed another product for v2 that has pricing correctly wired up for all pricing-related tests.
       v2Product = (
         await breaking(
           async () => ({}),
           async () =>
-            await api.post("/admin/products", productFixture, adminHeaders)
+            await api.post("/admin/products", getProductFixture(), adminHeaders)
         )
       )?.data?.product
 
@@ -475,13 +476,13 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: breaking(
                   () => "test-price_4",
-                  () => expect.stringMatching(/^ma_*/)
+                  () => expect.stringMatching(/^price_*/)
                 ),
               }),
               expect.objectContaining({
                 id: breaking(
                   () => "test-price_3",
-                  () => expect.stringMatching(/^ma_*/)
+                  () => expect.stringMatching(/^price_*/)
                 ),
               }),
             ])
@@ -1398,7 +1399,11 @@ medusaIntegrationTestRunner({
             .post(
               "/admin/products",
               {
-                ...productFixture,
+                ...getProductFixture(),
+                ...breaking(
+                  () => ({ type: { value: "test-type" } }),
+                  () => ({ type_id: "test-type" })
+                ),
                 title: "Test create",
                 collection_id: "test-collection",
               },
@@ -1407,6 +1412,11 @@ medusaIntegrationTestRunner({
             .catch((err) => {
               console.log(err)
             })
+
+          const priceIdSelector = breaking(
+            () => /^ma_*/,
+            () => /^price_*/
+          )
 
           // TODO: It seems we end up with this recursive nested population (product -> variant -> product) that we need to get rid of
           expect(response.status).toEqual(200)
@@ -1502,7 +1512,7 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                   prices: expect.arrayContaining([
                     expect.objectContaining({
-                      id: expect.stringMatching(/^ma_*/),
+                      id: expect.stringMatching(priceIdSelector),
                       currency_code: "usd",
                       amount: 100,
                       created_at: expect.any(String),
@@ -1510,7 +1520,7 @@ medusaIntegrationTestRunner({
                       variant_id: expect.stringMatching(/^variant_*/),
                     }),
                     expect.objectContaining({
-                      id: expect.stringMatching(/^ma_*/),
+                      id: expect.stringMatching(priceIdSelector),
                       currency_code: "eur",
                       amount: 45,
                       created_at: expect.any(String),
@@ -1518,7 +1528,7 @@ medusaIntegrationTestRunner({
                       variant_id: expect.stringMatching(/^variant_*/),
                     }),
                     expect.objectContaining({
-                      id: expect.stringMatching(/^ma_*/),
+                      id: expect.stringMatching(priceIdSelector),
                       currency_code: "dkk",
                       amount: 30,
                       created_at: expect.any(String),
@@ -1579,8 +1589,10 @@ medusaIntegrationTestRunner({
             title: "Test",
             discountable: false,
             description: "test-product-description",
-            type: { value: "test-type" },
-            images: ["test-image.png", "test-image-2.png"],
+            images: breaking(
+              () => ["test-image.png", "test-image-2.png"],
+              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
+            ),
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
             variants: [
@@ -1610,8 +1622,10 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             description: "test-product-description 1",
-            type: { value: "test-type 1" },
-            images: ["test-image.png", "test-image-2.png"],
+            images: breaking(
+              () => ["test-image.png", "test-image-2.png"],
+              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
+            ),
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
             variants: [
@@ -1706,8 +1720,10 @@ medusaIntegrationTestRunner({
               },
             ],
             tags: [{ value: "123" }],
-            images: ["test-image-2.png"],
-            type: { value: "test-type-2" },
+            images: breaking(
+              () => ["test-image-2.png"],
+              () => [{ url: "test-image-2.png" }]
+            ),
             status: "published",
           }
 
@@ -1771,8 +1787,7 @@ medusaIntegrationTestRunner({
                 updated_at: expect.any(String),
                 value: "test-type-2",
               }),
-              // TODO: For some reason this is `test-type`, but the ID is correct in the `type` property.
-              // type_id: expect.stringMatching(/^ptyp_*/),
+              type_id: expect.stringMatching(/^ptyp_*/),
               updated_at: expect.any(String),
               variants: expect.arrayContaining([
                 expect.objectContaining({
@@ -2929,8 +2944,10 @@ medusaIntegrationTestRunner({
             title: "Test product",
             handle: "test-product",
             description: "test-product-description",
-            type: { value: "test-type" },
-            images: ["test-image.png", "test-image-2.png"],
+            images: breaking(
+              () => ["test-image.png", "test-image-2.png"],
+              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
+            ),
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
             variants: [
@@ -2964,8 +2981,10 @@ medusaIntegrationTestRunner({
             title: "Test product",
             handle: "test-product",
             description: "test-product-description",
-            type: { value: "test-type" },
-            images: ["test-image.png", "test-image-2.png"],
+            images: breaking(
+              () => ["test-image.png", "test-image-2.png"],
+              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
+            ),
             collection_id: "test-collection",
             tags: [{ value: "123" }, { value: "456" }],
             variants: [
