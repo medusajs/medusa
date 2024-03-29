@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
+  CreatePriceSetDTO,
   CreatePricesDTO,
   DAL,
   InternalModuleDeclaration,
@@ -13,6 +14,7 @@ import {
   PricingRepositoryService,
   PricingTypes,
   RuleTypeDTO,
+  UpsertPriceSetDTO,
 } from "@medusajs/types"
 import {
   arrayDifference,
@@ -22,6 +24,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -46,6 +49,7 @@ import { validatePriceListDates } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { PriceSetIdPrefix } from "../models/price-set"
 import { PriceListIdPrefix } from "../models/price-list"
+import { UpdatePriceSetInput } from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -235,6 +239,7 @@ export default class PricingModuleService<
     const input = Array.isArray(data) ? data : [data]
     const priceSets = await this.create_(input, sharedContext)
 
+    // TODO: Remove the need to refetch the data here
     const dbPriceSets = await this.list(
       { id: priceSets.map((p) => p.id) },
       { relations: ["rule_types", "prices", "price_rules"] },
@@ -246,7 +251,104 @@ export default class PricingModuleService<
       return dbPriceSets.find((p) => p.id === priceSet.id)!
     })
 
-    return Array.isArray(data) ? results : results[0]
+    return await this.baseRepository_.serialize<PriceSetDTO[] | PriceSetDTO>(
+      Array.isArray(data) ? results : results[0]
+    )
+  }
+
+  async upsert(
+    data: UpsertPriceSetDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+  async upsert(
+    data: UpsertPriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
+  @InjectManager("baseRepository_")
+  async upsert(
+    data: UpsertPriceSetDTO | UpsertPriceSetDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PriceSetDTO | PriceSetDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (priceSet): priceSet is UpdatePriceSetInput => !!priceSet.id
+    )
+    const forCreate = input.filter(
+      (priceSet): priceSet is CreatePriceSetDTO => !priceSet.id
+    )
+
+    const operations: Promise<PriceSet[]>[] = []
+
+    if (forCreate.length) {
+      operations.push(this.create_(forCreate, sharedContext))
+    }
+    if (forUpdate.length) {
+      operations.push(this.update_(forUpdate, sharedContext))
+    }
+
+    const result = (await promiseAll(operations)).flat()
+    return await this.baseRepository_.serialize<PriceSetDTO[] | PriceSetDTO>(
+      Array.isArray(data) ? result : result[0]
+    )
+  }
+
+  async update(
+    id: string,
+    data: PricingTypes.UpdatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+  async update(
+    selector: PricingTypes.FilterablePriceSetProps,
+    data: PricingTypes.UpdatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
+  @InjectManager("baseRepository_")
+  async update(
+    idOrSelector: string | PricingTypes.FilterablePriceSetProps,
+    data: PricingTypes.UpdatePriceSetDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PriceSetDTO | PriceSetDTO[]> {
+    let normalizedInput: UpdatePriceSetInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the ID exists, it will throw if not.
+      await this.priceSetService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const priceSets = await this.priceSetService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = priceSets.map((priceSet) => ({
+        id: priceSet.id,
+        ...data,
+      }))
+    }
+
+    const updateResult = await this.update_(normalizedInput, sharedContext)
+    const priceSets = await this.baseRepository_.serialize<
+      PriceSetDTO[] | PriceSetDTO
+    >(updateResult)
+
+    return isString(idOrSelector) ? priceSets[0] : priceSets
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    data: UpdatePriceSetInput[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PriceSet[]> {
+    // TODO: We are not handling rule types, rules, etc. here, add support after data models are finalized
+    // TODO: Since money IDs are rarely passed, this will delete all previous data and insert new entries.
+    // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
+    return this.priceSetService_.upsertWithReplace(
+      data,
+      { relations: ["prices"] },
+      sharedContext
+    )
   }
 
   async addRules(
@@ -353,18 +455,6 @@ export default class PricingModuleService<
     await this.priceService_.delete(
       priceRules.map((pr) => pr.price.id),
       sharedContext
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async update(
-    data: PricingTypes.UpdatePriceSetDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const priceSets = await this.priceSetService_.update(data, sharedContext)
-
-    return await this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-      priceSets
     )
   }
 

@@ -48,14 +48,20 @@ class ProductOption {
   @Property({ columnType: "text" })
   title: string
 
-  @Property({ columnType: "text", nullable: true })
-  product_id!: string
+  @ManyToOne(() => Product, {
+    columnType: "text",
+    fieldName: "product_id",
+    mapToPk: true,
+    nullable: true,
+    onDelete: "cascade",
+  })
+  product_id: string | null
 
   @ManyToOne(() => Product, {
-    fieldName: "product_id",
+    persist: false,
     nullable: true,
   })
-  product!: Product
+  product: Product | null
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
@@ -87,11 +93,13 @@ class ProductOption {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "opt")
+    this.product_id ??= this.product?.id ?? null
   }
 
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "opt")
+    this.product_id ??= this.product?.id ?? null
   }
 }
 

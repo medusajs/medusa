@@ -6,6 +6,7 @@ import { useAdminAcceptInvite } from "medusa-react"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
+import i18n from "i18next"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -26,7 +27,7 @@ const CreateAccountSchema = z
     if (password !== repeat_password) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Passwords do not match",
+        message: i18n.t("invite.passwordMismatch"),
         path: ["repeat_password"],
       })
     }
