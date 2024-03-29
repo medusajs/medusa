@@ -9,16 +9,12 @@ interface StepInput {
   }[]
 }
 
-export const associateApiKeysWithSalesChannelsStepId =
-  "associate-sales-channels-with-api-keys"
-export const associateApiKeysWithSalesChannelsStep = createStep(
-  associateApiKeysWithSalesChannelsStepId,
+export const detachApiKeysWithSalesChannelsStepId =
+  "detach-sales-channels-with-api-keys"
+export const detachApiKeysWithSalesChannelsStep = createStep(
+  detachApiKeysWithSalesChannelsStepId,
   async (input: StepInput, { container }) => {
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-
-    if (!input.links) {
-      return
-    }
 
     const links = input.links
       .map((link) => {
@@ -35,17 +31,17 @@ export const associateApiKeysWithSalesChannelsStep = createStep(
       })
       .flat()
 
-    const createdLinks = await remoteLink.create(links)
+    await remoteLink.dismiss(links)
 
-    return new StepResponse(createdLinks, links)
+    return new StepResponse(void 0, links)
   },
   async (links, { container }) => {
-    if (!links) {
+    if (!links?.length) {
       return
     }
 
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
-    await remoteLink.dismiss(links)
+    await remoteLink.create(links)
   }
 )
