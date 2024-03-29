@@ -10,6 +10,7 @@ import {
   FlowRunOptions,
   MedusaWorkflow,
   ReturnWorkflow,
+  resolveValue,
 } from "@medusajs/workflows-sdk"
 import Redis from "ioredis"
 import { ulid } from "ulid"
@@ -512,30 +513,39 @@ export class WorkflowOrchestratorService {
         await notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+        const stepName = step.definition.action!
+        const response = await resolveValue(
+          transaction.getContext().invoke[stepName],
+          transaction
+        )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         await notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: async ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
-        ]
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.INVOKE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         await notify({ eventType: "onStepFailure", step, errors })
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
+        const stepName = step.definition.action!
+        const response = transaction.getContext().compensate[stepName]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         await notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: async ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
-        ]
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.COMPENSATE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         await notify({ eventType: "onCompensateStepFailure", step, errors })

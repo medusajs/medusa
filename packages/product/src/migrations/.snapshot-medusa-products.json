@@ -944,7 +944,7 @@
             "id"
           ],
           "referencedTableName": "public.product",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1063,6 +1063,7 @@
             "id"
           ],
           "referencedTableName": "public.product_option",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
