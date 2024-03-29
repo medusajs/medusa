@@ -109,7 +109,6 @@ export class AdminCreateInviteRequest {
  */
 export class AdminPostInvitesInviteAcceptReq {
   /**
-   * The invite's first name.
    * If email is not passed, we default to using the email of the invite.
    */
   @IsString()

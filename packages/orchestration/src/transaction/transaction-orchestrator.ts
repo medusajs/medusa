@@ -631,21 +631,30 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction,
         })
 
+        const isAsync = step.isCompensating()
+          ? step.definition.compensateAsync
+          : step.definition.async
+
         const setStepFailure = async (
           error: Error | any,
           { endRetry }: { endRetry?: boolean } = {}
         ) => {
-          return TransactionOrchestrator.setStepFailure(
+          const ret = TransactionOrchestrator.setStepFailure(
             transaction,
             step,
             error,
             endRetry ? 0 : step.definition.maxRetries
           )
-        }
 
-        const isAsync = step.isCompensating()
-          ? step.definition.compensateAsync
-          : step.definition.async
+          if (isAsync) {
+            await transaction.scheduleRetry(
+              step,
+              step.definition.retryInterval ?? 0
+            )
+          }
+
+          return ret
+        }
 
         if (!isAsync) {
           hasSyncSteps = true

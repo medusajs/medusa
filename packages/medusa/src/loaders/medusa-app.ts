@@ -249,7 +249,6 @@ export async function runModulesLoader({
   }
   container: MedusaContainer
 }): Promise<void> {
-  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION

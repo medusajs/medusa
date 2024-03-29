@@ -502,6 +502,16 @@
       "disabled": "Disabled"
     }
   },
+  "promotions": {
+    "domain": "Promotions",
+    "fields": {
+      "method": "Method",
+      "campaign": "Campaign"
+    },
+    "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
+    "createPromotionTitle": "Create Promotion",
+    "type": "Promotion type"
+  },
   "pricing": {
     "domain": "Pricing",
     "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
@@ -738,9 +748,10 @@
     "invalidInvite": "The invite is invalid or has expired.",
     "successTitle": "Your account has been created",
     "successHint": "Get started with Medusa Admin right away.",
-    "successAction": "Start using Medusa",
+    "successAction": "Sign in to start using Medusa",
     "invalidTokenTitle": "Your invite token is invalid",
-    "invalidTokenHint": "Try requesting a new invite link."
+    "invalidTokenHint": "Try requesting a new invite link.",
+    "passwordMismatch": "Passwords do not match"
   },
   "resetPassword": {
     "title": "Reset password",
@@ -799,6 +810,12 @@
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
+  },
+  "statuses": {
+    "scheduled": "Scheduled",
+    "expired": "Expired",
+    "active": "Active",
+    "disabled": "Disabled"
   },
   "fields": {
     "amount": "Amount",
