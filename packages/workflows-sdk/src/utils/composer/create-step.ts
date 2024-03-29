@@ -251,24 +251,16 @@ function wrapAsyncHandler(
       const originalInvoke = handle.invoke
 
       handle.invoke = async (stepArguments: WorkflowStepHandlerArguments) => {
-        originalInvoke(stepArguments)
-          .then(async (response: any) => {
-            if (
-              response?.__type !== OrchestrationUtils.SymbolWorkflowStepResponse
-            ) {
-              return
-            }
+        const response = (await originalInvoke(stepArguments)) as any
+        if (
+          response?.output?.__type !==
+          OrchestrationUtils.SymbolWorkflowStepResponse
+        ) {
+          return
+        }
 
-            await stepArguments.orchestrator.registerStepSuccess(
-              stepArguments.metadata.idempotency_key,
-              undefined,
-              stepArguments.transaction,
-              response
-            )
-          })
-          .catch((error) => {
-            throw error
-          })
+        stepArguments.step.definition.backgroundExecution = true
+        return response
       }
     }
   }
@@ -279,24 +271,17 @@ function wrapAsyncHandler(
       handle.compensate = async (
         stepArguments: WorkflowStepHandlerArguments
       ) => {
-        originalCompensate(stepArguments)
-          .then(async (response: any) => {
-            if (
-              response?.__type !== OrchestrationUtils.SymbolWorkflowStepResponse
-            ) {
-              return
-            }
+        const response = (await originalCompensate(stepArguments)) as any
 
-            await stepArguments.orchestrator.registerStepSuccess(
-              stepArguments.metadata.idempotency_key,
-              undefined,
-              stepArguments.transaction,
-              response
-            )
-          })
-          .catch((error) => {
-            throw error
-          })
+        if (
+          response?.output?.__type !==
+          OrchestrationUtils.SymbolWorkflowStepResponse
+        ) {
+          return
+        }
+        stepArguments.step.definition.backgroundExecution = true
+
+        return response
       }
     }
   }

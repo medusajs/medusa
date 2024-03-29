@@ -635,13 +635,11 @@ export class TransactionOrchestrator extends EventEmitter {
           ? step.definition.compensateAsync
           : step.definition.async
 
-        const isBackgroundExecution = step.definition.backgroundExecution
-
         const setStepFailure = async (
           error: Error | any,
           { endRetry }: { endRetry?: boolean } = {}
         ) => {
-          const ret = TransactionOrchestrator.setStepFailure(
+          await TransactionOrchestrator.setStepFailure(
             transaction,
             step,
             error,
@@ -654,8 +652,6 @@ export class TransactionOrchestrator extends EventEmitter {
               step.definition.retryInterval ?? 0
             )
           }
-
-          return ret
         }
 
         if (!isAsync) {
@@ -717,7 +713,7 @@ export class TransactionOrchestrator extends EventEmitter {
                   this
                 )
                 .then(async (response: any) => {
-                  if (!isBackgroundExecution) {
+                  if (!step.definition.backgroundExecution) {
                     return
                   }
 
