@@ -1,6 +1,6 @@
 {
   "name": "@nelomobile/medusa-admin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -27,7 +27,7 @@
     "directory": "packages/admin"
   },
   "dependencies": {
-    "@medusajs/admin-ui": "npm:@nelomobile/medusa-admin-ui@latest",
+    "@medusajs/admin-ui": "npm:@nelomobile/medusa-admin-ui@0.0.4",
     "@rollup/plugin-alias": "5.0.0",
     "@rollup/plugin-commonjs": "24.1.0",
     "@rollup/plugin-json": "6.0.0",
