@@ -9,7 +9,7 @@ type WorkflowInput = {
 }
 
 export const removeSalesChannelsFromApiKeyWorkflowId =
-  "remove-sales-channels-From-api-key"
+  "remove-sales-channels-from-api-key"
 export const removeSalesChannelsFromApiKeyWorkflow = createWorkflow(
   removeSalesChannelsFromApiKeyWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
