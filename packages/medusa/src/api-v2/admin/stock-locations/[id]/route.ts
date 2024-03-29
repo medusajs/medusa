@@ -4,10 +4,9 @@ import {
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-import { AdminPostStockLocationsLocationReq } from "../validators"
+import { deleteStockLocationsWorkflow, updateStockLocationsWorkflow } from "@medusajs/core-flows"
 import { MedusaError } from "@medusajs/utils"
-import { deleteStockLocationsWorkflow } from "@medusajs/core-flows"
-import { updateStockLocationsWorkflow } from "@medusajs/core-flows"
+import { AdminPostStockLocationsLocationReq } from "../validators"
 
 export const POST = async (
   req: MedusaRequest<AdminPostStockLocationsLocationReq>,

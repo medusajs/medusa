@@ -1,6 +1,7 @@
 import {
   JoinerRelationship,
   JoinerServiceConfig,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "../joiner"
 
@@ -276,10 +277,11 @@ export type ModuleBootstrapDeclaration =
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions
 
-export type RemoteQueryFunction = <T>(
+export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>
-) => Promise<T> | null
+  variables?: Record<string, unknown>,
+  options?: RemoteJoinerOptions
+) => Promise<any> | null
 
 export interface IModuleService {
   /**
@@ -292,5 +294,6 @@ export interface IModuleService {
    */
   __hooks?: {
     onApplicationStart?: () => Promise<void>
+    onApplicationShutdown?: () => Promise<void>
   }
 }
