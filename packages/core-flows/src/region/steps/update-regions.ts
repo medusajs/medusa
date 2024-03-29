@@ -29,6 +29,10 @@ export const updateRegionsStep = createStep(
       relations,
     })
 
+    if (Object.keys(data.update).length === 0) {
+      return new StepResponse(prevData, [])
+    }
+
     const regions = await service.update(data.selector, data.update)
 
     return new StepResponse(regions, prevData)

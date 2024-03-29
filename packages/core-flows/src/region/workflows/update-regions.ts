@@ -1,22 +1,32 @@
+import { RegionDTO } from "@medusajs/types"
 import {
-  FilterableRegionProps,
-  RegionDTO,
-  UpdateRegionDTO,
-} from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+  createWorkflow,
+  transform,
+  WorkflowData,
+} from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
-
-type UpdateRegionsStepInput = {
-  selector: FilterableRegionProps
-  update: UpdateRegionDTO
-}
-
-type WorkflowInput = UpdateRegionsStepInput
+import { UpdateRegionsWorkflowInput } from "@medusajs/types/dist/workflow/region"
 
 export const updateRegionsWorkflowId = "update-regions"
 export const updateRegionsWorkflow = createWorkflow(
   updateRegionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<RegionDTO[]> => {
-    return updateRegionsStep(input)
+  (
+    input: WorkflowData<UpdateRegionsWorkflowInput>
+  ): WorkflowData<RegionDTO[]> => {
+    const data = transform(input, (data) => {
+      const { selector, update } = data
+      const { payment_provider_ids, ...rest } = update
+      return {
+        selector,
+        update: rest,
+        payment_provider_ids,
+      }
+    })
+
+    const regions = updateRegionsStep(data)
+
+
+
+    return regions
   }
 )

@@ -276,10 +276,10 @@ export type ModuleBootstrapDeclaration =
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions
 
-export type RemoteQueryFunction = (
+export type RemoteQueryFunction = <T>(
   query: string | RemoteJoinerQuery | object,
   variables?: Record<string, unknown>
-) => Promise<any> | null
+) => Promise<T> | null
 
 export interface IModuleService {
   /**
