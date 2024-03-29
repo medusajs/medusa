@@ -16,11 +16,11 @@ export const updateRegionsWorkflow = createWorkflow(
   ): WorkflowData<RegionDTO[]> => {
     const data = transform(input, (data) => {
       const { selector, update } = data
-      const { payment_provider_ids = [], ...rest } = update
+      const { payment_providers = [], ...rest } = update
       return {
         selector,
         update: rest,
-        payment_provider_ids,
+        payment_providers,
       }
     })
 
@@ -29,7 +29,7 @@ export const updateRegionsWorkflow = createWorkflow(
     upsertAndReplaceRegionPaymentProvidersStep({
       input: {
         regions,
-        payment_provider_ids: data.payment_provider_ids,
+        payment_providers: data.payment_providers,
       },
     })
 

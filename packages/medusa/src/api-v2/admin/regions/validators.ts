@@ -112,5 +112,5 @@ export class AdminPostRegionsRegionReq {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  payment_provider_ids?: string[]
+  payment_providers?: string[]
 }

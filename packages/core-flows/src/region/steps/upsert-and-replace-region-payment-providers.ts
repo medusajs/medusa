@@ -22,11 +22,11 @@ export interface UpsertAndReplaceRegionPaymentProvidersStepInput {
   input:
     | {
         region_selector: FilterableRegionProps
-        payment_provider_ids: string[]
+        payment_providers: string[]
       }
     | {
         regions: { id: string }[]
-        payment_provider_ids: string[]
+        payment_providers: string[]
       }
 }
 
@@ -34,7 +34,7 @@ async function validatePaymentProvidersExists(
   paymentService: IPaymentModuleService,
   data: UpsertAndReplaceRegionPaymentProvidersStepInput["input"]
 ) {
-  const paymentProviderIds = Array.from(new Set(data.payment_provider_ids))
+  const paymentProviderIds = Array.from(new Set(data.payment_providers))
 
   const paymentProviders = await paymentService.listPaymentProviders({
     id: { $in: paymentProviderIds },
@@ -102,7 +102,7 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
     data: UpsertAndReplaceRegionPaymentProvidersStepInput,
     { container }
   ) => {
-    if (!data.input?.payment_provider_ids) {
+    if (!data.input?.payment_providers) {
       return
     }
 
@@ -117,7 +117,7 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
 
     await validatePaymentProvidersExists(paymentService, input)
 
-    const paymentProviderIds = Array.from(new Set(input.payment_provider_ids))
+    const paymentProviderIds = Array.from(new Set(input.payment_providers))
     let regions: { id: string }[] = []
 
     if ("regions" in input) {

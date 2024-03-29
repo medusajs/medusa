@@ -65,7 +65,7 @@ medusaIntegrationTestRunner({
         const paymentProvider2Id = "pp_system_default_2"
         const updateData = {
           name: "United States update",
-          payment_provider_ids: [paymentProviderId, paymentProvider2Id],
+          payment_providers: [paymentProviderId, paymentProvider2Id],
         }
 
         const workflow = updateRegionsWorkflow(container)

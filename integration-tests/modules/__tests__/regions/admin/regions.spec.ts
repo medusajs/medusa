@@ -115,7 +115,7 @@ medusaIntegrationTestRunner({
           .post(
             `/admin/regions/${created.data.region.id}`,
             {
-              payment_provider_ids: ["test"],
+              payment_providers: ["test"],
             },
             adminHeaders
           )
@@ -133,7 +133,7 @@ medusaIntegrationTestRunner({
         await api.post(
           `/admin/regions/${created.data.region.id}`,
           {
-            payment_provider_ids: [paymentProviderId],
+            payment_providers: [paymentProviderId],
           },
           adminHeaders
         )
@@ -163,7 +163,7 @@ medusaIntegrationTestRunner({
         await api.post(
           `/admin/regions/${created.data.region.id}`,
           {
-            payment_provider_ids: [paymentProvider2Id],
+            payment_providers: [paymentProvider2Id],
           },
           adminHeaders
         )
@@ -193,7 +193,7 @@ medusaIntegrationTestRunner({
         await api.post(
           `/admin/regions/${created.data.region.id}`,
           {
-            payment_provider_ids: [paymentProviderId, paymentProvider2Id],
+            payment_providers: [paymentProviderId, paymentProvider2Id],
           },
           adminHeaders
         )
