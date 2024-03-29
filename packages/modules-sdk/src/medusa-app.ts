@@ -12,6 +12,7 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
 } from "@medusajs/types"
@@ -346,9 +347,10 @@ async function MedusaApp_({
 
   const query = async (
     query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
   ) => {
-    return await remoteQuery.query(query, variables)
+    return await remoteQuery.query(query, variables, options)
   }
 
   const runMigrations: RunMigrationFn = async (
