@@ -99,22 +99,6 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     })
   }
 
-  /*private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
-    }
-
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
-    }
-
-    return value
-  }*/
-
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
@@ -276,7 +260,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id)
+      key.push(step.id, step.attempts + "")
     }
 
     return key.join(":")
