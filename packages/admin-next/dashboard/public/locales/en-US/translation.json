@@ -750,9 +750,10 @@
     "invalidInvite": "The invite is invalid or has expired.",
     "successTitle": "Your account has been created",
     "successHint": "Get started with Medusa Admin right away.",
-    "successAction": "Start using Medusa",
+    "successAction": "Sign in to start using Medusa",
     "invalidTokenTitle": "Your invite token is invalid",
-    "invalidTokenHint": "Try requesting a new invite link."
+    "invalidTokenHint": "Try requesting a new invite link.",
+    "passwordMismatch": "Passwords do not match"
   },
   "resetPassword": {
     "title": "Reset password",
