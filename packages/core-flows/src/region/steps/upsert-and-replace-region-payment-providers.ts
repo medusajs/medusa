@@ -103,7 +103,7 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
     { container }
   ) => {
     if (!data.input?.payment_providers) {
-      return
+      return new StepResponse(void 0)
     }
 
     const { input } = data
