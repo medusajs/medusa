@@ -2,9 +2,9 @@ import { Navigate, RouteObject, useLocation } from "react-router-dom"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
-import { Outlet } from "react-router-dom"
-
 import { Spinner } from "@medusajs/icons"
+import { AdminPromotionRes } from "@medusajs/medusa"
+import { Outlet } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
 import { SearchProvider } from "../search-provider"
@@ -86,6 +86,14 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-detail"),
+                handle: {
+                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                },
               },
             ],
           },

@@ -2,10 +2,9 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { PromotionDTO } from "@medusajs/types"
 import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminDeleteDiscount } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, Outlet, useLoaderData } from "react-router-dom"
+import { Link, Outlet, useLoaderData, useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -13,7 +12,10 @@ import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters-v2/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useV2Promotions } from "../../../../../lib/api-v2"
+import {
+  useV2DeletePromotion,
+  useV2Promotions,
+} from "../../../../../lib/api-v2"
 import { promotionsLoader } from "../../loader"
 
 const PAGE_SIZE = 20
@@ -80,25 +82,34 @@ export const PromotionListTable = () => {
 const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  // TODO: change to promotions delete endpoint
-  const { mutateAsync } = useAdminDeleteDiscount(promotion.id)
+  const navigate = useNavigate()
+  const { mutateAsync } = useV2DeletePromotion(promotion.id)
 
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("promotions.deleteWarning", {
-        code: promotion.code,
-      }),
+      description: t("promotions.deleteWarning", { code: promotion.code! }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
+      verificationInstruction: t("general.typeToConfirm"),
+      verificationText: promotion.code,
     })
 
     if (!res) {
       return
     }
 
-    // TODO: handle error scenario here
-    await mutateAsync()
+    try {
+      await mutateAsync(undefined, {
+        onSuccess: () => {
+          navigate("/promotions", { replace: true })
+        },
+      })
+    } catch {
+      throw new Error(
+        `Promotion with code ${promotion.code} could not be deleted`
+      )
+    }
   }
 
   return (
