@@ -31,6 +31,7 @@ import {
   UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
   UpdateRuleTypeDTO,
+  UpsertPriceSetDTO,
 } from "./common"
 
 import { FindConfig } from "../common"
@@ -602,18 +603,117 @@ export interface IPricingModuleService extends IModuleService {
   ): Promise<PriceSetDTO[]>
 
   /**
-   * @ignore
-   * @privateRemarks
-   * The update method shouldn't be documented at the moment
+   * This method updates existing price sets, or creates new ones if they don't exist.
    *
-   * This method is used to update existing price sets.
-   *
-   * @param {UpdatePriceSetDTO[]} data - The price sets to update, each having the attributes that should be updated in a price set.
+   * @param {UpsertPriceSetDTO[]} data - The attributes to update or create for each price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} The list of updated price sets.
+   * @returns {Promise<PriceSetDTO[]>} The updated and created price sets.
+   *
+   * @example
+   * import {
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *
+   * async function upsertPriceSet (title: string) {
+   *   const pricingModule = await initializePricingModule()
+   *
+   *   const createdPriceSets = await pricingModule.upsert([
+   *     {
+   *       prices: [{amount: 100, currency_code: "USD"}]
+   *     }
+   *   ])
+   *
+   *   // do something with the price sets or return them
+   * }
+   */
+  upsert(
+    data: UpsertPriceSetDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
+  /**
+   * This method updates the price set if it exists, or creates a new ones if it doesn't.
+   *
+   * @param {UpsertPriceSetDTO} data - The attributes to update or create for the new price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The updated or created price set.
+   *
+   * @example
+   * import {
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *
+   * async function upsertPriceSet (title: string) {
+   *   const pricingModule = await initializePricingModule()
+   *
+   *   const createdPriceSet = await pricingModule.upsert(
+   *     {
+   *       prices: [{amount: 100, currency_code: "USD"}]
+   *     }
+   *   )
+   *
+   *   // do something with the price set or return it
+   * }
+   */
+  upsert(data: UpsertPriceSetDTO, sharedContext?: Context): Promise<PriceSetDTO>
+
+  /**
+   * This method is used to update a price set.
+   *
+   * @param {string} id - The ID of the price set to be updated.
+   * @param {UpdatePriceSetDTO} data - The attributes of the price set to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The updated price set.
+   *
+   * @example
+   * import {
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *
+   * async function updatePriceSet (id: string, title: string) {
+   *   const pricingtModule = await initializePricingModule()
+   *
+   *   const priceSet = await pricingtModule.update(id, {
+   *       prices: [{amount: 100, currency_code: "USD"}]
+   *     }
+   *   )
+   *
+   *   // do something with the price set or return it
+   * }
    */
   update(
-    data: UpdatePriceSetDTO[],
+    id: string,
+    data: UpdatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
+  /**
+   * This method is used to update a list of price sets determined by the selector filters.
+   *
+   * @param {FilterablePriceSetProps} selector - The filters that will determine which price sets will be updated.
+   * @param {UpdatePriceSetDTO} data - The attributes to be updated on the selected price sets
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The updated price sets.
+   *
+   * @example
+   * import {
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *
+   * async function updatePriceSet(id: string, title: string) {
+   *   const pricingModule = await initializePricingModule()
+   *
+   *   const priceSets = await pricingModule.update({id}, {
+   *       prices: [{amount: 100, currency_code: "USD"}]
+   *     }
+   *   )
+   *
+   *   // do something with the price sets or return them
+   * }
+   */
+  update(
+    selector: FilterablePriceSetProps,
+    data: UpdatePriceSetDTO,
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 

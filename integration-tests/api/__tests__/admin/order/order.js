@@ -2649,6 +2649,34 @@ describe("/admin/orders", () => {
         })
       )
     })
+
+    it("retrieves an order should include a deleted discount", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE discount
+         set deleted_at = NOW()
+         WHERE id = 'test-discount';`
+      )
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          discounts: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-discount",
+              deleted_at: expect.any(String),
+            }),
+          ]),
+        })
+      )
+    })
   })
 
   describe("POST /orders/:id/refund", () => {
