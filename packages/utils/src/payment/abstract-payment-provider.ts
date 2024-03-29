@@ -18,6 +18,22 @@ import {
  * Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.
  * 
  * Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.
+ * 
+ * ---
+ * 
+ * ## How to Create a Payment Provider
+ * 
+ * A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` class imported from `@medusajsa/utils`.
+ * 
+ * You can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's `providers` option.
+ * 
+ * For example:
+ * 
+ * ```ts
+ * abstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {
+ *   // ...
+ * }
+ * ```
  *
  * ---
  * 
