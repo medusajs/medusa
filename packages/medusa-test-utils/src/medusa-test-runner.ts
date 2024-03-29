@@ -85,14 +85,14 @@ export function medusaIntegrationTestRunner({
   testSuite,
 }: {
   moduleName?: string
-  env?: Record<string, string>
+  env?: Record<string, string | any>
   dbName?: string
   schema?: string
   debug?: boolean
   force_modules_migration?: boolean
   testSuite: <TService = unknown>(
     options: MedusaSuiteOptions<TService>
-  ) => () => void
+  ) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)

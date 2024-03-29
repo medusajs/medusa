@@ -35,7 +35,7 @@ export function moduleIntegrationTestRunner({
   injectedDependencies?: Record<string, any>
   resolve?: string
   debug?: boolean
-  testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
+  testSuite: <TService = unknown>(options: SuiteOptions<TService>) => void
 }) {
   process.env.LOG_LEVEL = "error"
 
