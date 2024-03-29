@@ -399,6 +399,11 @@ module.exports = {
         },
         {
           type: "ref",
+          id: "references/payment_provider/classes/payment_provider.AbstractPaymentProvider",
+          label: "Payment Provider Reference",
+        },
+        {
+          type: "ref",
           id: "references/payment/interfaces/payment.IPaymentModuleService",
           label: "Interface Reference",
         },
