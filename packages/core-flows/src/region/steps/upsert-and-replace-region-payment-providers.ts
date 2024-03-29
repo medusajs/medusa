@@ -243,10 +243,17 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       .flat()
       .filter(Boolean)
 
-    await promiseAll([
-      remoteLink.dismiss(linksToRemove),
-      remoteLink.create(linksToCreate),
-    ])
+    const promises: Promise<unknown[]>[] = []
+
+    if (linksToRemove.length) {
+      promises.push(remoteLink.dismiss(linksToRemove))
+    }
+
+    if (linksToCreate.length) {
+      promises.push(remoteLink.create(linksToCreate))
+    }
+
+    await promiseAll(promises)
 
     return new StepResponse(void 0, {
       linksToCreate: linksToRemove,
@@ -262,9 +269,16 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       ContainerRegistrationKeys.REMOTE_LINK
     )
 
-    await promiseAll([
-      remoteLink.dismiss(rollbackData.linksToRemove),
-      remoteLink.create(rollbackData.linksToCreate),
-    ])
+    const promises: Promise<unknown[]>[] = []
+
+    if (rollbackData.linksToRemove.length) {
+      promises.push(remoteLink.dismiss(rollbackData.linksToRemove))
+    }
+
+    if (rollbackData.linksToCreate.length) {
+      promises.push(remoteLink.create(rollbackData.linksToCreate))
+    }
+
+    await promiseAll(promises)
   }
 )
