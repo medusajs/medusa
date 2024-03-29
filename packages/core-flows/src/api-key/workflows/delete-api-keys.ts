@@ -11,6 +11,7 @@ export const deleteApiKeysWorkflow = createWorkflow(
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
     deleteApiKeysStep(input.ids)
 
+    // Please note, the ids here should be publishable key IDs
     removeRemoteLinkStep({
       [Modules.API_KEY]: { publishable_key_id: input.ids },
     })
