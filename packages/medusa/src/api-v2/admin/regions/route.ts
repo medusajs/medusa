@@ -5,7 +5,6 @@ import {
 
 import { CreateRegionDTO } from "@medusajs/types"
 import { createRegionsWorkflow } from "@medusajs/core-flows"
-import { defaultAdminRegionFields } from "./query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -18,11 +17,9 @@ export const GET = async (
     entryPoint: "region",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: defaultAdminRegionFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: regions, metadata } = await remoteQuery(queryObject)

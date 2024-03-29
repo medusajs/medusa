@@ -8,7 +8,6 @@ import {
 } from "@medusajs/core-flows"
 
 import { UpdateRegionDTO } from "@medusajs/types"
-import { defaultAdminRegionFields } from "../query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -22,7 +21,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "region",
     variables,
-    fields: defaultAdminRegionFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [region] = await remoteQuery(queryObject)

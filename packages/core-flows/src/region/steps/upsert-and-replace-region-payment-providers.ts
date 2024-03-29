@@ -36,9 +36,9 @@ async function validatePaymentProvidersExists(
 ) {
   const paymentProviderIds = Array.from(new Set(data.payment_provider_ids))
 
-  // TODO: Maybe use remote query with throw if key not found in the step bellow
   const paymentProviders = await paymentService.listPaymentProviders({
     id: { $in: paymentProviderIds },
+    is_enabled: true,
   })
 
   const retrievedPaymentProviderIds = paymentProviders.map((p) => p.id)
@@ -51,7 +51,9 @@ async function validatePaymentProvidersExists(
   if (missingProviders.length) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Payment providers with ids ${missingProviders.join(", ")} not found`
+      `Payment providers with ids ${missingProviders.join(
+        ", "
+      )} not found or not enabled`
     )
   }
 }
@@ -75,14 +77,12 @@ async function getCurrentRegionPaymentProvidersLinks(
     fields: ["region_id", "payment_provider_id"],
   })
 
-  const { rows: regions } = (await remoteQuery(query)) as {
-    rows: {
-      region_id: string
-      payment_provider_id: string
-    }[]
-  }
+  const regionProviderLinks = (await remoteQuery(query)) as {
+    region_id: string
+    payment_provider_id: string
+  }[]
 
-  return regions.map((region) => {
+  return regionProviderLinks.map((region) => {
     return {
       [Modules.REGION]: {
         region_id: region.region_id,
@@ -145,18 +145,24 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       { remoteQuery }
     )
 
+    const existingPaymentProviderIdLink = currentExistingLinks.map(
+      (existingLink) => existingLink[Modules.PAYMENT].payment_provider_id
+    )
+
     const linksToRemove = arrayDifference(
-      currentExistingLinks.map((l) => l[Modules.PAYMENT].payment_provider_id),
+      existingPaymentProviderIdLink,
       paymentProviderIds
     ).map((paymentProviderId) => {
       return currentExistingLinks.find(
-        (l) => l[Modules.PAYMENT].payment_provider_id === paymentProviderId
+        (existingLink) =>
+          existingLink[Modules.PAYMENT].payment_provider_id ===
+          paymentProviderId
       )!
     })
 
     const linksToCreate = arrayDifference(
       paymentProviderIds,
-      currentExistingLinks.map((l) => l[Modules.PAYMENT].payment_provider_id)
+      existingPaymentProviderIdLink
     )
       .map((paymentProviderId) => {
         return regions.map((region) => {

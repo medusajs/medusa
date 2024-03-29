@@ -96,6 +96,130 @@ medusaIntegrationTestRunner({
         expect(deletedRegion.deleted_at).toBeTruthy()
       })
 
+      it("should update the region available payment providers if the providers exists", async () => {
+        const paymentProviderId = "pp_system_default"
+        const paymentProvider2Id = "pp_system_default_2"
+
+        const created = await api.post(
+          `/admin/regions`,
+          {
+            name: "Test Region",
+            currency_code: "usd",
+            countries: ["us", "ca"],
+            metadata: { foo: "bar" },
+          },
+          adminHeaders
+        )
+
+        const updateErr = await api
+          .post(
+            `/admin/regions/${created.data.region.id}`,
+            {
+              payment_provider_ids: ["test"],
+            },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(updateErr.response.status).toEqual(404)
+        expect(updateErr.response.data.message).toEqual(
+          "Payment providers with ids test not found or not enabled"
+        )
+
+        /**
+         * Assign a new payment provider
+         */
+
+        await api.post(
+          `/admin/regions/${created.data.region.id}`,
+          {
+            payment_provider_ids: [paymentProviderId],
+          },
+          adminHeaders
+        )
+
+        let regionResponse = await api.get(
+          `/admin/regions/${created.data.region.id}?fields=*payment_providers`,
+          adminHeaders
+        )
+
+        expect(regionResponse.status).toEqual(200)
+        expect(regionResponse.data.region.payment_providers).toHaveLength(1)
+        expect(regionResponse.data.region).toEqual(
+          expect.objectContaining({
+            id: regionResponse.data.region.id,
+            payment_providers: [
+              expect.objectContaining({
+                id: paymentProviderId,
+              }),
+            ],
+          })
+        )
+
+        /**
+         * Replace the region payment providers by a new one set of providers
+         */
+
+        await api.post(
+          `/admin/regions/${created.data.region.id}`,
+          {
+            payment_provider_ids: [paymentProvider2Id],
+          },
+          adminHeaders
+        )
+
+        regionResponse = await api.get(
+          `/admin/regions/${created.data.region.id}?fields=*payment_providers`,
+          adminHeaders
+        )
+
+        expect(regionResponse.status).toEqual(200)
+        expect(regionResponse.data.region.payment_providers).toHaveLength(1)
+        expect(regionResponse.data.region).toEqual(
+          expect.objectContaining({
+            id: regionResponse.data.region.id,
+            payment_providers: [
+              expect.objectContaining({
+                id: paymentProvider2Id,
+              }),
+            ],
+          })
+        )
+
+        /**
+         * Replace the region payment providers with both providers
+         */
+
+        await api.post(
+          `/admin/regions/${created.data.region.id}`,
+          {
+            payment_provider_ids: [paymentProviderId, paymentProvider2Id],
+          },
+          adminHeaders
+        )
+
+        regionResponse = await api.get(
+          `/admin/regions/${created.data.region.id}?fields=*payment_providers`,
+          adminHeaders
+        )
+
+        expect(regionResponse.status).toEqual(200)
+        expect(regionResponse.data.region.payment_providers).toHaveLength(2)
+        expect(regionResponse.data.region).toEqual(
+          expect.objectContaining({
+            id: regionResponse.data.region.id,
+            payment_providers: [
+              expect.objectContaining({
+                id: paymentProvider2Id,
+              }),
+              expect.objectContaining({
+                id: paymentProviderId,
+              }),
+            ],
+          })
+        )
+      })
+
       it("should throw on missing required properties in create", async () => {
         const err = await api
           .post(`/admin/regions`, {}, adminHeaders)
