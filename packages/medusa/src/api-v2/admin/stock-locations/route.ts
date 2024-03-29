@@ -30,3 +30,25 @@ export const POST = async (
 
   res.status(200).json({ stock_location })
 }
+
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const { rows: stock_locations } = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "stock_locations",
+      variables: {
+        filters: req.filterableFields,
+        order: req.listConfig.order,
+        skip: req.listConfig.skip,
+        take: req.listConfig.take,
+      },
+      fields: req.remoteQueryConfig.fields,
+    })
+  )
+
+  res.status(200).json({
+    stock_locations,
+    ...req.remoteQueryConfig.pagination,
+  })
+}
