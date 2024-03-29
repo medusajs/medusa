@@ -211,6 +211,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CustomerGroupDTO[]>} The created customer groups.
    *
+   * @privateRemarks
+   * TODO should be pluralized
+   *
    * @example
    * const customerGroup =
    *   await customerModuleService.createCustomerGroup([
@@ -230,6 +233,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {CreateCustomerGroupDTO} data - The customer group to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CustomerGroupDTO>} The created customer group.
+   *
+   * @privateRemarks
+   * TODO should be pluralized
    *
    * @example
    * const customerGroup =
@@ -440,6 +446,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the customer is removed from the group successfully.
    *
+   * @privateRemarks
+   * TODO should be pluralized
+   *
    * @example
    * await customerModuleService.removeCustomerFromGroup({
    *   customer_id: "cus_123",
@@ -457,6 +466,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {GroupCustomerPair[]} groupCustomerPairs - A list of items, each being the details of a customer and the group it should be removed from.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the customers are removed from the groups successfully.
+   *
+   * @privateRemarks
+   * TODO should be pluralized
    *
    * @example
    * await customerModuleService.removeCustomerFromGroup([
