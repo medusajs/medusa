@@ -31,6 +31,7 @@ import {
   UpsertProductCollectionDTO,
   UpsertProductDTO,
   UpsertProductOptionDTO,
+  UpsertProductTypeDTO,
   UpsertProductVariantDTO,
 } from "./common"
 
@@ -1202,32 +1203,150 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductTypeDTO[]>
 
   /**
-   * This method is used to update a product type
+   * This method is used to create a product type.
    *
-   * @param {UpdateProductTypeDTO[]} data - The product types to be updated, each having the attributes that should be updated in the product type.
+   * @param {CreateProductTypeDTO} data - The product type to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTypeDTO[]>} The list of updated product types.
+   * @returns {Promise<ProductTypeDTO>} The created product type.
    *
    * @example
    * import {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
    *
-   * async function updateProductType (id: string, value: string) {
+   * async function createType (title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const productTypes = await productModule.updateTypes([
+   *   const type = await productModule.createTypes(
    *     {
-   *       id,
+   *       value
+   *     }
+   *   )
+   *
+   *   // do something with the product type or return them
+   * }
+   *
+   */
+  createTypes(
+    data: CreateProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO>
+
+  /**
+   * This method updates existing types, or creates new ones if they don't exist.
+   *
+   * @param {UpsertProductTypeDTO[]} data - The attributes to update or create for each type.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO[]>} The updated and created types.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertTypes (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdTypes = await productModule.upsertTypes([
+   *     {
    *       value
    *     }
    *   ])
    *
-   *   // do something with the product types or return them
+   *   // do something with the types or return them
+   * }
+   */
+  upsertTypes(
+    data: UpsertProductTypeDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO[]>
+
+  /**
+   * This method updates an existing type, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductTypeDTO} data - The attributes to update or create for the type.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO>} The updated or created type.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertType (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdType = await productModule.upsertTypes(
+   *     {
+   *       value
+   *     }
+   *   )
+   *
+   *   // do something with the type or return it
+   * }
+   */
+  upsertTypes(
+    data: UpsertProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO>
+
+  /**
+   * This method is used to update a type.
+   *
+   * @param {string} id - The ID of the type to be updated.
+   * @param {UpdateProductTypeDTO} data - The attributes of the type to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO>} The updated type.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateType (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const type = await productModule.updateTypes(id, {
+   *       value
+   *     }
+   *   )
+   *
+   *   // do something with the type or return it
    * }
    */
   updateTypes(
-    data: UpdateProductTypeDTO[],
+    id: string,
+    data: UpdateProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO>
+
+  /**
+   * This method is used to update a list of types determined by the selector filters.
+   *
+   * @param {FilterableProductTypeProps} selector - The filters that will determine which types will be updated.
+   * @param {UpdateProductTypeDTO} data - The attributes to be updated on the selected types
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO[]>} The updated types.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateTypes(ids: string[], title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const types = await productModule.updateTypes({id: ids}, {
+   *       value
+   *     }
+   *   )
+   *
+   *   // do something with the types or return them
+   * }
+   */
+  updateTypes(
+    selector: FilterableProductTypeProps,
+    data: UpdateProductTypeDTO,
     sharedContext?: Context
   ): Promise<ProductTypeDTO[]>
 
@@ -1250,6 +1369,74 @@ export interface IProductModuleService extends IModuleService {
    * }
    */
   deleteTypes(productTypeIds: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method is used to delete types. Unlike the {@link delete} method, this method won't completely remove the type. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted types can be restored using the {@link restore} method.
+   *
+   * @param {string[]} typeIds - The IDs of the types to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the types. You can pass to its `returnLinkableKeys`
+   * property any of the type's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the type entity's relations, and its value is an array of strings, each being the ID of a record associated with the type through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteTypes (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.softDeleteTypes(ids)
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  softDeleteTypes<TReturnableLinkableKeys extends string = string>(
+    typeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore types which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} typeIds - The IDs of the types to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the types. You can pass to its `returnLinkableKeys`
+   * property any of the type's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the type entity's relations, and its value is an array of strings, each being the ID of the record associated with the type through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreTypes (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.restoreTypes(ids, {
+   *     returnLinkableKeys: []
+   *   })
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  restoreTypes<TReturnableLinkableKeys extends string = string>(
+    typeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a product option by its ID.
