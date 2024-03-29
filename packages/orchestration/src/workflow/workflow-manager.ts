@@ -32,7 +32,7 @@ export type WorkflowHandler = Map<
   { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
 >
 
-export type WorkflowStepHandler = (args: {
+export type WorkflowStepHandlerArguments = {
   container: MedusaContainer
   payload: unknown
   invoke: { [actions: string]: unknown }
@@ -40,7 +40,11 @@ export type WorkflowStepHandler = (args: {
   metadata: TransactionMetadata
   transaction: DistributedTransaction
   context?: Context
-}) => unknown
+}
+
+export type WorkflowStepHandler = (
+  args: WorkflowStepHandlerArguments
+) => unknown
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
