@@ -1,4 +1,4 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
+import { MedusaContainer, Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
@@ -36,15 +36,11 @@ export const createVariantPriceSet = async ({
   })
 
   await remoteLink.create({
-    productService: {
-      variant_id: variantId,
-    },
-    pricingService: {
-      price_set_id: priceSet.id,
-    },
+    [Modules.PRODUCT]: { variant_id: variantId },
+    [Modules.PRICING]: { price_set_id: priceSet.id },
   })
 
   return await pricingModuleService.retrieve(priceSet.id, {
-    relations: ["money_amounts"],
+    relations: ["prices"],
   })
 }

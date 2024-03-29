@@ -366,11 +366,11 @@ medusaIntegrationTestRunner({
           const result = await api.post(`admin/price-lists`, data, adminHeaders)
           const priceListId = result.data.price_list.id
 
-          let psmas = await pricingModule.listPriceSetMoneyAmounts({
+          let prices = await pricingModule.listPrices({
             price_list_id: [priceListId],
           })
 
-          expect(psmas.length).toEqual(1)
+          expect(prices.length).toEqual(1)
 
           const deleteRes = await api.delete(
             `/admin/price-lists/${priceListId}`,
@@ -385,10 +385,10 @@ medusaIntegrationTestRunner({
 
           expect(afterDelete.response.status).toEqual(404)
 
-          psmas = await pricingModule.listPriceSetMoneyAmounts({
+          prices = await pricingModule.listPrices({
             price_list_id: [priceListId],
           })
-          expect(psmas.length).toEqual(0)
+          expect(prices.length).toEqual(0)
         })
 
         it("should idempotently return a success even if price lists dont exist", async () => {
@@ -590,7 +590,7 @@ medusaIntegrationTestRunner({
             prices: [],
           })
 
-          const [priceList] = await pricingModule.createPriceLists([
+          const [createdPriceList] = await pricingModule.createPriceLists([
             {
               title: "test price list",
               description: "test",
@@ -607,11 +607,15 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const psmaIdToDelete = priceList.price_set_money_amounts![0].id
+          const [priceList] = await pricingModule.listPriceLists(
+            { id: [createdPriceList.id] },
+            { relations: ["prices"] }
+          )
+          const priceIdToDelete = priceList.prices![0].id
 
           const response = await api.post(
             `/admin/price-lists/${priceList.id}/prices/batch/remove`,
-            { ids: [psmaIdToDelete] },
+            { ids: [priceIdToDelete] },
             adminHeaders
           )
 

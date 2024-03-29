@@ -30,6 +30,8 @@ import {
   UpdateProductVariantDTO,
   UpsertProductCollectionDTO,
   UpsertProductDTO,
+  UpsertProductOptionDTO,
+  UpsertProductVariantDTO,
 } from "./common"
 
 import { FindConfig } from "../common"
@@ -302,6 +304,267 @@ export interface IProductModuleService extends IModuleService {
     config?: FindConfig<ProductDTO>,
     sharedContext?: Context
   ): Promise<[ProductDTO[], number]>
+
+  /**
+   * This method is used to create a list of products.
+   *
+   * @param {CreateProductDTO[]} data - The products to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The list of created products.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const products = await productModule.create([
+   *     {
+   *       title
+   *     }
+   *   ])
+   *
+   *   // do something with the products or return them
+   * }
+   */
+  create(
+    data: CreateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
+   * This method is used to create a product.
+   *
+   * @param {CreateProductDTO} data - The product to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The created product.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const product = await productModule.create(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  create(data: CreateProductDTO, sharedContext?: Context): Promise<ProductDTO>
+
+  /**
+   * This method updates existing products, or creates new ones if they don't exist.
+   *
+   * @param {CreateProductDTO[]} data - The attributes to update or create for each product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The updated and created products.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upserProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdProducts = await productModule.upsert([
+   *     {
+   *       title
+   *     }
+   *   ])
+   *
+   *   // do something with the products or return them
+   * }
+   */
+  upsert(
+    data: UpsertProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
+   * This method updates the product if it exists, or creates a new ones if it doesn't.
+   *
+   * @param {CreateProductDTO} data - The attributes to update or create for the new product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The updated or created product.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upserProduct (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdProduct = await productModule.upsert(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  upsert(
+    data: UpsertProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
+   * This method is used to update a product.
+   *
+   * @param {string} id - The ID of the product to be updated.
+   * @param {UpdateProductDTO} data - The attributes of the product to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The updated product.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateProduct (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const product = await productModule.update(id, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product or return it
+   * }
+   */
+  update(
+    id: string,
+    data: UpdateProductDTO,
+    sharedContext?: Context
+  ): Promise<ProductDTO>
+
+  /**
+   * This method is used to update a list of products determined by the selector filters.
+   *
+   * @param {FilterableProductProps} selector - The filters that will determine which products will be updated.
+   * @param {UpdateProductDTO} data - The attributes to be updated on the selected products
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The updated products.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateProduct (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const products = await productModule.update({id}, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the products or return them
+   * }
+   */
+  update(
+    selector: FilterableProductProps,
+    data: UpdateProductDTO,
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  /**
+   * This method is used to delete products. Unlike the {@link softDelete} method, this method will completely remove the products and they can no longer be accessed or retrieved.
+   *
+   * @param {string[]} productIds - The IDs of the products to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the products are successfully deleted.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   await productModule.delete(ids)
+   * }
+   */
+  delete(productIds: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method is used to delete products. Unlike the {@link delete} method, this method won't completely remove the product. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted products can be restored using the {@link restore} method.
+   *
+   * @param {string[]} productIds - The IDs of the products to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys`
+   * property any of the product's relation attribute names, such as `variant_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.softDelete(ids)
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    productIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore products which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} productIds - The IDs of the products to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the products. You can pass to its `returnLinkableKeys`
+   * property any of the product's relation attribute names, such as `variant_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.restore(ids, {
+   *     returnLinkableKeys: ["variant_id"]
+   *   })
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  restore<TReturnableLinkableKeys extends string = string>(
+    productIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a tag by its ID.
@@ -1256,25 +1519,25 @@ export interface IProductModuleService extends IModuleService {
    *
    * @param {CreateProductOptionDTO[]} data - The product options to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {ProductOptionDTO[]} The list of created product options.
+   * @returns {Promise<ProductOptionDTO[]>} The list of created product options.
    *
    * @example
    * import {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
    *
-   * async function createProductOption (title: string, productId: string) {
+   * async function createOptions (title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const productOptions = await productModule.createOptions([
+   *   const options = await productModule.createOptions([
    *     {
-   *       title,
-   *       product_id: productId
+   *       title
    *     }
    *   ])
    *
    *   // do something with the product options or return them
    * }
+   *
    */
   createOptions(
     data: CreateProductOptionDTO[],
@@ -1282,32 +1545,150 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductOptionDTO[]>
 
   /**
-   * This method is used to update existing product options.
+   * This method is used to create a product option.
    *
-   * @param {UpdateProductOptionDTO[]} data - The product options to be updated, each holding the attributes that should be updated in the product option.
+   * @param {CreateProductOptionDTO} data - The product option to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {ProductOptionDTO[]} The list of updated product options.
+   * @returns {Promise<ProductOptionDTO>} The created product option.
    *
    * @example
    * import {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
    *
-   * async function updateProductOption (id: string, title: string) {
+   * async function createOption (title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const productOptions = await productModule.updateOptions([
+   *   const option = await productModule.createOptions(
    *     {
-   *       id,
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product option or return them
+   * }
+   *
+   */
+  createOptions(
+    data: CreateProductOptionDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO>
+
+  /**
+   * This method updates existing options, or creates new ones if they don't exist.
+   *
+   * @param {UpsertProductOptionDTO[]} data - The attributes to update or create for each option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO[]>} The updated and created options.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertOptions (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdOptions = await productModule.upsertOptions([
+   *     {
    *       title
    *     }
    *   ])
    *
-   *   // do something with the product options or return them
+   *   // do something with the options or return them
+   * }
+   */
+  upsertOptions(
+    data: UpsertProductOptionDTO[],
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO[]>
+
+  /**
+   * This method updates an existing option, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductOptionDTO} data - The attributes to update or create for the option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO>} The updated or created option.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertOption (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdOption = await productModule.upsertOptions(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the option or return it
+   * }
+   */
+  upsertOptions(
+    data: UpsertProductOptionDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO>
+
+  /**
+   * This method is used to update a option.
+   *
+   * @param {string} id - The ID of the option to be updated.
+   * @param {UpdateProductOptionDTO} data - The attributes of the option to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO>} The updated option.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateOption (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const option = await productModule.updateOptions(id, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the option or return it
    * }
    */
   updateOptions(
-    data: UpdateProductOptionDTO[],
+    id: string,
+    data: UpdateProductOptionDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO>
+
+  /**
+   * This method is used to update a list of options determined by the selector filters.
+   *
+   * @param {FilterableProductOptionProps} selector - The filters that will determine which options will be updated.
+   * @param {UpdateProductOptionDTO} data - The attributes to be updated on the selected options
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO[]>} The updated options.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateOptions(ids: string[], title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const options = await productModule.updateOptions({id: ids}, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the options or return them
+   * }
+   */
+  updateOptions(
+    selector: FilterableProductOptionProps,
+    data: UpdateProductOptionDTO,
     sharedContext?: Context
   ): Promise<ProductOptionDTO[]>
 
@@ -1560,85 +1941,6 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductVariantDTO[]>
 
   /**
-   * This method is used to update a product's variants.
-   *
-   * @param {UpdateProductVariantDTO[]} data - The product variants to update.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductVariantDTO[]>} The updated product variants's details.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   * import {
-   *   UpdateProductVariantDTO
-   * } from "@medusajs/product/dist/types/services/product-variant"
-   *
-   * async function updateProductVariants (items: UpdateProductVariantDTO[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productVariants = await productModule.updateVariants(items)
-   *
-   *   // do something with the product variants or return them
-   * }
-   */
-  updateVariants(
-    data: UpdateProductVariantDTO[],
-    sharedContext?: Context
-  ): Promise<ProductVariantDTO[]>
-
-  /**
-   * This method is used to create variants for a product.
-   *
-   * @param {CreateProductVariantDTO[]} data - The product variants to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductVariantDTO[]>} The created product variants' details.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProductVariants (items: {
-   *   product_id: string,
-   *   title: string
-   * }[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productVariants = await productModule.createVariants(items)
-   *
-   *   // do something with the product variants or return them
-   * }
-   */
-  createVariants(
-    data: CreateProductVariantDTO[],
-    sharedContext?: Context
-  ): Promise<ProductVariantDTO[]>
-
-  /**
-   * This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
-   *
-   * @param {string[]} productVariantIds - The IDs of the ProductVariant to be deleted.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteVariants(ids)
-   * }
-   */
-  deleteVariants(
-    productVariantIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-
-  /**
    * This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.
    *
    * @param {FilterableProductVariantProps} filters - The filters applied on the retrieved product variants.
@@ -1743,6 +2045,207 @@ export interface IProductModuleService extends IModuleService {
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
   ): Promise<[ProductVariantDTO[], number]>
+
+  /**
+   * This method is used to create product variants.
+   *
+   * @param {CreateProductVariantDTO[]} data - The product variants to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The list of created product variants.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createVariants (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const variants = await productModule.createVariants([
+   *     {
+   *       title
+   *     }
+   *   ])
+   *
+   *   // do something with the product variants or return them
+   * }
+   *
+   */
+  createVariants(
+    data: CreateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method is used to create a product variant.
+   *
+   * @param {CreateProductVariantDTO} data - The product variant to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO>} The created product variant.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createVariant (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const variant = await productModule.createVariants(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the product variant or return them
+   * }
+   *
+   */
+  createVariants(
+    data: CreateProductVariantDTO,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO>
+
+  /**
+   * This method updates existing variants, or creates new ones if they don't exist.
+   *
+   * @param {UpsertProductVariantDTO[]} data - The attributes to update or create for each variant.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The updated and created variants.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertVariants (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdVariants = await productModule.upsertVariants([
+   *     {
+   *       title
+   *     }
+   *   ])
+   *
+   *   // do something with the variants or return them
+   * }
+   */
+  upsertVariants(
+    data: UpsertProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method updates an existing variant, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductVariantDTO} data - The attributes to update or create for the variant.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO>} The updated or created variant.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function upsertVariant (title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const createdVariant = await productModule.upsertVariants(
+   *     {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the variant or return it
+   * }
+   */
+  upsertVariants(
+    data: UpsertProductVariantDTO,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO>
+
+  /**
+   * This method is used to update a variant.
+   *
+   * @param {string} id - The ID of the variant to be updated.
+   * @param {UpdateProductVariantDTO} data - The attributes of the variant to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO>} The updated variant.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateVariant (id: string, title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const variant = await productModule.updateVariants(id, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the variant or return it
+   * }
+   */
+  updateVariants(
+    id: string,
+    data: UpdateProductVariantDTO,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO>
+
+  /**
+   * This method is used to update a list of variants determined by the selector filters.
+   *
+   * @param {FilterableProductVariantProps} selector - The filters that will determine which variants will be updated.
+   * @param {UpdateProductVariantDTO} data - The attributes to be updated on the selected variants
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The updated variants.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function updateVariants(ids: string[], title: string) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const variants = await productModule.updateVariants({id: ids}, {
+   *       title
+   *     }
+   *   )
+   *
+   *   // do something with the variants or return them
+   * }
+   */
+  updateVariants(
+    selector: FilterableProductVariantProps,
+    data: UpdateProductVariantDTO,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
+   *
+   * @param {string[]} productVariantIds - The IDs of the ProductVariant to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   await productModule.deleteVariants(ids)
+   * }
+   */
+  deleteVariants(
+    productVariantIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method is used to delete variants. Unlike the {@link delete} method, this method won't completely remove the variant. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
@@ -2147,10 +2650,10 @@ export interface IProductModuleService extends IModuleService {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
    *
-   * async function upserCollections (title: string) {
+   * async function upsertCollections (title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const createdCollections = await productModule.upsert([
+   *   const createdCollections = await productModule.upsertCollections([
    *     {
    *       title
    *     }
@@ -2176,10 +2679,10 @@ export interface IProductModuleService extends IModuleService {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
    *
-   * async function upserCollection (title: string) {
+   * async function upsertCollection (title: string) {
    *   const productModule = await initializeProductModule()
    *
-   *   const createdCollection = await productModule.upsert(
+   *   const createdCollection = await productModule.upsertCollection(
    *     {
    *       title
    *     }
@@ -2276,6 +2779,74 @@ export interface IProductModuleService extends IModuleService {
     productCollectionIds: string[],
     sharedContext?: Context
   ): Promise<void>
+
+  /**
+   * This method is used to delete product collections. Unlike the {@link deleteCollections} method, this method won't completely remove the collection. It can still be accessed or retrieved using methods like {@link retrieveCollections} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted collections can be restored using the {@link restoreCollections} method.
+   *
+   * @param {string[]} collectionIds - The IDs of the collections to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the collections. You can pass to its `returnLinkableKeys`
+   * property any of the collection's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the collection entity's relations.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteCollections (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.softDeleteCollections(ids)
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  softDeleteCollections<TReturnableLinkableKeys extends string = string>(
+    collectionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore collections which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} collectionIds - The IDs of the collections to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the collections. You can pass to its `returnLinkableKeys`
+   * property any of the collection's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product entity's relations.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreCollections (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const cascadedEntities = await productModule.restoreCollections(ids, {
+   *     returnLinkableKeys: []
+   *   })
+   *
+   *   // do something with the returned cascaded entity IDs or return them
+   * }
+   */
+  restoreCollections<TReturnableLinkableKeys extends string = string>(
+    collectionIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a product category by its ID.
@@ -2617,365 +3188,4 @@ export interface IProductModuleService extends IModuleService {
    * }
    */
   deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
-
-  /**
-   * This method is used to create a list of products.
-   *
-   * @param {CreateProductDTO[]} data - The products to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} The list of created products.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.create([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the products or return them
-   * }
-   */
-  create(
-    data: CreateProductDTO[],
-    sharedContext?: Context
-  ): Promise<ProductDTO[]>
-
-  /**
-   * This method is used to create a product.
-   *
-   * @param {CreateProductDTO} data - The product to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO>} The created product.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.create(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
-   */
-  create(data: CreateProductDTO, sharedContext?: Context): Promise<ProductDTO>
-
-  /**
-   * This method updates existing products, or creates new ones if they don't exist.
-   *
-   * @param {CreateProductDTO[]} data - The attributes to update or create for each product.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} The updated and created products.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upserProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdProducts = await productModule.upsert([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the products or return them
-   * }
-   */
-  upsert(
-    data: UpsertProductDTO[],
-    sharedContext?: Context
-  ): Promise<ProductDTO[]>
-
-  /**
-   * This method updates the product if it exists, or creates a new ones if it doesn't.
-   *
-   * @param {CreateProductDTO} data - The attributes to update or create for the new product.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO>} The updated or created product.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upserProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdProduct = await productModule.upsert(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
-   */
-  upsert(
-    data: UpsertProductDTO[],
-    sharedContext?: Context
-  ): Promise<ProductDTO[]>
-
-  /**
-   * This method is used to update a product.
-   *
-   * @param {string} id - The ID of the product to be updated.
-   * @param {UpdateProductDTO} data - The attributes of the product to be updated
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO>} The updated product.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateProduct (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.update(id, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
-   */
-  update(
-    id: string,
-    data: UpdateProductDTO,
-    sharedContext?: Context
-  ): Promise<ProductDTO>
-
-  /**
-   * This method is used to update a list of products determined by the selector filters.
-   *
-   * @param {FilterableProductProps} selector - The filters that will determine which products will be updated.
-   * @param {UpdateProductDTO} data - The attributes to be updated on the selected products
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} The updated products.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateProduct (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.update({id}, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the products or return them
-   * }
-   */
-  update(
-    selector: FilterableProductProps,
-    data: UpdateProductDTO,
-    sharedContext?: Context
-  ): Promise<ProductDTO[]>
-
-  /**
-   * This method is used to delete products. Unlike the {@link softDelete} method, this method will completely remove the products and they can no longer be accessed or retrieved.
-   *
-   * @param {string[]} productIds - The IDs of the products to be deleted.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the products are successfully deleted.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.delete(ids)
-   * }
-   */
-  delete(productIds: string[], sharedContext?: Context): Promise<void>
-
-  /**
-   * This method is used to delete products. Unlike the {@link delete} method, this method won't completely remove the product. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
-   *
-   * The soft-deleted products can be restored using the {@link restore} method.
-   *
-   * @param {string[]} productIds - The IDs of the products to soft-delete.
-   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys`
-   * property any of the product's relation attribute names, such as `variant_id`.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.
-   *
-   * If there are no related records, the promise resolved to `void`.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDelete(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
-   */
-  softDelete<TReturnableLinkableKeys extends string = string>(
-    productIds: string[],
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method is used to restore products which were deleted using the {@link softDelete} method.
-   *
-   * @param {string[]} productIds - The IDs of the products to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to restore along with each of the products. You can pass to its `returnLinkableKeys`
-   * property any of the product's relation attribute names, such as `variant_id`.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
-   *
-   * If there are no related records that were restored, the promise resolved to `void`.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restore(ids, {
-   *     returnLinkableKeys: ["variant_id"]
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
-   */
-  restore<TReturnableLinkableKeys extends string = string>(
-    productIds: string[],
-    config?: RestoreReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method is used to delete product collections. Unlike the {@link deleteCollections} method, this method won't completely remove the collection. It can still be accessed or retrieved using methods like {@link retrieveCollections} if you pass the `withDeleted` property to the `config` object parameter.
-   *
-   * The soft-deleted collections can be restored using the {@link restoreCollections} method.
-   *
-   * @param {string[]} collectionIds - The IDs of the collections to soft-delete.
-   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to soft delete along with the each of the collections. You can pass to its `returnLinkableKeys`
-   * property any of the collection's relation attribute names.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the collection entity's relations.
-   *
-   * If there are no related records, the promise resolved to `void`.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDeleteCollections(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
-   */
-  softDeleteCollections<TReturnableLinkableKeys extends string = string>(
-    collectionIds: string[],
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method is used to restore collections which were deleted using the {@link softDelete} method.
-   *
-   * @param {string[]} collectionIds - The IDs of the collections to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to restore along with each of the collections. You can pass to its `returnLinkableKeys`
-   * property any of the collection's relation attribute names.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product entity's relations.
-   *
-   * If there are no related records that were restored, the promise resolved to `void`.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restoreCollections(ids, {
-   *     returnLinkableKeys: []
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
-   */
-  restoreCollections<TReturnableLinkableKeys extends string = string>(
-    collectionIds: string[],
-    config?: RestoreReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method is used to restore product varaints that were soft deleted. Product variants are soft deleted when they're not
-   * provided in a product's details passed to the {@link update} method.
-   *
-   * @param {string[]} variantIds - The IDs of the variants to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to restore along with each of the product variants. You can pass to its `returnLinkableKeys`
-   * property any of the product variant's relation attribute names.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product variant entity's relations
-   * and its value is an array of strings, each being the ID of the record associated with the product variant through this relation.
-   *
-   * If there are no related records that were restored, the promise resolved to `void`.
-   *
-   * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.restoreVariants(ids)
-   * }
-   */
-  restoreVariants<TReturnableLinkableKeys extends string = string>(
-    variantIds: string[],
-    config?: RestoreReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
 }

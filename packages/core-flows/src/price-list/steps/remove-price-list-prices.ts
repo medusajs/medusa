@@ -14,20 +14,20 @@ export const removePriceListPricesStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    const psmas = await pricingModule.listPriceSetMoneyAmounts(
+    const prices = await pricingModule.listPrices(
       { id: ids },
       { relations: ["price_list"] }
     )
 
-    await pricingModule.removePrices(psmas.map((psma) => psma.id))
+    await pricingModule.softDeletePrices(prices.map((price) => price.id))
 
     return new StepResponse(
       null,
-      psmas.map((psma) => psma.id)
+      prices.map((price) => price.id)
     )
   },
   async (ids, { container }) => {
-    if (!ids) {
+    if (!ids?.length) {
       return
     }
 
@@ -35,7 +35,6 @@ export const removePriceListPricesStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    // TODO: This needs to be implemented
-    // pricingModule.restorePrices(ids)
+    await pricingModule.restorePrices(ids)
   }
 )

@@ -1,10 +1,17 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  Relation,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Product } from "./product"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Product } from "./product"
 
 @Entity()
 export class ProductCollection extends SoftDeletableEntity {
@@ -16,7 +23,7 @@ export class ProductCollection extends SoftDeletableEntity {
   handle: string
 
   @OneToMany(() => Product, (product) => product.collection)
-  products: Product[]
+  products: Relation<Product>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
