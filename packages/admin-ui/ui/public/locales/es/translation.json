@@ -1976,5 +1976,11 @@
   "customs-form-origin-country-input-placeholder": "Elige un país",
   "metadata-form-key": "Clave",
   "metadata-form-value": "Valor",
-  "variant-select-options-form": "Seleccione una opción"
+  "variant-select-options-form": "Seleccione una opción",
+  "file-upload-field-drop-your-images-here-or": "Suelta tus imágenes aquí, o",
+  "file-upload-field-click-to-browse": "haz clic para explorar",
+  "media-form-image-size-recommended": "Se recomienda 1200 x 1600 (3:4), hasta 10MB cada una",
+  "media-form-uploads": "Subidas",
+  "thumbnail-form-image-recommended-size": "Se recomienda 1200 x 1600 (3:4), hasta 10MB cada una",
+  "thumbnail-form-upload": "Subida"
 }

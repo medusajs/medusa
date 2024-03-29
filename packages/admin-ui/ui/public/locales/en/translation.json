@@ -2063,5 +2063,11 @@
   "customs-form-origin-country-input-placeholder": "Choose a country",
   "metadata-form-key": "Key",
   "metadata-form-value": "Value",
-  "variant-select-options-form": "Choose an option"
+  "variant-select-options-form": "Choose an option",
+  "file-upload-field-drop-your-images-here-or": "Drop your images here, or",
+  "file-upload-field-click-to-browse": "click to browse",
+  "media-form-image-size-recommended": "1200 x 1600 (3:4) recommended, up to 10MB each",
+  "media-form-uploads": "Uploads",
+  "thumbnail-form-image-recommended-size": "1200 x 1600 (3:4) recommended, up to 10MB each",
+  "thumbnail-form-upload": "Upload"
 }
