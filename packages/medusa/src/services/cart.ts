@@ -1,3 +1,4 @@
+import { RemoteQueryFunction } from "@medusajs/types"
 import {
   FlagRouter,
   isDefined,
@@ -45,6 +46,11 @@ import {
   SalesChannel,
   ShippingMethod,
 } from "../models"
+import { AddressRepository } from "../repositories/address"
+import { CartRepository } from "../repositories/cart"
+import { LineItemRepository } from "../repositories/line-item"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
   CartCreateProps,
   CartUpdateProps,
@@ -59,17 +65,9 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, isString, setMetadata } from "../utils"
-
-import { AddressRepository } from "../repositories/address"
-import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { PaymentSessionInput } from "../types/payment"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
-import { RemoteQueryFunction } from "@medusajs/types"
-import { RemoteLink } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -101,7 +99,6 @@ type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
   pricingService: PricingService
   remoteQuery: RemoteQueryFunction
-  remoteLink: RemoteLink
 }
 
 type TotalsConfig = {
@@ -144,7 +141,6 @@ class CartService extends TransactionBaseService {
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly featureFlagRouter_: FlagRouter
   protected remoteQuery_: RemoteQueryFunction
-  protected remoteLink_: RemoteLink
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly pricingService_: PricingService
@@ -176,7 +172,6 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     remoteQuery,
-    remoteLink,
     productVariantInventoryService,
     pricingService,
   }: InjectedDependencies) {
@@ -211,7 +206,6 @@ class CartService extends TransactionBaseService {
     this.productVariantInventoryService_ = productVariantInventoryService
     this.pricingService_ = pricingService
     this.remoteQuery_ = remoteQuery
-    this.remoteLink_ = remoteLink
   }
 
   /**
@@ -500,14 +494,7 @@ class CartService extends TransactionBaseService {
             data.sales_channel_id
           )
 
-          await this.remoteLink_.create({
-            cartService: {
-              cart_id: cart.id,
-            },
-            salesChannelService: {
-              sales_channel_id: salesChannel.id,
-            },
-          })
+          cart.sales_channel_id = salesChannel.id
         }
 
         await this.eventBus_
@@ -1287,33 +1274,7 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
-          /**
-           * TODO: remove this once update cart workflow is build
-           * since this will be handled in a handler by the workflow
-           */
-          if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-            if (cart.sales_channel_id) {
-              await this.remoteLink_.dismiss({
-                cartService: {
-                  cart_id: cart.id,
-                },
-                salesChannelService: {
-                  sales_channel_id: cart.sales_channel_id,
-                },
-              })
-            }
-
-            await this.remoteLink_.create({
-              cartService: {
-                cart_id: cart.id,
-              },
-              salesChannelService: {
-                sales_channel_id: salesChannel.id,
-              },
-            })
-          } else {
-            cart.sales_channel_id = salesChannel.id
-          }
+          cart.sales_channel_id = salesChannel.id
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {

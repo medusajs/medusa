@@ -7,6 +7,7 @@ import {
   Index,
   ManyToMany,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -14,8 +15,8 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import Product from "./product"
 import { DAL } from "@medusajs/types"
+import Product from "./product"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
@@ -55,10 +56,15 @@ class ProductCategory {
   @Property({ columnType: "numeric", nullable: false, default: 0 })
   rank?: number
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ProductCategory, {
+    columnType: "text",
+    fieldName: "parent_category_id",
+    nullable: true,
+    mapToPk: true,
+  })
   parent_category_id?: string | null
 
-  @ManyToOne(() => ProductCategory, { nullable: true })
+  @ManyToOne(() => ProductCategory, { nullable: true, persist: false })
   parent_category?: ProductCategory
 
   @OneToMany({
@@ -85,11 +91,18 @@ class ProductCategory {
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
 
+  @OnInit()
+  async onInit() {
+    this.id = generateEntityId(this.id, "pcat")
+    this.parent_category_id ??= this.parent_category?.id ?? null
+  }
+
   @BeforeCreate()
   async onCreate(args: EventArgs<ProductCategory>) {
     this.id = generateEntityId(this.id, "pcat")
+    this.parent_category_id ??= this.parent_category?.id ?? null
 
-    if (!this.handle) {
+    if (!this.handle && this.name) {
       this.handle = kebabCase(this.name)
     }
 

@@ -1,6 +1,5 @@
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
 
 /**
@@ -41,9 +40,9 @@ export interface PriceRuleDTO {
    */
   priority: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id: string
+  price_id: string
   /**
    * The ID of the associated price list.
    */
@@ -74,17 +73,9 @@ export interface CreatePriceRuleDTO {
    */
   price_set_id?: string
   /**
-   * The ID or object of the associated price set.
-   */
-  price_set?: string | PriceSetDTO
-  /**
    * The ID of the associated rule type.
    */
   rule_type_id?: string
-  /**
-   * The ID of the associated rule type.
-   */
-  rule_type?: string | RuleTypeDTO
   /**
    * The value of the price rule.
    */
@@ -94,20 +85,16 @@ export interface CreatePriceRuleDTO {
    */
   priority?: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id?: string
-  /**
-   * The ID or object of the associated price set money amount.
-   */
-  price_set_money_amount?: string | PriceSetMoneyAmountDTO
+  price_id?: string
 }
 
 /**
  *
  * @interface
  *
- * The data to update in a price rule. The `id` is used to identify which money amount to update.
+ * The data to update in a price rule. The `id` is used to identify which price rule to update.
  */
 export interface UpdatePriceRuleDTO {
   id: string
@@ -122,9 +109,9 @@ export interface UpdatePriceRuleDTO {
    */
   priority?: number
   /**
-   * The ID of the associated price set money amount.
+   * The ID of the associated price.
    */
-  price_set_money_amount_id?: string
+  price_id?: string
   /**
    * The ID of the associated price list.
    */

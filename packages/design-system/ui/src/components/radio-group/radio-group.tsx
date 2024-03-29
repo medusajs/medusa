@@ -62,7 +62,7 @@ const Item = React.forwardRef<
           "shadow-borders-base bg-ui-bg-base transition-fg flex h-[14px] w-[14px] items-center justify-center rounded-full",
           "group-hover:bg-ui-bg-base-hover",
           "group-data-[state=checked]:bg-ui-bg-interactive group-data-[state=checked]:shadow-borders-interactive-with-shadow",
-          "group-focus:!shadow-borders-interactive-with-focus",
+          "group-focus-visible:!shadow-borders-interactive-with-focus",
           "group-disabled:!bg-ui-bg-disabled group-disabled:!shadow-borders-base"
         )}
       >
@@ -95,7 +95,7 @@ const ChoiceBox = React.forwardRef<
     <Primitives.Item
       ref={ref}
       className={clx(
-        "shadow-borders-base bg-ui-bg-base focus:shadow-borders-interactive-with-focus transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed",
+        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed",
         className
       )}
       {...props}
@@ -110,14 +110,14 @@ const ChoiceBox = React.forwardRef<
       <div className="flex flex-col items-start">
         <Label
           htmlFor={id}
-          size="base"
+          size="small"
           weight="plus"
           className="group-disabled:text-ui-fg-disabled cursor-pointer group-disabled:cursor-not-allowed"
         >
           {label}
         </Label>
         <Hint
-          className="txt-compact-medium text-ui-fg-subtle group-disabled:text-ui-fg-disabled"
+          className="txt-compact-medium text-ui-fg-subtle group-disabled:text-ui-fg-disabled text-left"
           id={descriptionId}
         >
           {description}

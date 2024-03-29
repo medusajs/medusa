@@ -69,27 +69,9 @@ const plugins = [
 ]
 ```
 
-The plugin accepts the following options:
-
-1. `serve`: (default: `true`) a boolean indicating whether to serve the admin dashboard when the Medusa backend starts. If set to `false`, you can serve the admin dashboard using the [dev command](./configuration.md#dev-command-options).
-2. `path`: (default: `app`) a string indicating the path the admin server should run on when running the Medusa backend in production. It must be prefixed with a slash `/`, but it can't end with a `/`, which throws an error. It also can't be one of the reserved paths: "admin" and "store".
-3. `outDir`: Optional path for where to output the admin build files.
-4. `autoRebuild`: (default: `false`) a boolean indicating whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts. If not set, you must [manually build the admin dashboard](./configuration.md#build-command-options).
-5. `develop`: An optional object that accepts the following properties:
-  - `open`: (default: `true`) a boolean value that indicates if the browser should be opened when the medusa project is first started.
-  - `port`: (default: `7001`) a number indicating the port the admin dashboard runs on.
-
-### Optional: Manually Building Admin Dashboard
-
-If you have `autoRebuild` disabled, you must build your admin dashboard before starting the Medusa backend. Refer to the [build command](./configuration.md#build-command-options) for more details.
+Check [this documentation](./configuration.mdx#plugin-options) for a full list of available options.
 
 ### Step 3: Test the Admin Dashboard
-
-:::tip
-
-If you disabled the `serve` option, you need to run the admin dashboard separately using the [dev command](./configuration.md#dev-command-options)
-
-:::
 
 You can test the admin dashboard by running the following command in the directory of the Medusa backend:
 
@@ -112,14 +94,14 @@ This starts the Medusa Backend and the admin dashboard in a development environm
 
 :::note
 
-This doesn't apply if you have the `serve` option disabled.
+This doesn't apply if you have the `serve` option disabled or you're deploying the admin separately.
 
 :::
 
 When you run the Medusa project in a production environment (such as with the `npx medusa start` command), the admin dashboard will be available at `<MEDUSA_URL>/<ADMIN_PATH>`, where:
 
 1. `<MEDUSA_URL>` is the URL of your Medusa backend. By default, it'll be `localhost:9000` locally.
-2. `<ADMIN_PATH>` is the path you define in the [admin's configurations](#step-2-add-admin-to-medusa-configurations).
+2. `<ADMIN_PATH>` is the path you define in the [admin plugin's configurations](./configuration.mdx#plugin-options).
 
 So, if you simulate a production environment locally, the admin dashboard will run by default on `localhost:9000/app`.
 
@@ -167,13 +149,7 @@ You can learn more about the admin dashboard and its features in the [User Guide
 
 Medusa supports multiple languages and translations. Check out available languages [here](../user-guide/tips/languages.md).
 
-Refer to [this user guide](../user-guide/users/profile.md#change-admin-language) to learn how to switch the language of the Medusa admin.
-
-:::note
-
-Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../contribution/admin-translations.md).
-
-:::
+Refer to [this user guide](../user-guide/users/profile.md#change-admin-language) to learn how to switch the language of the Medusa Admin.
 
 ---
 
@@ -196,6 +172,6 @@ Can't find your language? Learn how you can contribute by translating the admin 
 
 ## See Also
 
-- [Admin Configuration](./configuration.md)
+- [Admin Configuration](./configuration.mdx)
 - [Admin widgets](./widgets.md)
 - [Admin UI routes](./routes.md)

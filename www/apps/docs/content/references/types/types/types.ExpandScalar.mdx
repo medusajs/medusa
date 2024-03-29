@@ -1,9 +1,9 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ExpandScalar
 
- **ExpandScalar**: `null` \| `T` extends `string` ? `string` \| `RegExp` : `T` extends `Date` ? `Date` \| `string` : `T`
+ **ExpandScalar**: `null` \| T extends `string` ? `string` \| `RegExp` : T extends `Date` ? `Date` \| `string` : T
 
 ## Type Parameters
 
-<ParameterTypes parameters={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ExpandScalar"/>

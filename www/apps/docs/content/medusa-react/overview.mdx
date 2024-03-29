@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 [Medusa React](https://www.npmjs.com/package/medusa-react) is a React library that provides a set of utilities and hooks for interacting seamlessly with the Medusa backend.
 
-For example, if you're creating a storefront with frameworks like Nuxt, you can send requests to the backend using this client. You can also use it in your Medusa admin customizations.
+For example, if you're creating a storefront with frameworks like Nuxt, you can send requests to the backend using this client. You can also use it in your Medusa Admin customizations.
 
 This reference provides details on the available hooks, providers, and utilities, including examples of each.
 
@@ -326,7 +326,7 @@ You can learn more about publishable API keys and how to use them in [this docum
 
 ### Create a Publishable API Key
 
-You can create a publishable API key either using the [admin REST APIs](../development/publishable-api-keys/admin/manage-publishable-api-keys.mdx), or using the [Medusa admin dashboard](../user-guide/settings/publishable-api-keys.mdx).
+You can create a publishable API key either using the [admin REST APIs](../development/publishable-api-keys/admin/manage-publishable-api-keys.mdx), or using the [Medusa Admin dashboard](../user-guide/settings/publishable-api-keys.mdx).
 
 ### Use a Publishable API Key
 
@@ -412,7 +412,7 @@ import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { products, isLoading } = useAdminProducts({
-    expand: "collection"
+    expand: "collection",
   })
 
   return (
@@ -445,7 +445,7 @@ import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { products, isLoading } = useAdminProducts({
-    expand: "variants,collection"
+    expand: "variants,collection",
   })
 
   return (
@@ -478,7 +478,7 @@ import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { products, isLoading } = useAdminProducts({
-    expand: ""
+    expand: "",
   })
 
   return (
@@ -558,7 +558,7 @@ import { useAdminProducts } from "medusa-react"
 const Products = () => {
   const { products, isLoading } = useAdminProducts({
     fields: "title",
-    expand: ""
+    expand: "",
   })
 
   return (
@@ -654,7 +654,7 @@ import { useAdminProducts } from "medusa-react"
 const Products = () => {
   const { products, isLoading } = useAdminProducts({
     fields: "",
-    expand: ""
+    expand: "",
   })
 
   return (
@@ -698,10 +698,10 @@ const Products = () => {
     products, 
     limit,
     offset,
-    isLoading
+    isLoading,
   } = useAdminProducts({
     limit: 20,
-    offset: 0
+    offset: 0,
   })
 
   return (
@@ -736,14 +736,14 @@ For example, if the `count` is `100` and the `limit` is `50`, you can divide the
 
 The `order` field, available on hooks supporting pagination, allows you to sort the retrieved items by an attribute of that item. For example, you can sort products by their `created_at` attribute by setting `order` to `created_at`:
 
-```ts
+```tsx
 import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { 
     products, 
-    isLoading
+    isLoading,
   } = useAdminProducts({
     order: "created_at",
   })
@@ -768,14 +768,14 @@ export default Products
 
 By default, the sort direction will be ascending. To change it to descending, pass a dash (`-`) before the attribute name. For example:
 
-```ts
+```tsx
 import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { 
     products, 
-    isLoading
+    isLoading,
   } = useAdminProducts({
     order: "-created_at",
   })

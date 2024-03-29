@@ -2,14 +2,10 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminUsersListRes
 
- **AdminUsersListRes**: `Object`
+ **AdminUsersListRes**: [PaginatedResponse](medusa.PaginatedResponse-1.mdx) & `object`
 
 The list of users.
-
-## Type declaration
-
-<ParameterTypes parameters={[{"name":"users","type":"Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;[]","description":"An array of users details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>

@@ -41,9 +41,6 @@ import { adminAuthKeys } from "./queries"
  * @category Mutations
  */
 export const useAdminLogin = (
-  /**
-   * stuff again
-   */
   options?: UseMutationOptions<Response<AdminAuthRes>, Error, AdminPostAuthReq>
 ) => {
   const { client } = useMedusa()

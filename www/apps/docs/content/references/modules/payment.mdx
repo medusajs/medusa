@@ -1,4 +1,4 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # payment
 
@@ -8,37 +8,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Interfaces
 
-- [PaymentProcessor](../payment/interfaces/payment.PaymentProcessor.mdx)
 - [PaymentProcessorContext](../payment/interfaces/payment.PaymentProcessorContext.mdx)
-- [PaymentProcessorError](../payment/interfaces/payment.PaymentProcessorError.mdx)
 - [PaymentProcessorSessionResponse](../payment/interfaces/payment.PaymentProcessorSessionResponse.mdx)
+- [PaymentProcessorError](../payment/interfaces/payment.PaymentProcessorError.mdx)
+- [PaymentProcessor](../payment/interfaces/payment.PaymentProcessor.mdx)
 
 ___
 
 ## Functions
 
-### isPaymentProcessor
-
-Return if the input object is AbstractPaymentProcessor
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"obj","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
 ### isPaymentProcessorError
 
-Utility function to determine if an object is a processor error
-
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"obj","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"obj","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="isPaymentProcessorError"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"obj","type":"obj is PaymentProcessorError","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"obj","type":"obj is PaymentProcessorError","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="isPaymentProcessorError"/>

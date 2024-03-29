@@ -26,7 +26,7 @@ class MinioService extends AbstractFileService implements IFileService {
   protected downloadUrlDuration: string | number
 
   constructor({}, options) {
-    super({}, options)
+    super(arguments[0], options)
 
     this.bucket_ = options.bucket
     this.accessKeyId_ = options.access_key_id

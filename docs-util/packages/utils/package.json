@@ -21,6 +21,7 @@
     "typescript": "5.2"
   },
   "dependencies": {
+    "octokit": "^3.1.2",
     "rimraf": "^5.0.5"
   }
 }

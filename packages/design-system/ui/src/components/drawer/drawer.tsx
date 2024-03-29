@@ -52,7 +52,11 @@ const DrawerOverlay = React.forwardRef<
   return (
     <DrawerPrimitives.Overlay
       ref={ref}
-      className={clx("bg-ui-bg-overlay fixed inset-0", className)}
+      className={clx(
+        "bg-ui-bg-overlay fixed inset-0",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        className
+      )}
       {...props}
     />
   )
@@ -69,8 +73,8 @@ const DrawerContent = React.forwardRef<
       <DrawerPrimitives.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-base shadow-elevation-modal border-ui-border-base fixed inset-y-2 right-2 flex w-full max-w-[560px] flex-1 flex-col rounded-lg border focus:outline-none",
-          // "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-1/2 data-[state=open]:slide-in-from-right-1/2 duration-200",
+          "bg-ui-bg-base shadow-elevation-modal border-ui-border-base fixed inset-y-2 flex w-full flex-1 flex-col rounded-lg border focus:outline-none max-sm:inset-x-2 max-sm:w-[calc(100%-16px)] sm:right-2 sm:max-w-[560px]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-1/2 data-[state=open]:slide-in-from-right-1/2 duration-200",
           className
         )}
         {...props}
@@ -87,14 +91,14 @@ const DrawerHeader = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="border-ui-border-base flex items-start justify-between gap-x-4 border-b px-8 py-6"
+      className="border-ui-border-base flex items-start justify-between gap-x-4 border-b px-6 py-4"
       {...props}
     >
       <div className={clx("flex flex-col gap-y-1", className)}>{children}</div>
       <div className="flex items-center gap-x-2">
         <Kbd>esc</Kbd>
         <DrawerPrimitives.Close asChild>
-          <IconButton variant="transparent">
+          <IconButton size="small" type="button" variant="transparent">
             <XMark />
           </IconButton>
         </DrawerPrimitives.Close>
@@ -109,11 +113,7 @@ const DrawerBody = React.forwardRef<
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => {
   return (
-    <div
-      ref={ref}
-      className={clx("flex-1 px-8 pb-16 pt-6", className)}
-      {...props}
-    />
+    <div ref={ref} className={clx("flex-1 px-6 py-4", className)} {...props} />
   )
 })
 DrawerBody.displayName = "Drawer.Body"
@@ -125,7 +125,7 @@ const DrawerFooter = ({
   return (
     <div
       className={clx(
-        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-scroll border-t px-8 pb-6 pt-4",
+        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-auto border-t px-6 py-4",
         className
       )}
       {...props}

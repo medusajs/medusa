@@ -109,7 +109,7 @@ You can list products as an admin using the [List Products API Route](https://do
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -317,7 +317,7 @@ You can create a product by sending a request to the [Create a Product API Route
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "title": "Shirt 2",
@@ -461,7 +461,7 @@ You can retrieve a single product as an admin by sending a request to the [Get a
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -548,7 +548,7 @@ You can update a product by sending a request to the [Update Product API Route](
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     --header 'Content-Type: application/json' \
     --data-raw '{
         "title": "Shirt"
@@ -651,7 +651,7 @@ You can add a product option to a product by sending a request to the [Add Produ
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     --header 'Content-Type: application/json' \
     --data-raw '{
         "title": "Size"
@@ -747,7 +747,7 @@ You can update a product option by sending a request to the [Update Product Opti
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     --header 'Content-Type: application/json' \
     --data-raw '{
         "title": "Size"
@@ -832,7 +832,7 @@ You can delete a product option by sending a request to the [Delete Product Opti
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -966,7 +966,7 @@ You can create a product variant by sending a request to the [Create Product Var
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     --header 'Content-Type: application/json' \
     --data-raw '{
       "title": "White Shirt",
@@ -1080,7 +1080,7 @@ You can update a product variant by sending a request to the [Update a Product V
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     --header 'Content-Type: application/json' \
     --data-raw '{
       "title": "White Shirt"
@@ -1165,7 +1165,7 @@ You can delete a product variant by sending a request to the [Delete a Product V
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -1245,7 +1245,7 @@ You can delete a product by sending a request to the [Delete a Product API Route
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

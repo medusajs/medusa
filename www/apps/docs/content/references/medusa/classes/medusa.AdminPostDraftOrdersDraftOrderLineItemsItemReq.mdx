@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminPostDraftOrdersDraftOrderLineItemsItemReq
 
@@ -10,4 +10,4 @@ The details to update of the line item.
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the Line Item.","optional":true,"defaultValue":"{}","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"The title of the line item if `variant\\_id` is not provided.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"title","type":"`string`","description":"The title of the line item if `variant\\_id` is not provided.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the Line Item.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="AdminPostDraftOrdersDraftOrderLineItemsItemReq"/>

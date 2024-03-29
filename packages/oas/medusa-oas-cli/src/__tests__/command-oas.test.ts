@@ -8,8 +8,15 @@ import { readYaml } from "../utils/yaml-utils"
 import { readJson } from "../utils/json-utils"
 import execa from "execa"
 
-const medusaPackagePath = path.dirname(
-  require.resolve("@medusajs/medusa/package.json")
+/**
+ * OAS output directory
+ * 
+ * @privateRemark
+ * This should be the only directory OAS is loaded from for Medusa V2.
+ * For now, we only use it if the --v2 flag it passed to the CLI tool.
+ */
+const oasOutputPath = path.resolve(
+  __dirname, "..", "..", "..", "..", "docs-util", "oas-output"
 )
 const basePath = path.resolve(__dirname, `../../`)
 
@@ -67,7 +74,7 @@ describe("command oas", () => {
      */
     beforeAll(async () => {
       const outDir = path.resolve(tmpDir, uid())
-      await runCLI("oas", ["--type", "admin", "--out-dir", outDir])
+      await runCLI("oas", ["--type", "admin", "--out-dir", outDir, "--local"])
       const generatedFilePath = path.resolve(outDir, "admin.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
@@ -80,8 +87,8 @@ describe("command oas", () => {
 
     it("generates oas using admin.oas.base.yaml", async () => {
       const yamlFilePath = path.resolve(
-        medusaPackagePath,
-        "oas",
+        oasOutputPath,
+        "base",
         "admin.oas.base.yaml"
       )
       const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
@@ -94,7 +101,7 @@ describe("command oas", () => {
 
     beforeAll(async () => {
       const outDir = path.resolve(tmpDir, uid())
-      await runCLI("oas", ["--type", "store", "--out-dir", outDir])
+      await runCLI("oas", ["--type", "store", "--out-dir", outDir, "--local"])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
@@ -107,8 +114,8 @@ describe("command oas", () => {
 
     it("generates oas using store.oas.base.yaml", async () => {
       const yamlFilePath = path.resolve(
-        medusaPackagePath,
-        "oas",
+        oasOutputPath,
+        "base",
         "store.oas.base.yaml"
       )
       const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
@@ -121,7 +128,7 @@ describe("command oas", () => {
 
     beforeAll(async () => {
       const outDir = path.resolve(tmpDir, uid())
-      await runCLI("oas", ["--type", "combined", "--out-dir", outDir])
+      await runCLI("oas", ["--type", "combined", "--out-dir", outDir, "--local"])
       const generatedFilePath = path.resolve(outDir, "combined.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
@@ -220,6 +227,7 @@ describe("command oas", () => {
         outDir,
         "--paths",
         additionalPath,
+        "--local"
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
@@ -355,10 +363,223 @@ components:
         outDir,
         "--base",
         filePath,
+        "--local"
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
+
+    it("should add new path to existing paths", async () => {
+      const routes = Object.keys(oas.paths)
+      expect(routes.includes("/store/products")).toBeTruthy()
+      expect(routes.includes("/foobar/tests")).toBeTruthy()
+    })
+
+    it("should overwrite existing path", async () => {
+      expect(oas.paths["/store/regions"]["get"].operationId).toBe(
+        "OverwrittenOperation"
+      )
+    })
+
+    it("should add new schema to existing schemas", async () => {
+      const schemas = Object.keys(oas.components?.schemas ?? {})
+      expect(schemas.includes("StoreProductsListRes")).toBeTruthy()
+      expect(schemas.includes("FoobarTestSchema")).toBeTruthy()
+    })
+
+    it("should overwrite existing schema", async () => {
+      const schema = oas.components?.schemas?.StoreRegionsListRes as
+        | SchemaObject
+        | undefined
+      expect(schema?.properties?.foo).toBeDefined()
+    })
+
+    it("should replace base properties", async () => {
+      expect(oas.openapi).toBe("3.1.0")
+      expect(oas.info).toEqual({ version: "1.0.1", title: "Custom API" })
+      expect(oas.servers).toEqual([{ url: "https://foobar.com" }])
+      expect(oas.security).toEqual([{ api_key: [] }])
+      expect(oas.externalDocs).toEqual({ url: "https://docs.com" })
+      expect(oas.webhooks).toEqual({
+        "foo-hook": { get: { responses: { "200": { description: "OK" } } } },
+      })
+    })
+
+    it("should add new tag", async () => {
+      expect(oas.tags).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "FoobarTag",
+          }),
+        ])
+      )
+    })
+
+    it("should overwrite existing tag", async () => {
+      expect(oas.tags).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "Products",
+            description: "Overwritten tag",
+          }),
+        ])
+      )
+    })
+
+    it("should add new components", async () => {
+      const components = oas.components ?? {}
+      expect(
+        Object.keys(components.callbacks ?? {}).includes("fooCallback")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.examples ?? {}).includes("fooExample")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.headers ?? {}).includes("fooHeader")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.links ?? {}).includes("fooLink")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.parameters ?? {}).includes("fooParameter")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.requestBodies ?? {}).includes("fooRequestBody")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.responses ?? {}).includes("fooResponse")
+      ).toBeTruthy()
+      expect(
+        Object.keys(components.securitySchemes ?? {}).includes("fooSecurity")
+      ).toBeTruthy()
+    })
+  })
+
+  describe("public OAS", () => {
+    let oas: OpenAPIObject
+    /**
+     * In a CI context, beforeAll might exceed the configured jest timeout.
+     * Until we upgrade our jest version, the timeout error will be swallowed
+     * and the test will fail in unexpected ways.
+     */
+    beforeAll(async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      await runCLI("oas", ["--type", "admin", "--out-dir", outDir])
+      const generatedFilePath = path.resolve(outDir, "admin.oas.json")
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
+    })
+
+    it("generates oas with admin routes only", async () => {
+      const routes = Object.keys(oas.paths)
+      expect(routes.includes("/admin/products")).toBeTruthy()
+      expect(routes.includes("/store/products")).toBeFalsy()
+    })    
+  })
+
+  describe("public OAS with base", () => {
+    let oas: OpenAPIObject
+    beforeAll(async () => {
+      const fileContent = `
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Custom API
+servers:
+  - url: https://foobar.com
+security:
+  - api_key: []
+externalDocs:
+  url: https://docs.com
+webhooks:
+  "foo-hook":
+    get:
+      responses:
+        "200":
+          description: OK
+tags:
+  - name: Products
+    description: Overwritten tag
+  - name: FoobarTag
+    description: Foobar tag description
+paths:
+  "/foobar/tests":
+    get:
+      operationId: GetFoobarTests
+      responses:
+        "200":
+          description: OK
+  "/store/regions":
+    get:
+      operationId: OverwrittenOperation
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    FoobarTestSchema:
+      type: object
+      properties:
+        foo:
+          type: string
+    StoreRegionsListRes:
+      type: object
+      properties:
+        foo:
+          type: string
+  callbacks:
+    fooCallback:
+      get:
+        description: foo callback
+  examples:
+    fooExample:
+      description: foo example
+  headers:
+    fooHeader:
+      description: foo header
+  links:
+    fooLink:
+      description: foo link
+      operationRef: GetFoobarTests
+  parameters:
+    fooParameter:
+      description: foo parameter
+      name: foobar
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    fooRequestBody:
+      description: foo requestBody
+      content:
+        "application/octet-stream": { }
+  responses:
+    fooResponse:
+      description: foo response
+  securitySchemes:
+    fooSecurity:
+      description: foo security
+      type: apiKey
+      name: foo-api-key
+      in: header
+`
+      const targetDir = path.resolve(tmpDir, uid())
+      const filePath = path.resolve(targetDir, "custom.oas.base.yaml")
+      await fs.mkdir(targetDir, { recursive: true })
+      await fs.writeFile(filePath, fileContent, "utf8")
+
+      const outDir = path.resolve(tmpDir, uid())
+      await runCLI("oas", [
+        "--type",
+        "store",
+        "--out-dir",
+        outDir,
+        "--base",
+        filePath,
+      ])
+      const generatedFilePath = path.resolve(outDir, "store.oas.json")
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
+    })   
 
     it("should add new path to existing paths", async () => {
       const routes = Object.keys(oas.paths)

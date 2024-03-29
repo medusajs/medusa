@@ -35,8 +35,16 @@ jobs:
         run: yarn install
         working-directory: docs-util
 
+      - name: Build Workspace packages
+        run: yarn build
+        working-directory: docs-util
+
       - name: Remove Announcement Bar
         run: yarn generate:announcement --expire
+        working-directory: docs-util/packages/scripts
+
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
         working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request

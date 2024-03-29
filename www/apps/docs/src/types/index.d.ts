@@ -26,8 +26,6 @@ declare module "@medusajs/docs" {
     PropSidebarItemCategory,
     PropSidebarItemLink,
     PropSidebarItemHtml,
-    SidebarCategoriesShorthand,
-    SidebarItemConfig,
   } from "@docusaurus/plugin-content-docs"
   import { BadgeProps, ButtonType, ButtonVariants } from "docs-ui"
   import { IconProps } from "@medusajs/icons/dist/types"
@@ -58,6 +56,7 @@ declare module "@medusajs/docs" {
       sidebar_is_divider_line?: boolean
       sidebar_is_back_link?: boolean
       sidebar_badge?: BadgeProps
+      category_id?: string
     }
   }
 

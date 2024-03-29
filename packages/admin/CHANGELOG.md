@@ -1,5 +1,33 @@
 # @medusajs/admin
 
+## 7.1.12
+
+### Patch Changes
+
+- [#6824](https://github.com/medusajs/medusa/pull/6824) [`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui, admin): Add missing regions relation
+
+- Updated dependencies [[`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f)]:
+  - @medusajs/admin-ui@2.1.13
+
+## 7.1.11
+
+### Patch Changes
+
+- [#6306](https://github.com/medusajs/medusa/pull/6306) [`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381) Thanks [@erikengervall](https://github.com/erikengervall)! - fix(admin-ui) Refactor `use-copy-promotion` to map product IDs
+
+- Updated dependencies [[`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381)]:
+  - @medusajs/admin-ui@2.1.12
+
+## 7.1.10
+
+### Patch Changes
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b), [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - @medusajs/admin-ui@2.1.11
+  - medusa-core-utils@1.2.1
+
 ## 7.1.9
 
 ### Patch Changes

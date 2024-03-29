@@ -1,0 +1,355 @@
+---
+displayed_sidebar: core
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# IFileService
+
+## Overview
+
+A file service class is defined in a TypeScript or JavaScript file that’s created in the `src/services` directory.
+The class must extend the `AbstractFileService` class imported from the `@medusajs/medusa` package.
+
+Based on services’ naming conventions, the file’s name should be the slug version of the file service’s name
+without `service`, and the class’s name should be the pascal case of the file service’s name following by `Service`.
+
+For example, create the file `src/services/local-file.ts` with the following content:
+
+```ts title="src/services/local-file.ts"
+import { AbstractFileService } from "@medusajs/medusa"
+import {
+  DeleteFileType,
+  FileServiceGetUploadStreamResult,
+  FileServiceUploadResult,
+  GetUploadedFileType,
+  UploadStreamDescriptorType,
+} from "@medusajs/types"
+
+class LocalFileService extends AbstractFileService {
+  async upload(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
+    throw new Error("Method not implemented.")
+  }
+  async uploadProtected(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
+    throw new Error("Method not implemented.")
+  }
+  async delete(fileData: DeleteFileType): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+  async getUploadStreamDescriptor(
+    fileData: UploadStreamDescriptorType
+  ): Promise<FileServiceGetUploadStreamResult> {
+    throw new Error("Method not implemented.")
+  }
+  async getDownloadStream(
+    fileData: GetUploadedFileType
+  ): Promise<NodeJS.ReadableStream> {
+    throw new Error("Method not implemented.")
+  }
+  async getPresignedDownloadUrl(
+    fileData: GetUploadedFileType
+  ): Promise<string> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+export default LocalFileService
+```
+
+:::note[Multer Typing]
+
+The examples implement a file service supporting local uploads.
+
+If you’re using TypeScript and you're following along with the implementation,
+you should install the Multer types package in the root of your Medusa backend to resolve errors within your file service types:
+
+```bash npm2yarn
+npm install @types/multer
+```
+
+:::
+
+---
+
+## Properties
+
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="IFileService"/>
+
+___
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+
+___
+
+## Methods
+
+### upload
+
+This method is used to upload a file to the Medusa backend.
+
+#### Example
+
+```ts
+class LocalFileService extends AbstractFileService {
+  // ...
+  async upload(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
+    const filePath =
+      `${this.publicPath}/${fileData.originalname}`
+    fs.copyFileSync(fileData.path, filePath)
+    return {
+      url: `${this.serverUrl}/${filePath}`,
+      key: filePath,
+    }
+  }
+  // ...
+}
+```
+
+:::tip
+
+This example does not account for duplicate names to maintain simplicity in this guide. So, an uploaded file can replace another existing file that has the same name.
+
+:::
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="upload"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upload"/>
+
+### uploadProtected
+
+This method is used to upload a file to the Medusa backend, but to a protected storage. Typically, this would be used to store files that
+shouldn’t be accessible by using the file’s URL or should only be accessible by authenticated users. For example, exported or imported
+CSV files.
+
+#### Example
+
+```ts
+class LocalFileService extends AbstractFileService {
+  // ...
+  async uploadProtected(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
+    const filePath =
+      `${this.protectedPath}/${fileData.originalname}`
+    fs.copyFileSync(fileData.path, filePath)
+    return {
+      url: `${this.serverUrl}/${filePath}`,
+      key: filePath
+    }
+  }
+  // ...
+}
+```
+
+:::tip
+
+This example does not account for duplicate names to maintain simplicity in this guide. So, an uploaded file can replace another existing file that has the same name.
+
+:::
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"`File`","description":"A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="uploadProtected"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"FileServiceUploadResult","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)","optional":false,"defaultValue":"","description":"Details of a file upload's result.","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="uploadProtected"/>
+
+### delete
+
+This method is used to delete a file from storage.
+
+#### Example
+
+```ts
+class LocalFileService extends AbstractFileService {
+
+  async delete(
+    fileData: DeleteFileType
+  ): Promise<void> {
+    fs.rmSync(fileData.fileKey)
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[DeleteFileType](../../medusa/interfaces/medusa.DeleteFileType.mdx)","description":"The details of the file to remove.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key. When uploading a file, the\nreturned key is used here.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### getUploadStreamDescriptor
+
+This method is used to retrieve a write stream to be used to upload a file.
+
+#### Example
+
+```ts
+// ...
+import { Stream } from "stream"
+
+class LocalFileService extends AbstractFileService {
+  // ...
+  async getUploadStreamDescriptor({
+      name,
+      ext,
+      isPrivate = true,
+    }: UploadStreamDescriptorType
+  ): Promise<FileServiceGetUploadStreamResult> {
+    const filePath = `${isPrivate ?
+      this.publicPath : this.protectedPath
+    }/${name}.${ext}`
+
+    const pass = new Stream.PassThrough()
+    const writeStream = fs.createWriteStream(filePath)
+
+    pass.pipe(writeStream)
+
+    return {
+      writeStream: pass,
+      promise: Promise.resolve(),
+      url: `${this.serverUrl}/${filePath}`,
+      fileKey: filePath,
+    }
+  }
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[UploadStreamDescriptorType](../../medusa/interfaces/medusa.UploadStreamDescriptorType.mdx)","description":"The details of the file being uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ext","type":"`string`","description":"The extension of the file.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file should be uploaded to a private bucket or location. By convention, the default value of this property is `true`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of the file-stream upload.","expandable":false,"children":[{"name":"FileServiceGetUploadStreamResult","type":"[FileServiceGetUploadStreamResult](../../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)","optional":false,"defaultValue":"","description":"The relevant details to upload a file through a stream.","expandable":false,"children":[{"name":"writeStream","type":"`PassThrough`","description":"A [PassThrough](https://nodejs.org/api/stream.html#class-streampassthrough) write stream object to be used to write the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"promise","type":"Promise&#60;any&#62;","description":"A promise that should resolved when the writing process is done to finish the upload.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the file once it’s uploaded.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fileKey","type":"`string`","description":"The identifier of the file in the storage. For example, for a local file service, this can be the file's name.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getUploadStreamDescriptor"/>
+
+### getDownloadStream
+
+This method is used to retrieve a read stream for a file, which can then be used to download the file.
+
+#### Example
+
+```ts
+class LocalFileService extends AbstractFileService {
+
+  async getDownloadStream({
+      fileKey,
+      isPrivate = true,
+    }: GetUploadedFileType
+  ): Promise<NodeJS.ReadableStream> {
+    const filePath = `${isPrivate ?
+      this.publicPath : this.protectedPath
+    }/${fileKey}`
+    const readStream = fs.createReadStream(filePath)
+
+    return readStream
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ReadableStream&#62;","optional":false,"defaultValue":"","description":"The [read stream](https://nodejs.org/api/webstreams.html#class-readablestream) to read and download the file.","expandable":false,"children":[{"name":"ReadableStream","type":"`ReadableStream`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getDownloadStream"/>
+
+### getPresignedDownloadUrl
+
+This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.
+
+If your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file.
+
+#### Example
+
+```ts
+class LocalFileService extends AbstractFileService {
+
+  async getPresignedDownloadUrl({
+      fileKey,
+      isPrivate = true,
+    }: GetUploadedFileType
+  ): Promise<string> {
+    // Local upload doesn't provide
+    // support for presigned URLs,
+    // so just return the file's URL.
+
+    const filePath = `${isPrivate ?
+      this.publicPath : this.protectedPath
+    }/${fileKey}`
+    return `${this.serverUrl}/${filePath}`
+  }
+
+  // ...
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[GetUploadedFileType](../../medusa/interfaces/medusa.GetUploadedFileType.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The presigned URL to download the file","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+
+#### Parameters
+
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="atomicPhase_"/>

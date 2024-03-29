@@ -33,7 +33,7 @@
       "description": "The button's style.",
       "tsType": {
         "name": "union",
-        "raw": "\"primary\" \\| \"secondary\" \\| \"transparent\" \\| \"danger\"",
+        "raw": "\"primary\" \\| \"transparent\" \\| \"secondary\" \\| \"danger\"",
         "elements": [
           {
             "name": "literal",
@@ -41,11 +41,11 @@
           },
           {
             "name": "literal",
-            "value": "\"secondary\""
+            "value": "\"transparent\""
           },
           {
             "name": "literal",
-            "value": "\"transparent\""
+            "value": "\"secondary\""
           },
           {
             "name": "literal",
@@ -63,8 +63,12 @@
       "description": "The button's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"large\" \\| \"xlarge\"",
+        "raw": "\"small\" \\| \"base\" \\| \"large\" \\| \"xlarge\"",
         "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
           {
             "name": "literal",
             "value": "\"base\""

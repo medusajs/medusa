@@ -45,6 +45,58 @@
       },
       "description": "Whether there's a next page that can be navigated to."
     },
+    "translations": {
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "object",
+        "raw": "{\n  of?: string\n  results?: string\n  pages?: string\n  prev?: string\n  next?: string\n}",
+        "signature": {
+          "properties": [
+            {
+              "key": "of",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "results",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "pages",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "prev",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "next",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            }
+          ]
+        }
+      },
+      "description": "An optional object of words to use in the pagination component.\nUse this to override the default words, or translate them into another language.",
+      "defaultValue": {
+        "value": "{\n  of: \"of\",\n  results: \"results\",\n  pages: \"pages\",\n  prev: \"Prev\",\n  next: \"Next\",\n}",
+        "computed": false
+      }
+    },
     "previousPage": {
       "required": true,
       "tsType": {

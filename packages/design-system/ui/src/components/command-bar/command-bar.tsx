@@ -69,7 +69,7 @@ const Root = ({
 Root.displayName = "CommandBar"
 
 /**
- * The value component of the command bar. This component is used to display a value, 
+ * The value component of the command bar. This component is used to display a value,
  * such as the number of selected items which the commands will act on.
  */
 const Value = React.forwardRef<
@@ -143,21 +143,24 @@ interface CommandProps
 const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
   (
     {
-      className, 
-      type = "button", 
+      className,
+      /**
+       * @ignore
+       */
+      type = "button",
       /**
        * The command's label.
        */
-      label, 
+      label,
       /**
        * The function to execute when the command is triggered.
        */
-      action, 
+      action,
       /**
        * The command's shortcut
        */
-      shortcut, 
-      disabled, 
+      shortcut,
+      disabled,
       ...props
     }: CommandProps,
     ref
@@ -185,7 +188,7 @@ const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
         ref={ref}
         className={clx(
           "bg-ui-contrast-bg-base txt-compact-small-plus transition-fg text-ui-contrast-fg-primary flex items-center gap-x-2 px-3 py-2.5 outline-none",
-          "focus:bg-ui-contrast-bg-highlight focus:hover:bg-ui-contrast-bg-base-hover hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus:active:bg-ui-contrast-bg-base-pressed disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
+          "focus-visible:bg-ui-contrast-bg-highlight focus-visible:hover:bg-ui-contrast-bg-base-hover hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus-visible:active:bg-ui-contrast-bg-base-pressed disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
           "last-of-type:-mr-1 last-of-type:pr-4",
           className
         )}

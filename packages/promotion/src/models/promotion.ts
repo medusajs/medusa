@@ -1,12 +1,14 @@
-import { PromotionType } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DAL, PromotionTypeValues } from "@medusajs/types"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
+  ManyToOne,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -15,15 +17,14 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
+import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields =
-  | "is_automatic"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
-type OptionalRelations = "application_method"
-@Entity()
+type OptionalFields = "is_automatic" | DAL.SoftDeletableEntityDateColumns
+type OptionalRelations = "application_method" | "campaign"
+
+@Entity({ tableName: "promotion" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Promotion {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -38,12 +39,19 @@ export default class Promotion {
   })
   code: string
 
+  @ManyToOne(() => Campaign, {
+    fieldName: "campaign_id",
+    nullable: true,
+    cascade: ["soft-remove"] as any,
+  })
+  campaign: Campaign | null = null
+
   @Property({ columnType: "boolean", default: false })
-  is_automatic?: boolean = false
+  is_automatic: boolean = false
 
   @Index({ name: "IDX_promotion_type" })
   @Enum(() => PromotionUtils.PromotionType)
-  type: PromotionType
+  type: PromotionTypeValues
 
   @OneToOne({
     entity: () => ApplicationMethod,
@@ -75,7 +83,7 @@ export default class Promotion {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

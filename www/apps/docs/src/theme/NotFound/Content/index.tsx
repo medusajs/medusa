@@ -3,6 +3,8 @@ import clsx from "clsx"
 import Translate from "@docusaurus/Translate"
 import type { Props } from "@theme/NotFound/Content"
 import useBaseUrl from "@docusaurus/useBaseUrl"
+import Heading from "@theme/Heading"
+import Link from "@docusaurus/Link"
 
 export default function NotFoundContent({ className }: Props): JSX.Element {
   return (
@@ -11,14 +13,14 @@ export default function NotFoundContent({ className }: Props): JSX.Element {
     >
       <div className="row">
         <div className="col col--6 col--offset-3">
-          <h1>
+          <Heading as="h1">
             <Translate
               id="theme.NotFound.title"
               description="The title of the 404 page"
             >
               Page Not Found
             </Translate>
-          </h1>
+          </Heading>
           <p>
             <Translate
               id="theme.NotFound.p1"
@@ -31,41 +33,43 @@ export default function NotFoundContent({ className }: Props): JSX.Element {
           </p>
           <p>
             If you think this is a mistake, please{" "}
-            <a
+            <Link
               href="https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml"
               rel="noopener noreferrer"
               target="_blank"
             >
               report this issue on GitHub
-            </a>
+            </Link>
           </p>
-          <h2>Some popular links</h2>
+          <Heading as="h2">Some popular links</Heading>
           <ul>
             <li>
-              <a href={useBaseUrl("/usage/create-medusa-app")}>
+              <Link href={useBaseUrl("/create-medusa-app")}>
                 Install Medusa with create-medusa-app
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://docs.medusajs.com/api/store">
+              <Link href="https://docs.medusajs.com/api/store">
                 Storefront REST API Reference
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://docs.medusajs.com/api/admin">
+              <Link href="https://docs.medusajs.com/api/admin">
                 Admin REST API Reference
-              </a>
+              </Link>
             </li>
             <li>
-              <a href={useBaseUrl("/starters/nextjs-medusa-starter")}>
+              <Link href={useBaseUrl("/starters/nextjs-medusa-starter")}>
                 Install Next.js Storefront
-              </a>
+              </Link>
             </li>
             <li>
-              <a href={useBaseUrl("/admin/quickstart")}>Install Medusa Admin</a>
+              <Link href={useBaseUrl("/admin/quickstart")}>
+                Install Medusa Admin
+              </Link>
             </li>
             <li>
-              <a href={useBaseUrl("/user-guide")}>User Guide</a>
+              <Link href={useBaseUrl("/user-guide")}>User Guide</Link>
             </li>
           </ul>
         </div>

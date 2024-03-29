@@ -416,7 +416,6 @@ class CustomerService extends TransactionBaseService {
    * Updates the customers' billing address.
    * @param {Customer} customer - the Customer to update
    * @param {Object|string} addressOrId - the value to set the billing address to
-   * @param {Object} addrRepo - address repository
    * @return {Promise} the result of the update operation
    */
   async updateBillingAddress_(

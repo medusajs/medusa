@@ -16,18 +16,21 @@ const iconButtonVariants = cva({
         "shadow-buttons-neutral text-ui-fg-subtle bg-ui-button-neutral after:button-neutral-gradient",
         "hover:bg-ui-button-neutral-hover hover:after:button-neutral-hover-gradient",
         "active:bg-ui-button-neutral-pressed active:after:button-neutral-pressed-gradient",
-        "focus:shadow-buttons-neutral-focus",
+        "focus-visible:shadow-buttons-neutral-focus",
         "after:absolute after:inset-0 after:content-['']"
       ),
       transparent: clx(
         "text-ui-fg-subtle bg-ui-button-transparent",
         "hover:bg-ui-button-transparent-hover",
         "active:bg-ui-button-transparent-pressed",
-        "focus:shadow-buttons-neutral-focus focus:bg-ui-bg-base",
+        "focus-visible:shadow-buttons-neutral-focus focus-visible:bg-ui-bg-base",
         "disabled:!bg-transparent disabled:!shadow-none"
       ),
     },
     size: {
+      "2xsmall": "h-5 w-5",
+      xsmall: "h-6 w-6 p-1",
+      small: "h-7 w-7 p-1",
       base: "h-8 w-8 p-1.5",
       large: "h-10 w-10 p-2.5",
       xlarge: "h-12 w-12 p-3.5",

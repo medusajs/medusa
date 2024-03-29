@@ -11,6 +11,7 @@ const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
+const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -31,6 +32,7 @@ const keepTables = [
   "fulfillment_provider",
   "payment_provider",
   "country",
+  "region_country",
   "currency",
   "migrations",
   "mikro_orm_migrations",
@@ -87,7 +89,12 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra, env }) {
+  initDb: async function ({
+    cwd,
+    database_extra,
+    env,
+    force_modules_migration,
+  }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
@@ -148,42 +155,36 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
-    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    if (
+      force_modules_migration ||
+      featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+    ) {
       const pgConnectionLoader =
         require("@medusajs/medusa/dist/loaders/pg-connection").default
 
       const featureFlagLoader =
         require("@medusajs/medusa/dist/loaders/feature-flags").default
 
-      const medusaAppLoader =
-        require("@medusajs/medusa/dist/loaders/medusa-app").default
-
       const container = createMedusaContainer()
 
       const featureFlagRouter = await featureFlagLoader(configModule)
+
+      const pgConnection = await pgConnectionLoader({ configModule, container })
 
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(console),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+        [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
         featureFlagRouter: asValue(featureFlagRouter),
       })
 
-      const pgConnection = await pgConnectionLoader({ configModule, container })
       instance.setPgConnection(pgConnection)
 
-      const { runMigrations } = await medusaAppLoader(
+      await migrateMedusaApp(
         { configModule, container },
         { registerInContainer: false }
       )
-
-      const options = {
-        database: {
-          clientUrl: DB_URL,
-          connection: pgConnection,
-        },
-      }
-      await runMigrations(options)
     }
 
     return dbDataSource

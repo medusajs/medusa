@@ -238,7 +238,7 @@ export interface FulfillmentService extends TransactionBaseService {
    *   // ...
    *   async createFulfillment(
    *     data: Record<string, unknown>,
-   *     items: LineItem,
+   *     items: LineItem[],
    *     order: Order,
    *     fulfillment: Fulfillment
    *   ) {
@@ -390,22 +390,32 @@ export interface FulfillmentService extends TransactionBaseService {
   ): Promise<any>
 }
 
+/**
+ * @parentIgnore activeManager_,atomicPhase_,shouldRetryTransaction_,withTransaction
+ */
 export abstract class AbstractFulfillmentService
   extends TransactionBaseService
   implements FulfillmentService
 {
+  /**
+   * @ignore
+   */
   static _isFulfillmentService = true
 
+  /**
+   * @ignore
+   */
   static isFulfillmentService(object): boolean {
     return object?.constructor?._isFulfillmentService
   }
 
   /**
    * You can use the `constructor` of your fulfillment provider to access the different services in Medusa through dependency injection.
+   *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
    * Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
    * @param {Record<string, unknown>} config - If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
@@ -423,7 +433,7 @@ export abstract class AbstractFulfillmentService
    * }
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {
     super(container, config)

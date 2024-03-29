@@ -110,8 +110,6 @@ export const useAdminCancelBatchJob = (
 }
 
 /**
- * @reactMutationHook
- * 
  * When a batch job is created, it's not executed automatically if `dry_run` is set to `true`. This hook confirms that the batch job should be executed.
  * 
  * @example

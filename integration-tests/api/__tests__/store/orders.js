@@ -215,9 +215,12 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toHaveLength(22)
+      expect(Object.keys(response.data.order)).toHaveLength(24)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
+          "id",
+          "created_at",
+
           // fields
           "status",
           "email",
@@ -252,9 +255,11 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toHaveLength(21)
+      expect(Object.keys(response.data.order)).toHaveLength(22)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
+          "id",
+
           // fields
           "status",
 
@@ -290,27 +295,30 @@ describe("/store/carts", () => {
         "/store/orders/order_test?fields=status&expand=billing_address"
       )
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
+      expect(Object.keys(response.data.order).sort()).toEqual(
+        [
+          "id",
+          // fields
+          "status",
 
-        // selected relations
-        "billing_address",
+          // selected relations
+          "billing_address",
 
-        // totals
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "refunded_total",
-        "total",
-        "subtotal",
-        "paid_total",
-        "refundable_amount",
-        "gift_card_total",
-        "gift_card_tax_total",
-        "item_tax_total",
-        "shipping_tax_total",
-      ])
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+          "item_tax_total",
+          "shipping_tax_total",
+        ].sort()
+      )
     })
 
     it("looks up order", async () => {

@@ -1,8 +1,9 @@
 "use client"
 
 import * as Icons from "@medusajs/icons"
-import { Container, Input, Text, Tooltip } from "@medusajs/ui"
+import { Container, Input, Text } from "@medusajs/ui"
 import clsx from "clsx"
+import { CopyButton } from "docs-ui"
 import * as React from "react"
 
 const iconNames = Object.keys(Icons).filter((name) => name !== "default")
@@ -56,7 +57,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
             key={name}
             className="flex h-full w-full items-center justify-center"
           >
-            <Tooltip content={name}>
+            <CopyButton text={name} tooltipText={name} handleTouch>
               <div
                 className={clsx(
                   "border-medusa-border-base",
@@ -73,7 +74,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
                   {React.createElement(Icons[name as keyof typeof Icons])}
                 </div>
               </div>
-            </Tooltip>
+            </CopyButton>
           </div>
         )
       })}

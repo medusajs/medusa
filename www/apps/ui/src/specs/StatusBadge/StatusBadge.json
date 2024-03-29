@@ -4,10 +4,14 @@
   "displayName": "StatusBadge",
   "props": {
     "color": {
-      "required": false,
+      "defaultValue": {
+        "value": "\"grey\"",
+        "computed": false
+      },
+      "description": "The status's color.",
       "tsType": {
         "name": "union",
-        "raw": "\"green\" | \"red\" | \"blue\" | \"orange\" | \"grey\" | \"purple\"",
+        "raw": "\"green\" \\| \"red\" \\| \"blue\" \\| \"orange\" \\| \"grey\" \\| \"purple\"",
         "elements": [
           {
             "name": "literal",
@@ -35,14 +39,11 @@
           }
         ]
       },
-      "description": "The status's color.",
-      "defaultValue": {
-        "value": "\"grey\"",
-        "computed": false
-      }
+      "required": false
     }
   },
   "composes": [
-    "Omit"
+    "Omit",
+    "VariantProps"
   ]
 }

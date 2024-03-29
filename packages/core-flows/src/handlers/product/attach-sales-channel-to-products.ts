@@ -51,7 +51,7 @@ export async function attachSalesChannelToProducts({
           [Modules.PRODUCT]: {
             product_id: id,
           },
-          salesChannelService: {
+          [Modules.SALES_CHANNEL]: {
             sales_channel_id: salesChannelId,
           },
         })

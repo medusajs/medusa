@@ -14,6 +14,54 @@ export const LINKS = {
     Modules.PRICING,
     "price_set_id"
   ),
+  ShippingOptionPriceSet: composeLinkName(
+    Modules.FULFILLMENT,
+    "shipping_option_id",
+    Modules.PRICING,
+    "price_set_id"
+  ),
+  CartPaymentCollection: composeLinkName(
+    Modules.CART,
+    "cart_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  RegionPaymentProvider: composeLinkName(
+    Modules.REGION,
+    "region_id",
+    Modules.PAYMENT,
+    "payment_provider_id"
+  ),
+  CartPromotion: composeLinkName(
+    Modules.CART,
+    "cart_id",
+    Modules.PROMOTION,
+    "promotion_id"
+  ),
+  SalesChannelLocation: composeLinkName(
+    Modules.SALES_CHANNEL,
+    "sales_channel_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
+  ),
+  FulfillmentSetLocation: composeLinkName(
+    Modules.FULFILLMENT,
+    "fulfillment_set_id",
+    Modules.STOCK_LOCATION,
+    "location_id"
+  ),
+  PublishableApiKeySalesChannel: composeLinkName(
+    Modules.API_KEY,
+    "api_key_id",
+    Modules.SALES_CHANNEL,
+    "sales_channel_id"
+  ),
+  ProductSalesChannel: composeLinkName(
+    Modules.PRODUCT,
+    "product_id",
+    Modules.SALES_CHANNEL,
+    "sales_channel_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(
@@ -22,28 +70,10 @@ export const LINKS = {
     "shippingProfileService",
     "profile_id"
   ),
-  ProductSalesChannel: composeLinkName(
-    Modules.PRODUCT,
-    "product_id",
-    "salesChannelService",
-    "sales_channel_id"
-  ),
-  CartSalesChannel: composeLinkName(
-    "cartService",
-    "cart_id",
-    "salesChannelService",
-    "sales_channel_id"
-  ),
   OrderSalesChannel: composeLinkName(
     "orderService",
     "order_id",
-    "salesChannelService",
-    "sales_channel_id"
-  ),
-  PublishableApiKeySalesChannel: composeLinkName(
-    "publishableApiKeyService",
-    "publishable_key_id",
-    "salesChannelService",
+    Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
 }

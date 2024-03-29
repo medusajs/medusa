@@ -8,16 +8,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
 import { RequirementType, ShippingOptionPriceType } from "../../../../models"
-import { defaultFields, defaultRelations } from "."
 
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { ShippingOptionService } from "../../../../services"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingOptionService } from "../../../../services"
 import { CreateShippingOptionInput } from "../../../../types/shipping-options"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/shipping-options
@@ -150,8 +153,8 @@ export default async (req, res) => {
   })
 
   const data = await optionService.retrieve(result.id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })

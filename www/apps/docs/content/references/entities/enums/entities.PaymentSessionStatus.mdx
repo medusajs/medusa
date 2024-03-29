@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentSessionStatus
 
@@ -16,15 +16,17 @@ The status of a payment session.
 
 The payment is authorized.
 
-___
+### PENDING
 
-### CANCELED
+ **PENDING** = `"pending"`
 
- **CANCELED** = `"canceled"`
+The payment is pending.
 
-The payment is canceled.
+### REQUIRES\_MORE
 
-___
+ **REQUIRES\_MORE** = `"requires_more"`
+
+The payment requires an action.
 
 ### ERROR
 
@@ -32,18 +34,8 @@ ___
 
 An error occurred while processing the payment.
 
-___
+### CANCELED
 
-### PENDING
+ **CANCELED** = `"canceled"`
 
- **PENDING** = `"pending"`
-
-The payment is pending.
-
-___
-
-### REQUIRES\_MORE
-
- **REQUIRES\_MORE** = `"requires_more"`
-
-The payment requires an action.
+The payment is canceled.

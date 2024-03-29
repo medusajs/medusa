@@ -46,7 +46,7 @@ const SubMenuTrigger = React.forwardRef<
   <Primitives.SubTrigger
     ref={ref}
     className={clx(
-      "focus:bg-ui-bg-base-pressed data-[state=open]:bg-ui-bg-base-pressed txt-compact-small flex cursor-default select-none items-center rounded-sm px-3 py-2 outline-none",
+      "focus-visible:bg-ui-bg-base-pressed data-[state=open]:bg-ui-bg-base-pressed txt-compact-small flex cursor-default select-none items-center rounded-sm px-2 py-1.5 outline-none",
       className
     )}
     {...props}
@@ -69,7 +69,7 @@ const SubMenuContent = React.forwardRef<
       ref={ref}
       collisionPadding={collisionPadding}
       className={clx(
-        "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[8rem] overflow-hidden rounded-lg border p-1",
+        "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[8rem] overflow-hidden rounded-lg p-1",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
@@ -91,7 +91,7 @@ const Content = React.forwardRef<
       className,
       sideOffset = 8,
       collisionPadding = 8,
-      align = "start",
+      align = "center",
       ...props
     },
     ref
@@ -124,7 +124,7 @@ const Item = React.forwardRef<
   <Primitives.Item
     ref={ref}
     className={clx(
-      "bg-ui-bg-base focus:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-3 py-2 outline-none transition-colors data-[disabled]:pointer-events-none",
+      "bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none",
       className
     )}
     {...props}
@@ -142,7 +142,7 @@ const CheckboxItem = React.forwardRef<
   <Primitives.CheckboxItem
     ref={ref}
     className={clx(
-      "focus:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-2 pl-10 pr-3 text-sm outline-none transition-colors data-[disabled]:pointer-events-none",
+      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-bg-base-hover text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none",
       className
     )}
     checked={checked}
@@ -168,7 +168,7 @@ const RadioItem = React.forwardRef<
   <Primitives.RadioItem
     ref={ref}
     className={clx(
-      "focus:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-2 pl-10 pr-3 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50",
+      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50",
       className
     )}
     {...props}
@@ -192,10 +192,7 @@ const Label = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Primitives.Label
     ref={ref}
-    className={clx(
-      "text-ui-fg-subtle txt-compact-xsmall-plus px-2 py-1.5",
-      className
-    )}
+    className={clx("text-ui-fg-subtle txt-compact-xsmall-plus", className)}
     {...props}
   />
 ))

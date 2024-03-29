@@ -18,23 +18,17 @@ To use Medusa, it is required to install the CLI tool as it is used to create a 
 
 ## How to Install CLI Tool
 
-To install the CLI tool, run the following command in your terminal:
+In your Medusa backend's directory, you can use the Medusa CLI tool using NPX. For example:
+
+```bash
+npx medusa --help
+```
+
+Alternatively, you can install the CLI tool globally:
 
 ```bash npm2yarn
 npm install @medusajs/medusa-cli -g
-```
-
-:::note
-
-If you run into any errors while installing the CLI tool, check out the [troubleshooting section](#troubleshooting-installation).
-
-:::
-
-The CLI tool is then available under the `medusa` command. You can see all commands and options with the following command:
-
-```bash
 medusa --help
-```
 
 ---
 
@@ -44,65 +38,7 @@ medusa --help
 
 ---
 
-## Common Options
-
-The following options can be used with all available commands.
-
-### --help
-
-Learn more about what you can do with the CLI tool or with a specific command.
-
-**Alias:** `-h`
-
-```bash
-medusa new --help
-```
-
-### --verbose
-
-Turn on verbose output for detailed logs.
-
-**Default:** `false`
-
-```bash
-medusa new my-backend --verbose
-```
-
-### --no-color
-
-Turn off colors in the output.
-
-**Alias:** `--no-colors`
-
-**Default:** `false`
-
-```bash
-medusa new my-backend --no-color
-```
-
-### --json
-
-Turn on JSON logger.
-
-**Default:** `false`
-
-```bash
-medusa new my-backend --json
-```
-
-### --version
-
-If used inside a Medusa project, the version of the Medusa CLI and Medusa project is shown. Otherwise, the version of the Medusa CLI is shown.
-
-**Alias:** `-v`
-
-```bash
-medusa --version
-```
-
----
-
-## Available Commands
+## Commands
 
 ### new
 
@@ -150,7 +86,7 @@ medusa develop
 
 ### start
 
-Start development backend. This command does not watch for file changes or restart the backend.
+Start backend in production.
 
 ```bash
 medusa start
@@ -165,7 +101,7 @@ medusa start
 
 ### migrations
 
-Migrate the database to the most recent version.
+Perform migration actions to reflect changes on the database, such as running or reverting migrations.
 
 ```bash
 medusa migrations <action>
@@ -221,8 +157,6 @@ medusa start-cluster
 
 | Name | Description |
 | --- | --- |
-| `--cpus <number>` | The number of CPUs that Medusa can consume. By default, Medusa will try to consume all CPUs in cluster mode if this option isn't specified. |
-| `--cpus <number>` | The number of CPUs that Medusa can consume. By default, Medusa will try to consume all CPUs in cluster mode if this option isn't specified. |
 | `-c <number>`, `--cpus <number>` | The number of CPUs that Medusa can consume. By default, Medusa will try to consume all CPUs in cluster mode if this option isn't specified. |
 | `-H <host>`, `--host <host>` | Set host. Defaults to `localhost`. |
 | `-p <port>`, `--port <port>` | Set port. Defaults to `9000`. |
@@ -246,5 +180,5 @@ medusa telemetry
 
 ## See Also
 
-- [Configure Medusa](../development/backend/configurations.md)
+- [Configure Medusa](../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx)
 - [Set up your development environment](../development/backend/prepare-environment.mdx)

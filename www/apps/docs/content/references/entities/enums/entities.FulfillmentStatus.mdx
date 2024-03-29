@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # FulfillmentStatus
 
@@ -10,29 +10,11 @@ The order's fulfillment status.
 
 ## Enumeration Members
 
-### CANCELED
-
- **CANCELED** = `"canceled"`
-
-The order's fulfillments are canceled.
-
-___
-
-### FULFILLED
-
- **FULFILLED** = `"fulfilled"`
-
-The order's items are fulfilled.
-
-___
-
 ### NOT\_FULFILLED
 
  **NOT\_FULFILLED** = `"not_fulfilled"`
 
 The order's items are not fulfilled.
-
-___
 
 ### PARTIALLY\_FULFILLED
 
@@ -40,15 +22,11 @@ ___
 
 Some of the order's items, but not all, are fulfilled.
 
-___
+### FULFILLED
 
-### PARTIALLY\_RETURNED
+ **FULFILLED** = `"fulfilled"`
 
- **PARTIALLY\_RETURNED** = `"partially_returned"`
-
-Some of the order's items, but not all, are returned.
-
-___
+The order's items are fulfilled.
 
 ### PARTIALLY\_SHIPPED
 
@@ -56,15 +34,17 @@ ___
 
 Some of the order's items, but not all, are shipped.
 
-___
+### SHIPPED
 
-### REQUIRES\_ACTION
+ **SHIPPED** = `"shipped"`
 
- **REQUIRES\_ACTION** = `"requires_action"`
+The order's items are shipped.
 
-The order's fulfillment requires action.
+### PARTIALLY\_RETURNED
 
-___
+ **PARTIALLY\_RETURNED** = `"partially_returned"`
+
+Some of the order's items, but not all, are returned.
 
 ### RETURNED
 
@@ -72,10 +52,14 @@ ___
 
 The order's items are returned.
 
-___
+### CANCELED
 
-### SHIPPED
+ **CANCELED** = `"canceled"`
 
- **SHIPPED** = `"shipped"`
+The order's fulfillments are canceled.
 
-The order's items are shipped.
+### REQUIRES\_ACTION
+
+ **REQUIRES\_ACTION** = `"requires_action"`
+
+The order's fulfillment requires action.

@@ -1,11 +1,12 @@
-import { PromotionRuleOperatorValues } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DAL, PromotionRuleOperatorValues } from "@medusajs/types"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   OnInit,
@@ -18,10 +19,11 @@ import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
-type OptionalFields = "description" | "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = "description" | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "values" | "promotions"
 
-@Entity()
+@Entity({ tableName: "promotion_rule" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PromotionRule {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -29,7 +31,7 @@ export default class PromotionRule {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description: string | null = null
 
   @Index({ name: "IDX_promotion_rule_attribute" })
   @Property({ columnType: "text" })
@@ -51,7 +53,13 @@ export default class PromotionRule {
     () => ApplicationMethod,
     (applicationMethod) => applicationMethod.target_rules
   )
-  application_methods = new Collection<ApplicationMethod>(this)
+  method_target_rules = new Collection<ApplicationMethod>(this)
+
+  @ManyToMany(
+    () => ApplicationMethod,
+    (applicationMethod) => applicationMethod.buy_rules
+  )
+  method_buy_rules = new Collection<ApplicationMethod>(this)
 
   @Property({
     onCreate: () => new Date(),
@@ -69,7 +77,7 @@ export default class PromotionRule {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

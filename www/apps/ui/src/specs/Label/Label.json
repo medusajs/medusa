@@ -11,15 +11,11 @@
       "description": "The label's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"large\" \\| \"small\" \\| \"xsmall\"",
+        "raw": "\"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\"",
         "elements": [
           {
             "name": "literal",
-            "value": "\"base\""
-          },
-          {
-            "name": "literal",
-            "value": "\"large\""
+            "value": "\"xsmall\""
           },
           {
             "name": "literal",
@@ -27,7 +23,11 @@
           },
           {
             "name": "literal",
-            "value": "\"xsmall\""
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
           }
         ]
       },

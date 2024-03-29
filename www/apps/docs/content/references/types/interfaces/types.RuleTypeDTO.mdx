@@ -1,4 +1,4 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # RuleTypeDTO
 
@@ -6,4 +6,4 @@ A rule type's data.
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"default_priority","type":"`number`","description":"The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy \nthe provided context. The higher the value, the higher the priority of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The display name of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rule_attribute","type":"`string`","description":"The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of \nthe `calculatePrices` method to specify a rule for calculating the price.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The display name of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rule_attribute","type":"`string`","description":"The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of \nthe `calculatePrices` method to specify a rule for calculating the price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"default_priority","type":"`number`","description":"The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy \nthe provided context. The higher the value, the higher the priority of the rule type.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="RuleTypeDTO"/>

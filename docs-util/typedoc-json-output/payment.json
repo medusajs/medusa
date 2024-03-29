@@ -6,7 +6,2158 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 64,
+			"id": 4,
+			"name": "PaymentProcessorContext",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A payment's context."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 5,
+					"name": "billing_address",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment's billing address."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/models/address.ts",
+									"qualifiedName": "Address"
+								},
+								"name": "Address",
+								"package": "@medusajs/medusa"
+							}
+						]
+					}
+				},
+				{
+					"id": 6,
+					"name": "email",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The customer's email."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 7,
+					"name": "currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The selected currency code, typically associated with the customer's cart."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 8,
+					"name": "amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment's amount."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 9,
+					"name": "resource_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the resource the payment is associated with. For example, the cart's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 10,
+					"name": "customer",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The customer associated with this payment."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/medusa/src/models/customer.ts",
+							"qualifiedName": "Customer"
+						},
+						"name": "Customer",
+						"package": "@medusajs/medusa"
+					}
+				},
+				{
+					"id": 11,
+					"name": "context",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The cart's context."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12,
+					"name": "paymentSessionData",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's "
+							},
+							{
+								"kind": "code",
+								"text": "`data`"
+							},
+							{
+								"kind": "text",
+								"text": " field."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			]
+		},
+		{
+			"id": 13,
+			"name": "PaymentProcessorSessionResponse",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The response of operations on a payment."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 14,
+					"name": "update_requests",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Used to specify data that should be updated in the Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 15,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 16,
+									"name": "customer_metadata",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Specifies a new value of the "
+											},
+											{
+												"kind": "code",
+												"text": "`metadata`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the customer associated with the payment."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										16
+									]
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 17,
+					"name": "session_data",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The data to be stored in the "
+							},
+							{
+								"kind": "code",
+								"text": "`data`"
+							},
+							{
+								"kind": "text",
+								"text": " field of the Payment Session to be created.\nThe "
+							},
+							{
+								"kind": "code",
+								"text": "`data`"
+							},
+							{
+								"kind": "text",
+								"text": " field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						14,
+						17
+					]
+				}
+			]
+		},
+		{
+			"id": 18,
+			"name": "PaymentProcessorError",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is returned in case of an error."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 19,
+					"name": "error",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The error message"
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 20,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The error code."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 21,
+					"name": "detail",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Any additional helpful details."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						19,
+						20,
+						21
+					]
+				}
+			]
+		},
+		{
+			"id": 22,
+			"name": "PaymentProcessor",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "## Overview\n\nA Payment Processor is the payment method used to authorize, capture, and refund payment, among other actions. An example of a Payment Processor is Stripe.\n\nBy default, Medusa has a "
+					},
+					{
+						"kind": "code",
+						"text": "`manual`"
+					},
+					{
+						"kind": "text",
+						"text": " payment provider that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows\nstore operators to manage the payment themselves but still keep track of its different stages on Medusa.\n\nA payment processor is a service that extends the "
+					},
+					{
+						"kind": "code",
+						"text": "`AbstractPaymentProcessor`"
+					},
+					{
+						"kind": "text",
+						"text": " and implements its methods. So, adding a Payment Processor is as simple as\ncreating a service file in "
+					},
+					{
+						"kind": "code",
+						"text": "`src/services`"
+					},
+					{
+						"kind": "text",
+						"text": ". The file's name is the payment processor's class name as a slug and without the word "
+					},
+					{
+						"kind": "code",
+						"text": "`Service`"
+					},
+					{
+						"kind": "text",
+						"text": ".\nFor example, if you're creating a "
+					},
+					{
+						"kind": "code",
+						"text": "`MyPaymentService`"
+					},
+					{
+						"kind": "text",
+						"text": " class, the file name is "
+					},
+					{
+						"kind": "code",
+						"text": "`src/services/my-payment.ts`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { AbstractPaymentProcessor } from \"@medusajs/medusa\";\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // methods here...\n}\n\nexport default MyPaymentService\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\nThe methods of the payment processor are used at different points in the Checkout flow as well as when processing an order after it’s placed.\n\n![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1680177820/Medusa%20Docs/Diagrams/checkout-payment_cy9efp.jpg)\n\n---\n\n## Identifier Property\n\nThe "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProvider`"
+					},
+					{
+						"kind": "text",
+						"text": " entity has 2 properties: "
+					},
+					{
+						"kind": "code",
+						"text": "`id`"
+					},
+					{
+						"kind": "text",
+						"text": " and "
+					},
+					{
+						"kind": "code",
+						"text": "`is_installed`"
+					},
+					{
+						"kind": "text",
+						"text": ". The "
+					},
+					{
+						"kind": "code",
+						"text": "`identifier`"
+					},
+					{
+						"kind": "text",
+						"text": " property in the payment processor service is used when the payment processor is added to the database.\n\nThe value of this property is also used to reference the payment processor throughout Medusa.\nFor example, it is used to [add a payment processor](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders) to a region.\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyPaymentService extends AbstractPaymentProcessor {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## PaymentProcessorError\n\nBefore diving into the methods of the Payment Processor, you'll notice that part of the expected return signature of these method includes "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProcessorError`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\ninterface PaymentProcessorError {\n  error: string\n  code?: string\n  detail?: any\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\nWhile implementing the Payment Processor's methods, if you need to inform the Medusa core that an error occurred at a certain stage,\nreturn an object having the attributes defined in the "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProcessorError`"
+					},
+					{
+						"kind": "text",
+						"text": " interface.\n\nFor example, the Stripe payment processor has the following method to create the error object, which is used within other methods:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nabstract class StripeBase extends AbstractPaymentProcessor {\n  // ...\n  protected buildError(\n    message: string,\n    e: Stripe.StripeRawError | PaymentProcessorError | Error\n  ): PaymentProcessorError {\n    return {\n      error: message,\n      code: \"code\" in e ? e.code : \"\",\n      detail: isPaymentProcessorError(e)\n        ? `${e.error}${EOL}${e.detail ?? \"\"}`\n        : \"detail\" in e\n        ? e.detail\n        : e.message ?? \"\",\n    }\n  }\n\n  // used in other methods\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    PaymentProcessorSessionResponse[\"session_data\"]\n  > {\n    try {\n      // ...\n    } catch (e) {\n      return this.buildError(\n        \"An error occurred in retrievePayment\",\n        e\n      )\n    }\n  }\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 25,
+					"name": "initiatePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 26,
+							"name": "initiatePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession),\nwhich occurs when the customer selects their preferred payment method during checkout.\n\nIt is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either the payment's data or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 27,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The context of the payment."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 4,
+										"name": "PaymentProcessorContext",
+										"package": "@medusajs/medusa"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											},
+											{
+												"type": "reference",
+												"target": 13,
+												"name": "PaymentProcessorSessionResponse",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 28,
+					"name": "updatePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 29,
+							"name": "updatePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update the payment session when the payment amount changes. It's called whenever the cart or any of its related data is updated.\nFor example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) or when a\n[shipping method is selected](https://docs.medusajs.com/api/store#carts_postcartscartshippingmethod)."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either the payment's data or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorContext,\n  PaymentProcessorError,\n  PaymentProcessorSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async updatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    void |\n    PaymentProcessorError |\n    PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const paymentId = context.paymentSessionData.id\n\n    await this.client.update(paymentId, context)\n\n    return {\n      session_data: context.paymentSessionData\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 30,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The context of the payment."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 4,
+										"name": "PaymentProcessorContext",
+										"package": "@medusajs/medusa"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "void"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											},
+											{
+												"type": "reference",
+												"target": 13,
+												"name": "PaymentProcessorSessionResponse",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 31,
+					"name": "refundPayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 32,
+							"name": "refundPayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.\n\nThis method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds).\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or a value that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async refundPayment(\n    paymentSessionData: Record<string, unknown>,\n    refundAmount: number\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const refundData = this.client.refund(paymentId, refundAmount)\n\n    return {\n      id: paymentId,\n      ...refundData\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 33,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a Payment."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 34,
+									"name": "refundAmount",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "the amount to refund."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "number"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 35,
+					"name": "authorizePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 36,
+							"name": "authorizePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to authorize payment using the Payment Session of an order. This is called when the\n[cart is completed](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) and before the order is created.\n\nThis method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.\nYou can interact with a third-party provider and perform any actions necessary to authorize the payment.\n\nThe payment authorization might require additional action from the customer before it is declared authorized. Once that additional action is performed,\nthe "
+									},
+									{
+										"kind": "code",
+										"text": "`authorizePayment`"
+									},
+									{
+										"kind": "text",
+										"text": " method will be called again to validate that the payment is now fully authorized. So, make sure to implement it for this case as well, if necessary.\n\nOnce the payment is authorized successfully and the Payment Session status is set to "
+									},
+									{
+										"kind": "code",
+										"text": "`authorized`"
+									},
+									{
+										"kind": "text",
+										"text": ", the associated order or swap can then be placed or created.\nIf the payment authorization fails, then an error will be thrown and the order will not be created.\n\n:::note\n\nThe payment authorization status is determined using the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "getPaymentStatus",
+										"target": 54,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method. If the status is "
+									},
+									{
+										"kind": "code",
+										"text": "`requires_more`"
+									},
+									{
+										"kind": "text",
+										"text": ", then it means additional actions are required\nfrom the customer. If you try to create the order with a status that isn't "
+									},
+									{
+										"kind": "code",
+										"text": "`authorized`"
+									},
+									{
+										"kind": "text",
+										"text": ", the process will fail.\n\n:::"
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authorization details or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentSessionStatus,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async authorizePayment(\n    paymentSessionData: Record<string, unknown>,\n    context: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    {\n      status: PaymentSessionStatus;\n      data: Record<string, unknown>;\n    }\n  > {\n    try {\n      await this.client.authorize(paymentSessionData.id)\n\n      return {\n        status: PaymentSessionStatus.AUTHORIZED,\n        data: {\n          id: paymentSessionData.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e.message\n      }\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 37,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment session."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 38,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The context of the authorization. It may include some of the following fields:\n\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`ip`"
+											},
+											{
+												"kind": "text",
+												"text": ": The customer’s IP.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`idempotency_key`"
+											},
+											{
+												"kind": "text",
+												"text": ": The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`cart_id`"
+											},
+											{
+												"kind": "text",
+												"text": ": The ID of a cart. This is only during operations like placing an order or creating a swap."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 39,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 40,
+															"name": "status",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "The status of the payment, which will be stored in the payment session's "
+																	},
+																	{
+																		"kind": "code",
+																		"text": "`status`"
+																	},
+																	{
+																		"kind": "text",
+																		"text": " field."
+																	}
+																]
+															},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
+																	"qualifiedName": "PaymentSessionStatus"
+																},
+																"name": "PaymentSessionStatus",
+																"package": "@medusajs/medusa"
+															}
+														},
+														{
+															"id": 41,
+															"name": "data",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "The "
+																	},
+																	{
+																		"kind": "code",
+																		"text": "`data`"
+																	},
+																	{
+																		"kind": "text",
+																		"text": " to be stored in the payment session's "
+																	},
+																	{
+																		"kind": "code",
+																		"text": "`data`"
+																	},
+																	{
+																		"kind": "text",
+																		"text": " field."
+																	}
+																]
+															},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																40,
+																41
+															]
+														}
+													]
+												}
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 42,
+					"name": "capturePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 43,
+							"name": "capturePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.\n\nThis method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture).\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or a value that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async capturePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const captureData = this.client.catch(paymentId)\n\n    return {\n      id: paymentId,\n      ...captureData\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 44,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment for its first parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 45,
+					"name": "deletePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 46,
+							"name": "deletePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:\n\n1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store#carts_deletecartscartpaymentsessionssession).\n2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionssession). The Payment Session is deleted so that a newer one is initialized instead.\n3. When the Payment Processor is no longer available. This generally happens when the store operator removes it from the available Payment Processor in the admin.\n4. When the region of the store is changed based on the cart information and the Payment Processor is not available in the new region."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or an empty object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async deletePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    this.client.delete(paymentId)\n\n    return {}\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 47,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment Session."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 48,
+					"name": "retrievePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 49,
+							"name": "retrievePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to provide a uniform way of retrieving the payment information from the third-party provider.\nFor example, in Stripe’s Payment Processor this method is used to retrieve the payment intent details from Stripe."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The payment's data, typically retrieved from a third-party provider."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    return await this.client.retrieve(paymentId)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 50,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a Payment Session. Make sure to store in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field any necessary data that would allow you to retrieve the payment data from the third-party provider."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 51,
+					"name": "cancelPayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 52,
+							"name": "cancelPayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to cancel an order’s payment. This method is typically triggered by one of the following situations:\n\n1. Before an order is placed and after the payment is authorized, an inventory check is done on products to ensure that products are still available for purchase. If the inventory check fails for any of the products, the payment is canceled.\n2. If the store operator cancels the order from the admin.\n3. When the payment of an order's swap is canceled.\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to cancel the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or a value that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async cancelPayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const cancelData = this.client.cancel(paymentId)\n\n    return {\n      id: paymentId,\n      ...cancelData\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 53,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 54,
+					"name": "getPaymentStatus",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 55,
+							"name": "getPaymentStatus",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to get the status of a Payment or a Payment Session. Its main usage is within the place order and create swap flows.\nIf the status returned is not "
+									},
+									{
+										"kind": "code",
+										"text": "`authorized`"
+									},
+									{
+										"kind": "text",
+										"text": " within these flows, then the payment is considered failed and an error will be thrown, stopping the flow from completion."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The status of the Payment or Payment Session."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentSessionStatus\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async getPaymentStatus(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<PaymentSessionStatus> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    return await this.client.getStatus(paymentId) as PaymentSessionStatus\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 56,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a Payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
+											"qualifiedName": "PaymentSessionStatus"
+										},
+										"name": "PaymentSessionStatus",
+										"package": "@medusajs/medusa"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 57,
+					"name": "updatePaymentData",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 58,
+							"name": "updatePaymentData",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update the "
+									},
+									{
+										"kind": "code",
+										"text": "`data`"
+									},
+									{
+										"kind": "text",
+										"text": " field of a payment session. It's called when a request is sent to the\n[Update Payment Session API Route](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionupdate), or when the "
+									},
+									{
+										"kind": "code",
+										"text": "`CartService`"
+									},
+									{
+										"kind": "text",
+										"text": "'s "
+									},
+									{
+										"kind": "code",
+										"text": "`updatePaymentSession`"
+									},
+									{
+										"kind": "text",
+										"text": " is used.\n\nThis method can also be used to update the data in the third-party payment provider, if necessary."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "the data to store in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment session.\nYou can keep the data as-is, or make changes to it by communicating with the third-party provider."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentProviderService,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  protected paymentProviderService: PaymentProviderService\n  // ...\n  constructor(container, options) {\n    super(container)\n    this.paymentProviderService = container.paymentProviderService\n    // ...\n  }\n  // ...\n  async updatePaymentData(\n    sessionId: string,\n    data: Record<string, unknown>\n  ): Promise<\n    Record<string, unknown> |\n    PaymentProcessorError\n  > {\n    const paymentSession = await this.paymentProviderService.retrieveSession(sessionId)\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.update(paymentSession.data.id, data)\n\n    return {\n      id: clientPayment.id\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 59,
+									"name": "sessionId",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the payment session."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 60,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The data to be updated in the payment session."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": 18,
+												"name": "PaymentProcessorError",
+												"package": "@medusajs/medusa"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						25,
+						28,
+						31,
+						35,
+						42,
+						45,
+						48,
+						51,
+						54,
+						57
+					]
+				}
+			],
+			"implementedBy": [
+				{
+					"type": "reference",
+					"target": 61,
+					"name": "AbstractPaymentProcessor"
+				}
+			]
+		},
+		{
+			"id": 61,
 			"name": "AbstractPaymentProcessor",
 			"variant": "declaration",
 			"kind": 128,
@@ -151,7 +2302,7 @@
 			},
 			"children": [
 				{
-					"id": 66,
+					"id": 67,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -160,7 +2311,7 @@
 					},
 					"signatures": [
 						{
-							"id": 67,
+							"id": 68,
 							"name": "new AbstractPaymentProcessor",
 							"variant": "signature",
 							"kind": 16384,
@@ -194,7 +2345,7 @@
 							},
 							"parameters": [
 								{
-									"id": 68,
+									"id": 69,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -218,15 +2369,25 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-											"qualifiedName": "MedusaContainer"
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
 										},
-										"name": "MedusaContainer",
-										"package": "medusa-core-utils"
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
 									}
 								},
 								{
-									"id": 69,
+									"id": 70,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -264,7 +2425,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 64,
+								"target": 61,
 								"name": "AbstractPaymentProcessor",
 								"package": "@medusajs/medusa"
 							}
@@ -273,6 +2434,51 @@
 				},
 				{
 					"id": 71,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 72,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -310,42 +2516,7 @@
 					}
 				},
 				{
-					"id": 70,
-					"name": "container",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "An instance of "
-							},
-							{
-								"kind": "code",
-								"text": "`MedusaContainer`"
-							},
-							{
-								"kind": "text",
-								"text": " that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-							"qualifiedName": "MedusaContainer"
-						},
-						"name": "MedusaContainer",
-						"package": "medusa-core-utils"
-					}
-				},
-				{
-					"id": 65,
+					"id": 66,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -403,442 +2574,7 @@
 					}
 				},
 				{
-					"id": 77,
-					"name": "authorizePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 78,
-							"name": "authorizePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to authorize payment using the Payment Session of an order. This is called when the\n[cart is completed](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) and before the order is created.\n\nThis method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.\nYou can interact with a third-party provider and perform any actions necessary to authorize the payment.\n\nThe payment authorization might require additional action from the customer before it is declared authorized. Once that additional action is performed,\nthe "
-									},
-									{
-										"kind": "code",
-										"text": "`authorizePayment`"
-									},
-									{
-										"kind": "text",
-										"text": " method will be called again to validate that the payment is now fully authorized. So, make sure to implement it for this case as well, if necessary.\n\nOnce the payment is authorized successfully and the Payment Session status is set to "
-									},
-									{
-										"kind": "code",
-										"text": "`authorized`"
-									},
-									{
-										"kind": "text",
-										"text": ", the associated order or swap can then be placed or created.\nIf the payment authorization fails, then an error will be thrown and the order will not be created.\n\n:::note\n\nThe payment authorization status is determined using the "
-									},
-									{
-										"kind": "inline-tag",
-										"tag": "@link",
-										"text": "getPaymentStatus",
-										"target": 57,
-										"tsLinkText": ""
-									},
-									{
-										"kind": "text",
-										"text": " method. If the status is "
-									},
-									{
-										"kind": "code",
-										"text": "`requires_more`"
-									},
-									{
-										"kind": "text",
-										"text": ", then it means additional actions are required\nfrom the customer. If you try to create the order with a status that isn't "
-									},
-									{
-										"kind": "code",
-										"text": "`authorized`"
-									},
-									{
-										"kind": "text",
-										"text": ", the process will fail.\n\n:::"
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The authorization details or an error object."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentSessionStatus,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async authorizePayment(\n    paymentSessionData: Record<string, unknown>,\n    context: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    {\n      status: PaymentSessionStatus;\n      data: Record<string, unknown>;\n    }\n  > {\n    try {\n      await this.client.authorize(paymentSessionData.id)\n\n      return {\n        status: PaymentSessionStatus.AUTHORIZED,\n        data: {\n          id: paymentSessionData.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e.message\n      }\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 79,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the payment session."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 80,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The context of the authorization. It may include some of the following fields:\n\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`ip`"
-											},
-											{
-												"kind": "text",
-												"text": ": The customer’s IP.\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`idempotency_key`"
-											},
-											{
-												"kind": "text",
-												"text": ": The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`cart_id`"
-											},
-											{
-												"kind": "text",
-												"text": ": The ID of a cart. This is only during operations like placing an order or creating a swap."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											},
-											{
-												"type": "reflection",
-												"declaration": {
-													"id": 81,
-													"name": "__type",
-													"variant": "declaration",
-													"kind": 65536,
-													"flags": {},
-													"children": [
-														{
-															"id": 83,
-															"name": "data",
-															"variant": "declaration",
-															"kind": 1024,
-															"flags": {},
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-																	"qualifiedName": "Record"
-																},
-																"typeArguments": [
-																	{
-																		"type": "intrinsic",
-																		"name": "string"
-																	},
-																	{
-																		"type": "intrinsic",
-																		"name": "unknown"
-																	}
-																],
-																"name": "Record",
-																"package": "typescript"
-															}
-														},
-														{
-															"id": 82,
-															"name": "status",
-															"variant": "declaration",
-															"kind": 1024,
-															"flags": {},
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
-																	"qualifiedName": "PaymentSessionStatus"
-																},
-																"name": "PaymentSessionStatus",
-																"package": "@medusajs/medusa"
-															}
-														}
-													],
-													"groups": [
-														{
-															"title": "Properties",
-															"children": [
-																83,
-																82
-															]
-														}
-													]
-												}
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 39,
-								"name": "PaymentProcessor.authorizePayment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 38,
-						"name": "PaymentProcessor.authorizePayment"
-					}
-				},
-				{
-					"id": 84,
-					"name": "cancelPayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 85,
-							"name": "cancelPayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to cancel an order’s payment. This method is typically triggered by one of the following situations:\n\n1. Before an order is placed and after the payment is authorized, an inventory check is done on products to ensure that products are still available for purchase. If the inventory check fails for any of the products, the payment is canceled.\n2. If the store operator cancels the order from the admin.\n3. When the payment of an order's swap is canceled.\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to cancel the payment."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either an error object or a value that's stored in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async cancelPayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const cancelData = this.client.cancel(paymentId)\n\n    return {\n      id: paymentId,\n      ...cancelData\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 86,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 55,
-								"name": "PaymentProcessor.cancelPayment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 54,
-						"name": "PaymentProcessor.cancelPayment"
-					}
-				},
-				{
-					"id": 74,
+					"id": 75,
 					"name": "capturePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -847,7 +2583,7 @@
 					},
 					"signatures": [
 						{
-							"id": 75,
+							"id": 76,
 							"name": "capturePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -890,7 +2626,7 @@
 							},
 							"parameters": [
 								{
-									"id": 76,
+									"id": 77,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -963,7 +2699,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -975,20 +2711,20 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 46,
+								"target": 43,
 								"name": "PaymentProcessor.capturePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 45,
+						"target": 42,
 						"name": "PaymentProcessor.capturePayment"
 					}
 				},
 				{
-					"id": 90,
-					"name": "deletePayment",
+					"id": 78,
+					"name": "authorizePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -996,8 +2732,8 @@
 					},
 					"signatures": [
 						{
-							"id": 91,
-							"name": "deletePayment",
+							"id": 79,
+							"name": "authorizePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -1005,148 +2741,15 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:\n\n1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store#carts_deletecartscartpaymentsessionssession).\n2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionssession). The Payment Session is deleted so that a newer one is initialized instead.\n3. When the Payment Processor is no longer available. This generally happens when the store operator removes it from the available Payment Processor in the admin.\n4. When the region of the store is changed based on the cart information and the Payment Processor is not available in the new region."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either an error object or an empty object."
-											}
-										]
+										"text": "This method is used to authorize payment using the Payment Session of an order. This is called when the\n[cart is completed](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) and before the order is created.\n\nThis method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.\nYou can interact with a third-party provider and perform any actions necessary to authorize the payment.\n\nThe payment authorization might require additional action from the customer before it is declared authorized. Once that additional action is performed,\nthe "
 									},
 									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async deletePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    this.client.delete(paymentId)\n\n    return {}\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 92,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment Session."
-											}
-										]
+										"kind": "code",
+										"text": "`authorizePayment`"
 									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 49,
-								"name": "PaymentProcessor.deletePayment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 48,
-						"name": "PaymentProcessor.deletePayment"
-					}
-				},
-				{
-					"id": 93,
-					"name": "getPaymentStatus",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 94,
-							"name": "getPaymentStatus",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to get the status of a Payment or a Payment Session. Its main usage is within the place order and create swap flows.\nIf the status returned is not "
+										"text": " method will be called again to validate that the payment is now fully authorized. So, make sure to implement it for this case as well, if necessary.\n\nOnce the payment is authorized successfully and the Payment Session status is set to "
 									},
 									{
 										"kind": "code",
@@ -1154,7 +2757,34 @@
 									},
 									{
 										"kind": "text",
-										"text": " within these flows, then the payment is considered failed and an error will be thrown, stopping the flow from completion."
+										"text": ", the associated order or swap can then be placed or created.\nIf the payment authorization fails, then an error will be thrown and the order will not be created.\n\n:::note\n\nThe payment authorization status is determined using the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "getPaymentStatus",
+										"target": 54,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method. If the status is "
+									},
+									{
+										"kind": "code",
+										"text": "`requires_more`"
+									},
+									{
+										"kind": "text",
+										"text": ", then it means additional actions are required\nfrom the customer. If you try to create the order with a status that isn't "
+									},
+									{
+										"kind": "code",
+										"text": "`authorized`"
+									},
+									{
+										"kind": "text",
+										"text": ", the process will fail.\n\n:::"
 									}
 								],
 								"blockTags": [
@@ -1163,7 +2793,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The status of the Payment or Payment Session."
+												"text": "The authorization details or an error object."
 											}
 										]
 									},
@@ -1172,7 +2802,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentSessionStatus\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async getPaymentStatus(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<PaymentSessionStatus> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    return await this.client.getStatus(paymentId) as PaymentSessionStatus\n  }\n}\n```"
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentSessionStatus,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async authorizePayment(\n    paymentSessionData: Record<string, unknown>,\n    context: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    {\n      status: PaymentSessionStatus;\n      data: Record<string, unknown>;\n    }\n  > {\n    try {\n      await this.client.authorize(paymentSessionData.id)\n\n      return {\n        status: PaymentSessionStatus.AUTHORIZED,\n        data: {\n          id: paymentSessionData.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e.message\n      }\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -1180,7 +2810,7 @@
 							},
 							"parameters": [
 								{
-									"id": 95,
+									"id": 80,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1197,7 +2827,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of a Payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary."
+												"text": " field of the payment session."
 											}
 										]
 									},
@@ -1220,87 +2850,9 @@
 										"name": "Record",
 										"package": "typescript"
 									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
 								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
-											"qualifiedName": "PaymentSessionStatus"
-										},
-										"name": "PaymentSessionStatus",
-										"package": "@medusajs/medusa"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 58,
-								"name": "PaymentProcessor.getPaymentStatus"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 57,
-						"name": "PaymentProcessor.getPaymentStatus"
-					}
-				},
-				{
-					"id": 87,
-					"name": "initiatePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 88,
-							"name": "initiatePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession),\nwhich occurs when the customer selects their preferred payment method during checkout.\n\nIt is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either the payment's data or an error object."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
 								{
-									"id": 89,
+									"id": 81,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1309,15 +2861,52 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The context of the payment."
+												"text": "The context of the authorization. It may include some of the following fields:\n\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`ip`"
+											},
+											{
+												"kind": "text",
+												"text": ": The customer’s IP.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`idempotency_key`"
+											},
+											{
+												"kind": "text",
+												"text": ": The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`cart_id`"
+											},
+											{
+												"kind": "text",
+												"text": ": The ID of a cart. This is only during operations like placing an order or creating a swap."
 											}
 										]
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
-										"name": "PaymentProcessorContext",
-										"package": "@medusajs/medusa"
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
 									}
 								}
 							],
@@ -1333,15 +2922,72 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
-												"type": "reference",
-												"target": 16,
-												"name": "PaymentProcessorSessionResponse",
-												"package": "@medusajs/medusa"
+												"type": "reflection",
+												"declaration": {
+													"id": 82,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 83,
+															"name": "status",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
+																	"qualifiedName": "PaymentSessionStatus"
+																},
+																"name": "PaymentSessionStatus",
+																"package": "@medusajs/medusa"
+															}
+														},
+														{
+															"id": 84,
+															"name": "data",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																83,
+																84
+															]
+														}
+													]
+												}
 											}
 										]
 									}
@@ -1351,20 +2997,20 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 29,
-								"name": "PaymentProcessor.initiatePayment"
+								"target": 36,
+								"name": "PaymentProcessor.authorizePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 28,
-						"name": "PaymentProcessor.initiatePayment"
+						"target": 35,
+						"name": "PaymentProcessor.authorizePayment"
 					}
 				},
 				{
-					"id": 96,
-					"name": "refundPayment",
+					"id": 85,
+					"name": "cancelPayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -1372,8 +3018,8 @@
 					},
 					"signatures": [
 						{
-							"id": 97,
-							"name": "refundPayment",
+							"id": 86,
+							"name": "cancelPayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -1381,7 +3027,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.\n\nThis method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds).\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment."
+										"text": "This method is used to cancel an order’s payment. This method is typically triggered by one of the following situations:\n\n1. Before an order is placed and after the payment is authorized, an inventory check is done on products to ensure that products are still available for purchase. If the inventory check fails for any of the products, the payment is canceled.\n2. If the store operator cancels the order from the admin.\n3. When the payment of an order's swap is canceled.\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to cancel the payment."
 									}
 								],
 								"blockTags": [
@@ -1407,7 +3053,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async refundPayment(\n    paymentSessionData: Record<string, unknown>,\n    refundAmount: number\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const refundData = this.client.refund(paymentId, refundAmount)\n\n    return {\n      id: paymentId,\n      ...refundData\n    }\n  }\n}\n```"
+												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async cancelPayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const cancelData = this.client.cancel(paymentId)\n\n    return {\n      id: paymentId,\n      ...cancelData\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -1415,7 +3061,7 @@
 							},
 							"parameters": [
 								{
-									"id": 98,
+									"id": 87,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1432,175 +3078,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of a Payment."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 99,
-									"name": "refundAmount",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "the amount to refund."
-											}
-										]
-									},
-									"type": {
-										"type": "intrinsic",
-										"name": "number"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 35,
-								"name": "PaymentProcessor.refundPayment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 34,
-						"name": "PaymentProcessor.refundPayment"
-					}
-				},
-				{
-					"id": 100,
-					"name": "retrievePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 101,
-							"name": "retrievePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to provide a uniform way of retrieving the payment information from the third-party provider.\nFor example, in Stripe’s Payment Processor this method is used to retrieve the payment intent details from Stripe."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The payment's data, typically retrieved from a third-party provider."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    return await this.client.retrieve(paymentId)\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 102,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of a Payment Session. Make sure to store in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field any necessary data that would allow you to retrieve the payment data from the third-party provider."
+												"text": " field of the Payment."
 											}
 										]
 									},
@@ -1656,7 +3134,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -1669,19 +3147,19 @@
 							"implementationOf": {
 								"type": "reference",
 								"target": 52,
-								"name": "PaymentProcessor.retrievePayment"
+								"name": "PaymentProcessor.cancelPayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
 						"target": 51,
-						"name": "PaymentProcessor.retrievePayment"
+						"name": "PaymentProcessor.cancelPayment"
 					}
 				},
 				{
-					"id": 103,
-					"name": "updatePayment",
+					"id": 88,
+					"name": "initiatePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -1689,8 +3167,8 @@
 					},
 					"signatures": [
 						{
-							"id": 104,
-							"name": "updatePayment",
+							"id": 89,
+							"name": "initiatePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -1698,7 +3176,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to update the payment session when the payment amount changes. It's called whenever the cart or any of its related data is updated.\nFor example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) or when a\n[shipping method is selected](https://docs.medusajs.com/api/store#carts_postcartscartshippingmethod)."
+										"text": "This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession),\nwhich occurs when the customer selects their preferred payment method during checkout.\n\nIt is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer."
 									}
 								],
 								"blockTags": [
@@ -1716,7 +3194,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorContext,\n  PaymentProcessorError,\n  PaymentProcessorSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async updatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    void |\n    PaymentProcessorError |\n    PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const paymentId = context.paymentSessionData.id\n\n    await this.client.update(paymentId, context)\n\n    return {\n      session_data: context.paymentSessionData\n    }\n  }\n}\n```"
+												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -1724,7 +3202,7 @@
 							},
 							"parameters": [
 								{
-									"id": 105,
+									"id": 90,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1739,7 +3217,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -1756,18 +3234,14 @@
 										"type": "union",
 										"types": [
 											{
-												"type": "intrinsic",
-												"name": "void"
-											},
-											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -1779,20 +3253,20 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 32,
-								"name": "PaymentProcessor.updatePayment"
+								"target": 26,
+								"name": "PaymentProcessor.initiatePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 31,
-						"name": "PaymentProcessor.updatePayment"
+						"target": 25,
+						"name": "PaymentProcessor.initiatePayment"
 					}
 				},
 				{
-					"id": 106,
-					"name": "updatePaymentData",
+					"id": 91,
+					"name": "deletePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -1800,961 +3274,7 @@
 					},
 					"signatures": [
 						{
-							"id": 107,
-							"name": "updatePaymentData",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to update the "
-									},
-									{
-										"kind": "code",
-										"text": "`data`"
-									},
-									{
-										"kind": "text",
-										"text": " field of a payment session. It's called when a request is sent to the\n[Update Payment Session API Route](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionupdate), or when the "
-									},
-									{
-										"kind": "code",
-										"text": "`CartService`"
-									},
-									{
-										"kind": "text",
-										"text": "'s "
-									},
-									{
-										"kind": "code",
-										"text": "`updatePaymentSession`"
-									},
-									{
-										"kind": "text",
-										"text": " is used.\n\nThis method can also be used to update the data in the third-party payment provider, if necessary."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "the data to store in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the payment session.\nYou can keep the data as-is, or make changes to it by communicating with the third-party provider."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentProviderService,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  protected paymentProviderService: PaymentProviderService\n  // ...\n  constructor(container, options) {\n    super(container)\n    this.paymentProviderService = container.paymentProviderService\n    // ...\n  }\n  // ...\n  async updatePaymentData(\n    sessionId: string,\n    data: Record<string, unknown>\n  ): Promise<\n    Record<string, unknown> |\n    PaymentProcessorError\n  > {\n    const paymentSession = await this.paymentProviderService.retrieveSession(sessionId)\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.update(paymentSession.data.id, data)\n\n    return {\n      id: clientPayment.id\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 108,
-									"name": "sessionId",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The ID of the payment session."
-											}
-										]
-									},
-									"type": {
-										"type": "intrinsic",
-										"name": "string"
-									}
-								},
-								{
-									"id": 109,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The data to be updated in the payment session."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 61,
-								"name": "PaymentProcessor.updatePaymentData"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 60,
-						"name": "PaymentProcessor.updatePaymentData"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						66
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						71,
-						70,
-						65
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						77,
-						84,
-						74,
-						90,
-						93,
-						87,
-						96,
-						100,
-						103,
-						106
-					]
-				}
-			],
-			"implementedTypes": [
-				{
-					"type": "reference",
-					"target": 25,
-					"name": "PaymentProcessor",
-					"package": "@medusajs/medusa"
-				}
-			]
-		},
-		{
-			"id": 25,
-			"name": "PaymentProcessor",
-			"variant": "declaration",
-			"kind": 256,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "## Overview\n\nA Payment Processor is the payment method used to authorize, capture, and refund payment, among other actions. An example of a Payment Processor is Stripe.\n\nBy default, Medusa has a "
-					},
-					{
-						"kind": "code",
-						"text": "`manual`"
-					},
-					{
-						"kind": "text",
-						"text": " payment provider that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows\nstore operators to manage the payment themselves but still keep track of its different stages on Medusa.\n\nA payment processor is a service that extends the "
-					},
-					{
-						"kind": "code",
-						"text": "`AbstractPaymentProcessor`"
-					},
-					{
-						"kind": "text",
-						"text": " and implements its methods. So, adding a Payment Processor is as simple as\ncreating a service file in "
-					},
-					{
-						"kind": "code",
-						"text": "`src/services`"
-					},
-					{
-						"kind": "text",
-						"text": ". The file's name is the payment processor's class name as a slug and without the word "
-					},
-					{
-						"kind": "code",
-						"text": "`Service`"
-					},
-					{
-						"kind": "text",
-						"text": ".\nFor example, if you're creating a "
-					},
-					{
-						"kind": "code",
-						"text": "`MyPaymentService`"
-					},
-					{
-						"kind": "text",
-						"text": " class, the file name is "
-					},
-					{
-						"kind": "code",
-						"text": "`src/services/my-payment.ts`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nimport { AbstractPaymentProcessor } from \"@medusajs/medusa\";\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // methods here...\n}\n\nexport default MyPaymentService\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\nThe methods of the payment processor are used at different points in the Checkout flow as well as when processing an order after it’s placed.\n\n![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1680177820/Medusa%20Docs/Diagrams/checkout-payment_cy9efp.jpg)\n\n---\n\n## Identifier Property\n\nThe "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProvider`"
-					},
-					{
-						"kind": "text",
-						"text": " entity has 2 properties: "
-					},
-					{
-						"kind": "code",
-						"text": "`id`"
-					},
-					{
-						"kind": "text",
-						"text": " and "
-					},
-					{
-						"kind": "code",
-						"text": "`is_installed`"
-					},
-					{
-						"kind": "text",
-						"text": ". The "
-					},
-					{
-						"kind": "code",
-						"text": "`identifier`"
-					},
-					{
-						"kind": "text",
-						"text": " property in the payment processor service is used when the payment processor is added to the database.\n\nThe value of this property is also used to reference the payment processor throughout Medusa.\nFor example, it is used to [add a payment processor](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders) to a region.\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nclass MyPaymentService extends AbstractPaymentProcessor {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## PaymentProcessorError\n\nBefore diving into the methods of the Payment Processor, you'll notice that part of the expected return signature of these method includes "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProcessorError`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\ninterface PaymentProcessorError {\n  error: string\n  code?: string\n  detail?: any\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\nWhile implementing the Payment Processor's methods, if you need to inform the Medusa core that an error occurred at a certain stage,\nreturn an object having the attributes defined in the "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProcessorError`"
-					},
-					{
-						"kind": "text",
-						"text": " interface.\n\nFor example, the Stripe payment processor has the following method to create the error object, which is used within other methods:\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nabstract class StripeBase extends AbstractPaymentProcessor {\n  // ...\n  protected buildError(\n    message: string,\n    e: Stripe.StripeRawError | PaymentProcessorError | Error\n  ): PaymentProcessorError {\n    return {\n      error: message,\n      code: \"code\" in e ? e.code : \"\",\n      detail: isPaymentProcessorError(e)\n        ? `${e.error}${EOL}${e.detail ?? \"\"}`\n        : \"detail\" in e\n        ? e.detail\n        : e.message ?? \"\",\n    }\n  }\n\n  // used in other methods\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    PaymentProcessorSessionResponse[\"session_data\"]\n  > {\n    try {\n      // ...\n    } catch (e) {\n      return this.buildError(\n        \"An error occurred in retrievePayment\",\n        e\n      )\n    }\n  }\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---"
-					}
-				]
-			},
-			"children": [
-				{
-					"id": 38,
-					"name": "authorizePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 39,
-							"name": "authorizePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to authorize payment using the Payment Session of an order. This is called when the\n[cart is completed](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) and before the order is created.\n\nThis method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.\nYou can interact with a third-party provider and perform any actions necessary to authorize the payment.\n\nThe payment authorization might require additional action from the customer before it is declared authorized. Once that additional action is performed,\nthe "
-									},
-									{
-										"kind": "code",
-										"text": "`authorizePayment`"
-									},
-									{
-										"kind": "text",
-										"text": " method will be called again to validate that the payment is now fully authorized. So, make sure to implement it for this case as well, if necessary.\n\nOnce the payment is authorized successfully and the Payment Session status is set to "
-									},
-									{
-										"kind": "code",
-										"text": "`authorized`"
-									},
-									{
-										"kind": "text",
-										"text": ", the associated order or swap can then be placed or created.\nIf the payment authorization fails, then an error will be thrown and the order will not be created.\n\n:::note\n\nThe payment authorization status is determined using the "
-									},
-									{
-										"kind": "inline-tag",
-										"tag": "@link",
-										"text": "getPaymentStatus",
-										"target": 57,
-										"tsLinkText": ""
-									},
-									{
-										"kind": "text",
-										"text": " method. If the status is "
-									},
-									{
-										"kind": "code",
-										"text": "`requires_more`"
-									},
-									{
-										"kind": "text",
-										"text": ", then it means additional actions are required\nfrom the customer. If you try to create the order with a status that isn't "
-									},
-									{
-										"kind": "code",
-										"text": "`authorized`"
-									},
-									{
-										"kind": "text",
-										"text": ", the process will fail.\n\n:::"
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The authorization details or an error object."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  PaymentSessionStatus,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async authorizePayment(\n    paymentSessionData: Record<string, unknown>,\n    context: Record<string, unknown>\n  ): Promise<\n    PaymentProcessorError |\n    {\n      status: PaymentSessionStatus;\n      data: Record<string, unknown>;\n    }\n  > {\n    try {\n      await this.client.authorize(paymentSessionData.id)\n\n      return {\n        status: PaymentSessionStatus.AUTHORIZED,\n        data: {\n          id: paymentSessionData.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e.message\n      }\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 40,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the payment session."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 41,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The context of the authorization. It may include some of the following fields:\n\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`ip`"
-											},
-											{
-												"kind": "text",
-												"text": ": The customer’s IP.\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`idempotency_key`"
-											},
-											{
-												"kind": "text",
-												"text": ": The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- "
-											},
-											{
-												"kind": "code",
-												"text": "`cart_id`"
-											},
-											{
-												"kind": "text",
-												"text": ": The ID of a cart. This is only during operations like placing an order or creating a swap."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											},
-											{
-												"type": "reflection",
-												"declaration": {
-													"id": 42,
-													"name": "__type",
-													"variant": "declaration",
-													"kind": 65536,
-													"flags": {},
-													"children": [
-														{
-															"id": 44,
-															"name": "data",
-															"variant": "declaration",
-															"kind": 1024,
-															"flags": {},
-															"comment": {
-																"summary": [
-																	{
-																		"kind": "text",
-																		"text": "The "
-																	},
-																	{
-																		"kind": "code",
-																		"text": "`data`"
-																	},
-																	{
-																		"kind": "text",
-																		"text": " to be stored in the payment session's "
-																	},
-																	{
-																		"kind": "code",
-																		"text": "`data`"
-																	},
-																	{
-																		"kind": "text",
-																		"text": " field."
-																	}
-																]
-															},
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-																	"qualifiedName": "Record"
-																},
-																"typeArguments": [
-																	{
-																		"type": "intrinsic",
-																		"name": "string"
-																	},
-																	{
-																		"type": "intrinsic",
-																		"name": "unknown"
-																	}
-																],
-																"name": "Record",
-																"package": "typescript"
-															}
-														},
-														{
-															"id": 43,
-															"name": "status",
-															"variant": "declaration",
-															"kind": 1024,
-															"flags": {},
-															"comment": {
-																"summary": [
-																	{
-																		"kind": "text",
-																		"text": "The status of the payment, which will be stored in the payment session's "
-																	},
-																	{
-																		"kind": "code",
-																		"text": "`status`"
-																	},
-																	{
-																		"kind": "text",
-																		"text": " field."
-																	}
-																]
-															},
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../../packages/medusa/src/models/payment-session.ts",
-																	"qualifiedName": "PaymentSessionStatus"
-																},
-																"name": "PaymentSessionStatus",
-																"package": "@medusajs/medusa"
-															}
-														}
-													],
-													"groups": [
-														{
-															"title": "Properties",
-															"children": [
-																44,
-																43
-															]
-														}
-													]
-												}
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 54,
-					"name": "cancelPayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 55,
-							"name": "cancelPayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to cancel an order’s payment. This method is typically triggered by one of the following situations:\n\n1. Before an order is placed and after the payment is authorized, an inventory check is done on products to ensure that products are still available for purchase. If the inventory check fails for any of the products, the payment is canceled.\n2. If the store operator cancels the order from the admin.\n3. When the payment of an order's swap is canceled.\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to cancel the payment."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either an error object or a value that's stored in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async cancelPayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const cancelData = this.client.cancel(paymentId)\n\n    return {\n      id: paymentId,\n      ...cancelData\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 56,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 45,
-					"name": "capturePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 46,
-							"name": "capturePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.\n\nThis method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture).\n\nYou can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either an error object or a value that's stored in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentProcessorError,\n  // ...\n} from \"@medusajs/medusa\"\n// ...\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async capturePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<Record<string, unknown> | PaymentProcessorError> {\n    const paymentId = paymentSessionData.id\n\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const captureData = this.client.catch(paymentId)\n\n    return {\n      id: paymentId,\n      ...captureData\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 47,
-									"name": "paymentSessionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the Payment for its first parameter."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 48,
-					"name": "deletePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 49,
+							"id": 92,
 							"name": "deletePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -2789,7 +3309,7 @@
 							},
 							"parameters": [
 								{
-									"id": 50,
+									"id": 93,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2862,7 +3382,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -2871,19 +3391,31 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 46,
+								"name": "PaymentProcessor.deletePayment"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 45,
+						"name": "PaymentProcessor.deletePayment"
+					}
 				},
 				{
-					"id": 57,
+					"id": 94,
 					"name": "getPaymentStatus",
 					"variant": "declaration",
 					"kind": 2048,
-					"flags": {},
+					"flags": {
+						"isAbstract": true
+					},
 					"signatures": [
 						{
-							"id": 58,
+							"id": 95,
 							"name": "getPaymentStatus",
 							"variant": "signature",
 							"kind": 4096,
@@ -2926,7 +3458,7 @@
 							},
 							"parameters": [
 								{
-									"id": 59,
+									"id": 96,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2987,114 +3519,31 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 28,
-					"name": "initiatePayment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 29,
-							"name": "initiatePayment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession),\nwhich occurs when the customer selects their preferred payment method during checkout.\n\nIt is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Either the payment's data or an error object."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
-											}
-										]
-									}
-								]
 							},
-							"parameters": [
-								{
-									"id": 30,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The context of the payment."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": 7,
-										"name": "PaymentProcessorContext",
-										"package": "@medusajs/medusa"
-									}
-								}
-							],
-							"type": {
+							"implementationOf": {
 								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": 21,
-												"name": "PaymentProcessorError",
-												"package": "@medusajs/medusa"
-											},
-											{
-												"type": "reference",
-												"target": 16,
-												"name": "PaymentProcessorSessionResponse",
-												"package": "@medusajs/medusa"
-											}
-										]
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
+								"target": 55,
+								"name": "PaymentProcessor.getPaymentStatus"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 54,
+						"name": "PaymentProcessor.getPaymentStatus"
+					}
 				},
 				{
-					"id": 34,
+					"id": 97,
 					"name": "refundPayment",
 					"variant": "declaration",
 					"kind": 2048,
-					"flags": {},
+					"flags": {
+						"isAbstract": true
+					},
 					"signatures": [
 						{
-							"id": 35,
+							"id": 98,
 							"name": "refundPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3137,7 +3586,7 @@
 							},
 							"parameters": [
 								{
-									"id": 36,
+									"id": 99,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -3179,7 +3628,7 @@
 									}
 								},
 								{
-									"id": 37,
+									"id": 100,
 									"name": "refundAmount",
 									"variant": "param",
 									"kind": 32768,
@@ -3229,7 +3678,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3238,19 +3687,31 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 32,
+								"name": "PaymentProcessor.refundPayment"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 31,
+						"name": "PaymentProcessor.refundPayment"
+					}
 				},
 				{
-					"id": 51,
+					"id": 101,
 					"name": "retrievePayment",
 					"variant": "declaration",
 					"kind": 2048,
-					"flags": {},
+					"flags": {
+						"isAbstract": true
+					},
 					"signatures": [
 						{
-							"id": 52,
+							"id": 102,
 							"name": "retrievePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3285,7 +3746,7 @@
 							},
 							"parameters": [
 								{
-									"id": 53,
+									"id": 103,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -3366,7 +3827,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3375,19 +3836,31 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 49,
+								"name": "PaymentProcessor.retrievePayment"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 48,
+						"name": "PaymentProcessor.retrievePayment"
+					}
 				},
 				{
-					"id": 31,
+					"id": 104,
 					"name": "updatePayment",
 					"variant": "declaration",
 					"kind": 2048,
-					"flags": {},
+					"flags": {
+						"isAbstract": true
+					},
 					"signatures": [
 						{
-							"id": 32,
+							"id": 105,
 							"name": "updatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3422,7 +3895,7 @@
 							},
 							"parameters": [
 								{
-									"id": 33,
+									"id": 106,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3437,7 +3910,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -3459,13 +3932,13 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -3474,19 +3947,31 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 29,
+								"name": "PaymentProcessor.updatePayment"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 28,
+						"name": "PaymentProcessor.updatePayment"
+					}
 				},
 				{
-					"id": 60,
+					"id": 107,
 					"name": "updatePaymentData",
 					"variant": "declaration",
 					"kind": 2048,
-					"flags": {},
+					"flags": {
+						"isAbstract": true
+					},
 					"signatures": [
 						{
-							"id": 61,
+							"id": 108,
 							"name": "updatePaymentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -3553,7 +4038,7 @@
 							},
 							"parameters": [
 								{
-									"id": 62,
+									"id": 109,
 									"name": "sessionId",
 									"variant": "param",
 									"kind": 32768,
@@ -3572,7 +4057,7 @@
 									}
 								},
 								{
-									"id": 63,
+									"id": 110,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -3637,7 +4122,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3646,591 +4131,77 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 58,
+								"name": "PaymentProcessor.updatePaymentData"
 							}
 						}
-					]
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 57,
+						"name": "PaymentProcessor.updatePaymentData"
+					}
 				}
 			],
 			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						67
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						71,
+						72,
+						66
+					]
+				},
 				{
 					"title": "Methods",
 					"children": [
-						38,
-						54,
-						45,
-						48,
-						57,
-						28,
-						34,
-						51,
-						31,
-						60
+						75,
+						78,
+						85,
+						88,
+						91,
+						94,
+						97,
+						101,
+						104,
+						107
 					]
 				}
 			],
-			"implementedBy": [
+			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 64,
-					"name": "AbstractPaymentProcessor"
-				}
-			]
-		},
-		{
-			"id": 7,
-			"name": "PaymentProcessorContext",
-			"variant": "declaration",
-			"kind": 256,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "A payment's context."
-					}
-				]
-			},
-			"children": [
-				{
-					"id": 11,
-					"name": "amount",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The payment's amount."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 8,
-					"name": "billing_address",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The payment's billing address."
-							}
-						]
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/models/address.ts",
-									"qualifiedName": "Address"
-								},
-								"name": "Address",
-								"package": "@medusajs/medusa"
-							}
-						]
-					}
-				},
-				{
-					"id": 14,
-					"name": "context",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The cart's context."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 10,
-					"name": "currency_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The selected currency code, typically associated with the customer's cart."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 13,
-					"name": "customer",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The customer associated with this payment."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/medusa/src/models/customer.ts",
-							"qualifiedName": "Customer"
-						},
-						"name": "Customer",
-						"package": "@medusajs/medusa"
-					}
-				},
-				{
-					"id": 9,
-					"name": "email",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The customer's email."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 15,
-					"name": "paymentSessionData",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's "
-							},
-							{
-								"kind": "code",
-								"text": "`data`"
-							},
-							{
-								"kind": "text",
-								"text": " field."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 12,
-					"name": "resource_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The ID of the resource the payment is associated with. For example, the cart's ID."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Properties",
-					"children": [
-						11,
-						8,
-						14,
-						10,
-						13,
-						9,
-						15,
-						12
-					]
-				}
-			]
-		},
-		{
-			"id": 21,
-			"name": "PaymentProcessorError",
-			"variant": "declaration",
-			"kind": 256,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "An object that is returned in case of an error."
-					}
-				]
-			},
-			"children": [
-				{
-					"id": 23,
-					"name": "code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The error code."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 24,
-					"name": "detail",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Any additional helpful details."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "any"
-					}
-				},
-				{
-					"id": 22,
-					"name": "error",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The error message"
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Properties",
-					"children": [
-						23,
-						24,
-						22
-					]
-				}
-			]
-		},
-		{
-			"id": 16,
-			"name": "PaymentProcessorSessionResponse",
-			"variant": "declaration",
-			"kind": 256,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "The response of operations on a payment."
-					}
-				]
-			},
-			"children": [
-				{
-					"id": 20,
-					"name": "session_data",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The data to be stored in the "
-							},
-							{
-								"kind": "code",
-								"text": "`data`"
-							},
-							{
-								"kind": "text",
-								"text": " field of the Payment Session to be created.\nThe "
-							},
-							{
-								"kind": "code",
-								"text": "`data`"
-							},
-							{
-								"kind": "text",
-								"text": " field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 17,
-					"name": "update_requests",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Used to specify data that should be updated in the Medusa backend."
-							}
-						]
-					},
-					"type": {
-						"type": "reflection",
-						"declaration": {
-							"id": 18,
-							"name": "__type",
-							"variant": "declaration",
-							"kind": 65536,
-							"flags": {},
-							"children": [
-								{
-									"id": 19,
-									"name": "customer_metadata",
-									"variant": "declaration",
-									"kind": 1024,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "Specifies a new value of the "
-											},
-											{
-												"kind": "code",
-												"text": "`metadata`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the customer associated with the payment."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"groups": [
-								{
-									"title": "Properties",
-									"children": [
-										19
-									]
-								}
-							]
-						}
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Properties",
-					"children": [
-						20,
-						17
-					]
+					"target": 22,
+					"name": "PaymentProcessor",
+					"package": "@medusajs/medusa"
 				}
 			]
 		},
 		{
 			"id": 1,
-			"name": "isPaymentProcessor",
-			"variant": "declaration",
-			"kind": 64,
-			"flags": {},
-			"signatures": [
-				{
-					"id": 2,
-					"name": "isPaymentProcessor",
-					"variant": "signature",
-					"kind": 4096,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Return if the input object is AbstractPaymentProcessor"
-							}
-						]
-					},
-					"parameters": [
-						{
-							"id": 3,
-							"name": "obj",
-							"variant": "param",
-							"kind": 32768,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						}
-					],
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					}
-				}
-			]
-		},
-		{
-			"id": 4,
 			"name": "isPaymentProcessorError",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 5,
+					"id": 2,
 					"name": "isPaymentProcessorError",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Utility function to determine if an object is a processor error"
-							}
-						]
-					},
 					"parameters": [
 						{
-							"id": 6,
+							"id": 3,
 							"name": "obj",
 							"variant": "param",
 							"kind": 32768,
@@ -4247,7 +4218,7 @@
 						"asserts": false,
 						"targetType": {
 							"type": "reference",
-							"target": 21,
+							"target": 18,
 							"name": "PaymentProcessorError",
 							"package": "@medusajs/medusa"
 						}
@@ -4260,23 +4231,22 @@
 		{
 			"title": "Classes",
 			"children": [
-				64
+				61
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				25,
-				7,
-				21,
-				16
+				4,
+				13,
+				18,
+				22
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
-				1,
-				4
+				1
 			]
 		}
 	],
@@ -4288,11 +4258,11 @@
 		},
 		"1": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessor"
+			"qualifiedName": "isPaymentProcessorError"
 		},
 		"2": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessor"
+			"qualifiedName": "isPaymentProcessorError"
 		},
 		"3": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4300,99 +4270,99 @@
 		},
 		"4": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessorError"
+			"qualifiedName": "PaymentProcessorContext"
 		},
 		"5": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessorError"
+			"qualifiedName": "__type.billing_address"
 		},
 		"6": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "obj"
+			"qualifiedName": "__type.email"
 		},
 		"7": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorContext"
+			"qualifiedName": "__type.currency_code"
 		},
 		"8": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.billing_address"
+			"qualifiedName": "__type.amount"
 		},
 		"9": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.email"
+			"qualifiedName": "__type.resource_id"
 		},
 		"10": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.currency_code"
+			"qualifiedName": "__type.customer"
 		},
 		"11": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.amount"
+			"qualifiedName": "__type.context"
 		},
 		"12": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.resource_id"
+			"qualifiedName": "__type.paymentSessionData"
 		},
 		"13": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.customer"
+			"qualifiedName": "PaymentProcessorSessionResponse"
 		},
 		"14": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.context"
+			"qualifiedName": "__type.update_requests"
 		},
 		"15": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.paymentSessionData"
+			"qualifiedName": "__type"
 		},
 		"16": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorSessionResponse"
+			"qualifiedName": "__type.customer_metadata"
 		},
 		"17": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.update_requests"
+			"qualifiedName": "__type.session_data"
 		},
 		"18": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "PaymentProcessorError"
 		},
 		"19": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.customer_metadata"
+			"qualifiedName": "PaymentProcessorError.error"
 		},
 		"20": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.session_data"
+			"qualifiedName": "PaymentProcessorError.code"
 		},
 		"21": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError"
+			"qualifiedName": "PaymentProcessorError.detail"
 		},
 		"22": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.error"
-		},
-		"23": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.code"
-		},
-		"24": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.detail"
+			"qualifiedName": "PaymentProcessor"
 		},
 		"25": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor"
+			"qualifiedName": "PaymentProcessor.initiatePayment"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "PaymentProcessor.initiatePayment"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "context"
 		},
 		"28": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.initiatePayment"
+			"qualifiedName": "PaymentProcessor.updatePayment"
 		},
 		"29": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.initiatePayment"
+			"qualifiedName": "PaymentProcessor.updatePayment"
 		},
 		"30": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4400,67 +4370,67 @@
 		},
 		"31": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePayment"
+			"qualifiedName": "PaymentProcessor.refundPayment"
 		},
 		"32": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePayment"
+			"qualifiedName": "PaymentProcessor.refundPayment"
 		},
 		"33": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "paymentSessionData"
 		},
 		"34": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.refundPayment"
+			"qualifiedName": "refundAmount"
 		},
 		"35": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.refundPayment"
+			"qualifiedName": "PaymentProcessor.authorizePayment"
 		},
 		"36": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "PaymentProcessor.authorizePayment"
 		},
 		"37": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "refundAmount"
+			"qualifiedName": "paymentSessionData"
 		},
 		"38": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.authorizePayment"
+			"qualifiedName": "context"
 		},
 		"39": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.authorizePayment"
+			"qualifiedName": "__type"
 		},
 		"40": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "__type.status"
 		},
 		"41": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "__type.data"
 		},
 		"42": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "PaymentProcessor.capturePayment"
 		},
 		"43": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.status"
+			"qualifiedName": "PaymentProcessor.capturePayment"
 		},
 		"44": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "paymentSessionData"
 		},
 		"45": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.capturePayment"
+			"qualifiedName": "PaymentProcessor.deletePayment"
 		},
 		"46": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.capturePayment"
+			"qualifiedName": "PaymentProcessor.deletePayment"
 		},
 		"47": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4468,11 +4438,11 @@
 		},
 		"48": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.deletePayment"
+			"qualifiedName": "PaymentProcessor.retrievePayment"
 		},
 		"49": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.deletePayment"
+			"qualifiedName": "PaymentProcessor.retrievePayment"
 		},
 		"50": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4480,11 +4450,11 @@
 		},
 		"51": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.retrievePayment"
+			"qualifiedName": "PaymentProcessor.cancelPayment"
 		},
 		"52": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.retrievePayment"
+			"qualifiedName": "PaymentProcessor.cancelPayment"
 		},
 		"53": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4492,11 +4462,11 @@
 		},
 		"54": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.cancelPayment"
+			"qualifiedName": "PaymentProcessor.getPaymentStatus"
 		},
 		"55": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.cancelPayment"
+			"qualifiedName": "PaymentProcessor.getPaymentStatus"
 		},
 		"56": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4504,67 +4474,51 @@
 		},
 		"57": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.getPaymentStatus"
+			"qualifiedName": "PaymentProcessor.updatePaymentData"
 		},
 		"58": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.getPaymentStatus"
+			"qualifiedName": "PaymentProcessor.updatePaymentData"
 		},
 		"59": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "sessionId"
 		},
 		"60": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePaymentData"
+			"qualifiedName": "data"
 		},
 		"61": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePaymentData"
-		},
-		"62": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "sessionId"
-		},
-		"63": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "data"
-		},
-		"64": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
 			"qualifiedName": "AbstractPaymentProcessor"
-		},
-		"65": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.identifier"
 		},
 		"66": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.__constructor"
+			"qualifiedName": "AbstractPaymentProcessor.identifier"
 		},
 		"67": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor"
+			"qualifiedName": "AbstractPaymentProcessor.__constructor"
 		},
 		"68": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "container"
+			"qualifiedName": "AbstractPaymentProcessor"
 		},
 		"69": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "container"
 		},
 		"70": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.container"
+			"qualifiedName": "config"
 		},
 		"71": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.config"
+			"qualifiedName": "AbstractPaymentProcessor.container"
 		},
-		"74": {
+		"72": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.capturePayment"
+			"qualifiedName": "AbstractPaymentProcessor.config"
 		},
 		"75": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4572,11 +4526,11 @@
 		},
 		"76": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.capturePayment"
 		},
 		"77": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.authorizePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"78": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4584,27 +4538,27 @@
 		},
 		"79": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.authorizePayment"
 		},
 		"80": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "paymentSessionData"
 		},
 		"81": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "context"
 		},
 		"82": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.status"
+			"qualifiedName": "__type"
 		},
 		"83": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "__type.status"
 		},
 		"84": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.cancelPayment"
+			"qualifiedName": "__type.data"
 		},
 		"85": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4612,11 +4566,11 @@
 		},
 		"86": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.cancelPayment"
 		},
 		"87": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.initiatePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"88": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4624,11 +4578,11 @@
 		},
 		"89": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "AbstractPaymentProcessor.initiatePayment"
 		},
 		"90": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.deletePayment"
+			"qualifiedName": "context"
 		},
 		"91": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4636,11 +4590,11 @@
 		},
 		"92": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.deletePayment"
 		},
 		"93": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.getPaymentStatus"
+			"qualifiedName": "paymentSessionData"
 		},
 		"94": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4648,11 +4602,11 @@
 		},
 		"95": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.getPaymentStatus"
 		},
 		"96": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.refundPayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"97": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4660,15 +4614,15 @@
 		},
 		"98": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.refundPayment"
 		},
 		"99": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "refundAmount"
+			"qualifiedName": "paymentSessionData"
 		},
 		"100": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.retrievePayment"
+			"qualifiedName": "refundAmount"
 		},
 		"101": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4676,11 +4630,11 @@
 		},
 		"102": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.retrievePayment"
 		},
 		"103": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.updatePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"104": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4688,11 +4642,11 @@
 		},
 		"105": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "AbstractPaymentProcessor.updatePayment"
 		},
 		"106": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.updatePaymentData"
+			"qualifiedName": "context"
 		},
 		"107": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4700,9 +4654,13 @@
 		},
 		"108": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "sessionId"
+			"qualifiedName": "AbstractPaymentProcessor.updatePaymentData"
 		},
 		"109": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "sessionId"
+		},
+		"110": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
 			"qualifiedName": "data"
 		}

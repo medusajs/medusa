@@ -1,9 +1,13 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # SharedContext
 
-A shared context object that is used to share resources between the application and the module.
+## Deprecated
+
+use `Context` instead
+
+A context used to share resources, such as transaction manager, between the application and the module.
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SharedContext"/>

@@ -1,10 +1,10 @@
 # Install in Node.js-Based Application
 
-In this document, you’ll learn how to setup and use the Pricing module in a Node.js based application.
+In this document, you’ll learn how to setup and use the Pricing Module in a Node.js based application.
 
 ## Prerequisites
 
-Before installing the Pricing module in your application, make sure you have the following prerequisites:
+Before installing the Pricing Module in your application, make sure you have the following prerequisites:
 
 - Node.js v16 or greater
 - PostgreSQL database. You can use an existing Medusa database, or set up a new PostgreSQL database.
@@ -13,7 +13,7 @@ Before installing the Pricing module in your application, make sure you have the
 
 ## Install Package
 
-In your Node.js-based applications, such as a Next.js application, you can install the Pricing module with the following command:
+In your Node.js-based applications, such as a Next.js application, you can install the Pricing Module with the following command:
 
 ```bash npm2yarn
 npm install @medusajs/pricing
@@ -29,7 +29,7 @@ Add the following environment variable to your application:
 POSTGRES_URL=<DATABASE_URL>
 ```
 
-Where `<DATABASE_URL>` is your database connection URL of the format `postgres://[user][:password]@[host][:port]/[dbname]`. You can learn more about the connection URL format in [this guide](../../development/backend/configurations.md#database_url).
+Where `<DATABASE_URL>` is your database connection URL of the format `postgres://[user][:password]@[host][:port]/[dbname]`. You can learn more about the connection URL format in [this guide](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#database_url).
 
 You can also set the following optional environment variables:
 
@@ -161,7 +161,7 @@ npm run price:seed
 
 ## Next.js Application: Adjust Configurations
 
-The Pricing module uses dependencies that aren’t Webpack optimized. Since Next.js uses Webpack for compilation, you need to add the Pricing module as an external dependency.
+The Pricing Module uses dependencies that aren’t Webpack optimized. Since Next.js uses Webpack for compilation, you need to add the Pricing Module as an external dependency.
 
 To do that, add the `serverComponentsExternalPackages` option in `next.config.js`:
 
@@ -183,6 +183,6 @@ module.exports = nextConfig
 
 ## Start Development
 
-You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Pricing module.
+You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Pricing Module.
 
 You can also refer to the [Module Interface Reference](../../references/pricing/interfaces/pricing.IPricingModuleService.mdx) for a detailed reference on all available methods.

@@ -4,10 +4,9 @@ import {
   AiAssistantCommandIcon,
   AiAssistantProvider,
   SearchProvider as UiSearchProvider,
+  searchFilters,
 } from "docs-ui"
 import { absoluteUrl } from "../lib/absolute-url"
-import clsx from "clsx"
-import { Sparkles } from "@medusajs/icons"
 
 type SearchProviderProps = {
   children: React.ReactNode
@@ -35,36 +34,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(`^${absoluteUrl()}/ui`),
-        filterOptions: [
-          {
-            value: "admin",
-            label: "Admin API",
-          },
-          {
-            value: "store",
-            label: "Store API",
-          },
-          {
-            value: "docs",
-            label: "Docs",
-          },
-          {
-            value: "user-guide",
-            label: "User Guide",
-          },
-          {
-            value: "plugins",
-            label: "Plugins",
-          },
-          {
-            value: "reference",
-            label: "References",
-          },
-          {
-            value: "ui",
-            label: "UI",
-          },
-        ],
+        filterOptions: searchFilters,
       }}
       initialDefaultFilters={["ui"]}
       commands={[

@@ -4,9 +4,11 @@
 
 {{#each categories}}
 
+{{#ifShowSeparatorForTitleLevel}}
 {{#unless @first}}
 ___
 {{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
 
 {{#unless (getFormattingOption "expandMembers")}}
 
@@ -20,11 +22,19 @@ ___
 
 {{/unless}}
 
-{{#if (showPropertiesAsComponent title)}}
+{{#if (shouldExpandProperties title)}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{else if (showPropertiesAsComponent title)}}
 
 {{#with children}}
 
-{{{parameterComponent}}}
+{{{parameterComponent sectionTitle=../owningReflection.name}}}
 
 {{/with}}
 
@@ -64,11 +74,19 @@ ___
 
 {{/unless}}
 
-{{#if (showPropertiesAsComponent title)}}
+{{#if (shouldExpandProperties title)}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{else if (showPropertiesAsComponent title)}}
 
 {{#with children}}
 
-{{{parameterComponent}}}
+{{{parameterComponent sectionTitle=../owningReflection.name}}}
 
 {{/with}}
 

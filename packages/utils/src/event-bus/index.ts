@@ -22,6 +22,7 @@ export abstract class AbstractEventBusModuleService
     options: Record<string, unknown>
   ): Promise<void>
   abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
+  abstract emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
 
   protected storeSubscribers({
     event,
@@ -101,3 +102,8 @@ export abstract class AbstractEventBusModuleService
     return this
   }
 }
+
+export * from "./build-event-messages"
+export * from "./common-events"
+export * from "./message-aggregator"
+export * from "./utils"

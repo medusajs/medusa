@@ -86,7 +86,11 @@ export interface ProductDTO {
    *
    * @expandable
    */
-  collection: ProductCollectionDTO
+  collection?: ProductCollectionDTO | null
+  /**
+   * The associated product collection id.
+   */
+  collection_id?: string | null
   /**
    * The associated product categories.
    *
@@ -98,7 +102,11 @@ export interface ProductDTO {
    *
    * @expandable
    */
-  type: ProductTypeDTO[]
+  type?: ProductTypeDTO | null
+  /**
+   * The associated product type id.
+   */
+  type_id?: string | null
   /**
    * The associated product tags.
    *
@@ -229,7 +237,7 @@ export interface ProductVariantDTO {
    *
    * @expandable
    */
-  options: ProductOptionValueDTO[]
+  options: ProductVariantOptionDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
@@ -239,11 +247,11 @@ export interface ProductVariantDTO {
    *
    * @expandable
    */
-  product: ProductDTO
+  product?: ProductDTO | null
   /**
-   * The ID of the associated product.
+   * The associated product id.
    */
-  product_id: string
+  product_id?: string | null
   /**
    * he ranking of the variant among other variants associated with the product.
    */
@@ -301,7 +309,11 @@ export interface ProductCategoryDTO {
    *
    * @expandable
    */
-  parent_category?: ProductCategoryDTO
+  parent_category?: ProductCategoryDTO | null
+  /**
+   * The associated parent category id.
+   */
+  parent_category_id?: string | null
   /**
    * The associated child categories.
    *
@@ -439,6 +451,14 @@ export interface ProductCollectionDTO {
    */
   metadata?: Record<string, unknown> | null
   /**
+   * When the product collection was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product collection was updated.
+   */
+  updated_at: string | Date
+  /**
    * When the product collection was deleted.
    */
   deleted_at?: string | Date
@@ -469,6 +489,14 @@ export interface ProductTypeDTO {
    */
   metadata?: Record<string, unknown> | null
   /**
+   * When the product type was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product type was updated.
+   */
+  updated_at: string | Date
+  /**
    * When the product type was deleted.
    */
   deleted_at?: string | Date
@@ -494,7 +522,11 @@ export interface ProductOptionDTO {
    *
    * @expandable
    */
-  product: ProductDTO
+  product?: ProductDTO | null
+  /**
+   * The associated product id.
+   */
+  product_id?: string | null
   /**
    * The associated product option values.
    *
@@ -506,9 +538,44 @@ export interface ProductOptionDTO {
    */
   metadata?: Record<string, unknown> | null
   /**
+   * When the product option was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product option was updated.
+   */
+  updated_at: string | Date
+  /**
    * When the product option was deleted.
    */
   deleted_at?: string | Date
+}
+
+export interface ProductVariantOptionDTO {
+  /**
+   * The ID of the product variant option.
+   */
+  id: string
+  /**
+   * The value of the product variant option.
+   *
+   * @expandable
+   */
+  option_value?: ProductOptionValueDTO | null
+  /**
+   * The value of the product variant option id.
+   */
+  option_value_id?: string | null
+  /**
+   * The associated product variant.
+   *
+   * @expandable
+   */
+  variant?: ProductVariantDTO | null
+  /**
+   * The associated product variant id.
+   */
+  variant_id?: string | null
 }
 
 /**
@@ -534,6 +601,14 @@ export interface ProductImageDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * When the product image was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product image was updated.
+   */
+  updated_at: string | Date
   /**
    * When the product image was deleted.
    */
@@ -566,17 +641,23 @@ export interface ProductOptionValueDTO {
    *
    * @expandable
    */
-  option: ProductOptionDTO
+  option?: ProductOptionDTO | null
   /**
-   * The associated product variant.
-   *
-   * @expandable
+   * The associated product option id.
    */
-  variant: ProductVariantDTO
+  option_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * When the product option value was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product option value was updated.
+   */
+  updated_at: string | Date
   /**
    * When the product option value was deleted.
    */
@@ -595,12 +676,21 @@ export interface ProductOptionValueDTO {
  * @prop categories - Filters on a product's categories.
  * @prop collection_id - Filters a product by its associated collections.
  */
+
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
   /**
    * Search through the products' attributes, such as titles and descriptions, using this search term.
    */
   q?: string
+  /**
+   * The status to filter products by
+   */
+  status?: ProductStatus | ProductStatus[]
+  /**
+   * The titles to filter products by.
+   */
+  title?: string | string[]
   /**
    * The handles to filter products by.
    */
@@ -609,6 +699,10 @@ export interface FilterableProductProps
    * The IDs to filter products by.
    */
   id?: string | string[]
+  /**
+   * Filters only or excluding gift card products
+   */
+  is_giftcard?: boolean
   /**
    * Filters on a product's tags.
    */
@@ -619,22 +713,9 @@ export interface FilterableProductProps
     value?: string[]
   }
   /**
-   * Filters on a product's categories.
+   * Filter a product by the ID of the associated type
    */
-  categories?: {
-    /**
-     * IDs to filter categories by.
-     */
-    id?: string | string[] | OperatorMap<string>
-    /**
-     * Filter categories by whether they're internal
-     */
-    is_internal?: boolean
-    /**
-     * Filter categories by whether they're active.
-     */
-    is_active?: boolean
-  }
+  type_id?: string | string[]
   /**
    * Filter a product by the IDs of their associated categories.
    */
@@ -643,6 +724,18 @@ export interface FilterableProductProps
    * Filters a product by the IDs of their associated collections.
    */
   collection_id?: string | string[] | OperatorMap<string>
+  /**
+   * Filters a product based on when it was created
+   */
+  created_at?: OperatorMap<string>
+  /**
+   * Filters a product based on when it was updated
+   */
+  updated_at?: OperatorMap<string>
+  /**
+   * Filters soft-deleted products based on the date they were deleted at.
+   */
+  deleted_at?: OperatorMap<string>
 }
 
 /**
@@ -703,7 +796,7 @@ export interface FilterableProductOptionProps
   /**
    * The titles to filter product options by.
    */
-  title?: string
+  title?: string | string[]
   /**
    * Filter the product options by their associated products' IDs.
    */
@@ -731,7 +824,7 @@ export interface FilterableProductCollectionProps
   /**
    * The title to filter product collections by.
    */
-  title?: string
+  title?: string | string[]
 }
 
 /**
@@ -761,12 +854,7 @@ export interface FilterableProductVariantProps
   /**
    * Filter product variants by their associated options.
    */
-  options?: {
-    /**
-     * IDs to filter options by.
-     */
-    id?: string[]
-  }
+  options?: Record<string, string>
 }
 
 /**
@@ -843,16 +931,19 @@ export interface CreateProductCollectionDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductCollectionDTO extends UpdateProductCollectionDTO {
+  /**
+   * The ID of the product collection to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
  * The data to update in a product collection. The `id` is used to identify which product collection to update.
  */
 export interface UpdateProductCollectionDTO {
-  /**
-   * The ID of the product collection to update.
-   */
-  id: string
   /**
    * The value of the product collection.
    */
@@ -882,10 +973,6 @@ export interface UpdateProductCollectionDTO {
  */
 export interface CreateProductTypeDTO {
   /**
-   * The product type's ID.
-   */
-  id?: string
-  /**
    * The product type's value.
    */
   value: string
@@ -895,9 +982,11 @@ export interface CreateProductTypeDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface UpsertProductTypeDTO {
+export interface UpsertProductTypeDTO extends UpdateProductTypeDTO {
+  /**
+   * The product type's ID.
+   */
   id?: string
-  value: string
 }
 
 /**
@@ -907,13 +996,48 @@ export interface UpsertProductTypeDTO {
  */
 export interface UpdateProductTypeDTO {
   /**
-   * The ID of the product type to update.
-   */
-  id: string
-  /**
    * The new value of the product type.
    */
   value?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+}
+
+/**
+ * @interface
+ *
+ * A product image to create.
+ */
+export interface CreateProductImageDTO {
+  /**
+   * The product image's URL.
+   */
+  url: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+}
+
+export interface UpsertProductImageDTO extends UpdateProductImageDTO {
+  /**
+   * The product image's ID.
+   */
+  id?: string
+}
+
+/**
+ * @interface
+ *
+ * The data to update in a product image. The `id` is used to identify which product image to update.
+ */
+export interface UpdateProductImageDTO {
+  /**
+   * The new URL of the product image.
+   */
+  url?: string
   /**
    * Holds custom data in key-value pairs.
    */
@@ -932,9 +1056,11 @@ export interface CreateProductTagDTO {
   value: string
 }
 
-export interface UpsertProductTagDTO {
+export interface UpsertProductTagDTO extends UpdateProductTagDTO {
+  /**
+   * The ID of the product tag to update.
+   */
   id?: string
-  value: string
 }
 
 /**
@@ -944,10 +1070,6 @@ export interface UpsertProductTagDTO {
  * The data to update in a product tag. The `id` is used to identify which product tag to update.
  */
 export interface UpdateProductTagDTO {
-  /**
-   * The ID of the product tag to update.
-   */
-  id: string
   /**
    * The value of the product tag.
    */
@@ -965,29 +1087,35 @@ export interface CreateProductOptionDTO {
    */
   title: string
   /**
+   * The product option values.
+   */
+  values: string[]
+  /**
    * The ID of the associated product.
    */
   product_id?: string
 }
 
-export interface UpdateProductOptionDTO {
-  id: string
-  title?: string
-  product_id?: string
+export interface UpsertProductOptionDTO extends UpdateProductOptionDTO {
+  /**
+   * The ID of the product option to update.
+   */
+  id?: string
 }
 
-/**
- * @interface
- *
- * A product variant option to create.
- */
-export interface CreateProductVariantOptionDTO {
+export interface UpdateProductOptionDTO {
   /**
-   * The value of a product variant option.
+   * The product option's title.
    */
-  value: string
-
-  option_id?: string
+  title?: string
+  /**
+   * The product option values.
+   */
+  values?: string[]
+  /**
+   * The ID of the associated product.
+   */
+  product_id?: string
 }
 
 /**
@@ -1065,13 +1193,20 @@ export interface CreateProductVariantDTO {
    */
   width?: number
   /**
-   * The product variant options to create and associate with the product variant.
+   * The product variant options to associate with the product variant.
    */
-  options?: CreateProductVariantOptionDTO[]
+  options?: Record<string, string>
   /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown>
+}
+
+export interface UpsertProductVariantDTO extends UpdateProductVariantDTO {
+  /**
+   * The ID of the product variant to update.
+   */
+  id?: string
 }
 
 /**
@@ -1080,10 +1215,6 @@ export interface CreateProductVariantDTO {
  * The data to update in a product variant. The `id` is used to identify which product variant to update.
  */
 export interface UpdateProductVariantDTO {
-  /**
-   * The ID of the product variant to update.
-   */
-  id: string
   /**
    * The tile of the product variant.
    */
@@ -1149,9 +1280,9 @@ export interface UpdateProductVariantDTO {
    */
   width?: number
   /**
-   * The product variant options to create and associate with the product variant.
+   * The product variant options to associate with the product variant.
    */
-  options?: CreateProductVariantOptionDTO[]
+  options?: Record<string, string>
   /**
    * Holds custom data in key-value pairs.
    */
@@ -1185,11 +1316,6 @@ export interface CreateProductDTO {
    */
   discountable?: boolean
   /**
-   * The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created
-   * and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.
-   */
-  images?: string[] | { id?: string; url: string }[]
-  /**
    * The URL of the product's thumbnail.
    */
   thumbnail?: string
@@ -1203,25 +1329,25 @@ export interface CreateProductDTO {
    */
   status?: ProductStatus
   /**
-   * The product type to create and associate with the product.
+   * The product's images to upsert and associate with the product
    */
-  type?: CreateProductTypeDTO
+  images?: UpsertProductImageDTO[]
   /**
-   * The product type to be associated with the product.
+   * The product type id to associate with the product.
    */
   type_id?: string
   /**
-   * The product collection to be associated with the product.
+   * The product collection to associate with the product.
    */
   collection_id?: string
   /**
-   * The product tags to be created and associated with the product.
+   * The product tags to be upserted and associated with the product.
    */
-  tags?: CreateProductTagDTO[]
+  tags?: UpsertProductTagDTO[]
   /**
    * The product categories to associate with the product.
    */
-  categories?: { id: string }[]
+  category_ids?: string[]
   /**
    * The product options to be created and associated with the product.
    */
@@ -1268,16 +1394,19 @@ export interface CreateProductDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductDTO extends UpdateProductDTO {
+  /**
+   * The ID of the product to update.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
  * The data to update in a product. The `id` is used to identify which product to update.
  */
 export interface UpdateProductDTO {
-  /**
-   * The ID of the product to update.
-   */
-  id: string
   /**
    * The title of the product.
    */
@@ -1299,11 +1428,6 @@ export interface UpdateProductDTO {
    */
   discountable?: boolean
   /**
-   * The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created
-   * and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.
-   */
-  images?: string[] | { id?: string; url: string }[]
-  /**
    * The URL of the product's thumbnail.
    */
   thumbnail?: string
@@ -1317,33 +1441,33 @@ export interface UpdateProductDTO {
    */
   status?: ProductStatus
   /**
-   * The product type to create and associate with the product.
+   * The product's images to upsert and associate with the product
    */
-  type?: CreateProductTypeDTO
+  images?: UpsertProductImageDTO[]
   /**
-   * The product type to be associated with the product.
+   * The product type to associate with the product.
    */
   type_id?: string | null
   /**
-   * The product collection to be associated with the product.
+   * The product collection to associate with the product.
    */
   collection_id?: string | null
   /**
    * The product tags to be created and associated with the product.
    */
-  tags?: CreateProductTagDTO[]
+  tags?: UpsertProductTagDTO[]
   /**
    * The product categories to associate with the product.
    */
-  categories?: { id: string }[]
+  category_ids?: string[]
   /**
    * The product options to be created and associated with the product.
    */
-  options?: CreateProductOptionDTO[]
+  options?: UpsertProductOptionDTO[]
   /**
    * The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
    */
-  variants?: (CreateProductVariantDTO | UpdateProductVariantDTO)[]
+  variants?: UpsertProductVariantDTO[]
   /**
    * The width of the product.
    */
@@ -1380,79 +1504,4 @@ export interface UpdateProductDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown>
-}
-
-export interface CreateProductOnlyDTO {
-  title: string
-  subtitle?: string
-  description?: string
-  is_giftcard?: boolean
-  discountable?: boolean
-  images?: { id?: string; url: string }[]
-  thumbnail?: string
-  handle?: string
-  status?: ProductStatus
-  collection_id?: string
-  width?: number
-  height?: number
-  length?: number
-  weight?: number
-  origin_country?: string
-  hs_code?: string
-  material?: string
-  mid_code?: string
-  metadata?: Record<string, unknown>
-  tags?: { id: string }[]
-  categories?: { id: string }[]
-  type_id?: string
-}
-
-export interface CreateProductVariantOnlyDTO {
-  product_id?: string
-  title: string
-  sku?: string
-  barcode?: string
-  ean?: string
-  upc?: string
-  allow_backorder?: boolean
-  inventory_quantity?: number
-  manage_inventory?: boolean
-  hs_code?: string
-  origin_country?: string
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
-  options?: (CreateProductVariantOptionDTO & { option: any })[]
-  metadata?: Record<string, unknown>
-}
-
-export interface UpdateProductVariantOnlyDTO {
-  id: string
-  title?: string
-  sku?: string
-  barcode?: string
-  ean?: string
-  upc?: string
-  allow_backorder?: boolean
-  inventory_quantity?: number
-  manage_inventory?: boolean
-  hs_code?: string
-  origin_country?: string
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
-  options?: (CreateProductVariantOptionDTO & { option: any })[]
-  metadata?: Record<string, unknown>
-}
-
-export interface CreateProductOptionOnlyDTO {
-  product_id?: string
-  product?: Record<any, any>
-  title: string
 }

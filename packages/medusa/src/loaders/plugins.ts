@@ -469,6 +469,12 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
+      if (typeof loaded !== "function") {
+        throw new Error(
+          `Cannot register ${name}. Make sure to default export a service class in ${fn}`
+        )
+      }
+
       const context = { container, pluginDetails, registrationName: name }
 
       registerPaymentProcessorFromClass(loaded, context)

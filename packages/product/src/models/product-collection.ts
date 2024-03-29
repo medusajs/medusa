@@ -4,6 +4,7 @@ import {
   Entity,
   Filter,
   Index,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -11,9 +12,9 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
+import { DAL } from "@medusajs/types"
 import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
-import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "products"
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
@@ -61,11 +62,20 @@ class ProductCollection {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "pcol")
+
+    if (!this.handle && this.title) {
+      this.handle = kebabCase(this.title)
+    }
+  }
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pcol")
 
-    if (!this.handle) {
+    if (!this.handle && this.title) {
       this.handle = kebabCase(this.title)
     }
   }

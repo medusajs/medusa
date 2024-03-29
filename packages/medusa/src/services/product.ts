@@ -1,12 +1,13 @@
+import { RemoteQueryFunction } from "@medusajs/types"
 import {
   buildRelations,
   buildSelects,
   FlagRouter,
   MedusaV2Flag,
   objectToStringPath,
-  promiseAll, selectorConstraintsToString,
+  promiseAll,
+  selectorConstraintsToString,
 } from "@medusajs/utils"
-import { RemoteQueryFunction } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 
@@ -42,9 +43,9 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
+import { CreateProductVariantInput } from "../types/product-variant"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
-import { CreateProductVariantInput } from "../types/product-variant"
 import SalesChannelService from "./sales-channel"
 
 type InjectedDependencies = {
@@ -594,7 +595,7 @@ class ProductService extends TransactionBaseService {
           )
       }
 
-      const result = await this.retrieve(product.id, {
+      const result = await this.withTransaction(manager).retrieve(product.id, {
         relations: ["options"],
       })
 
@@ -645,7 +646,7 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations,
       })
 
@@ -805,7 +806,7 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["options", "variants"],
       })
 
@@ -833,7 +834,7 @@ class ProductService extends TransactionBaseService {
         )
       }
 
-      const result = await this.retrieve(productId)
+      const result = await this.withTransaction(manager).retrieve(productId)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -849,7 +850,7 @@ class ProductService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["variants"],
       })
 
@@ -898,7 +899,9 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, { relations: ["options"] })
+      const product = await this.withTransaction(manager).retrieve(productId, {
+        relations: ["options"],
+      })
 
       const { title, values } = data
 
@@ -973,7 +976,7 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["variants", "variants.options"],
       })
 

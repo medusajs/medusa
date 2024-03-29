@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.3.9
+
+### Patch Changes
+
+- [#6700](https://github.com/medusajs/medusa/pull/6700) [`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Version all modules to allow for initial testing
+
+## 1.3.8
+
+### Patch Changes
+
+- [#5869](https://github.com/medusajs/medusa/pull/5869) [`45996d58a2`](https://github.com/medusajs/medusa/commit/45996d58a2665d72335faad11bea958f8da74195) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa, interfaces, utils, webshiper): Uniformise class checks
+
 ## 1.3.7
 
 ### Patch Changes

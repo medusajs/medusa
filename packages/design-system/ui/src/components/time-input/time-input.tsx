@@ -36,7 +36,7 @@ const TimeSegment = ({ segment, state }: TimeSegmentProps) => {
       {...segmentProps}
       ref={ref}
       className={clx(
-        "txt-compact-medium w-full rounded-md px-2 py-[5px] text-left uppercase tabular-nums",
+        "txt-compact-small w-full rounded-md px-2 py-1 text-left uppercase tabular-nums",
         inputBaseStyles,
         "group-aria-[invalid=true]/time-input:!shadow-borders-error group-invalid/time-input:!shadow-borders-error",
         {
@@ -52,7 +52,7 @@ const TimeSegment = ({ segment, state }: TimeSegmentProps) => {
       <span
         aria-hidden="true"
         className={clx(
-          "txt-compact-medium text-ui-fg-muted pointer-events-none block w-full text-left",
+          "txt-compact-small text-ui-fg-muted pointer-events-none block w-full text-left",
           {
             hidden: !segment.isPlaceholder,
             "h-0": !segment.isPlaceholder,
@@ -75,14 +75,17 @@ type TimeInputProps = Omit<
  * This component is based on the `div` element and supports all of its props.
  */
 const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>(
-  ({ 
-    /**
-     * The time's format. If no value is specified, the format is
-     * set based on the user's locale.
-     */
-    hourCycle, 
-    ...props
-  }: TimeInputProps, ref) => {
+  (
+    {
+      /**
+       * The time's format. If no value is specified, the format is
+       * set based on the user's locale.
+       */
+      hourCycle,
+      ...props
+    }: TimeInputProps,
+    ref
+  ) => {
     const innerRef = React.useRef<HTMLDivElement>(null)
 
     React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(

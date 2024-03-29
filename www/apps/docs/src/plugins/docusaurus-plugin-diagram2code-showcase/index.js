@@ -1,5 +1,4 @@
 import { exec } from "child_process"
-import { Dirent } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
 import path from "path"
 

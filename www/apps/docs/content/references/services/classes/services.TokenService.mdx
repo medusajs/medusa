@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # TokenService
 
@@ -10,36 +10,34 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new TokenService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"configModule_","type":"[ConfigModule](../../medusa/types/medusa.ConfigModule-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"RESOLUTION_KEY","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"RESOLUTION_KEY","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"configModule_","type":"[ConfigModule](../../medusa/interfaces/medusa.ConfigModule-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="TokenService"/>
 
 ___
 
 ## Methods
 
-### signToken
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"`string` \\| `object` \\| `Buffer`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`SignOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
 ### verifyToken
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"token","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`VerifyOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"token","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`VerifyOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="verifyToken"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"string \\| Jwt \\| JwtPayload","type":"`string` \\| `Jwt` \\| `JwtPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"string \\| Jwt \\| JwtPayload","type":"`string` \\| `Jwt` \\| `JwtPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="verifyToken"/>
+
+### signToken
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`string` \\| `object` \\| `Buffer`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`SignOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="signToken"/>
+
+#### Returns
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="signToken"/>

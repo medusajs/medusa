@@ -4,6 +4,7 @@ import IconGitHub from "@site/src/theme/Icon/GitHub"
 import IconDiscord from "@site/src/theme/Icon/Discord"
 import IconLinkedIn from "@site/src/theme/Icon/LinkedIn"
 import { SocialLink } from "@medusajs/docs"
+import Link from "@docusaurus/Link"
 
 type SocialLinksProps = {
   links?: SocialLink[]
@@ -28,9 +29,13 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ links = [] }) => {
   return (
     <div className="flex items-center">
       {links.map((link) => (
-        <a className="group ml-1 first:ml-0" href={link.href} key={link.type}>
+        <Link
+          className="group ml-1 first:ml-0"
+          href={link.href}
+          key={link.type}
+        >
           {socialIcons[link.type]}
-        </a>
+        </Link>
       ))}
     </div>
   )

@@ -204,6 +204,16 @@ export const useCreatePaymentSession = (
 }
 
 /**
+ * The details of the payment session to update.
+ */
+export type UpdatePaymentSessionReq = StorePostCartsCartPaymentSessionUpdateReq & {
+  /**
+   * The payment provider's identifier.
+   */
+  provider_id: string
+}
+
+/**
  * This hook updates a Payment Session with additional data. This can be useful depending on the payment provider used.
  * All payment sessions are updated and cart totals are recalculated afterwards.
  * 
@@ -248,17 +258,12 @@ export const useUpdatePaymentSession = (
   options?: UseMutationOptions<
     StoreCartsRes,
     Error,
-    { 
-      /**
-       * The payment provider's identifier.
-       */
-      provider_id: string
-    } & StorePostCartsCartPaymentSessionUpdateReq
+    UpdatePaymentSessionReq
   >
 ) => {
   const { client } = useMedusa()
   return useMutation(
-    ({ data, provider_id }) =>
+    ({ data, provider_id }: UpdatePaymentSessionReq) =>
       client.carts.updatePaymentSession(cartId, provider_id, { data }),
     options
   )

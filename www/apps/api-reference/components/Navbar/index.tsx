@@ -1,13 +1,30 @@
 "use client"
 
-import { Navbar as UiNavbar, usePageLoading } from "docs-ui"
-import getLinkWithBasePath from "../../utils/get-link-with-base-path"
-import { useSidebar } from "docs-ui"
+import {
+  Navbar as UiNavbar,
+  getNavbarItems,
+  usePageLoading,
+  useSidebar,
+} from "docs-ui"
 import FeedbackModal from "./FeedbackModal"
+import { useMemo } from "react"
+import { config } from "../../config"
+import { usePathname } from "next/navigation"
+import VersionSwitcher from "../VersionSwitcher"
 
 const Navbar = () => {
   const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
+  const pathname = usePathname()
   const { isLoading } = usePageLoading()
+
+  const navbarItems = useMemo(
+    () =>
+      getNavbarItems({
+        basePath: config.baseUrl,
+        activePath: pathname,
+      }),
+    [pathname]
+  )
 
   return (
     <UiNavbar
@@ -15,33 +32,17 @@ const Navbar = () => {
         light: "/images/logo-icon.png",
         dark: "/images/logo-icon-dark.png",
       }}
-      items={[
-        {
-          href: `/`,
-          label: "Docs",
-        },
-        {
-          href: `/user-guide`,
-          label: "User Guide",
-        },
-        {
-          href: `${getLinkWithBasePath("/store")}`,
-          label: "Store API",
-        },
-        {
-          href: `${getLinkWithBasePath("/admin")}`,
-          label: "Admin API",
-        },
-        {
-          href: `/ui`,
-          label: "UI",
-        },
-      ]}
+      items={navbarItems}
       mobileMenuButton={{
         setMobileSidebarOpen,
         mobileSidebarOpen,
       }}
-      additionalActions={<FeedbackModal />}
+      additionalActionsBefore={
+        <>
+          {process.env.NEXT_PUBLIC_VERSIONING === "true" && <VersionSwitcher />}
+        </>
+      }
+      additionalActionsAfter={<FeedbackModal />}
       isLoading={isLoading}
     />
   )

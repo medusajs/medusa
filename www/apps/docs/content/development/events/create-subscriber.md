@@ -66,7 +66,7 @@ The function accepts a parameter of type `SubscriberArgs`, which has the followi
 - `data`: The data payload of the emitted event. Its type is different for each event. So, make sure to check the [events reference](./events-list.md) for the expected payload of the events your subscriber listens to. You can then pass the expected payload type as a type parameter to `SubscriberArgs`, for example, `Record<string, string>`.
 - `eventName`: A string indicating the name of the event. This is useful if your subscriber listens to more than one event and you want to differentiate between them.
 - `container`: The [dependency container](../fundamentals/dependency-injection.md) that allows you to resolve Medusa resources, such as services.
-- `pluginOptions`: When the subscriber is created within a plugin, this object holds the plugin's options defined in the [Medusa configurations](../backend/configurations.md).
+- `pluginOptions`: When the subscriber is created within a plugin, this object holds the plugin's options defined in the [Medusa configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx).
 
 ---
 

@@ -45,6 +45,10 @@
     {
       "tagName": "@typeParamDefinition",
       "syntaxKind": "block"
+    },
+    {
+      "tagName": "@parentIgnore",
+      "syntaxKind": "block"
     }
   ]
 }

@@ -1,25 +1,31 @@
-import { Spinner } from "@medusajs/icons";
-import { PropsWithChildren } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Spinner } from "@medusajs/icons"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 
-import { useAuth } from "../../../providers/auth-provider";
+import { useAdminGetSession } from "medusa-react"
+import { SearchProvider } from "../../../providers/search-provider"
+import { SidebarProvider } from "../../../providers/sidebar-provider"
 
-export const RequireAuth = ({ children }: PropsWithChildren) => {
-  const auth = useAuth();
-  const location = useLocation();
+export const ProtectedRoute = () => {
+  const { user, isLoading } = useAdminGetSession()
+  const location = useLocation()
 
-  if (auth.isLoading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner className="animate-spin text-ui-fg-interactive" />
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner className="text-ui-fg-interactive animate-spin" />
       </div>
-    );
+    )
   }
 
-  if (!auth.user) {
-    console.log("redirecting");
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
 
-  return children;
-};
+  return (
+    <SidebarProvider>
+      <SearchProvider>
+        <Outlet />
+      </SearchProvider>
+    </SidebarProvider>
+  )
+}

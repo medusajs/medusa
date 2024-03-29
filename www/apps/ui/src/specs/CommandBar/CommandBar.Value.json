@@ -1,5 +1,5 @@
 {
-  "description": "The value component of the command bar. This component is used to display a value, \nsuch as the number of selected items which the commands will act on.",
+  "description": "The value component of the command bar. This component is used to display a value,\nsuch as the number of selected items which the commands will act on.",
   "methods": [],
   "displayName": "CommandBar.Value",
   "props": {}

@@ -6,7 +6,7 @@ import {
   TSFunctionSignatureType,
   TypeDescriptor,
 } from "react-docgen/dist/Documentation.js"
-import { Comment } from "typedoc"
+import { Comment, ReferenceReflection, ReferenceType } from "typedoc"
 import {
   Application,
   Context,
@@ -72,6 +72,8 @@ export default class TypedocManager {
       tsconfig: this.options.tsconfigPath,
       plugin: ["typedoc-plugin-custom"],
       enableInternalResolve: true,
+      internalModule: "internal",
+      checkVariables: true,
       logLevel: this.options.verbose ? "Verbose" : "None",
     })
 
@@ -108,24 +110,35 @@ export default class TypedocManager {
     // since the component may be a child of an exported component
     // we use the reflectionPathName to retrieve the component
     // by its "reflection path"
-    const reflection = this.project?.getChildByName(
-      reflectionPathName
-    ) as DeclarationReflection
+    let reflection = this.project?.getChildByName(reflectionPathName) as
+      | DeclarationReflection
+      | ReferenceReflection
+    if (reflection && reflection instanceof ReferenceReflection) {
+      // load declaration reflection
+      reflection = reflection.getTargetReflection() as DeclarationReflection
+    }
     if (!reflection) {
       return spec
     }
 
-    // retrieve the signature of the reflection
-    // this is helpful to retrieve the props of the component
-    const mappedSignature = reflection.sources?.length
-      ? this.getMappedSignatureFromSource(reflection.sources[0])
-      : undefined
+    const doesReflectionHaveSignature =
+      reflection.type?.type === "reference" &&
+      reflection.type.reflection instanceof DeclarationReflection &&
+      reflection.type.reflection.signatures?.length
 
-    if (
-      mappedSignature?.signatures[0].parameters?.length &&
-      mappedSignature.signatures[0].parameters[0].type
-    ) {
-      const signature = mappedSignature.signatures[0]
+    // If the original reflection in the reference type has a signature
+    // use that signature. Else, try to get the signature from the mapping.
+    const signature = doesReflectionHaveSignature
+      ? (
+          (reflection.type! as ReferenceType)
+            .reflection as DeclarationReflection
+        ).signatures![0]
+      : reflection.sources?.length
+        ? this.getMappedSignatureFromSource(reflection.sources[0])
+            ?.signatures[0]
+        : undefined
+
+    if (signature?.parameters?.length && signature.parameters[0].type) {
       // get the props of the component from the
       // first parameter in the signature.
       const props = getTypeChildren({
@@ -212,7 +225,7 @@ export default class TypedocManager {
             return
           }
           spec.props![prop.name] = {
-            description: this.normalizeDescription(this.getDescription(prop)),
+            description,
             required: !prop.flags.isOptional,
             tsType: prop.type
               ? this.getTsType(prop.type)
@@ -446,8 +459,9 @@ export default class TypedocManager {
   // this is useful for the CustomResolver to check
   // if a variable is a React component.
   isReactComponent(name: string): boolean {
-    const reflection = this.getReflectionByName(name)
-
+    const reflection = this.getReflectionByName(name, {
+      hasSignature: true,
+    })
     if (
       !reflection ||
       !(reflection instanceof DeclarationReflection) ||
@@ -459,7 +473,9 @@ export default class TypedocManager {
     return reflection.signatures.some(
       (signature) =>
         signature.type?.type === "reference" &&
-        signature.type.name === "ReactNode"
+        (signature.type.name === "ReactNode" ||
+          (signature.type.name === "Element" &&
+            signature.type.package === "@types/react"))
     )
   }
 
@@ -571,11 +587,27 @@ export default class TypedocManager {
   }
 
   // Gets a reflection by its name.
-  getReflectionByName(name: string): DeclarationReflection | undefined {
+  getReflectionByName(
+    name: string,
+    options?: {
+      hasSignature?: boolean
+    }
+  ): DeclarationReflection | undefined {
     return this.project
-      ? (Object.values(this.project?.reflections || {}).find(
-          (ref) => ref.name === name
-        ) as DeclarationReflection)
+      ? (Object.values(this.project?.reflections || {}).find((ref) => {
+          if (ref.name !== name) {
+            return false
+          }
+
+          if (
+            options?.hasSignature &&
+            (!(ref instanceof DeclarationReflection) || !ref.signatures)
+          ) {
+            return false
+          }
+
+          return true
+        }) as DeclarationReflection)
       : undefined
   }
 }

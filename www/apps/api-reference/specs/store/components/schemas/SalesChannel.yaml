@@ -59,3 +59,26 @@ properties:
       description: Learn about the metadata attribute, and how to delete and update it.
       url: >-
         https://docs.medusajs.com/development/entities/overview#metadata-attribute
+  carts:
+    description: The associated carts.
+    type: array
+    nullable: true
+    x-expandable: carts
+    x-featureFlag: medusa_v2
+    items:
+      type: object
+  orders:
+    description: The associated orders.
+    type: array
+    nullable: true
+    x-expandable: orders
+    x-featureFlag: medusa_v2
+    items:
+      type: object
+  publishableKeys:
+    description: The associated publishable API keys.
+    type: array
+    nullable: true
+    x-expandable: publishableKeys
+    items:
+      type: object

@@ -1,14 +1,23 @@
 import { Router } from "express"
 import { Cart, DraftOrder, Order } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetDraftOrdersParams } from "./list-draft-orders"
 
 const route = Router()
 
 export default (app) => {
   app.use("/draft-orders", route)
 
-  route.get("/", middlewares.wrap(require("./list-draft-orders").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetDraftOrdersParams, {
+      defaultFields: defaultAdminDraftOrdersFields,
+      defaultRelations: defaultAdminDraftOrdersRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-draft-orders").default)
+  )
 
   route.get("/:id", middlewares.wrap(require("./get-draft-order").default))
 
@@ -59,7 +68,9 @@ export const defaultAdminDraftOrdersCartRelations = [
   "items.adjustments",
   "payment",
   "shipping_address",
+  "shipping_address.country",
   "billing_address",
+  "billing_address.country",
   "region.payment_providers",
   "shipping_methods",
   "payment_sessions",

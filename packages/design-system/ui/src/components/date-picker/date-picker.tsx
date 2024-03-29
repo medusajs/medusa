@@ -4,7 +4,7 @@ import { Time } from "@internationalized/date"
 import { Calendar as CalendarIcon, Minus } from "@medusajs/icons"
 import * as Primitives from "@radix-ui/react-popover"
 import { TimeValue } from "@react-aria/datepicker"
-import { format } from "date-fns"
+import { format, type Locale } from "date-fns"
 import * as React from "react"
 
 import { Button } from "@/components/button"
@@ -19,14 +19,14 @@ const displayVariants = cva({
   base: clx(
     "text-ui-fg-base bg-ui-bg-field transition-fg shadow-buttons-neutral flex w-full items-center gap-x-2 rounded-md outline-none",
     "hover:bg-ui-bg-field-hover",
-    "focus:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active",
+    "focus-visible:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active",
     "disabled:bg-ui-bg-disabled disabled:text-ui-fg-disabled disabled:shadow-buttons-neutral",
     "aria-[invalid=true]:!shadow-borders-error"
   ),
   variants: {
     size: {
-      base: "txt-compact-medium h-10 px-3 py-2.5",
-      small: "txt-compact-small h-8 px-2 py-1.5",
+      base: "txt-compact-small h-8 px-2 py-1.5",
+      small: "txt-compact-small h-7 px-2 py-1",
     },
   },
   defaultVariants: {
@@ -39,41 +39,43 @@ interface DisplayProps extends React.ComponentProps<"button"> {
   size?: "small" | "base"
 }
 
-const Display = React.forwardRef<
-  HTMLButtonElement,
-  DisplayProps
->(({ 
-    className, 
-    children, 
-    /**
-     * Placeholder of the date picker's input.
-     */
-    placeholder, 
-    /**
-     * The size of the date picker's input.
-     */
-    size = "base", 
-    ...props 
-  }: DisplayProps, ref) => {
-  return (
-    <Primitives.Trigger asChild>
-      <button
-        ref={ref}
-        className={clx(displayVariants({ size }), className)}
-        {...props}
-      >
-        <CalendarIcon className="text-ui-fg-muted" />
-        <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left">
-          {children ? (
-            children
-          ) : placeholder ? (
-            <span className="text-ui-fg-muted">{placeholder}</span>
-          ) : null}
-        </span>
-      </button>
-    </Primitives.Trigger>
-  )
-})
+const Display = React.forwardRef<HTMLButtonElement, DisplayProps>(
+  (
+    {
+      className,
+      children,
+      /**
+       * Placeholder of the date picker's input.
+       */
+      placeholder,
+      /**
+       * The size of the date picker's input.
+       */
+      size = "base",
+      ...props
+    }: DisplayProps,
+    ref
+  ) => {
+    return (
+      <Primitives.Trigger asChild>
+        <button
+          ref={ref}
+          className={clx(displayVariants({ size }), className)}
+          {...props}
+        >
+          <CalendarIcon className="text-ui-fg-muted" />
+          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left">
+            {children ? (
+              children
+            ) : placeholder ? (
+              <span className="text-ui-fg-muted">{placeholder}</span>
+            ) : null}
+          </span>
+        </button>
+      </Primitives.Trigger>
+    )
+  }
+)
 Display.displayName = "DatePicker.Display"
 
 const Flyout = React.forwardRef<
@@ -219,7 +221,7 @@ const PresetContainer = <TPreset extends Preset, TValue>({
               className={clx(
                 "txt-compact-small-plus w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md p-2 text-left",
                 "text-ui-fg-subtle hover:bg-ui-bg-base-hover outline-none transition-all",
-                "focus:bg-ui-bg-base-hover",
+                "focus-visible:bg-ui-bg-base-hover",
                 {
                   "!bg-ui-bg-base-pressed": matchesCurrent(preset),
                 }
@@ -284,6 +286,18 @@ type CalendarProps = {
    * The date to show dates to.
    */
   toDate?: Date
+  /**
+   * The locale to use for formatting dates. To change the locale pass a date-fns locale object.
+   */
+  locale?: Locale
+}
+
+type Translations = {
+  cancel?: string
+  apply?: string
+  start?: string
+  end?: string
+  range?: string
 }
 
 interface PickerProps extends CalendarProps {
@@ -300,6 +314,10 @@ interface PickerProps extends CalendarProps {
    */
   required?: boolean
   /**
+   * The date picker's placeholder.
+   */
+  placeholder?: string
+  /**
    * The date picker's size.
    */
   size?: "small" | "base"
@@ -307,6 +325,10 @@ interface PickerProps extends CalendarProps {
    * Whether to show a time picker along with the date picker.
    */
   showTimePicker?: boolean
+  /**
+   * Translation keys for the date picker. Use this to localize the date picker.
+   */
+  translations?: Translations
   id?: string
   "aria-invalid"?: boolean
   "aria-label"?: string
@@ -330,6 +352,8 @@ const SingleDatePicker = ({
   showTimePicker,
   disabled,
   className,
+  placeholder,
+  translations,
   ...props
 }: SingleProps) => {
   const [open, setOpen] = React.useState(false)
@@ -458,7 +482,7 @@ const SingleDatePicker = ({
   return (
     <Primitives.Root open={open} onOpenChange={onOpenChange}>
       <Display
-        placeholder="Pick a date"
+        placeholder={placeholder}
         disabled={disabled}
         className={className}
         aria-required={props.required || props["aria-required"]}
@@ -507,19 +531,21 @@ const SingleDatePicker = ({
               <div className="border-ui-border-base flex items-center gap-x-2 border-t p-3">
                 <Button
                   variant="secondary"
+                  size="small"
                   className="w-full"
                   type="button"
                   onClick={onCancel}
                 >
-                  Cancel
+                  {translations?.cancel ?? "Cancel"}
                 </Button>
                 <Button
                   variant="primary"
+                  size="small"
                   className="w-full"
                   type="button"
                   onClick={onApply}
                 >
-                  Apply
+                  {translations?.apply ?? "Apply"}
                 </Button>
               </div>
             </div>
@@ -558,6 +584,8 @@ const RangeDatePicker = ({
   presets,
   disabled,
   className,
+  placeholder,
+  translations,
   ...props
 }: RangeProps) => {
   const [open, setOpen] = React.useState(false)
@@ -730,7 +758,7 @@ const RangeDatePicker = ({
   return (
     <Primitives.Root open={open} onOpenChange={onOpenChange}>
       <Display
-        placeholder="Pick a date"
+        placeholder={placeholder}
         disabled={disabled}
         className={className}
         aria-required={props.required || props["aria-required"]}
@@ -772,7 +800,9 @@ const RangeDatePicker = ({
               {showTimePicker && (
                 <div className="border-ui-border-base flex items-center justify-evenly gap-x-3 border-t p-3">
                   <div className="flex flex-1 items-center gap-x-2">
-                    <span className="text-ui-fg-subtle">Start:</span>
+                    <span className="text-ui-fg-subtle">
+                      {translations?.start ?? "Start"}:
+                    </span>
                     <TimeInput
                       value={startTime}
                       onChange={(v) => onTimeChange(v, "start")}
@@ -783,7 +813,9 @@ const RangeDatePicker = ({
                   </div>
                   <Minus className="text-ui-fg-muted" />
                   <div className="flex flex-1 items-center gap-x-2">
-                    <span className="text-ui-fg-subtle">End:</span>
+                    <span className="text-ui-fg-subtle">
+                      {translations?.end ?? "End"}:
+                    </span>
                     <TimeInput
                       value={endTime}
                       onChange={(v) => onTimeChange(v, "end")}
@@ -796,15 +828,27 @@ const RangeDatePicker = ({
               )}
               <div className="flex items-center justify-between border-t p-3">
                 <p className={clx("text-ui-fg-subtle txt-compact-small-plus")}>
-                  <span className="text-ui-fg-muted">Range:</span>{" "}
+                  <span className="text-ui-fg-muted">
+                    {translations?.range ?? "Range"}:
+                  </span>{" "}
                   {displayRange}
                 </p>
                 <div className="flex items-center gap-x-2">
-                  <Button variant="secondary" type="button" onClick={onCancel}>
-                    Cancel
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    type="button"
+                    onClick={onCancel}
+                  >
+                    {translations?.cancel ?? "Cancel"}
                   </Button>
-                  <Button variant="primary" type="button" onClick={onApply}>
-                    Apply
+                  <Button
+                    size="small"
+                    variant="primary"
+                    type="button"
+                    onClick={onApply}
+                  >
+                    {translations?.apply ?? "Apply"}
                   </Button>
                 </div>
               </div>
@@ -818,7 +862,7 @@ const RangeDatePicker = ({
 
 /**
  * @interface
- * 
+ *
  * @prop presets - Provide selectable preset configurations.
  * @prop defaultValue - The date selected by default.
  * @prop value - The selected date.
@@ -987,11 +1031,11 @@ const validatePresets = (
  * This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)
  * component and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).
  */
-const DatePicker = ({ 
+const DatePicker = ({
   /**
    * The date picker's mode.
    */
-  mode = "single", 
+  mode = "single",
   ...props
 }: DatePickerProps) => {
   if (props.presets) {

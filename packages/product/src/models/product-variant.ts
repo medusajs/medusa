@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   generateEntityId,
@@ -11,6 +12,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -18,8 +20,7 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import { Product } from "@models"
-import ProductOptionValue from "./product-option-value"
-import { DAL } from "@medusajs/types"
+import ProductVariantOption from "./product-variant-option"
 
 type OptionalFields =
   | "allow_backorder"
@@ -118,8 +119,21 @@ class ProductVariant {
   })
   variant_rank?: number | null
 
-  @Property({ columnType: "text", nullable: true })
-  product_id!: string
+  @ManyToOne(() => Product, {
+    columnType: "text",
+    nullable: true,
+    onDelete: "cascade",
+    fieldName: "product_id",
+    index: "IDX_product_variant_product_id",
+    mapToPk: true,
+  })
+  product_id: string | null
+
+  @ManyToOne(() => Product, {
+    persist: false,
+    nullable: true,
+  })
+  product: Product | null
 
   @Property({
     onCreate: () => new Date(),
@@ -140,21 +154,25 @@ class ProductVariant {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
-  @ManyToOne(() => Product, {
-    onDelete: "cascade",
-    index: "IDX_product_variant_product_id",
-    fieldName: "product_id",
-  })
-  product!: Product
+  @OneToMany(
+    () => ProductVariantOption,
+    (variantOption) => variantOption.variant,
+    {
+      cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
+    }
+  )
+  options = new Collection<ProductVariantOption>(this)
 
-  @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
-  })
-  options = new Collection<ProductOptionValue>(this)
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "variant")
+    this.product_id ??= this.product?.id ?? null
+  }
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "variant")
+    this.product_id ??= this.product?.id ?? null
   }
 }
 

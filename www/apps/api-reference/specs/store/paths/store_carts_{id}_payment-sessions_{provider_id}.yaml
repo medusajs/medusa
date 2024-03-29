@@ -35,7 +35,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/store_carts_{id}_payment-sessions_{provider_id}/postundefined
+          ../code_samples/tsx/store_carts_{id}_payment-sessions_{provider_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -93,7 +93,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/store_carts_{id}_payment-sessions_{provider_id}/deleteundefined
+          ../code_samples/tsx/store_carts_{id}_payment-sessions_{provider_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

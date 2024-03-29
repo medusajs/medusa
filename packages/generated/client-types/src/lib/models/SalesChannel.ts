@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+import type { Cart } from "./Cart"
+import type { Order } from "./Order"
+import type { PublishableApiKey } from "./PublishableApiKey"
 import type { SalesChannelLocation } from "./SalesChannelLocation"
 
 /**
@@ -45,4 +48,16 @@ export interface SalesChannel {
    * An optional key-value map with additional details
    */
   metadata?: Record<string, any> | null
+  /**
+   * The associated carts.
+   */
+  carts?: Array<Cart> | null
+  /**
+   * The associated orders.
+   */
+  orders?: Array<Order> | null
+  /**
+   * The associated publishable API keys.
+   */
+  publishableKeys?: Array<PublishableApiKey> | null
 }

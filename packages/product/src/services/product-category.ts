@@ -9,7 +9,6 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -114,7 +113,7 @@ export default class ProductCategoryService<
 
   @InjectTransactionManager("productCategoryRepository_")
   async create(
-    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    data: ProductTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await (
@@ -125,7 +124,7 @@ export default class ProductCategoryService<
   @InjectTransactionManager("productCategoryRepository_")
   async update(
     id: string,
-    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    data: ProductTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await (

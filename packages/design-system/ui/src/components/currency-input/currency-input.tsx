@@ -15,8 +15,8 @@ const currencyInputVariants = cva({
   ),
   variants: {
     size: {
-      base: "txt-compact-medium h-10 px-3",
-      small: "txt-compact-small h-8 px-2",
+      base: "txt-compact-medium h-8",
+      small: "txt-compact-small h-7",
     },
   },
   defaultVariants: {
@@ -36,27 +36,27 @@ interface CurrencyInputProps
 
 /**
  * This component is based on the input element and supports all of its props
- * 
+ *
  * @excludeExternal
  */
 const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
   (
-    { 
+    {
       /**
        * The input's size.
        */
-      size = "base", 
+      size = "base",
       /**
        * The symbol to show in the input.
        */
-      symbol, 
+      symbol,
       /**
        * The currency code to show in the input.
        */
-      code, 
-      disabled, 
-      onInvalid, 
-      className, 
+      code,
+      disabled,
+      onInvalid,
+      className,
       ...props
     }: CurrencyInputProps,
     ref
@@ -101,13 +101,15 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
         )}
       >
         <span
-          className={clx("w-fit", {
+          className={clx("w-fit min-w-[32px] border-r px-2", {
             "py-[9px]": size === "base",
             "py-[5px]": size === "small",
           })}
           role="presentation"
         >
           <Text
+            size="small"
+            leading="compact"
             className={clx(
               "text-ui-fg-muted pointer-events-none select-none uppercase",
               {
@@ -126,13 +128,18 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
           {...props}
         />
         <span
-          className={clx("w-fit min-w-[16px] text-right", {
-            "py-[9px]": size === "base",
-            "py-[5px]": size === "small",
-          })}
+          className={clx(
+            "flex w-fit min-w-[32px] items-center justify-center border-l px-2 text-right",
+            {
+              "py-[9px]": size === "base",
+              "py-[5px]": size === "small",
+            }
+          )}
           role="presentation"
         >
           <Text
+            size="small"
+            leading="compact"
             className={clx("text-ui-fg-muted pointer-events-none select-none", {
               "text-ui-fg-disabled": disabled,
             })}

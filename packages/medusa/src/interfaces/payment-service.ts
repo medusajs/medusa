@@ -148,6 +148,9 @@ export abstract class AbstractPaymentService
 {
   static _isPaymentService = true
 
+  /**
+   * @ignore
+   */
   static isPaymentService(object): boolean {
     return object?.constructor?._isPaymentService
   }

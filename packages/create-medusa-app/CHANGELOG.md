@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.2.7
+
+### Patch Changes
+
+- [#6729](https://github.com/medusajs/medusa/pull/6729) [`fbc369705d`](https://github.com/medusajs/medusa/commit/fbc369705d4feae21d77ea2fc59173ac9519cee6) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): Add `--v2` option
+
+## 1.2.6
+
+### Patch Changes
+
+- [#5983](https://github.com/medusajs/medusa/pull/5983) [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(create-medusa-app,medusa-core-utils): Use NodeJS.Timeout instead of NodeJS.Timer as the latter was deprecated in v14.
+  chore(icons): Update icons to latest version.
+
 ## 1.2.5
 
 ### Patch Changes

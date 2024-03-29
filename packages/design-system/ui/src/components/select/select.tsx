@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronUpDown, EllipseMiniSolid } from "@medusajs/icons"
+import { EllipseMiniSolid, TrianglesMini } from "@medusajs/icons"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cva } from "cva"
 import * as React from "react"
@@ -33,11 +33,11 @@ const useSelectContext = () => {
  * It also accepts all props of the HTML `select` component.
  */
 const Root = ({
-  children, 
+  children,
   /**
    * The select's size.
    */
-  size = "base", 
+  size = "base",
   ...props
 }: SelectProps) => {
   return (
@@ -63,19 +63,19 @@ Value.displayName = "Select.Value"
 
 const triggerVariants = cva({
   base: clx(
-    "bg-ui-bg-field txt-compact-medium shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
+    "bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
     "data-[placeholder]:text-ui-fg-muted text-ui-fg-base",
     "hover:bg-ui-bg-field-hover",
-    "focus:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
+    "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
     "aria-[invalid=true]:border-ui-border-error aria-[invalid=true]:shadow-borders-error",
-    "invalid::border-ui-border-error invalid:shadow-borders-error",
+    "invalid:border-ui-border-error invalid:shadow-borders-error",
     "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
     "group/trigger"
   ),
   variants: {
     size: {
-      base: "h-10 px-3 py-[9px]",
-      small: "h-8 px-2 py-[5px]",
+      base: "h-8 px-2 py-1.5 txt-compact-small",
+      small: "h-7 px-2 py-1 txt-compact-small",
     },
   },
 })
@@ -97,7 +97,7 @@ const Trigger = React.forwardRef<
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronUpDown className="text-ui-fg-muted group-disabled/trigger:text-ui-fg-disabled" />
+        <TrianglesMini className="text-ui-fg-muted group-disabled/trigger:text-ui-fg-disabled" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -185,8 +185,8 @@ const Item = React.forwardRef<
     <SelectPrimitive.Item
       ref={ref}
       className={clx(
-        "txt-compact-medium bg-ui-bg-base grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-md px-3 py-2 outline-none transition-colors",
-        "hover:bg-ui-bg-base-hover focus:bg-ui-bg-base-hover",
+        "bg-ui-bg-base grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-md px-3 py-2 outline-none transition-colors",
+        "hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-hover",
         {
           "txt-compact-medium data-[state=checked]:txt-compact-medium-plus":
             size === "base",

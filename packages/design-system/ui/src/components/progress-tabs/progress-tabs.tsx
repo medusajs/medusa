@@ -13,7 +13,7 @@ import { clx } from "@/utils/clx"
 
 /**
  * This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.
- * 
+ *
  * @excludeExternal
  */
 const ProgressTabsRoot = (props: ProgressTabsPrimitives.TabsProps) => {
@@ -29,11 +29,7 @@ interface IndicatorProps
   status?: ProgressStatus
 }
 
-const ProgressIndicator = ({ 
-  status, 
-  className, 
-  ...props 
-}: IndicatorProps) => {
+const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
       case "not-started":
@@ -72,24 +68,34 @@ interface ProgressTabsTriggerProps
 const ProgressTabsTrigger = React.forwardRef<
   React.ElementRef<typeof ProgressTabsPrimitives.Trigger>,
   ProgressTabsTriggerProps
->(({ className, children, status = "not-started", ...props }: ProgressTabsTriggerProps, ref) => (
-  <ProgressTabsPrimitives.Trigger
-    ref={ref}
-    className={clx(
-      "txt-compact-small-plus transition-fg text-ui-fg-muted bg-ui-bg-subtle border-r-ui-border-base inline-flex h-14 w-full max-w-[200px] flex-1 items-center gap-x-2 border-r px-4 text-left outline-none",
-      "group/trigger overflow-hidden text-ellipsis whitespace-nowrap",
-      "disabled:bg-ui-bg-disabled disabled:text-ui-fg-muted",
-      "hover:bg-ui-bg-subtle-hover",
-      "focus:bg-ui-bg-base focus:z-[1]",
-      "data-[state=active]:text-ui-fg-base data-[state=active]:bg-ui-bg-base",
-      className
-    )}
-    {...props}
-  >
-    <ProgressIndicator status={status} />
-    {children}
-  </ProgressTabsPrimitives.Trigger>
-))
+>(
+  (
+    {
+      className,
+      children,
+      status = "not-started",
+      ...props
+    }: ProgressTabsTriggerProps,
+    ref
+  ) => (
+    <ProgressTabsPrimitives.Trigger
+      ref={ref}
+      className={clx(
+        "txt-compact-small-plus transition-fg text-ui-fg-muted bg-ui-bg-subtle border-r-ui-border-base inline-flex h-14 w-full max-w-[200px] flex-1 items-center gap-x-2 border-r px-4 text-left outline-none",
+        "group/trigger overflow-hidden text-ellipsis whitespace-nowrap",
+        "disabled:bg-ui-bg-disabled disabled:text-ui-fg-muted",
+        "hover:bg-ui-bg-subtle-hover",
+        "focus-visible:bg-ui-bg-base focus:z-[1]",
+        "data-[state=active]:text-ui-fg-base data-[state=active]:bg-ui-bg-base",
+        className
+      )}
+      {...props}
+    >
+      <ProgressIndicator status={status} />
+      {children}
+    </ProgressTabsPrimitives.Trigger>
+  )
+)
 ProgressTabsTrigger.displayName = "ProgressTabs.Trigger"
 
 const ProgressTabsList = React.forwardRef<

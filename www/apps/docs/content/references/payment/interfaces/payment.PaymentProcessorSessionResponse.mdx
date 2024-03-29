@@ -2,7 +2,7 @@
 displayed_sidebar: modules
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentProcessorSessionResponse
 
@@ -10,4 +10,4 @@ The response of operations on a payment.
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"session_data","type":"`Record<string, unknown>`","description":"The data to be stored in the `data` field of the Payment Session to be created.\nThe `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update_requests","type":"`object`","description":"Used to specify data that should be updated in the Medusa backend.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"customer_metadata","type":"`Record<string, unknown>`","description":"Specifies a new value of the `metadata` field of the customer associated with the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"update_requests.customer_metadata","type":"`Record<string, unknown>`","description":"Specifies a new value of the `metadata` field of the customer associated with the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"session_data","type":"`Record<string, unknown>`","description":"The data to be stored in the `data` field of the Payment Session to be created.\nThe `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update_requests","type":"`object`","description":"Used to specify data that should be updated in the Medusa backend.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"customer_metadata","type":"`Record<string, unknown>`","description":"Specifies a new value of the `metadata` field of the customer associated with the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"update_requests.customer_metadata","type":"`Record<string, unknown>`","description":"Specifies a new value of the `metadata` field of the customer associated with the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PaymentProcessorSessionResponse"/>

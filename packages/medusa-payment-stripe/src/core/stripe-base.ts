@@ -40,6 +40,10 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
+  get options(): StripeOptions {
+    return this.options_
+  }
+
   getStripe() {
     return this.stripe_
   }

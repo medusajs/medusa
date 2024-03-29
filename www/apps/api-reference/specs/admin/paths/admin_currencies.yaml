@@ -23,6 +23,11 @@ get:
       schema:
         type: string
     - in: query
+      name: q
+      description: Term used to search currencies' name and code.
+      schema:
+        type: string
+    - in: query
       name: offset
       description: The number of currencies to skip when retrieving the currencies.
       schema:
@@ -45,7 +50,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_currencies/getundefined
+        $ref: ../code_samples/tsx/admin_currencies/get.tsx
     - lang: Shell
       label: cURL
       source:

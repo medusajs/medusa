@@ -1,5 +1,36 @@
 # @medusajs/admin-ui
 
+## 2.1.13
+
+### Patch Changes
+
+- [#6824](https://github.com/medusajs/medusa/pull/6824) [`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui, admin): Add missing regions relation
+
+- Updated dependencies [[`247ca3c3fa`](https://github.com/medusajs/medusa/commit/247ca3c3fadd69a1e90415041643727b53458e41), [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713)]:
+  - @medusajs/ui@2.4.3
+  - @medusajs/ui-preset@1.1.3
+
+## 2.1.12
+
+### Patch Changes
+
+- [#6306](https://github.com/medusajs/medusa/pull/6306) [`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381) Thanks [@erikengervall](https://github.com/erikengervall)! - fix(admin-ui) Refactor `use-copy-promotion` to map product IDs
+
+- Updated dependencies [[`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c), [`73fd92a1a`](https://github.com/medusajs/medusa/commit/73fd92a1afdec88c0d5f4aeed16349f2bd62cfa2)]:
+  - @medusajs/ui-preset@1.1.1
+  - @medusajs/ui@2.4.0
+
+## 2.1.11
+
+### Patch Changes
+
+- [#5822](https://github.com/medusajs/medusa/pull/5822) [`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b) Thanks [@hexrw](https://github.com/hexrw)! - feat(admin-ui): Add Czech translation
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7d650771d`](https://github.com/medusajs/medusa/commit/7d650771d1c1d3e5d77ff95c12e4970743b64303), [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7)]:
+  - medusa-react@9.0.13
+
 ## 2.1.10
 
 ### Patch Changes

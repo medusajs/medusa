@@ -5,8 +5,9 @@ import {
   SearchProvider as UiSearchProvider,
   AiAssistantCommandIcon,
   AiAssistantProvider,
+  searchFilters,
 } from "docs-ui"
-import getBaseUrl from "../utils/get-base-url"
+import { config } from "../config"
 
 type SearchProviderProps = {
   children: React.ReactNode
@@ -29,47 +30,30 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         isLoading,
         suggestions: [
           {
-            title: "Search Suggestions",
+            title: "Getting started? Try one of the following terms.",
             items: [
-              "Authentication",
-              "Expanding fields",
-              "Selecting fields",
-              "Pagination",
-              "Query parameter types",
+              "Install Medusa with create-medusa-app",
+              "Next.js quickstart",
+              "Admin dashboard quickstart",
+              "Commerce modules",
+              "Medusa architecture",
+            ],
+          },
+          {
+            title: "Developing with Medusa",
+            items: [
+              "Recipes",
+              "How to create API routes",
+              "How to create an entity",
+              "How to create a plugin",
+              "How to create an admin widget",
             ],
           },
         ],
-        checkInternalPattern: new RegExp(`^${getBaseUrl()}/api/(admin|store)`),
-        filterOptions: [
-          {
-            value: "admin",
-            label: "Admin API",
-          },
-          {
-            value: "store",
-            label: "Store API",
-          },
-          {
-            value: "docs",
-            label: "Docs",
-          },
-          {
-            value: "user-guide",
-            label: "User Guide",
-          },
-          {
-            value: "plugins",
-            label: "Plugins",
-          },
-          {
-            value: "reference",
-            label: "References",
-          },
-          {
-            value: "ui",
-            label: "UI",
-          },
-        ],
+        checkInternalPattern: new RegExp(
+          `^${config.baseUrl}/api/(admin|store)`
+        ),
+        filterOptions: searchFilters,
       }}
       commands={[
         {

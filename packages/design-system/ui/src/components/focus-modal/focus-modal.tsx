@@ -13,16 +13,13 @@ import { clx } from "@/utils/clx"
  * @prop open - Whether the modal is opened.
  * @prop onOpenChange - A function to handle when the modal is opened or closed.
  */
-interface FocusModalRootProps 
-  extends React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Root> {
-}
+interface FocusModalRootProps
+  extends React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Root> {}
 
 /**
  * This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
  */
-const FocusModalRoot = (
-  props: FocusModalRootProps
-) => {
+const FocusModalRoot = (props: FocusModalRootProps) => {
   return <FocusModalPrimitives.Root {...props} />
 }
 FocusModalRoot.displayName = "FocusModal"
@@ -34,6 +31,9 @@ const FocusModalTrigger = React.forwardRef<
   return <FocusModalPrimitives.Trigger ref={ref} {...props} />
 })
 FocusModalTrigger.displayName = "FocusModal.Trigger"
+
+const FocusModalClose = FocusModalPrimitives.Close
+FocusModalClose.displayName = "FocusModal.Close"
 
 const FocusModalPortal = ({
   className,
@@ -54,7 +54,7 @@ const FocusModalOverlay = React.forwardRef<
       ref={ref}
       className={clx(
         "bg-ui-bg-overlay fixed inset-0",
-        // "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       {...props}
@@ -73,8 +73,8 @@ const FocusModalContent = React.forwardRef<
       <FocusModalPrimitives.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-base shadow-elevation-modal fixed inset-2 flex flex-col overflow-hidden rounded-lg border focus:outline-none",
-          // "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200",
+          "bg-ui-bg-base shadow-elevation-modal fixed inset-2 flex flex-col overflow-hidden rounded-lg border focus-visible:outline-none",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-0 data-[state=closed]:slide-in-from-bottom-2  duration-200",
           className
         )}
         {...props}
@@ -102,7 +102,7 @@ const FocusModalHeader = React.forwardRef<
     >
       <div className="flex items-center gap-x-2">
         <FocusModalPrimitives.Close asChild>
-          <IconButton variant="transparent">
+          <IconButton size="small" type="button" variant="transparent">
             <XMark />
           </IconButton>
         </FocusModalPrimitives.Close>
@@ -130,6 +130,7 @@ const FocusModal = Object.assign(FocusModalRoot, {
   Content: FocusModalContent,
   Header: FocusModalHeader,
   Body: FocusModalBody,
+  Close: FocusModalClose,
 })
 
 export { FocusModal }

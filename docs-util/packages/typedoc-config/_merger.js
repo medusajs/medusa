@@ -15,6 +15,7 @@ const baseSectionsOptions = {
   member_signature_title: false,
   member_signature_returns: false,
   title_reflectionPath: false,
+  member_declaration_children: false,
 }
 
 const modulesSectionsOptions = {
@@ -70,10 +71,8 @@ module.exports = {
       showCommentsAsHeader: true,
       sections: baseSectionsOptions,
       parameterStyle: "component",
-      parameterComponent: "ParameterTypes",
-      mdxImports: [
-        `import ParameterTypes from "@site/src/components/ParameterTypes"`,
-      ],
+      parameterComponent: "TypeList",
+      mdxImports: [`import TypeList from "@site/src/components/TypeList"`],
     },
     internal: {
       maxLevel: 1,
@@ -104,18 +103,64 @@ module.exports = {
       maxLevel: 1,
     },
 
-    // FULFILLMENT CONFIG
-    "^fulfillment": {
+    // FILE CONFIG
+    "^file": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+    },
+    "^file/.*AbstractFileService": {
       reflectionGroups: {
         Properties: false,
       },
+      reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/file-service/create-file-service",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a File Service",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your file service in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your file service implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Upload a file using the [Admin REST APIs](https://docs.medusajs.com/api/admin#uploads_postuploads) or using the Medusa admin, for example, to [upload a product's thumbnail](https://docs.medusajs.com/user-guide/products/manage#manage-thumbnails).
+      `,
+      ],
+    },
+
+    // FULFILLMENT CONFIG
+    "^fulfillment": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
       maxLevel: 2,
     },
     "^fulfillment/.*AbstractFulfillmentService": {
-      reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider to a Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
+      reflectionGroups: {
+        Properties: false,
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider in the Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
       frontmatterData: {
         displayed_sidebar: "modules",
         slug: "/modules/carts-and-checkout/backend/add-fulfillment-provider",
@@ -123,6 +168,34 @@ module.exports = {
       reflectionTitle: {
         fullReplacement: "How to Create a Fulfillment Provider",
       },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your fulfillment provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your fulfillment provider implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Enable your fulfillment provider in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
+
+4\\. To test out your fulfillment provider implementation, create a cart and complete an order. You can do that either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).
+      `,
+      ],
     },
 
     // INVENTORY CONFIG
@@ -156,7 +229,7 @@ module.exports = {
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -189,6 +262,38 @@ module.exports = {
     },
     "^js_client/.*LineItemsResource": {
       maxLevel: 3,
+    },
+
+    // MEDUSA CONFIG CONFIG
+    "^medusa_config": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+      expandMembers: true,
+    },
+    "^medusa_config/.*ConfigModule": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/backend/configurations",
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.
+
+## Prerequisites
+
+This document assumes you already followed along with the [Prepare Environment documentation](https://docs.medusajs.com/development/backend/prepare-environment) and have a Medusa backend installed.
+      
+---`,
+      reflectionTitle: {
+        fullReplacement: "Configure Medusa Backend",
+      },
+      expandMembers: true,
+      expandProperties: true,
+      // parameterStyle: "list",
+      sections: {
+        ...baseSectionsOptions,
+        member_declaration_title: false,
+        member_declaration_children: true,
+      },
     },
 
     // MEDUSA REACT CONFIG
@@ -317,6 +422,86 @@ module.exports = {
       },
     },
 
+    // NOTIFICATION CONFIG
+    "^notification": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+    },
+    "^notification/.*AbstractNotificationService": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a notification provider in the Medusa backend and the methods you must implement in it. Learn more about the notification architecture in [this documentation](https://docs.medusajs.com/development/notification/overview)`,
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/notification/create-notification-provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Notification Provider",
+      },
+      endSections: [
+        `## Subscribe with Loaders
+
+After creating your Notification Provider Service, you must create a [Loader](https://docs.medusajs.com/development/loaders/overview) that registers this Service as a notification handler of events.
+
+For example, to register the \`email-sender\` Notification Provider as a handler for the \`order.placed\` event, create the file \`src/loaders/notification.ts\` with the following content:
+
+\`\`\`ts title="src/loaders/notification.ts"
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
+
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
+
+  notificationService.subscribe(
+    "order.placed", 
+    "email-sender"
+  )
+}
+\`\`\`
+
+This loader accesses the \`notificationService\` through the [MedusaContainer](https://docs.medusajs.com/development/fundamentals/dependency-injection). The \`notificationService\` has a \`subscribe\` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that's subscribing to that event.`,
+        `## Test Sending a Notification
+
+Make sure you have an event bus module configured in your Medusa backend. You can learn more on how to do that in the [Configurations guide](https://docs.medusajs.com/development/backend/configurations#modules).
+
+Then:
+
+1\\. Run the \`build\` command in the root directory of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start your Medusa backend:
+
+\`\`\`bash npm2yarn
+npx medusa develop
+\`\`\`
+
+3\\. Place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [storefront](https://docs.medusajs.com/starters/nextjs-medusa-starter).
+
+4\\. After placing an order, you can see in your console the message “Notification Sent”. If you added your own notification sending logic, you should receive an email or alternatively the type of notification you’ve set up.`,
+        `## Test Resending a Notification
+
+To test resending a notification:
+
+1. Retrieve the ID of the notification you just sent using the [List Notifications API Route](https://docs.medusajs.com/api/admin#notifications_getnotifications). You can pass as a body parameter the \`to\` or \`event_name\` parameters to filter out the notification you just sent.
+
+2. Send a request to the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend) using the ID retrieved from the previous request. You can pass the \`to\` parameter in the body to change the receiver of the notification. 
+
+3. You should see the message “Notification Resent” in your console.
+        `,
+      ],
+    },
+
     // PAYMENT CONFIG
     "^payment": {
       frontmatterData: {
@@ -336,6 +521,80 @@ module.exports = {
       reflectionGroups: {
         Properties: false,
       },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your payment processor in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your payment processor implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Enable your payment processor in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-payment-providers).
+
+4\\. There are different ways to test out your payment processor, such as authorizing payment on order completion or capturing payment of an order. You test payment in a checkout flow either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow).
+      `,
+      ],
+    },
+
+    // PRICE SELECTION CONFIG
+    "^price_selection": {
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^price_selection/.*AbstractPriceSelectionStrategy": {
+      reflectionDescription: `In this document, you’ll learn what the price selection strategy and how to override it in the Medusa backend.`,
+      reflectionGroups: {
+        Properties: false,
+      },
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/price-lists/price-selection-strategy",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Override the Price Selection Strategy",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your price selection strategy in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your price selection strategy implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. To test out your price selection strategy implementation, you can retrieve a product and it's variants by specifying pricing parameters as explained in [this guide](https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters).
+      `,
+      ],
     },
 
     // PRICING CONFIG
@@ -377,7 +636,7 @@ module.exports = {
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -420,8 +679,64 @@ module.exports = {
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
+    },
+
+    // SEARCH CONFIG
+    "^search": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+    },
+    "^search/.*AbstractSearchService": {
+      reflectionDescription: `In this document, you’ll learn how to create a search service in the Medusa backend and the methods you must implement in it.
+
+## Prerequisites
+
+A search service must extend the \`AbstractSearchService\` class imported from the \`@medusajs/utils\` package. If you don’t already have the package 
+installed, run the following command to install it within your project:
+
+\`\`\`bash npm2yarn
+npm install @medusajs/utils
+\`\`\`
+
+---`,
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/search/create",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Search Service",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your search service in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your search service implementation:
+
+1\\. Make sure you have an [event bus module](https://docs.medusajs.com/development/events/modules/redis) installed that triggers search indexing when the Medusa backend loads.
+
+2\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+3\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+4\\. Try to search for products either using the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch). The results returned by your search service's \`search\` method is returned in the \`hits\` response field.
+      `,
+      ],
     },
 
     // SERVICES CONFIG
@@ -463,8 +778,102 @@ module.exports = {
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
+    },
+
+    // TAX CALCULATION CONFIG
+    "^tax_calculation": {
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax_calculation/.*AbstractTaxCalculationStrategy": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      reflectionDescription: `In this document, you’ll learn how to override the tax calculations strategy in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/tax-calculation-strategy",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Override a Tax Calculation Strategy",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your tax calculation strategy in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax calculation strategy implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. To test out your tax calculation strategy implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
+      `,
+      ],
+    },
+
+    // TAX PROVIDER CONFIG
+    "^tax/": {
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax/.*AbstractTaxService": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a tax provider in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/create-tax-provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Tax Provider",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your tax provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax provider implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Use the tax provider in a region. You can do that either using the [Admin APIs](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) or the [Medusa Admin](https://docs.medusajs.com/user-guide/taxes/manage#change-tax-provider).
+
+4\\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
+      `,
+      ],
     },
 
     // WORKFLOWS CONFIG

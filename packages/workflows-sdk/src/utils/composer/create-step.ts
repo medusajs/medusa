@@ -1,4 +1,12 @@
-import { resolveValue, StepResponse } from "./helpers"
+import {
+  TransactionStepsDefinition,
+  WorkflowManager,
+  WorkflowStepHandlerArguments,
+} from "@medusajs/orchestration"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
+import { StepResponse, resolveValue } from "./helpers"
+import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -6,9 +14,6 @@ import {
   StepFunctionResult,
   WorkflowData,
 } from "./type"
-import { proxify } from "./helpers/proxy"
-import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -116,11 +121,20 @@ function applyStep<
     }
 
     const handler = {
-      invoke: async (transactionContext) => {
+      invoke: async (transactionContext: WorkflowStepHandlerArguments) => {
+        const metadata = transactionContext.metadata
+        const idempotencyKey = metadata.idempotency_key
+
+        transactionContext.context!.idempotencyKey = idempotencyKey
         const executionContext: StepExecutionContext = {
+          workflowId: metadata.model_id,
+          stepName: metadata.action,
+          action: "invoke",
+          idempotencyKey,
+          attempt: metadata.attempt,
           container: transactionContext.container,
-          metadata: transactionContext.metadata,
-          context: transactionContext.context,
+          metadata,
+          context: transactionContext.context!,
         }
 
         const argInput = input
@@ -142,20 +156,31 @@ function applyStep<
         }
       },
       compensate: compensateFn
-        ? async (transactionContext) => {
+        ? async (transactionContext: WorkflowStepHandlerArguments) => {
+            const metadata = transactionContext.metadata
+            const idempotencyKey = metadata.idempotency_key
+
+            transactionContext.context!.idempotencyKey = idempotencyKey
+
             const executionContext: StepExecutionContext = {
+              workflowId: metadata.model_id,
+              stepName: metadata.action,
+              action: "compensate",
+              idempotencyKey,
+              attempt: metadata.attempt,
               container: transactionContext.container,
-              metadata: transactionContext.metadata,
-              context: transactionContext.context,
+              metadata,
+              context: transactionContext.context!,
             }
 
-            const stepOutput = transactionContext.invoke[stepName]?.output
+            const stepOutput = (transactionContext.invoke[stepName] as any)
+              ?.output
             const invokeResult =
               stepOutput?.__type ===
               OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
-                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
-                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
+                  deepCopy(stepOutput.compensateInput)
+                : stepOutput && deepCopy(stepOutput)
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
@@ -166,19 +191,38 @@ function applyStep<
         : undefined,
     }
 
-    stepConfig!.noCompensation = !compensateFn
+    stepConfig.uuid = ulid()
+    stepConfig.noCompensation = !compensateFn
 
     this.flow.addAction(stepName, stepConfig)
-    this.handlers.set(stepName, handler)
+
+    if (!this.handlers.has(stepName)) {
+      this.handlers.set(stepName, handler)
+    }
 
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (config: Pick<TransactionStepsDefinition, "maxRetries">) => {
-        this.flow.replaceAction(stepName, stepName, {
+      config: (
+        localConfig: { name?: string } & Omit<
+          TransactionStepsDefinition,
+          "next" | "uuid" | "action"
+        >
+      ) => {
+        const newStepName = localConfig.name ?? stepName
+
+        delete localConfig.name
+
+        this.handlers.set(newStepName, handler)
+
+        this.flow.replaceAction(stepConfig.uuid!, newStepName, {
           ...stepConfig,
-          ...config,
+          ...localConfig,
         })
+
+        ret.__step__ = newStepName
+        WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
         return proxify(ret)
       },
     }
@@ -241,11 +285,14 @@ export function createStep<
   TInvokeResultCompensateInput
 >(
   /**
-   * The name of the step or its configuration (currently support maxRetries).
+   * The name of the step or its configuration.
    */
   nameOrConfig:
     | string
-    | ({ name: string } & Pick<TransactionStepsDefinition, "maxRetries">),
+    | ({ name: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.

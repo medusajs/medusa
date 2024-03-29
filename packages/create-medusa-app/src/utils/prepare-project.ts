@@ -26,6 +26,7 @@ type PrepareOptions = {
   nextjsDirectory?: string
   client: Client | null
   verbose?: boolean
+  v2?: boolean
 }
 
 export default async ({
@@ -43,6 +44,7 @@ export default async ({
   nextjsDirectory = "",
   client,
   verbose = false,
+  v2 = false,
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -72,6 +74,9 @@ export default async ({
 
   if (!skipDb) {
     let env = `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=http://localhost:8000,http://localhost:7001`
+    if (v2) {
+      env += `${EOL}POSTGRES_URL=${dbConnectionString}`
+    }
     if (nextjsDirectory) {
       env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
     }
@@ -158,7 +163,9 @@ export default async ({
           // to ensure that migrations ran
           let errorOccurred = false
           try {
-            const migrations = await client.query(`SELECT * FROM "migrations"`)
+            const migrations = await client.query(
+              `SELECT * FROM "${v2 ? "mikro_orm_migrations" : "migrations"}"`
+            )
             errorOccurred = migrations.rowCount == 0
           } catch (e) {
             // avoid error thrown if the migrations table
@@ -184,7 +191,7 @@ export default async ({
     })
   }
 
-  if (admin && !skipDb && migrations) {
+  if (admin && !skipDb && migrations && !v2) {
     // create admin user
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,

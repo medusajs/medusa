@@ -33,7 +33,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_regions_{id}_countries_{country_code}/deleteundefined
+          ../code_samples/tsx/admin_regions_{id}_countries_{country_code}/delete.tsx
     - lang: Shell
       label: cURL
       source:

@@ -17,30 +17,31 @@ const buttonVariants = cva({
         "shadow-buttons-inverted text-ui-fg-on-inverted bg-ui-button-inverted after:button-inverted-gradient",
         "hover:bg-ui-button-inverted-hover hover:after:button-inverted-hover-gradient",
         "active:bg-ui-button-inverted-pressed active:after:button-inverted-pressed-gradient",
-        "focus:!shadow-buttons-inverted-focus"
+        "focus-visible:!shadow-buttons-inverted-focus"
       ),
       secondary: clx(
         "shadow-buttons-neutral text-ui-fg-base bg-ui-button-neutral after:button-neutral-gradient",
         "hover:bg-ui-button-neutral-hover hover:after:button-neutral-hover-gradient",
         "active:bg-ui-button-neutral-pressed active:after:button-neutral-pressed-gradient",
-        "focus:shadow-buttons-neutral-focus"
+        "focus-visible:shadow-buttons-neutral-focus"
       ),
       transparent: clx(
         "after:hidden",
         "text-ui-fg-base bg-ui-button-transparent",
         "hover:bg-ui-button-transparent-hover",
         "active:bg-ui-button-transparent-pressed",
-        "focus:shadow-buttons-neutral-focus focus:bg-ui-bg-base",
+        "focus-visible:shadow-buttons-neutral-focus focus-visible:bg-ui-bg-base",
         "disabled:!bg-transparent disabled:!shadow-none"
       ),
       danger: clx(
         "shadow-buttons-colored shadow-buttons-danger text-ui-fg-on-color bg-ui-button-danger after:button-danger-gradient",
         "hover:bg-ui-button-danger-hover hover:after:button-danger-hover-gradient",
         "active:bg-ui-button-danger-pressed active:after:button-danger-pressed-gradient",
-        "focus:shadow-buttons-danger-focus"
+        "focus-visible:shadow-buttons-danger-focus"
       ),
     },
     size: {
+      small: "txt-compact-small-plus gap-x-1 px-2 py-1",
       base: "txt-compact-small-plus gap-x-1.5 px-3 py-1.5",
       large: "txt-compact-medium-plus gap-x-1.5 px-4 py-2.5",
       xlarge: "txt-compact-large-plus gap-x-1.5 px-5 py-3.5",

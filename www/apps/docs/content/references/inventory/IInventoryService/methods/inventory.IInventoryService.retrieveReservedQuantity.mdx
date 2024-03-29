@@ -4,7 +4,7 @@ slug: /references/inventory/retrieveReservedQuantity
 sidebar_label: retrieveReservedQuantity
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # retrieveReservedQuantity - Inventory Module Reference
 
@@ -15,7 +15,7 @@ This method is used to retrieve the reserved quantity of an inventory item withi
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
@@ -29,15 +29,15 @@ async function retrieveReservedQuantity (
     inventoryItemId,
     locationIds,
   )
-  
+
   // do something with the quantity or return it
 }
 ```
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"inventoryItemId","type":"`string`","description":"The ID of the inventory item to retrieve its reserved quantity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locationIds","type":"`string`[]","description":"The IDs of the locations to retrieve the reserved quantity from.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"inventoryItemId","type":"`string`","description":"The ID of the inventory item to retrieve its reserved quantity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locationIds","type":"`string`[]","description":"The IDs of the locations to retrieve the reserved quantity from.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="retrieveReservedQuantity"/>
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"The reserved quantity of the inventory item in the specified locations.","expandable":false,"children":[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"The reserved quantity of the inventory item in the specified locations.","expandable":false,"children":[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="retrieveReservedQuantity"/>

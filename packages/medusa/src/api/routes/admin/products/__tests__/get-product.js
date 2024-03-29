@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 import { request } from "../../../../../helpers/test-request"
+import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
 describe("GET /admin/products/:id", () => {
   describe("successfully gets a product", () => {
@@ -24,8 +24,11 @@ describe("GET /admin/products/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls get product from productSerice", () => {
+    it("calls get product from productService", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        ProductServiceMock.retrieve.mock.calls[0][1].relations
+      ).toHaveLength(11)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("product1"),
         {
@@ -55,10 +58,11 @@ describe("GET /admin/products/:id", () => {
             "deleted_at",
             "metadata",
           ],
-          relations: [
+          relations: expect.arrayContaining([
             "collection",
             "images",
             "options",
+            "options.values",
             "profiles",
             "sales_channels",
             "tags",
@@ -66,7 +70,7 @@ describe("GET /admin/products/:id", () => {
             "variants",
             "variants.options",
             "variants.prices",
-          ],
+          ]),
         }
       )
     })

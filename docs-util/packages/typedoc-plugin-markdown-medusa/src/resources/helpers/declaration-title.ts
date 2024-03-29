@@ -55,6 +55,7 @@ export default function (theme: MarkdownTheme) {
           ` = \`${stripLineBreaks(stripComments(`${this.defaultValue}`))}\``
         )
       }
+
       return md.join("")
     }
   )

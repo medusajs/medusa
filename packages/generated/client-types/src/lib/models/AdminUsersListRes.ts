@@ -13,4 +13,16 @@ export interface AdminUsersListRes {
    * An array of users details.
    */
   users: Array<User>
+  /**
+   * The total number of items available
+   */
+  count: number
+  /**
+   * The number of users skipped when retrieving the users.
+   */
+  offset: number
+  /**
+   * The number of items per page
+   */
+  limit: number
 }

@@ -8,7 +8,7 @@ import { StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../thumbnail"
 
-export const ProductInventoryCell = ({
+export const ProductVariantCell = ({
   variants,
 }: {
   variants: ProductVariant[] | null
@@ -23,13 +23,10 @@ export const ProductInventoryCell = ({
     )
   }
 
-  const inventory = variants.reduce((acc, v) => acc + v.inventory_quantity, 0)
-
   return (
     <Text size="small" className="text-ui-fg-base">
-      {t("products.inStockVariants", {
+      {t("products.variantCount", {
         count: variants.length,
-        inventory: inventory,
       })}
     </Text>
   )

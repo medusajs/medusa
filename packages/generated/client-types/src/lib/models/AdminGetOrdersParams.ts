@@ -155,4 +155,8 @@ export interface AdminGetOrdersParams {
    * Comma-separated fields that should be included in the returned order.
    */
   fields?: string
+  /**
+   * Field to sort retrieved orders by.
+   */
+  order?: string
 }

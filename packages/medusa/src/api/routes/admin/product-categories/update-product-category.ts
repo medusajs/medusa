@@ -1,17 +1,17 @@
 import {
-  IsOptional,
-  IsString,
   IsInt,
-  Min,
   IsNotEmpty,
   IsObject,
+  IsOptional,
+  IsString,
+  Min,
 } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import { ProductCategoryService } from "../../../../services"
-import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 import { FindParams } from "../../../../types/common"
+import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 
 /**
  * @oas [post] /admin/product-categories/{id}

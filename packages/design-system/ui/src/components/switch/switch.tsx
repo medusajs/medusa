@@ -7,7 +7,7 @@ import * as React from "react"
 import { clx } from "@/utils/clx"
 
 const switchVariants = cva({
-  base: "bg-ui-bg-switch-off hover:bg-ui-bg-switch-off-hover data-[state=unchecked]:hover:after:bg-switch-off-hover-gradient before:shadow-details-switch-background focus:shadow-details-switch-background-focus data-[state=checked]:bg-ui-bg-interactive disabled:!bg-ui-bg-disabled group relative inline-flex items-center rounded-full outline-none transition-all before:absolute before:inset-0 before:rounded-full before:content-[''] after:absolute after:inset-0 after:rounded-full after:content-[''] disabled:cursor-not-allowed",
+  base: "bg-ui-bg-switch-off hover:bg-ui-bg-switch-off-hover data-[state=unchecked]:hover:after:bg-switch-off-hover-gradient before:shadow-details-switch-background focus-visible:shadow-details-switch-background-focus data-[state=checked]:bg-ui-bg-interactive disabled:!bg-ui-bg-disabled group relative inline-flex items-center rounded-full outline-none transition-all before:absolute before:inset-0 before:rounded-full before:content-[''] after:absolute after:inset-0 after:rounded-full after:content-[''] disabled:cursor-not-allowed",
   variants: {
     size: {
       small: "h-[16px] w-[28px]",
@@ -46,22 +46,27 @@ interface SwitchProps
 const Switch = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   SwitchProps
->(({ 
-    className, 
-    /**
-     * The switch's size.
-     */
-    size = "base", 
-    ...props 
-  }: SwitchProps, ref) => (
-  <Primitives.Root
-    className={clx(switchVariants({ size }), className)}
-    {...props}
-    ref={ref}
-  >
-    <Primitives.Thumb className={clx(thumbVariants({ size }))} />
-  </Primitives.Root>
-))
+>(
+  (
+    {
+      className,
+      /**
+       * The switch's size.
+       */
+      size = "base",
+      ...props
+    }: SwitchProps,
+    ref
+  ) => (
+    <Primitives.Root
+      className={clx(switchVariants({ size }), className)}
+      {...props}
+      ref={ref}
+    >
+      <Primitives.Thumb className={clx(thumbVariants({ size }))} />
+    </Primitives.Root>
+  )
+)
 Switch.displayName = "Switch"
 
 export { Switch }

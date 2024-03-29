@@ -5,6 +5,9 @@ info:
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
+servers:
+  - url: http://localhost:9000
+  - url: https://api.medusa-commerce.com
 tags:
   - name: Apps Oauth
     description: >
@@ -47,13 +50,6 @@ tags:
       description: How to manage currencies
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
-  - name: Customers
-    description: >
-      Customers can either be created when they register through the Store APIs,
-      or created by the admin using the Admin APIs.
-    externalDocs:
-      description: How to manage customers
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
   - name: Customer Groups
     description: >
       Customer Groups can be used to organize customers that share similar data
@@ -64,6 +60,13 @@ tags:
     externalDocs:
       description: How to manage customer groups
       url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
+  - name: Customers
+    description: >
+      Customers can either be created when they register through the Store APIs,
+      or created by the admin using the Admin APIs.
+    externalDocs:
+      description: How to manage customers
+      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
   - name: Discounts
     description: >
       Admins can create discounts with conditions and rules, providing them with
@@ -121,6 +124,13 @@ tags:
 
       The notification's type, such as an email or SMS, is determined by the
       notification provider installed on the Medusa backend.
+  - name: Order Edits
+    description: >
+      An admin can edit an order to remove, add, or update an item's quantity.
+      When an admin edits an order, they're stored as an `OrderEdit`.
+    externalDocs:
+      description: How to edit an order
+      url: https://docs.medusajs.com/modules/orders/admin/edit-order
   - name: Orders
     description: >
       Orders are purchases made by customers, typically through a storefront
@@ -132,21 +142,14 @@ tags:
     externalDocs:
       description: How to manage orders
       url: https://docs.medusajs.com/modules/orders/admin/manage-orders
-  - name: Order Edits
-    description: >
-      An admin can edit an order to remove, add, or update an item's quantity.
-      When an admin edits an order, they're stored as an `OrderEdit`.
-    externalDocs:
-      description: How to edit an order
-      url: https://docs.medusajs.com/modules/orders/admin/edit-order
-  - name: Payments
-    description: >
-      A payment can be related to an order, swap, return, or more. It can be
-      captured or refunded.
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+  - name: Payments
+    description: >
+      A payment can be related to an order, swap, return, or more. It can be
+      captured or refunded.
   - name: Price Lists
     description: >
       A price list are special prices applied to products based on a set of
@@ -154,14 +157,6 @@ tags:
     externalDocs:
       description: How to manage price lists
       url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
-  - name: Products
-    description: >
-      Products are saleable items in a store. This also includes [saleable gift
-      cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product)
-      in a store.
-    externalDocs:
-      description: How to manage products
-      url: https://docs.medusajs.com/modules/products/admin/manage-products
   - name: Product Categories
     description: >
       Products can be categoriezed into categories. A product can be added into
@@ -200,6 +195,14 @@ tags:
       description: How to manage product variants
       url: >-
         https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
+  - name: Products
+    description: >
+      Products are saleable items in a store. This also includes [saleable gift
+      cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product)
+      in a store.
+    externalDocs:
+      description: How to manage products
+      url: https://docs.medusajs.com/modules/products/admin/manage-products
   - name: Publishable API Keys
     description: >
       Publishable API Keys can be used to scope Store API calls with an API key,
@@ -218,6 +221,16 @@ tags:
       description: How to manage publishable API keys
       url: >-
         https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys
+  - name: Regions
+    description: >
+      Regions are different countries or geographical regions that the commerce
+      store serves customers in.
+
+      Admins can manage these regions, their providers, and more.
+    externalDocs:
+      description: How to manage regions
+      url: >-
+        https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
   - name: Reservations
     description: >
       Reservations, provided by the [Inventory
@@ -231,16 +244,6 @@ tags:
       description: How to manage item allocations in orders
       url: >-
         https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
-  - name: Regions
-    description: >
-      Regions are different countries or geographical regions that the commerce
-      store serves customers in.
-
-      Admins can manage these regions, their providers, and more.
-    externalDocs:
-      description: How to manage regions
-      url: >-
-        https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
   - name: Return Reasons
     description: >
       Return reasons are key-value pairs that are used to specify why an order
@@ -344,9 +347,6 @@ tags:
     externalDocs:
       description: How to manage users
       url: https://docs.medusajs.com/modules/users/admin/manage-users
-servers:
-  - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
 paths:
   /admin/apps:
     $ref: paths/admin_apps.yaml

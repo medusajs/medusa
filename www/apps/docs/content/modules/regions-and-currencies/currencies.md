@@ -86,5 +86,5 @@ The relation is available on the `PaymentCollection` entity by expanding the `cu
 
 ## See Also
 
-- [Price Selection Strategy](../price-lists/price-selection-strategy.md)
+- [Price Selection Strategy](../../references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy.mdx)
 - [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md)

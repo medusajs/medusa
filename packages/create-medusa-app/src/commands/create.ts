@@ -43,6 +43,7 @@ export type CreateOptions = {
   directoryPath?: string
   withNextjsStarter?: boolean
   verbose?: boolean
+  v2?: boolean
 }
 
 export default async ({
@@ -56,6 +57,7 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
   verbose = false,
+  v2 = false,
 }: CreateOptions) => {
   track("CREATE_CLI_CMA")
 
@@ -140,6 +142,7 @@ export default async ({
       abortController,
       spinner,
       verbose,
+      v2,
     })
   } catch {
     return
@@ -192,6 +195,7 @@ export default async ({
       nextjsDirectory,
       client,
       verbose,
+      v2,
     })
   } catch (e: any) {
     if (isAbortError(e)) {

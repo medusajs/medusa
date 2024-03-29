@@ -28,6 +28,72 @@ get:
       schema:
         type: string
     - in: query
+      name: created_at
+      description: Filter by a creation date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Filter by an update date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: deleted_at
+      description: Filter by a deletion date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
       name: rate
       style: form
       explode: false
@@ -49,6 +115,16 @@ get:
               gte:
                 type: number
                 description: filter by rates greater than or equal to this number
+    - in: query
+      name: q
+      description: Term used to search tax rates by name.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: A tax rate field to sort-order the retrieved tax rates by.
+      schema:
+        type: string
     - in: query
       name: offset
       description: The number of tax rates to skip when retrieving the tax rates.
@@ -92,7 +168,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_tax-rates/getundefined
+        $ref: ../code_samples/tsx/admin_tax-rates/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -164,7 +240,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_tax-rates/postundefined
+        $ref: ../code_samples/tsx/admin_tax-rates/post.tsx
     - lang: Shell
       label: cURL
       source:

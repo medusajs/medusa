@@ -5,12 +5,13 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm"
 
-import { ClaimItem } from "./claim-item"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { ClaimItem } from "./claim-item"
 
 @Entity()
 export class ClaimImage extends SoftDeletableEntity {
@@ -20,7 +21,7 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimItem, (ci) => ci.images)
   @JoinColumn({ name: "claim_item_id" })
-  claim_item: ClaimItem
+  claim_item: Relation<ClaimItem>
 
   @Column()
   url: string

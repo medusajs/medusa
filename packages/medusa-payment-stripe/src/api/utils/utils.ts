@@ -177,7 +177,7 @@ async function capturePaymenCollectiontIfNecessary({
       await manager.transaction(async (manager) => {
         await paymentCollectionService
           .withTransaction(manager)
-          .capture(payment.id)
+          .capture(payment.id) // TODO: revisit - this method doesn't exists ATM
       })
     }
   }

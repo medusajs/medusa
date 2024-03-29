@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # Item
 
@@ -12,4 +12,4 @@ ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"item_id","type":"`string`","description":"The ID of the Line Item that will be claimed.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The number of items that will be returned","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"`string`[]","description":"A list of image URL's that will be associated with the Claim","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"Short text describing the Claim Item in further detail.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reason","type":"[ClaimReason](../../entities/enums/entities.ClaimReason.mdx)","description":"The reason for the Claim","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"MISSING_ITEM","type":"`\"missing_item\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"OTHER","type":"`\"other\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PRODUCTION_FAILURE","type":"`\"production_failure\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"WRONG_ITEM","type":"`\"wrong_item\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"tags","type":"`string`[]","description":"A list of tags to add to the Claim Item","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"item_id","type":"`string`","description":"The ID of the Line Item to fulfill.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the Line Item to fulfill.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="Item"/>

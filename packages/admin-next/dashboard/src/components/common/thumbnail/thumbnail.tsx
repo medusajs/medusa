@@ -1,9 +1,9 @@
-import { Photo } from "@medusajs/icons";
+import { Photo } from "@medusajs/icons"
 
 type ThumbnailProps = {
-  src?: string | null;
-  alt?: string;
-};
+  src?: string | null
+  alt?: string
+}
 
 export const Thumbnail = ({ src, alt }: ThumbnailProps) => {
   return (
@@ -15,8 +15,8 @@ export const Thumbnail = ({ src, alt }: ThumbnailProps) => {
           className="h-full w-full object-cover object-center"
         />
       ) : (
-        <Photo />
+        <Photo className="text-ui-fg-subtle" />
       )}
     </div>
-  );
-};
+  )
+}
