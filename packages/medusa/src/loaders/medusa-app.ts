@@ -248,8 +248,7 @@ export async function runModulesLoader({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
-}): Promise<MedusaAppOutput> {
-  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
+}): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -290,7 +289,7 @@ export async function runModulesLoader({
     }
   }
 
-  return await MedusaApp({
+  await MedusaApp({
     modulesConfig: configModules,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
