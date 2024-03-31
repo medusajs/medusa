@@ -114,23 +114,7 @@ Refer to the [admin deployment guides on how to deploy the admin separately](../
 
 ---
 
-## (Optional) Step 1: Add Nixpacks Configurations
-
-If you've created your project using `create-medusa-app`, you might receive errors during the deployment process as Railway uses NPM by default. To avoid that, you need to configure Nixpacks to either use `yarn` or add the `--legacy-peer-deps` option to `npm install`.
-
-In the root of your Medusa project, add the `nixpacks.toml` file with the following content:
-
-```toml
-[phases.setup]
-nixPkgs = ['nodejs', 'yarn']
-
-[phases.install]
-cmds=['yarn install']
-```
-
----
-
-## Step 2: Add Worker Mode Configuration
+## Step 1: Add Worker Mode Configuration
 
 :::note
 
@@ -152,7 +136,7 @@ This allows you to switch between modes for different deployed Medusa instances 
 
 ---
 
-## Step 3: Create GitHub Repository
+## Step 2: Create GitHub Repository
 
 Before you deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
@@ -187,7 +171,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ---
 
-## Step 4: Deploy to Railway
+## Step 3: Deploy to Railway
 
 In this section, you’ll create the PostgreSQL and Redis databases first, then deploy two instances of the Medusa backend: one having a `server` runtime mode, and another having a `worker` runtime mode.
 
@@ -337,7 +321,7 @@ The last step is to add a domain name to your Medusa backend. To do that:
 
 ---
 
-## Step 5: Test the Backend
+## Step 4: Test the Backend
 
 Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 
@@ -373,11 +357,11 @@ This error may be thrown by a module that uses Redis. If you see it in your buil
 
 ---
 
-## Run Commands on the Backend
+## Run Commands locally with the service variables available
 
-To run commands on your backend, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
+To run commands with your service variables available, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 
-For example, you can run commands on the backend to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.mdx).
+For example, you can run commands to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.mdx).
 
 ### Create Admin User
 
