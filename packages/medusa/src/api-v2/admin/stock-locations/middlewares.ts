@@ -2,6 +2,7 @@ import * as QueryConfig from "./query-config"
 
 import {
   AdminGetStockLocationsLocationParams,
+  AdminGetStockLocationsParams,
   AdminPostStockLocationsLocationParams,
   AdminPostStockLocationsLocationReq,
   AdminPostStockLocationsParams,
@@ -10,6 +11,7 @@ import {
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
+import { applySalesChannelsFilter } from "./utils/apply-sales-channel-filter"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
@@ -27,6 +29,17 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostStockLocationsParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/stock-locations",
+    middlewares: [
+      transformQuery(
+        AdminGetStockLocationsParams,
+        QueryConfig.listTransformQueryConfig
+      ),
+      applySalesChannelsFilter(),
     ],
   },
   {

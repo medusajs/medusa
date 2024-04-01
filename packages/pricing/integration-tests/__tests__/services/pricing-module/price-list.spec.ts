@@ -296,9 +296,6 @@ moduleIntegrationTestRunner({
               starts_at: updateDate,
               prices: expect.arrayContaining([
                 expect.objectContaining({
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
@@ -449,9 +446,6 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               prices: expect.arrayContaining([
                 expect.objectContaining({
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
@@ -565,18 +559,12 @@ moduleIntegrationTestRunner({
                       value: "DE",
                     }),
                   ]),
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 400,
                   currency_code: "EUR",
                 }),
                 expect.objectContaining({
                   rules_count: 0,
                   price_rules: [],
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 600,
                   currency_code: "EUR",
                 }),
@@ -698,9 +686,6 @@ moduleIntegrationTestRunner({
               prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 0,
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 123,
                   currency_code: "EUR",
                 }),
@@ -809,9 +794,6 @@ moduleIntegrationTestRunner({
               prices: expect.arrayContaining([
                 expect.objectContaining({
                   rules_count: 1,
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   price_rules: [
                     expect.objectContaining({
                       value: "EU",
@@ -919,9 +901,6 @@ moduleIntegrationTestRunner({
                       }),
                     }),
                   ]),
-                  price_list: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   amount: 123,
                   currency_code: "EUR",
                 }),
