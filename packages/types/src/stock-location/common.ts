@@ -447,4 +447,10 @@ export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
   id: string
 }
 
+/**
+ * @interface
+ *
+ * A stock location to create or update. If the `id` property isn't provided,
+ * the stock location is created. In that case, the `name` property is required.
+ */
 export type UpsertStockLocationInput = Partial<UpdateStockLocationNextInput>
