@@ -1108,7 +1108,7 @@ export default class ProductModuleService<
     const productData = await this.productService_.upsertWithReplace(
       normalizedInput,
       {
-        relations: ["type", "collection", "images", "tags", "categories"],
+        relations: ["images", "tags", "categories"],
       },
       sharedContext
     )
@@ -1164,7 +1164,7 @@ export default class ProductModuleService<
     const productData = await this.productService_.upsertWithReplace(
       normalizedInput,
       {
-        relations: ["type", "collection", "images", "tags", "categories"],
+        relations: ["images", "tags", "categories"],
       },
       sharedContext
     )
@@ -1349,6 +1349,10 @@ export default class ProductModuleService<
           }
         }
       )
+
+      if (!variantOptions.length) {
+        return variant
+      }
 
       return {
         ...variant,
