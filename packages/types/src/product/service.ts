@@ -40,7 +40,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
 /**
- * The main service interface for the product module.
+ * The main service interface for the Product Module.
  */
 export interface IProductModuleService extends IModuleService {
   /**
@@ -57,35 +57,19 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProduct (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.retrieve(id)
-   *
-   *   // do something with the product or return it
-   * }
+   * const product =
+   *   await productModuleService.retrieve("prod_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProduct (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.retrieve(id, {
-   *     relations: ["categories"]
-   *   })
-   *
-   *   // do something with the product or return it
-   * }
+   * const product = await productModuleService.retrieve(
+   *   "prod_123",
+   *   {
+   *     relations: ["categories"],
+   *   }
+   * )
    * ```
    */
   retrieve(
@@ -108,90 +92,37 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of products using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.list({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
+   * const products = await productModuleService.list({
+   *   id: ["prod_123", "prod_321"],
+   * })
    * ```
    *
    * To specify relations that should be retrieved within the products:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.list({
-   *     id: ids
-   *   }, {
-   *     relations: ["categories"]
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
+   * const products = await productModuleService.list(
+   *   {
+   *     id: ["prod_123", "prod_321"],
+   *   },
+   *   {
+   *     relations: ["categories"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.list({
-   *     id: ids
-   *   }, {
+   * const products = await productModuleService.list(
+   *   {
+   *     id: ["prod_123", "prod_321"],
+   *   },
+   *   {
    *     relations: ["categories"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.list({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         q: title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["categories"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
   list(
@@ -214,90 +145,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of products using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [products, count] = await productModule.listAndCount({
-   *     id: ids
+   * const [products, count] =
+   *   await productModuleService.listAndCount({
+   *     id: ["prod_123", "prod_321"],
    *   })
-   *
-   *   // do something with the products or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the products:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [products, count] = await productModule.listAndCount({
-   *     id: ids
-   *   }, {
-   *     relations: ["categories"]
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
+   * const [products, count] =
+   *   await productModuleService.listAndCount(
+   *     {
+   *       id: ["prod_123", "prod_321"],
+   *     },
+   *     {
+   *       relations: ["categories"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [products, count] = await productModule.listAndCount({
-   *     id: ids
-   *   }, {
-   *     relations: ["categories"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProducts (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [products, count] = await productModule.listAndCount({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         q: title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["categories"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the products or return them
-   * }
+   * const [products, count] =
+   *   await productModuleService.listAndCount(
+   *     {
+   *       id: ["prod_123", "prod_321"],
+   *     },
+   *     {
+   *       relations: ["categories"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCount(
@@ -314,21 +195,15 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO[]>} The list of created products.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.create([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the products or return them
-   * }
+   * const products = await productModuleService.create([
+   *   {
+   *     title: "Shirt",
+   *   },
+   *   {
+   *     title: "Pants",
+   *     handle: "pants",
+   *   },
+   * ])
    */
   create(
     data: CreateProductDTO[],
@@ -343,47 +218,29 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO>} The created product.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.create(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
+   * const product = await productModuleService.create({
+   *   title: "Shirt",
+   * })
    */
   create(data: CreateProductDTO, sharedContext?: Context): Promise<ProductDTO>
 
   /**
    * This method updates existing products, or creates new ones if they don't exist.
    *
-   * @param {CreateProductDTO[]} data - The attributes to update or create for each product.
+   * @param {UpsertProductDTO[]} data - The attributes to update or create for each product.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductDTO[]>} The updated and created products.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upserProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdProducts = await productModule.upsert([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the products or return them
-   * }
+   * const products = await productModuleService.upsert([
+   *   {
+   *     id: "prod_123",
+   *     handle: "pant",
+   *   },
+   *   {
+   *     title: "Shirt",
+   *   },
+   * ])
    */
   upsert(
     data: UpsertProductDTO[],
@@ -393,26 +250,14 @@ export interface IProductModuleService extends IModuleService {
   /**
    * This method updates the product if it exists, or creates a new ones if it doesn't.
    *
-   * @param {CreateProductDTO} data - The attributes to update or create for the new product.
+   * @param {UpsertProductDTO} data - The attributes to update or create for the new product.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductDTO>} The updated or created product.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upserProduct (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdProduct = await productModule.upsert(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
+   * const product = await productModuleService.upsert({
+   *   title: "Shirt",
+   * })
    */
   upsert(
     data: UpsertProductDTO[],
@@ -428,20 +273,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductDTO>} The updated product.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateProduct (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const product = await productModule.update(id, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product or return it
-   * }
+   * const product = await productModuleService.update(
+   *   "prod_123",
+   *   {
+   *     handle: "pant",
+   *   }
+   * )
    */
   update(
     id: string,
@@ -450,28 +287,22 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductDTO>
 
   /**
-   * This method is used to update a list of products determined by the selector filters.
+   * This method is used to update a list of products matching the specified filters.
    *
-   * @param {FilterableProductProps} selector - The filters that will determine which products will be updated.
+   * @param {FilterableProductProps} selector - The filters specifying which products to update.
    * @param {UpdateProductDTO} data - The attributes to be updated on the selected products
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductDTO[]>} The updated products.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateProduct (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const products = await productModule.update({id}, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the products or return them
-   * }
+   * const products = await productModuleService.update(
+   *   {
+   *     title: "Pant",
+   *   },
+   *   {
+   *     handle: "pant",
+   *   }
+   * )
    */
   update(
     selector: FilterableProductProps,
@@ -487,15 +318,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the products are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.delete(ids)
-   * }
+   * await productModuleService.delete(["prod_123", "prod_321"])
    */
   delete(productIds: string[], sharedContext?: Context): Promise<void>
 
@@ -515,17 +338,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDelete(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.softDelete([
+   *   "prod_123",
+   *   "prod_321",
+   * ])
    */
   softDelete<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
@@ -547,19 +363,7 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restore(ids, {
-   *     returnLinkableKeys: ["variant_id"]
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.restore(["prod_123", "prod_321"])
    */
   restore<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
@@ -581,35 +385,18 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product tag by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagId: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTag = await productModule.retrieveTag(tagId)
-   *
-   *   // do something with the product tag or return it
-   * }
+   * const tag = await productModuleService.retrieveTag("ptag_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagId: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTag = await productModule.retrieveTag(tagId, {
-   *     relations: ["products"]
-   *   })
-   *
-   *   // do something with the product tag or return it
-   * }
+   * const tag = await productModuleService.retrieveTag(
+   *   "ptag_123",
+   *   {
+   *     relations: ["products"],
+   *   }
+   * )
    * ```
    */
   retrieveTag(
@@ -632,90 +419,37 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product tags using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTags = await productModule.listTags({
-   *     id: tagIds
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
+   * const tags = await productModuleService.listTags({
+   *   id: ["ptag_123", "ptag_321"],
+   * })
    * ```
    *
    * To specify relations that should be retrieved within the product tags:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTags = await productModule.listTags({
-   *     id: tagIds
-   *   }, {
-   *     relations: ["products"]
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
+   * const tags = await productModuleService.listTags(
+   *   {
+   *     id: ["ptag_123", "ptag_321"],
+   *   },
+   *   {
+   *     relations: ["products"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTags = await productModule.listTags({
-   *     id: tagIds
-   *   }, {
+   * const tags = await productModuleService.listTags(
+   *   {
+   *     id: ["ptag_123", "ptag_321"],
+   *   },
+   *   {
    *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[], value: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTags = await productModule.listTags({
-   *     $and: [
-   *       {
-   *         id: tagIds
-   *       },
-   *       {
-   *         value
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
   listTags(
@@ -738,90 +472,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product tags using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTags, count] = await productModule.listAndCountTags({
-   *     id: tagIds
+   * const [tags, count] =
+   *   await productModuleService.listAndCountTags({
+   *     id: ["ptag_123", "ptag_321"],
    *   })
-   *
-   *   // do something with the product tags or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product tags:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTags, count] = await productModule.listAndCountTags({
-   *     id: tagIds
-   *   }, {
-   *     relations: ["products"]
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
+   * const [tags, count] =
+   *   await productModuleService.listAndCountTags(
+   *     {
+   *       id: ["ptag_123", "ptag_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTags, count] = await productModule.listAndCountTags({
-   *     id: tagIds
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTag (tagIds: string[], value: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTags, count] = await productModule.listAndCountTags({
-   *     $and: [
-   *       {
-   *         id: tagIds
-   *       },
-   *       {
-   *         value
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product tags or return them
-   * }
+   * const [tags, count] =
+   *   await productModuleService.listAndCountTags(
+   *     {
+   *       id: ["ptag_123", "ptag_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountTags(
@@ -838,21 +522,14 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTagDTO[]>} The list of product tags.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProductTags (values: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTags = await productModule.createTags(
-   *     values.map((value) => ({
-   *       value
-   *     }))
-   *   )
-   *
-   *   // do something with the product tags or return them
-   * }
+   * const tags = await productModuleService.createTags([
+   *   {
+   *     value: "Clothes",
+   *   },
+   *   {
+   *     value: "Accessories",
+   *   },
+   * ])
    */
   createTags(
     data: CreateProductTagDTO[],
@@ -867,22 +544,19 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTagDTO[]>} The list of updated product tags.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
+   * const productTags = await productModule.updateTags([
+   *   {
+   *     id,
+   *     value
+   *   }
+   * ])
    *
-   * async function updateProductTag (id: string, value: string) {
-   *   const productModule = await initializeProductModule()
+   * @ignore
    *
-   *   const productTags = await productModule.updateTags([
-   *     {
-   *       id,
-   *       value
-   *     }
-   *   ])
-   *
-   *   // do something with the product tags or return them
-   * }
+   * @privateRemarks
+   * This method needs an update as it doesn't allow passing an ID of the tag to update
+   * So, for now, we've added the `@\ignore` tag to not show it in the generated docs.
+   * Once fixed, the `@\ignore` tag (and this comment) can be removed safely.
    */
   updateTags(
     data: UpdateProductTagDTO[],
@@ -897,16 +571,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product tags are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProductTags (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteTags(ids)
-   *
-   * }
+   * await productModuleService.deleteTags([
+   *   "ptag_123",
+   *   "ptag_321",
+   * ])
    */
   deleteTags(productTagIds: string[], sharedContext?: Context): Promise<void>
 
@@ -921,39 +589,8 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The retrieved product type.
    *
    * @example
-   * A simple example that retrieves a product type by its ID:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductType (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productType = await productModule.retrieveType(id)
-   *
-   *   // do something with the product type or return it
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductType (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productType = await productModule.retrieveType(id, {
-   *     select: ["value"]
-   *   })
-   *
-   *   // do something with the product type or return it
-   * }
-   * ```
+   * const productType =
+   *   await productModuleService.retrieveType("ptyp_123")
    */
   retrieveType(
     typeId: string,
@@ -975,90 +612,23 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product types using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTypes = await productModule.listTypes({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved within the product types:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTypes = await productModule.listTypes({
-   *     id: ids
-   *   }, {
-   *     select: ["value"]
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
+   * const productTypes = await productModuleService.listTypes({
+   *   id: ["ptyp_123", "ptyp_321"],
+   * })
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTypes = await productModule.listTypes({
-   *     id: ids
-   *   }, {
-   *     select: ["value"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[], value: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTypes = await productModule.listTypes({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         value
-   *       }
-   *     ]
-   *   }, {
-   *     select: ["value"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
+   * const productTypes = await productModuleService.listTypes(
+   *   {
+   *     id: ["ptyp_123", "ptyp_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
   listTypes(
@@ -1081,90 +651,25 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product types using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTypes, count] = await productModule.listAndCountTypes({
-   *     id: ids
+   * const [productTypes, count] =
+   *   await productModuleService.listAndCountTypes({
+   *     id: ["ptyp_123", "ptyp_321"],
    *   })
-   *
-   *   // do something with the product types or return them
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved within the product types:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTypes, count] = await productModule.listAndCountTypes({
-   *     id: ids
-   *   }, {
-   *     select: ["value"]
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTypes, count] = await productModule.listAndCountTypes({
-   *     id: ids
-   *   }, {
-   *     select: ["value"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductTypes (ids: string[], value: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productTypes, count] = await productModule.listAndCountTypes({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         value
-   *       }
-   *     ]
-   *   }, {
-   *     select: ["value"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product types or return them
-   * }
+   * const [productTypes, count] =
+   *   await productModuleService.listAndCountTypes(
+   *     {
+   *       id: ["ptyp_123", "ptyp_321"],
+   *     },
+   *     {
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountTypes(
@@ -1181,21 +686,11 @@ export interface IProductModuleService extends IModuleService {
    * @return {Promise<ProductTypeDTO[]>} The list of created product types.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createProductType (value: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productTypes = await productModule.createTypes([
-   *     {
-   *       value
-   *     }
-   *   ])
-   *
-   *   // do something with the product types or return them
-   * }
+   * const productTypes = await productModuleService.createTypes([
+   *   {
+   *     value: "digital",
+   *   },
+   * ])
    */
   createTypes(
     data: CreateProductTypeDTO[],
@@ -1210,21 +705,9 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The created product type.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createType (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const type = await productModule.createTypes(
-   *     {
-   *       value
-   *     }
-   *   )
-   *
-   *   // do something with the product type or return them
-   * }
+   * const productType = await productModuleService.createTypes({
+   *   value: "digital",
+   * })
    *
    */
   createTypes(
@@ -1240,21 +723,17 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO[]>} The updated and created types.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertTypes (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdTypes = await productModule.upsertTypes([
-   *     {
-   *       value
-   *     }
-   *   ])
-   *
-   *   // do something with the types or return them
-   * }
+   * const productTypes = await productModuleService.upsertTypes([
+   *   {
+   *     id: "ptyp_123",
+   *     metadata: {
+   *       test: true,
+   *     },
+   *   },
+   *   {
+   *     value: "Digital",
+   *   },
+   * ])
    */
   upsertTypes(
     data: UpsertProductTypeDTO[],
@@ -1269,21 +748,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The updated or created type.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertType (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdType = await productModule.upsertTypes(
-   *     {
-   *       value
-   *     }
-   *   )
-   *
-   *   // do something with the type or return it
-   * }
+   * const productType = await productModuleService.upsertTypes({
+   *   id: "ptyp_123",
+   *   metadata: {
+   *     test: true,
+   *   },
+   * })
    */
   upsertTypes(
     data: UpsertProductTypeDTO,
@@ -1299,20 +769,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductTypeDTO>} The updated type.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateType (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const type = await productModule.updateTypes(id, {
-   *       value
-   *     }
-   *   )
-   *
-   *   // do something with the type or return it
-   * }
+   * const productType = await productModuleService.updateTypes(
+   *   "ptyp_123",
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
    */
   updateTypes(
     id: string,
@@ -1321,28 +783,22 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductTypeDTO>
 
   /**
-   * This method is used to update a list of types determined by the selector filters.
+   * This method is used to update a list of types matching the specified filters.
    *
-   * @param {FilterableProductTypeProps} selector - The filters that will determine which types will be updated.
+   * @param {FilterableProductTypeProps} selector - The filters specifying which types to update.
    * @param {UpdateProductTypeDTO} data - The attributes to be updated on the selected types
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductTypeDTO[]>} The updated types.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateTypes(ids: string[], title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const types = await productModule.updateTypes({id: ids}, {
-   *       value
-   *     }
-   *   )
-   *
-   *   // do something with the types or return them
-   * }
+   * const productTypes = await productModuleService.updateTypes(
+   *   {
+   *     id: ["ptyp_123", "ptyp_321"],
+   *   },
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
    */
   updateTypes(
     selector: FilterableProductTypeProps,
@@ -1358,15 +814,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product types are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProductTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteTypes(ids)
-   * }
+   * await productModuleService.deleteTypes([
+   *   "ptyp_123",
+   *   "ptyp_321",
+   * ])
    */
   deleteTypes(productTypeIds: string[], sharedContext?: Context): Promise<void>
 
@@ -1386,17 +837,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDeleteTypes(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.softDeleteTypes([
+   *   "ptyp_123",
+   *   "ptyp_321",
+   * ])
    */
   softDeleteTypes<TReturnableLinkableKeys extends string = string>(
     typeIds: string[],
@@ -1418,19 +862,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreTypes (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restoreTypes(ids, {
-   *     returnLinkableKeys: []
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.restoreTypes([
+   *   "ptyp_123",
+   *   "ptyp_321",
+   * ])
    */
   restoreTypes<TReturnableLinkableKeys extends string = string>(
     typeIds: string[],
@@ -1452,35 +887,19 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product option by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOption (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOption = await productModule.retrieveOption(id)
-   *
-   *   // do something with the product option or return it
-   * }
+   * const option =
+   *   await productModuleService.retrieveOption("opt_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOption (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOption = await productModule.retrieveOption(id, {
-   *     relations: ["product"]
-   *   })
-   *
-   *   // do something with the product option or return it
-   * }
+   * const option = await productModuleService.retrieveOption(
+   *   "opt_123",
+   *   {
+   *     relations: ["product"],
+   *   }
+   * )
    * ```
    */
   retrieveOption(
@@ -1503,91 +922,39 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product options using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOptions = await productModule.listOptions({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
+   * const options = await productModuleService.listOptions({
+    id: ["opt_123", "opt_321"],
+   * })
    * ```
    *
-   * To specify relations that should be retrieved within the product types:
+   * To specify relations that should be retrieved within the product options:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOptions = await productModule.listOptions({
-   *     id: ids
-   *   }, {
-   *     relations: ["product"]
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
+   * const options = await productModuleService.listOptions(
+   *   {
+   *     id: ["opt_123", "opt_321"],
+   *   },
+   *   {
+   *     relations: ["product"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOptions = await productModule.listOptions({
-   *     id: ids
-   *   }, {
+   * const options = await productModuleService.listOptions(
+   *   {
+   *     id: ["opt_123", "opt_321"],
+   *   },
+   *   {
    *     relations: ["product"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const productOptions = await productModule.listOptions({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["product"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
-   * ```
    */
   listOptions(
     filters?: FilterableProductOptionProps,
@@ -1609,90 +976,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product options using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productOptions, count] = await productModule.listAndCountOptions({
-   *     id: ids
+   * const [options, count] =
+   *   await productModuleService.listAndCountOptions({
+   *     id: ["opt_123", "opt_321"],
    *   })
-   *
-   *   // do something with the product options or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product types:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productOptions, count] = await productModule.listAndCountOptions({
-   *     id: ids
-   *   }, {
-   *     relations: ["product"]
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
+   * const [options, count] =
+   *   await productModuleService.listAndCountOptions(
+   *     {
+   *       id: ["opt_123", "opt_321"],
+   *     },
+   *     {
+   *       relations: ["product"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productOptions, count] = await productModule.listAndCountOptions({
-   *     id: ids
-   *   }, {
-   *     relations: ["product"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductOptions (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [productOptions, count] = await productModule.listAndCountOptions({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["product"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product options or return them
-   * }
+   * const [options, count] =
+   *   await productModuleService.listAndCountOptions(
+   *     {
+   *       id: ["opt_123", "opt_321"],
+   *     },
+   *     {
+   *       relations: ["product"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountOptions(
@@ -1709,21 +1026,18 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO[]>} The list of created product options.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createOptions (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const options = await productModule.createOptions([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the product options or return them
-   * }
+   * const options = await productModuleService.createOptions([
+   *   {
+   *     title: "Color",
+   *     values: ["Blue", "Green"],
+   *     product_id: "prod_123",
+   *   },
+   *   {
+   *     title: "Size",
+   *     values: ["Small", "Medium"],
+   *     product_id: "prod_321",
+   *   },
+   * ])
    *
    */
   createOptions(
@@ -1739,21 +1053,11 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The created product option.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createOption (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const option = await productModule.createOptions(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product option or return them
-   * }
+   * const option = await productModuleService.createOptions({
+   *   title: "Color",
+   *   values: ["Blue", "Green"],
+   *   product_id: "prod_123",
+   * })
    *
    */
   createOptions(
@@ -1769,21 +1073,17 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO[]>} The updated and created options.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertOptions (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdOptions = await productModule.upsertOptions([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the options or return them
-   * }
+   * const options = await productModuleService.upsertOptions([
+   *   {
+   *     id: "opt_123",
+   *     title: "Color",
+   *   },
+   *   {
+   *     title: "Color",
+   *     values: ["Blue", "Green"],
+   *     product_id: "prod_123",
+   *   },
+   * ])
    */
   upsertOptions(
     data: UpsertProductOptionDTO[],
@@ -1798,21 +1098,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The updated or created option.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertOption (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdOption = await productModule.upsertOptions(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the option or return it
-   * }
+   * const option = await productModuleService.upsertOptions({
+   *   id: "opt_123",
+   *   title: "Color",
+   * })
    */
   upsertOptions(
     data: UpsertProductOptionDTO,
@@ -1828,20 +1117,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductOptionDTO>} The updated option.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateOption (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const option = await productModule.updateOptions(id, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the option or return it
-   * }
+   * const option = await productModuleService.updateOptions(
+   *   "opt_123",
+   *   {
+   *     title: "Color",
+   *   }
+   * )
    */
   updateOptions(
     id: string,
@@ -1850,28 +1131,22 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductOptionDTO>
 
   /**
-   * This method is used to update a list of options determined by the selector filters.
+   * This method is used to update a list of options matching the specified filters.
    *
-   * @param {FilterableProductOptionProps} selector - The filters that will determine which options will be updated.
+   * @param {FilterableProductOptionProps} selector - The filters specifying which options to update.
    * @param {UpdateProductOptionDTO} data - The attributes to be updated on the selected options
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductOptionDTO[]>} The updated options.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateOptions(ids: string[], title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const options = await productModule.updateOptions({id: ids}, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the options or return them
-   * }
+   * const options = await productModuleService.updateOptions(
+   *   {
+   *     title: "Color",
+   *   },
+   *   {
+   *     values: ["Blue", "Green"],
+   *   }
+   * )
    */
   updateOptions(
     selector: FilterableProductOptionProps,
@@ -1887,15 +1162,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProductOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteOptions(ids)
-   * }
+   * await productModuleService.deleteOptions([
+   *   "opt_123",
+   *   "opt_321",
+   * ])
    */
   deleteOptions(
     productOptionIds: string[],
@@ -1918,17 +1188,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDeleteOptions(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.softDeleteOptions([
+   *   "opt_123",
+   *   "opt_321",
+   * ])
    */
   softDeleteOptions<TReturnableLinkableKeys extends string = string>(
     optionIds: string[],
@@ -1950,19 +1213,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreOptions (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restoreOptions(ids, {
-   *     returnLinkableKeys: ["option_value_id"]
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.restoreOptions([
+   *   "opt_123",
+   *   "opt_321",
+   * ])
    */
   restoreOptions<TReturnableLinkableKeys extends string = string>(
     optionIds: string[],
@@ -1984,35 +1238,19 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product variant by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariant (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variant = await productModule.retrieveVariant(id)
-   *
-   *   // do something with the product variant or return it
-   * }
+   * const variant =
+   *   await productModuleService.retrieveVariant("variant_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariant (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variant = await productModule.retrieveVariant(id, {
-   *     relations: ["options"]
-   *   })
-   *
-   *   // do something with the product variant or return it
-   * }
+   * const variant = await productModuleService.retrieveVariant(
+   *   "variant_123",
+   *   {
+   *     relations: ["options"],
+   *   }
+   * )
    * ```
    */
   retrieveVariant(
@@ -2035,90 +1273,37 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product variants using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.listVariants({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
+   * const variants = await productModuleService.listVariants({
+   *   id: ["variant_123", "variant_321"],
+   * })
    * ```
    *
    * To specify relations that should be retrieved within the product variants:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.listVariants({
-   *     id: ids
-   *   }, {
-   *     relations: ["options"]
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
+   * const variants = await productModuleService.listVariants(
+   *   {
+   *     id: ["variant_123", "variant_321"],
+   *   },
+   *   {
+   *     relations: ["options"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.listVariants({
-   *     id: ids
-   *   }, {
+   * const variants = await productModuleService.listVariants(
+   *   {
+   *     id: ["variant_123", "variant_321"],
+   *   },
+   *   {
    *     relations: ["options"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[], sku: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.listVariants({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         sku
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["options"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
   listVariants(
@@ -2141,90 +1326,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product variants using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [variants, count] = await productModule.listAndCountVariants({
-   *     id: ids
+   * const [variants, count] =
+   *   await productModuleService.listAndCountVariants({
+   *     id: ["variant_123", "variant_321"],
    *   })
-   *
-   *   // do something with the product variants or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product variants:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [variants, count] = await productModule.listAndCountVariants({
-   *     id: ids
-   *   }, {
-   *     relations: ["options"]
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
+   * const [variants, count] =
+   *   await productModuleService.listAndCountVariants(
+   *     {
+   *       id: ["variant_123", "variant_321"],
+   *     },
+   *     {
+   *       relations: ["options"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [variants, count] = await productModule.listAndCountVariants({
-   *     id: ids
-   *   }, {
-   *     relations: ["options"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveProductVariants (ids: string[], sku: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [variants, count] = await productModule.listAndCountVariants({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         sku
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["options"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product variants or return them
-   * }
+   * const [variants, count] =
+   *   await productModuleService.listAndCountVariants(
+   *     {
+   *       id: ["variant_123", "variant_321"],
+   *     },
+   *     {
+   *       relations: ["options"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountVariants(
@@ -2241,21 +1376,22 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO[]>} The list of created product variants.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createVariants (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.createVariants([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the product variants or return them
-   * }
+   * const variants = await productModuleService.createVariants([
+   *   {
+   *     title: "Blue Shirt",
+   *     product_id: "prod_123",
+   *     options: {
+   *       Color: "Blue",
+   *     },
+   *   },
+   *   {
+   *     title: "Green Shirt",
+   *     product_id: "prod_321",
+   *     options: {
+   *       Color: "Green",
+   *     },
+   *   },
+   * ])
    *
    */
   createVariants(
@@ -2271,21 +1407,13 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The created product variant.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createVariant (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variant = await productModule.createVariants(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product variant or return them
-   * }
+   * const variant = await productModuleService.createVariants({
+   *   title: "Blue Shirt",
+   *   product_id: "prod_123",
+   *   options: {
+   *     Color: "Blue",
+   *   },
+   * })
    *
    */
   createVariants(
@@ -2301,21 +1429,18 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO[]>} The updated and created variants.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertVariants (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdVariants = await productModule.upsertVariants([
-   *     {
-   *       title
-   *     }
-   *   ])
-   *
-   *   // do something with the variants or return them
-   * }
+   * const variants = await productModuleService.upsertVariants([
+   *   {
+   *     id: "variant_123",
+   *     title: "Green Shirt",
+   *   },
+   *   {
+   *     title: "Blue Shirt",
+   *     options: {
+   *       Color: "Blue",
+   *     },
+   *   },
+   * ])
    */
   upsertVariants(
     data: UpsertProductVariantDTO[],
@@ -2330,21 +1455,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The updated or created variant.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertVariant (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdVariant = await productModule.upsertVariants(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the variant or return it
-   * }
+   * const variant = await productModuleService.upsertVariants({
+   *   id: "variant_123",
+   *   title: "Green Shirt",
+   * })
    */
   upsertVariants(
     data: UpsertProductVariantDTO,
@@ -2360,20 +1474,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductVariantDTO>} The updated variant.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateVariant (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variant = await productModule.updateVariants(id, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the variant or return it
-   * }
+   * const variant = await productModuleService.updateVariants(
+   *   "variant_123",
+   *   {
+   *     title: "Blue Shirt",
+   *   }
+   * )
    */
   updateVariants(
     id: string,
@@ -2382,28 +1488,22 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductVariantDTO>
 
   /**
-   * This method is used to update a list of variants determined by the selector filters.
+   * This method is used to update a list of variants matching the specified filters.
    *
-   * @param {FilterableProductVariantProps} selector - The filters that will determine which variants will be updated.
+   * @param {FilterableProductVariantProps} selector - The filters specifying which variants to update.
    * @param {UpdateProductVariantDTO} data - The attributes to be updated on the selected variants
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductVariantDTO[]>} The updated variants.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateVariants(ids: string[], title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const variants = await productModule.updateVariants({id: ids}, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the variants or return them
-   * }
+   * const variants = await productModuleService.updateVariants(
+   *   {
+   *     id: ["variant_123", "variant_321"],
+   *   },
+   *   {
+   *     title: "Blue Shirt",
+   *   }
+   * )
    */
   updateVariants(
     selector: FilterableProductVariantProps,
@@ -2419,15 +1519,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProducts (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteVariants(ids)
-   * }
+   * await productModuleService.deleteVariants([
+   *   "variant_123",
+   *   "variant_321",
+   * ])
    */
   deleteVariants(
     productVariantIds: string[],
@@ -2450,17 +1545,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteProductVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDeleteVariants(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.softDeleteVariants([
+   *   "variant_123",
+   *   "variant_321",
+   * ])
    */
   softDeleteVariants<TReturnableLinkableKeys extends string = string>(
     variantIds: string[],
@@ -2482,19 +1570,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreVariants (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restoreVariants(ids, {
-   *     returnLinkableKeys: ["option_value_id"]
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.restoreVariants([
+   *   "variant_123",
+   *   "variant_321",
+   * ])
    */
   restoreVariants<TReturnableLinkableKeys extends string = string>(
     variantIds: string[],
@@ -2516,35 +1595,17 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product collection by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollection (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collection = await productModule.retrieveCollection(id)
-   *
-   *   // do something with the product collection or return it
-   * }
+   * const collection =
+   *   await productModuleService.retrieveCollection("pcol_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollection (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collection = await productModule.retrieveCollection(id, {
-   *     relations: ["products"]
+   * const collection =
+   *   await productModuleService.retrieveCollection("pcol_123", {
+   *     relations: ["products"],
    *   })
-   *
-   *   // do something with the product collection or return it
-   * }
    * ```
    */
   retrieveCollection(
@@ -2567,90 +1628,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product collections using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.listCollections({
-   *     id: ids
+   * const collections =
+   *   await productModuleService.listCollections({
+   *     id: ["pcol_123", "pcol_321"],
    *   })
-   *
-   *   // do something with the product collections or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product collections:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.listCollections({
-   *     id: ids
-   *   }, {
-   *     relations: ["products"]
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
+   * const collections =
+   *   await productModuleService.listCollections(
+   *     {
+   *       id: ["pcol_123", "pcol_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.listCollections({
-   *     id: ids
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.listCollections({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
+   * const collections =
+   *   await productModuleService.listCollections(
+   *     {
+   *       id: ["pcol_123", "pcol_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listCollections(
@@ -2673,90 +1684,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product collections using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [collections, count] = await productModule.listAndCountCollections({
-   *     id: ids
+   * const [collections, count] =
+   *   await productModuleService.listAndCountCollections({
+   *     id: ["pcol_123", "pcol_321"],
    *   })
-   *
-   *   // do something with the product collections or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product collections:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [collections, count] = await productModule.listAndCountCollections({
-   *     id: ids
-   *   }, {
-   *     relations: ["products"]
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
+   * const [collections, count] =
+   *   await productModuleService.listAndCountCollections(
+   *     {
+   *       id: ["pcol_123", "pcol_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [collections, count] = await productModule.listAndCountCollections({
-   *     id: ids
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCollections (ids: string[], title: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [collections, count] = await productModule.listAndCountCollections({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         title
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["products"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product collections or return them
-   * }
+   * const [collections, count] =
+   *   await productModuleService.listAndCountCollections(
+   *     {
+   *       id: ["pcol_123", "pcol_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountCollections(
@@ -2773,21 +1734,15 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCollectionDTO[]>} The list of created product collections.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createCollections (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.createCollections([
+   * const collections =
+   *   await productModuleService.createCollections([
    *     {
-   *       title
-   *     }
+   *       title: "Summer Collection",
+   *     },
+   *     {
+   *       title: "Winter Collection",
+   *     },
    *   ])
-   *
-   *   // do something with the product collections or return them
-   * }
    *
    */
   createCollections(
@@ -2803,21 +1758,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCollectionDTO>} The created product collection.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createCollection (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collection = await productModule.createCollections(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the product collection or return them
-   * }
+   * const collection =
+   *   await productModuleService.createCollections({
+   *     title: "Summer Collection",
+   *   })
    *
    */
   createCollections(
@@ -2833,21 +1777,16 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCollectionDTO[]>} The updated and created collections.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertCollections (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdCollections = await productModule.upsertCollections([
+   * const collections =
+   *   await productModuleService.upsertCollections([
    *     {
-   *       title
-   *     }
+   *       id: "pcol_123",
+   *       title: "Winter Collection",
+   *     },
+   *     {
+   *       title: "Summer Collection",
+   *     },
    *   ])
-   *
-   *   // do something with the collections or return them
-   * }
    */
   upsertCollections(
     data: UpsertProductCollectionDTO[],
@@ -2862,21 +1801,11 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCollectionDTO>} The updated or created collection.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function upsertCollection (title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const createdCollection = await productModule.upsertCollection(
-   *     {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the collection or return it
-   * }
+   * const collection =
+   *   await productModuleService.upsertCollections({
+   *     id: "pcol_123",
+   *     title: "Winter Collection",
+   *   })
    */
   upsertCollections(
     data: UpsertProductCollectionDTO,
@@ -2892,20 +1821,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCollectionDTO>} The updated collection.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateCollection (id: string, title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collection = await productModule.updateCollections(id, {
-   *       title
-   *     }
-   *   )
-   *
-   *   // do something with the collection or return it
-   * }
+   * const collection =
+   *   await productModuleService.updateCollections("pcol_123", {
+   *     title: "Summer Collection",
+   *   })
    */
   updateCollections(
     id: string,
@@ -2914,28 +1833,23 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductCollectionDTO>
 
   /**
-   * This method is used to update a list of collections determined by the selector filters.
+   * This method is used to update a list of collections matching the specified filters.
    *
-   * @param {FilterableProductCollectionProps} selector - The filters that will determine which collections will be updated.
+   * @param {FilterableProductCollectionProps} selector - The filters specifying which collections to update.
    * @param {UpdateProductCollectionDTO} data - The attributes to be updated on the selected collections
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductCollectionDTO[]>} The updated collections.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateCollections(ids: string[], title: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const collections = await productModule.updateCollections({id: ids}, {
-   *       title
+   * const collections =
+   *   await productModuleService.updateCollections(
+   *     {
+   *       id: ["pcol_123", "pcol_321"],
+   *     },
+   *     {
+   *       title: "Summer Collection",
    *     }
    *   )
-   *
-   *   // do something with the collections or return them
-   * }
    */
   updateCollections(
     selector: FilterableProductCollectionProps,
@@ -2951,15 +1865,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteCollection (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteCollections(ids)
-   * }
+   * await productModuleService.deleteCollections([
+   *   "pcol_123",
+   *   "pcol_321",
+   * ])
    *
    */
   deleteCollections(
@@ -2983,17 +1892,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.softDeleteCollections(ids)
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.softDeleteCollections([
+   *   "pcol_123",
+   *   "pcol_321",
+   * ])
    */
   softDeleteCollections<TReturnableLinkableKeys extends string = string>(
     collectionIds: string[],
@@ -3015,19 +1917,10 @@ export interface IProductModuleService extends IModuleService {
    * If there are no related records that were restored, the promise resolved to `void`.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function restoreCollections (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const cascadedEntities = await productModule.restoreCollections(ids, {
-   *     returnLinkableKeys: []
-   *   })
-   *
-   *   // do something with the returned cascaded entity IDs or return them
-   * }
+   * await productModuleService.restoreCollections([
+   *   "pcol_123",
+   *   "pcol_321",
+   * ])
    */
   restoreCollections<TReturnableLinkableKeys extends string = string>(
     collectionIds: string[],
@@ -3049,35 +1942,19 @@ export interface IProductModuleService extends IModuleService {
    * A simple example that retrieves a product category by its ID:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategory (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const category = await productModule.retrieveCategory(id)
-   *
-   *   // do something with the product category or return it
-   * }
+   * const category =
+   *   await productModuleService.retrieveCategory("pcat_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategory (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const category = await productModule.retrieveCategory(id, {
-   *     relations: ["parent_category"]
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const category = await productModuleService.retrieveCategory(
+   *   "pcat_123",
+   *   {
+   *     relations: ["products"],
+   *   }
+   * )
    * ```
    */
   retrieveCategory(
@@ -3100,90 +1977,37 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product categories using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const categories = await productModule.listCategories({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const categories = await productModuleService.listCategories({
+   *   id: ["pcat_123", "pcat_321"],
+   * })
    * ```
    *
    * To specify relations that should be retrieved within the product categories:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const categories = await productModule.listCategories({
-   *     id: ids
-   *   }, {
-   *     relations: ["parent_category"]
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const categories = await productModuleService.listCategories(
+   *   {
+   *     id: ["pcat_123", "pcat_321"],
+   *   },
+   *   {
+   *     relations: ["products"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const categories = await productModule.listCategories({
-   *     id: ids
-   *   }, {
-   *     relations: ["parent_category"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[], name: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const categories = await productModule.listCategories({
-   *     $or: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         name
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["parent_category"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const categories = await productModuleService.listCategories(
+   *   {
+   *     id: ["pcat_123", "pcat_321"],
+   *   },
+   *   {
+   *     relations: ["products"],
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
   listCategories(
@@ -3206,90 +2030,40 @@ export interface IProductModuleService extends IModuleService {
    * To retrieve a list of product categories using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [categories, count] = await productModule.listAndCountCategories({
-   *     id: ids
+   * const [categories, count] =
+   *   await productModuleService.listAndCountCategories({
+   *     id: ["pcat_123", "pcat_321"],
    *   })
-   *
-   *   // do something with the product category or return it
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the product categories:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[]) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [categories, count] = await productModule.listAndCountCategories({
-   *     id: ids
-   *   }, {
-   *     relations: ["parent_category"]
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const [categories, count] =
+   *   await productModuleService.listAndCountCategories(
+   *     {
+   *       id: ["pcat_123", "pcat_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[], skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [categories, count] = await productModule.listAndCountCategories({
-   *     id: ids
-   *   }, {
-   *     relations: ["parent_category"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
-   * ```
-   *
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function retrieveCategories (ids: string[], name: string, skip: number, take: number) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const [categories, count] = await productModule.listAndCountCategories({
-   *     $or: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         name
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["parent_category"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const [categories, count] =
+   *   await productModuleService.listAndCountCategories(
+   *     {
+   *       id: ["pcat_123", "pcat_321"],
+   *     },
+   *     {
+   *       relations: ["products"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
   listAndCountCategories(
@@ -3306,20 +2080,10 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCategoryDTO>} The created product category.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function createCategory (name: string, parent_category_id: string | null) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const category = await productModule.createCategory({
-   *     name,
-   *     parent_category_id
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const category = await productModuleService.createCategory({
+   *   name: "Shirts",
+   *   parent_category_id: null,
+   * })
    *
    */
   createCategory(
@@ -3336,19 +2100,12 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCategoryDTO>} The updated product category.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function updateCategory (id: string, name: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   const category = await productModule.updateCategory(id, {
-   *     name,
-   *   })
-   *
-   *   // do something with the product category or return it
-   * }
+   * const category = await productModuleService.updateCategory(
+   *   "pcat_123",
+   *   {
+   *     name: "Shirts",
+   *   }
+   * )
    */
   updateCategory(
     categoryId: string,
@@ -3364,15 +2121,7 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the product category is successfully deleted.
    *
    * @example
-   * import {
-   *   initialize as initializeProductModule,
-   * } from "@medusajs/product"
-   *
-   * async function deleteCategory (id: string) {
-   *   const productModule = await initializeProductModule()
-   *
-   *   await productModule.deleteCategory(id)
-   * }
+   * await productModuleService.deleteCategory("pcat_123")
    */
   deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
 }
