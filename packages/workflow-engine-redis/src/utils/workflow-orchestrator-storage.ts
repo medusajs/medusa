@@ -64,6 +64,11 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     )
   }
 
+  async onApplicationShutdown() {
+    await this.queue.close()
+    await this.worker.close(true)
+  }
+
   setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }
@@ -98,22 +103,6 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       throwOnError: false,
     })
   }
-
-  /*private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
-    }
-
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
-    }
-
-    return value
-  }*/
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
@@ -276,7 +265,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id)
+      key.push(step.id, step.attempts + "")
     }
 
     return key.join(":")

@@ -41,12 +41,22 @@ export default class PriceSetRuleType {
   id!: string
 
   @PriceSetRuleTypePriceSetIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceSet, { onDelete: "cascade" })
-  price_set: PriceSet
+  @ManyToOne(() => PriceSet, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "price_set_id",
+    onDelete: "cascade",
+  })
+  price_set_id: string
 
   @PriceSetRuleTypeRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne(() => RuleType, { onDelete: "cascade" })
-  rule_type: RuleType
+  @ManyToOne(() => RuleType, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "rule_type_id",
+    onDelete: "cascade",
+  })
+  rule_type_id: string
 
   @Property({
     onCreate: () => new Date(),

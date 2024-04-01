@@ -4,7 +4,7 @@ import {
   MoneyAmountDTO,
   UpdateMoneyAmountDTO,
 } from "./money-amount"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
+import { PriceDTO } from "./price"
 import { RuleTypeDTO } from "./rule-type"
 
 /**
@@ -74,7 +74,7 @@ export interface PriceListDTO {
    *
    * @expandable
    */
-  price_set_money_amounts?: PriceSetMoneyAmountDTO[]
+  prices?: PriceDTO[]
   /**
    * The associated money amounts.
    *

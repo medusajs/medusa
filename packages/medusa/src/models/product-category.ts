@@ -1,8 +1,4 @@
-import { generateEntityId } from "../utils/generate-entity-id"
-import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Product } from "."
 import {
   BeforeInsert,
   Column,
@@ -11,10 +7,15 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  Relation,
   Tree,
   TreeChildren,
   TreeParent,
 } from "typeorm"
+import { Product } from "."
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Tree("materialized-path")
@@ -53,14 +54,14 @@ export class ProductCategory extends BaseEntity {
 
   @TreeParent()
   @JoinColumn({ name: "parent_category_id" })
-  parent_category: ProductCategory | null
+  parent_category: Relation<ProductCategory> | null
 
   // Typeorm also keeps track of the category's parent at all times.
   @Column()
   parent_category_id: string | null
 
   @TreeChildren({ cascade: true })
-  category_children: ProductCategory[]
+  category_children: Relation<ProductCategory>[]
 
   @Column({ nullable: false, default: 0 })
   rank: number
@@ -80,7 +81,7 @@ export class ProductCategory extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products: Relation<Product>[]
 
   /**
    * @apiIgnore

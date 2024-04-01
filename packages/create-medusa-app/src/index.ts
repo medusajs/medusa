@@ -38,6 +38,16 @@ program
     "Install the Next.js starter along with the Medusa backend",
     false
   )
+  .option(
+    "--verbose",
+    "Show all logs of underlying commands. Useful for debugging.",
+    false
+  )
+  .option(
+    "--v2",
+    "Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.",
+    false
+  )
   .parse()
 
 void create(program.opts())

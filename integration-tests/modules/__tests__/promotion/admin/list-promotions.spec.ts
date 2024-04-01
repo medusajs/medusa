@@ -37,7 +37,7 @@ medusaIntegrationTestRunner({
             application_method: {
               type: "fixed",
               target_type: "order",
-              value: "100",
+              value: 100,
             },
           },
         ])
@@ -69,14 +69,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all promotions and its count filtered", async () => {
-        const [createdPromotion] = await promotionModuleService.create([
+        await promotionModuleService.create([
           {
             code: "TEST",
             type: PromotionType.STANDARD,
             application_method: {
               type: "fixed",
               target_type: "order",
-              value: "100",
+              value: 100,
             },
           },
         ])
@@ -95,7 +95,6 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
             application_method: {
               id: expect.any(String),
-              promotion: expect.any(Object),
             },
           },
         ])

@@ -1,4 +1,9 @@
-import { MedusaContainer, ProductDTO, ProductVariantDTO } from "@medusajs/types"
+import {
+  CreateProductDTO,
+  MedusaContainer,
+  ProductDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const isPricing = (fieldName: string) =>
@@ -15,10 +20,7 @@ export const remapKeysForProduct = (selectFields: string[]) => {
   const pricingFields = selectFields
     .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
-      fieldName.replace(
-        "variants.prices.",
-        "variants.price_set.price_set_money_amounts."
-      )
+      fieldName.replace("variants.prices.", "variants.price_set.prices.")
     )
 
   return [...productFields, ...pricingFields]
@@ -31,7 +33,7 @@ export const remapKeysForVariant = (selectFields: string[]) => {
   const pricingFields = selectFields
     .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
-      fieldName.replace("prices.", "price_set.price_set_money_amounts.")
+      fieldName.replace("prices.", "price_set.prices.")
     )
 
   return [...variantFields, ...pricingFields]
@@ -45,11 +47,21 @@ export const remapProduct = (p: ProductDTO) => {
 }
 
 export const remapVariant = (v: ProductVariantDTO) => {
+  if (!v) {
+    return v
+  }
+
   return {
     ...v,
-    prices: (v as any).price_set?.price_set_money_amounts?.map((psma) => ({
-      ...psma,
+    prices: (v as any).price_set?.prices?.map((price) => ({
+      id: price.id,
+      amount: price.amount,
+      currency_code: price.currency_code,
+      min_quantity: price.min_quantity,
+      max_quantity: price.max_quantity,
       variant_id: v.id,
+      created_at: price.created_at,
+      updated_at: price.updated_at,
     })),
     price_set: undefined,
   }

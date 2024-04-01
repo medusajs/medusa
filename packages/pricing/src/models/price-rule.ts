@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -14,8 +14,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import Price from "./price"
 import PriceSet from "./price-set"
-import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
@@ -39,9 +39,9 @@ const PriceRuleRuleTypeIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-const PriceRulePriceSetMoneyAmountIdIndex = createPsqlIndexStatementHelper({
+const PriceRulePriceIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
-  columns: "price_set_money_amount_id",
+  columns: ["price_id", "rule_type_id"],
   where: "deleted_at IS NULL",
   unique: true,
 })
@@ -83,17 +83,17 @@ export default class PriceRule {
   @Property({ columnType: "integer", default: 0 })
   priority: number = 0
 
-  @PriceRulePriceSetMoneyAmountIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceSetMoneyAmount, {
+  @PriceRulePriceIdIndex.MikroORMIndex()
+  @ManyToOne(() => Price, {
     columnType: "text",
     mapToPk: true,
-    fieldName: "price_set_money_amount_id",
+    fieldName: "price_id",
     onDelete: "cascade",
   })
-  price_set_money_amount_id: string
+  price_id: string
 
-  @ManyToOne(() => PriceSetMoneyAmount, { persist: false })
-  price_set_money_amount: PriceSetMoneyAmount
+  @ManyToOne(() => Price, { persist: false })
+  price: Price
 
   @Property({
     onCreate: () => new Date(),
@@ -117,10 +117,16 @@ export default class PriceRule {
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prule")
+    this.rule_type_id ??= this.rule_type?.id!
+    this.price_set_id ??= this.price_set?.id!
+    this.price_id ??= this.price?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "prule")
+    this.rule_type_id ??= this.rule_type?.id!
+    this.price_set_id ??= this.price_set?.id!
+    this.price_id ??= this.price?.id!
   }
 }
