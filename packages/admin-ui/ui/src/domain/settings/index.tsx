@@ -25,6 +25,7 @@ import ReturnReasons from "./return-reasons"
 import Taxes from "./taxes"
 import Users from "./users"
 import { useAdminGetSession } from "medusa-react"
+import i18n from "i18next"
 
 type SettingsCardType = {
   heading: string
@@ -71,63 +72,96 @@ const SettingsIndex = () => {
 
   const settings: SettingsCardType[] = [
     {
-      heading: "API Key Management",
-      description: "Create and manage API keys",
+      heading: i18n.t(
+        "settings-api-key-management-title",
+        "API Key Management"
+      ),
+      description: i18n.t(
+        "settings-api-key-management-description",
+        "Create and manage API keys"
+      ),
       icon: KeyIcon,
       to: "/a/publishable-api-keys",
       feature_flag: "publishable_api_keys",
       hide: user?.store_id != undefined,
     },
     {
-      heading: "Currencies",
-      description: "Manage the currencies of your store",
+      heading: i18n.t("settings-currencies-title", "Currencies"),
+      description: i18n.t(
+        "settings-currencies-description",
+        "Manage the currencies of your store"
+      ),
       icon: CoinsIcon,
       to: "/a/settings/currencies",
       hide: user?.store_id != undefined,
     },
     {
-      heading: "Personal Information",
-      description: "Manage your Medusa profile",
+      heading: i18n.t(
+        "settings-personal-information-title",
+        "Personal Information"
+      ),
+      description: i18n.t(
+        "settings-personal-information-description",
+        "Manage your Medusa profile"
+      ),
       icon: HappyIcon,
       to: "/a/settings/personal-information",
     },
     {
-      heading: "Regions",
-      description: "Manage shipping, payment, and fulfillment across regions",
+      heading: i18n.t("settings-regions-title", "Regions"),
+      description: i18n.t(
+        "settings-regions-description",
+        "Manage shipping, payment, and fulfillment across regions"
+      ),
       icon: MapPinIcon,
       to: "/a/settings/regions",
     },
     {
-      heading: "Return Reasons",
-      description: "Manage reasons for returned items",
+      heading: i18n.t("settings-return-reasons-title", "Return Reasons"),
+      description: i18n.t(
+        "settings-return-reasons-description",
+        "Manage reasons for returned items"
+      ),
       icon: ArrowUTurnLeft,
       to: "/a/settings/return-reasons",
       hide: user?.store_id != undefined,
     },
     {
-      heading: "Sales Channels",
-      description: "Control which product are available in which channels",
+      heading: i18n.t("settings-sales-channel-title", "Sales Channels"),
+      description: i18n.t(
+        "settings-sales-channel-description",
+        "Control which product are available in which channels"
+      ),
       icon: ChannelsIcon,
       feature_flag: "sales_channels",
       to: "/a/sales-channels",
       hide: user?.store_id != undefined,
     },
     {
-      heading: "Store Details",
-      description: "Manage your business details",
+      heading: i18n.t("settings-store-details-title", "Store Details"),
+      description: i18n.t(
+        "settings-store-details-description",
+        "Manage your business details"
+      ),
       icon: CrosshairIcon,
       to: "/a/settings/details",
     },
     {
-      heading: "Taxes",
-      description: "Manage taxes across regions and products",
+      heading: i18n.t("settings-taxes-title", "Taxes"),
+      description: i18n.t(
+        "settings-taxes-description",
+        "Manage taxes across regions and products"
+      ),
       icon: TaxesIcon,
       to: "/a/settings/taxes",
       hide: user?.store_id != undefined,
     },
     {
-      heading: "The Team",
-      description: "Manage users of your Medusa Store",
+      heading: i18n.t("settings-the-team-title", "The Team"),
+      description: i18n.t(
+        "settings-the-team-description",
+        "Manage users of your Medusa Store"
+      ),
       icon: UsersIcon,
       to: "/a/settings/team",
     },
