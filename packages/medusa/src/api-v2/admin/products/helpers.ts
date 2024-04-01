@@ -1,4 +1,9 @@
-import { MedusaContainer, ProductDTO, ProductVariantDTO } from "@medusajs/types"
+import {
+  CreateProductDTO,
+  MedusaContainer,
+  ProductDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 const isPricing = (fieldName: string) =>
@@ -42,11 +47,21 @@ export const remapProduct = (p: ProductDTO) => {
 }
 
 export const remapVariant = (v: ProductVariantDTO) => {
+  if (!v) {
+    return v
+  }
+
   return {
     ...v,
     prices: (v as any).price_set?.prices?.map((price) => ({
-      ...price,
+      id: price.id,
+      amount: price.amount,
+      currency_code: price.currency_code,
+      min_quantity: price.min_quantity,
+      max_quantity: price.max_quantity,
       variant_id: v.id,
+      created_at: price.created_at,
+      updated_at: price.updated_at,
     })),
     price_set: undefined,
   }

@@ -6,7 +6,7 @@ import TypeList from "@site/src/components/TypeList"
 
 # WorkflowData
 
- **WorkflowData**: T extends `object` ? &#123; [Key in keyof T]: WorkflowData&#60;T[Key]&#62; &#125; : [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;T&#62; & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;T&#62; & `object`
+ **WorkflowData**: T extends infer Item[] ? (`Item` \| [WorkflowData](workflows.WorkflowData.mdx)&#60;Item&#62;)[] : T extends `object` ? &#123; [Key in keyof T]: T[Key] \| WorkflowData&#60;T[Key]&#62; &#125; : T & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;T&#62; & T & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;T&#62; & `object`
 
 This type is used to encapsulate the input or output type of all utils.
 

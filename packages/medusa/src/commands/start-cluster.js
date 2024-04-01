@@ -54,7 +54,10 @@ export default async function ({ port, cpus, directory }) {
 
       const app = express()
 
-      const { dbConnection } = await loaders({ directory, expressApp: app })
+      const { dbConnection, shutdown } = await loaders({
+        directory,
+        expressApp: app,
+      })
       const serverActivity = Logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
         app.listen(port, (err) => {
@@ -70,7 +73,9 @@ export default async function ({ port, cpus, directory }) {
         server
           .shutdown()
           .then(() => {
-            process.exit(0)
+            shutdown().then(() => {
+              process.exit(0)
+            })
           })
           .catch((e) => {
             process.exit(1)

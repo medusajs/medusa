@@ -15,6 +15,7 @@ import {
 } from "@medusajs/types"
 import {
   createMedusaContainer,
+  promiseAll,
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
@@ -115,6 +116,22 @@ export class MedusaModule {
         }
       }
     }
+  }
+  public static async onApplicationShutdown(): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationShutdown
+              ?.bind(instance)()
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
   }
 
   public static clearInstances(): void {
@@ -247,14 +264,13 @@ export class MedusaModule {
     let finishLoading: any
     let errorLoading: any
 
+    const loadingPromise = new Promise((resolve, reject) => {
+      finishLoading = resolve
+      errorLoading = reject
+    })
+
     if (!loaderOnly) {
-      MedusaModule.loading_.set(
-        hashKey,
-        new Promise((resolve, reject) => {
-          finishLoading = resolve
-          errorLoading = reject
-        })
-      )
+      MedusaModule.loading_.set(hashKey, loadingPromise)
     }
 
     let modDeclaration =
@@ -315,6 +331,7 @@ export class MedusaModule {
     const services = {}
 
     if (loaderOnly) {
+      finishLoading(services)
       return services
     }
 
