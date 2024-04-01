@@ -8,7 +8,7 @@ module.exports = {
     "^.+\\.[jt]s?$": [
       "ts-jest",
       {
-        tsConfig: "tsconfig.spec.json",
+        tsconfig: "tsconfig.spec.json",
         isolatedModules: true,
       },
     ],

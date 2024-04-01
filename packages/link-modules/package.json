@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --passWithNoTests --runInBand --bail --forceExit",
+    "test": "jest --passWithNoTests --runInBand --bail --forceExit -- src",
     "test:integration": "jest --passWithNoTests"
   },
   "devDependencies": {
@@ -39,9 +39,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.9",
-    "@medusajs/types": "^1.11.14",
-    "@medusajs/utils": "^1.11.7",
+    "@medusajs/modules-sdk": "^1.12.10",
+    "@medusajs/types": "^1.11.15",
+    "@medusajs/utils": "^1.11.8",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.0"

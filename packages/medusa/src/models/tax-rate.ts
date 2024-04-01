@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  Relation,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
@@ -32,7 +33,7 @@ export class TaxRate extends BaseEntity {
 
   @ManyToOne(() => Region, (region) => region.tax_rates)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region: Relation<Region>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
@@ -49,7 +50,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products: Relation<Product>[]
 
   @ManyToMany(() => ProductType)
   @JoinTable({
@@ -63,7 +64,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  product_types: ProductType[]
+  product_types: Relation<ProductType>[]
 
   @ManyToMany(() => ShippingOption)
   @JoinTable({
@@ -77,7 +78,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  shipping_options: ShippingOption[]
+  shipping_options: Relation<ShippingOption>[]
 
   // TODO: consider custom DTO instead
   product_count?: number

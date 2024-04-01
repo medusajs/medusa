@@ -1,16 +1,8 @@
 module.exports = {
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
-  },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": "@swc/jest",
   },
-  transformIgnorePatterns: [
-   "/node_modules/(?!(axios)/).*"
-  ],
+  transformIgnorePatterns: ["/node_modules/(?!(axios)/).*", "/dist"],
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
 }

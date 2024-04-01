@@ -1,4 +1,4 @@
-import { Buildings, PencilSquare } from "@medusajs/icons"
+import { Buildings, PencilSquare, ArrowUturnLeft } from "@medusajs/icons"
 import { LineItem, Order } from "@medusajs/medusa"
 import { ReservationItemDTO } from "@medusajs/types"
 import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
@@ -45,6 +45,11 @@ const Header = ({ order }: { order: Order }) => {
                 label: t("orders.summary.allocateItems"),
                 to: "#", // TODO: Open modal to allocate items
                 icon: <Buildings />,
+              },
+              {
+                label: t("orders.summary.requestReturn"),
+                to: `/orders/${order.id}/returns`,
+                icon: <ArrowUturnLeft />,
               },
             ],
           },

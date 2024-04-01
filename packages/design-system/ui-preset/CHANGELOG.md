@@ -1,5 +1,14 @@
 # @medusajs/ui-preset
 
+## 1.1.3
+
+### Patch Changes
+
+- [#6680](https://github.com/medusajs/medusa/pull/6680) [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui-preset): Pull latest styles from Figma.
+  fix(ui): Fix invalid state styling of Select, so it correctly shows when aria-invalid is true.
+  fix(medusa): Align query params between `/admin/products/:id/variants` and `/admin/variants`.
+  chore(client-types): Update `medusa` client types to reflect changes to the API.
+
 ## 1.1.2
 
 ### Patch Changes
