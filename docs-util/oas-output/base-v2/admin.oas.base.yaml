@@ -89,6 +89,7 @@ tags:
     externalDocs:
       description: How to manage sales channels
       url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+  - name: Stock Locations
   - name: Stores
   - name: Tax Rates
     description: >

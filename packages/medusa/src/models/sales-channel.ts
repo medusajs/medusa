@@ -1,17 +1,24 @@
-import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  Relation,
+} from "typeorm"
 
+import { MedusaV2Flag } from "@medusajs/utils"
+import { SoftDeletableEntity } from "../interfaces"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import {
   FeatureFlagDecorators,
   FeatureFlagEntity,
 } from "../utils/feature-flag-decorators"
-import { MedusaV2Flag } from "@medusajs/utils"
-import { SoftDeletableEntity } from "../interfaces"
-import { DbAwareColumn, generateEntityId } from "../utils"
-import { SalesChannelLocation } from "./sales-channel-location"
-import { Product } from "./product"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { Product } from "./product"
 import { PublishableApiKey } from "./publishable-api-key"
+import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -39,7 +46,7 @@ export class SalesChannel extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products: Relation<Product>[]
 
   @FeatureFlagDecorators(MedusaV2Flag.key, [
     ManyToMany(() => Cart),
@@ -55,25 +62,23 @@ export class SalesChannel extends SoftDeletableEntity {
       },
     }),
   ])
-  carts: Cart[]
+  carts: Relation<Cart>[]
 
-  @FeatureFlagDecorators(MedusaV2Flag.key,
-    [
-      ManyToMany(() => Order),
-      JoinTable({
-        name: "order_sales_channel",
-        joinColumn: {
-          name: "sales_channel_id",
-          referencedColumnName: "id",
-        },
-        inverseJoinColumn: {
-          name: "order_id",
-          referencedColumnName: "id",
-        },
-      }),
-    ]
-  )
-  orders: Order[]
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
+    ManyToMany(() => Order),
+    JoinTable({
+      name: "order_sales_channel",
+      joinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "order_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  orders: Relation<Order>[]
 
   @ManyToMany(() => PublishableApiKey)
   @JoinTable({
@@ -87,7 +92,7 @@ export class SalesChannel extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  publishableKeys: PublishableApiKey[]
+  publishableKeys: Relation<PublishableApiKey>[]
 
   @OneToMany(
     () => SalesChannelLocation,
@@ -96,7 +101,7 @@ export class SalesChannel extends SoftDeletableEntity {
       cascade: ["soft-remove", "remove"],
     }
   )
-  locations: SalesChannelLocation[]
+  locations: Relation<SalesChannelLocation>[]
 
   /**
    * @apiIgnore

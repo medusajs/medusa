@@ -1,10 +1,4 @@
 import {
-  IdempotencyKeyService,
-  OrderService,
-  ReturnService,
-  SwapService,
-} from "../../../../services"
-import {
   IsArray,
   IsBoolean,
   IsInt,
@@ -16,11 +10,17 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
+import {
+  IdempotencyKeyService,
+  OrderService,
+  ReturnService,
+  SwapService,
+} from "../../../../services"
 
+import { Type } from "class-transformer"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
-import { MedusaError } from "medusa-core-utils"
-import { Type } from "class-transformer"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -298,6 +298,64 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
+class ReturnItem {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(1)
+  quantity: number
+
+  @IsOptional()
+  @IsString()
+  reason_id?: string
+
+  @IsOptional()
+  @IsString()
+  note?: string
+}
+
+/**
+ * The return's shipping method details.
+ */
+class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  /**
+   * The shipping method's price.
+   */
+  @IsInt()
+  @IsOptional()
+  price?: number
+}
+
+class CustomShippingOption {
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  price: number
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id: string
+
+  @IsNumber()
+  @IsNotEmpty()
+  quantity: number
+}
+
 /**
  * @schema AdminPostOrdersOrderSwapsReq
  * type: object
@@ -424,64 +482,6 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsBoolean()
   @IsOptional()
   allow_backorder?: boolean = true
-}
-
-class ReturnItem {
-  @IsString()
-  @IsNotEmpty()
-  item_id: string
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Min(1)
-  quantity: number
-
-  @IsOptional()
-  @IsString()
-  reason_id?: string
-
-  @IsOptional()
-  @IsString()
-  note?: string
-}
-
-/**
- * The return's shipping method details.
- */
-class ReturnShipping {
-  /**
-   * The ID of the shipping option used for the return.
-   */
-  @IsString()
-  @IsNotEmpty()
-  option_id: string
-
-  /**
-   * The shipping method's price.
-   */
-  @IsInt()
-  @IsOptional()
-  price?: number
-}
-
-class CustomShippingOption {
-  @IsString()
-  @IsNotEmpty()
-  option_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  price: number
-}
-
-class AdditionalItem {
-  @IsString()
-  @IsNotEmpty()
-  variant_id: string
-
-  @IsNumber()
-  @IsNotEmpty()
-  quantity: number
 }
 
 export class AdminPostOrdersOrderSwapsParams extends FindParams {}

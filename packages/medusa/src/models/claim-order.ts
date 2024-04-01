@@ -9,10 +9,13 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
   UpdateDateColumn,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { ClaimItem } from "./claim-item"
 import { Fulfillment } from "./fulfillment"
@@ -20,12 +23,10 @@ import { LineItem } from "./line-item"
 import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 /**
  * @enum
- * 
+ *
  * The claim's type.
  */
 export enum ClaimType {
@@ -41,7 +42,7 @@ export enum ClaimType {
 
 /**
  * @enum
- * 
+ *
  * The claim's payment status
  */
 export enum ClaimPaymentStatus {
@@ -61,7 +62,7 @@ export enum ClaimPaymentStatus {
 
 /**
  * @enum
- * 
+ *
  * The claim's fulfillment status.
  */
 export enum ClaimFulfillmentStatus {
@@ -120,13 +121,13 @@ export class ClaimOrder extends SoftDeletableEntity {
   fulfillment_status: ClaimFulfillmentStatus
 
   @OneToMany(() => ClaimItem, (ci) => ci.claim_order)
-  claim_items: ClaimItem[]
+  claim_items: Relation<ClaimItem>[]
 
   @OneToMany(() => LineItem, (li) => li.claim_order, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items: Relation<LineItem>[]
 
   @DbAwareColumn({ type: "enum", enum: ClaimType })
-  type: ClaimType
+  type: Relation<ClaimType>
 
   @Index()
   @Column()
@@ -134,10 +135,10 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.claims)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToOne(() => Return, (ret) => ret.claim_order)
-  return_order: Return
+  return_order: Relation<Return>
 
   @Index()
   @Column({ nullable: true })
@@ -145,17 +146,17 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Relation<Address>
 
   @OneToMany(() => ShippingMethod, (method) => method.claim_order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: Relation<ShippingMethod>[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.claim_order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments: Relation<Fulfillment>[]
 
   @Column({ type: "int", nullable: true })
   refund_amount: number

@@ -45,6 +45,17 @@ export const retrieveTransformQueryConfig = {
   isList: false,
 }
 
+export const retrieveLocationLevelsTransformQueryConfig = {
+  defaults: defaultAdminLocationLevelFields,
+  allowed: defaultAdminLocationLevelFields,
+  isList: false,
+}
+
+export const listLocationLevelsTransformQueryConfig = {
+  ...retrieveLocationLevelsTransformQueryConfig,
+  isList: true,
+}
+
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,

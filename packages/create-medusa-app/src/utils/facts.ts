@@ -10,6 +10,7 @@ export type FactBoxOptions = {
   processManager: ProcessManager
   message?: string
   title?: string
+  verbose?: boolean
 }
 
 const facts = [
@@ -38,25 +39,41 @@ export const getFact = () => {
   return facts[randIndex]
 }
 
-export const showFact = (spinner: Ora, title: string) => {
+export const showFact = ({
+  spinner,
+  title,
+  verbose,
+}: Pick<FactBoxOptions, "spinner" | "verbose"> & {
+  title: string
+}) => {
   const fact = getFact()
-  spinner.text = `${title}\n${boxen(`${fact}`, {
-    title: chalk.cyan(`${emojify(":bulb:")} Medusa Tips`),
-    titleAlignment: "center",
-    textAlignment: "center",
-    padding: 1,
-    margin: 1,
-  })}`
+  if (verbose) {
+    spinner.stopAndPersist({
+      symbol: chalk.cyan("⠋"),
+      text: title,
+    })
+  } else {
+    spinner.text = `${title}\n${boxen(`${fact}`, {
+      title: chalk.cyan(`${emojify(":bulb:")} Medusa Tips`),
+      titleAlignment: "center",
+      textAlignment: "center",
+      padding: 1,
+      margin: 1,
+    })}`
+  }
 }
 
-export const createFactBox = (
-  spinner: Ora,
-  title: string,
-  processManager: ProcessManager
-): NodeJS.Timeout => {
-  showFact(spinner, title)
+export const createFactBox = ({
+  spinner,
+  title,
+  processManager,
+  verbose,
+}: Pick<FactBoxOptions, "spinner" | "processManager" | "verbose"> & {
+  title: string
+}): NodeJS.Timeout => {
+  showFact({ spinner, title, verbose })
   const interval = setInterval(() => {
-    showFact(spinner, title)
+    showFact({ spinner, title, verbose })
   }, 10000)
 
   processManager.addInterval(interval)
@@ -64,13 +81,20 @@ export const createFactBox = (
   return interval
 }
 
-export const resetFactBox = (
-  interval: NodeJS.Timeout | null,
-  spinner: Ora,
-  successMessage: string,
-  processManager: ProcessManager,
+export const resetFactBox = ({
+  interval,
+  spinner,
+  successMessage,
+  processManager,
+  newTitle,
+  verbose,
+}: Pick<
+  FactBoxOptions,
+  "interval" | "spinner" | "processManager" | "verbose"
+> & {
+  successMessage: string
   newTitle?: string
-): NodeJS.Timeout | null => {
+}): NodeJS.Timeout | null => {
   if (interval) {
     clearInterval(interval)
   }
@@ -78,7 +102,12 @@ export const resetFactBox = (
   spinner.succeed(chalk.green(successMessage)).start()
   let newInterval = null
   if (newTitle) {
-    newInterval = createFactBox(spinner, newTitle, processManager)
+    newInterval = createFactBox({
+      spinner,
+      title: newTitle,
+      processManager,
+      verbose,
+    })
   }
 
   return newInterval
@@ -90,10 +119,18 @@ export function displayFactBox({
   processManager,
   title = "",
   message = "",
+  verbose = false,
 }: FactBoxOptions): NodeJS.Timeout | null {
   if (!message) {
-    return createFactBox(spinner, title, processManager)
+    return createFactBox({ spinner, title, processManager, verbose })
   }
 
-  return resetFactBox(interval, spinner, message, processManager, title)
+  return resetFactBox({
+    interval,
+    spinner,
+    successMessage: message,
+    processManager,
+    newTitle: title,
+    verbose,
+  })
 }

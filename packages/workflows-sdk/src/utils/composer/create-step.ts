@@ -1,8 +1,9 @@
 import {
   TransactionStepsDefinition,
   WorkflowManager,
+  WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
@@ -120,16 +121,20 @@ function applyStep<
     }
 
     const handler = {
-      invoke: async (transactionContext) => {
+      invoke: async (transactionContext: WorkflowStepHandlerArguments) => {
+        const metadata = transactionContext.metadata
+        const idempotencyKey = metadata.idempotency_key
+
+        transactionContext.context!.idempotencyKey = idempotencyKey
         const executionContext: StepExecutionContext = {
-          workflowId: transactionContext.model_id,
-          stepName: transactionContext.action,
+          workflowId: metadata.model_id,
+          stepName: metadata.action,
           action: "invoke",
-          idempotencyKey: transactionContext.idempotency_key,
-          attempt: transactionContext.attempt,
+          idempotencyKey,
+          attempt: metadata.attempt,
           container: transactionContext.container,
-          metadata: transactionContext.metadata,
-          context: transactionContext.context,
+          metadata,
+          context: transactionContext.context!,
         }
 
         const argInput = input
@@ -151,25 +156,31 @@ function applyStep<
         }
       },
       compensate: compensateFn
-        ? async (transactionContext) => {
+        ? async (transactionContext: WorkflowStepHandlerArguments) => {
+            const metadata = transactionContext.metadata
+            const idempotencyKey = metadata.idempotency_key
+
+            transactionContext.context!.idempotencyKey = idempotencyKey
+
             const executionContext: StepExecutionContext = {
-              workflowId: transactionContext.model_id,
-              stepName: transactionContext.action,
+              workflowId: metadata.model_id,
+              stepName: metadata.action,
               action: "compensate",
-              idempotencyKey: transactionContext.idempotency_key,
-              attempt: transactionContext.attempt,
+              idempotencyKey,
+              attempt: metadata.attempt,
               container: transactionContext.container,
-              metadata: transactionContext.metadata,
-              context: transactionContext.context,
+              metadata,
+              context: transactionContext.context!,
             }
 
-            const stepOutput = transactionContext.invoke[stepName]?.output
+            const stepOutput = (transactionContext.invoke[stepName] as any)
+              ?.output
             const invokeResult =
               stepOutput?.__type ===
               OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
-                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
-                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
+                  deepCopy(stepOutput.compensateInput)
+                : stepOutput && deepCopy(stepOutput)
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)

@@ -1,6 +1,6 @@
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -10,13 +10,13 @@ import {
   Entity,
   Filter,
   ManyToMany,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import Price from "./price"
 import PriceRule from "./price-rule"
-import PriceSetMoneyAmount from "./price-set-money-amount"
 import PriceSetRuleType from "./price-set-rule-type"
 import RuleType from "./rule-type"
 
@@ -27,19 +27,21 @@ const PriceSetDeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+export const PriceSetIdPrefix = "pset"
+
 @Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceSet {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_set, {
-    cascade: ["soft-remove" as Cascade],
+  @OneToMany(() => Price, (price) => price.price_set, {
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  price_set_money_amounts = new Collection<PriceSetMoneyAmount>(this)
+  prices = new Collection<Price>(this)
 
   @OneToMany(() => PriceRule, (pr) => pr.price_set, {
-    cascade: ["soft-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   price_rules = new Collection<PriceRule>(this)
 
@@ -71,11 +73,11 @@ export default class PriceSet {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, PriceSetIdPrefix)
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, PriceSetIdPrefix)
   }
 }
