@@ -53,6 +53,10 @@ export const v2Routes: RouteObject[] = [
     lazy: () => import("../../routes/no-match"),
   },
   {
+    path: "/invite",
+    lazy: () => import("../../v2-routes/invite"),
+  },
+  {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
     children: [
@@ -69,6 +73,18 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/orders/order-list"),
+              },
+            ],
+          },
+          {
+            path: "/promotions",
+            handle: {
+              crumb: () => "Promotions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
             ],
           },
