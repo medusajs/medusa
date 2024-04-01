@@ -2,7 +2,7 @@ import chalk from "chalk"
 import fs from "fs"
 import path from "path"
 import { Ora } from "ora"
-import promiseExec from "./promise-exec.js"
+import execute from "./execute.js"
 import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import ProcessManager from "./process-manager.js"
@@ -25,6 +25,7 @@ type PrepareOptions = {
   onboardingType?: "default" | "nextjs"
   nextjsDirectory?: string
   client: Client | null
+  verbose?: boolean
   v2?: boolean
 }
 
@@ -42,6 +43,7 @@ export default async ({
   onboardingType = "default",
   nextjsDirectory = "",
   client,
+  verbose = false,
   v2 = false,
 }: PrepareOptions) => {
   // initialize execution options
@@ -64,6 +66,7 @@ export default async ({
     processManager,
     message: "",
     title: "",
+    verbose,
   }
 
   // initialize the invite token to return
@@ -91,11 +94,13 @@ export default async ({
   await processManager.runProcess({
     process: async () => {
       try {
-        await promiseExec(`yarn`, execOptions)
+        await execute([`yarn`, execOptions], { verbose })
       } catch (e) {
         // yarn isn't available
         // use npm
-        await promiseExec(`npm install --legacy-peer-deps`, execOptions)
+        await execute([`npm install --legacy-peer-deps`, execOptions], {
+          verbose,
+        })
       }
     },
     ignoreERESOLVE: true,
@@ -127,11 +132,11 @@ export default async ({
   await processManager.runProcess({
     process: async () => {
       try {
-        await promiseExec(`yarn build`, execOptions)
+        await execute([`yarn build`, execOptions], { verbose })
       } catch (e) {
         // yarn isn't available
         // use npm
-        await promiseExec(`npm run build`, execOptions)
+        await execute([`npm run build`, execOptions], { verbose })
       }
     },
     ignoreERESOLVE: true,
@@ -148,9 +153,9 @@ export default async ({
     // run migrations
     await processManager.runProcess({
       process: async () => {
-        const proc = await promiseExec(
-          "npx @medusajs/medusa-cli@latest migrations run",
-          npxOptions
+        const proc = await execute(
+          ["npx @medusajs/medusa-cli@latest migrations run", npxOptions],
+          { verbose, needOutput: true }
         )
 
         if (client) {
@@ -169,7 +174,7 @@ export default async ({
           }
 
           // ensure that migrations actually ran in case of an uncaught error
-          if (errorOccurred) {
+          if (errorOccurred && (proc.stderr || proc.stdout)) {
             throw new Error(
               `An error occurred while running migrations: ${
                 proc.stderr || proc.stdout
@@ -195,12 +200,18 @@ export default async ({
 
     await processManager.runProcess({
       process: async () => {
-        const proc = await promiseExec(
-          `npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
-          npxOptions
+        const proc = await execute(
+          [
+            `npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+            npxOptions,
+          ],
+          { verbose, needOutput: true }
         )
+
         // get invite token from stdout
-        const match = proc.stdout.match(/Invite token: (?<token>.+)/)
+        const match = (proc.stdout as string).match(
+          /Invite token: (?<token>.+)/
+        )
         inviteToken = match?.groups?.token
       },
     })
@@ -232,12 +243,15 @@ export default async ({
 
       await processManager.runProcess({
         process: async () => {
-          await promiseExec(
-            `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-              "data",
-              "seed.json"
-            )}`,
-            npxOptions
+          await execute(
+            [
+              `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+                "data",
+                "seed.json"
+              )}`,
+              npxOptions,
+            ],
+            { verbose }
           )
         },
       })
@@ -257,12 +271,15 @@ export default async ({
 
       await processManager.runProcess({
         process: async () => {
-          await promiseExec(
-            `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-              "data",
-              "seed-onboarding.json"
-            )}`,
-            npxOptions
+          await execute(
+            [
+              `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+                "data",
+                "seed-onboarding.json"
+              )}`,
+              npxOptions,
+            ],
+            { verbose }
           )
         },
       })

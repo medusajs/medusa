@@ -34,27 +34,21 @@ export const createProductVariantsWorkflow = createWorkflow(
     const createdVariants = createProductVariantsStep(variantsWithoutPrices)
 
     // Note: We rely on the same order of input and output when creating variants here, make sure that assumption holds
-    const variantsWithAssociatedPrices = transform(
-      { input, createdVariants },
-      (data) =>
-        data.createdVariants
-          .map((variant, i) => {
-            return {
-              id: variant.id,
-              prices: data.input.product_variants[i]?.prices,
-            }
-          })
-          .flat()
-          .filter((v) => !!v.prices?.length)
+    const pricesToCreate = transform({ input, createdVariants }, (data) =>
+      data.createdVariants.map((v, i) => {
+        return {
+          prices: data.input.product_variants[i]?.prices,
+        }
+      })
     )
 
     // TODO: From here until the final transform the code is the same as when creating a product, we can probably refactor
-    const createdPriceSets = createPriceSetsStep(variantsWithAssociatedPrices)
+    const createdPriceSets = createPriceSetsStep(pricesToCreate)
 
     const variantAndPriceSets = transform(
-      { variantsWithAssociatedPrices, createdPriceSets },
+      { createdVariants, createdPriceSets },
       (data) => {
-        return data.variantsWithAssociatedPrices.map((variant, i) => ({
+        return data.createdVariants.map((variant, i) => ({
           variant: variant,
           price_set: data.createdPriceSets[i],
         }))
@@ -77,15 +71,12 @@ export const createProductVariantsWorkflow = createWorkflow(
 
     return transform(
       {
-        createdVariants,
         variantAndPriceSets,
       },
       (data) => {
-        return data.createdVariants.map((variant) => ({
-          ...variant,
-          price_set: data.variantAndPriceSets.find(
-            (v) => v.variant.id === variant.id
-          )?.price_set,
+        return data.variantAndPriceSets.map((variantAndPriceSet) => ({
+          ...variantAndPriceSet.variant,
+          ...variantAndPriceSet.price_set,
         }))
       }
     )

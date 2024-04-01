@@ -1,4 +1,4 @@
-import { OperatorMap } from "@medusajs/types"
+import { ApiKeyType } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -9,8 +9,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { ApiKeyType } from "@medusajs/utils"
 
 export class AdminGetApiKeysApiKeyParams extends FindParams {}
 /**
@@ -80,3 +78,11 @@ export class AdminRevokeApiKeysApiKeyReq {
 }
 
 export class AdminDeleteApiKeysApiKeyReq {}
+
+export class AdminPostApiKeysApiKeySalesChannelsBatchAddReq {
+  @IsArray()
+  sales_channel_ids: string[]
+}
+
+// eslint-disable-next-line max-len
+export class AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq extends AdminPostApiKeysApiKeySalesChannelsBatchAddReq {}

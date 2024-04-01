@@ -2,13 +2,13 @@ import TypeList from "@site/src/components/TypeList"
 
 # RemoteQueryFunction
 
- **RemoteQueryFunction**: (`query`: `string` \| [RemoteJoinerQuery](../../interfaces/types.RemoteJoinerQuery.mdx) \| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \| `null`
+ **RemoteQueryFunction**: (`query`: `string` \| [RemoteJoinerQuery](../../interfaces/types.RemoteJoinerQuery.mdx) \| `object`, `variables?`: `Record<string, unknown>`, `options?`: [RemoteJoinerOptions](../../interfaces/types.RemoteJoinerOptions.mdx)) => Promise&#60;any&#62; \| `null`
 
 ## Type declaration
 
 ### Parameters
 
-<TypeList types={[{"name":"query","type":"`string` \\| [RemoteJoinerQuery](../../interfaces/types.RemoteJoinerQuery.mdx) \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variables","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="__type"/>
+<TypeList types={[{"name":"query","type":"`string` \\| [RemoteJoinerQuery](../../interfaces/types.RemoteJoinerQuery.mdx) \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variables","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RemoteJoinerOptions](../../interfaces/types.RemoteJoinerOptions.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"throwIfKeyNotFound","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"throwIfRelationNotFound","type":"`boolean` \\| `string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="__type"/>
 
 ### Returns
 

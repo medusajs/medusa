@@ -1,5 +1,17 @@
 # @medusajs/orchestration
 
+## 0.5.6
+
+### Patch Changes
+
+- [#6742](https://github.com/medusajs/medusa/pull/6742) [`06f22bb48a`](https://github.com/medusajs/medusa/commit/06f22bb48ad1fe73577657b8c5db055312f16a0d) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(orchestration): Properly handle select all
+
+- [#6778](https://github.com/medusajs/medusa/pull/6778) [`7e93eda1a4`](https://github.com/medusajs/medusa/commit/7e93eda1a44310311d2f3f8a1d634f60e7c48cb5) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: workflow cancel
+
+- Updated dependencies [[`deab12e27e`](https://github.com/medusajs/medusa/commit/deab12e27e8249e26d24d7bc904c18195679ff24), [`56481e683d`](https://github.com/medusajs/medusa/commit/56481e683d33ff98f0d4c4e144873bb23f993c9c), [`9073d7aba3`](https://github.com/medusajs/medusa/commit/9073d7aba3419e4dc0a206473291a46ebd79b8c1), [`4974f5e455`](https://github.com/medusajs/medusa/commit/4974f5e4557bd64a328a881ec02b91e15485bd23), [`05e857d256`](https://github.com/medusajs/medusa/commit/05e857d25657b5576a891c9b48c19c1759c70701), [`1ef9c78cea`](https://github.com/medusajs/medusa/commit/1ef9c78cea080c3b7c136f909c6cddec9d8f0c62)]:
+  - @medusajs/types@1.11.15
+  - @medusajs/utils@1.11.8
+
 ## 0.5.5
 
 ### Patch Changes
