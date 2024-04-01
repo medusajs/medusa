@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# SnakeCase
+
+ **SnakeCase**: S extends \`$&#123;infer T&#125;$&#123;infer U&#125;$&#123;infer V&#125;\` ? `U` extends Uppercase&#60;U&#62; ? \`$&#123;Lowercase&#60;T&#62;&#125;\_$&#123;SnakeCase&#60;\`$&#123;Lowercase&#60;U&#62;&#125;$&#123;V&#125;\`&#62;&#125;\` : \`$&#123;T&#125;$&#123;SnakeCase&#60;\`$&#123;U&#125;$&#123;V&#125;\`&#62;&#125;\` : S
+
+## Type Parameters
+
+<TypeList types={[{"name":"S","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SnakeCase"/>
