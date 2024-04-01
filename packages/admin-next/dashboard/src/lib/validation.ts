@@ -20,3 +20,15 @@ export const optionalInt = z
       message: i18next.t("validation.mustBeInt"),
     }
   )
+  .refine(
+    (value) => {
+      if (value === "" || value === undefined) {
+        return true
+      }
+
+      return castNumber(value) >= 0
+    },
+    {
+      message: i18next.t("validation.mustBePositive"),
+    }
+  )

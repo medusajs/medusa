@@ -44,7 +44,8 @@
     "timeline": "Timeline"
   },
   "validation": {
-    "mustBeInt": "The value must be a whole number."
+    "mustBeInt": "The value must be a whole number.",
+    "mustBePositive": "The value must be a positive number."
   },
   "nav": {
     "general": "General",

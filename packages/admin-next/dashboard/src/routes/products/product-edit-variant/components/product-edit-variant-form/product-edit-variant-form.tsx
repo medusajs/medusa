@@ -10,7 +10,10 @@ import { Fragment } from "react"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { RouteDrawer } from "../../../../../components/route-modal"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
 
@@ -45,6 +48,7 @@ export const ProductEditVariantForm = ({
   isStockAndInventoryEnabled = false,
 }: ProductEditVariantFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<z.infer<typeof ProductEditVariantSchema>>({
     defaultValues: {
@@ -115,15 +119,22 @@ export const ProductEditVariantForm = ({
         }
       : {}
 
-    await mutateAsync({
-      variant_id: variant.id,
-      weight: parseNumber(weight),
-      height: parseNumber(height),
-      width: parseNumber(width),
-      length: parseNumber(length),
-      ...conditionalPayload,
-      ...rest,
-    })
+    await mutateAsync(
+      {
+        variant_id: variant.id,
+        weight: parseNumber(weight),
+        height: parseNumber(height),
+        width: parseNumber(width),
+        length: parseNumber(length),
+        ...conditionalPayload,
+        ...rest,
+      },
+      {
+        onSuccess: () => {
+          handleSuccess()
+        },
+      }
+    )
   })
 
   return (
