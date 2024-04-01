@@ -240,7 +240,6 @@ export default async ({
       })
     }
   } catch (e) {
-    console.log(e)
     if (isAbortError(e)) {
       process.exit()
     }
