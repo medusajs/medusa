@@ -30,6 +30,10 @@ const DiscountIndex = () => {
 
   const { getWidgets } = useWidgets()
 
+  const views = [
+    { key: "discounts", label: t("discounts-header", "Discounts") },
+  ]
+
   return (
     <div className="flex h-full flex-col">
       <div className="gap-y-xsmall flex w-full grow flex-col">
@@ -45,7 +49,7 @@ const DiscountIndex = () => {
         })}
         <BodyCard
           actionables={actionables}
-          customHeader={<TableViewHeader views={["discounts"]} />}
+          customHeader={<TableViewHeader views={views} />}
           className="h-fit"
         >
           <DiscountTable />

@@ -22,8 +22,6 @@ import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
 
 const OrderIndex = () => {
-  const view = "orders"
-
   const { t } = useTranslation()
   const { resetInterval } = usePolling()
   const navigate = useNavigate()
@@ -41,6 +39,13 @@ const OrderIndex = () => {
 
   const { getWidgets } = useWidgets()
 
+  const views = [
+    { key: "orders", label: t("orders-header", "Orders") },
+    { key: "drafts", label: t("draft-orders-header", "Drafts") },
+  ]
+
+  const activeView = "orders"
+
   const actions = useMemo(() => {
     return [
       <Button
@@ -50,10 +55,10 @@ const OrderIndex = () => {
         onClick={() => openExportModal()}
       >
         <ExportIcon size={20} />
-        Export Orders
+        {t("orders-export-orders", "Export Orders")}
       </Button>,
     ]
-  }, [view])
+  }, [activeView])
 
   const handleCreateExport = () => {
     const reqObj = {
@@ -109,13 +114,13 @@ const OrderIndex = () => {
           <BodyCard
             customHeader={
               <TableViewHeader
-                views={VIEWS}
+                views={views}
                 setActiveView={(v) => {
                   if (v === "drafts") {
                     navigate(`/a/draft-orders`)
                   }
                 }}
-                activeView={view}
+                activeView={activeView}
               />
             }
             className="h-fit"
