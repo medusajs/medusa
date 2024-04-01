@@ -13,16 +13,20 @@ import NewOrderFormProvider from "../new/form"
 import NewOrder from "../new/new-order"
 import DraftOrderDetails from "./details"
 
-const VIEWS = ["orders", "drafts"]
-
 const DraftOrderIndex = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const view = "drafts"
   const [showNewOrder, setShowNewOrder] = useState(false)
 
   const { getWidgets } = useWidgets()
+
+  const views = [
+    { key: "orders", label: t("orders-header", "Orders") },
+    { key: "drafts", label: t("draft-orders-header", "Drafts") },
+  ]
+
+  const activeView = "drafts"
 
   const actions = useMemo(() => {
     return [
@@ -32,7 +36,7 @@ const DraftOrderIndex = () => {
         icon: <PlusIcon size={20} />,
       },
     ]
-  }, [view])
+  }, [activeView])
 
   return (
     <div className="gap-y-xsmall flex h-full grow flex-col">
@@ -50,13 +54,13 @@ const DraftOrderIndex = () => {
         <BodyCard
           customHeader={
             <TableViewHeader
-              views={VIEWS}
+              views={views}
               setActiveView={(v) => {
                 if (v === "orders") {
                   navigate(`/a/orders`)
                 }
               }}
-              activeView={view}
+              activeView={activeView}
             />
           }
           actionables={actions}

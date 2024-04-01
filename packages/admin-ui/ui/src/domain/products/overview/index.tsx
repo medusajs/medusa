@@ -23,13 +23,21 @@ import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
 
-const VIEWS = ["products", "collections"]
-
 const Overview = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
-  const [view, setView] = useState("products")
+
+  const views = [
+    { key: "products", label: t("overview-products-header", "Products") },
+    {
+      key: "collections",
+      label: t("overview-collections-header", "Collections"),
+    },
+  ]
+
+  const [activeView, setActiveView] = useState("products")
+
   const {
     state: createProductState,
     close: closeProductCreate,
@@ -50,16 +58,16 @@ const Overview = () => {
 
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
-      setView("collections")
+      setActiveView("collections")
     }
   }, [location])
 
   useEffect(() => {
     location.search = ""
-  }, [view])
+  }, [activeView])
 
   const CurrentView = () => {
-    switch (view) {
+    switch (activeView) {
       case "products":
         return <ProductTable />
       default:
@@ -68,7 +76,7 @@ const Overview = () => {
   }
 
   const CurrentAction = () => {
-    switch (view) {
+    switch (activeView) {
       case "products":
         return (
           <div className="flex space-x-2">
@@ -219,9 +227,9 @@ const Overview = () => {
             customActionable={CurrentAction()}
             customHeader={
               <TableViewHeader
-                views={VIEWS}
-                setActiveView={setView}
-                activeView={view}
+                views={views}
+                setActiveView={setActiveView}
+                activeView={activeView}
               />
             }
             className="h-fit"
