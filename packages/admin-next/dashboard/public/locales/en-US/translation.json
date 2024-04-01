@@ -43,6 +43,10 @@
     "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
     "timeline": "Timeline"
   },
+  "validation": {
+    "mustBeInt": "The value must be a whole number.",
+    "mustBePositive": "The value must be a positive number."
+  },
   "nav": {
     "general": "General",
     "developer": "Developer",
@@ -181,6 +185,18 @@
       "published": "Published",
       "proposed": "Proposed",
       "rejected": "Rejected"
+    },
+    "variant": {
+      "edit": {
+        "header": "Edit Variant"
+      },
+      "inventory": {
+        "header": "Stock & Inventory",
+        "manageInventoryLabel": "Manage inventory",
+        "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
+        "allowBackordersLabel": "Allow backorders",
+        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+      }
     }
   },
   "collections": {
@@ -940,9 +956,13 @@
     "width": "Width",
     "length": "Length",
     "weight": "Weight",
-    "midCode": "MID Code",
-    "hsCode": "HS Code",
-    "countryOfOrigin": "Country of Origin",
+    "midCode": "MID code",
+    "hsCode": "HS code",
+    "ean": "EAN",
+    "upc": "UPC",
+    "inventoryQuantity": "Inventory quantity",
+    "barcode": "Barcode",
+    "countryOfOrigin": "Country of origin",
     "material": "Material",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
