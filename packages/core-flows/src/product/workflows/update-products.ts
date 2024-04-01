@@ -15,6 +15,7 @@ export const updateProductsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowInput>
   ): WorkflowData<ProductTypes.ProductDTO[]> => {
+    // TODO: Delete price sets for removed variants
     return updateProductsStep(input)
   }
 )

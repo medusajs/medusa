@@ -579,6 +579,18 @@ export interface ProductVariantOptionDTO {
    * The associated product variant id.
    */
   variant_id?: string | null
+  /**
+   * When the product variant option was created.
+   */
+  created_at: string | Date
+  /**
+   * When the product variant option was updated.
+   */
+  updated_at: string | Date
+  /**
+   * When the product variant option was deleted.
+   */
+  deleted_at?: string | Date
 }
 
 /**
