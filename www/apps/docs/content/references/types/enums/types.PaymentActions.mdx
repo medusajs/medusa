@@ -1,0 +1,31 @@
+import TypeList from "@site/src/components/TypeList"
+
+# PaymentActions
+
+Normalized events from payment provider to internal payment module events.
+
+## Enumeration Members
+
+### AUTHORIZED
+
+ **AUTHORIZED** = `"authorized"`
+
+Payment session has been authorized and there are available funds for capture.
+
+### SUCCESSFUL
+
+ **SUCCESSFUL** = `"captured"`
+
+Payment was successful and the mount is captured.
+
+### FAILED
+
+ **FAILED** = `"failed"`
+
+Payment failed.
+
+### NOT\_SUPPORTED
+
+ **NOT\_SUPPORTED** = `"not_supported"`
+
+Received an event that is not processable.
