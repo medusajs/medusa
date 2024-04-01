@@ -208,7 +208,6 @@ export default async ({
           { verbose, needOutput: true }
         )
 
-        // console.log(proc)
         // get invite token from stdout
         const match = (proc.stdout as string).match(
           /Invite token: (?<token>.+)/
