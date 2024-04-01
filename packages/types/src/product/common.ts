@@ -673,7 +673,7 @@ export interface ProductOptionValueDTO {
  * @prop handle - The handles to filter products by.
  * @prop id - The IDs to filter products by.
  * @prop tags - Filters on a product's tags.
- * @prop categories - Filters on a product's categories.
+ * @prop category_id - Filters on a product's category_id.
  * @prop collection_id - Filters a product by its associated collections.
  */
 
@@ -1002,7 +1002,7 @@ export interface UpdateProductTypeDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /**

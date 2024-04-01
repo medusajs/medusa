@@ -47,6 +47,10 @@ export const remapProduct = (p: ProductDTO) => {
 }
 
 export const remapVariant = (v: ProductVariantDTO) => {
+  if (!v) {
+    return v
+  }
+
   return {
     ...v,
     prices: (v as any).price_set?.prices?.map((price) => ({
