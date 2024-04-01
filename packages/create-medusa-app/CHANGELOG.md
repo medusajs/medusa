@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.7
+
+### Patch Changes
+
+- [#6729](https://github.com/medusajs/medusa/pull/6729) [`fbc369705d`](https://github.com/medusajs/medusa/commit/fbc369705d4feae21d77ea2fc59173ac9519cee6) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): Add `--v2` option
+
 ## 1.2.6
 
 ### Patch Changes

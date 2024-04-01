@@ -4,9 +4,9 @@ import {
   StockLocationDTO,
   UpdateStockLocationInput,
   UpdateStockLocationNextInput,
+  UpsertStockLocationInput,
 } from "./common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-
 import { Context } from "../shared-context"
 import { FindConfig } from "../common/common"
 import { IModuleService } from "../modules-sdk"
@@ -193,6 +193,36 @@ export interface IStockLocationServiceNext extends IModuleService {
   ): Promise<StockLocationDTO[]>
 
   /**
+   * This method updates or creates stock location service nexts if they don't exist.
+   *
+   * @param {Partial<UpdateStockLocationNextInput>[]} data - The list of Make all properties in t optional
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The created or updated stock location service nexts.
+   *
+   * @example
+   * {example-code}
+   */
+  upsert(
+    data: UpsertStockLocationInput[],
+    sharedContext?: Context
+  ): Promise<StockLocationDTO[]>
+
+  /**
+   * This method updates or creates a stock location service next if it doesn't exist.
+   *
+   * @param {Partial<UpdateStockLocationNextInput>} data - Make all properties in T optional
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO>} The created or updated stock location service next.
+   *
+   * @example
+   * {example-code}
+   */
+  upsert(
+    data: UpsertStockLocationInput,
+    sharedContext?: Context
+  ): Promise<StockLocationDTO>
+
+  /**
    * This method updates existing stock locations.
    *
    * @param {UpdateStockLocationNextInput[]} input - The attributes to update in the stock locations.
@@ -213,28 +243,35 @@ export interface IStockLocationServiceNext extends IModuleService {
    *   ])
    */
   update(
-    input: UpdateStockLocationNextInput[],
+    id: string,
+    input: UpdateStockLocationInput,
     context?: Context
-  ): Promise<StockLocationDTO[]>
+  ): Promise<StockLocationDTO>
 
   /**
-   * This method updates an existing stock location.
+   * This method updates existing stock locations matching the specified filters.
    *
-   * @param {UpdateStockLocationNextInput} input - The attributes to update in the stock location.
+   * @param {FilterableStockLocationProps} selector - The filters specifying which stock locations to update.
+   * @param {UpdateStockLocationInput} input - The attributes to update in the stock locations.
    * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<StockLocationDTO>} The updated stock location.
+   * @returns {Promise<StockLocationDTO[]>} The updated stock locations.
    *
    * @example
    * const stockLocations =
-   *   await stockLocationModuleService.update({
-   *     id: "sloc_123",
-   *     name: "Warehouse",
-   *   })
+   *   await stockLocationModuleService.update(
+   *     {
+   *       name: "Warehouse",
+   *     },
+   *     {
+   *       address_id: "laddr_123",
+   *     }
+   *   )
    */
   update(
-    input: UpdateStockLocationNextInput,
+    selector: FilterableStockLocationProps,
+    input: UpdateStockLocationInput,
     context?: Context
-  ): Promise<StockLocationDTO>
+  ): Promise<StockLocationDTO[]>
 
   /**
    * This method deletes a stock location by its ID.
@@ -249,10 +286,22 @@ export interface IStockLocationServiceNext extends IModuleService {
   delete(id: string, context?: Context): Promise<void>
 
   /**
-   * Soft delete stock locations
-   * @param stockLocationIds
-   * @param config
-   * @param sharedContext
+   * This method soft deletes stock locations by their IDs.
+   *
+   * @param {string[]} stockLocationIds - The IDs of the stock locations.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated address.
+   * The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`, and its value is an array of strings, each being the ID of a record associated
+   * with the stock location through this relation, such as the IDs of associated address.
+   *
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await stockLocationModuleService.softDelete([
+   *   "sloc_123",
+   *   "sloc_321",
+   * ])
    */
   softDelete<TReturnableLinkableKeys extends string = string>(
     stockLocationIds: string[],
@@ -261,12 +310,24 @@ export interface IStockLocationServiceNext extends IModuleService {
   ): Promise<Record<string, string[]> | void>
 
   /**
-   * This method is used to restore a stock location or multiple stock locations that were previously deleted using the {@link softDelete} method.
+   * This method restores soft deleted stock locations by their IDs.
    *
-   * @param {string[]} stockLocationIds - The ID(s) of the stock location(s) to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Restore config
-   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the stock location(s) are successfully restored.
+   * @param {string[]} stockLocationIds - The IDs of the stock locations.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the stock location. You can pass to its `returnLinkableKeys`
+   * property any of the stock location's relation attribute names, such as `address`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated address.
+   * The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`,
+   * and its value is an array of strings, each being the ID of the record associated with the stock location through this relation,
+   * such as the ID of associated address.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await stockLocationModuleService.restore([
+   *   "sloc_123",
+   *   "sloc_321",
+   * ])
    */
   restore<TReturnableLinkableKeys extends string = string>(
     stockLocationIds: string[],

@@ -6,7 +6,7 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 

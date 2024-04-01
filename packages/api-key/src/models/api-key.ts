@@ -6,10 +6,10 @@ import {
 import {
   BeforeCreate,
   Entity,
+  Enum,
   OnInit,
   PrimaryKey,
   Property,
-  Enum,
 } from "@mikro-orm/core"
 
 const TypeIndex = createPsqlIndexStatementHelper({

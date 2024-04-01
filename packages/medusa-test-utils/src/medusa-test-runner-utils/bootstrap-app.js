@@ -1,7 +1,8 @@
 const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
-const { isObject } = require("@medusajs/utils")
+const { isObject, promiseAll } = require("@medusajs/utils")
+const { GracefulShutdownServer } = require("medusa-core-utils")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()
@@ -12,20 +13,17 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
 
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
-  const { container, dbConnection, pgConnection, disposeResources } =
-    await loaders({
-      directory: path.resolve(cwd || process.cwd()),
-      expressApp: app,
-      isTest: false,
-    })
+  const { container, shutdown } = await loaders({
+    directory: path.resolve(cwd || process.cwd()),
+    expressApp: app,
+    isTest: false,
+  })
 
   const PORT = await getPort()
 
   return {
-    disposeResources,
+    shutdown,
     container,
-    db: dbConnection,
-    pgConnection,
     app,
     port: PORT,
   }
@@ -37,10 +35,16 @@ module.exports = {
     env = {},
     skipExpressListen = false,
   } = {}) => {
-    const { app, port, container, db, pgConnection } = await bootstrapApp({
+    const {
+      app,
+      port,
+      container,
+      shutdown: medusaShutdown,
+    } = await bootstrapApp({
       cwd,
       env,
     })
+
     let expressServer
 
     if (skipExpressListen) {
@@ -48,13 +52,7 @@ module.exports = {
     }
 
     const shutdown = async () => {
-      await Promise.all([
-        container.dispose(),
-        expressServer.close(),
-        db?.destroy(),
-        pgConnection?.context?.destroy(),
-        container.dispose(),
-      ])
+      await promiseAll([expressServer.shutdown(), medusaShutdown()])
 
       if (typeof global !== "undefined" && global?.gc) {
         global.gc()
@@ -62,7 +60,7 @@ module.exports = {
     }
 
     return await new Promise((resolve, reject) => {
-      expressServer = app.listen(port, async (err) => {
+      const server = app.listen(port, async (err) => {
         if (err) {
           await shutdown()
           return reject(err)
@@ -74,6 +72,8 @@ module.exports = {
           port,
         })
       })
+
+      expressServer = GracefulShutdownServer.create(server)
     })
   },
 }

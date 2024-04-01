@@ -36,7 +36,7 @@ export const createProductsWorkflow = createWorkflow(
 
     const createdProducts = createProductsStep(productWithoutPrices)
 
-    // Note: We rely on the same order of input and output when creating products here, make sure that assumption holds
+    // Note: We rely on the same order of input and output when creating products here, ensure this always holds true
     const variantsWithAssociatedPrices = transform(
       { input, createdProducts },
       (data) => {
@@ -44,16 +44,21 @@ export const createProductsWorkflow = createWorkflow(
           .map((p, i) => {
             const inputProduct = data.input.products[i]
             return p.variants?.map((v, j) => ({
-              id: v.id,
+              ...v,
               prices: inputProduct?.variants?.[j]?.prices,
             }))
           })
           .flat()
-          .filter((v) => !!v.prices?.length)
       }
     )
 
-    const createdPriceSets = createPriceSetsStep(variantsWithAssociatedPrices)
+    const pricesToCreate = transform({ variantsWithAssociatedPrices }, (data) =>
+      data.variantsWithAssociatedPrices.map((v) => ({
+        prices: v.prices,
+      }))
+    )
+
+    const createdPriceSets = createPriceSetsStep(pricesToCreate)
 
     const variantAndPriceSets = transform(
       { variantsWithAssociatedPrices, createdPriceSets },

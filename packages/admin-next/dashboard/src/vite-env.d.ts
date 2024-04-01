@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly MEDUSA_ADMIN_BACKEND_URL: string
-  readonly VITE_MEDUSA_V2: boolean
+  readonly VITE_MEDUSA_V2: "true" | "false"
 }
 
 interface ImportMeta {
