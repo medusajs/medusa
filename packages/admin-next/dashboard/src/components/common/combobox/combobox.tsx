@@ -6,7 +6,12 @@ import {
   ComboboxList as PrimitiveComboboxList,
   ComboboxProvider as PrimitiveComboboxProvider,
 } from "@ariakit/react"
-import { EllipseMiniSolid, TrianglesMini, XMarkMini } from "@medusajs/icons"
+import {
+  EllipseMiniSolid,
+  PlusMini,
+  TrianglesMini,
+  XMarkMini,
+} from "@medusajs/icons"
 import { Text, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import { matchSorter } from "match-sorter"
@@ -21,6 +26,7 @@ import {
   useTransition,
 } from "react"
 import { useTranslation } from "react-i18next"
+
 import { genericForwardRef } from "../generic-forward-ref"
 
 type ComboboxOption = {
@@ -39,6 +45,7 @@ interface ComboboxProps<T extends Value = Value>
   options: ComboboxOption[]
   fetchNextPage?: () => void
   isFetchingNextPage?: boolean
+  onCreateOption?: (value: string) => void
 }
 
 const ComboboxImpl = <T extends Value = string>(
@@ -52,6 +59,7 @@ const ComboboxImpl = <T extends Value = string>(
     placeholder,
     fetchNextPage,
     isFetchingNextPage,
+    onCreateOption,
     ...inputProps
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -167,6 +175,16 @@ const ComboboxImpl = <T extends Value = string>(
     [isFetchingNextPage]
   )
 
+  const createOption = () => {
+    if (!onCreateOption) {
+      return
+    }
+
+    onCreateOption(uncontrolledSearchValue || "")
+    handleValueChange(uncontrolledSearchValue as T)
+    setOpen(false)
+  }
+
   const hasValue = selectedValues.length > 0
 
   const showTag = hasValue && isArrayValue
@@ -258,7 +276,6 @@ const ComboboxImpl = <T extends Value = string>(
         </Popover.Anchor>
         <Popover.Portal>
           <Popover.Content
-            asChild
             align="center"
             side="bottom"
             sideOffset={8}
@@ -307,22 +324,55 @@ const ComboboxImpl = <T extends Value = string>(
                   <div className="bg-ui-bg-component size-full h-5 w-full animate-pulse rounded-[4px]" />
                 </div>
               )}
-              {!results.length && (
-                <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-subtle"
-                  >
-                    {t("general.noResultsTitle")}
-                  </Text>
-                </div>
-              )}
+              <NoResultsDisplay
+                results={results}
+                onCreateOption={createOption}
+                searchValue={uncontrolledSearchValue}
+              />
             </PrimitiveComboboxList>
           </Popover.Content>
         </Popover.Portal>
       </PrimitiveComboboxProvider>
     </Popover.Root>
+  )
+}
+
+const NoResultsDisplay = ({
+  results,
+  onCreateOption,
+  searchValue,
+}: {
+  results: ComboboxOption[]
+  onCreateOption?: () => void
+  searchValue?: string
+}) => {
+  const { t } = useTranslation()
+
+  if (results.length) {
+    return null
+  }
+
+  if (!onCreateOption) {
+    return (
+      <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
+        <Text size="small" leading="compact" className="text-ui-fg-subtle">
+          {t("general.noResultsTitle")}
+        </Text>
+      </div>
+    )
+  }
+
+  return (
+    <button
+      onClick={onCreateOption}
+      type="button"
+      className="text-ui-fg-subtle flex items-center gap-x-2 rounded-[4px] px-2 py-1.5"
+    >
+      <PlusMini />
+      <Text size="small" leading="compact">
+        {t("actions.create")} &quot;{searchValue}&quot;
+      </Text>
+    </button>
   )
 }
 
