@@ -17,21 +17,11 @@ This method is used to create a product type.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createProductType (value: string) {
-  const productModule = await initializeProductModule()
-
-  const productTypes = await productModule.createTypes([
-    {
-      value
-    }
-  ])
-
-  // do something with the product types or return them
-}
+const productTypes = await productModuleService.createTypes([
+  {
+    value: "digital",
+  },
+])
 ```
 
 ### Parameters
@@ -49,21 +39,9 @@ This method is used to create a product type.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createType (title: string) {
-  const productModule = await initializeProductModule()
-
-  const type = await productModule.createTypes(
-    {
-      value
-    }
-  )
-
-  // do something with the product type or return them
-}
+const productType = await productModuleService.createTypes({
+  value: "digital",
+})
 ```
 
 ### Parameters

@@ -15,15 +15,10 @@ This method is used to delete collections by their ID.
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteCollection (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  await productModule.deleteCollections(ids)
-}
+await productModuleService.deleteCollections([
+  "pcol_123",
+  "pcol_321",
+])
 ```
 
 ## Parameters

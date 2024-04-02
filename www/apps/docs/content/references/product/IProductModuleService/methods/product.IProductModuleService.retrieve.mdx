@@ -17,35 +17,15 @@ This method is used to retrieve a product by its ID
 A simple example that retrieves a product by its ID:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProduct (id: string) {
-  const productModule = await initializeProductModule()
-
-  const product = await productModule.retrieve(id)
-
-  // do something with the product or return it
-}
+const product = await productModuleService.retrieve("prod_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProduct (id: string) {
-  const productModule = await initializeProductModule()
-
-  const product = await productModule.retrieve(id, {
-    relations: ["categories"]
-  })
-
-  // do something with the product or return it
-}
+const product = await productModuleService.retrieve("prod_123", {
+  relations: ["categories"],
+})
 ```
 
 ## Parameters

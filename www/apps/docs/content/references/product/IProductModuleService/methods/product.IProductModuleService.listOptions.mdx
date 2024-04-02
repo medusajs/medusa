@@ -17,90 +17,37 @@ This method is used to retrieve a paginated list of product options based on opt
 To retrieve a list of product options using their IDs:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const productOptions = await productModule.listOptions({
-    id: ids
-  })
-
-  // do something with the product options or return them
-}
+const options = await productModuleService.listOptions({
+ id: ["opt_123", "opt_321"],
+})
 ```
 
-To specify relations that should be retrieved within the product types:
+To specify relations that should be retrieved within the product options:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const productOptions = await productModule.listOptions({
-    id: ids
-  }, {
-    relations: ["product"]
-  })
-
-  // do something with the product options or return them
-}
+const options = await productModuleService.listOptions(
+  {
+    id: ["opt_123", "opt_321"],
+  },
+  {
+    relations: ["product"],
+  }
+)
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[], skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const productOptions = await productModule.listOptions({
-    id: ids
-  }, {
+const options = await productModuleService.listOptions(
+  {
+    id: ["opt_123", "opt_321"],
+  },
+  {
     relations: ["product"],
-    skip,
-    take
-  })
-
-  // do something with the product options or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[], title: string, skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const productOptions = await productModule.listOptions({
-    $and: [
-      {
-        id: ids
-      },
-      {
-        title
-      }
-    ]
-  }, {
-    relations: ["product"],
-    skip,
-    take
-  })
-
-  // do something with the product options or return them
-}
+    take: 20,
+    skip: 2,
+  }
+)
 ```
 
 ## Parameters

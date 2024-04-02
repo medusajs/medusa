@@ -14,38 +14,9 @@ This method is used to retrieve a product type by its ID.
 
 ## Example
 
-A simple example that retrieves a product type by its ID:
-
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductType (id: string) {
-  const productModule = await initializeProductModule()
-
-  const productType = await productModule.retrieveType(id)
-
-  // do something with the product type or return it
-}
-```
-
-To specify attributes that should be retrieved:
-
-```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductType (id: string) {
-  const productModule = await initializeProductModule()
-
-  const productType = await productModule.retrieveType(id, {
-    select: ["value"]
-  })
-
-  // do something with the product type or return it
-}
+const productType =
+  await productModuleService.retrieveType("ptyp_123")
 ```
 
 ## Parameters

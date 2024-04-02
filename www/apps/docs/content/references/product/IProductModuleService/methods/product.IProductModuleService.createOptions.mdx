@@ -17,21 +17,18 @@ This method is used to create product options.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createOptions (title: string) {
-  const productModule = await initializeProductModule()
-
-  const options = await productModule.createOptions([
-    {
-      title
-    }
-  ])
-
-  // do something with the product options or return them
-}
+const options = await productModuleService.createOptions([
+  {
+    title: "Color",
+    values: ["Blue", "Green"],
+    product_id: "prod_123",
+  },
+  {
+    title: "Size",
+    values: ["Small", "Medium"],
+    product_id: "prod_321",
+  },
+])
 ```
 
 ### Parameters
@@ -49,21 +46,11 @@ This method is used to create a product option.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createOption (title: string) {
-  const productModule = await initializeProductModule()
-
-  const option = await productModule.createOptions(
-    {
-      title
-    }
-  )
-
-  // do something with the product option or return them
-}
+const option = await productModuleService.createOptions({
+  title: "Color",
+  values: ["Blue", "Green"],
+  product_id: "prod_123",
+})
 ```
 
 ### Parameters

@@ -17,17 +17,10 @@ The soft-deleted variants can be restored using the [restore](product.IProductMo
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteProductVariants (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.softDeleteVariants(ids)
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.softDeleteVariants([
+  "variant_123",
+  "variant_321",
+])
 ```
 
 ## Parameters

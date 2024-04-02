@@ -17,35 +17,18 @@ This method is used to retrieve a tag by its ID.
 A simple example that retrieves a product tag by its ID:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductTag (tagId: string) {
-  const productModule = await initializeProductModule()
-
-  const productTag = await productModule.retrieveTag(tagId)
-
-  // do something with the product tag or return it
-}
+const tag = await productModuleService.retrieveTag("ptag_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductTag (tagId: string) {
-  const productModule = await initializeProductModule()
-
-  const productTag = await productModule.retrieveTag(tagId, {
-    relations: ["products"]
-  })
-
-  // do something with the product tag or return it
-}
+const tag = await productModuleService.retrieveTag(
+  "ptag_123",
+  {
+    relations: ["products"],
+  }
+)
 ```
 
 ## Parameters

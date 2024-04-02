@@ -1777,10 +1777,30 @@ npx medusa develop
     // TAX PROVIDER CONFIG
     "^tax_provider/": {
       frontmatterData: {
+        displayed_sidebar: "experimentalSidebar",
+      },
+    },
+    "^tax_provider/.*ITaxProvider": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a tax provider to use with the Tax Module, and the methods to implement.`,
+      frontmatterData: {
+        displayed_sidebar: "experimentalSidebar",
+        slug: "/modules/tax/provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Tax Provider",
+      },
+    },
+
+    // TAX SERVICE CONFIG
+    "^tax_service/": {
+      frontmatterData: {
         displayed_sidebar: "modules",
       },
     },
-    "^tax_provider/.*AbstractTaxService": {
+    "^tax_service/.*AbstractTaxService": {
       reflectionGroups: {
         Properties: false,
       },

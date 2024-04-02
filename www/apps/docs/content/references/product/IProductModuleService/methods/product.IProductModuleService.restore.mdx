@@ -15,19 +15,7 @@ This method is used to restore products which were deleted using the [softDelete
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function restoreProducts (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.restore(ids, {
-    returnLinkableKeys: ["variant_id"]
-  })
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.restore(["prod_123", "prod_321"])
 ```
 
 ## Parameters

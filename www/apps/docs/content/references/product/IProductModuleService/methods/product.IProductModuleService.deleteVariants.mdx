@@ -15,15 +15,10 @@ This method is used to delete ProductVariant. This method will completely remove
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteProducts (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  await productModule.deleteVariants(ids)
-}
+await productModuleService.deleteVariants([
+  "variant_123",
+  "variant_321",
+])
 ```
 
 ## Parameters

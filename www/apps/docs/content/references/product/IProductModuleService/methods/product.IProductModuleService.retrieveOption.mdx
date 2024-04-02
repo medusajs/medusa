@@ -17,35 +17,19 @@ This method is used to retrieve a product option by its ID.
 A simple example that retrieves a product option by its ID:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOption (id: string) {
-  const productModule = await initializeProductModule()
-
-  const productOption = await productModule.retrieveOption(id)
-
-  // do something with the product option or return it
-}
+const option =
+  await productModuleService.retrieveOption("opt_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOption (id: string) {
-  const productModule = await initializeProductModule()
-
-  const productOption = await productModule.retrieveOption(id, {
-    relations: ["product"]
-  })
-
-  // do something with the product option or return it
-}
+const option = await productModuleService.retrieveOption(
+  "opt_123",
+  {
+    relations: ["product"],
+  }
+)
 ```
 
 ## Parameters

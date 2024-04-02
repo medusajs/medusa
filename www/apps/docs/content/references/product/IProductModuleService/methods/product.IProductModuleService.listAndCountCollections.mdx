@@ -17,90 +17,40 @@ This method is used to retrieve a paginated list of product collections along wi
 To retrieve a list of product collections using their IDs:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollections (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const [collections, count] = await productModule.listAndCountCollections({
-    id: ids
+const [collections, count] =
+  await productModuleService.listAndCountCollections({
+    id: ["pcol_123", "pcol_321"],
   })
-
-  // do something with the product collections or return them
-}
 ```
 
 To specify relations that should be retrieved within the product collections:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollections (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const [collections, count] = await productModule.listAndCountCollections({
-    id: ids
-  }, {
-    relations: ["products"]
-  })
-
-  // do something with the product collections or return them
-}
+const [collections, count] =
+  await productModuleService.listAndCountCollections(
+    {
+      id: ["pcol_123", "pcol_321"],
+    },
+    {
+      relations: ["products"],
+    }
+  )
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollections (ids: string[], skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const [collections, count] = await productModule.listAndCountCollections({
-    id: ids
-  }, {
-    relations: ["products"],
-    skip,
-    take
-  })
-
-  // do something with the product collections or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollections (ids: string[], title: string, skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const [collections, count] = await productModule.listAndCountCollections({
-    $and: [
-      {
-        id: ids
-      },
-      {
-        title
-      }
-    ]
-  }, {
-    relations: ["products"],
-    skip,
-    take
-  })
-
-  // do something with the product collections or return them
-}
+const [collections, count] =
+  await productModuleService.listAndCountCollections(
+    {
+      id: ["pcol_123", "pcol_321"],
+    },
+    {
+      relations: ["products"],
+      take: 20,
+      skip: 2,
+    }
+  )
 ```
 
 ## Parameters

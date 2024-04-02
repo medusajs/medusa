@@ -17,90 +17,40 @@ This method is used to retrieve a paginated list of product options along with t
 To retrieve a list of product options using their IDs:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const [productOptions, count] = await productModule.listAndCountOptions({
-    id: ids
+const [options, count] =
+  await productModuleService.listAndCountOptions({
+    id: ["opt_123", "opt_321"],
   })
-
-  // do something with the product options or return them
-}
 ```
 
 To specify relations that should be retrieved within the product types:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const [productOptions, count] = await productModule.listAndCountOptions({
-    id: ids
-  }, {
-    relations: ["product"]
-  })
-
-  // do something with the product options or return them
-}
+const [options, count] =
+  await productModuleService.listAndCountOptions(
+    {
+      id: ["opt_123", "opt_321"],
+    },
+    {
+      relations: ["product"],
+    }
+  )
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[], skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const [productOptions, count] = await productModule.listAndCountOptions({
-    id: ids
-  }, {
-    relations: ["product"],
-    skip,
-    take
-  })
-
-  // do something with the product options or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductOptions (ids: string[], title: string, skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const [productOptions, count] = await productModule.listAndCountOptions({
-    $and: [
-      {
-        id: ids
-      },
-      {
-        title
-      }
-    ]
-  }, {
-    relations: ["product"],
-    skip,
-    take
-  })
-
-  // do something with the product options or return them
-}
+const [options, count] =
+  await productModuleService.listAndCountOptions(
+    {
+      id: ["opt_123", "opt_321"],
+    },
+    {
+      relations: ["product"],
+      take: 20,
+      skip: 2,
+    }
+  )
 ```
 
 ## Parameters

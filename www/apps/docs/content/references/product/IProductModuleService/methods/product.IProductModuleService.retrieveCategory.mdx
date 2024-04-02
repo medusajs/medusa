@@ -17,35 +17,19 @@ This method is used to retrieve a product category by its ID.
 A simple example that retrieves a product category by its ID:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCategory (id: string) {
-  const productModule = await initializeProductModule()
-
-  const category = await productModule.retrieveCategory(id)
-
-  // do something with the product category or return it
-}
+const category =
+  await productModuleService.retrieveCategory("pcat_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCategory (id: string) {
-  const productModule = await initializeProductModule()
-
-  const category = await productModule.retrieveCategory(id, {
-    relations: ["parent_category"]
-  })
-
-  // do something with the product category or return it
-}
+const category = await productModuleService.retrieveCategory(
+  "pcat_123",
+  {
+    relations: ["products"],
+  }
+)
 ```
 
 ## Parameters

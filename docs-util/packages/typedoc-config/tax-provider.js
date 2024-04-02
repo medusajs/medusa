@@ -2,8 +2,7 @@
 const getConfig = require("./utils/get-config")
 
 module.exports = getConfig({
-  entryPointPath: "packages/medusa/src/interfaces/tax-service.ts",
-  tsConfigName: "medusa.json",
+  entryPointPath: "packages/types/src/tax/provider.ts",
+  tsConfigName: "types.json",
   name: "tax-provider",
-  parentIgnore: true,
 })

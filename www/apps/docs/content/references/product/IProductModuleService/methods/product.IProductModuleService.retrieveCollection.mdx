@@ -17,35 +17,17 @@ This method is used to retrieve a product collection by its ID.
 A simple example that retrieves a product collection by its ID:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollection (id: string) {
-  const productModule = await initializeProductModule()
-
-  const collection = await productModule.retrieveCollection(id)
-
-  // do something with the product collection or return it
-}
+const collection =
+  await productModuleService.retrieveCollection("pcol_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveCollection (id: string) {
-  const productModule = await initializeProductModule()
-
-  const collection = await productModule.retrieveCollection(id, {
-    relations: ["products"]
+const collection =
+  await productModuleService.retrieveCollection("pcol_123", {
+    relations: ["products"],
   })
-
-  // do something with the product collection or return it
-}
 ```
 
 ## Parameters

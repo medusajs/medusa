@@ -15,19 +15,12 @@ This method is used to update a product category by its ID.
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function updateCategory (id: string, name: string) {
-  const productModule = await initializeProductModule()
-
-  const category = await productModule.updateCategory(id, {
-    name,
-  })
-
-  // do something with the product category or return it
-}
+const category = await productModuleService.updateCategory(
+  "pcat_123",
+  {
+    name: "Shirts",
+  }
+)
 ```
 
 ## Parameters

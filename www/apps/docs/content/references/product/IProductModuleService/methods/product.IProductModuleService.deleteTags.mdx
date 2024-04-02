@@ -15,16 +15,10 @@ This method is used to delete product tags by their ID.
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteProductTags (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  await productModule.deleteTags(ids)
-
-}
+await productModuleService.deleteTags([
+  "ptag_123",
+  "ptag_321",
+])
 ```
 
 ## Parameters

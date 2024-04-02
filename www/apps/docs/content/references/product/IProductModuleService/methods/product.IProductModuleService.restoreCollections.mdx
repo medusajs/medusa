@@ -15,19 +15,10 @@ This method is used to restore collections which were deleted using the [softDel
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function restoreCollections (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.restoreCollections(ids, {
-    returnLinkableKeys: []
-  })
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.restoreCollections([
+  "pcol_123",
+  "pcol_321",
+])
 ```
 
 ## Parameters

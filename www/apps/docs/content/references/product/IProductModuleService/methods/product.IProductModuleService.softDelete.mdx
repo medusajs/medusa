@@ -17,17 +17,10 @@ The soft-deleted products can be restored using the [restore](product.IProductMo
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteProducts (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.softDelete(ids)
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.softDelete([
+  "prod_123",
+  "prod_321",
+])
 ```
 
 ## Parameters

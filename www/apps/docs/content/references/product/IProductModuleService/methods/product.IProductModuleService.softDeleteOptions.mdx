@@ -17,17 +17,10 @@ The soft-deleted options can be restored using the [restore](product.IProductMod
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteOptions (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.softDeleteOptions(ids)
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.softDeleteOptions([
+  "opt_123",
+  "opt_321",
+])
 ```
 
 ## Parameters

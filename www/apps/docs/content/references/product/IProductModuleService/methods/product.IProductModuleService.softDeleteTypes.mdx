@@ -1,8 +1,5 @@
 ---
 displayed_sidebar: productReference
-badge:
-  variant: orange
-  text: Beta
 slug: /references/product/softDeleteTypes
 sidebar_label: softDeleteTypes
 ---
@@ -20,17 +17,10 @@ The soft-deleted types can be restored using the [restore](product.IProductModul
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteTypes (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.softDeleteTypes(ids)
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.softDeleteTypes([
+  "ptyp_123",
+  "ptyp_321",
+])
 ```
 
 ## Parameters

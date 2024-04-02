@@ -17,21 +17,15 @@ This method is used to create product collections.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createCollections (title: string) {
-  const productModule = await initializeProductModule()
-
-  const collections = await productModule.createCollections([
+const collections =
+  await productModuleService.createCollections([
     {
-      title
-    }
+      title: "Summer Collection",
+    },
+    {
+      title: "Winter Collection",
+    },
   ])
-
-  // do something with the product collections or return them
-}
 ```
 
 ### Parameters
@@ -49,21 +43,10 @@ This method is used to create a product collection.
 ### Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createCollection (title: string) {
-  const productModule = await initializeProductModule()
-
-  const collection = await productModule.createCollections(
-    {
-      title
-    }
-  )
-
-  // do something with the product collection or return them
-}
+const collection =
+  await productModuleService.createCollections({
+    title: "Summer Collection",
+  })
 ```
 
 ### Parameters

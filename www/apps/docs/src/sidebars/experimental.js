@@ -838,6 +838,11 @@ module.exports = {
         },
         {
           type: "ref",
+          id: "references/tax_provider/interfaces/tax_provider.ITaxProvider.mdx",
+          label: "Tax Provider Reference",
+        },
+        {
+          type: "ref",
           id: "references/tax/interfaces/tax.ITaxModuleService",
           label: "Interface Reference",
         },

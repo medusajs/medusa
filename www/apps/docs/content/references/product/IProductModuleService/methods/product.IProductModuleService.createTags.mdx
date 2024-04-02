@@ -15,21 +15,14 @@ This method is used to create product tags.
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function createProductTags (values: string[]) {
-  const productModule = await initializeProductModule()
-
-  const productTags = await productModule.createTags(
-    values.map((value) => ({
-      value
-    }))
-  )
-
-  // do something with the product tags or return them
-}
+const tags = await productModuleService.createTags([
+  {
+    value: "Clothes",
+  },
+  {
+    value: "Accessories",
+  },
+])
 ```
 
 ## Parameters

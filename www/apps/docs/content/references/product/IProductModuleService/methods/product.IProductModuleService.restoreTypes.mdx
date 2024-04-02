@@ -1,8 +1,5 @@
 ---
 displayed_sidebar: productReference
-badge:
-  variant: orange
-  text: Beta
 slug: /references/product/restoreTypes
 sidebar_label: restoreTypes
 ---
@@ -18,19 +15,10 @@ This method is used to restore types which were deleted using the [softDelete](p
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function restoreTypes (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.restoreTypes(ids, {
-    returnLinkableKeys: []
-  })
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.restoreTypes([
+  "ptyp_123",
+  "ptyp_321",
+])
 ```
 
 ## Parameters

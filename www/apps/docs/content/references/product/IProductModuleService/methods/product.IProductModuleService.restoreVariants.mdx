@@ -15,19 +15,10 @@ This method is used to restore variants which were deleted using the [softDelete
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function restoreVariants (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const cascadedEntities = await productModule.restoreVariants(ids, {
-    returnLinkableKeys: ["option_value_id"]
-  })
-
-  // do something with the returned cascaded entity IDs or return them
-}
+await productModuleService.restoreVariants([
+  "variant_123",
+  "variant_321",
+])
 ```
 
 ## Parameters

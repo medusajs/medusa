@@ -397,6 +397,109 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
+							},
+							{
+								"kind": "code",
+								"text": "`auth_cors`"
+							},
+							{
+								"kind": "text",
+								"text": " is a string used to specify the accepted URLs or patterns for API Routes starting with "
+							},
+							{
+								"kind": "code",
+								"text": "`/auth`"
+							},
+							{
+								"kind": "text",
+								"text": ". It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+							},
+							{
+								"kind": "code",
+								"text": "`http://localhost:7001`"
+							},
+							{
+								"kind": "text",
+								"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
+							},
+							{
+								"kind": "code",
+								"text": "`.example.com`"
+							},
+							{
+								"kind": "text",
+								"text": ". The regex pattern that the backend tests for is "
+							},
+							{
+								"kind": "code",
+								"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Some example values of common use cases:\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```bash\n# Allow different ports locally starting with 700\nAUTH_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nAUTH_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nAUTH_CORS=/http://.+/\n```"
+									},
+									{
+										"kind": "text",
+										"text": "\n\nThen, set the configuration in "
+									},
+									{
+										"kind": "code",
+										"text": "`medusa-config.js`"
+									},
+									{
+										"kind": "text",
+										"text": ":\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: process.env.AUTH_CORS,\n    // ...\n  },\n  // ...\n}\n```"
+									},
+									{
+										"kind": "text",
+										"text": "\n\nIf you’re adding the value directly within "
+									},
+									{
+										"kind": "code",
+										"text": "`medusa-config.js`"
+									},
+									{
+										"kind": "text",
+										"text": ", make sure to add an extra escaping "
+									},
+									{
+										"kind": "code",
+										"text": "`/`"
+									},
+									{
+										"kind": "text",
+										"text": " for every backslash in the pattern. For example:\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"

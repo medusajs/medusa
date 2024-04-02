@@ -6,6 +6,6 @@ import TypeList from "@site/src/components/TypeList"
 
 # UpsertProductTagDTO
 
-The data to update in a product tag. The `id` is used to identify which product tag to update.
+A product tag to create or update.
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the product tag to update.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product tag.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="UpsertProductTagDTO"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the product tag to update. If not provided, the tag\nis created. In that case, the `value` property is required.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product tag.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="UpsertProductTagDTO"/>

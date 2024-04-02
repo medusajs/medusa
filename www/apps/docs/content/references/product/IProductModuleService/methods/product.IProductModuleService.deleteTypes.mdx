@@ -15,15 +15,10 @@ This method is used to delete a product type.
 ## Example
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function deleteProductTypes (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  await productModule.deleteTypes(ids)
-}
+await productModuleService.deleteTypes([
+  "ptyp_123",
+  "ptyp_321",
+])
 ```
 
 ## Parameters
