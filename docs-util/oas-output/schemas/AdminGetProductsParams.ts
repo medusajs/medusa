@@ -48,6 +48,13 @@
  *       type: string
  *       title: price_list_id
  *       description: The price list id's details.
+ *   sales_channel_id:
+ *     type: array
+ *     description: The product's sales channel id.
+ *     items:
+ *       type: string
+ *       title: sales_channel_id
+ *       description: The sales channel id's details.
  *   collection_id:
  *     type: array
  *     description: The product's collection id.
@@ -6377,6 +6384,13 @@
  *             type: string
  *             title: price_list_id
  *             description: The price list id's details.
+ *         sales_channel_id:
+ *           type: array
+ *           description: The $and's sales channel id.
+ *           items:
+ *             type: string
+ *             title: sales_channel_id
+ *             description: The sales channel id's details.
  *         collection_id:
  *           type: array
  *           description: The $and's collection id.
@@ -7081,6 +7095,13 @@
  *                   type: string
  *                   title: price_list_id
  *                   description: The price list id's details.
+ *               sales_channel_id:
+ *                 type: array
+ *                 description: The $and's sales channel id.
+ *                 items:
+ *                   type: string
+ *                   title: sales_channel_id
+ *                   description: The sales channel id's details.
  *               collection_id:
  *                 type: array
  *                 description: The $and's collection id.
@@ -7206,6 +7227,13 @@
  *                   type: string
  *                   title: price_list_id
  *                   description: The price list id's details.
+ *               sales_channel_id:
+ *                 type: array
+ *                 description: The $or's sales channel id.
+ *                 items:
+ *                   type: string
+ *                   title: sales_channel_id
+ *                   description: The sales channel id's details.
  *               collection_id:
  *                 type: array
  *                 description: The $or's collection id.
@@ -7351,6 +7379,13 @@
  *             type: string
  *             title: price_list_id
  *             description: The price list id's details.
+ *         sales_channel_id:
+ *           type: array
+ *           description: The $or's sales channel id.
+ *           items:
+ *             type: string
+ *             title: sales_channel_id
+ *             description: The sales channel id's details.
  *         collection_id:
  *           type: array
  *           description: The $or's collection id.
@@ -8055,6 +8090,13 @@
  *                   type: string
  *                   title: price_list_id
  *                   description: The price list id's details.
+ *               sales_channel_id:
+ *                 type: array
+ *                 description: The $and's sales channel id.
+ *                 items:
+ *                   type: string
+ *                   title: sales_channel_id
+ *                   description: The sales channel id's details.
  *               collection_id:
  *                 type: array
  *                 description: The $and's collection id.
@@ -8180,6 +8222,13 @@
  *                   type: string
  *                   title: price_list_id
  *                   description: The price list id's details.
+ *               sales_channel_id:
+ *                 type: array
+ *                 description: The $or's sales channel id.
+ *                 items:
+ *                   type: string
+ *                   title: sales_channel_id
+ *                   description: The sales channel id's details.
  *               collection_id:
  *                 type: array
  *                 description: The $or's collection id.

@@ -82,6 +82,13 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   price_list_id?: string[]
 
   /**
+   * Filter products by associated sales channel IDs.
+   */
+  @IsOptional()
+  @IsArray()
+  sales_channel_id?: string[]
+
+  /**
    * Filter products by their associated product collection's ID.
    */
   @IsArray()
@@ -106,12 +113,6 @@ export class AdminGetProductsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsObject()
   variants?: Record<any, any>
-
-  // /**
-  //  * Filter products by their associated sales channels' ID.
-  //  */
-  // @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
-  // sales_channel_id?: string[]
 
   // /**
   //  * Filter products by their associated discount condition's ID.
@@ -286,9 +287,8 @@ export class AdminPostProductsReq {
   status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
@@ -399,9 +399,8 @@ export class AdminPostProductsProductReq {
   status?: ProductStatus
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
@@ -647,7 +646,8 @@ export class AdminPostProductsProductOptionsOptionReq {
 // eslint-disable-next-line max-len
 export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
   @IsString()
-  id: string
+  @IsOptional()
+  id?: string
 }
 
 export class ProductTagReq {

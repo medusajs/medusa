@@ -25,6 +25,18 @@ export interface AdminGetVariantsParams {
    */
   limit?: number
   /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  order?: string
+  /**
+   * Filter product variants by whether their inventory is managed or not.
+   */
+  manage_inventory?: boolean
+  /**
+   * Filter product variants by whether they are allowed to be backordered or not.
+   */
+  allow_backorder?: boolean
+  /**
    * The ID of the cart to use for the price selection context.
    */
   cart_id?: string

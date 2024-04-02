@@ -4,10 +4,10 @@ import {
 } from "../../../../factories"
 
 import { IPricingModuleService } from "@medusajs/types"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -98,16 +98,16 @@ medusaIntegrationTestRunner({
         const res = await api.post(`admin/price-lists`, data, adminHeaders)
 
         const priceListId = res.data.price_list.id
-        let psmas = await pricingModuleService.listPriceSetMoneyAmounts(
+        let prices = await pricingModuleService.listPrices(
           {
             price_list_id: [priceListId],
           },
-          { relations: ["money_amount"] }
+          {}
         )
 
-        expect(psmas.length).toEqual(2)
+        expect(prices.length).toEqual(2)
 
-        const deletePrice = psmas[0].money_amount
+        const deletePrice = prices[0]
         const deleteRes = await api.delete(
           `/admin/price-lists/${priceListId}/prices/batch`,
           {
@@ -119,10 +119,10 @@ medusaIntegrationTestRunner({
         )
         expect(deleteRes.status).toEqual(200)
 
-        psmas = await pricingModuleService.listPriceSetMoneyAmounts({
+        prices = await pricingModuleService.listPrices({
           price_list_id: [priceListId],
         })
-        expect(psmas.length).toEqual(1)
+        expect(prices.length).toEqual(1)
       })
     })
   },

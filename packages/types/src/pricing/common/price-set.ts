@@ -1,12 +1,12 @@
 import { BaseFilterable } from "../../dal"
-import { CreatePriceSetPriceRules } from "./price-list"
+import { Context } from "../../shared-context"
 import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,
   MoneyAmountDTO,
 } from "./money-amount"
+import { CreatePriceSetPriceRules } from "./price-list"
 import { RuleTypeDTO } from "./rule-type"
-import { Context } from "../../shared-context"
 
 export interface PricingRepositoryService {
   calculatePrices(
@@ -55,7 +55,7 @@ export interface PriceSetDTO {
   /**
    * The prices that belong to this price set.
    */
-  money_amounts?: MoneyAmountDTO[]
+  prices?: MoneyAmountDTO[]
   /**
    * The rule types applied on this price set.
    */
@@ -145,9 +145,9 @@ export interface CalculatedPriceSet {
    */
   calculated_price?: {
     /**
-     * The ID of the money amount selected as the calculated price.
+     * The ID of the price selected as the calculated price.
      */
-    money_amount_id: string | null
+    id: string | null
     /**
      * The ID of the associated price list, if any.
      */
@@ -157,11 +157,11 @@ export interface CalculatedPriceSet {
      */
     price_list_type: string | null
     /**
-     * The `min_quantity` field defined on a money amount.
+     * The `min_quantity` field defined on a price.
      */
     min_quantity: number | null
     /**
-     * The `max_quantity` field defined on a money amount.
+     * The `max_quantity` field defined on a price.
      */
     max_quantity: number | null
   }
@@ -171,9 +171,9 @@ export interface CalculatedPriceSet {
    */
   original_price?: {
     /**
-     * The ID of the money amount selected as the original price.
+     * The ID of the price selected as the original price.
      */
-    money_amount_id: string | null
+    id: string | null
     /**
      * The ID of the associated price list, if any.
      */
@@ -183,11 +183,11 @@ export interface CalculatedPriceSet {
      */
     price_list_type: string | null
     /**
-     * The `min_quantity` field defined on a money amount.
+     * The `min_quantity` field defined on a price.
      */
     min_quantity: number | null
     /**
-     * The `max_quantity` field defined on a money amount.
+     * The `max_quantity` field defined on a price.
      */
     max_quantity: number | null
   }
@@ -282,13 +282,34 @@ export interface CreatePriceSetDTO {
 /**
  * @interface
  *
+ * The data to upsert in a price set. The `id` is used in the case we are doing an update.
+ */
+export interface UpsertPriceSetDTO extends UpdatePriceSetDTO {
+  /**
+   * A string indicating the ID of the price set to update.
+   */
+  id?: string
+}
+
+/**
+ * @interface
+ *
  * The data to update in a price set. The `id` is used to identify which price set to update.
  */
 export interface UpdatePriceSetDTO {
   /**
-   * A string indicating the ID of the price set to update.
+   * The rules to associate with the price set.
    */
-  id: string
+  rules?: {
+    /**
+     * the value of the rule's `rule_attribute` attribute.
+     */
+    rule_attribute: string
+  }[]
+  /**
+   * The prices to create and add to this price set.
+   */
+  prices?: CreatePricesDTO[]
 }
 
 /**

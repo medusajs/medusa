@@ -78,11 +78,6 @@ export class AdminCreateInviteRequest {
 }
 
 /**
- * Details of the use accepting the invite.
- */
-export class AdminPostInvitesInviteAcceptUserReq {}
-
-/**
  * @schema AdminPostInvitesInviteAcceptReq
  * type: object
  * description: "The details of the invite to be accepted."
@@ -113,6 +108,12 @@ export class AdminPostInvitesInviteAcceptUserReq {}
  *         format: password
  */
 export class AdminPostInvitesInviteAcceptReq {
+  /**
+   * If email is not passed, we default to using the email of the invite.
+   */
+  @IsString()
+  @IsOptional()
+  email: string
   /**
    * The invite's first name.
    */

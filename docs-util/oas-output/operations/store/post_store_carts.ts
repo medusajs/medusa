@@ -67,8 +67,7 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/CreateCartWorkflowInput"
+ *       schema: {}
  * 
 */
 

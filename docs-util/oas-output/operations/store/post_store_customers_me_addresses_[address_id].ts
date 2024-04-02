@@ -73,8 +73,7 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/CustomerAddress"
+ *       schema: {}
  * 
 */
 

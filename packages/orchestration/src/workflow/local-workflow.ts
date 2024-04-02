@@ -5,6 +5,7 @@ import {
   MedusaModuleType,
   createMedusaContainer,
   isDefined,
+  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -348,17 +349,16 @@ export class LocalWorkflow {
   }
 
   async cancel(
-    uniqueTransactionId: string,
+    transactionOrTransactionId: string | DistributedTransaction,
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ) {
     this.medusaContext = context
     const { orchestrator } = this.workflow
 
-    const transaction = await this.getRunningTransaction(
-      uniqueTransactionId,
-      context
-    )
+    const transaction = isString(transactionOrTransactionId)
+      ? await this.getRunningTransaction(transactionOrTransactionId, context)
+      : transactionOrTransactionId
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,
