@@ -108,6 +108,7 @@ export async function loadInternalModule(
           container: localContainer,
           logger,
           options: resolution.options,
+          dataLoaderOnly: loaderOnly,
         },
         resolution.moduleDeclaration as InternalModuleDeclaration
       )

@@ -3,7 +3,11 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModulesSdkUtils,
+  promiseAll
+} from "@medusajs/utils";
 
 export interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
@@ -29,8 +33,6 @@ export async function initModules({
   preventConnectionDestroyWarning = false,
 }: InitModulesOptions) {
   const { MedusaApp, MedusaModule } = await import("@medusajs/modules-sdk")
-  const { ContainerRegistrationKeys, ModulesSdkUtils, promiseAll } =
-    await import("@medusajs/utils")
 
   injectedDependencies ??= {}
 
