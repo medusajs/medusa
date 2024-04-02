@@ -16,6 +16,10 @@ export const associateApiKeysWithSalesChannelsStep = createStep(
   async (input: StepInput, { container }) => {
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
+    if (!input.links) {
+      return
+    }
+
     const links = input.links
       .map((link) => {
         return link.sales_channel_ids.map((id) => {
