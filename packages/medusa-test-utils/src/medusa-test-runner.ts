@@ -34,6 +34,10 @@ const dbTestUtilFactory = (): any => ({
     schema,
   }: { forceDelete?: string[]; schema?: string } = {}) {
     forceDelete ??= []
+    if (!this.db_) {
+      return
+    }
+
     const manager = this.db_.manager
 
     schema ??= "public"
@@ -150,14 +154,18 @@ export function medusaIntegrationTestRunner({
     let pgConnectionRes
 
     try {
-      const { dbDataSource: dataSourceRes, pgConnection: pgConnectionRes } = await initDb({
-        cwd,
-        env,
-        force_modules_migration,
-        database_extra: {},
-        dbUrl: dbConfig.clientUrl,
-        dbSchema: dbConfig.schema,
-      })
+      const { dbDataSource, pgConnection } =
+        await initDb({
+          cwd,
+          env,
+          force_modules_migration,
+          database_extra: {},
+          dbUrl: dbConfig.clientUrl,
+          dbSchema: dbConfig.schema,
+        })
+
+      dataSourceRes = dbDataSource
+      pgConnectionRes = pgConnection
     } catch (error) {
       console.error("Error initializing database", error)
     }
@@ -170,13 +178,17 @@ export function medusaIntegrationTestRunner({
     let portRes
     try {
       const {
-        shutdown: serverShutdownRes,
-        container: containerRes,
-        port: portRes,
+        shutdown = () => void 0,
+        container = createMedusaContainer({}),
+        port,
       } = await startBootstrapApp({
         cwd,
         env,
       })
+
+      containerRes = container
+      serverShutdownRes = shutdown
+      portRes = port
     } catch (error) {
       console.error("Error starting the app", error)
     }
