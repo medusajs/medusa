@@ -250,6 +250,11 @@ export const v1Routes: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/products/product-edit-variant"),
                   },
+                  {
+                    path: "organization",
+                    lazy: () =>
+                      import("../../routes/products/product-organization"),
+                  },
                 ],
               },
             ],
