@@ -62,4 +62,9 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/sales-channels/:id/products/batch/add",
     middlewares: [transformBody(AdminPostSalesChannelsChannelProductsBatchReq)],
   },
+  {
+    method: ["POST"],
+    matcher: "/admin/sales-channels/:id/products/batch/remove",
+    middlewares: [transformBody(AdminPostSalesChannelsChannelProductsBatchReq)],
+  },
 ]
