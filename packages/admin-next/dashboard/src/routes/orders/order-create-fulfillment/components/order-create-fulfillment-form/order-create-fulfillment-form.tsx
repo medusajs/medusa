@@ -184,7 +184,8 @@ export function OrderCreateFulfillmentForm({
                     >
                       {form.formState.errors.root.message}
                       <Button
-                        variant="ghost"
+                        variant="transparent"
+                        size="small"
                         type="button"
                         onClick={resetItems}
                       >
