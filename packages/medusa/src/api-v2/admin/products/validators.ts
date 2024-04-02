@@ -287,9 +287,8 @@ export class AdminPostProductsReq {
   status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
@@ -400,9 +399,8 @@ export class AdminPostProductsProductReq {
   status?: ProductStatus
 
   @IsOptional()
-  @Type(() => ProductTypeReq)
-  @ValidateNested()
-  type?: ProductTypeReq
+  @IsString()
+  type_id?: string
 
   @IsOptional()
   @IsString()
@@ -648,7 +646,8 @@ export class AdminPostProductsProductOptionsOptionReq {
 // eslint-disable-next-line max-len
 export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
   @IsString()
-  id: string
+  @IsOptional()
+  id?: string
 }
 
 export class ProductTagReq {
