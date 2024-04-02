@@ -148,7 +148,6 @@ export const v2Routes: RouteObject[] = [
             children: [
               {
                 path: "",
-
                 lazy: () => import("../../v2-routes/users/user-list"),
                 children: [
                   {
