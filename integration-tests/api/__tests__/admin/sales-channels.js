@@ -406,6 +406,48 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      it("should successfully delete channel associations", async () => {
+        await breaking(null, async () => {
+          const remoteLink = container.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          console.warn("testing")
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: "test-channel",
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: "test-location",
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: "test-channel-default",
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: "test-location",
+              },
+            },
+          ])
+
+          await api
+            .delete(`/admin/sales-channels/test-channel`, adminReqConfig)
+            .catch(console.log)
+
+          const linkService = remoteLink.getLinkModule(
+            Modules.SALES_CHANNEL,
+            "sales_channel_id",
+            Modules.STOCK_LOCATION,
+            "stock_location_id"
+          )
+
+          const channelLinks = await linkService.list()
+          expect(channelLinks).toHaveLength(1)
+        })
+      })
     })
 
     describe("GET /admin/orders/:id", () => {

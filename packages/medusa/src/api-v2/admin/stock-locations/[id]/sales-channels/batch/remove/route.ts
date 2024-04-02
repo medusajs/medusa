@@ -8,7 +8,7 @@ import {
 } from "../../../../../../../types/routing"
 
 import { AdminStockLocationsLocationSalesChannelBatchReq } from "../../../../validators"
-import { removeLocationsToSalesChannelWorkflow } from "@medusajs/core-flows"
+import { removeLocationsFromSalesChannelWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
   req: MedusaRequest<AdminStockLocationsLocationSalesChannelBatchReq>,
@@ -21,12 +21,12 @@ export const POST = async (
     })),
   }
 
-  const { errors } = await removeLocationsToSalesChannelWorkflow(req.scope).run(
-    {
-      input: workflowInput,
-      throwOnError: false,
-    }
-  )
+  const { errors } = await removeLocationsFromSalesChannelWorkflow(
+    req.scope
+  ).run({
+    input: workflowInput,
+    throwOnError: false,
+  })
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
