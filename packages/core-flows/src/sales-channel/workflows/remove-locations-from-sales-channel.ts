@@ -1,16 +1,6 @@
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
-import { DeleteEntityInput, Modules, RemoteLink } from "@medusajs/modules-sdk"
-import {
-  StepResponse,
-  WorkflowData,
-  createStep,
-  createWorkflow,
-  transform,
-} from "@medusajs/workflows-sdk"
+import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 
-import { SalesChannelDTO } from "@medusajs/types"
 import { removeLocationsFromSalesChannelStep } from "../steps"
-import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 
 interface WorkflowInput {
   data: {

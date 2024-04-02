@@ -100,16 +100,19 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     return this.primaryKey_.concat(this.foreignKey_).includes(name)
   }
 
-  private validateFields(data: any) {
-    const keys = Object.keys(data)
-    if (!keys.every((k) => this.isValidKeyName(k))) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Invalid field name provided. Valid field names are ${this.primaryKey_.concat(
-          this.foreignKey_
-        )}`
-      )
-    }
+  private validateFields(data: any | any[]) {
+    const dataToValidate = Array.isArray(data) ? data : [data]
+    dataToValidate.forEach((d) => {
+      const keys = Object.keys(d)
+      if (!keys.every((k) => this.isValidKeyName(k))) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid field name provided. Valid field names are ${this.primaryKey_.concat(
+            this.foreignKey_
+          )}`
+        )
+      }
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -277,9 +280,8 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     const inputArray = Array.isArray(data) ? data : [data]
-    inputArray.forEach((element) => {
-      this.validateFields(element)
-    })
+
+    this.validateFields(inputArray)
 
     let [deletedEntities, cascadedEntitiesMap] = await this.softDelete_(
       inputArray,
@@ -339,9 +341,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     const inputArray = Array.isArray(data) ? data : [data]
-    inputArray.forEach((element) => {
-      this.validateFields(element)
-    })
+    this.validateFields(inputArray)
 
     let [restoredEntities, cascadedEntitiesMap] = await this.restore_(
       inputArray,
