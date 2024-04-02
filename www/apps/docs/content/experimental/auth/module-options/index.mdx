@@ -218,3 +218,11 @@ GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
 GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 GOOGLE_SUCCESS_REDIRECT_URL=<YOUR_GOOGLE_SUCCESS_REDIRECT_URL>
 ```
+
+---
+
+## Auth CORS
+
+The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `auth_cors` configuration. So, before using these routes, make sure to set that configuration.
+
+Refer to [Medusa's configuration guide](../../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#auth_cors) for more details.
