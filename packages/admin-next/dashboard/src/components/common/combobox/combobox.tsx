@@ -323,6 +323,7 @@ const ComboboxImpl = <T extends Value = string>(
       </PrimitiveComboboxProvider>
       {open && (
         <div
+          tabIndex={-1}
           aria-hidden="true"
           data-aria-hidden="true"
           data-state="open"
