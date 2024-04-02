@@ -166,7 +166,8 @@ export function medusaIntegrationTestRunner({
       dataSourceRes = dbDataSource
       pgConnectionRes = pgConnection
     } catch (error) {
-      console.error("Error initializing database", error)
+      console.error("Error initializing database", error?.message)
+      throw error
     }
 
     dbUtils.db_ = dataSourceRes
@@ -189,7 +190,8 @@ export function medusaIntegrationTestRunner({
       serverShutdownRes = shutdown
       portRes = port
     } catch (error) {
-      console.error("Error starting the app", error)
+      console.error("Error starting the app", error?.message)
+      throw error
     }
 
     const cancelTokenSource = axios.CancelToken.source()
@@ -224,7 +226,8 @@ export function medusaIntegrationTestRunner({
           container: copiedContainer,
         })
       } catch (error) {
-        console.error("Error runner medusa loaders", error)
+        console.error("Error runner medusa loaders", error?.message)
+        throw error
       }
     }
 
@@ -236,7 +239,8 @@ export function medusaIntegrationTestRunner({
         configModule: container.resolve("configModule"),
       })
     } catch (error) {
-      console.error("Error runner modules loaders", error)
+      console.error("Error runner modules loaders", error?.message)
+      throw error
     }
   }
 
@@ -244,7 +248,8 @@ export function medusaIntegrationTestRunner({
     try {
       await dbUtils.teardown({ schema })
     } catch (error) {
-      console.error("Error tearing down database:", error)
+      console.error("Error tearing down database:", error?.message)
+      throw error
     }
   }
 
