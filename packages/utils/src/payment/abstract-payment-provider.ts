@@ -25,7 +25,8 @@ import {
  * 
  * A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` class imported from `@medusajsa/utils`.
  * 
- * You can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's `providers` option.
+ * You can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's `providers` option. You can also pass the path to the file
+ * that defines the provider if it's created in the Medusa application's codebase.
  * 
  * For example:
  * 
