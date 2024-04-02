@@ -127,15 +127,6 @@
           "unique": false
         },
         {
-          "keyName": "IDX_product_category_handle",
-          "columnNames": [
-            "handle"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "product_category_pkey",
           "columnNames": [
             "id"
@@ -157,7 +148,7 @@
             "id"
           ],
           "referencedTableName": "public.product_category",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -244,15 +235,6 @@
           "keyName": "IDX_product_collection_deleted_at",
           "primary": false,
           "unique": false
-        },
-        {
-          "keyName": "IDX_product_collection_handle_unique",
-          "columnNames": [
-            "handle"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "product_collection_pkey",
@@ -789,15 +771,6 @@
           "keyName": "IDX_product_deleted_at",
           "primary": false,
           "unique": false
-        },
-        {
-          "keyName": "IDX_product_handle_unique",
-          "columnNames": [
-            "handle"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "product_pkey",
@@ -1504,42 +1477,6 @@
           "unique": false
         },
         {
-          "keyName": "IDX_product_variant_sku_unique",
-          "columnNames": [
-            "sku"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "IDX_product_variant_barcode_unique",
-          "columnNames": [
-            "barcode"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "IDX_product_variant_ean_unique",
-          "columnNames": [
-            "ean"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "IDX_product_variant_upc_unique",
-          "columnNames": [
-            "upc"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "product_variant_pkey",
           "columnNames": [
             "id"
@@ -1662,7 +1599,7 @@
             "id"
           ],
           "referencedTableName": "public.product_option_value",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "product_variant_option_variant_id_foreign": {
@@ -1675,7 +1612,7 @@
             "id"
           ],
           "referencedTableName": "public.product_variant",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
