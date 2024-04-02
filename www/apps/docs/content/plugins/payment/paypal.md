@@ -164,7 +164,7 @@ Then, add the Client ID as an environment variable based on the framework you’
 
 Next, create the file that will hold the PayPal component with the following content:
 
-```jsx
+```tsx
 import { 
   PayPalButtons, 
   PayPalScriptProcessor,
@@ -237,7 +237,8 @@ function Paypal() {
             )}
             <PayPalButtons 
               style={{ layout: "horizontal" }}
-              createOrder={async () => cart.payment_session.data.id as string}
+              createOrder={async () =>
+                cart.payment_session.data.id as string}
               onApprove={handlePayment}
               disabled={processing}
             />
