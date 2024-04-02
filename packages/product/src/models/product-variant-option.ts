@@ -36,6 +36,7 @@ class ProductVariantOption {
     nullable: true,
     fieldName: "option_value_id",
     mapToPk: true,
+    onDelete: "cascade",
   })
   option_value_id!: string
 
@@ -50,6 +51,7 @@ class ProductVariantOption {
     nullable: true,
     fieldName: "variant_id",
     mapToPk: true,
+    onDelete: "cascade",
   })
   variant_id: string | null
 
@@ -79,14 +81,8 @@ class ProductVariantOption {
   deleted_at?: Date
 
   @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "varopt")
-    this.variant_id ??= this.variant?.id ?? null
-    this.option_value_id ??= this.option_value?.id ?? null
-  }
-
   @BeforeCreate()
-  beforeCreate() {
+  onInit() {
     this.id = generateEntityId(this.id, "varopt")
     this.variant_id ??= this.variant?.id ?? null
     this.option_value_id ??= this.option_value?.id ?? null
