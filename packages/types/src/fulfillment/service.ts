@@ -1,5 +1,6 @@
 import { IModuleService } from "../modules-sdk"
 import {
+  FilterableFulfillmentProps,
   FilterableFulfillmentSetProps,
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
@@ -32,6 +33,7 @@ import {
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
   UpdateShippingOptionRuleDTO,
+  UpdateShippingProfileDTO,
 } from "./mutations"
 import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
@@ -456,11 +458,11 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   updateShippingProfiles(
-    data: CreateShippingProfileDTO[],
+    data: UpdateShippingProfileDTO[],
     sharedContext?: Context
   ): Promise<ShippingProfileDTO[]>
   updateShippingProfiles(
-    data: CreateShippingProfileDTO,
+    data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO>
   /**
@@ -626,7 +628,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listFulfillments(
-    filters?: FilterableFulfillmentSetProps,
+    filters?: FilterableFulfillmentProps,
     config?: FindConfig<FulfillmentDTO>,
     sharedContext?: Context
   ): Promise<FulfillmentDTO[]>
@@ -637,7 +639,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listAndCountFulfillments(
-    filters?: FilterableFulfillmentSetProps,
+    filters?: FilterableFulfillmentProps,
     config?: FindConfig<FulfillmentDTO>,
     sharedContext?: Context
   ): Promise<[FulfillmentDTO[], number]>
