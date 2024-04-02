@@ -56,6 +56,101 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("list stock locations", () => {
+      let location1
+      let location2
+      beforeEach(async () => {
+        const location1CreateResponse = await api.post(
+          `/admin/stock-locations`,
+          {
+            name: "Test Location 1",
+            address: {
+              address_1: "Test Address",
+              country_code: "US",
+            },
+          },
+          adminHeaders
+        )
+        location1 = location1CreateResponse.data.stock_location
+        const location2CreateResponse = await api.post(
+          `/admin/stock-locations`,
+          {
+            name: "Test Location 2",
+            address: {
+              address_1: "Test Address",
+              country_code: "US",
+            },
+          },
+          adminHeaders
+        )
+        location2 = location2CreateResponse.data.stock_location
+      })
+
+      it("should list stock locations", async () => {
+        const listLocationsResponse = await api.get(
+          "/admin/stock-locations",
+          adminHeaders
+        )
+
+        expect(listLocationsResponse.status).toEqual(200)
+        expect(listLocationsResponse.data.stock_locations).toEqual([
+          expect.objectContaining(location1),
+          expect.objectContaining(location2),
+        ])
+      })
+
+      it("should filter stock locations by name", async () => {
+        const listLocationsResponse = await api.get(
+          "/admin/stock-locations?name=Test%20Location%201",
+          adminHeaders
+        )
+
+        expect(listLocationsResponse.status).toEqual(200)
+        expect(listLocationsResponse.data.stock_locations).toEqual([
+          expect.objectContaining(location1),
+        ])
+      })
+
+      it("should filter stock locations by partial name with q parameter", async () => {
+        const listLocationsResponse = await api.get(
+          "/admin/stock-locations?q=ation%201",
+          adminHeaders
+        )
+
+        expect(listLocationsResponse.status).toEqual(200)
+        expect(listLocationsResponse.data.stock_locations).toEqual([
+          expect.objectContaining(location1),
+        ])
+      })
+
+      it("should filter stock locations on sales_channel_id", async () => {
+        const remoteLinkService = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        await remoteLinkService.create([
+          {
+            [Modules.SALES_CHANNEL]: {
+              sales_channel_id: "default",
+            },
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location1.id,
+            },
+          },
+        ])
+
+        const listLocationsResponse = await api.get(
+          "/admin/stock-locations?sales_channel_id=default",
+          adminHeaders
+        )
+
+        expect(listLocationsResponse.status).toEqual(200)
+        expect(listLocationsResponse.data.stock_locations).toEqual([
+          expect.objectContaining(location1),
+        ])
+      })
+    })
+
     describe("Update stock locations", () => {
       let stockLocationId
 

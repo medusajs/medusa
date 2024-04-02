@@ -8,7 +8,6 @@ import {
 } from "@mikro-orm/core"
 
 // Circular dependency one level
-
 @Entity()
 class RecursiveEntity1 {
   constructor(props: { id: string; deleted_at: Date | null }) {

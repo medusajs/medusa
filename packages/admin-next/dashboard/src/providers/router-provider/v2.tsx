@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom"
 import { Spinner } from "@medusajs/icons"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
+import { UserDTO } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -54,6 +55,10 @@ export const v2Routes: RouteObject[] = [
     lazy: () => import("../../routes/no-match"),
   },
   {
+    path: "/invite",
+    lazy: () => import("../../v2-routes/invite"),
+  },
+  {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
     children: [
@@ -70,6 +75,18 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/orders/order-list"),
+              },
+            ],
+          },
+          {
+            path: "/promotions",
+            handle: {
+              crumb: () => "Promotions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
             ],
           },
@@ -120,6 +137,38 @@ export const v2Routes: RouteObject[] = [
                 path: "add-currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "users",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Users",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/users/user-list"),
+                children: [
+                  {
+                    path: "invite",
+                    lazy: () => import("../../v2-routes/users/user-invite"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/users/user-detail"),
+                handle: {
+                  crumb: (data: { user: UserDTO }) => data.user.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/users/user-edit"),
+                  },
+                ],
               },
             ],
           },

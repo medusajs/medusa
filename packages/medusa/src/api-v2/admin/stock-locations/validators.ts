@@ -130,6 +130,55 @@ export class AdminPostStockLocationsReq {
 export class AdminPostStockLocationsParams extends FindParams {}
 
 /**
+ * Parameters used to filter and configure the pagination of the retrieved stock locations.
+ */
+export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
+  limit: 20,
+  offset: 0,
+}) {
+  /**
+   * Search term to search stock location names.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  /**
+   * IDs to filter stock locations by.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
+  /**
+   * Names to filter stock locations by.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  name?: string | string[]
+
+  /**
+   * Filter stock locations by the ID of their associated addresses.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  address_id?: string | string[]
+
+  /**
+   * Filter stock locations by the ID of their associated sales channels.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  sales_channel_id?: string | string[]
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+}
+/**
  * The attributes of a stock location address to create or update.
  */
 class StockLocationUpdateAddress {
