@@ -7,12 +7,14 @@ type CategoryTreeCollapseIconProps = {
   item: Item
   isCollapsed: boolean
   toggle: (item: Item) => void
+  disabled?: boolean
 }
 
 export const CategoryTreeCollapseIcon = ({
   item,
   isCollapsed,
   toggle,
+  disabled,
 }: CategoryTreeCollapseIconProps) => {
   const handleClick = (e: MouseEvent) => {
     e.stopPropagation()
@@ -27,6 +29,7 @@ export const CategoryTreeCollapseIcon = ({
       variant="transparent"
       type="button"
       onClick={handleClick}
+      disabled={disabled}
     >
       <TriangleRightMini
         className={clx({

@@ -76,6 +76,8 @@ export const CategoryTree = ({
     return true
   }
 
+  const showOverlay = isDisabled || isLoading
+
   if (isLoading) {
     return (
       <div className="flex w-full flex-col">
@@ -92,6 +94,9 @@ export const CategoryTree = ({
 
   return (
     <div className="txt-compact-small relative flex-1 overflow-y-auto">
+      {showOverlay && (
+        <div className="bg-ui-bg-disabled/40 absolute inset-0 animate-pulse" />
+      )}
       <Nestable
         ref={ref}
         items={productCategories}
@@ -104,6 +109,7 @@ export const CategoryTree = ({
             targetPath,
           })
         }
+        disableCollapse={isDisabled || isLoading}
         disableDrag={({ item }) => handleDisableDrag(item as ProductCategory)}
         renderItem={({ item, depth, ...props }) => {
           const isEnabled = enableDrag
@@ -130,6 +136,7 @@ export const CategoryTree = ({
               isCollapsed={isCollapsed}
               item={item}
               toggle={handleToggle}
+              disabled={isDisabled || isLoading}
             />
           )
         }}
