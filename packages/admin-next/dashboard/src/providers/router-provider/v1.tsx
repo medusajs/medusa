@@ -14,11 +14,10 @@ import type {
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
 
-import { ProtectedRoute } from "../../components/authentication/require-auth"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
+import { ProtectedRoute } from "../../components/authentication/require-auth"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-
 import routes from "medusa-admin:routes/pages"
 import settings from "medusa-admin:settings/pages"
 

@@ -1,15 +1,18 @@
+import {
+  AdminCustomerGroupsRes,
+  AdminCustomersRes,
+} from "@medusajs/client-types"
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { SettingsLayout } from "../../components/layout/settings-layout"
 
-import { Outlet } from "react-router-dom"
-
-import { Spinner } from "@medusajs/icons"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { useV2Session } from "../../lib/api-v2"
-import { UserDTO } from "@medusajs/types"
+import { MainLayout } from "../../components/layout-v2/main-layout"
+import { Outlet } from "react-router-dom"
 import { SearchProvider } from "../search-provider"
+import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
+import { Spinner } from "@medusajs/icons"
+import { UserDTO } from "@medusajs/types"
+import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useV2Session()
@@ -92,8 +95,86 @@ export const v2Routes: RouteObject[] = [
           },
         ],
       },
+      {
+        path: "/customers",
+        handle: {
+          crumb: () => "Customers",
+        },
+        children: [
+          {
+            path: "",
+            lazy: () => import("../../v2-routes/customers/customer-list"),
+            children: [
+              {
+                path: "create",
+                lazy: () => import("../../v2-routes/customers/customer-create"),
+              },
+            ],
+          },
+          {
+            path: ":id",
+            lazy: () => import("../../v2-routes/customers/customer-detail"),
+            handle: {
+              crumb: (data: AdminCustomersRes) => data.customer.email,
+            },
+            children: [
+              {
+                path: "edit",
+                lazy: () => import("../../v2-routes/customers/customer-edit"),
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
+  // {
+  //   element: <ProtectedRoute />,
+  //   errorElement: <ErrorBoundary />,
+  //   children: [],
+  // },
+  // {
+  //   path: "/customer-groups",
+  //   handle: {
+  //     crumb: () => "Customer Groups",
+  //   },
+  //   children: [
+  //     {
+  //       path: "",
+  //       lazy: () =>
+  //         import("../../v2-routes/customer-groups/customer-group-list"),
+  //       children: [
+  //         {
+  //           path: "create",
+  //           lazy: () =>
+  //             import("../../v2-routes/customer-groups/customer-group-create"),
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: ":id",
+  //       lazy: () =>
+  //         import("../../v2-routes/customer-groups/customer-group-detail"),
+  //       handle: {
+  //         crumb: (data: AdminCustomerGroupsRes) => data.customer_group.name,
+  //       },
+  //       children: [
+  //         {
+  //           path: "add-customers",
+  //           lazy: () =>
+  //             import(
+  //               "../../v2-routes/customer-groups/customer-group-add-customers"
+  //             ),
+  //         },
+  //         {
+  //           path: "edit",
+  //           lazy: () =>
+  //             import("../../v2-routes/customer-groups/customer-group-edit"),
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
