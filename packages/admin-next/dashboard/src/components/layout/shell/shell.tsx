@@ -30,7 +30,7 @@ import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
 
-const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || false
+const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || "false"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -130,12 +130,12 @@ const UserBadge = () => {
     isError: isErrorV1,
     error: v1Error,
   } = ({ user, isLoading, isError, error } = useAdminGetSession({
-    enabled: V2_ENABLED === false,
+    enabled: V2_ENABLED === "false",
   }))
 
   // Medusa V2 enabled
   ;({ user, isLoading, isError, error } = useV2Session({
-    enabled: V2_ENABLED === true,
+    enabled: V2_ENABLED === "true",
   }))
 
   if (!V2_ENABLED) {
