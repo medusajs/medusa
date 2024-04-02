@@ -141,10 +141,16 @@ export function prepareListQuery<
     allRelations = new Set(expand.split(",").filter(Boolean))
   }
 
+  const { relations: allAllowedRelationsFromAllowedFields } =
+    stringToSelectRelationObject(allowed)
+
   const allAllowedRelations = new Set([
     ...Array.from(allAllowedFields),
     ...allowedRelations,
+    // Backward compatibility
+    ...allAllowedRelationsFromAllowedFields,
   ])
+
   const notAllowedRelations = !allowedRelations.length
     ? new Set()
     : getSetDifference(allRelations, allAllowedRelations)

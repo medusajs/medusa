@@ -382,6 +382,58 @@ describe("transformQuery", () => {
         ],
       })
     )
+
+    //////////////////////////////
+
+    mockRequest = {
+      query: {
+        fields: "store.name",
+      },
+    } as unknown as Request
+
+    queryConfig = {
+      defaultFields: [
+        "id",
+        "created_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowedFields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "product",
+        "product.variants",
+        "store.name",
+      ],
+      isList: true,
+    }
+
+    middleware = transformQuery(extendedFindParamsMixin(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: ["store.name", "created_at", "id"],
+        relations: ["store"],
+      })
+    )
+    expect(mockRequest.remoteQueryConfig).toEqual(
+      expect.objectContaining({
+        fields: [
+          "store.name", "created_at", "id"
+        ],
+      })
+    )
   })
 
   it("should throw when attempting to transform the input if disallowed fields are requested", async () => {
