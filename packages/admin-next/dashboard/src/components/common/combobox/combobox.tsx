@@ -176,11 +176,11 @@ const ComboboxImpl = <T extends Value = string>(
   )
 
   const createOption = () => {
-    if (!onCreateOption) {
+    if (!onCreateOption || !uncontrolledSearchValue) {
       return
     }
 
-    onCreateOption(uncontrolledSearchValue || "")
+    onCreateOption(uncontrolledSearchValue)
     handleValueChange(uncontrolledSearchValue as T)
     setOpen(false)
   }
@@ -333,6 +333,15 @@ const ComboboxImpl = <T extends Value = string>(
           </Popover.Content>
         </Popover.Portal>
       </PrimitiveComboboxProvider>
+      {open && (
+        <div
+          aria-hidden="true"
+          data-aria-hidden="true"
+          data-state="open"
+          className="fixed inset-0 size-full"
+          onClick={() => setOpen(false)}
+        />
+      )}
     </Popover.Root>
   )
 }
