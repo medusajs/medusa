@@ -134,7 +134,7 @@ const migrate = async function ({ directory }) {
   await processBatch(variants, defaultLocationId, container)
 
   let processedCount = variants.length
-  Logger.log(`Processed ${processedCount} of ${totalCount}`)
+  Logger.info(`Processed ${processedCount} of ${totalCount}`)
   while (processedCount < totalCount) {
     const nextBatch = await variantService.list(
       {},
@@ -148,10 +148,10 @@ const migrate = async function ({ directory }) {
     await processBatch(nextBatch, defaultLocationId, container)
 
     processedCount += nextBatch.length
-    Logger.log(`Processed ${processedCount} of ${totalCount}`)
+    Logger.info(`Processed ${processedCount} of ${totalCount}`)
   }
 
-  Logger.log("Done")
+  Logger.info("Done")
   process.exit(0)
 }
 
