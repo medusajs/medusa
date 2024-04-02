@@ -321,7 +321,7 @@ export function OrderCreateClaimDetails({
                             >
                               {t("orders.claims.replacementShipping")}
                             </Form.Label>
-                            <Form.Hint>
+                            <Form.Hint className="text-left">
                               {t(
                                 "orders.claims.replacementShippingDescription"
                               )}
