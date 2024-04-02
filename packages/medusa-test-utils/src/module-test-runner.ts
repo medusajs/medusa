@@ -1,4 +1,3 @@
-import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { initModules, InitModulesOptions } from "./init-modules"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 
@@ -41,6 +40,10 @@ export function moduleIntegrationTestRunner({
     MedusaAppOutput,
     ModulesDefinition,
   } = require("@medusajs/modules-sdk")
+  const {
+    ContainerRegistrationKeys,
+    ModulesSdkUtils,
+  } = require("@medusajs/utils")
 
   process.env.LOG_LEVEL = "error"
 
