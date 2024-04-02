@@ -24,6 +24,7 @@ export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+  // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
     allowed = [],
@@ -126,11 +127,11 @@ export function prepareListQuery<
     )
   }
 
+  // TODO: maintain backward compatibility, remove in the future
   const { select, relations } = stringToSelectRelationObject(
     Array.from(allFields)
   )
 
-  // TODO: maintain backward compatibility, remove in the future
   let allRelations = new Set([
     ...relations,
     ...defaultRelations,
@@ -141,27 +142,27 @@ export function prepareListQuery<
     allRelations = new Set(expand.split(",").filter(Boolean))
   }
 
-  const { relations: allAllowedRelationsFromAllowedFields } =
-    stringToSelectRelationObject(allowed)
+  if (allowedRelations.length) {
+    const { relations: allAllowedRelationsFromAllowedFields } =
+      stringToSelectRelationObject(Array.from(allAllowedFields))
 
-  const allAllowedRelations = new Set([
-    ...Array.from(allAllowedFields),
-    ...allowedRelations,
-    // Backward compatibility
-    ...allAllowedRelationsFromAllowedFields,
-  ])
+    const allAllowedRelations = new Set([
+      ...allowedRelations,
+      ...allAllowedRelationsFromAllowedFields,
+    ])
 
-  const notAllowedRelations = !allowedRelations.length
-    ? new Set()
-    : getSetDifference(allRelations, allAllowedRelations)
+    const notAllowedRelations = !allowedRelations.length
+      ? new Set()
+      : getSetDifference(allRelations, allAllowedRelations)
 
-  if (allRelations.size && notAllowedRelations.size) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Requested fields [${Array.from(notAllowedRelations).join(
-        ", "
-      )}] are not valid`
-    )
+    if (allRelations.size && notAllowedRelations.size) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [${Array.from(notAllowedRelations).join(
+          ", "
+        )}] are not valid`
+      )
+    }
   }
   // End of expand compatibility
 
