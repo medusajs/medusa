@@ -100,8 +100,8 @@ export const SalesChannelProductSection = ({
   const { mutateAsync } = useAdminCustomPost(
     `/admin/sales-channels/${salesChannel.id}/products/batch/remove`,
     [
-      ...adminSalesChannelsKeys.lists(),
-      ...adminSalesChannelsKeys.detail(salesChannel.id),
+      adminSalesChannelsKeys.lists(),
+      adminSalesChannelsKeys.detail(salesChannel.id),
     ]
   )
 
