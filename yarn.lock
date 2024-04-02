@@ -38549,8 +38549,6 @@ __metadata:
   peerDependenciesMeta:
     "@medusajs/medusa":
       optional: true
-    "@medusajs/modules-sdk":
-      optional: true
     axios:
       optional: true
     express:
