@@ -9,13 +9,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostApiKeysApiKeySalesChannelsBatchReq } from "../../../../validators"
+import { AdminPostApiKeysApiKeySalesChannelsBatchAddReq } from "../../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const body = req.validatedBody as AdminPostApiKeysApiKeySalesChannelsBatchReq
+  const body =
+    req.validatedBody as AdminPostApiKeysApiKeySalesChannelsBatchAddReq
 
   const apiKeyModule = req.scope.resolve(ModuleRegistrationName.API_KEY)
 

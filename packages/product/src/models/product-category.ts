@@ -1,29 +1,49 @@
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+  kebabCase,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
   EventArgs,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
   OnInit,
   OneToMany,
-  OptionalProps,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
-import { DAL } from "@medusajs/types"
 import Product from "./product"
 
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+const categoryHandleIndexName = "IDX_category_handle_unique"
+const categoryHandleIndexStatement = createPsqlIndexStatementHelper({
+  name: categoryHandleIndexName,
+  tableName: "product_category",
+  columns: ["handle"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+const categoryMpathIndexName = "IDX_product_category_path"
+const categoryMpathIndexStatement = createPsqlIndexStatementHelper({
+  name: categoryMpathIndexName,
+  tableName: "product_category",
+  columns: ["mpath"],
+  unique: false,
+  where: "deleted_at IS NULL",
+})
+
+categoryMpathIndexStatement.MikroORMIndex()
+categoryHandleIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_category" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductCategory {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -33,17 +53,9 @@ class ProductCategory {
   @Property({ columnType: "text", default: "", nullable: false })
   description?: string
 
-  @Unique({
-    name: "IDX_product_category_handle",
-    properties: ["handle"],
-  })
   @Property({ columnType: "text", nullable: false })
   handle?: string
 
-  @Index({
-    name: "IDX_product_category_path",
-    properties: ["mpath"],
-  })
   @Property({ columnType: "text", nullable: false })
   mpath?: string
 
@@ -61,6 +73,7 @@ class ProductCategory {
     fieldName: "parent_category_id",
     nullable: true,
     mapToPk: true,
+    onDelete: "cascade",
   })
   parent_category_id?: string | null
 
@@ -87,6 +100,10 @@ class ProductCategory {
     defaultRaw: "now()",
   })
   updated_at?: Date
+
+  @Index({ name: "IDX_product_category_deleted_at" })
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at?: Date
 
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)

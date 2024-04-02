@@ -738,7 +738,6 @@ moduleIntegrationTestRunner({
               relations: [
                 "variants",
                 "variants.options",
-                "variants.options",
                 "options",
                 "options.values",
               ],

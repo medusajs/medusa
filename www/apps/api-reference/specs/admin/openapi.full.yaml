@@ -17038,6 +17038,28 @@ paths:
           schema:
             type: boolean
         - in: query
+          name: inventory_quantity
+          description: Filter by available inventory quantity
+          schema:
+            oneOf:
+              - type: number
+                description: a specific number to filter by.
+              - type: object
+                description: filter using less and greater than comparisons.
+                properties:
+                  lt:
+                    type: number
+                    description: filter by inventory quantity less than this number
+                  gt:
+                    type: number
+                    description: filter by inventory quantity greater than this number
+                  lte:
+                    type: number
+                    description: filter by inventory quantity less than or equal to this number
+                  gte:
+                    type: number
+                    description: filter by inventory quantity greater than or equal to this number
+        - in: query
           name: created_at
           description: Filter by a creation date range.
           schema:
@@ -26497,6 +26519,21 @@ paths:
           schema:
             type: number
             default: '100'
+        - in: query
+          name: order
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          schema:
+            type: string
+        - in: query
+          name: manage_inventory
+          description: Filter product variants by whether their inventory is managed or not.
+          schema:
+            type: boolean
+        - in: query
+          name: allow_backorder
+          description: Filter product variants by whether they are allowed to be backordered or not.
+          schema:
+            type: boolean
         - in: query
           name: cart_id
           style: form
