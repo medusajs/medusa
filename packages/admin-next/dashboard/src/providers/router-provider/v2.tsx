@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom"
 import { Spinner } from "@medusajs/icons"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
+import { SalesChannelDTO } from "@medusajs/types"
 import { UserDTO } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
@@ -167,6 +168,54 @@ export const v2Routes: RouteObject[] = [
                   {
                     path: "edit",
                     lazy: () => import("../../v2-routes/users/user-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "sales-channels",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Sales Channels",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-detail"),
+                handle: {
+                  crumb: (data: { sales_channel: SalesChannelDTO }) =>
+                    data.sales_channel.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-edit"
+                      ),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-add-products"
+                      ),
                   },
                 ],
               },
