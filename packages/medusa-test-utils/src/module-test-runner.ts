@@ -36,7 +36,7 @@ export function moduleIntegrationTestRunner({
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
-  const { ModulesDefinition } = require("@medusajs/modules-sdk")
+  const moduleSdkImports = require("@medusajs/modules-sdk")
 
   process.env.LOG_LEVEL = "error"
 
@@ -63,7 +63,7 @@ export function moduleIntegrationTestRunner({
 
   const modulesConfig_ = {
     [moduleName]: {
-      definition: ModulesDefinition[moduleName],
+      definition: moduleSdkImports.ModulesDefinition[moduleName],
       resolve,
       options: {
         defaultAdapterOptions: {

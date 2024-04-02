@@ -6,8 +6,8 @@ import {
 import {
   ContainerRegistrationKeys,
   ModulesSdkUtils,
-  promiseAll
-} from "@medusajs/utils";
+  promiseAll,
+} from "@medusajs/utils"
 
 export interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
@@ -32,7 +32,7 @@ export async function initModules({
   joinerConfig,
   preventConnectionDestroyWarning = false,
 }: InitModulesOptions) {
-  const { MedusaApp, MedusaModule } = await import("@medusajs/modules-sdk")
+  const moduleSdkImports = require("@medusajs/modules-sdk")
 
   injectedDependencies ??= {}
 
@@ -50,7 +50,7 @@ export async function initModules({
       sharedPgConnection
   }
 
-  const medusaApp = await MedusaApp({
+  const medusaApp = await moduleSdkImports.MedusaApp({
     modulesConfig,
     servicesConfig: joinerConfig,
     injectedDependencies,
@@ -70,7 +70,7 @@ export async function initModules({
         )
       }
     }
-    MedusaModule.clearInstances()
+    moduleSdkImports.MedusaModule.clearInstances()
   }
 
   return {
