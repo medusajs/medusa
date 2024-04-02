@@ -1,13 +1,13 @@
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { InitModulesOptions, initModules } from "./init-modules"
-import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
-import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
+import { initModules, InitModulesOptions } from "./init-modules"
+import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 
 import { MockEventBusService } from "."
+import { MedusaAppOutput } from "@medusajs/modules-sdk"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
-  medusaApp: MedusaAppOutput
+  medusaApp: any
   service: TService
   dbConfig: {
     schema: string
@@ -37,6 +37,11 @@ export function moduleIntegrationTestRunner({
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
+  const {
+    MedusaAppOutput,
+    ModulesDefinition,
+  } = require("@medusajs/modules-sdk")
+
   process.env.LOG_LEVEL = "error"
 
   moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
