@@ -212,13 +212,13 @@ medusaIntegrationTestRunner({
       })
 
       it("should add sales channels to a location", async () => {
-        const salesChannelResponse = await api
-          .post(
-            `/admin/stock-locations/${location.id}/sales-channels/batch/add`,
-            { sales_channel_ids: ["test"] },
-            adminHeaders
-          )
-          .catch(console.log)
+        const salesChannelResponse = await api.post(
+          `/admin/stock-locations/${location.id}/sales-channels/batch/add?fields=*sales_channels`,
+          { sales_channel_ids: [salesChannel.id] },
+          adminHeaders
+        )
+
+        console.warn(salesChannelResponse.data.stock_location)
         expect(
           salesChannelResponse.data.stock_location.sales_channels
         ).toHaveLength(1)

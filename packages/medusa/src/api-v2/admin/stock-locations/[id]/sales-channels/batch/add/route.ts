@@ -2,9 +2,13 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../../../../../types/routing"
+
+import { AdminPostStockLocationsLocationSalesChannelBatchReq } from "../../../../validators"
 import { addLocationsToSalesChannelWorkflow } from "@medusajs/core-flows"
-import { AdminPostStockLocationsLocationSalesChannelBatchReq } from "../../../validators"
 
 export const POST = async (
   req: MedusaRequest<AdminPostStockLocationsLocationSalesChannelBatchReq>,
@@ -29,12 +33,12 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "sales_channels",
+    entryPoint: "stock_locations",
     variables: { id: req.params.id },
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [sales_channel] = await remoteQuery(queryObject)
+  const [stock_location] = await remoteQuery(queryObject)
 
-  res.status(200).json({ sales_channel })
+  res.status(200).json({ stock_location })
 }
