@@ -17,6 +17,7 @@ import { CreateReturnSchema } from "./schema"
 import { getReturnableItemsForClaim } from "../../../../../lib/rma"
 import { OrderCreateClaimDetails } from "./order-create-claim-details"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers.ts"
+import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type CreateReturnsFormProps = {
   order: Order
@@ -329,7 +330,12 @@ export function OrderCreateClaimForm({ order }: CreateReturnsFormProps) {
                 onSelectionChange={onSelectionChange}
               />
             ) : (
-              <span>TODO NO shipped items placeholder</span>
+              <div className="flex h-full w-full items-center">
+                <NoRecords
+                  title={t("orders.claims.error.noItemsTitle")}
+                  message={t(t("orders.claims.error.noItemsMessage"))}
+                />
+              </div>
             )}
           </ProgressTabs.Content>
           <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">

@@ -349,7 +349,11 @@
       "customRefundHint": "If you want to refund something else instead of the total refund.",
       "customShippingPrice": "Custom shipping",
       "customShippingPriceHint": "Custom shipping cost.",
-      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location."
+      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
+      "error": {
+        "noItemsTitle": "No returnable items",
+        "noItemsMessage": "There are no items that can be returned at the moment."
+      }
     },
     "reservations": {
       "allocatedLabel": "Allocated",
