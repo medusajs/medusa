@@ -104,7 +104,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     const dataToValidate = Array.isArray(data) ? data : [data]
     dataToValidate.forEach((d) => {
       const keys = Object.keys(d)
-      if (!keys.every((k) => this.isValidKeyName(k))) {
+      if (keys.some((k) => !this.isValidKeyName(k))) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Invalid field name provided. Valid field names are ${this.primaryKey_.concat(

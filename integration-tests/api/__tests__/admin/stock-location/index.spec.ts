@@ -362,7 +362,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should add sales channels to a location", async () => {
+      it("should remove sales channels from a location", async () => {
         const salesChannelResponse = await api.post(
           `/admin/stock-locations/${location.id}/sales-channels/batch/remove?fields=*sales_channels`,
           { sales_channel_ids: [salesChannel1.id] },
