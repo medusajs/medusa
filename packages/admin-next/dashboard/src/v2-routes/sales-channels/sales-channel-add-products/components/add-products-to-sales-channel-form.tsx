@@ -11,7 +11,8 @@ import {
 } from "@tanstack/react-table"
 import {
   adminProductKeys,
-  useAdminAddProductsToSalesChannel,
+  adminSalesChannelsKeys,
+  useAdminCustomPost,
   useAdminProducts,
 } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
@@ -60,8 +61,13 @@ export const AddProductsToSalesChannelForm = ({
 
   const { setValue } = form
 
-  const { mutateAsync, isLoading: isMutating } =
-    useAdminAddProductsToSalesChannel(salesChannel.id)
+  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
+    `/admin/sales-channels/${salesChannel.id}/products/batch/add`,
+    [
+      adminSalesChannelsKeys.lists(),
+      adminSalesChannelsKeys.detail(salesChannel.id),
+    ]
+  )
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -131,7 +137,7 @@ export const AddProductsToSalesChannelForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
-        product_ids: values.product_ids.map((p) => ({ id: p })),
+        product_ids: values.product_ids,
       },
       {
         onSuccess: () => {
