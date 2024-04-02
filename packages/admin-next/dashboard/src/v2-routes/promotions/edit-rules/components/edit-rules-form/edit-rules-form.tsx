@@ -309,16 +309,16 @@ export const EditRulesForm = ({
 
             <div className="mt-8">
               <Button
+                type="button"
                 variant="secondary"
                 className="inline-block"
-                onClick={(e) => {
-                  e.preventDefault()
-
+                onClick={() => {
                   append({
                     attribute: "",
                     operator: "",
                     values: [],
                     required: false,
+                    // TODO: come up with a better way to handle this
                     frontend_id: Math.floor(Math.random() * 100).toString(),
                   })
                 }}
@@ -327,11 +327,10 @@ export const EditRulesForm = ({
               </Button>
 
               <Button
+                type="button"
                 variant="transparent"
                 className="inline-block text-ui-fg-muted hover:text-ui-fg-subtle ml-2"
-                onClick={(e) => {
-                  e.preventDefault()
-
+                onClick={() => {
                   const indicesToRemove = fields
                     .map((field, index) => (field.required ? null : index))
                     .filter((f) => f !== null)
