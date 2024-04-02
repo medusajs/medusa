@@ -232,8 +232,14 @@ export const v1Routes: RouteObject[] = [
                       import("../../routes/products/product-attributes"),
                   },
                   {
-                    path: "options",
-                    lazy: () => import("../../routes/products/product-options"),
+                    path: "options/create",
+                    lazy: () =>
+                      import("../../routes/products/product-create-option"),
+                  },
+                  {
+                    path: "options/:option_id/edit",
+                    lazy: () =>
+                      import("../../routes/products/product-edit-option"),
                   },
                   {
                     path: "media",
