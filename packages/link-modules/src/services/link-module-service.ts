@@ -276,10 +276,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     { returnLinkableKeys }: SoftDeleteReturn = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
-    this.validateFields(data)
+    const inputArray = Array.isArray(data) ? data : [data]
+    inputArray.forEach((element) => {
+      this.validateFields(element)
+    })
 
     let [deletedEntities, cascadedEntitiesMap] = await this.softDelete_(
-      data,
+      inputArray,
       sharedContext
     )
 
@@ -324,7 +327,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async softDelete_(
-    data: any,
+    data: any[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[object[], Record<string, string[]>]> {
     return await this.linkService_.softDelete(data, sharedContext)
@@ -335,10 +338,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     { returnLinkableKeys }: RestoreReturn = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
-    this.validateFields(data)
+    const inputArray = Array.isArray(data) ? data : [data]
+    inputArray.forEach((element) => {
+      this.validateFields(element)
+    })
 
     let [restoredEntities, cascadedEntitiesMap] = await this.restore_(
-      data,
+      inputArray,
       sharedContext
     )
 

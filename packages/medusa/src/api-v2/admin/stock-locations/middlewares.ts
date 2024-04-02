@@ -4,9 +4,9 @@ import {
   AdminGetStockLocationsLocationParams,
   AdminPostStockLocationsLocationParams,
   AdminPostStockLocationsLocationReq,
-  AdminPostStockLocationsLocationSalesChannelBatchReq,
   AdminPostStockLocationsParams,
   AdminPostStockLocationsReq,
+  AdminStockLocationsLocationSalesChannelBatchReq,
 } from "./validators"
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
@@ -43,9 +43,9 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/stock-locations/:id/sales-channels/batch/add",
+    matcher: "/admin/stock-locations/:id/sales-channels/batch*",
     middlewares: [
-      transformBody(AdminPostStockLocationsLocationSalesChannelBatchReq),
+      transformBody(AdminStockLocationsLocationSalesChannelBatchReq),
       transformQuery(
         AdminPostStockLocationsLocationParams,
         QueryConfig.retrieveTransformQueryConfig

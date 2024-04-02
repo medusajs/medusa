@@ -1,8 +1,9 @@
-import { SalesChannelDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+
+import { SalesChannelDTO } from "@medusajs/types"
 import { associateLocationsWithChannelStep } from "../steps"
 
-type WorkflowInput = {
+interface WorkflowInput {
   data: {
     sales_channel_id: string
     location_ids: string[]

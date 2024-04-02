@@ -1,4 +1,3 @@
-import { FindParams } from "../../../types/common"
 import {
   IsArray,
   IsNotEmpty,
@@ -8,6 +7,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
+
+import { FindParams } from "../../../types/common"
 
 /**
  * @schema AdminPostStockLocationsReqAddress
@@ -232,7 +233,7 @@ export class AdminPostStockLocationsLocationParams extends FindParams {}
 
 export class AdminGetStockLocationsLocationParams extends FindParams {}
 
-export class AdminPostStockLocationsLocationSalesChannelBatchReq {
+export class AdminStockLocationsLocationSalesChannelBatchReq {
   @IsString({ each: true })
   sales_channel_ids: string[]
 }
