@@ -23,7 +23,8 @@ type CategoryTreeProps = {
   onChange: OnChangeFn
   itemMenu?: ItemMenuCompoment
   enableDrag?: (item: ProductCategory) => boolean
-  isLoading: boolean
+  isLoading?: boolean
+  isDisabled?: boolean
   asLink?: boolean
 }
 
@@ -33,6 +34,7 @@ export const CategoryTree = ({
   itemMenu,
   enableDrag,
   isLoading,
+  isDisabled,
   asLink,
 }: CategoryTreeProps) => {
   const ref = useRef<Nestable>(null)
@@ -60,6 +62,18 @@ export const CategoryTree = ({
 
       ref.current.collapse([item.id])
     }
+  }
+
+  const handleDisableDrag = (item: ProductCategory) => {
+    if (isDisabled || isLoading) {
+      return false
+    }
+
+    if (enableDrag) {
+      return enableDrag(item)
+    }
+
+    return true
   }
 
   if (isLoading) {
@@ -90,13 +104,7 @@ export const CategoryTree = ({
             targetPath,
           })
         }
-        disableDrag={
-          enableDrag
-            ? ({ item }) => {
-                return enableDrag(item as ProductCategory)
-              }
-            : undefined
-        }
+        disableDrag={({ item }) => handleDisableDrag(item as ProductCategory)}
         renderItem={({ item, depth, ...props }) => {
           const isEnabled = enableDrag
             ? enableDrag(item as ProductCategory)
@@ -109,6 +117,7 @@ export const CategoryTree = ({
               item={item as ProductCategory}
               menu={itemMenu}
               isEnabled={isEnabled}
+              isDisabled={isDisabled}
               asLink={asLink}
               {...props}
             />

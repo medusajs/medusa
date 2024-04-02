@@ -14,6 +14,7 @@ type CategoryTreeBranchProps = {
   handler: ReactNode
   menu?: ItemMenuCompoment
   asLink?: boolean
+  isDisabled?: boolean
 }
 
 export const CategoryTreeBranch = ({
@@ -24,6 +25,7 @@ export const CategoryTreeBranch = ({
   handler,
   menu,
   asLink = false,
+  isDisabled = false,
 }: CategoryTreeBranchProps) => {
   const hasChildren = !!item.category_children?.length
 
@@ -73,10 +75,14 @@ export const CategoryTreeBranch = ({
   return Component
 }
 
-const renderMenu = (item: ProductCategory, Menu?: ItemMenuCompoment) => {
+const renderMenu = (
+  item: ProductCategory,
+  Menu?: ItemMenuCompoment,
+  isDisabled?: boolean
+) => {
   if (!Menu) {
     return null
   }
 
-  return <Menu item={item} />
+  return <Menu item={item} isDisabled={isDisabled} />
 }

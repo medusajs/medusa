@@ -13,12 +13,14 @@ import {
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { useState } from "react"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { queryClient } from "../../../../../lib/medusa"
 import { CategoryTree } from "../../../common/components/category-tree"
 
 export const CategoryOverview = () => {
   const { t } = useTranslation()
+  const [isMutating, setIsMutating] = useState(false)
 
   const { product_categories, isLoading, isError, error } =
     useAdminProductCategories({
@@ -37,6 +39,8 @@ export const CategoryOverview = () => {
     items: ProductCategory[]
     targetPath: number[]
   }) => {
+    setIsMutating(true)
+
     let parentId = null
     const [rank] = targetPath.slice(-1)
 
@@ -58,6 +62,9 @@ export const CategoryOverview = () => {
         queryClient.invalidateQueries(adminProductCategoryKeys.lists())
         queryClient.invalidateQueries(adminProductCategoryKeys.details())
       })
+      .finally(() => {
+        setIsMutating(false)
+      })
   }
 
   if (isError) {
@@ -77,13 +84,20 @@ export const CategoryOverview = () => {
         onChange={handlePositionChange}
         itemMenu={ItemMenu}
         isLoading={isLoading}
+        isDisabled={isMutating || isLoading}
         asLink
       />
     </Container>
   )
 }
 
-const ItemMenu = ({ item }: { item: ProductCategory }) => {
+const ItemMenu = ({
+  item,
+  isDisabled,
+}: {
+  item: ProductCategory
+  isDisabled?: boolean
+}) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -113,6 +127,7 @@ const ItemMenu = ({ item }: { item: ProductCategory }) => {
 
   return (
     <ActionMenu
+      disabled={isDisabled}
       groups={[
         {
           actions: [

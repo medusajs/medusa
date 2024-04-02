@@ -25,13 +25,14 @@ type ActionGroup = {
 }
 
 type ActionMenuProps = {
+  disabled?: boolean
   groups: ActionGroup[]
 }
 
-export const ActionMenu = ({ groups }: ActionMenuProps) => {
+export const ActionMenu = ({ groups, disabled }: ActionMenuProps) => {
   return (
     <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
+      <DropdownMenu.Trigger asChild disabled={disabled}>
         <IconButton size="small" variant="transparent">
           <EllipsisHorizontal />
         </IconButton>

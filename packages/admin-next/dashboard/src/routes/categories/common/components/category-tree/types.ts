@@ -11,4 +11,7 @@ export type OnChangeFn =
   | ((args: OnChangeArgs) => Promise<void>)
   | ((args: OnChangeArgs) => void)
 
-export type ItemMenuCompoment = ComponentType<{ item: ProductCategory }>
+export type ItemMenuCompoment = ComponentType<{
+  item: ProductCategory
+  isDisabled?: boolean
+}>
