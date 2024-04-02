@@ -2,14 +2,14 @@ import { ModuleExports } from "@medusajs/types"
 import * as ModuleServices from "@services"
 import { FulfillmentModuleService } from "@services"
 import { Modules } from "@medusajs/modules-sdk"
-import * as Models from "@models"
 import * as ModuleModels from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as ModuleRepositories from "@repositories"
+import loadProviders from "./loaders/providers"
 
 const migrationScriptOptions = {
   moduleName: Modules.FULFILLMENT,
-  models: Models,
+  models: ModuleModels,
   pathToMigrations: __dirname + "/migrations",
 }
 
@@ -29,12 +29,12 @@ const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
 
 const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
   moduleName: Modules.FULFILLMENT,
-  moduleModels: Object.values(Models),
+  moduleModels: Object.values(ModuleModels),
   migrationsPath: __dirname + "/migrations",
 })
 
 const service = FulfillmentModuleService
-const loaders = [containerLoader, connectionLoader] as any
+const loaders = [containerLoader, connectionLoader, loadProviders]
 
 export const moduleDefinition: ModuleExports = {
   service,

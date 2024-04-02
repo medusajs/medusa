@@ -1,45 +1,38 @@
 import { clx } from "@medusajs/ui"
-import { getPresentationalAmount } from "../../../../../lib/money-amount-helpers"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { PlaceholderCell } from "../placeholder-cell"
 
 type MoneyAmountCellProps = {
   currencyCode: string
   amount?: number | null
   align?: "left" | "right"
+  className?: string
 }
 
 export const MoneyAmountCell = ({
   currencyCode,
   amount,
   align = "left",
+  className,
 }: MoneyAmountCellProps) => {
-  if (!amount) {
+  if (typeof amount === "undefined" || amount === null) {
     return <PlaceholderCell />
   }
 
-  const formatted = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: currencyCode,
-    currencyDisplay: "narrowSymbol",
-  }).format(0)
-
-  const symbol = formatted.replace(/\d/g, "").replace(/[.,]/g, "").trim()
-
-  const presentationAmount = getPresentationalAmount(amount, currencyCode)
-  const formattedTotal = new Intl.NumberFormat(undefined, {
-    style: "decimal",
-  }).format(presentationAmount)
+  const formatted = getStylizedAmount(amount, currencyCode)
 
   return (
     <div
-      className={clx("flex h-full w-full items-center overflow-hidden", {
-        "justify-start text-left": align === "left",
-        "justify-end text-right": align === "right",
-      })}
+      className={clx(
+        "flex h-full w-full items-center overflow-hidden",
+        {
+          "justify-start text-left": align === "left",
+          "justify-end text-right": align === "right",
+        },
+        className
+      )}
     >
-      <span className="truncate">
-        {symbol} {formattedTotal} {currencyCode.toUpperCase()}
-      </span>
+      <span className="truncate">{formatted}</span>
     </div>
   )
 }

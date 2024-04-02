@@ -33,20 +33,20 @@ export interface CreateCartDTO {
   currency_code: string
   shipping_address_id?: string
   billing_address_id?: string
-  shipping_address?: CreateAddressDTO | UpdateAddressDTO
-  billing_address?: CreateAddressDTO | UpdateAddressDTO
+  shipping_address?: CreateAddressDTO | string
+  billing_address?: CreateAddressDTO | string
   metadata?: Record<string, unknown>
 
   items?: CreateLineItemDTO[]
 }
 
 export interface UpdateCartDataDTO {
-  region_id?: string | null
+  region_id?: string
   customer_id?: string | null
   sales_channel_id?: string | null
 
   email?: string | null
-  currency_code?: string | null
+  currency_code?: string
 
   shipping_address_id?: string | null
   billing_address_id?: string | null
@@ -58,7 +58,7 @@ export interface UpdateCartDataDTO {
 }
 
 export interface UpdateCartDTO extends UpdateCartDataDTO {
-  id?: string
+  id: string
 }
 
 /** CART END */
@@ -176,7 +176,7 @@ export interface UpdateLineItemWithSelectorDTO {
 
 export interface UpdateCartWithSelectorDTO {
   selector: Partial<CartDTO>
-  data: UpdateCartDTO
+  data: UpdateCartDataDTO
 }
 
 export interface UpdateLineItemDTO
@@ -189,6 +189,7 @@ export interface UpdateLineItemDTO
   title?: string
   quantity?: number
   unit_price?: number
+  metadata?: Record<string, unknown> | null
 
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]

@@ -2523,6 +2523,9 @@ describe("/admin/orders", () => {
         refundable_amount: 10000,
         gift_card_total: 0,
         gift_card_tax_total: 0,
+        items: [{ refundable: 7200 }],
+        claims: [],
+        swaps: [],
       })
     })
 
@@ -2643,6 +2646,34 @@ describe("/admin/orders", () => {
             id: "test-region",
             deleted_at: expect.any(String),
           }),
+        })
+      )
+    })
+
+    it("retrieves an order should include a deleted discount", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE discount
+         set deleted_at = NOW()
+         WHERE id = 'test-discount';`
+      )
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          discounts: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-discount",
+              deleted_at: expect.any(String),
+            }),
+          ]),
         })
       )
     })

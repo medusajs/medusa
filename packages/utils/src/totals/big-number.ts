@@ -1,4 +1,4 @@
-import { BigNumberRawPriceInput, BigNumberRawValue } from "@medusajs/types"
+import { BigNumberInput, BigNumberRawValue } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isBigNumber, isString } from "../common"
 
@@ -7,53 +7,74 @@ export class BigNumber {
 
   private numeric_: number
   private raw_?: BigNumberRawValue
+  private bignumber_?: BigNumberJS
 
-  constructor(rawPrice: BigNumberRawPriceInput) {
-    this.setRawPriceOrThrow(rawPrice)
+  constructor(
+    rawValue: BigNumberInput | BigNumber,
+    options?: { precision?: number }
+  ) {
+    this.setRawValueOrThrow(rawValue, options)
   }
 
-  setRawPriceOrThrow(rawPrice: BigNumberRawPriceInput) {
-    if (BigNumberJS.isBigNumber(rawPrice)) {
+  setRawValueOrThrow(
+    rawValue: BigNumberInput | BigNumber,
+    { precision }: { precision?: number } = {}
+  ) {
+    precision ??= BigNumber.DEFAULT_PRECISION
+
+    if (rawValue instanceof BigNumber) {
+      Object.assign(this, rawValue)
+    } else if (BigNumberJS.isBigNumber(rawValue)) {
       /**
        * Example:
-       *  const bnUnitPrice = new BigNumberJS("10.99")
-       *  const unitPrice = new BigNumber(bnUnitPrice)
+       *  const bnUnitValue = new BigNumberJS("10.99")
+       *  const unitValue = new BigNumber(bnUnitValue)
        */
-      this.numeric_ = rawPrice.toNumber()
+      this.numeric_ = rawValue.toNumber()
       this.raw_ = {
-        value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: rawValue.toPrecision(precision),
+        precision,
       }
-    } else if (isString(rawPrice)) {
+      this.bignumber_ = rawValue
+    } else if (isString(rawValue)) {
       /**
-       * Example: const unitPrice = "1234.1234"
+       * Example: const unitValue = "1234.1234"
        */
-      const bigNum = new BigNumberJS(rawPrice)
+      const bigNum = new BigNumberJS(rawValue)
 
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
-        value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: bigNum.toPrecision(precision),
+        precision,
       }
-    } else if (isBigNumber(rawPrice)) {
+      this.bignumber_ = bigNum
+    } else if (isBigNumber(rawValue)) {
       /**
-       * Example: const unitPrice = { value: "1234.1234" }
+       * Example: const unitValue = { value: "1234.1234" }
        */
-      this.numeric_ = BigNumberJS(rawPrice.value).toNumber()
-
+      const definedPrecision = rawValue.precision ?? precision
+      const bigNum = new BigNumberJS(rawValue.value)
+      this.numeric_ = bigNum.toNumber()
       this.raw_ = {
-        ...rawPrice,
+        ...rawValue,
+        precision: definedPrecision,
       }
-    } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
+      this.bignumber_ = bigNum
+    } else if (typeof rawValue === `number` && !Number.isNaN(rawValue)) {
       /**
-       * Example: const unitPrice = 1234
+       * Example: const unitValue = 1234
        */
-      this.numeric_ = rawPrice as number
+      this.numeric_ = rawValue as number
 
+      const bigNum = new BigNumberJS(rawValue as number)
       this.raw_ = {
-        value: BigNumberJS(rawPrice as number).toString(),
+        value: bigNum.toPrecision(precision),
+        precision,
       }
+      this.bignumber_ = bigNum
     } else {
       throw new Error(
-        "Invalid BigNumber value. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+        `Invalid BigNumber value: ${rawValue}. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue`
       )
     }
   }
@@ -67,31 +88,37 @@ export class BigNumber {
     }
   }
 
-  set numeric(value: BigNumberRawPriceInput) {
+  set numeric(value: BigNumberInput) {
     const newValue = new BigNumber(value)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
+    this.bignumber_ = newValue.bignumber_
   }
 
   get raw(): BigNumberRawValue | undefined {
     return this.raw_
   }
 
-  set raw(rawValue: BigNumberRawPriceInput) {
+  get bigNumber(): BigNumberJS | undefined {
+    return this.bignumber_
+  }
+
+  set raw(rawValue: BigNumberInput) {
     const newValue = new BigNumber(rawValue)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
+    this.bignumber_ = newValue.bignumber_
   }
 
   toJSON() {
-    return this.raw_
+    return this.bignumber_
+      ? this.bignumber_?.toNumber()
+      : this.raw_
       ? new BigNumberJS(this.raw_.value).toNumber()
       : this.numeric_
   }
 
   valueOf() {
-    return this.raw_
-      ? new BigNumberJS(this.raw_.value).toNumber()
-      : this.numeric_
+    return this.bignumber_
   }
 }

@@ -130,9 +130,31 @@ cmds=['yarn install']
 
 ---
 
-## Step 2: Create GitHub Repository
+## Step 2: Add Worker Mode Configuration
 
-Before you can deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
+:::note
+
+Learn more about the Worker Mode in [this guide](../../development/worker-mode/index.mdx).
+
+:::
+
+Set the `worker_mode` configuration in your `medusa-config.js`, if you haven't already:
+
+```ts
+const projectConfig = {
+  // ...,
+  database_url: "...",
+  worker_mode: process.env.MEDUSA_WORKER_MODE,
+}
+```
+
+This allows you to switch between modes for different deployed Medusa instances based on the `MEDUSA_WORKER_MODE` environment variable.
+
+---
+
+## Step 3: Create GitHub Repository
+
+Before you deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
@@ -165,9 +187,9 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ---
 
-## Step 3: Deploy to Railway
+## Step 4: Deploy to Railway
 
-In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the backend from the GitHub repository. 
+In this section, you’ll create the PostgreSQL and Redis databases first, then deploy two instances of the Medusa backend: one having a `server` runtime mode, and another having a `worker` runtime mode.
 
 ### Create the PostgreSQL Database
 
@@ -192,7 +214,9 @@ A new Redis database will be added to the project view in a few seconds. Click o
 
 If you use modules that require setting up other resources, make sure to add them at this point. This guide does not cover configurations specific to a module.
 
-### Deploy the Medusa Backend Repository
+### Deploy Medusa in Server Mode
+
+In this section, you'll create a Medusa backend instance running in `server` runtime mode.
 
 In the same project view:
 
@@ -209,7 +233,7 @@ If the GitHub repositories in the dropdown are stuck on loading and aren't showi
 
 It will take the backend a few minutes for the deployment to finish. It may fail since you haven't added the environment variables yet.
 
-### Configure Environment Variables
+#### Configure Backend Environment Variables
 
 To configure the environment variables of your Medusa backend:
 
@@ -224,6 +248,7 @@ COOKIE_SECRET=something
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 REDIS_URL=${{Redis.REDIS_URL}}
 DATABASE_TYPE=postgres
+MEDUSA_WORKER_MODE=server
 ```
 
 Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
@@ -234,9 +259,9 @@ It’s highly recommended to use strong, randomly generated secrets for `JWT_SE
 
 :::
 
-Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa admin or your modules.
+Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa Admin or your modules.
 
-### Change Start Command
+#### Change Backend's Start Command
 
 The start command is the command used to run the backend. You’ll change it to run any available migrations, then run the Medusa backend. This way if you create your own migrations or update the Medusa backend, it's guaranteed that these migrations are run first before the backend starts.
 
@@ -250,6 +275,58 @@ To change the start command of your Medusa backend:
 medusa migrations run && medusa start
 ```
 
+### Deploy Medusa in Worker Mode
+
+You'll now create another Medusa instance that'll be in `worker` runtime mode.
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the ”GitHub Repo” option.
+3. Choose the same repository from the GitHub Repo dropdown.
+
+It will take the worker backend a few minutes for the deployment to finish. It may fail since you haven't added the environment variables yet.
+
+#### Configure Environment Variables for Worker Mode
+
+To configure the environment variables of the Medusa instance running in worker mode:
+
+1. Click on the card of the Medusa instance you just created..
+2. Choose the Variables tab.
+3. Add the following environment variables:
+
+```bash
+PORT=9000
+JWT_SECRET=something
+COOKIE_SECRET=something
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_TYPE=postgres
+MEDUSA_WORKER_MODE=worker
+```
+
+Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
+
+:::warning
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+
+:::
+
+Make sure to add any other environment variables that are relevant for you here.
+
+#### Change Worker's Start Command
+
+The start command is the command used to run the Medusa instance in worker mode. To set it:
+
+1. Click on the worker’s card.
+2. Click on the Settings tab and scroll down to the Deploy section.
+3. Paste the following in the Start Command field:
+
+```bash
+medusa start
+```
+
 ### Add Domain Name
 
 The last step is to add a domain name to your Medusa backend. To do that:
@@ -260,7 +337,7 @@ The last step is to add a domain name to your Medusa backend. To do that:
 
 ---
 
-## Step 4: Test the Backend
+## Step 5: Test the Backend
 
 Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 

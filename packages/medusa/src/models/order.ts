@@ -12,6 +12,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import {
@@ -19,6 +20,7 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
@@ -41,7 +43,6 @@ import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
-import { MedusaV2Flag } from "@medusajs/utils"
 
 /**
  * @enum
@@ -184,7 +185,7 @@ export class Order extends BaseEntity {
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column()
@@ -192,7 +193,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Customer, { cascade: ["insert"] })
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer: Relation<Customer>
 
   @Column()
   email: string
@@ -203,7 +204,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address: Relation<Address>
 
   @Index()
   @Column({ nullable: true })
@@ -211,7 +212,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Relation<Address>
 
   @Index()
   @Column()
@@ -219,7 +220,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region: Relation<Region>
 
   @Index()
   @Column()
@@ -227,7 +228,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency: Relation<Currency>
 
   @Column({ type: "real", nullable: true })
   tax_rate: number | null
@@ -244,7 +245,7 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts: Relation<Discount>[]
 
   @ManyToMany(() => GiftCard, { cascade: ["insert"] })
   @JoinTable({
@@ -258,50 +259,50 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards: Relation<GiftCard>[]
 
   @OneToMany(() => ShippingMethod, (method) => method.order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: Relation<ShippingMethod>[]
 
   @OneToMany(() => Payment, (payment) => payment.order, { cascade: ["insert"] })
-  payments: Payment[]
+  payments: Relation<Payment>[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments: Relation<Fulfillment>[]
 
   @OneToMany(() => Return, (ret) => ret.order, { cascade: ["insert"] })
-  returns: Return[]
+  returns: Relation<Return>[]
 
   @OneToMany(() => ClaimOrder, (co) => co.order, { cascade: ["insert"] })
-  claims: ClaimOrder[]
+  claims: Relation<ClaimOrder>[]
 
   @OneToMany(() => Refund, (ref) => ref.order, { cascade: ["insert"] })
-  refunds: Refund[]
+  refunds: Relation<Refund>[]
 
   @OneToMany(() => Swap, (swap) => swap.order, { cascade: ["insert"] })
-  swaps: Swap[]
+  swaps: Relation<Swap>[]
 
   @Column({ nullable: true })
   draft_order_id: string
 
   @OneToOne(() => DraftOrder)
   @JoinColumn({ name: "draft_order_id" })
-  draft_order: DraftOrder
+  draft_order: Relation<DraftOrder>
 
   @OneToMany(() => OrderEdit, (oe) => oe.order)
-  edits: OrderEdit[]
+  edits: Relation<OrderEdit>[]
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
     cascade: ["insert"],
   })
-  items: LineItem[]
+  items: Relation<LineItem>[]
 
   @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
-  gift_card_transactions: GiftCardTransaction[]
+  gift_card_transactions: Relation<GiftCardTransaction>[]
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
@@ -325,7 +326,7 @@ export class Order extends BaseEntity {
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel: SalesChannel
+  sales_channel: Relation<SalesChannel>
 
   @FeatureFlagDecorators(
     [MedusaV2Flag.key, "sales_channels"],
@@ -344,7 +345,7 @@ export class Order extends BaseEntity {
       }),
     ]
   )
-  sales_channels?: SalesChannel[]
+  sales_channels?: Relation<SalesChannel>[]
 
   // Total fields
   shipping_total: number
@@ -361,7 +362,7 @@ export class Order extends BaseEntity {
   gift_card_total: number
   gift_card_tax_total: number
 
-  returnable_items?: LineItem[]
+  returnable_items?: Relation<LineItem>[]
 
   /**
    * @apiIgnore

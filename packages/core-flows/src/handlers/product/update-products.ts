@@ -19,7 +19,7 @@ export async function updateProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  const products = await productModuleService.update(data.products)
+  const products = await productModuleService.upsert(data.products)
 
   return await productModuleService.list(
     { id: products.map((p) => p.id) },

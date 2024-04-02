@@ -30,14 +30,17 @@ export class StorePostCartReq {
   region_id?: string
 
   @IsOptional()
-  @IsString()
-  customer_id?: string
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
+
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
 
   @IsOptional()
   @IsString()
   email?: string
 
-  // TODO: Remove in favor of using region currencies, as in the core
   @IsOptional()
   @IsString()
   currency_code?: string
@@ -57,6 +60,18 @@ export class StorePostCartReq {
   metadata?: Record<string, unknown>
 }
 
+export class StorePostCartsCartPromotionsReq {
+  @IsArray()
+  @Type(() => String)
+  promo_codes: string[]
+}
+
+export class StoreDeleteCartsCartPromotionsReq {
+  @IsArray()
+  @Type(() => String)
+  promo_codes: string[]
+}
+
 export class StorePostCartsCartReq {
   @IsOptional()
   @IsString()
@@ -74,17 +89,18 @@ export class StorePostCartsCartReq {
   @IsType([AddressPayload, String])
   shipping_address?: AddressPayload | string
 
+  @IsOptional()
   @IsString()
-  @IsOptional()
-  customer_id?: string
-
-  @IsEmail()
-  @IsOptional()
   sales_channel_id?: string
 
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  promo_codes?: string[]
 
   // @IsOptional()
   // @IsArray()
@@ -98,3 +114,5 @@ export class StorePostCartsCartReq {
   // @Type(() => Discount)
   // discounts?: Discount[]
 }
+
+export class StorePostCartsCartTaxesReq {}

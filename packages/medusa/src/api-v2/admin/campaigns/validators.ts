@@ -1,4 +1,3 @@
-import { CampaignBudgetType } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -11,6 +10,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+
+import { CampaignBudgetType } from "@medusajs/utils"
 
 export class AdminGetCampaignsCampaignParams extends FindParams {}
 

@@ -8,6 +8,7 @@ import {
 } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -19,7 +20,11 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import {
+  DateComparisonOperator,
+  FindParams,
+  extendedFindParamsMixin,
+} from "../../../types/common"
 import { XorConstraint } from "../../../types/validators/xor"
 import { AdminPostCampaignsReq } from "../campaigns/validators"
 
@@ -32,6 +37,29 @@ export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   code?: string
+
+  /**
+   * Search terms to search promotions' code fields.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  /**
+   * Date filters to apply on the promotions' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the promotions' `updated_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
 
 export class AdminPostPromotionsReq {
@@ -213,4 +241,48 @@ export class AdminPostPromotionsPromotionReq {
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
   rules?: PromotionRule[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchAddReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  rules: PromotionRule[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchRemoveReq {
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  rule_ids: string[]
+}
+
+export class AdminPostPromotionsPromotionRulesBatchUpdateReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UpdatePromotionRule)
+  rules: UpdatePromotionRule[]
+}
+
+export class UpdatePromotionRule {
+  @IsNotEmpty()
+  @IsString()
+  id: string
+
+  @IsOptional()
+  @IsEnum(PromotionRuleOperator)
+  operator?: PromotionRuleOperator
+
+  @IsOptional()
+  @IsString()
+  description?: string | null
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  attribute: string
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  values: string[]
 }

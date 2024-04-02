@@ -5,28 +5,29 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   value: string
 
-  @Index('idx_product_option_value_option_id')
+  @Index("idx_product_option_value_option_id")
   @Column()
   option_id: string
 
   @ManyToOne(() => ProductOption, (option) => option.values)
   @JoinColumn({ name: "option_id" })
-  option: ProductOption
+  option: Relation<ProductOption>
 
-  @Index('idx_product_option_value_variant_id')
+  @Index("idx_product_option_value_variant_id")
   @Column()
   variant_id: string
 
@@ -34,7 +35,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>

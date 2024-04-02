@@ -29,7 +29,15 @@ describe("BigNumber", function () {
     it("should throw if not correct type", function () {
       // @ts-ignore
       expect(() => new BigNumber([])).toThrow(
-        "Invalid BigNumber value. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+        "Invalid BigNumber value: . Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+      )
+
+      expect(() => new BigNumber(null as any)).toThrow(
+        "Invalid BigNumber value: null. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+      )
+
+      expect(() => new BigNumber(undefined as any)).toThrow(
+        "Invalid BigNumber value: undefined. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
       )
     })
   })

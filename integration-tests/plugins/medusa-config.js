@@ -1,11 +1,12 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { Workflows } = require("@medusajs/core-flows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+
 process.env.POSTGRES_URL = DB_URL
+process.env.LOG_LEVEL = "error"
 
 const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
@@ -37,20 +38,25 @@ module.exports = {
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
-    workflows: {
-      [Workflows.CreateCart]: true,
-    },
   },
   modules: {
+    workflows: true,
+
     [Modules.AUTH]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
-    },
-    [Modules.USER]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/user",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
+      },
     },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
@@ -62,6 +68,11 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
+    },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 0 }, // Cache disabled
@@ -71,36 +82,6 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/product",
     },
-    [Modules.PRICING]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/pricing",
-    },
-    [Modules.PROMOTION]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/promotion",
-    },
-    [Modules.CUSTOMER]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/customer",
-    },
-    [Modules.SALES_CHANNEL]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/sales-channel",
-    },
-    [Modules.CART]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/cart",
-    },
     [Modules.WORKFLOW_ENGINE]: true,
-    [Modules.REGION]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/region",
-    },
   },
 }

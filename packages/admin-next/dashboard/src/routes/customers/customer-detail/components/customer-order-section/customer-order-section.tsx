@@ -1,7 +1,11 @@
-import { Customer } from "@medusajs/medusa"
+import { ArrowPath } from "@medusajs/icons"
+import { Customer, Order } from "@medusajs/medusa"
 import { Button, Container, Heading } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminOrders } from "medusa-react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-order-table-columns"
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
@@ -37,9 +41,7 @@ export const CustomerOrderSection = ({
     }
   )
 
-  const columns = useOrderTableColumns({
-    exclude: ["customer"],
-  })
+  const columns = useColumns()
   const filters = useOrderTableFilters()
 
   const { table } = useDataTable({
@@ -72,11 +74,48 @@ export const CustomerOrderSection = ({
         filters={filters}
         count={count}
         isLoading={isLoading}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         orderBy={["display_id", "created_at", "updated_at"]}
         search={true}
         queryObject={raw}
       />
     </Container>
+  )
+}
+
+const CustomerOrderActions = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("transferOwnership.label"),
+              to: `${order.id}/transfer-ownership`,
+              icon: <ArrowPath />,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const columnHelper = createColumnHelper<Order>()
+
+const useColumns = () => {
+  const base = useOrderTableColumns({ exclude: ["customer"] })
+
+  return useMemo(
+    () => [
+      ...base,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <CustomerOrderActions order={row.original} />,
+      }),
+    ],
+    [base]
   )
 }

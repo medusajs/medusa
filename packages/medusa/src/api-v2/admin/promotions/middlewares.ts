@@ -1,23 +1,23 @@
-import { MedusaV2Flag } from "@medusajs/utils"
-
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminPostPromotionsPromotionReq,
+  AdminPostPromotionsPromotionRulesBatchAddReq,
+  AdminPostPromotionsPromotionRulesBatchRemoveReq,
+  AdminPostPromotionsPromotionRulesBatchUpdateReq,
   AdminPostPromotionsReq,
 } from "./validators"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/promotions*",
-    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
+    middlewares: [authenticate("admin", ["bearer", "session"])],
   },
   {
     method: ["GET"],
@@ -48,5 +48,48 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/promotions/:id",
     middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/target-rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/buy-rules/batch/add",
+    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/update",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchUpdateReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/target-rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id/buy-rules/batch/remove",
+    middlewares: [
+      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
   },
 ]

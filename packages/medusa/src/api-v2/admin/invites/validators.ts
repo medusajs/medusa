@@ -1,5 +1,11 @@
 import { Type } from "class-transformer"
-import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import {
   DateComparisonOperator,
   FindParams,
@@ -69,4 +75,65 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
 export class AdminCreateInviteRequest {
   @IsEmail()
   email: string
+}
+
+/**
+ * @schema AdminPostInvitesInviteAcceptReq
+ * type: object
+ * description: "The details of the invite to be accepted."
+ * required:
+ *   - token
+ *   - user
+ * properties:
+ *   token:
+ *     description: "The token of the invite to accept. This is a unique token generated when the invite was created or resent."
+ *     type: string
+ *   user:
+ *     description: "The details of the user to create."
+ *     type: object
+ *     required:
+ *       - first_name
+ *       - last_name
+ *       - password
+ *     properties:
+ *       first_name:
+ *         type: string
+ *         description: the first name of the User
+ *       last_name:
+ *         type: string
+ *         description: the last name of the User
+ *       password:
+ *         description: The password for the User
+ *         type: string
+ *         format: password
+ */
+export class AdminPostInvitesInviteAcceptReq {
+  /**
+   * If email is not passed, we default to using the email of the invite.
+   */
+  @IsString()
+  @IsOptional()
+  email: string
+  /**
+   * The invite's first name.
+   */
+  @IsString()
+  @IsOptional()
+  first_name: string
+
+  /**
+   * The invite's last name.
+   */
+  @IsString()
+  @IsOptional()
+  last_name: string
+}
+
+export class AdminPostInvitesInviteAcceptParams {
+  @IsString()
+  @IsNotEmpty()
+  token: string
+
+  @IsOptional()
+  expand = undefined
 }

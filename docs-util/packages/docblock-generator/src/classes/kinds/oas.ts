@@ -28,7 +28,7 @@ import OasSchemaHelper from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 
-export const API_ROUTE_PARAM_REGEX = /\[(.+)\]/g
+export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
 type SchemaDescriptionOptions = {
@@ -48,6 +48,7 @@ type ParameterType = "query" | "path"
  * since API routes are functions.
  */
 class OasKindGenerator extends FunctionKindGenerator {
+  public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
   // we can't use `{summary}` because it causes an MDX error
@@ -112,9 +113,12 @@ class OasKindGenerator extends FunctionKindGenerator {
     // and the second of type `MedusaResponse`
     return (
       (functionNode.parameters.length === 2 &&
-        functionNode.parameters[0].type
+        (functionNode.parameters[0].type
           ?.getText()
-          .startsWith("MedusaRequest") &&
+          .startsWith("MedusaRequest") ||
+          functionNode.parameters[0].type
+            ?.getText()
+            .startsWith("AuthenticatedMedusaRequest")) &&
         functionNode.parameters[1].type
           ?.getText()
           .startsWith("MedusaResponse")) ||
@@ -163,12 +167,13 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param options - The options to get the OAS.
    * @returns The OAS as a string that can be used as a comment in a TypeScript file.
    */
-  getDocBlock(
+  async getDocBlock(
     node: ts.Node | FunctionOrVariableNode,
     options?: GetDocBlockOptions
-  ): string {
+  ): Promise<string> {
+    // TODO use AiGenerator to generate descriptions + examples
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
 
     const actualNode = ts.isVariableStatement(node)
@@ -176,7 +181,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       : node
 
     if (!actualNode) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
     const methodName = this.getHTTPMethodName(node)
 
@@ -988,26 +993,32 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     tagName?: string
   }): OpenAPIV3.ParameterObject[] {
-    const pathParameters = API_ROUTE_PARAM_REGEX.exec(oasPath)?.slice(1)
+    // reset regex manually
+    API_ROUTE_PARAM_REGEX.lastIndex = 0
+    let pathParameters: string[] | undefined
     const parameters: OpenAPIV3.ParameterObject[] = []
-
-    if (pathParameters?.length) {
-      pathParameters.forEach((parameter) =>
-        parameters.push(
-          this.getParameterObject({
-            type: "path",
-            name: parameter,
-            description: this.getSchemaDescription({
-              typeStr: parameter,
-              parentName: tagName,
-            }),
-            required: true,
-            schema: {
-              type: "string",
-            },
-          })
+    while (
+      (pathParameters = API_ROUTE_PARAM_REGEX.exec(oasPath)?.slice(1)) !==
+      undefined
+    ) {
+      if (pathParameters.length) {
+        pathParameters.forEach((parameter) =>
+          parameters.push(
+            this.getParameterObject({
+              type: "path",
+              name: parameter,
+              description: this.getSchemaDescription({
+                typeStr: parameter,
+                parentName: tagName,
+              }),
+              required: true,
+              schema: {
+                type: "string",
+              },
+            })
+          )
         )
-      )
+      }
     }
 
     return parameters

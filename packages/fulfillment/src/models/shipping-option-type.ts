@@ -4,33 +4,28 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
 type ShippingOptionTypeOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_shipping_option_type_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_type",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-const shippingOptionIdIndexName = "IDX_shipping_option_type_shipping_option_id"
-const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
-  name: shippingOptionIdIndexName,
+const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_type",
   columns: "shipping_option_id",
   where: "deleted_at IS NULL",
@@ -53,14 +48,10 @@ export default class ShippingOptionType {
   @Property({ columnType: "text" })
   code: string
 
-  @Property({ columnType: "text" })
-  @Index({
-    name: shippingOptionIdIndexName,
-    expression: shippingOptionIdIndexStatement,
+  @OneToOne(() => ShippingOption, (so) => so.type, {
+    type: "text",
+    onDelete: "cascade",
   })
-  shipping_option_id: string
-
-  @OneToOne(() => ShippingOption, (so) => so.shipping_option_type)
   shipping_option: ShippingOption
 
   @Property({
@@ -78,10 +69,7 @@ export default class ShippingOptionType {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

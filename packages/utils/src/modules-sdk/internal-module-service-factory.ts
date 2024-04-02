@@ -2,19 +2,19 @@ import {
   BaseFilterable,
   Context,
   FilterQuery,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
+  FilterQuery as InternalFilterQuery,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isObject,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
 } from "../common"
 import { buildQuery } from "./build-query"
@@ -23,6 +23,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
+import { UpsertWithReplaceConfig } from "@medusajs/types"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -60,7 +61,25 @@ export function internalModuleServiceFactory<
     }
 
     static buildUniqueCompositeKeyValue(keys: string[], data: object) {
-      return keys.map((k) => data[k]).join("_")
+      return keys.map((k) => data[k]).join(":")
+    }
+
+    /**
+     * Only apply top level default ordering as the relation
+     * default ordering is already applied through the foreign key
+     * @param config
+     */
+    static applyDefaultOrdering(config: FindConfig<any>) {
+      if (config.order) {
+        return
+      }
+
+      config.order = {}
+
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+      primaryKeys.forEach((primaryKey) => {
+        config.order![primaryKey] = "ASC"
+      })
     }
 
     @InjectManager(propertyRepositoryName)
@@ -129,6 +148,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -143,6 +163,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].findAndCount(
@@ -267,7 +288,7 @@ export function internalModuleServiceFactory<
 
           ;[...keySelectorDataMap.keys()].filter((key) => {
             if (!compositeKeysValuesForFoundEntities.has(key)) {
-              const value = key.replace(/_/gi, " - ")
+              const value = key.replace(/:/gi, " - ")
               missingEntityValues.push(value)
             }
           })
@@ -434,6 +455,34 @@ export function internalModuleServiceFactory<
       const data_ = Array.isArray(data) ? data : [data]
       const entities = await this[propertyRepositoryName].upsert(
         data_,
+        sharedContext
+      )
+      return Array.isArray(data) ? entities : entities[0]
+    }
+
+    upsertWithReplace(
+      data: any[],
+      config?: UpsertWithReplaceConfig<TEntity>,
+      sharedContext?: Context
+    ): Promise<TEntity[]>
+    upsertWithReplace(
+      data: any,
+      config?: UpsertWithReplaceConfig<TEntity>,
+      sharedContext?: Context
+    ): Promise<TEntity>
+
+    @InjectTransactionManager(propertyRepositoryName)
+    async upsertWithReplace(
+      data: any | any[],
+      config: UpsertWithReplaceConfig<TEntity> = {
+        relations: [],
+      },
+      @MedusaContext() sharedContext: Context = {}
+    ): Promise<TEntity | TEntity[]> {
+      const data_ = Array.isArray(data) ? data : [data]
+      const entities = await this[propertyRepositoryName].upsertWithReplace(
+        data_,
+        config,
         sharedContext
       )
       return Array.isArray(data) ? entities : entities[0]

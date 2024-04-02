@@ -24,7 +24,7 @@ npm install @medusajs/inventory
 
 ### Step 2: Add Inventory Module to Configurations
 
-In `medusa-config.js`, add the inventory module to the exported object under the `modules` property:
+In `medusa-config.js`, add the Inventory Module to the exported object under the `modules` property:
 
 ```js
 module.exports = {
@@ -48,7 +48,7 @@ npx medusa migrations run
 
 ### Step 4: Run Migration Script
 
-After installing the Stock Location module, make sure to [run the migration script](#run-migration-script)
+After installing the Stock Location Module, make sure to [run the migration script](#run-migration-script)
 
 ---
 
@@ -64,7 +64,7 @@ npm install @medusajs/stock-location
 
 ### Step 2: Add Stock Location Module to Configurations
 
-In `medusa-config.js`, add the stock location module to the exported object under the `modules` property:
+In `medusa-config.js`, add the Stock Location Module to the exported object under the `modules` property:
 
 ```js
 module.exports = {
@@ -100,4 +100,4 @@ After installing both modules, run the following command to migrate current prod
 node ./node_modules/@medusajs/medusa/dist/scripts/migrate-inventory-items.js
 ```
 
-You can now start the Medusa backend and use the stock location module in your commerce application.
+You can now start the Medusa backend and use the Stock Location Module in your commerce application.

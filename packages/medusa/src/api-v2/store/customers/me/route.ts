@@ -1,9 +1,15 @@
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata?.customer_id
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.auth.actor_id
 
   const customerModule = req.scope.resolve(ModuleRegistrationName.CUSTOMER)
 

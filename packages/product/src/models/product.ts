@@ -66,6 +66,7 @@ class Product {
   is_giftcard!: boolean
 
   @Enum(() => ProductUtils.ProductStatus)
+  @Property({ default: ProductUtils.ProductStatus.DRAFT })
   status!: ProductUtils.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
@@ -105,30 +106,39 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @Property({ columnType: "text", nullable: true })
-  collection_id!: string
+  @ManyToOne(() => ProductCollection, {
+    columnType: "text",
+    nullable: true,
+    fieldName: "collection_id",
+    mapToPk: true,
+  })
+  collection_id: string | null
 
   @ManyToOne(() => ProductCollection, {
     nullable: true,
-    fieldName: "collection_id",
+    persist: false,
   })
-  collection!: ProductCollection | null
+  collection: ProductCollection | null
 
-  @Property({ columnType: "text", nullable: true })
-  type_id!: string
+  @ManyToOne(() => ProductType, {
+    columnType: "text",
+    nullable: true,
+    fieldName: "type_id",
+    index: "IDX_product_type_id",
+    mapToPk: true,
+  })
+  type_id: string | null
 
   @ManyToOne(() => ProductType, {
     nullable: true,
-    index: "IDX_product_type_id",
-    fieldName: "type_id",
+    persist: false,
   })
-  type!: ProductType
+  type: ProductType | null
 
   @ManyToMany(() => ProductTag, "products", {
     owner: true,
     pivotTable: "product_tags",
     index: "IDX_product_tag_id",
-    cascade: ["soft-remove"] as any,
   })
   tags = new Collection<ProductTag>(this)
 
@@ -136,7 +146,6 @@ class Product {
     owner: true,
     pivotTable: "product_images",
     index: "IDX_product_image_id",
-    cascade: ["soft-remove"] as any,
     joinColumn: "product_id",
     inverseJoinColumn: "image_id",
   })
@@ -145,7 +154,6 @@ class Product {
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,
     pivotTable: "product_category_product",
-    // TODO: rm cascade: ["soft-remove"] as any,
   })
   categories = new Collection<ProductCategory>(this)
 
@@ -180,12 +188,21 @@ class Product {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "prod")
+    this.type_id ??= this.type?.id ?? null
+    this.collection_id ??= this.collection?.id ?? null
+
+    if (!this.handle && this.title) {
+      this.handle = kebabCase(this.title)
+    }
   }
 
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prod")
-    if (!this.handle) {
+    this.type_id ??= this.type?.id ?? null
+    this.collection_id ??= this.collection?.id ?? null
+
+    if (!this.handle && this.title) {
       this.handle = kebabCase(this.title)
     }
   }

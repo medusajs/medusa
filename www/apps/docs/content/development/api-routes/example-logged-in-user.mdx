@@ -24,6 +24,7 @@ Create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
 import type { 
+  authenticate,
   MiddlewaresConfig, 
   User, 
   UserService,
@@ -60,7 +61,7 @@ export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/admin/products",
-      middlewares: [registerLoggedInUser],
+      middlewares: [authenticate(), registerLoggedInUser],
     },
   ],
 }

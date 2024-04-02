@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentMethod
 
@@ -14,4 +14,4 @@ ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"provider_id","type":"`string`","description":"The ID of the payment provider used in the order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data to attach to the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="PaymentMethod"/>
+<TypeList types={[{"name":"provider_id","type":"`string`","description":"The ID of the payment provider used in the order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data to attach to the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="PaymentMethod"/>

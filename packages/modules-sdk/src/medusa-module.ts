@@ -15,9 +15,11 @@ import {
 } from "@medusajs/types"
 import {
   createMedusaContainer,
+  promiseAll,
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
+import { EOL } from "os"
 import {
   moduleLoader,
   registerMedusaLinkModule,
@@ -64,6 +66,11 @@ export type ModuleBootstrapOptions = {
    * Don't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done.
    */
   migrationOnly?: boolean
+  /**
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   */
+  loaderOnly?: boolean
+  workerMode?: "shared" | "worker" | "server"
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -109,6 +116,22 @@ export class MedusaModule {
         }
       }
     }
+  }
+  public static async onApplicationShutdown(): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationShutdown
+              ?.bind(instance)()
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
   }
 
   public static clearInstances(): void {
@@ -219,6 +242,8 @@ export class MedusaModule {
     moduleDefinition,
     injectedDependencies,
     migrationOnly,
+    loaderOnly,
+    workerMode,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -226,25 +251,27 @@ export class MedusaModule {
       stringifyCircular({ moduleKey, defaultPath, declaration })
     )
 
-    if (MedusaModule.instances_.has(hashKey)) {
+    if (!loaderOnly && MedusaModule.instances_.has(hashKey)) {
       return MedusaModule.instances_.get(hashKey)! as {
         [key: string]: T
       }
     }
 
-    if (MedusaModule.loading_.has(hashKey)) {
+    if (!loaderOnly && MedusaModule.loading_.has(hashKey)) {
       return MedusaModule.loading_.get(hashKey)
     }
 
     let finishLoading: any
     let errorLoading: any
-    MedusaModule.loading_.set(
-      hashKey,
-      new Promise((resolve, reject) => {
-        finishLoading = resolve
-        errorLoading = reject
-      })
-    )
+
+    const loadingPromise = new Promise((resolve, reject) => {
+      finishLoading = resolve
+      errorLoading = reject
+    })
+
+    if (!loaderOnly) {
+      MedusaModule.loading_.set(hashKey, loadingPromise)
+    }
 
     let modDeclaration =
       declaration ??
@@ -258,6 +285,7 @@ export class MedusaModule {
         options: declaration?.options ?? declaration,
         alias: declaration?.alias,
         main: declaration?.main,
+        worker_mode: workerMode,
       }
     }
 
@@ -284,12 +312,16 @@ export class MedusaModule {
       moduleDefinition
     )
 
+    const logger_ =
+      container.resolve("logger", { allowUnregistered: true }) ?? logger
+
     try {
       await moduleLoader({
         container,
         moduleResolutions,
-        logger,
+        logger: logger_,
         migrationOnly,
+        loaderOnly,
       })
     } catch (err) {
       errorLoading(err)
@@ -297,6 +329,11 @@ export class MedusaModule {
     }
 
     const services = {}
+
+    if (loaderOnly) {
+      finishLoading(services)
+      return services
+    }
 
     for (const resolution of Object.values(
       moduleResolutions
@@ -311,6 +348,14 @@ export class MedusaModule {
         const joinerConfig: ModuleJoinerConfig = await services[
           keyName
         ].__joinerConfig()
+
+        if (!joinerConfig.primaryKeys) {
+          logger_.warn(
+            `Primary keys are not defined by the module ${keyName}. Setting default primary key to 'id'${EOL}`
+          )
+
+          joinerConfig.primaryKeys = ["id"]
+        }
 
         services[keyName].__joinerConfig = joinerConfig
         MedusaModule.setJoinerConfig(keyName, joinerConfig)
@@ -398,11 +443,14 @@ export class MedusaModule {
       moduleExports
     )
 
+    const logger_ =
+      container.resolve("logger", { allowUnregistered: true }) ?? logger
+
     try {
       await moduleLoader({
         container,
         moduleResolutions,
-        logger,
+        logger: logger_,
       })
     } catch (err) {
       errorLoading(err)

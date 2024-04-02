@@ -56,10 +56,15 @@ class ProductCategory {
   @Property({ columnType: "numeric", nullable: false, default: 0 })
   rank?: number
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ProductCategory, {
+    columnType: "text",
+    fieldName: "parent_category_id",
+    nullable: true,
+    mapToPk: true,
+  })
   parent_category_id?: string | null
 
-  @ManyToOne(() => ProductCategory, { nullable: true })
+  @ManyToOne(() => ProductCategory, { nullable: true, persist: false })
   parent_category?: ProductCategory
 
   @OneToMany({
@@ -89,13 +94,15 @@ class ProductCategory {
   @OnInit()
   async onInit() {
     this.id = generateEntityId(this.id, "pcat")
+    this.parent_category_id ??= this.parent_category?.id ?? null
   }
 
   @BeforeCreate()
   async onCreate(args: EventArgs<ProductCategory>) {
     this.id = generateEntityId(this.id, "pcat")
+    this.parent_category_id ??= this.parent_category?.id ?? null
 
-    if (!this.handle) {
+    if (!this.handle && this.name) {
       this.handle = kebabCase(this.name)
     }
 

@@ -64,6 +64,11 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     )
   }
 
+  async onApplicationShutdown() {
+    await this.queue.close()
+    await this.worker.close(true)
+  }
+
   setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }
@@ -99,26 +104,10 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     })
   }
 
-  private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
-    }
-
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
-    }
-
-    return value
-  }
-
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
-    return data ? JSON.parse(data, this.jsonWithSymbol) : undefined
+    return data ? JSON.parse(data) : undefined
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -129,7 +118,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     for (const key of keys) {
       const data = await this.redisClient.get(key)
       if (data) {
-        transactions.push(JSON.parse(data, this.jsonWithSymbol))
+        transactions.push(JSON.parse(data))
       }
     }
     return transactions
@@ -159,7 +148,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       })
     }
 
-    const stringifiedData = JSON.stringify(data, this.stringifyWithSymbol)
+    const stringifiedData = JSON.stringify(data)
     const parsedData = JSON.parse(stringifiedData)
 
     if (!hasFinished) {
@@ -276,7 +265,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id)
+      key.push(step.id, step.attempts + "")
     }
 
     return key.join(":")

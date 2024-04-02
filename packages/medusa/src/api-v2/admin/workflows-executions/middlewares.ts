@@ -1,14 +1,22 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
 import {
   AdminGetWorkflowExecutionDetailsParams,
   AdminGetWorkflowExecutionsParams,
   AdminPostWorkflowsAsyncResponseReq,
   AdminPostWorkflowsRunReq,
 } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["ALL"],
+    matcher: "/admin/workflows-executions*",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
+  },
   {
     method: ["GET"],
     matcher: "/admin/workflows-executions",

@@ -1,29 +1,75 @@
-import { RegionCurrencyDTO } from "./common"
-
+/**
+ * The region to be created.
+ */
 export interface CreateRegionDTO {
+  /**
+   * The name of the region.
+   */
   name: string
+  /**
+   * The currency code of the region.
+   */
   currency_code: string
-  currency?: RegionCurrencyDTO
+  /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
+  /**
+   * The region's countries.
+   */
   countries?: string[]
-  tax_code?: string
-  tax_rate?: number
-  tax_provider_id?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+}
+
+export interface UpsertRegionDTO {
+  /**
+   * The id of the region in the case of an update
+   */
+  id?: string
+  /**
+   * The target name of the region
+   */
+  name?: string
+  /**
+   * The currency code of the region.
+   */
+  currency_code?: string
+  /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
+  /**
+   * The region's countries.
+   */
+  countries?: string[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdateRegionDTO {
-  id: string
-  currency_code?: string
-  currency?: RegionCurrencyDTO
-  countries: string[]
+  /**
+   * The target name of the region
+   */
   name?: string
-  tax_code?: string
-  tax_rate?: number
-  tax_provider_id?: string
+  /**
+   * The currency code of the region.
+   */
+  currency_code?: string
+  /**
+   * Setting to indicate whether taxes need to be applied automatically
+   */
+  automatic_taxes?: boolean
+  /**
+   * The region's countries.
+   */
+  countries?: string[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
-
-export interface AddCountryToRegionDTO {
-  region_id: string
-  country_id: string
-}
-
-export interface RemoveCountryFromRegionDTO extends AddCountryToRegionDTO {}

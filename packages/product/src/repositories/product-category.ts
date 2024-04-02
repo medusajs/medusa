@@ -8,8 +8,7 @@ import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
-
-import { ProductCategoryServiceTypes } from "../types"
+import { ProductTypes } from "@medusajs/types"
 
 export type ReorderConditions = {
   targetCategoryId: string
@@ -192,7 +191,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   }
 
   async create(
-    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    data: ProductTypes.CreateProductCategoryDTO,
     context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
@@ -214,7 +213,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
   async update(
     id: string,
-    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    data: ProductTypes.UpdateProductCategoryDTO,
     context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
@@ -248,7 +247,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
   protected fetchReorderConditions(
     productCategory: ProductCategory,
-    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    data: ProductTypes.UpdateProductCategoryDTO,
     shouldDeleteElement = false
   ): ReorderConditions {
     const originalParentId = productCategory.parent_category_id || null

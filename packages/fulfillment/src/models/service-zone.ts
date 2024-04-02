@@ -4,21 +4,22 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  ManyToOne,
   OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-import FulfillmentSet from "./fullfilment-set"
+import FulfillmentSet from "./fulfillment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
 
@@ -30,6 +31,19 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
+}).expression
+
+const NameIndex = createPsqlIndexStatementHelper({
+  tableName: "service_zone",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+const FulfillmentSetIdIndex = createPsqlIndexStatementHelper({
+  tableName: "service_zone",
+  columns: "fulfillment_set_id",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
@@ -41,28 +55,37 @@ export default class ServiceZone {
   id: string
 
   @Property({ columnType: "text" })
+  @NameIndex.MikroORMIndex()
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(
-    () => FulfillmentSet,
-    (fulfillmentSet) => fulfillmentSet.service_zones
-  )
-  fulfillment_sets = new Collection<FulfillmentSet>(this)
+  @ManyToOne(() => FulfillmentSet, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "fulfillment_set_id",
+    onDelete: "cascade",
+  })
+  @FulfillmentSetIdIndex.MikroORMIndex()
+  fulfillment_set_id: string
 
-  @ManyToMany(() => GeoZone, "service_zones", {
-    owner: true,
-    pivotTable: "service_zone_geo_zones",
-    joinColumn: "service_zone_id",
-    inverseJoinColumn: "geo_zone_id",
+  @ManyToOne(() => FulfillmentSet, { persist: false })
+  fulfillment_set: FulfillmentSet
+
+  @OneToMany(() => GeoZone, "service_zone", {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
   })
   geo_zones = new Collection<GeoZone>(this)
 
   @OneToMany(
     () => ShippingOption,
-    (shippingOption) => shippingOption.service_zone
+    (shippingOption) => shippingOption.service_zone,
+    {
+      cascade: [Cascade.PERSIST, "soft-remove"] as any,
+      orphanRemoval: true,
+    }
   )
   shipping_options = new Collection<ShippingOption>(this)
 
@@ -91,10 +114,12 @@ export default class ServiceZone {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 }

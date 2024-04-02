@@ -1,12 +1,8 @@
-import BigNumber from "bignumber.js"
+import BigNumberJS from "bignumber.js"
 
 export type BigNumberRawValue = {
   value: string | number
   [key: string]: unknown
 }
 
-export type BigNumberRawPriceInput =
-  | BigNumberRawValue
-  | number
-  | string
-  | BigNumber
+export type BigNumberInput = BigNumberRawValue | number | string | BigNumberJS

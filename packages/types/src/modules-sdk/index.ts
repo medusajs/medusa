@@ -1,6 +1,7 @@
 import {
   JoinerRelationship,
   JoinerServiceConfig,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "../joiner"
 
@@ -11,6 +12,7 @@ import { Logger } from "../logger"
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
 export * from "./internal-module-service"
+export * from "./module-provider"
 
 export type LogLevel =
   | "query"
@@ -47,6 +49,7 @@ export type InternalModuleDeclaration = {
    * If the module is the main module for the key when multiple ones are registered
    */
   main?: boolean
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 export type ExternalModuleDeclaration = {
@@ -252,7 +255,9 @@ export interface ModuleServiceInitializeOptions {
     user?: string
     password?: string
     database?: string
-    driverOptions?: Record<string, unknown>
+    driverOptions?: Record<string, unknown> & {
+      connection?: Record<string, unknown>
+    }
     debug?: boolean
     pool?: Record<string, unknown>
   }
@@ -274,7 +279,8 @@ export type ModuleBootstrapDeclaration =
 
 export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  options?: RemoteJoinerOptions
 ) => Promise<any> | null
 
 export interface IModuleService {
@@ -288,15 +294,6 @@ export interface IModuleService {
    */
   __hooks?: {
     onApplicationStart?: () => Promise<void>
+    onApplicationShutdown?: () => Promise<void>
   }
-}
-
-export type ModuleProviderExports = {
-  services: Constructor<any>[]
-}
-
-export type ModuleProvider = {
-  resolve: string | ModuleProviderExports
-  provider_name?: string
-  options: Record<string, unknown>
 }

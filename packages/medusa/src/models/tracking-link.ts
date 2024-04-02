@@ -1,9 +1,16 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Fulfillment } from "./fulfillment"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Fulfillment } from "./fulfillment"
 
 @Entity()
 export class TrackingLink extends SoftDeletableEntity {
@@ -18,7 +25,7 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment: Relation<Fulfillment>
 
   @Column({ nullable: true })
   idempotency_key: string

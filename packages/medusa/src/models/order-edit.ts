@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
@@ -18,7 +19,7 @@ import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
 /**
  * @enum
- * 
+ *
  * The order edit's status.
  */
 export enum OrderEditStatus {
@@ -52,12 +53,12 @@ export class OrderEdit extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
   })
-  changes: OrderItemChange[]
+  changes: Relation<OrderItemChange>[]
 
   @Column({ nullable: true })
   internal_note?: string
@@ -93,7 +94,7 @@ export class OrderEdit extends BaseEntity {
   canceled_at?: Date
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
-  items: LineItem[]
+  items: Relation<LineItem>[]
 
   @Index()
   @Column({ nullable: true })

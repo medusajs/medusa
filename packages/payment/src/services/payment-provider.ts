@@ -1,26 +1,32 @@
-import { EOL } from "os"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Context,
   CreatePaymentProviderDTO,
+  CreatePaymentProviderSession,
   DAL,
+  FilterablePaymentProviderProps,
+  FindConfig,
   InternalModuleDeclaration,
   IPaymentProvider,
   PaymentProviderAuthorizeResponse,
-  PaymentProviderContext,
   PaymentProviderDataInput,
+  PaymentProviderDTO,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
+  UpdatePaymentProviderSession,
+  WebhookActionResult,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   isPaymentProviderError,
   MedusaContext,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
-
 import { PaymentProvider } from "@models"
+import { MedusaError } from "medusa-core-utils"
+import { EOL } from "os"
 
 type InjectedDependencies = {
   paymentProviderRepository: DAL.RepositoryService
@@ -50,14 +56,24 @@ export default class PaymentProviderService {
 
   @InjectManager("paymentProviderRepository_")
   async list(
+    filters: FilterablePaymentProviderProps,
+    config: FindConfig<PaymentProviderDTO>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentProvider[]> {
-    return await this.paymentProviderRepository_.find(undefined, sharedContext)
+    const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
+      filters,
+      config
+    )
+
+    return await this.paymentProviderRepository_.find(
+      queryOptions,
+      sharedContext
+    )
   }
 
   retrieveProvider(providerId: string): IPaymentProvider {
     try {
-      return this.container_[`pp_${providerId}`] as IPaymentProvider
+      return this.container_[providerId] as IPaymentProvider
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -68,19 +84,9 @@ export default class PaymentProviderService {
 
   async createSession(
     providerId: string,
-    sessionInput: PaymentProviderContext
+    sessionInput: CreatePaymentProviderSession
   ): Promise<PaymentProviderSessionResponse["data"]> {
     const provider = this.retrieveProvider(providerId)
-
-    if (
-      !isDefined(sessionInput.currency_code) ||
-      !isDefined(sessionInput.amount)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "`currency_code` and `amount` are required to create payment session."
-      )
-    }
 
     const paymentResponse = await provider.initiatePayment(sessionInput)
 
@@ -93,7 +99,7 @@ export default class PaymentProviderService {
 
   async updateSession(
     providerId: string,
-    sessionInput: PaymentProviderContext
+    sessionInput: UpdatePaymentProviderSession
   ): Promise<Record<string, unknown> | undefined> {
     const provider = this.retrieveProvider(providerId)
 
@@ -171,6 +177,15 @@ export default class PaymentProviderService {
     }
 
     return res as Record<string, unknown>
+  }
+
+  async getWebhookActionAndData(
+    providerId: string,
+    data: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult> {
+    const provider = this.retrieveProvider(providerId)
+
+    return await provider.getWebhookActionAndData(data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {

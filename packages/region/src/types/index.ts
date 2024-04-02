@@ -1,4 +1,4 @@
-import { Logger } from "@medusajs/types"
+import { Logger, UpdateRegionDTO } from "@medusajs/types"
 import { Country } from "@models"
 
 export type InitializeModuleInjectableDependencies = {
@@ -10,13 +10,6 @@ export type UpdateCountryRegion = {
   region_id: string
 }
 
-export type CreateCurrencyDTO = {
-  code: string
-  symbol: string
-  name: string
-  symbol_native: string
-}
-
 export type CreateCountryDTO = {
   iso_2: string
   iso_3: string
@@ -25,8 +18,4 @@ export type CreateCountryDTO = {
   display_name: string
 }
 
-export type CreateRegionDTO = {
-  name: string
-  currency_code: string
-  countries?: Country[]
-}
+export type UpdateRegionInput = UpdateRegionDTO & { id: string }

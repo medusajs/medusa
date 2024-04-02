@@ -1,18 +1,16 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   InternalModuleDeclaration,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
-import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
-import { Express, NextFunction, Request, Response } from "express"
-
-import databaseLoader, { dataSource } from "./database"
-import pluginsLoader, { registerPluginModels } from "./plugins"
-
+import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isString
+  isString,
+  MedusaV2Flag, promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
+import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
@@ -22,14 +20,17 @@ import { v4 } from "uuid"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import medusaProjectApisLoader from "./load-medusa-project-apis"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
+import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
@@ -82,17 +83,113 @@ async function loadLegacyModulesEntities(configModules, container) {
   }
 }
 
+async function loadMedusaV2({
+  rootDirectory,
+  configModule,
+  featureFlagRouter,
+  expressApp,
+}) {
+  const container = createMedusaContainer()
+
+  const shouldStartAPI = configModule.projectConfig.worker_mode !== "worker"
+
+  const pgConnection = await pgConnectionLoader({ container, configModule })
+
+  container.register({
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
+    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
+    [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+    [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
+  })
+
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
+    configModule,
+    container,
+  })
+
+  let expressShutdown = async () => {}
+
+  if (shouldStartAPI) {
+    const { shutdown } = await expressLoader({ app: expressApp, configModule })
+    expressShutdown = shutdown
+
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      req.scope = container.createScope() as MedusaContainer
+      req.requestId = (req.headers["x-request-id"] as string) ?? v4()
+      next()
+    })
+
+    // Add additional information to context of request
+    expressApp.use((req: Request, res: Response, next: NextFunction) => {
+      const ipAddress = requestIp.getClientIp(req) as string
+      ;(req as any).request_context = {
+        ip_address: ipAddress,
+      }
+      next()
+    })
+
+    // TODO: Add Subscribers loader
+
+    await apiLoader({
+      container,
+      app: expressApp,
+      configModule,
+      featureFlagRouter,
+    })
+  }
+
+  await medusaProjectApisLoader({
+    rootDirectory,
+    container,
+    app: expressApp,
+    configModule,
+    activityId: "medusa-project-apis",
+  })
+
+  await createDefaultsWorkflow(container).run()
+
+  const shutdown = async () => {
+    await promiseAll([
+      container.dispose(),
+      pgConnection?.context?.destroy(),
+      expressShutdown(),
+      medusaAppOnApplicationShutdown()
+    ])
+  }
+
+  return {
+    configModule,
+    container,
+    app: expressApp,
+    pgConnection,
+    shutdown,
+  }
+}
+
 export default async ({
   directory: rootDirectory,
   expressApp,
   isTest,
 }: Options): Promise<{
+  configModule: ConfigModule
   container: MedusaContainer
-  dbConnection: Connection
+  dbConnection?: Connection
   app: Express
   pgConnection: unknown
+  shutdown: () => Promise<void>
 }> => {
   const configModule = loadConfig(rootDirectory)
+  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  track("FEATURE_FLAGS_LOADED")
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    return await loadMedusaV2({
+      rootDirectory,
+      configModule,
+      featureFlagRouter,
+      expressApp,
+    })
+  }
 
   const container = createMedusaContainer()
   container.register(
@@ -109,15 +206,12 @@ export default async ({
     next()
   })
 
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
-  track("FEATURE_FLAGS_LOADED")
-
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  await redisLoader({ container, configModule, logger: Logger })
+  const { shutdown: redisShutdown } = await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
@@ -177,7 +271,7 @@ export default async ({
   track("MODULES_INIT_STARTED")
 
   // Move before services init once all modules are migrated and do not rely on core resources anymore
-  await loadMedusaApp({
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
     configModule,
     container,
   })
@@ -187,7 +281,7 @@ export default async ({
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
-  await expressLoader({ app: expressApp, configModule })
+  const { shutdown: expressShutdown } = await expressLoader({ app: expressApp, configModule })
   await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
@@ -244,10 +338,23 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
+  async function shutdown() {
+    await promiseAll([
+      container.dispose(),
+      dbConnection?.destroy(),
+      pgConnection?.context?.destroy(),
+      redisShutdown(),
+      expressShutdown(),
+      medusaAppOnApplicationShutdown(),
+    ])
+  }
+
   return {
+    configModule,
     container,
     dbConnection,
     app: expressApp,
     pgConnection,
+    shutdown,
   }
 }

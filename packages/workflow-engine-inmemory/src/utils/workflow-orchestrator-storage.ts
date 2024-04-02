@@ -55,7 +55,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     ])
   }
 
-  private stringifyWithSymbol(key, value) {
+  /*private stringifyWithSymbol(key, value) {
     if (key === "__type" && typeof value === "symbol") {
       return Symbol.keyFor(value)
     }
@@ -69,7 +69,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     }
 
     return value
-  }
+  }*/
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     return this.storage.get(key)
@@ -105,7 +105,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
       })
     }
 
-    const stringifiedData = JSON.stringify(data, this.stringifyWithSymbol)
+    const stringifiedData = JSON.stringify(data)
     const parsedData = JSON.parse(stringifiedData)
 
     if (hasFinished && !retentionTime) {

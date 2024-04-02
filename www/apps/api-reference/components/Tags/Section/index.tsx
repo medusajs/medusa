@@ -15,7 +15,7 @@ import SectionContainer from "../../Section/Container"
 import { useArea } from "../../../providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
-import { Feedback, Loading, NextLink } from "docs-ui"
+import { Feedback, Loading, Link } from "docs-ui"
 import { usePathname } from "next/navigation"
 import formatReportLink from "../../../utils/format-report-link"
 
@@ -100,9 +100,9 @@ const TagSection = ({ tag }: TagSectionProps) => {
             {tag.externalDocs && (
               <>
                 Related guide:{" "}
-                <NextLink href={tag.externalDocs.url} target="_blank">
+                <Link href={tag.externalDocs.url} target="_blank">
                   {tag.externalDocs.description || "Read More"}
-                </NextLink>
+                </Link>
               </>
             )}
             <Feedback

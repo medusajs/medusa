@@ -108,7 +108,7 @@ export const initialize = async (
     }
 
     const logger =
-      injectedDependencies?.[ContainerRegistrationKeys.LOGGER] ?? console.log
+      injectedDependencies?.[ContainerRegistrationKeys.LOGGER] ?? console
 
     definition.schema = generateGraphQLSchema(definition, primary, foreign, {
       logger,

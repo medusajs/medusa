@@ -7,26 +7,25 @@ interface CreateGeoZoneBaseDTO {
   metadata?: Record<string, any> | null
 }
 
-interface CreateCountryGeoZoneDTO extends CreateGeoZoneBaseDTO {
+export interface CreateCountryGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "country"
-  country_code: string
 }
 
-interface CreateProvinceGeoZoneDTO extends CreateGeoZoneBaseDTO {
+export interface CreateProvinceGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "province"
-  country_code: string
   province_code: string
 }
 
-interface CreateCityGeoZoneDTO extends CreateGeoZoneBaseDTO {
+export interface CreateCityGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "city"
-  country_code: string
+  province_code: string
   city: string
 }
 
-interface CreateZipGeoZoneDTO extends CreateGeoZoneBaseDTO {
+export interface CreateZipGeoZoneDTO extends CreateGeoZoneBaseDTO {
   type: "zip"
-  country_code: string
+  province_code: string
+  city: string
   postal_expression: Record<string, any>
 }
 
@@ -36,31 +35,30 @@ export type CreateGeoZoneDTO =
   | CreateCityGeoZoneDTO
   | CreateZipGeoZoneDTO
 
-interface UpdateGeoZoneBaseDTO extends Partial<CreateGeoZoneBaseDTO> {
+export interface UpdateGeoZoneBaseDTO extends Partial<CreateGeoZoneBaseDTO> {
   id: string
 }
 
-interface UpdateCountryGeoZoneDTO extends UpdateGeoZoneBaseDTO {
+export interface UpdateCountryGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "country"
-  country_code: string
 }
 
-interface UpdateProvinceGeoZoneDTO extends UpdateGeoZoneBaseDTO {
+export interface UpdateProvinceGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "province"
-  country_code: string
   province_code: string
 }
 
-interface UpdateCityGeoZoneDTO extends UpdateGeoZoneBaseDTO {
+export interface UpdateCityGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "city"
-  country_code: string
-  city: string
+  province_code?: string
+  city?: string
 }
 
-interface UpdateZipGeoZoneDTO extends UpdateGeoZoneBaseDTO {
+export interface UpdateZipGeoZoneDTO extends UpdateGeoZoneBaseDTO {
   type: "zip"
-  country_code: string
-  postal_expression: Record<string, any>
+  province_code?: string
+  city?: string
+  postal_expression?: Record<string, any>
 }
 
 export type UpdateGeoZoneDTO =

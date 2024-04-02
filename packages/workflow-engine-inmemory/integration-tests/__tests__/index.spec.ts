@@ -6,6 +6,7 @@ import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -19,6 +20,8 @@ const sharedPgConnection = knex<any, any>({
 const afterEach_ = async () => {
   await TestDatabase.clearTables(sharedPgConnection)
 }
+
+jest.setTimeout(50000)
 
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
@@ -122,6 +125,17 @@ describe("Workflow Orchestrator module", function () {
           transactionId: "transaction_1",
         },
         stepResponse: { uhuuuu: "yeaah!" },
+      })
+
+      expect(workflow2Step2Invoke).toBeCalledTimes(2)
+      expect(workflow2Step2Invoke.mock.calls[0][0]).toEqual({ hey: "oh" })
+      expect(workflow2Step2Invoke.mock.calls[1][0]).toEqual({
+        hey: "async hello",
+      })
+
+      expect(workflow2Step3Invoke).toBeCalledTimes(1)
+      expect(workflow2Step3Invoke.mock.calls[0][0]).toEqual({
+        uhuuuu: "yeaah!",
       })
 
       executionsList = await query({

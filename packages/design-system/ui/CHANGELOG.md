@@ -1,5 +1,31 @@
 # @medusajs/ui
 
+## 2.4.3
+
+### Patch Changes
+
+- [#6779](https://github.com/medusajs/medusa/pull/6779) [`247ca3c3fa`](https://github.com/medusajs/medusa/commit/247ca3c3fadd69a1e90415041643727b53458e41) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Ensure that Hint's with variant 'error' are not squished when constrained.
+
+- [#6680](https://github.com/medusajs/medusa/pull/6680) [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui-preset): Pull latest styles from Figma.
+  fix(ui): Fix invalid state styling of Select, so it correctly shows when aria-invalid is true.
+  fix(medusa): Align query params between `/admin/products/:id/variants` and `/admin/variants`.
+  chore(client-types): Update `medusa` client types to reflect changes to the API.
+
+## 2.4.2
+
+### Patch Changes
+
+- [#6347](https://github.com/medusajs/medusa/pull/6347) [`869dc751a0`](https://github.com/medusajs/medusa/commit/869dc751a041abc70b2eb9acb36e147d7fd4fd62) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix(ui): explicitly specify props type
+
+- [#6564](https://github.com/medusajs/medusa/pull/6564) [`2d00625729`](https://github.com/medusajs/medusa/commit/2d00625729e7dab02149751327239992dea3a8e1) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa,ui) Export param types for workflow endpoints. Add support for JSON to CodeBlock component.
+
+- [#6380](https://github.com/medusajs/medusa/pull/6380) [`d37ff8024d`](https://github.com/medusajs/medusa/commit/d37ff8024d8affbe84db3c0b6d79cd41016bfac4) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa,ui): Fixes list query params for the following endpoints: "/admin/customers", "/admin/customer-groups", "/admin/gift-cards", and "/admin/collections".
+
+- [#6534](https://github.com/medusajs/medusa/pull/6534) [`44a5567d0d`](https://github.com/medusajs/medusa/commit/44a5567d0df71fb85a566e29748a6c8e21272163) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Left aligns text in RadioGroup.Choicebox component.
+
+- Updated dependencies [[`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0)]:
+  - @medusajs/icons@1.2.1
+
 ## 2.4.1
 
 ### Patch Changes

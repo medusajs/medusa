@@ -1,15 +1,16 @@
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
   Filter,
   Index,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 
 type SalesChannelOptionalProps = "is_disabled" | DAL.EntityDateColumns
 
@@ -37,6 +38,9 @@ export default class SalesChannel {
   })
   created_at: Date
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
@@ -54,7 +58,7 @@ export default class SalesChannel {
     this.id = generateEntityId(this.id, "sc")
   }
 
-  @BeforeCreate()
+  @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sc")
   }

@@ -298,7 +298,7 @@ export const currencies: Record<string, CurrencyInfo> = {
   INR: {
     code: "INR",
     name: "Indian Rupee",
-    symbol_native: "টকা",
+    symbol_native: "₹",
     decimal_digits: 2,
   },
   IQD: {
@@ -727,4 +727,8 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "ZWL$",
     decimal_digits: 0,
   },
+}
+
+export function getCurrencySymbol(code: string) {
+  return currencies[code.toUpperCase()].symbol_native
 }
