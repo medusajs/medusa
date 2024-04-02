@@ -94,9 +94,6 @@ export const CategoryTree = ({
 
   return (
     <div className="txt-compact-small relative flex-1 overflow-y-auto">
-      {showOverlay && (
-        <div className="bg-ui-bg-disabled/40 absolute inset-0 animate-pulse" />
-      )}
       <Nestable
         ref={ref}
         items={productCategories}
@@ -142,6 +139,9 @@ export const CategoryTree = ({
         }}
         threshold={10}
       />
+      {showOverlay && (
+        <div className="bg-ui-bg-disabled/40 absolute inset-0 animate-pulse" />
+      )}
     </div>
   )
 }
