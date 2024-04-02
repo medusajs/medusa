@@ -90,9 +90,7 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   force_modules_migration?: boolean
-  testSuite: <TService = unknown>(
-    options: MedusaSuiteOptions<TService>
-  ) => () => void
+  testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
@@ -147,37 +145,54 @@ export function medusaIntegrationTestRunner({
 
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
-    const { dbDataSource, pgConnection } = await initDb({
-      cwd,
-      env,
-      force_modules_migration,
-      database_extra: {},
-      dbUrl: dbConfig.clientUrl,
-      dbSchema: dbConfig.schema,
-    })
-    dbUtils.db_ = dbDataSource
-    dbUtils.pgConnection_ = pgConnection
 
-    const {
-      shutdown: serverShutdown,
-      container: container_,
-      port,
-    } = await startBootstrapApp({
-      cwd,
-      env,
-    })
+    let dataSourceRes
+    let pgConnectionRes
+
+    try {
+      const { dbDataSource: dataSourceRes, pgConnection: pgConnectionRes } = await initDb({
+        cwd,
+        env,
+        force_modules_migration,
+        database_extra: {},
+        dbUrl: dbConfig.clientUrl,
+        dbSchema: dbConfig.schema,
+      })
+    } catch (error) {
+      console.error("Error initializing database", error)
+    }
+
+    dbUtils.db_ = dataSourceRes
+    dbUtils.pgConnection_ = pgConnectionRes
+
+    let containerRes
+    let serverShutdownRes
+    let portRes
+    try {
+      const {
+        shutdown: serverShutdownRes,
+        container: containerRes,
+        port: portRes,
+      } = await startBootstrapApp({
+        cwd,
+        env,
+      })
+    } catch (error) {
+      console.error("Error starting the app", error)
+    }
 
     const cancelTokenSource = axios.CancelToken.source()
-    apiUtils = axios.create({
-      baseURL: `http://localhost:${port}`,
-      cancelToken: cancelTokenSource.token,
-    })
 
-    container = container_
+    container = containerRes
     shutdown = async () => {
-      await serverShutdown()
+      await serverShutdownRes()
       cancelTokenSource.cancel("Request canceled by shutdown")
     }
+
+    apiUtils = axios.create({
+      baseURL: `http://localhost:${portRes}`,
+      cancelToken: cancelTokenSource.token,
+    })
   }
 
   const beforeEach_ = async () => {
@@ -191,19 +206,27 @@ export function medusaIntegrationTestRunner({
     const copiedContainer = createMedusaContainer({}, container)
 
     if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
-      const defaultLoader =
-        require("@medusajs/medusa/dist/loaders/defaults").default
-      await defaultLoader({
-        container: copiedContainer,
-      })
+      try {
+        const defaultLoader =
+          require("@medusajs/medusa/dist/loaders/defaults").default
+        await defaultLoader({
+          container: copiedContainer,
+        })
+      } catch (error) {
+        console.error("Error runner medusa loaders", error)
+      }
     }
 
-    const medusaAppLoaderRunner =
-      require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
-    await medusaAppLoaderRunner({
-      container: copiedContainer,
-      configModule: container.resolve("configModule"),
-    })
+    try {
+      const medusaAppLoaderRunner =
+        require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
+      await medusaAppLoaderRunner({
+        container: copiedContainer,
+        configModule: container.resolve("configModule"),
+      })
+    } catch (error) {
+      console.error("Error runner modules loaders", error)
+    }
   }
 
   const afterEach_ = async () => {
