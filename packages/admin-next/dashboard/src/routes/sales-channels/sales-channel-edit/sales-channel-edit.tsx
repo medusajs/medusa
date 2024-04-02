@@ -23,7 +23,7 @@ export const SalesChannelEdit = () => {
           {t("salesChannels.editSalesChannel")}
         </Heading>
       </RouteDrawer.Header>
-      {!isLoading && sales_channel && (
+      {!isLoading && !!sales_channel && (
         <EditSalesChannelForm salesChannel={sales_channel} />
       )}
     </RouteDrawer>
