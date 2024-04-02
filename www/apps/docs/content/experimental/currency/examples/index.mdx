@@ -1,0 +1,108 @@
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Examples of the Currency Module
+
+In this guide, you’ll find common examples of how you can use the Currency Module in your application.
+
+## List Currencies
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICurrencyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const currencyModuleService: ICurrencyModuleService =
+      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+
+    res.json({
+      currencies: await currencyModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCurrencyModule,
+  } from "@medusajs/currency"
+
+  export async function GET(request: Request) {
+    const currencyModuleService = await initializeCurrencyModule()
+
+    return NextResponse.json({
+      currencies: await currencyModuleService.list(),
+    })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Retrieve a Currency by its ID
+
+<Tabs groupId="app-type" isCodeTabs={true}>
+  <TabItem label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICurrencyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const currencyModuleService: ICurrencyModuleService =
+      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+
+    const currency = await currencyModuleService.retrieve("usd")
+
+    res.json({
+      currency,
+    })
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeCurrencyModule,
+  } from "@medusajs/currency"
+
+  export async function GET(
+    request: Request
+  ) {
+    const currencyModuleService = await initializeCurrencyModule()
+
+    const currency = await currencyModuleService.retrieve("usd")
+
+    return NextResponse.json({ currency })
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## More Examples
+
+The [Currency Module interface reference](../../../references/currency/interfaces/currency.ICurrencyModuleService.mdx) provides a reference to all the methods available for use with examples for each.

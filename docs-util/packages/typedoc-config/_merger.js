@@ -62,6 +62,7 @@ module.exports = {
     "api-key",
     "auth",
     "cart",
+    "currency",
     "customer",
     "inventory",
     "inventory-next",
@@ -289,6 +290,73 @@ module.exports = {
       },
       reflectionTitle: {
         fullReplacement: "Cart Module Data Models Reference",
+      },
+    },
+
+    // CURRENCY CONFIG
+    "^currency": {
+      ...modulesOptions,
+      frontmatterData: {
+        displayed_sidebar: "currencyReference",
+      },
+    },
+    "^currency/ICurrencyModuleService/methods": {
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Currency Module.",
+      frontmatterData: {
+        displayed_sidebar: "currencyReference",
+        slug: "/references/currency/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Currency Module Reference",
+      },
+    },
+    "^currency/.*ICurrencyModuleService\\.md": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the `ICurrencyModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Currency Module.",
+      frontmatterData: {
+        displayed_sidebar: "currencyReference",
+        slug: "/references/currency",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "Reference",
+      },
+    },
+
+    // CURRENCY MODELS CONFIG
+    "^currency_models": {
+      frontmatterData: {
+        displayed_sidebar: "currencyModelReference",
+        slug: "/references/currency/models/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionDescription:
+        "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Currency Module.",
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Currency Module Data Models Reference",
+      },
+      reflectionGroups: {
+        Constructors: false,
+        Functions: false,
+        Methods: false,
+      },
+    },
+    "^modules/currency_models": {
+      reflectionDescription:
+        "This documentation provides a reference to the data models in the Currency Module",
+      frontmatterData: {
+        displayed_sidebar: "currencyModelReference",
+        slug: "/references/currency/models",
+      },
+      reflectionTitle: {
+        fullReplacement: "Currency Module Data Models Reference",
       },
     },
 

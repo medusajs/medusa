@@ -205,6 +205,44 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Currency Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/currency/index",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/currency/examples/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/currency/interfaces/currency.ICurrencyModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/currency_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Customer Module",
       customProps: {
         sidebar_is_group_headline: true,

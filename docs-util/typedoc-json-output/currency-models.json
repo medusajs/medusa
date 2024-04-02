@@ -1,0 +1,136 @@
+{
+	"id": 0,
+	"name": "currency-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "Currency",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3,
+							"name": "new Currency",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "Currency",
+								"package": "@medusajs/currency"
+							}
+						}
+					]
+				},
+				{
+					"id": 4,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 5,
+					"name": "symbol",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 6,
+					"name": "symbol_native",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 7,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4,
+						5,
+						6,
+						7
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/currency",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/currency/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.code"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.symbol"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.symbol_native"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.name"
+		}
+	}
+}
