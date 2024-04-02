@@ -7,6 +7,7 @@ import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
 import { Spinner } from "@medusajs/icons"
+import { UserDTO } from "@medusajs/types"
 import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
@@ -135,6 +136,39 @@ export const v2Routes: RouteObject[] = [
                 path: "add-currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "users",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Users",
+            },
+            children: [
+              {
+                path: "",
+
+                lazy: () => import("../../v2-routes/users/user-list"),
+                children: [
+                  {
+                    path: "invite",
+                    lazy: () => import("../../v2-routes/users/user-invite"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/users/user-detail"),
+                handle: {
+                  crumb: (data: { user: UserDTO }) => data.user.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/users/user-edit"),
+                  },
+                ],
               },
             ],
           },
