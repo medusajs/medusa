@@ -14,6 +14,10 @@ export const removeLocationsFromSalesChannelStep = createStep(
     }[],
     { container }
   ) => {
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     const remoteLink = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK
     )

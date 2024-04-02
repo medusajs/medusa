@@ -1,6 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+
+import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 interface StepInput {
   links: {
@@ -14,6 +15,10 @@ export const associateLocationsWithChannelStepId =
 export const associateLocationsWithChannelStep = createStep(
   associateLocationsWithChannelStepId,
   async (data: StepInput, { container }) => {
+    if (!data.links.length) {
+      return new StepResponse([], [])
+    }
+
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
     const links = data.links
@@ -36,7 +41,7 @@ export const associateLocationsWithChannelStep = createStep(
     return new StepResponse(createdLinks, links)
   },
   async (links, { container }) => {
-    if (!links) {
+    if (!links?.length) {
       return
     }
 
