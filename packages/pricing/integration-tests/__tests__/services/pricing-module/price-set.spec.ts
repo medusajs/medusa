@@ -265,21 +265,64 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         const id = "price-set-1"
 
-        it("should throw an error when a id does not exist", async () => {
-          let error
+        it("should throw an error when an id does not exist", async () => {
+          let error = await service
+            .update("does-not-exist", {})
+            .catch((e) => e.message)
 
-          try {
-            await service.update([
-              {
-                id: "does-not-exist",
-              },
+          expect(error).toEqual(
+            "PriceSet with id: does-not-exist was not found"
+          )
+        })
+
+        it("should create, update, and delete prices to a price set", async () => {
+          const priceSetBefore = await service.retrieve(id, {
+            relations: ["prices"],
+          })
+
+          const updateResponse = await service.update(priceSetBefore.id, {
+            prices: [
+              { amount: 100, currency_code: "USD" },
+              { amount: 200, currency_code: "EUR" },
+            ],
+          })
+
+          const priceSetAfter = await service.retrieve(id, {
+            relations: ["prices"],
+          })
+          expect(priceSetBefore.prices).toHaveLength(1)
+          expect(priceSetBefore.prices?.[0]).toEqual(
+            expect.objectContaining({
+              amount: 500,
+              currency_code: "USD",
+            })
+          )
+
+          expect(priceSetAfter.prices).toHaveLength(2)
+          expect(priceSetAfter.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "USD",
+              }),
+              expect.objectContaining({
+                amount: 200,
+                currency_code: "EUR",
+              }),
             ])
-          } catch (e) {
-            error = e
-          }
-
-          expect(error.message).toEqual(
-            'PriceSet with id "does-not-exist" not found'
+          )
+          expect(updateResponse.prices).toHaveLength(2)
+          expect(updateResponse.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "USD",
+              }),
+              expect.objectContaining({
+                amount: 200,
+                currency_code: "EUR",
+              }),
+            ])
           )
         })
       })

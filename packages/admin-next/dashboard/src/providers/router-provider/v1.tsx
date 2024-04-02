@@ -130,6 +130,10 @@ export const v1Routes: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/orders/order-create-return"),
                   },
+                  {
+                    path: "refund",
+                    lazy: () => import("../../routes/orders/order-refund"),
+                  },
                 ],
               },
             ],
@@ -235,6 +239,11 @@ export const v1Routes: RouteObject[] = [
                   {
                     path: "media",
                     lazy: () => import("../../routes/products/product-media"),
+                  },
+                  {
+                    path: "variants/:variant_id/edit",
+                    lazy: () =>
+                      import("../../routes/products/product-edit-variant"),
                   },
                 ],
               },
