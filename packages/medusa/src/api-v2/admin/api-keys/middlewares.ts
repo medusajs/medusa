@@ -5,7 +5,8 @@ import {
   AdminGetApiKeysApiKeyParams,
   AdminGetApiKeysParams,
   AdminPostApiKeysApiKeyReq,
-  AdminPostApiKeysApiKeySalesChannelsBatchReq,
+  AdminPostApiKeysApiKeySalesChannelsBatchAddReq,
+  AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq,
   AdminPostApiKeysReq,
   AdminRevokeApiKeysApiKeyReq,
 } from "./validators"
@@ -84,7 +85,18 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetApiKeysApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchReq),
+      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchAddReq),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/api-keys/:id/sales-channels/batch/remove",
+    middlewares: [
+      transformQuery(
+        AdminGetApiKeysApiKeyParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq),
     ],
   },
 ]

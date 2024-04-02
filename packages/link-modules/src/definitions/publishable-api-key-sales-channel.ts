@@ -11,10 +11,10 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "publishable_api_key_sales_channel",
-    },
-    {
-      name: "publishable_api_key_sales_channels",
+      name: [
+        "publishable_api_key_sales_channel",
+        "publishable_api_key_sales_channels",
+      ],
     },
   ],
   primaryKeys: ["id", "publishable_key_id", "sales_channel_id"],
@@ -49,7 +49,7 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
     {
       serviceName: Modules.SALES_CHANNEL,
       fieldAlias: {
-        api_keys: "api_keys_link.api_key",
+        publishable_api_keys: "api_keys_link.api_key",
       },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
