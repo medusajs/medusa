@@ -44,6 +44,12 @@
     "@medusajs/medusa": {
       "optional": true
     },
+    "@medusajs/modules-sdk": {
+      "optional": true
+    },
+    "@medusajs/utils": {
+      "optional": true
+    },
     "axios": {
       "optional": true
     },
