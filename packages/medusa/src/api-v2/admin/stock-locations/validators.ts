@@ -1,5 +1,5 @@
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
-  IsArray,
   IsNotEmpty,
   IsObject,
   IsOptional,
@@ -8,7 +8,7 @@ import {
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
 
-import { FindParams } from "../../../types/common"
+import { IsType } from "../../../utils"
 
 /**
  * @schema AdminPostStockLocationsReqAddress
