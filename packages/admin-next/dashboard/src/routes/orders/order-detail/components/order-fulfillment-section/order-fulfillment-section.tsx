@@ -1,11 +1,10 @@
-import { XCircle } from "@medusajs/icons"
+import { Buildings, XCircle } from "@medusajs/icons"
 import {
   LineItem,
   Fulfillment as MedusaFulfillment,
   Order,
 } from "@medusajs/medusa"
 import {
-  Button,
   Container,
   Copy,
   Heading,
@@ -117,7 +116,19 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
           <StatusBadge color="red" className="text-nowrap">
             {t("orders.fulfillment.awaitingFullfillmentBadge")}
           </StatusBadge>
-          <ActionMenu groups={[]} />
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("orders.fulfillment.fulfillItems"),
+                    icon: <Buildings />,
+                    to: `/orders/${order.id}/fulfillment`,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
       <div>
@@ -128,11 +139,6 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
             currencyCode={order.currency_code}
           />
         ))}
-      </div>
-      <div className="px-5 py-4 text-right">
-        <Link to={`/orders/${order.id}/fulfillment`}>
-          <Button>{t("orders.fulfillment.fulfillItems")}</Button>
-        </Link>
       </div>
     </Container>
   )
