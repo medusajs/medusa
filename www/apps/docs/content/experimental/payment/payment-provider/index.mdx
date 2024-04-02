@@ -32,41 +32,9 @@ Refer to [this guide](../../../references/payment_provider/classes/payment_provi
 
 ## Configure Payment Providers
 
-The Payment Module accepts a `providers` option. Its value is an array of either provider modules or payment plugins.
+The Payment Module accepts a `providers` option that allows you to register providers in your application.
 
-When the Medusa application starts, these providers are registered and can be used to process payments.
-
-For example:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  payment: {
-    resolve: "@medusajs/payment",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/payment-stripe",
-          options: {
-            // ...
-          },
-        },
-        {
-          resolve: "medusa-payment-paypal",
-          options: {
-            // ...
-          },
-        },
-      ],
-    },
-  },
-}
-```
-
-The `providers` option is an array of objects that accept the following properties:
-
-- `resolve`: A string indicating the package name of the payment provider module or the payment plugin.
-- `options`: An object of options to pass to the payment provider module or the payment plugin.
+Learn more about this option in [this documentation](../module-options/index.mdx#providers).
 
 ---
 

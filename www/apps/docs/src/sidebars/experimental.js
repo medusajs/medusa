@@ -334,6 +334,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "experimental/payment/module-options/index",
+        },
+        {
+          type: "doc",
           label: "Examples",
           id: "experimental/payment/examples/index",
         },
@@ -798,6 +802,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "experimental/tax/module-options/index",
+        },
+        {
+          type: "doc",
           label: "Examples",
           id: "experimental/tax/examples/index",
         },
@@ -853,6 +861,10 @@ module.exports = {
           type: "doc",
           label: "Overview",
           id: "experimental/user/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/user/module-options/index",
         },
         {
           type: "doc",

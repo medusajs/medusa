@@ -4,7 +4,9 @@ In this document, you’ll learn how tax lines are calculated and what a tax pro
 
 ## Tax Lines Calculation
 
-Tax lines are calculated and retrieved using the `getTaxLines` method of the Tax Module’s main service (`ITaxModuleService`). It accepts an array of line items and shipping methods, and the context of the calculation. It returns the tax lines that are used to adjust the cart’s tax and grand totals.
+Tax lines are calculated and retrieved using the `getTaxLines` method of the Tax Module’s main service (`ITaxModuleService`). It accepts an array of line items and shipping methods, and the context of the calculation.
+
+It returns the tax lines that are used to adjust the cart’s tax and grand totals.
 
 ```ts
 const taxLines = await taxModuleService.getTaxLines(
@@ -41,7 +43,7 @@ The example above returns the tax lines based on the tax region for the United S
 
 ---
 
-## Tax Provider Usage
+## Tax Provider Usage in the Calculation
 
 The tax lines retrieved by the `getTaxLines` method are actually retrieved from the tax region’s provider.
 
@@ -49,4 +51,11 @@ A tax provider is a TypeScript or JavaScript class that implements the logic to 
 
 The Tax Module provides a `system` tax provider that only transforms calculated item and shipping tax rates into the required return type.
 
-Each tax provider extends the `ITaxProvider` interface imported from the `@medusajs/types` package. The Medusa application automatically stores all tax providers in the `TaxProvider` data model.
+---
+
+## Create Tax Provider
+
+You can create a tax provider by implementing the `ITaxProvider` imported from `@meduasjs/types`.
+
+Then, you can add the tax provider to the [providers](../module-options/index.mdx#providers) option and use it to retrieve tax lines.
+
