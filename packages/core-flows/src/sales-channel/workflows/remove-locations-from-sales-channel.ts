@@ -9,10 +9,10 @@ interface WorkflowInput {
   }[]
 }
 
-export const removeLocationsToSalesChannelWorkflowId =
-  "remove-locations-to-sales-channel"
-export const removeLocationsToSalesChannelWorkflow = createWorkflow(
-  removeLocationsToSalesChannelWorkflowId,
+export const removeLocationsFromSalesChannelWorkflowId =
+  "remove-locations-from-sales-channel"
+export const removeLocationsFromSalesChannelWorkflow = createWorkflow(
+  removeLocationsFromSalesChannelWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
     removeLocationsFromSalesChannelStep(input.data)
   }
