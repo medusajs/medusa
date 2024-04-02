@@ -63,7 +63,7 @@ export const PromotionConditionsSection = ({
                 {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
-                  to: `conditions`,
+                  to: `${ruleType.split("_").join("-")}/edit`,
                 },
               ],
             },

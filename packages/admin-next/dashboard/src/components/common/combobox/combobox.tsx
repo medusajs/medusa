@@ -238,7 +238,7 @@ const ComboboxImpl = <T extends Value = string>(
               <PrimitiveCombobox
                 ref={comboboxRef}
                 className={clx(
-                  "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text",
+                  "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text",
                   {
                     "opacity-0": hideInput,
                   }

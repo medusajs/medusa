@@ -1,6 +1,7 @@
 import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
+  AdminPostPromotionsPromotionReq,
   AdminPromotionRes,
   AdminPromotionsListRes,
 } from "@medusajs/medusa"
@@ -48,5 +49,11 @@ export const useV2Promotion = (
 export const useV2DeletePromotion = (id: string) => {
   return useMutation(() =>
     medusa.admin.custom.delete(`/admin/promotions/${id}`)
+  )
+}
+
+export const useV2PostPromotion = (id: string) => {
+  return useMutation((args: AdminPostPromotionsPromotionReq) =>
+    medusa.client.request("POST", `/admin/promotions/${id}`, args)
   )
 }

@@ -56,6 +56,7 @@ export const PromotionDetail = () => {
           <div className="flex w-full flex-col gap-y-2 xl:hidden">
             <CampaignSection campaign={promotion.campaign!} />
           </div>
+
           {after.widgets.map((w, i) => {
             return (
               <div key={i}>
@@ -63,6 +64,7 @@ export const PromotionDetail = () => {
               </div>
             )
           })}
+
           <JsonViewSection data={promotion as any} />
         </div>
 
