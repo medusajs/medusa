@@ -59,14 +59,21 @@ export function OrderCreateClaimDetails({
     Record<string, LevelWithAvailability[]>
   >({})
 
-  const { shipping_options = [], isLoading: isShippingOptionsLoading } =
-    useAdminShippingOptions({
-      region_id: order.region_id,
-      is_return: true,
-    })
+  const {
+    shipping_options: returnShippingOptions = [],
+    isLoading: isShippingOptionsLoading,
+  } = useAdminShippingOptions({
+    region_id: order.region_id,
+    is_return: true,
+  })
+
+  const { shipping_options: shippingOptions = [] } = useAdminShippingOptions({
+    region_id: order.region_id,
+    is_return: false,
+  })
 
   const noShippingOptions =
-    !isShippingOptionsLoading && !shipping_options.length
+    !isShippingOptionsLoading && !returnShippingOptions.length
 
   const hasAddedItems = !!addedItems.length
 
@@ -241,7 +248,7 @@ export function OrderCreateClaimDetails({
                               <Select.Value />
                             </Select.Trigger>
                             <Select.Content>
-                              {shipping_options.map((o) => (
+                              {returnShippingOptions.map((o) => (
                                 <Select.Item key={o.id} value={o.id}>
                                   {o.name}
                                 </Select.Item>
@@ -332,7 +339,7 @@ export function OrderCreateClaimDetails({
                                   <Select.Value />
                                 </Select.Trigger>
                                 <Select.Content>
-                                  {shipping_options.map((o) => (
+                                  {shippingOptions.map((o) => (
                                     <Select.Item key={o.id} value={o.id}>
                                       {o.name}
                                     </Select.Item>
