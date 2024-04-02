@@ -13,6 +13,7 @@ import { IconButton } from "@/components/icon-button"
 interface AlertProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: "error" | "success" | "warning" | "info"
   dismissible?: boolean
+  classNameInner?: string
 }
 
 /**
@@ -32,6 +33,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
        */
       dismissible = false,
       className,
+      classNameInner,
       children,
       ...props
     }: AlertProps,
@@ -58,7 +60,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div
         ref={ref}
         className={clx(
-          "bg-ui-bg-subtle text-pretty txt-compact-small grid items-start gap-x-3 rounded-lg border p-3",
+          "bg-ui-bg-subtle txt-compact-small grid items-start gap-x-3 text-pretty rounded-lg border p-3",
           {
             "grid-cols-[20px_1fr]": !dismissible,
             "grid-cols-[20px_1fr_20px]": dismissible,
@@ -75,7 +77,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             "text-ui-tag-neutral-icon": variant === "info",
           })}
         />
-        <div>{children}</div>
+        <div className={classNameInner}>{children}</div>
         {dismissible && (
           <IconButton
             size="2xsmall"

@@ -58,6 +58,7 @@
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
+    "reset": "Reset",
     "revoke": "Revoke",
     "cancel": "Cancel",
     "complete": "Complete",
@@ -349,6 +350,11 @@
         "returned": "Returned",
         "canceled": "Canceled",
         "requiresAction": "Requires action"
+      },
+      "error": {
+        "wrongQuantity": "Only one item is available for fulfillment",
+        "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
+        "noItems": "No items to fulfill."
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",

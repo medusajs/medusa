@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import * as zod from "zod"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useForm, useWatch } from "react-hook-form"
 import { Order } from "@medusajs/medusa"
-import { Button, Select, Switch } from "@medusajs/ui"
+import { Alert, Button, Select, Switch } from "@medusajs/ui"
 
 import {
   RouteFocusModal,
@@ -68,10 +68,29 @@ export function OrderCreateFulfillmentForm({
     form.unregister(`quantity.${itemId}`)
   }
 
+  const resetItems = () => {
+    const items = order.items.filter((item) => getFulfillableQuantity(item) > 0)
+    setFulfillableItems(items)
+
+    items.forEach((i) =>
+      form.register(`quantity.${i.id}`, { value: getFulfillableQuantity(i) })
+    )
+    form.clearErrors("root")
+  }
+
   const selectedLocationId = useWatch({
     name: "location_id",
     control: form.control,
   })
+
+  useEffect(() => {
+    if (!fulfillableItems.length) {
+      form.setError("root", {
+        type: "manual",
+        message: t("orders.fulfillment.error.noItems"),
+      })
+    }
+  }, [fulfillableItems.length])
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -150,6 +169,23 @@ export function OrderCreateFulfillmentForm({
                       ))}
                     </div>
                   </Form.Item>
+                  {form.formState.errors.root && (
+                    <Alert
+                      variant="error"
+                      dismissible={false}
+                      className="flex items-center"
+                      classNameInner="flex justify-between flex-1 items-center"
+                    >
+                      {form.formState.errors.root.message}
+                      <Button
+                        variant="ghost"
+                        type="button"
+                        onClick={resetItems}
+                      >
+                        {t("actions.reset")}
+                      </Button>
+                    </Alert>
+                  )}
                 </div>
 
                 <div className="mt-8 pt-8 ">

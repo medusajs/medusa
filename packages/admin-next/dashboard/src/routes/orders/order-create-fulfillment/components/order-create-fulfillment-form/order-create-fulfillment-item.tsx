@@ -127,13 +127,30 @@ export function OrderCreateFulfillmentItem({
                   <Form.Control>
                     <Input
                       className="bg-ui-bg-base txt-small w-full rounded-lg"
-                      min={minValue}
-                      max={maxValue}
                       type="number"
                       {...field}
                       onChange={(e) => {
-                        const val = e.target.value
-                        field.onChange(val === "" ? null : Number(val))
+                        const val =
+                          e.target.value === "" ? null : Number(e.target.value)
+
+                        field.onChange(val)
+
+                        if (!isNaN(val)) {
+                          if (val < minValue || val > maxValue) {
+                            form.setError(`quantity.${item.id}`, {
+                              type: "manual",
+                              message: t(
+                                "orders.fulfillment.error.wrongQuantity",
+                                {
+                                  count: maxValue,
+                                  number: maxValue,
+                                }
+                              ),
+                            })
+                          } else {
+                            form.clearErrors(`quantity.${item.id}`)
+                          }
+                        }
                       }}
                     />
                   </Form.Control>
