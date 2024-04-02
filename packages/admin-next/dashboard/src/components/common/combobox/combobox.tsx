@@ -258,7 +258,6 @@ const ComboboxImpl = <T extends Value = string>(
         </Popover.Anchor>
         <Popover.Portal>
           <Popover.Content
-            asChild
             align="center"
             side="bottom"
             sideOffset={8}
