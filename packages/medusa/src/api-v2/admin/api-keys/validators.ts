@@ -79,7 +79,10 @@ export class AdminRevokeApiKeysApiKeyReq {
 
 export class AdminDeleteApiKeysApiKeyReq {}
 
-export class AdminPostApiKeysApiKeySalesChannelsBatchReq {
+export class AdminPostApiKeysApiKeySalesChannelsBatchAddReq {
   @IsArray()
   sales_channel_ids: string[]
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq extends AdminPostApiKeysApiKeySalesChannelsBatchAddReq {}

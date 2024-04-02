@@ -646,7 +646,8 @@ export class AdminPostProductsProductOptionsOptionReq {
 // eslint-disable-next-line max-len
 export class ProductVariantReq extends AdminPostProductsProductVariantsVariantReq {
   @IsString()
-  id: string
+  @IsOptional()
+  id?: string
 }
 
 export class ProductTagReq {
