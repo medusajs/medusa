@@ -76,7 +76,7 @@ export const CategoryTree = ({
     return true
   }
 
-  const showOverlay = isDisabled || isLoading
+  const showOverlay = isLoading || isDisabled
 
   if (isLoading) {
     return (
@@ -140,7 +140,7 @@ export const CategoryTree = ({
         threshold={10}
       />
       {showOverlay && (
-        <div className="bg-ui-bg-disabled/40 absolute inset-0 animate-pulse" />
+        <div className="bg-ui-bg-disabled absolute inset-0 size-full animate-pulse opacity-80" />
       )}
     </div>
   )
