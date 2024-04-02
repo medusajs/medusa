@@ -127,7 +127,7 @@ export function OrderCreateFulfillmentForm({
                     render={({ field: { onChange, ref, ...field } }) => {
                       return (
                         <Form.Item>
-                          <Form.Label> {t("fields.location")}</Form.Label>
+                          <Form.Label>{t("fields.location")}</Form.Label>
                           <Form.Hint>
                             {t("orders.fulfillment.locationDescription")}
                           </Form.Hint>
