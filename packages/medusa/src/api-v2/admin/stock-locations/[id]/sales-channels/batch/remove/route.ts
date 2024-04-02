@@ -21,8 +21,6 @@ export const POST = async (
     })),
   }
 
-  console.warn(workflowInput)
-
   const { errors } = await removeLocationsToSalesChannelWorkflow(req.scope).run(
     {
       input: workflowInput,
