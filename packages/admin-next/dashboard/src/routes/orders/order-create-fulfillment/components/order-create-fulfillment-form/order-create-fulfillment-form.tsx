@@ -53,7 +53,7 @@ export function OrderCreateFulfillmentForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await createOrderFulfillment({
-      location_id: data.location,
+      location_id: data.location_id,
       no_notification: !data.send_notification,
       items: Object.entries(data.quantity)
         .filter(([, value]) => !!value)
@@ -69,7 +69,7 @@ export function OrderCreateFulfillmentForm({
   }
 
   const selectedLocationId = useWatch({
-    name: "location",
+    name: "location_id",
     control: form.control,
   })
 
@@ -98,7 +98,7 @@ export function OrderCreateFulfillmentForm({
                 <div className="flex-1">
                   <Form.Field
                     control={form.control}
-                    name="location"
+                    name="location_id"
                     render={({ field: { onChange, ref, ...field } }) => {
                       return (
                         <Form.Item>
