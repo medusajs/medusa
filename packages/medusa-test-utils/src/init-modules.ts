@@ -1,9 +1,8 @@
 import {
-  MedusaApp,
-  MedusaModule,
-  MedusaModuleConfig,
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
   ModuleJoinerConfig,
-} from "@medusajs/modules-sdk"
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModulesSdkUtils,
@@ -16,7 +15,12 @@ export interface InitModulesOptions {
     clientUrl: string
     schema?: string
   }
-  modulesConfig: MedusaModuleConfig
+  modulesConfig: {
+    [key: string]:
+      | string
+      | boolean
+      | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+  }
   joinerConfig?: ModuleJoinerConfig[]
   preventConnectionDestroyWarning?: boolean
 }
@@ -28,6 +32,8 @@ export async function initModules({
   joinerConfig,
   preventConnectionDestroyWarning = false,
 }: InitModulesOptions) {
+  const moduleSdkImports = require("@medusajs/modules-sdk")
+
   injectedDependencies ??= {}
 
   let sharedPgConnection =
@@ -44,7 +50,7 @@ export async function initModules({
       sharedPgConnection
   }
 
-  const medusaApp = await MedusaApp({
+  const medusaApp = await moduleSdkImports.MedusaApp({
     modulesConfig,
     servicesConfig: joinerConfig,
     injectedDependencies,
@@ -64,7 +70,7 @@ export async function initModules({
         )
       }
     }
-    MedusaModule.clearInstances()
+    moduleSdkImports.MedusaModule.clearInstances()
   }
 
   return {

@@ -1,4 +1,4 @@
-const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
+const { ModuleRegistrationName, Modules } = require("@medusajs/modules-sdk")
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 const {
   createAdminUser,
@@ -27,6 +27,7 @@ medusaIntegrationTestRunner({
     let salesChannelService
     let productService
     let remoteQuery
+    let remoteLink
 
     beforeAll(() => {
       ;({
@@ -49,6 +50,7 @@ medusaIntegrationTestRunner({
       )
       productService = container.resolve(ModuleRegistrationName.PRODUCT)
       remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+      remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     })
 
     describe("GET /admin/sales-channels/:id", () => {
@@ -617,60 +619,126 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/sales-channels/:id/products/batch", () => {
+      // BREAKING CHANGE: Endpoint has changed
+      // from: DELETE /admin/sales-channels/:id/products/batch
+      // to: POST /admin/sales-channels/:id/products/batch/remove
+
       let salesChannel
       let product
 
       beforeEach(async () => {
-        product = await simpleProductFactory(dbConnection, {
-          id: "product_1",
-          title: "test title",
-        })
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-          products: [product],
-        })
+        ;({ salesChannel, product } = await breaking(
+          async () => {
+            const product = await simpleProductFactory(dbConnection, {
+              id: "product_1",
+              title: "test title",
+            })
+            const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+              name: "test name",
+              description: "test description",
+              products: [product],
+            })
+
+            return { salesChannel, product }
+          },
+          async () => {
+            const salesChannel = await salesChannelService.create({
+              name: "test name",
+              description: "test description",
+            })
+            const product = await productService.create({
+              title: "test title",
+            })
+
+            await remoteLink.create({
+              [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            })
+
+            return { salesChannel, product }
+          }
+        ))
       })
 
       it("should remove products from a sales channel", async () => {
-        let attachedProduct = await dbConnection.manager.findOne(Product, {
-          where: { id: product.id },
-          relations: ["sales_channels"],
-        })
+        const attachedProduct = await breaking(
+          async () => {
+            return await dbConnection.manager.findOne(Product, {
+              where: { id: product.id },
+              relations: ["sales_channels"],
+            })
+          },
+          async () => {
+            const [product] = await remoteQuery({
+              products: {
+                fields: ["id"],
+                sales_channels: {
+                  fields: ["id", "name", "description", "is_disabled"],
+                },
+              },
+            })
 
-        expect(attachedProduct.sales_channels.length).toBe(2)
+            return product
+          }
+        )
+
+        expect(attachedProduct.sales_channels.length).toBe(
+          breaking(
+            () => 2,
+            () => 1 // Comment: The product factory from v1 adds products to the default channel
+          )
+        )
         expect(attachedProduct.sales_channels).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: "test name",
-              description: "test description",
-              is_disabled: false,
-            }),
-            expect.objectContaining({
-              id: expect.any(String),
-              is_disabled: false,
-            }),
-          ])
+          expect.arrayContaining(
+            breaking(
+              () => [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  name: "test name",
+                  description: "test description",
+                  is_disabled: false,
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  is_disabled: false,
+                }),
+              ],
+              () => [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  name: "test name",
+                  description: "test description",
+                  is_disabled: false,
+                }),
+              ]
+            )
+          )
         )
 
         const payload = {
-          product_ids: [{ id: product.id }],
+          product_ids: breaking(
+            () => [{ id: product.id }],
+            () => [product.id]
+          ),
         }
 
-        await api.delete(
-          `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          {
-            ...adminReqConfig,
-            data: payload,
-          }
-        )
-        // Validate idempotency
-        const response = await api.delete(
-          `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          {
-            ...adminReqConfig,
-            data: payload,
+        const response = await breaking(
+          async () => {
+            return await api.delete(
+              `/admin/sales-channels/${salesChannel.id}/products/batch`,
+              { ...adminReqConfig, data: payload }
+            )
+          },
+          async () => {
+            return await api.post(
+              `/admin/sales-channels/${salesChannel.id}/products/batch/remove`,
+              payload,
+              adminReqConfig
+            )
           }
         )
 
@@ -684,17 +752,42 @@ medusaIntegrationTestRunner({
           })
         )
 
-        attachedProduct = await dbConnection.manager.findOne(Product, {
-          where: { id: product.id },
-          relations: ["sales_channels"],
-        })
+        const removedProduct = await breaking(
+          async () => {
+            return await dbConnection.manager.findOne(Product, {
+              where: { id: product.id },
+              relations: ["sales_channels"],
+            })
+          },
+          async () => {
+            const [product] = await remoteQuery({
+              products: {
+                fields: ["id"],
+                sales_channels: {
+                  fields: ["id", "name", "description", "is_disabled"],
+                },
+              },
+            })
+
+            return product
+          }
+        )
 
         // default sales channel
-        expect(attachedProduct.sales_channels.length).toBe(1)
+        expect(removedProduct.sales_channels.length).toBe(
+          breaking(
+            () => 1,
+            () => 0 // Comment: The product factory from v1 adds products to the default channel
+          )
+        )
       })
     })
 
     describe("POST /admin/sales-channels/:id/products/batch", () => {
+      // BREAKING CHANGE: Endpoint has changed
+      // from: /admin/sales-channels/:id/products/batch
+      // to: /admin/sales-channels/:id/products/batch/add
+
       let { salesChannel, product } = {}
 
       beforeEach(async () => {
