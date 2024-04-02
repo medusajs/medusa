@@ -65,7 +65,7 @@ export function OrderCreateFulfillmentForm({
 
   const onItemRemove = (itemId: string) => {
     setFulfillableItems((state) => state.filter((i) => i.id !== itemId))
-    form.setValue(`quantity.${itemId}`, undefined)
+    form.unregister(`quantity.${itemId}`)
   }
 
   const selectedLocationId = useWatch({
