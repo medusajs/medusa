@@ -2,7 +2,6 @@ import { initModules, InitModulesOptions } from "./init-modules"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 
 import { MockEventBusService } from "."
-import { MedusaAppOutput } from "@medusajs/modules-sdk"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -36,10 +35,7 @@ export function moduleIntegrationTestRunner({
   debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
-  const {
-    MedusaAppOutput,
-    ModulesDefinition,
-  } = require("@medusajs/modules-sdk")
+  const { ModulesDefinition } = require("@medusajs/modules-sdk")
   const {
     ContainerRegistrationKeys,
     ModulesSdkUtils,
@@ -97,7 +93,7 @@ export function moduleIntegrationTestRunner({
 
   let shutdown: () => Promise<void>
   let moduleService
-  let medusaApp: MedusaAppOutput = {} as MedusaAppOutput
+  let medusaApp = {}
 
   const options = {
     MikroOrmWrapper,
@@ -108,7 +104,7 @@ export function moduleIntegrationTestRunner({
           return medusaApp[prop]
         },
       }
-    ) as MedusaAppOutput,
+    ),
     service: new Proxy(
       {},
       {
@@ -131,7 +127,7 @@ export function moduleIntegrationTestRunner({
     await MikroOrmWrapper.clearDatabase()
     await shutdown()
     moduleService = {}
-    medusaApp = {} as MedusaAppOutput
+    medusaApp = {}
   }
 
   return describe("", () => {
