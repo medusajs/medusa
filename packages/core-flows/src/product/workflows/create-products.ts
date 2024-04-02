@@ -44,16 +44,21 @@ export const createProductsWorkflow = createWorkflow(
           .map((p, i) => {
             const inputProduct = data.input.products[i]
             return p.variants?.map((v, j) => ({
-              id: v.id,
+              ...v,
               prices: inputProduct?.variants?.[j]?.prices,
             }))
           })
           .flat()
-          .filter((v) => !!v.prices?.length)
       }
     )
 
-    const createdPriceSets = createPriceSetsStep(variantsWithAssociatedPrices)
+    const pricesToCreate = transform({ variantsWithAssociatedPrices }, (data) =>
+      data.variantsWithAssociatedPrices.map((v) => ({
+        prices: v.prices,
+      }))
+    )
+
+    const createdPriceSets = createPriceSetsStep(pricesToCreate)
 
     const variantAndPriceSets = transform(
       { variantsWithAssociatedPrices, createdPriceSets },
