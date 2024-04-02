@@ -118,6 +118,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
   options?: TOptions
   logger?: Logger
+  dataLoaderOnly?: boolean
 }
 
 export type ModuleLoaderFunction = (
