@@ -42,11 +42,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<CreateProductDTO>,
   res: MedusaResponse
 ) => {
-  const input = [
-    {
-      ...req.validatedBody,
-    },
-  ]
+  const input = [req.validatedBody]
 
   const { result, errors } = await createProductsWorkflow(req.scope).run({
     input: { products: input },

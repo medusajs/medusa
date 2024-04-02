@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/ui",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "repository": {
@@ -42,7 +42,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@medusajs/ui-preset": "^1.1.2",
+    "@medusajs/ui-preset": "^1.1.3",
     "@storybook/addon-essentials": "^7.0.23",
     "@storybook/addon-interactions": "^7.0.23",
     "@storybook/addon-links": "^7.0.23",

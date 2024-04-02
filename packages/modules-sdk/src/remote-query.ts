@@ -15,6 +15,7 @@ import {
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
 
+import { RemoteJoinerOptions } from "@medusajs/types"
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -230,7 +231,8 @@ export class RemoteQuery {
 
   public async query(
     query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
   ): Promise<any> {
     let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
 
@@ -240,6 +242,6 @@ export class RemoteQuery {
       finalQuery = toRemoteJoinerQuery(query, variables)
     }
 
-    return await this.remoteJoiner.query(finalQuery)
+    return await this.remoteJoiner.query(finalQuery, options)
   }
 }
