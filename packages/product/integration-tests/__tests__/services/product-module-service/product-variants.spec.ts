@@ -19,35 +19,38 @@ moduleIntegrationTestRunner({
       let productTwo: Product
 
       beforeEach(async () => {
-        const testManager = await MikroOrmWrapper.forkManager()
-
-        productOne = testManager.create(Product, {
+        productOne = await service.create({
           id: "product-1",
           title: "product 1",
           status: ProductTypes.ProductStatus.PUBLISHED,
+          options: [
+            {
+              title: "size",
+              values: ["large"],
+            },
+          ],
         })
 
-        productTwo = testManager.create(Product, {
+        productTwo = await service.create({
           id: "product-2",
           title: "product 2",
           status: ProductTypes.ProductStatus.PUBLISHED,
         })
 
-        variantOne = testManager.create(ProductVariant, {
+        variantOne = await service.createVariants({
           id: "test-1",
           title: "variant 1",
           inventory_quantity: 10,
-          product: productOne,
+          product_id: productOne.id,
+          options: { size: "large" },
         })
 
-        variantTwo = testManager.create(ProductVariant, {
+        variantTwo = await service.createVariants({
           id: "test-2",
           title: "variant",
           inventory_quantity: 10,
-          product: productTwo,
+          product_id: productTwo.id,
         })
-
-        await testManager.persistAndFlush([variantOne, variantTwo])
       })
 
       describe("listAndCountVariants", () => {
@@ -163,6 +166,35 @@ moduleIntegrationTestRunner({
           expect(error.message).toEqual(
             "ProductVariant with id: does-not-exist was not found"
           )
+        })
+      })
+
+      describe("softDelete variant", () => {
+        it("should soft delete a variant and its relations", async () => {
+          const beforeDeletedVariants = await service.listVariants(
+            { id: variantOne.id },
+            {
+              relations: ["options", "options.option_value", "options.variant"],
+            }
+          )
+
+          await service.softDeleteVariants([variantOne.id])
+          const deletedVariants = await service.listVariants(
+            { id: variantOne.id },
+            {
+              relations: ["options", "options.option_value", "options.variant"],
+              withDeleted: true,
+            }
+          )
+
+          expect(deletedVariants).toHaveLength(1)
+          expect(deletedVariants[0].deleted_at).not.toBeNull()
+
+          for (const variantOption of deletedVariants[0].options) {
+            expect(variantOption.deleted_at).not.toBeNull()
+            // The value itself should not be affected
+            expect(variantOption?.option_value?.deleted_at).toBeNull()
+          }
         })
       })
     })

@@ -43,6 +43,10 @@
     "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
     "timeline": "Timeline"
   },
+  "validation": {
+    "mustBeInt": "The value must be a whole number.",
+    "mustBePositive": "The value must be a positive number."
+  },
   "nav": {
     "general": "General",
     "developer": "Developer",
@@ -56,6 +60,7 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "complete": "Complete",
     "back": "Back",
     "continue": "Continue",
     "confirm": "Confirm",
@@ -180,6 +185,18 @@
       "published": "Published",
       "proposed": "Proposed",
       "rejected": "Rejected"
+    },
+    "variant": {
+      "edit": {
+        "header": "Edit Variant"
+      },
+      "inventory": {
+        "header": "Stock & Inventory",
+        "manageInventoryLabel": "Manage inventory",
+        "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
+        "allowBackordersLabel": "Allow backorders",
+        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+      }
     }
   },
   "collections": {
@@ -362,6 +379,17 @@
       "shippingFromLabel": "Shipping from",
       "itemsLabel": "Items"
     },
+    "refund": {
+      "title": "Create Refund",
+      "sendNotificationHint": "Notify customers about the created refund.",
+      "systemPayment": "System payment",
+      "systemPaymentDesc": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
+      "error": {
+        "amountToLarge": "Cannot refund more than the original order amount.",
+        "amountNegative": "Refund amount must be a positive number.",
+        "reasonRequired": "Please select a refund reason."
+      }
+    },
     "customer": {
       "contactLabel": "Contact",
       "editEmail": "Edit email",
@@ -533,6 +561,16 @@
       "active": "Active",
       "disabled": "Disabled"
     }
+  },
+  "promotions": {
+    "domain": "Promotions",
+    "fields": {
+      "method": "Method",
+      "campaign": "Campaign"
+    },
+    "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
+    "createPromotionTitle": "Create Promotion",
+    "type": "Promotion type"
   },
   "pricing": {
     "domain": "Pricing",
@@ -770,9 +808,10 @@
     "invalidInvite": "The invite is invalid or has expired.",
     "successTitle": "Your account has been created",
     "successHint": "Get started with Medusa Admin right away.",
-    "successAction": "Start using Medusa",
+    "successAction": "Sign in to start using Medusa",
     "invalidTokenTitle": "Your invite token is invalid",
-    "invalidTokenHint": "Try requesting a new invite link."
+    "invalidTokenHint": "Try requesting a new invite link.",
+    "passwordMismatch": "Passwords do not match"
   },
   "resetPassword": {
     "title": "Reset password",
@@ -832,8 +871,15 @@
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
   },
+  "statuses": {
+    "scheduled": "Scheduled",
+    "expired": "Expired",
+    "active": "Active",
+    "disabled": "Disabled"
+  },
   "fields": {
     "amount": "Amount",
+    "refundAmount": "Refund amount",
     "name": "Name",
     "lastName": "Last Name",
     "firstName": "First Name",
@@ -942,9 +988,13 @@
     "width": "Width",
     "length": "Length",
     "weight": "Weight",
-    "midCode": "MID Code",
-    "hsCode": "HS Code",
-    "countryOfOrigin": "Country of Origin",
+    "midCode": "MID code",
+    "hsCode": "HS code",
+    "ean": "EAN",
+    "upc": "UPC",
+    "inventoryQuantity": "Inventory quantity",
+    "barcode": "Barcode",
+    "countryOfOrigin": "Country of origin",
     "material": "Material",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
