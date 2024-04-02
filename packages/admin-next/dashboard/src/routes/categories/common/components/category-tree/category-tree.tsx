@@ -97,19 +97,19 @@ export const CategoryTree = ({
               }
             : undefined
         }
-        renderItem={({ index, item, ...props }) => {
+        renderItem={({ item, depth, ...props }) => {
           const isEnabled = enableDrag
             ? enableDrag(item as ProductCategory)
             : true
 
           return (
             <CategoryTreeBranch
-              key={index}
+              key={item.id}
+              depth={depth}
               item={item as ProductCategory}
               menu={itemMenu}
               isEnabled={isEnabled}
               asLink={asLink}
-              isLast={index === productCategories.length - 1}
               {...props}
             />
           )

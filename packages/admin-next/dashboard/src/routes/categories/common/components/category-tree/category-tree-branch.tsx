@@ -14,7 +14,6 @@ type CategoryTreeBranchProps = {
   handler: ReactNode
   menu?: ItemMenuCompoment
   asLink?: boolean
-  isLast?: boolean
 }
 
 export const CategoryTreeBranch = ({
@@ -25,7 +24,6 @@ export const CategoryTreeBranch = ({
   handler,
   menu,
   asLink = false,
-  isLast = false,
 }: CategoryTreeBranchProps) => {
   const hasChildren = !!item.category_children?.length
 
@@ -36,7 +34,6 @@ export const CategoryTreeBranch = ({
         "bg-ui-bg-base hover:bg-ui-bg-base-hover transition-fg group flex h-12 items-center gap-x-3 border-b px-6 py-2.5",
         {
           "bg-ui-bg-disabled hover:bg-ui-bg-disabled": !isEnabled,
-          "border-b-0": isLast,
         }
       )}
     >
