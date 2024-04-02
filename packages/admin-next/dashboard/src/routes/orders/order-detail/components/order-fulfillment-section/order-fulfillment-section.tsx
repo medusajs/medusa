@@ -84,7 +84,10 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text>
-            <span className="tabular-nums">{item.quantity}</span>x
+            <span className="tabular-nums">
+              {item.quantity - item.fulfilled_quantity}
+            </span>
+            x
           </Text>
         </div>
         <div className="flex items-center justify-end">
