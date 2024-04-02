@@ -63,6 +63,12 @@ export function OrderCreateFulfillmentForm({
     handleSuccess(`/orders/${order.id}`)
   })
 
+  useEffect(() => {
+    if (stock_locations?.length) {
+      form.setValue("location_id", stock_locations[0].id)
+    }
+  }, [stock_locations?.length])
+
   const onItemRemove = (itemId: string) => {
     setFulfillableItems((state) => state.filter((i) => i.id !== itemId))
     form.unregister(`quantity.${itemId}`)
