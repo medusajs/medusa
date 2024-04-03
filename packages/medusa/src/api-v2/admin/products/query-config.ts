@@ -83,6 +83,7 @@ export const defaultAdminProductFields = [
   "*options.values",
   "*tags",
   "*images",
+  "*sales_channels",
   "*variants",
   "*variants.prices",
   "*variants.options",

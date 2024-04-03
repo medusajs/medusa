@@ -94,6 +94,8 @@ export const AddProductsToSalesChannelForm = ({
   const { products, count } = useAdminProducts(
     {
       expand: "variants,sales_channels",
+      limit: PAGE_SIZE,
+      offset: pageIndex * PAGE_SIZE,
       ...params,
     },
     {

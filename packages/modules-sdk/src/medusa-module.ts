@@ -67,7 +67,9 @@ export type ModuleBootstrapOptions = {
    */
   migrationOnly?: boolean
   /**
-   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely. This
+   * is meant for modules that have data loader. In a test env, in order to clear all data
+   * and load them back, we need to run those loader again
    */
   loaderOnly?: boolean
   workerMode?: "shared" | "worker" | "server"
