@@ -91,6 +91,27 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            lazy: () => import("../../v2-routes/inventory"),
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/inventory/list"),
+              },
+              {
+                path: "locations",
+                lazy: () => import("../../v2-routes/inventory/locations"),
+              },
+              {
+                path: "transfers",
+                lazy: () => import("../../v2-routes/inventory/transfers"),
+              },
+            ],
+          },
         ],
       },
     ],

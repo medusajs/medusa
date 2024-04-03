@@ -216,6 +216,7 @@
   "inventory": {
     "domain": "Inventory",
     "reserved": "Reserved",
+    "list": "Inventory list",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
@@ -721,6 +722,15 @@
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
+  },
+  "transfers": {
+    "domain": "Transfers"
+  },
+  "suppliers": {
+    "domain": "Suppliers"
+  },
+  "purchaseOrders": {
+    "domain": "Purchase orders"
   },
   "reservations": {
     "domain": "Reservations",
