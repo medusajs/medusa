@@ -4,7 +4,7 @@ import {
   ComboboxItem as PrimitiveComboboxItem,
   ComboboxItemCheck as PrimitiveComboboxItemCheck,
   ComboboxItemValue as PrimitiveComboboxItemValue,
-  ComboboxList as PrimitiveComboboxList,
+  ComboboxPopover as PrimitiveComboboxPopover,
   ComboboxProvider as PrimitiveComboboxProvider,
   Separator as PrimitiveSeparator,
 } from "@ariakit/react"
@@ -15,7 +15,6 @@ import {
   XMarkMini,
 } from "@medusajs/icons"
 import { Text, clx } from "@medusajs/ui"
-import * as Popover from "@radix-ui/react-popover"
 import { matchSorter } from "match-sorter"
 import {
   ComponentPropsWithoutRef,
@@ -196,180 +195,148 @@ const ComboboxImpl = <T extends Value = string>(
   }, [matches, options, isSearchControlled])
 
   return (
-    <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <PrimitiveComboboxProvider
-        open={open}
-        setOpen={handleOpenChange}
-        selectedValue={selectedValues}
-        setSelectedValue={(value) => handleValueChange(value as T)}
-        value={uncontrolledSearchValue}
-        setValue={(query) => {
-          startTransition(() => handleSearchChange(query))
-        }}
+    <PrimitiveComboboxProvider
+      open={open}
+      setOpen={handleOpenChange}
+      selectedValue={selectedValues}
+      setSelectedValue={(value) => handleValueChange(value as T)}
+      value={uncontrolledSearchValue}
+      setValue={(query) => {
+        startTransition(() => handleSearchChange(query))
+      }}
+    >
+      <div
+        className={clx(
+          "relative flex cursor-pointer items-center gap-x-2 overflow-hidden",
+          "h-8 w-full rounded-md px-2 py-0.5",
+          "bg-ui-bg-field transition-fg shadow-borders-base",
+          "hover:bg-ui-bg-field-hover",
+          "has-[input:focus]:shadow-borders-interactive-with-active",
+          "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
+          "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
+          {
+            "pl-0.5": hasValue && isArrayValue,
+          },
+          className
+        )}
       >
-        <Popover.Anchor asChild>
-          <div
-            className={clx(
-              "relative flex cursor-pointer items-center gap-x-2 overflow-hidden",
-              "h-8 w-full rounded-md px-2 py-0.5",
-              "bg-ui-bg-field transition-fg shadow-borders-base",
-              "hover:bg-ui-bg-field-hover",
-              "has-[input:focus]:shadow-borders-interactive-with-active",
-              "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
-              "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
-              {
-                "pl-0.5": hasValue && isArrayValue,
-              },
-              className
-            )}
-          >
-            {showTag && (
-              <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive relative flex h-[28px] items-center rounded-[4px] border py-[3px] pl-1.5 pr-1">
-                <span>{selectedValues.length}</span>
-                <button
-                  type="button"
-                  className="size-fit outline-none"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleValueChange(undefined)
-                  }}
-                >
-                  <XMarkMini className="text-ui-fg-muted" />
-                </button>
-              </div>
-            )}
-            <div className="relative flex size-full items-center">
-              {showSelected && (
-                <Text size="small" leading="compact">
-                  {t("general.selected")}
-                </Text>
-              )}
-              {hideInput && (
-                <div className="absolute inset-y-0 left-0 flex size-full items-center overflow-hidden">
-                  <Text size="small" leading="compact" className="truncate">
-                    {selectedLabel}
-                  </Text>
-                </div>
-              )}
-              <PrimitiveCombobox
-                autoFocus={false}
-                focusable={!hideInput}
-                ref={comboboxRef}
-                className={clx(
-                  "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text",
-                  {
-                    "opacity-0": hideInput,
-                  }
-                )}
-                placeholder={hidePlaceholder ? undefined : placeholder}
-                {...inputProps}
-              />
-            </div>
-            <PrimitiveComboboxDisclosure
-              render={() => {
-                return (
-                  <button
-                    type="button"
-                    className="text-ui-fg-muted pointer-events-none absolute right-2 size-fit outline-none"
-                  >
-                    <TrianglesMini />
-                  </button>
-                )
+        {showTag && (
+          <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive relative flex h-[28px] items-center rounded-[4px] border py-[3px] pl-1.5 pr-1">
+            <span>{selectedValues.length}</span>
+            <button
+              type="button"
+              className="size-fit outline-none"
+              onClick={(e) => {
+                e.preventDefault()
+                handleValueChange(undefined)
               }}
-            />
-          </div>
-        </Popover.Anchor>
-        <Popover.Portal>
-          <Popover.Content
-            align="center"
-            side="bottom"
-            sideOffset={8}
-            onOpenAutoFocus={(event) => event.preventDefault()}
-            onInteractOutside={(event) => {
-              const target = event.target as Element | null
-              const isCombobox = target === comboboxRef.current
-              const inListbox = target && listboxRef.current?.contains(target)
-
-              if (isCombobox || inListbox) {
-                event.preventDefault()
-              }
-            }}
-            aria-busy={isPending}
-          >
-            <PrimitiveComboboxList
-              ref={listboxRef}
-              role="listbox"
-              className={clx(
-                "shadow-elevation-flyout bg-ui-bg-base w-[var(--radix-popper-anchor-width)] rounded-[8px] p-1",
-                "max-h-[200px] overflow-y-auto",
-                "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-                "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-                "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
-              )}
             >
-              {results.map(({ value, label }) => (
-                <PrimitiveComboboxItem
-                  key={value}
-                  value={value}
-                  focusOnHover
-                  setValueOnClick={false}
-                  className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
-                >
-                  <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
-                    <EllipseMiniSolid />
-                  </PrimitiveComboboxItemCheck>
-                  <PrimitiveComboboxItemValue className="txt-compact-small">
-                    {label}
-                  </PrimitiveComboboxItemValue>
-                </PrimitiveComboboxItem>
-              ))}
-              {!!fetchNextPage && <div ref={lastOptionRef} className="w-px" />}
-              {isFetchingNextPage && (
-                <div className="transition-fg bg-ui-bg-base flex items-center rounded-[4px] px-2 py-1.5">
-                  <div className="bg-ui-bg-component size-full h-5 w-full animate-pulse rounded-[4px]" />
-                </div>
-              )}
-              {!results.length && (
-                <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-subtle"
-                  >
-                    {t("general.noResultsTitle")}
-                  </Text>
-                </div>
-              )}
-              {!results.length && onCreateOption && (
-                <Fragment>
-                  <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
-                  <PrimitiveComboboxItem
-                    value={uncontrolledSearchValue}
-                    focusOnHover
-                    setValueOnClick={false}
-                    className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group mt-1 flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
-                  >
-                    <PlusMini className="text-ui-fg-subtle" />
-                    <Text size="small" leading="compact">
-                      {t("actions.create")} &quot;{searchValue}&quot;
-                    </Text>
-                  </PrimitiveComboboxItem>
-                </Fragment>
-              )}
-            </PrimitiveComboboxList>
-          </Popover.Content>
-        </Popover.Portal>
-      </PrimitiveComboboxProvider>
-      {open && (
-        <div
-          aria-hidden="true"
-          data-aria-hidden="true"
-          data-state="open"
-          className="fixed inset-0 size-full"
-          onClick={() => setOpen(false)}
+              <XMarkMini className="text-ui-fg-muted" />
+            </button>
+          </div>
+        )}
+        <div className="relative flex size-full items-center">
+          {showSelected && (
+            <Text size="small" leading="compact">
+              {t("general.selected")}
+            </Text>
+          )}
+          {hideInput && (
+            <div className="absolute inset-y-0 left-0 flex size-full items-center overflow-hidden">
+              <Text size="small" leading="compact" className="truncate">
+                {selectedLabel}
+              </Text>
+            </div>
+          )}
+          <PrimitiveCombobox
+            autoSelect
+            ref={comboboxRef}
+            className={clx(
+              "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text",
+              {
+                "opacity-0": hideInput,
+              }
+            )}
+            placeholder={hidePlaceholder ? undefined : placeholder}
+            {...inputProps}
+          />
+        </div>
+        <PrimitiveComboboxDisclosure
+          render={() => {
+            return (
+              <button
+                type="button"
+                className="text-ui-fg-muted pointer-events-none absolute right-2 size-fit outline-none"
+              >
+                <TrianglesMini />
+              </button>
+            )
+          }}
         />
-      )}
-    </Popover.Root>
+      </div>
+      <PrimitiveComboboxPopover
+        gutter={4}
+        ref={listboxRef}
+        role="listbox"
+        className={clx(
+          "shadow-elevation-flyout bg-ui-bg-base -left-2 z-50 w-[calc(var(--popover-anchor-width)+16px)] rounded-[8px] p-1",
+          "max-h-[200px] overflow-y-auto",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+        )}
+        style={{
+          pointerEvents: open ? "auto" : "none",
+        }}
+        aria-busy={isPending}
+      >
+        {results.map(({ value, label }) => (
+          <PrimitiveComboboxItem
+            key={value}
+            value={value}
+            focusOnHover
+            setValueOnClick={false}
+            className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
+          >
+            <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
+              <EllipseMiniSolid />
+            </PrimitiveComboboxItemCheck>
+            <PrimitiveComboboxItemValue className="txt-compact-small">
+              {label}
+            </PrimitiveComboboxItemValue>
+          </PrimitiveComboboxItem>
+        ))}
+        {!!fetchNextPage && <div ref={lastOptionRef} className="w-px" />}
+        {isFetchingNextPage && (
+          <div className="transition-fg bg-ui-bg-base flex items-center rounded-[4px] px-2 py-1.5">
+            <div className="bg-ui-bg-component size-full h-5 w-full animate-pulse rounded-[4px]" />
+          </div>
+        )}
+        {!results.length && (
+          <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
+            <Text size="small" leading="compact" className="text-ui-fg-subtle">
+              {t("general.noResultsTitle")}
+            </Text>
+          </div>
+        )}
+        {!results.length && onCreateOption && (
+          <Fragment>
+            <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
+            <PrimitiveComboboxItem
+              value={uncontrolledSearchValue}
+              focusOnHover
+              setValueOnClick={false}
+              className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group mt-1 flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
+            >
+              <PlusMini className="text-ui-fg-subtle" />
+              <Text size="small" leading="compact">
+                {t("actions.create")} &quot;{searchValue}&quot;
+              </Text>
+            </PrimitiveComboboxItem>
+          </Fragment>
+        )}
+      </PrimitiveComboboxPopover>
+    </PrimitiveComboboxProvider>
   )
 }
 
