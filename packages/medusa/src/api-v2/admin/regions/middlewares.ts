@@ -40,7 +40,13 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/regions",
-    middlewares: [transformBody(AdminPostRegionsReq)],
+    middlewares: [
+      transformQuery(
+        AdminGetRegionsRegionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+      transformBody(AdminPostRegionsReq),
+    ],
   },
   {
     method: ["POST"],
