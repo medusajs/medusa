@@ -81,8 +81,8 @@ async function getConnection(url, redisOptions) {
   });
 
   await new Promise(async resolve => {
-    await connection.connect(resolve);
+    await connection.connect(resolve)
   })
 
-  return connection;
+  return connection
 }
