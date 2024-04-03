@@ -1,4 +1,4 @@
-import { CreateRegionDTO, WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/types"
 import {
   createWorkflow,
   transform,
@@ -6,7 +6,6 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
-import { remapRegionToPaymentProviders } from "../utils"
 
 export const createRegionsWorkflowId = "create-regions"
 export const createRegionsWorkflow = createWorkflow(
@@ -15,31 +14,37 @@ export const createRegionsWorkflow = createWorkflow(
     input: WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowInput>
   ): WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
     const data = transform(input, (data) => {
-      const regionsData: CreateRegionDTO[] = []
-      const regionsProvidersMap: { [key: string]: string[] } = {}
-
-      for (const region of data.regions) {
-        const { payment_providers, ...rest } = region
-        regionsData.push(rest)
-
-        if (payment_providers?.length) {
-          regionsProvidersMap[JSON.stringify(rest)] = payment_providers
+      const regionIndexToPaymentProviders = data.regions.map(
+        (region, index) => {
+          return {
+            region_index: index,
+            payment_providers: region.payment_providers,
+          }
         }
-      }
+      )
 
       return {
-        regions: regionsData,
-        regions_providers_map: regionsProvidersMap,
+        regions: data.regions,
+        regionIndexToPaymentProviders,
       }
     })
 
     const regions = createRegionsStep(data.regions)
 
     const normalizedRegionProviderData = transform(
-      { regions_providers_map: data.regions_providers_map, regions },
+      {
+        regionIndexToPaymentProviders: data.regionIndexToPaymentProviders,
+        regions,
+      },
       (data) => {
-        const { regions_providers_map, regions } = data
-        return remapRegionToPaymentProviders(regions, regions_providers_map)
+        return data.regionIndexToPaymentProviders.map(
+          ({ region_index, payment_providers }) => {
+            return {
+              id: data.regions[region_index].id,
+              payment_providers: payment_providers ?? [],
+            }
+          }
+        )
       }
     )
 
