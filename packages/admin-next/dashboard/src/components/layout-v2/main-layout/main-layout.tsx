@@ -120,6 +120,14 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
           label: t("locations.domain"),
           to: "/inventory/locations",
         },
+        {
+          label: t("transfers.domain"),
+          to: "/inventory/transfers",
+        },
+        {
+          label: t("suppliers.domain"),
+          to: "/inventory/suppliers",
+        },
       ],
     },
     {
