@@ -639,7 +639,7 @@ export class TransactionOrchestrator extends EventEmitter {
           error: Error | any,
           { endRetry }: { endRetry?: boolean } = {}
         ) => {
-          const ret = TransactionOrchestrator.setStepFailure(
+          await TransactionOrchestrator.setStepFailure(
             transaction,
             step,
             error,
@@ -652,15 +652,20 @@ export class TransactionOrchestrator extends EventEmitter {
               step.definition.retryInterval ?? 0
             )
           }
-
-          return ret
         }
 
         if (!isAsync) {
           hasSyncSteps = true
           execution.push(
             transaction
-              .handler(step.definition.action + "", type, payload, transaction)
+              .handler(
+                step.definition.action + "",
+                type,
+                payload,
+                transaction,
+                step,
+                this
+              )
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
@@ -703,8 +708,34 @@ export class TransactionOrchestrator extends EventEmitter {
                   step.definition.action + "",
                   type,
                   payload,
-                  transaction
+                  transaction,
+                  step,
+                  this
                 )
+                .then(async (response: any) => {
+                  if (!step.definition.backgroundExecution) {
+                    return
+                  }
+
+                  if (this.hasExpired({ transaction, step }, Date.now())) {
+                    await this.checkStepTimeout(transaction, step)
+                    await this.checkTransactionTimeout(
+                      transaction,
+                      nextSteps.next.includes(step) ? nextSteps.next : [step]
+                    )
+                  }
+
+                  await TransactionOrchestrator.setStepSuccess(
+                    transaction,
+                    step,
+                    response
+                  )
+
+                  await transaction.scheduleRetry(
+                    step,
+                    step.definition.retryInterval ?? 0
+                  )
+                })
                 .catch(async (error) => {
                   if (
                     PermanentStepFailureError.isPermanentStepFailureError(error)

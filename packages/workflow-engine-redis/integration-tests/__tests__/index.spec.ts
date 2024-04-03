@@ -4,7 +4,7 @@ import {
   TransactionTimeoutError,
 } from "@medusajs/orchestration"
 import { RemoteQueryFunction } from "@medusajs/types"
-import { TransactionHandlerType } from "@medusajs/utils"
+import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
@@ -236,6 +236,65 @@ describe("Workflow Orchestrator module", function () {
       expect(
         TransactionTimeoutError.isTransactionTimeoutError(errors[0].error)
       ).toBe(true)
+    })
+
+    it("should complete an async workflow that returns a StepResponse", async () => {
+      const { transaction, result } = await workflowOrcModule.run(
+        "workflow_async_background",
+        {
+          input: {
+            myInput: "123",
+          },
+          transactionId: "transaction_1",
+          throwOnError: false,
+        }
+      )
+
+      expect(transaction.flow.state).toEqual(TransactionStepState.INVOKING)
+      expect(result).toEqual(undefined)
+
+      await setTimeout(205)
+
+      const trx = await workflowOrcModule.run("workflow_async_background", {
+        input: {
+          myInput: "123",
+        },
+        transactionId: "transaction_1",
+        throwOnError: false,
+      })
+
+      expect(trx.transaction.flow.state).toEqual(TransactionStepState.DONE)
+      expect(trx.result).toEqual({
+        myInput: "123",
+      })
+    })
+
+    it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+      const transactionId = "trx_123"
+
+      const onFinish = jest.fn(() => {
+        done()
+      })
+
+      void workflowOrcModule.run("workflow_async_background", {
+        input: {
+          myInput: "123",
+        },
+        transactionId,
+        throwOnError: false,
+      })
+
+      void workflowOrcModule.subscribe({
+        workflowId: "workflow_async_background",
+        transactionId,
+        subscriber: (event) => {
+          if (event.eventType === "onFinish") {
+            onFinish()
+          }
+        },
+      })
+
+      expect(onFinish).toHaveBeenCalledTimes(0)
     })
   })
 })

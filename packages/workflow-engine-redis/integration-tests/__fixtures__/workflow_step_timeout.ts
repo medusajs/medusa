@@ -22,7 +22,7 @@ const step_1_async = createStep(
   },
 
   jest.fn(async (input) => {
-    return new StepResponse(input, { compensate: 123 })
+    return
   })
 )
 

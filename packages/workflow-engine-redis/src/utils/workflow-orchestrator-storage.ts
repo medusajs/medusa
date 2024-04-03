@@ -190,7 +190,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         stepId: step.id,
       },
       {
-        delay: interval * 1000,
+        delay: interval > 0 ? interval * 1000 : undefined,
         jobId: this.getJobId(JobType.RETRY, transaction, step),
         removeOnComplete: true,
       }
@@ -266,6 +266,9 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
 
     if (step) {
       key.push(step.id, step.attempts + "")
+      if (step.isCompensating()) {
+        key.push("compensate")
+      }
     }
 
     return key.join(":")
