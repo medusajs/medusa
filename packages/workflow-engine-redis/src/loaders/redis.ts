@@ -78,18 +78,11 @@ async function getConnection(url, redisOptions) {
   const connection = new Redis(url, {
     lazyConnect: true,
     ...(redisOptions ?? {}),
+  });
+
+  await new Promise(async resolve => {
+    await connection.connect(resolve);
   })
 
-  let resolver
-  const promise = new Promise((resolve) => {
-    resolver = resolve
-  })
-
-  await connection.connect(() => {
-    resolver(null)
-  })
-
-  await promise
-
-  return connection
+  return connection;
 }
