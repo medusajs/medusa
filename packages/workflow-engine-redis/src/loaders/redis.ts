@@ -80,7 +80,16 @@ async function getConnection(url, redisOptions) {
     ...(redisOptions ?? {}),
   })
 
-  await connection.connect()
+  let resolver
+  const promise = new Promise((resolve) => {
+    resolver = resolve
+  })
+
+  await connection.connect(() => {
+    resolver(null)
+  })
+
+  await promise
 
   return connection
 }
