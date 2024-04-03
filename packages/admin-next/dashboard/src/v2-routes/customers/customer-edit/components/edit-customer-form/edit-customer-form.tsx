@@ -1,16 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Customer } from "@medusajs/medusa"
-import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateCustomer } from "medusa-react"
-import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Form } from "../../../../../components/common/form"
+import { Button, Input } from "@medusajs/ui"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+
+import { Customer } from "@medusajs/medusa"
+import { Form } from "../../../../../components/common/form"
+import { useAdminUpdateCustomer } from "medusa-react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 type EditCustomerFormProps = {
   customer: Customer

@@ -1,9 +1,10 @@
-import { useAdminCustomer } from "medusa-react"
 import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
-import { JsonViewSection } from "../../../components/common/json-view-section"
+
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerOrderSection } from "./components/customer-order-section"
+import { JsonViewSection } from "../../../components/common/json-view-section"
 import { customerLoader } from "./loader"
+import { useAdminCustomer } from "medusa-react"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
@@ -30,7 +31,9 @@ export const CustomerDetail = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <CustomerGeneralSection customer={customer} />
-      <CustomerOrderSection customer={customer} />
+      {/* <CustomerOrderSection customer={customer} />
+      // TODO: re-add when order endpoints are added to api-v2
+      */}
       {/* <CustomerGroupSection customer={customer} /> */}
       <JsonViewSection data={customer} />
       <Outlet />

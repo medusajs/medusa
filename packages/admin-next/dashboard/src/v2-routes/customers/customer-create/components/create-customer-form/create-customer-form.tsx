@@ -1,52 +1,45 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreateCustomer } from "medusa-react"
-import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Form } from "../../../../../components/common/form"
+import {
+  AdminCustomersCreateRes,
+  AdminPostCustomersReq,
+} from "@medusajs/medusa"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { adminCustomerKeys, useAdminCustomPost } from "medusa-react"
 
-const CreateCustomerSchema = zod
-  .object({
-    email: zod.string().email(),
-    first_name: zod.string().min(1),
-    last_name: zod.string().min(1),
-    phone: zod.string().min(1).optional(),
-    password: zod.string().min(8),
-    password_confirmation: zod.string().min(8),
-  })
-  .superRefine(({ password, password_confirmation }, ctx) => {
-    if (password !== password_confirmation) {
-      return ctx.addIssue({
-        code: zod.ZodIssueCode.custom,
-        message: "Passwords do not match",
-        path: ["password_confirmation"],
-      })
-    }
-  })
+import { Form } from "../../../../../components/common/form"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+const CreateCustomerSchema = zod.object({
+  email: zod.string().email(),
+  first_name: zod.string().min(1),
+  last_name: zod.string().min(1),
+  phone: zod.string().min(1).optional(),
+})
 
 export const CreateCustomerForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const { mutateAsync, isLoading } = useAdminCustomPost<
+    AdminPostCustomersReq,
+    AdminCustomersCreateRes
+  >("/admin/customers", adminCustomerKeys.lists())
 
   const form = useForm<zod.infer<typeof CreateCustomerSchema>>({
     defaultValues: {
       email: "",
       first_name: "",
       last_name: "",
-      phone: "",
-      password: "",
-      password_confirmation: "",
     },
     resolver: zodResolver(CreateCustomerSchema),
   })
-
-  const { mutateAsync, isLoading } = useAdminCreateCustomer()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -55,7 +48,6 @@ export const CreateCustomerForm = () => {
         first_name: data.first_name,
         last_name: data.last_name,
         phone: data.phone,
-        password: data.password,
       },
       {
         onSuccess: ({ customer }) => {
@@ -163,46 +155,6 @@ export const CreateCustomerForm = () => {
                 <Text size="small" className="text-ui-fg-subtle">
                   {t("customers.passwordHint")}
                 </Text>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Form.Field
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>{t("fields.password")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            autoComplete="off"
-                            type="password"
-                            {...field}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="password_confirmation"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>{t("fields.confirmPassword")}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            autoComplete="off"
-                            type="password"
-                            {...field}
-                          />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
               </div>
             </div>
           </div>

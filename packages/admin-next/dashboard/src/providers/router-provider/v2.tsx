@@ -93,34 +93,85 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
-        ],
-      },
-      {
-        path: "/customers",
-        handle: {
-          crumb: () => "Customers",
-        },
-        children: [
           {
-            path: "",
-            lazy: () => import("../../v2-routes/customers/customer-list"),
+            path: "/customers",
+            handle: {
+              crumb: () => "Customers",
+            },
             children: [
               {
-                path: "create",
-                lazy: () => import("../../v2-routes/customers/customer-create"),
+                path: "",
+                lazy: () => import("../../v2-routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
               },
             ],
           },
           {
-            path: ":id",
-            lazy: () => import("../../v2-routes/customers/customer-detail"),
+            path: "/customer-groups",
             handle: {
-              crumb: (data: AdminCustomersRes) => data.customer.email,
+              crumb: () => "Customer Groups",
             },
             children: [
               {
-                path: "edit",
-                lazy: () => import("../../v2-routes/customers/customer-edit"),
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
               },
             ],
           },
@@ -133,48 +184,7 @@ export const v2Routes: RouteObject[] = [
   //   errorElement: <ErrorBoundary />,
   //   children: [],
   // },
-  // {
-  //   path: "/customer-groups",
-  //   handle: {
-  //     crumb: () => "Customer Groups",
-  //   },
-  //   children: [
-  //     {
-  //       path: "",
-  //       lazy: () =>
-  //         import("../../v2-routes/customer-groups/customer-group-list"),
-  //       children: [
-  //         {
-  //           path: "create",
-  //           lazy: () =>
-  //             import("../../v2-routes/customer-groups/customer-group-create"),
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: ":id",
-  //       lazy: () =>
-  //         import("../../v2-routes/customer-groups/customer-group-detail"),
-  //       handle: {
-  //         crumb: (data: AdminCustomerGroupsRes) => data.customer_group.name,
-  //       },
-  //       children: [
-  //         {
-  //           path: "add-customers",
-  //           lazy: () =>
-  //             import(
-  //               "../../v2-routes/customer-groups/customer-group-add-customers"
-  //             ),
-  //         },
-  //         {
-  //           path: "edit",
-  //           lazy: () =>
-  //             import("../../v2-routes/customer-groups/customer-group-edit"),
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  //
   {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
