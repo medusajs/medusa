@@ -1,3 +1,5 @@
+import * as Dialog from "@radix-ui/react-dialog"
+
 import {
   ArrowRightOnRectangle,
   BellAlert,
@@ -10,9 +12,6 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import * as Dialog from "@radix-ui/react-dialog"
-import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
-import { PropsWithChildren } from "react"
 import {
   Link,
   Outlet,
@@ -21,9 +20,10 @@ import {
   useMatches,
   useNavigate,
 } from "react-router-dom"
+import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 
+import { PropsWithChildren } from "react"
 import { Skeleton } from "../../common/skeleton"
-
 import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
@@ -121,6 +121,7 @@ const Breadcrumbs = () => {
 const UserBadge = () => {
   const isV2Enabled = V2_ENABLED === "true"
 
+  console.warn(isV2Enabled)
   // Medusa V2 disabled
   const v1 = useAdminGetSession({
     enabled: !isV2Enabled,
@@ -130,6 +131,9 @@ const UserBadge = () => {
   const v2 = useV2Session({
     enabled: isV2Enabled,
   })
+
+  console.warn(v1)
+  console.warn(v2)
 
   // Comment: Only place where we switch between the two modes inline.
   //  This is to avoid having to rebuild the shell for the app.
