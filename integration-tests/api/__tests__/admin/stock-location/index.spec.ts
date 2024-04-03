@@ -279,5 +279,100 @@ medusaIntegrationTestRunner({
         expect(stockLocationLinks).toHaveLength(0)
       })
     })
+
+    describe("Add sales channels", () => {
+      let salesChannel
+      let location
+
+      beforeEach(async () => {
+        const salesChannelResponse = await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name",
+            description: "test description",
+          },
+          adminHeaders
+        )
+        salesChannel = salesChannelResponse.data.sales_channel
+
+        const locationResponse = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "test location",
+          },
+          adminHeaders
+        )
+
+        location = locationResponse.data.stock_location
+      })
+
+      it("should add sales channels to a location", async () => {
+        const salesChannelResponse = await api.post(
+          `/admin/stock-locations/${location.id}/sales-channels/batch/add?fields=*sales_channels`,
+          { sales_channel_ids: [salesChannel.id] },
+          adminHeaders
+        )
+
+        expect(
+          salesChannelResponse.data.stock_location.sales_channels
+        ).toHaveLength(1)
+      })
+    })
+
+    describe("Remove sales channels", () => {
+      let salesChannel1
+      let salesChannel2
+      let location
+
+      beforeEach(async () => {
+        const salesChannelResponse1 = await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name",
+            description: "test description",
+          },
+          adminHeaders
+        )
+        salesChannel1 = salesChannelResponse1.data.sales_channel
+
+        const salesChannelResponse2 = await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name",
+            description: "test description",
+          },
+          adminHeaders
+        )
+        salesChannel2 = salesChannelResponse2.data.sales_channel
+
+        const locationResponse = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "test location",
+          },
+          adminHeaders
+        )
+
+        location = locationResponse.data.stock_location
+
+        await api.post(
+          `/admin/stock-locations/${location.id}/sales-channels/batch/add?fields=*sales_channels`,
+          { sales_channel_ids: [salesChannel1.id, salesChannel2.id] },
+          adminHeaders
+        )
+      })
+
+      it("should remove sales channels from a location", async () => {
+        const salesChannelResponse = await api.post(
+          `/admin/stock-locations/${location.id}/sales-channels/batch/remove?fields=*sales_channels`,
+          { sales_channel_ids: [salesChannel1.id] },
+          adminHeaders
+        )
+
+        expect(
+          salesChannelResponse.data.stock_location.sales_channels
+        ).toHaveLength(1)
+      })
+    })
   },
 })
