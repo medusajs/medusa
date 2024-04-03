@@ -43,17 +43,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should correctly list currencies in the correct order", async () => {
-        const listResp = await api.get("/admin/currencies?", adminHeaders)
+        const listResp = await api.get(
+          "/admin/currencies?order=-code",
+          adminHeaders
+        )
 
-        expect(listResp.data.currencies).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              code: "cad",
-            }),
-            expect.objectContaining({
-              code: "aud",
-            }),
-          ])
+        const first = listResp.data.currencies.shift()
+        expect(first).toEqual(
+          expect.objectContaining({ code: "zwl", name: "Zimbabwean Dollar" })
         )
       })
     })
