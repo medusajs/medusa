@@ -1,6 +1,9 @@
 const { ModuleRegistrationName, Modules } = require("@medusajs/modules-sdk")
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-const { createAdminUser } = require("../../../helpers/create-admin-user")
+const {
+  createAdminUser,
+  adminHeaders,
+} = require("../../../helpers/create-admin-user")
 const { breaking } = require("../../../helpers/breaking")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
@@ -345,7 +348,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete the requested sales channel", async () => {
-        let toDelete = await breaking(
+        const toDelete = await breaking(
           async () => {
             return await dbConnection.manager.findOne(SalesChannel, {
               where: { id: salesChannel.id },
@@ -401,6 +404,48 @@ medusaIntegrationTestRunner({
           expect(res.response.data.message).toEqual(
             "You cannot delete the default sales channel"
           )
+        })
+      })
+
+      it("should successfully delete channel associations", async () => {
+        await breaking(null, async () => {
+          const remoteLink = container.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          console.warn("testing")
+          await remoteLink.create([
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: "test-channel",
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: "test-location",
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: "test-channel-default",
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: "test-location",
+              },
+            },
+          ])
+
+          await api
+            .delete(`/admin/sales-channels/test-channel`, adminReqConfig)
+            .catch(console.log)
+
+          const linkService = remoteLink.getLinkModule(
+            Modules.SALES_CHANNEL,
+            "sales_channel_id",
+            Modules.STOCK_LOCATION,
+            "stock_location_id"
+          )
+
+          const channelLinks = await linkService.list()
+          expect(channelLinks).toHaveLength(1)
         })
       })
     })
