@@ -142,18 +142,13 @@ export function prepareListQuery<
     allRelations = new Set(expand.split(",").filter(Boolean))
   }
 
-  if (allowedRelations.length) {
-    const { relations: allAllowedRelationsFromAllowedFields } =
-      stringToSelectRelationObject(Array.from(allAllowedFields))
+  if (allowedRelations.length && expand) {
+    const allAllowedRelations = new Set([...allowedRelations])
 
-    const allAllowedRelations = new Set([
-      ...allowedRelations,
-      ...allAllowedRelationsFromAllowedFields,
-    ])
-
-    const notAllowedRelations = !allowedRelations.length
-      ? new Set()
-      : getSetDifference(allRelations, allAllowedRelations)
+    const notAllowedRelations = getSetDifference(
+      allRelations,
+      allAllowedRelations
+    )
 
     if (allRelations.size && notAllowedRelations.size) {
       throw new MedusaError(
