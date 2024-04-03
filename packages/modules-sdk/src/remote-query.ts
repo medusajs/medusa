@@ -173,6 +173,7 @@ export class RemoteQuery {
       "offset",
       "cursor",
       "sort",
+      "order",
       "withDeleted",
     ]
     const availableOptionsAlias = new Map([
