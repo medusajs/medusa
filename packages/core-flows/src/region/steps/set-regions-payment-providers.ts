@@ -59,7 +59,7 @@ async function getCurrentRegionPaymentProvidersLinks(
   }[]
 > {
   const query = remoteQueryObjectFromString({
-    entryPoint: LINKS.RegionPaymentProvider,
+    service: LINKS.RegionPaymentProvider,
     variables: {
       filters: { region_id: regionIds },
       take: null,

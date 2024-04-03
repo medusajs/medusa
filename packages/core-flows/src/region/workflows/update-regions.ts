@@ -28,7 +28,7 @@ export const updateRegionsWorkflow = createWorkflow(
     const upsertProvidersNormalizedInput = transform(
       { data, regions },
       (data) => {
-        return regions.map((region) => {
+        return data.regions.map((region) => {
           return {
             id: region.id,
             payment_providers: data.data.payment_providers,
