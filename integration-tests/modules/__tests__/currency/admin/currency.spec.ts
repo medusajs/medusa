@@ -1,5 +1,5 @@
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -39,6 +39,21 @@ medusaIntegrationTestRunner({
         )
         expect(retrieveResp.data.currency).toEqual(
           listResp.data.currencies.find((c) => c.code === "aud")
+        )
+      })
+
+      it("should correctly list currencies in the correct order", async () => {
+        const listResp = await api.get("/admin/currencies?", adminHeaders)
+
+        expect(listResp.data.currencies).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: "cad",
+            }),
+            expect.objectContaining({
+              code: "aud",
+            }),
+          ])
         )
       })
     })

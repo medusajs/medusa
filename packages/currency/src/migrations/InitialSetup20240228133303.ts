@@ -2,8 +2,20 @@ import { Migration } from "@mikro-orm/migrations"
 
 export class InitialSetup20240228133303 extends Migration {
   async up(): Promise<void> {
-    this.addSql(`create table if not exists "currency" 
-    ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, 
-    constraint "currency_pkey" primary key ("code"));`)
+    this.addSql(`
+      create table if not exists "currency" 
+      (
+        "code" text not null,
+        "symbol" text not null,
+        "symbol_native" text not null, 
+        "name" text not null, 
+        "created_at" timestamptz NOT NULL DEFAULT now(),
+        "updated_at" timestamptz NOT NULL DEFAULT now(),
+        constraint "currency_pkey" primary key ("code")
+      );
+
+      ALTER TABLE "currency" ADD COLUMN IF NOT EXISTS "created_at" TEXT NOT NULL DEFAULT now();
+      ALTER TABLE "currency" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMPTZ NULL DEFAULT now();
+    `)
   }
 }
