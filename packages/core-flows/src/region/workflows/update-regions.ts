@@ -5,7 +5,7 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
-import { upsertAndReplaceRegionPaymentProvidersStep } from "../steps/upsert-and-replace-region-payment-providers"
+import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
 
 export const updateRegionsWorkflowId = "update-regions"
 export const updateRegionsWorkflow = createWorkflow(
@@ -28,16 +28,16 @@ export const updateRegionsWorkflow = createWorkflow(
     const upsertProvidersNormalizedInput = transform(
       { data, regions },
       (data) => {
-        return [
-          {
-            regions: data.regions,
+        return regions.map((region) => {
+          return {
+            id: region.id,
             payment_providers: data.data.payment_providers,
-          },
-        ]
+          }
+        })
       }
     )
 
-    upsertAndReplaceRegionPaymentProvidersStep({
+    setRegionsPaymentProvidersStep({
       input: upsertProvidersNormalizedInput,
     })
 

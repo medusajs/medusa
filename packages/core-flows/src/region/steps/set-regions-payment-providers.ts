@@ -1,33 +1,21 @@
-import {
-  ModuleRegistrationName,
-  Modules,
-  RemoteLink,
-} from "@medusajs/modules-sdk"
-import {
-  FilterableRegionProps,
-  IPaymentModuleService,
-  IRegionModuleService,
-  RemoteQueryFunction,
-} from "@medusajs/types"
+import { ModuleRegistrationName, RemoteLink } from "@medusajs/modules-sdk"
+import { IPaymentModuleService, RemoteQueryFunction } from "@medusajs/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   arrayDifference,
   ContainerRegistrationKeys,
+  LINKS,
   MedusaError,
+  Modules,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-export interface UpsertAndReplaceRegionPaymentProvidersStepInput {
-  input:
-    | {
-        region_selector: FilterableRegionProps
-        payment_providers: string[]
-      }
-    | {
-        regions: { id: string }[]
-        payment_providers: string[]
-      }[]
+export interface SetRegionsPaymentProvidersStepInput {
+  input: {
+    id: string
+    payment_providers: string[]
+  }[]
 }
 
 type LinkItems = {
@@ -71,8 +59,7 @@ async function getCurrentRegionPaymentProvidersLinks(
   }[]
 > {
   const query = remoteQueryObjectFromString({
-    // TODO: use service: LINKS.RegionPaymentProvider, for that, the links.ts must be moved to the utils package, so that for link querying we can use link const instead of plain strings
-    entryPoint: "region_payment_provider",
+    entryPoint: LINKS.RegionPaymentProvider,
     variables: {
       filters: { region_id: regionIds },
       take: null,
@@ -97,76 +84,15 @@ async function getCurrentRegionPaymentProvidersLinks(
   })
 }
 
-async function validateAndNormalizeRegionsProvidersData(
-  input: UpsertAndReplaceRegionPaymentProvidersStepInput["input"],
-  {
-    regionService,
-  }: {
-    regionService: IRegionModuleService
-  }
-): Promise<Map<string, string[]>> {
-  const normalizedInput = Array.isArray(input) ? input : [input]
-  const predicate = "regions" in input[0] ? "regions" : "region_selector"
-
-  const regionPaymentProvidersMap = new Map()
-
-  for (const inputData of normalizedInput) {
-    if ("regions" in inputData) {
-      if (predicate === "region_selector") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Invalid input, all input must either be regions or region_selector"
-        )
-      }
-
-      inputData.regions.forEach((region) => {
-        regionPaymentProvidersMap.set(region.id, inputData.payment_providers)
-      })
-    } else if ("region_selector" in inputData) {
-      if (predicate === "regions") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Invalid input, all input must either be regions or region_selector"
-        )
-      }
-
-      const regions = await regionService.list(inputData.region_selector, {
-        select: ["id"],
-      })
-
-      regions.forEach((region) => {
-        regionPaymentProvidersMap.set(region.id, inputData.payment_providers)
-      })
-    } else {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Invalid input, must provide either regions or region_selector"
-      )
-    }
-  }
-
-  return regionPaymentProvidersMap
-}
-
-export const upsertAndReplaceRegionPaymentProvidersStepId =
+export const setRegionsPaymentProvidersStepId =
   "add-region-payment-providers-step"
-export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
-  upsertAndReplaceRegionPaymentProvidersStepId,
-  async (
-    data: UpsertAndReplaceRegionPaymentProvidersStepInput,
-    { container }
-  ) => {
-    const normalizedInput = Array.isArray(data.input)
-      ? data.input
-      : [data.input]
-
-    if (!normalizedInput.length) {
+export const setRegionsPaymentProvidersStep = createStep(
+  setRegionsPaymentProvidersStepId,
+  async (data: SetRegionsPaymentProvidersStepInput, { container }) => {
+    if (!data.input.length) {
       return new StepResponse(void 0)
     }
 
-    const regionService = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
     const paymentService = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )
@@ -177,7 +103,7 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const allPaymentProviderIds = normalizedInput
+    const allPaymentProviderIds = data.input
       .map((inputData) => {
         return inputData.payment_providers
       })
@@ -189,25 +115,22 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
       uniquePaymentProviderIds
     )
 
-    const normalizedData = await validateAndNormalizeRegionsProvidersData(
-      data.input,
-      {
-        regionService,
-      }
-    )
-
+    const regionIds = data.input.map((inputData) => inputData.id)
     const currentExistingLinks = await getCurrentRegionPaymentProvidersLinks(
-      [...normalizedData.keys()],
+      regionIds,
       { remoteQuery }
     )
 
     const linksToRemove = currentExistingLinks
       .filter((existingLink) => {
-        const providers =
-          normalizedData.get(existingLink[Modules.REGION].region_id) ?? []
-        return !providers.includes(
-          existingLink[Modules.PAYMENT].payment_provider_id
-        )
+        return !data.input.some((input) => {
+          return (
+            input.id === existingLink[Modules.REGION].region_id &&
+            input.payment_providers.includes(
+              existingLink[Modules.PAYMENT].payment_provider_id
+            )
+          )
+        })
       })
       .map((link) => {
         return {
@@ -218,30 +141,28 @@ export const upsertAndReplaceRegionPaymentProvidersStep = createStep(
         }
       })
 
-    const linksToCreate = Array.from(normalizedData.entries())
-      .map(([regionId, providers]) => {
-        const toCreate: LinkItems = []
-
-        for (const provider of providers) {
-          const exists = currentExistingLinks.some((existingLink) => {
+    const linksToCreate = data.input
+      .map((inputData) => {
+        return inputData.payment_providers.map((provider) => {
+          const alreadyExists = currentExistingLinks.some((link) => {
             return (
-              existingLink[Modules.REGION].region_id === regionId &&
-              existingLink[Modules.PAYMENT].payment_provider_id === provider
+              link[Modules.REGION].region_id === inputData.id &&
+              link[Modules.PAYMENT].payment_provider_id === provider
             )
           })
 
-          if (!exists) {
-            toCreate.push({
-              [Modules.REGION]: { region_id: regionId },
-              [Modules.PAYMENT]: { payment_provider_id: provider },
-            })
+          if (alreadyExists) {
+            return
           }
-        }
 
-        return toCreate
+          return {
+            [Modules.REGION]: { region_id: inputData.id },
+            [Modules.PAYMENT]: { payment_provider_id: provider },
+          }
+        })
       })
       .flat()
-      .filter(Boolean)
+      .filter((d): d is LinkItems[0] => !!d)
 
     const promises: Promise<unknown[]>[] = []
 

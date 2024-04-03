@@ -5,10 +5,8 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { createRegionsStep } from "../steps"
-import {
-  upsertAndReplaceRegionPaymentProvidersStep,
-  UpsertAndReplaceRegionPaymentProvidersStepInput,
-} from "../steps/upsert-and-replace-region-payment-providers"
+import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
+import { remapRegionToPaymentProviders } from "../utils"
 
 export const createRegionsWorkflowId = "create-regions"
 export const createRegionsWorkflow = createWorkflow(
@@ -41,33 +39,11 @@ export const createRegionsWorkflow = createWorkflow(
       { regions_providers_map: data.regions_providers_map, regions },
       (data) => {
         const { regions_providers_map, regions } = data
-        const upsertAndReplaceProvidersInput: UpsertAndReplaceRegionPaymentProvidersStepInput["input"] =
-          []
-
-        for (const region of regions) {
-          Object.entries(regions_providers_map).some(
-            ([regionHash, providers]) => {
-              const regionObj = JSON.parse(regionHash)
-              const match = Object.keys(regionObj).every(
-                (key) => regionObj[key] === region[key]
-              )
-              if (match) {
-                upsertAndReplaceProvidersInput.push({
-                  regions: [region],
-                  payment_providers: providers as string[],
-                })
-                return true
-              }
-              return false
-            }
-          )
-        }
-
-        return upsertAndReplaceProvidersInput as UpsertAndReplaceRegionPaymentProvidersStepInput["input"]
+        return remapRegionToPaymentProviders(regions, regions_providers_map)
       }
     )
 
-    upsertAndReplaceRegionPaymentProvidersStep({
+    setRegionsPaymentProvidersStep({
       input: normalizedRegionProviderData,
     })
 
