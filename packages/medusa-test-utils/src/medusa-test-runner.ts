@@ -114,6 +114,12 @@ export function medusaIntegrationTestRunner({
   ) => {
     const config = originalConfigLoader(rootDirectory)
     config.projectConfig.database_url = dbConfig.clientUrl
+    config.projectConfig.database_driver_options = dbConfig.clientUrl.includes("localhost") ? {} : {
+      connection: {
+        ssl: { rejectUnauthorized: false },
+      },
+      idle_in_transaction_session_timeout: 20000,
+    }
     return config
   }
 
