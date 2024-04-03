@@ -1,6 +1,6 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { updateRegionsWorkflow } from "@medusajs/core-flows"
-import { ContainerLike, RegionDTO } from "@medusajs/types"
+import {ContainerLike, MedusaContainer, RegionDTO} from "@medusajs/types"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(200000)
@@ -13,7 +13,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let container: ContainerLike
+    let container: MedusaContainer
     let region: RegionDTO
 
     beforeAll(() => {
