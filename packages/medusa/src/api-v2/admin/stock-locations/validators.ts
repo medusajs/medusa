@@ -1,15 +1,6 @@
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
-  DateComparisonOperator,
-  FindParams,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import {
-  IsBoolean,
-  IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -290,3 +281,8 @@ export class AdminPostStockLocationsLocationReq {
 export class AdminPostStockLocationsLocationParams extends FindParams {}
 
 export class AdminGetStockLocationsLocationParams extends FindParams {}
+
+export class AdminStockLocationsLocationSalesChannelBatchReq {
+  @IsString({ each: true })
+  sales_channel_ids: string[]
+}

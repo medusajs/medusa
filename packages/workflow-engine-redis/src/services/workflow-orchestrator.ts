@@ -79,10 +79,12 @@ export class WorkflowOrchestratorService {
   protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
 
   constructor({
+    dataLoaderOnly,
     redisDistributedTransactionStorage,
     redisPublisher,
     redisSubscriber,
   }: {
+    dataLoaderOnly: boolean
     redisDistributedTransactionStorage: RedisDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
     redisPublisher: Redis
@@ -92,7 +94,10 @@ export class WorkflowOrchestratorService {
     this.redisSubscriber = redisSubscriber
 
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
-    DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+
+    if (!dataLoaderOnly) {
+      DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+    }
 
     this.redisDistributedTransactionStorage_ =
       redisDistributedTransactionStorage
