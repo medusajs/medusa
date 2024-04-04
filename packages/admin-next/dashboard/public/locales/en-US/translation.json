@@ -860,8 +860,8 @@
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
   },
-  "executions": {
-    "domain": "Executions",
+  "workflowExecutions": {
+    "domain": "Workflows",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
     "progressLabel": "Progress",

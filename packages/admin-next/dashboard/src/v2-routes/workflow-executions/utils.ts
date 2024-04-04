@@ -40,19 +40,19 @@ export const getTransactionState = (
 ) => {
   switch (state) {
     case TransactionState.DONE:
-      return t("executions.state.done")
+      return t("workflowExecutions.state.done")
     case TransactionState.FAILED:
-      return t("executions.state.failed")
+      return t("workflowExecutions.state.failed")
     case TransactionState.REVERTED:
-      return t("executions.state.reverted")
+      return t("workflowExecutions.state.reverted")
     case TransactionState.INVOKING:
-      return t("executions.state.invoking")
+      return t("workflowExecutions.state.invoking")
     case TransactionState.WAITING_TO_COMPENSATE:
-      return t("executions.transaction.state.waitingToCompensate")
+      return t("workflowExecutions.transaction.state.waitingToCompensate")
     case TransactionState.COMPENSATING:
-      return t("executions.state.compensating")
+      return t("workflowExecutions.state.compensating")
     case TransactionState.NOT_STARTED:
-      return t("executions.state.notStarted")
+      return t("workflowExecutions.state.notStarted")
   }
 }
 
@@ -80,22 +80,22 @@ export const getStepState = (
 ) => {
   switch (state) {
     case TransactionStepState.DONE:
-      return t("executions.state.done")
+      return t("workflowExecutions.state.done")
     case TransactionStepState.FAILED:
-      return t("executions.state.failed")
+      return t("workflowExecutions.state.failed")
     case TransactionStepState.REVERTED:
-      return t("executions.state.reverted")
+      return t("workflowExecutions.state.reverted")
     case TransactionStepState.INVOKING:
-      return t("executions.state.invoking")
+      return t("workflowExecutions.state.invoking")
     case TransactionStepState.COMPENSATING:
-      return t("executions.state.compensating")
+      return t("workflowExecutions.state.compensating")
     case TransactionStepState.NOT_STARTED:
-      return t("executions.state.notStarted")
+      return t("workflowExecutions.state.notStarted")
     case TransactionStepState.SKIPPED:
-      return t("executions.step.state.skipped")
+      return t("workflowExecutions.step.state.skipped")
     case TransactionStepState.DORMANT:
-      return t("executions.step.state.dormant")
+      return t("workflowExecutions.step.state.dormant")
     case TransactionStepState.TIMEOUT:
-      return t("executions.step.state.timeout")
+      return t("workflowExecutions.step.state.timeout")
   }
 }

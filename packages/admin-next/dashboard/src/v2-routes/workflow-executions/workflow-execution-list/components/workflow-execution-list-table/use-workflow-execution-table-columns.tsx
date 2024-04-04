@@ -12,7 +12,7 @@ import { getTransactionState, getTransactionStateColor } from "../../../utils"
 
 const columnHelper = createColumnHelper<WorkflowExecutionDTO>()
 
-export const useExecutionTableColumns = (): ColumnDef<
+export const useWorkflowExecutionTableColumns = (): ColumnDef<
   WorkflowExecutionDTO,
   any
 >[] => {
@@ -21,7 +21,7 @@ export const useExecutionTableColumns = (): ColumnDef<
   return useMemo(
     () => [
       columnHelper.accessor("transaction_id", {
-        header: t("executions.transactionIdLabel"),
+        header: t("workflowExecutions.transactionIdLabel"),
         cell: ({ getValue }) => <Badge size="2xsmall">{getValue()}</Badge>,
       }),
       columnHelper.accessor("state", {
@@ -40,7 +40,7 @@ export const useExecutionTableColumns = (): ColumnDef<
         },
       }),
       columnHelper.accessor("execution", {
-        header: t("executions.progressLabel"),
+        header: t("workflowExecutions.progressLabel"),
         cell: ({ getValue }) => {
           const steps = getValue()?.steps as
             | Record<string, WorkflowExecutionStep>
@@ -58,7 +58,7 @@ export const useExecutionTableColumns = (): ColumnDef<
             (step) => step.invoke.state === TransactionStepState.DONE
           )
 
-          return t("executions.stepsCompletedLabel", {
+          return t("workflowExecutions.stepsCompletedLabel", {
             completed: completedSteps.length,
             count: actionableSteps.length,
           })
