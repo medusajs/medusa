@@ -1,7 +1,5 @@
-import { MedusaError, RuleType } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { ruleAttributesMap } from "./rule-attributes-map"
-
-const validRuleTypes: string[] = Object.values(RuleType)
 
 export function validateRuleAttribute(
   ruleType: string,
@@ -13,7 +11,7 @@ export function validateRuleAttribute(
   if (!ruleAttribute) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Invalid rule attribute`
+      `Invalid rule attribute - ${ruleAttributeId}`
     )
   }
 }

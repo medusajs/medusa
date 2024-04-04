@@ -767,7 +767,7 @@ medusaIntegrationTestRunner({
           expect(response.status).toEqual(400)
           expect(response.data).toEqual({
             type: "invalid_data",
-            message: "Invalid rule attribute",
+            message: "Invalid rule attribute - does-not-exist",
           })
         })
 
