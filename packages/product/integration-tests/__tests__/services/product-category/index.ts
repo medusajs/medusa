@@ -1,13 +1,13 @@
 import { ProductCategoryService } from "@services"
 
+import { Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   productCategoriesData,
   productCategoriesRankData,
 } from "../../../__fixtures__/product-category/data"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { IProductModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -138,14 +138,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
@@ -153,7 +151,6 @@ moduleIntegrationTestRunner({
                       handle: "category-1-b",
                       mpath: "category-0.category-1.category-1-b.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
@@ -161,7 +158,6 @@ moduleIntegrationTestRunner({
                           mpath:
                             "category-0.category-1.category-1-b.category-1-b-1.",
                           parent_category_id: "category-1-b",
-                          parent_category: "category-1-b",
                           category_children: [],
                         }),
                       ],
@@ -170,6 +166,171 @@ moduleIntegrationTestRunner({
                 }),
               ],
             }),
+          ])
+        })
+
+        it("includes the entire list of descendants when include_descendants_tree is true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_descendants_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              category_children: [],
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              category_children: [
+                {
+                  id: "category-1-b-1",
+                  handle: "category-1-b-1",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  parent_category_id: "category-1-b",
+                  category_children: [],
+                },
+              ],
+            },
+          ])
+        })
+
+        it("includes the entire list of parents when include_parents_tree is true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_parents_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+            },
+          ])
+        })
+
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_parents_tree are true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_descendants_tree: true,
+              include_parents_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+              category_children: [],
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+              category_children: [
+                {
+                  id: "category-1-b-1",
+                  handle: "category-1-b-1",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  parent_category_id: "category-1-b",
+                },
+              ],
+            },
           ])
         })
 
@@ -202,14 +363,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                   ],
@@ -456,14 +615,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
@@ -471,7 +628,6 @@ moduleIntegrationTestRunner({
                       handle: "category-1-b",
                       mpath: "category-0.category-1.category-1-b.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
@@ -479,7 +635,6 @@ moduleIntegrationTestRunner({
                           mpath:
                             "category-0.category-1.category-1-b.category-1-b-1.",
                           parent_category_id: "category-1-b",
-                          parent_category: "category-1-b",
                           category_children: [],
                         }),
                       ],
@@ -522,14 +677,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                   ],
