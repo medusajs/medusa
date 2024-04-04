@@ -891,36 +891,42 @@ export interface FilterableOrderShippingMethodTaxLineProps
 
 export interface FilterableOrderChangeProps
   extends BaseFilterable<FilterableOrderChangeProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  status?: string | string[]
-  requested_by?: string | string[]
-  confirmed_by?: string | string[]
-  declined_by?: string | string[]
-  canceled_by?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  status?: string | string[] | OperatorMap<string>
+  requested_by?: string | string[] | OperatorMap<string>
+  confirmed_by?: string | string[] | OperatorMap<string>
+  declined_by?: string | string[] | OperatorMap<string>
+  canceled_by?: string | string[] | OperatorMap<string>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+  canceled_at?: OperatorMap<string>
 }
 
 export interface FilterableOrderChangeActionProps
   extends BaseFilterable<FilterableOrderChangeActionProps> {
-  id?: string | string[]
-  order_change_id?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_change_id?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableOrderTransactionProps
   extends BaseFilterable<FilterableOrderTransactionProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  currency_code?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  currency_code?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
+
+  created_at?: OperatorMap<string>
 }
 
 export interface FilterableOrderItemProps
   extends BaseFilterable<FilterableOrderItemProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  version?: string | string[]
-  item_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  version?: string | string[] | OperatorMap<string>
+  item_id?: string | string[] | OperatorMap<string>
 }
