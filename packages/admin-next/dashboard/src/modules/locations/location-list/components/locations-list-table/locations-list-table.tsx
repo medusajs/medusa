@@ -1,6 +1,9 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { StockLocationExpandedDTO } from "@medusajs/types"
 import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content/empty-table-content"
 import {
   PaginationState,
   RowSelectionState,
@@ -9,20 +12,17 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import {
   useAdminDeleteStockLocation,
   useAdminStockLocations,
 } from "medusa-react"
 import { useMemo, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import {
-  NoRecords,
-  NoResults,
-} from "../../../../../components/common/empty-table-content/empty-table-content"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { StockLocationExpandedDTO } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 50
 
@@ -49,7 +49,7 @@ export const LocationsListTable = () => {
     useAdminStockLocations({
       limit: PAGE_SIZE,
       offset: pageIndex * PAGE_SIZE,
-      expand: "address",
+      fields: "*address",
     })
 
   const columns = useColumns()
