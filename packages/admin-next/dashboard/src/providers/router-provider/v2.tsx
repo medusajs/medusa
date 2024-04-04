@@ -1,5 +1,7 @@
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
+import { AdminCollectionsRes, type AdminRegionsRes } from "@medusajs/medusa"
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { Spinner } from "@medusajs/icons"
 
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
@@ -7,9 +9,6 @@ import { Outlet } from "react-router-dom"
 import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
-import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes, type AdminRegionsRes } from "@medusajs/medusa"
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
