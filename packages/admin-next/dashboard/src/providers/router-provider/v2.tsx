@@ -179,12 +179,6 @@ export const v2Routes: RouteObject[] = [
       },
     ],
   },
-  // {
-  //   element: <ProtectedRoute />,
-  //   errorElement: <ErrorBoundary />,
-  //   children: [],
-  // },
-  //
   {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
