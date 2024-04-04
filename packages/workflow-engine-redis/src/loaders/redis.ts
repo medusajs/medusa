@@ -7,7 +7,7 @@ export default async ({
   container,
   logger,
   options,
-                        dataLoaderOnly
+  dataLoaderOnly,
 }: LoaderOptions): Promise<void> => {
   const {
     url,
@@ -78,9 +78,9 @@ async function getConnection(url, redisOptions) {
   const connection = new Redis(url, {
     lazyConnect: true,
     ...(redisOptions ?? {}),
-  });
+  })
 
-  await new Promise(async resolve => {
+  await new Promise(async (resolve) => {
     await connection.connect(resolve)
   })
 
