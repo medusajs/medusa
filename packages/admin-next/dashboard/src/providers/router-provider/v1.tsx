@@ -1,5 +1,4 @@
 import type {
-  AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminDiscountsRes,
@@ -261,47 +260,6 @@ export const v1Routes: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () => import("../../routes/categories/details"),
-              },
-            ],
-          },
-          {
-            path: "/collections",
-            handle: {
-              crumb: () => "Collections",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/collections/collection-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import("../../routes/collections/collection-create"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                handle: {
-                  crumb: (data: AdminCollectionsRes) => data.collection.title,
-                },
-                lazy: () =>
-                  import("../../routes/collections/collection-detail"),
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import("../../routes/collections/collection-edit"),
-                  },
-                  {
-                    path: "add-products",
-                    lazy: () =>
-                      import(
-                        "../../routes/collections/collection-add-products"
-                      ),
-                  },
-                ],
               },
             ],
           },
