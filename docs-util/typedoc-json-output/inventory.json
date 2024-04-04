@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 2601,
 	"name": "inventory",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 160,
+			"id": 2761,
 			"name": "FindConfig",
 			"variant": "declaration",
 			"kind": 256,
@@ -29,7 +29,7 @@
 			},
 			"children": [
 				{
-					"id": 161,
+					"id": 2762,
 					"name": "select",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 171,
+										"target": 2772,
 										"name": "Entity",
 										"package": "@medusajs/types",
 										"qualifiedName": "FindConfig.Entity",
@@ -70,7 +70,7 @@
 					}
 				},
 				{
-					"id": 162,
+					"id": 2763,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 1024,
@@ -100,7 +100,7 @@
 					}
 				},
 				{
-					"id": 163,
+					"id": 2764,
 					"name": "take",
 					"variant": "declaration",
 					"kind": 1024,
@@ -130,7 +130,7 @@
 					}
 				},
 				{
-					"id": 164,
+					"id": 2765,
 					"name": "relations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -154,7 +154,7 @@
 					}
 				},
 				{
-					"id": 165,
+					"id": 2766,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -188,20 +188,20 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 166,
+							"id": 2767,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"indexSignature": {
-								"id": 167,
+								"id": 2768,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
 								"parameters": [
 									{
-										"id": 168,
+										"id": 2769,
 										"name": "K",
 										"variant": "param",
 										"kind": 32768,
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"id": 169,
+					"id": 2770,
 					"name": "withDeleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -259,7 +259,7 @@
 					}
 				},
 				{
-					"id": 170,
+					"id": 2771,
 					"name": "filters",
 					"variant": "declaration",
 					"kind": 1024,
@@ -299,19 +299,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						161,
-						162,
-						163,
-						164,
-						165,
-						169,
-						170
+						2762,
+						2763,
+						2764,
+						2765,
+						2766,
+						2770,
+						2771
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 171,
+					"id": 2772,
 					"name": "Entity",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -320,7 +320,7 @@
 			]
 		},
 		{
-			"id": 305,
+			"id": 2906,
 			"name": "StringComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
@@ -335,7 +335,7 @@
 			},
 			"children": [
 				{
-					"id": 306,
+					"id": 2907,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -356,7 +356,7 @@
 					}
 				},
 				{
-					"id": 307,
+					"id": 2908,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -377,7 +377,7 @@
 					}
 				},
 				{
-					"id": 308,
+					"id": 2909,
 					"name": "gte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -398,7 +398,7 @@
 					}
 				},
 				{
-					"id": 309,
+					"id": 2910,
 					"name": "lte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -419,7 +419,7 @@
 					}
 				},
 				{
-					"id": 310,
+					"id": 2911,
 					"name": "contains",
 					"variant": "declaration",
 					"kind": 1024,
@@ -440,7 +440,7 @@
 					}
 				},
 				{
-					"id": 311,
+					"id": 2912,
 					"name": "starts_with",
 					"variant": "declaration",
 					"kind": 1024,
@@ -461,7 +461,7 @@
 					}
 				},
 				{
-					"id": 312,
+					"id": 2913,
 					"name": "ends_with",
 					"variant": "declaration",
 					"kind": 1024,
@@ -486,19 +486,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						306,
-						307,
-						308,
-						309,
-						310,
-						311,
-						312
+						2907,
+						2908,
+						2909,
+						2910,
+						2911,
+						2912,
+						2913
 					]
 				}
 			]
 		},
 		{
-			"id": 313,
+			"id": 2914,
 			"name": "NumericalComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
@@ -513,7 +513,7 @@
 			},
 			"children": [
 				{
-					"id": 314,
+					"id": 2915,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -534,7 +534,7 @@
 					}
 				},
 				{
-					"id": 315,
+					"id": 2916,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -555,7 +555,7 @@
 					}
 				},
 				{
-					"id": 316,
+					"id": 2917,
 					"name": "gte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -576,7 +576,7 @@
 					}
 				},
 				{
-					"id": 317,
+					"id": 2918,
 					"name": "lte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -601,16 +601,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						314,
-						315,
-						316,
-						317
+						2915,
+						2916,
+						2917,
+						2918
 					]
 				}
 			]
 		},
 		{
-			"id": 172,
+			"id": 2773,
 			"name": "InventoryItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -624,14 +624,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 173,
+					"id": 2774,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 174,
+							"id": 2775,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -650,7 +650,7 @@
 							}
 						},
 						{
-							"id": 175,
+							"id": 2776,
 							"name": "sku",
 							"variant": "declaration",
 							"kind": 1024,
@@ -680,7 +680,7 @@
 							}
 						},
 						{
-							"id": 176,
+							"id": 2777,
 							"name": "origin_country",
 							"variant": "declaration",
 							"kind": 1024,
@@ -710,7 +710,7 @@
 							}
 						},
 						{
-							"id": 177,
+							"id": 2778,
 							"name": "hs_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -740,7 +740,7 @@
 							}
 						},
 						{
-							"id": 178,
+							"id": 2779,
 							"name": "requires_shipping",
 							"variant": "declaration",
 							"kind": 1024,
@@ -759,7 +759,7 @@
 							}
 						},
 						{
-							"id": 179,
+							"id": 2780,
 							"name": "mid_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -789,7 +789,7 @@
 							}
 						},
 						{
-							"id": 180,
+							"id": 2781,
 							"name": "material",
 							"variant": "declaration",
 							"kind": 1024,
@@ -819,7 +819,7 @@
 							}
 						},
 						{
-							"id": 181,
+							"id": 2782,
 							"name": "weight",
 							"variant": "declaration",
 							"kind": 1024,
@@ -849,7 +849,7 @@
 							}
 						},
 						{
-							"id": 182,
+							"id": 2783,
 							"name": "length",
 							"variant": "declaration",
 							"kind": 1024,
@@ -879,7 +879,7 @@
 							}
 						},
 						{
-							"id": 183,
+							"id": 2784,
 							"name": "height",
 							"variant": "declaration",
 							"kind": 1024,
@@ -909,7 +909,7 @@
 							}
 						},
 						{
-							"id": 184,
+							"id": 2785,
 							"name": "width",
 							"variant": "declaration",
 							"kind": 1024,
@@ -939,7 +939,7 @@
 							}
 						},
 						{
-							"id": 185,
+							"id": 2786,
 							"name": "title",
 							"variant": "declaration",
 							"kind": 1024,
@@ -969,7 +969,7 @@
 							}
 						},
 						{
-							"id": 186,
+							"id": 2787,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -999,7 +999,7 @@
 							}
 						},
 						{
-							"id": 187,
+							"id": 2788,
 							"name": "thumbnail",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1029,7 +1029,7 @@
 							}
 						},
 						{
-							"id": 188,
+							"id": 2789,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1074,7 +1074,7 @@
 							}
 						},
 						{
-							"id": 189,
+							"id": 2790,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1107,7 +1107,7 @@
 							}
 						},
 						{
-							"id": 190,
+							"id": 2791,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1140,7 +1140,7 @@
 							}
 						},
 						{
-							"id": 191,
+							"id": 2792,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1181,24 +1181,24 @@
 						{
 							"title": "Properties",
 							"children": [
-								174,
-								175,
-								176,
-								177,
-								178,
-								179,
-								180,
-								181,
-								182,
-								183,
-								184,
-								185,
-								186,
-								187,
-								188,
-								189,
-								190,
-								191
+								2775,
+								2776,
+								2777,
+								2778,
+								2779,
+								2780,
+								2781,
+								2782,
+								2783,
+								2784,
+								2785,
+								2786,
+								2787,
+								2788,
+								2789,
+								2790,
+								2791,
+								2792
 							]
 						}
 					]
@@ -1206,7 +1206,7 @@
 			}
 		},
 		{
-			"id": 204,
+			"id": 2805,
 			"name": "ReservationItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1225,14 +1225,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 205,
+					"id": 2806,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 206,
+							"id": 2807,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1251,7 +1251,7 @@
 							}
 						},
 						{
-							"id": 207,
+							"id": 2808,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1270,7 +1270,7 @@
 							}
 						},
 						{
-							"id": 208,
+							"id": 2809,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1289,7 +1289,7 @@
 							}
 						},
 						{
-							"id": 209,
+							"id": 2810,
 							"name": "quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1308,7 +1308,7 @@
 							}
 						},
 						{
-							"id": 210,
+							"id": 2811,
 							"name": "line_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1330,7 +1330,7 @@
 							}
 						},
 						{
-							"id": 211,
+							"id": 2812,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1360,7 +1360,7 @@
 							}
 						},
 						{
-							"id": 212,
+							"id": 2813,
 							"name": "created_by",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1390,7 +1390,7 @@
 							}
 						},
 						{
-							"id": 213,
+							"id": 2814,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1433,7 +1433,7 @@
 							}
 						},
 						{
-							"id": 214,
+							"id": 2815,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1466,7 +1466,7 @@
 							}
 						},
 						{
-							"id": 215,
+							"id": 2816,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1499,7 +1499,7 @@
 							}
 						},
 						{
-							"id": 216,
+							"id": 2817,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1540,17 +1540,17 @@
 						{
 							"title": "Properties",
 							"children": [
-								206,
-								207,
-								208,
-								209,
-								210,
-								211,
-								212,
-								213,
-								214,
-								215,
-								216
+								2807,
+								2808,
+								2809,
+								2810,
+								2811,
+								2812,
+								2813,
+								2814,
+								2815,
+								2816,
+								2817
 							]
 						}
 					]
@@ -1558,7 +1558,7 @@
 			}
 		},
 		{
-			"id": 223,
+			"id": 2824,
 			"name": "InventoryLevelDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1572,14 +1572,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 224,
+					"id": 2825,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 225,
+							"id": 2826,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1590,7 +1590,7 @@
 							}
 						},
 						{
-							"id": 226,
+							"id": 2827,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1601,7 +1601,7 @@
 							}
 						},
 						{
-							"id": 227,
+							"id": 2828,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1620,7 +1620,7 @@
 							}
 						},
 						{
-							"id": 228,
+							"id": 2829,
 							"name": "stocked_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1639,7 +1639,7 @@
 							}
 						},
 						{
-							"id": 229,
+							"id": 2830,
 							"name": "reserved_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1658,7 +1658,7 @@
 							}
 						},
 						{
-							"id": 230,
+							"id": 2831,
 							"name": "incoming_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1677,7 +1677,7 @@
 							}
 						},
 						{
-							"id": 231,
+							"id": 2832,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1720,7 +1720,7 @@
 							}
 						},
 						{
-							"id": 232,
+							"id": 2833,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1753,7 +1753,7 @@
 							}
 						},
 						{
-							"id": 233,
+							"id": 2834,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1786,7 +1786,7 @@
 							}
 						},
 						{
-							"id": 234,
+							"id": 2835,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1827,16 +1827,16 @@
 						{
 							"title": "Properties",
 							"children": [
-								225,
-								226,
-								227,
-								228,
-								229,
-								230,
-								231,
-								232,
-								233,
-								234
+								2826,
+								2827,
+								2828,
+								2829,
+								2830,
+								2831,
+								2832,
+								2833,
+								2834,
+								2835
 							]
 						}
 					]
@@ -1844,7 +1844,7 @@
 			}
 		},
 		{
-			"id": 195,
+			"id": 2796,
 			"name": "FilterableReservationItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -1859,7 +1859,7 @@
 			},
 			"children": [
 				{
-					"id": 196,
+					"id": 2797,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1892,7 +1892,7 @@
 					}
 				},
 				{
-					"id": 198,
+					"id": 2799,
 					"name": "line_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1925,7 +1925,7 @@
 					}
 				},
 				{
-					"id": 199,
+					"id": 2800,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1958,7 +1958,7 @@
 					}
 				},
 				{
-					"id": 200,
+					"id": 2801,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1991,7 +1991,7 @@
 					}
 				},
 				{
-					"id": 201,
+					"id": 2802,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2023,7 +2023,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 305,
+								"target": 2906,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2031,7 +2031,7 @@
 					}
 				},
 				{
-					"id": 202,
+					"id": 2803,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2064,7 +2064,7 @@
 					}
 				},
 				{
-					"id": 203,
+					"id": 2804,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2096,7 +2096,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 313,
+								"target": 2914,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2108,19 +2108,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						196,
-						198,
-						199,
-						200,
-						201,
-						202,
-						203
+						2797,
+						2799,
+						2800,
+						2801,
+						2802,
+						2803,
+						2804
 					]
 				}
 			]
 		},
 		{
-			"id": 152,
+			"id": 2753,
 			"name": "FilterableInventoryItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -2135,7 +2135,7 @@
 			},
 			"children": [
 				{
-					"id": 153,
+					"id": 2754,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2168,7 +2168,7 @@
 					}
 				},
 				{
-					"id": 154,
+					"id": 2755,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2201,7 +2201,7 @@
 					}
 				},
 				{
-					"id": 155,
+					"id": 2756,
 					"name": "q",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2222,7 +2222,7 @@
 					}
 				},
 				{
-					"id": 156,
+					"id": 2757,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2253,7 +2253,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 305,
+								"target": 2906,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2261,7 +2261,7 @@
 					}
 				},
 				{
-					"id": 157,
+					"id": 2758,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2294,7 +2294,7 @@
 					}
 				},
 				{
-					"id": 158,
+					"id": 2759,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2325,7 +2325,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 305,
+								"target": 2906,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2333,7 +2333,7 @@
 					}
 				},
 				{
-					"id": 159,
+					"id": 2760,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2358,19 +2358,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						153,
-						154,
-						155,
-						156,
-						157,
-						158,
-						159
+						2754,
+						2755,
+						2756,
+						2757,
+						2758,
+						2759,
+						2760
 					]
 				}
 			]
 		},
 		{
-			"id": 244,
+			"id": 2845,
 			"name": "CreateInventoryItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -2385,7 +2385,7 @@
 			},
 			"children": [
 				{
-					"id": 245,
+					"id": 2846,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2415,7 +2415,7 @@
 					}
 				},
 				{
-					"id": 246,
+					"id": 2847,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2445,7 +2445,7 @@
 					}
 				},
 				{
-					"id": 247,
+					"id": 2848,
 					"name": "mid_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2475,7 +2475,7 @@
 					}
 				},
 				{
-					"id": 248,
+					"id": 2849,
 					"name": "material",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2505,7 +2505,7 @@
 					}
 				},
 				{
-					"id": 249,
+					"id": 2850,
 					"name": "weight",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2535,7 +2535,7 @@
 					}
 				},
 				{
-					"id": 250,
+					"id": 2851,
 					"name": "length",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2565,7 +2565,7 @@
 					}
 				},
 				{
-					"id": 251,
+					"id": 2852,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2595,7 +2595,7 @@
 					}
 				},
 				{
-					"id": 252,
+					"id": 2853,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2625,7 +2625,7 @@
 					}
 				},
 				{
-					"id": 253,
+					"id": 2854,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2655,7 +2655,7 @@
 					}
 				},
 				{
-					"id": 254,
+					"id": 2855,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2685,7 +2685,7 @@
 					}
 				},
 				{
-					"id": 255,
+					"id": 2856,
 					"name": "thumbnail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2715,7 +2715,7 @@
 					}
 				},
 				{
-					"id": 256,
+					"id": 2857,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2760,7 +2760,7 @@
 					}
 				},
 				{
-					"id": 257,
+					"id": 2858,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2790,7 +2790,7 @@
 					}
 				},
 				{
-					"id": 258,
+					"id": 2859,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2815,26 +2815,26 @@
 				{
 					"title": "Properties",
 					"children": [
-						245,
-						246,
-						247,
-						248,
-						249,
-						250,
-						251,
-						252,
-						253,
-						254,
-						255,
-						256,
-						257,
-						258
+						2846,
+						2847,
+						2848,
+						2849,
+						2850,
+						2851,
+						2852,
+						2853,
+						2854,
+						2855,
+						2856,
+						2857,
+						2858,
+						2859
 					]
 				}
 			]
 		},
 		{
-			"id": 235,
+			"id": 2836,
 			"name": "CreateReservationItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -2849,7 +2849,7 @@
 			},
 			"children": [
 				{
-					"id": 236,
+					"id": 2837,
 					"name": "line_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2870,7 +2870,7 @@
 					}
 				},
 				{
-					"id": 237,
+					"id": 2838,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2889,7 +2889,7 @@
 					}
 				},
 				{
-					"id": 238,
+					"id": 2839,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2908,7 +2908,7 @@
 					}
 				},
 				{
-					"id": 239,
+					"id": 2840,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2927,7 +2927,7 @@
 					}
 				},
 				{
-					"id": 240,
+					"id": 2841,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2948,7 +2948,7 @@
 					}
 				},
 				{
-					"id": 241,
+					"id": 2842,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2969,7 +2969,7 @@
 					}
 				},
 				{
-					"id": 242,
+					"id": 2843,
 					"name": "external_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2990,7 +2990,7 @@
 					}
 				},
 				{
-					"id": 243,
+					"id": 2844,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3039,20 +3039,20 @@
 				{
 					"title": "Properties",
 					"children": [
-						236,
-						237,
-						238,
-						239,
-						240,
-						241,
-						242,
-						243
+						2837,
+						2838,
+						2839,
+						2840,
+						2841,
+						2842,
+						2843,
+						2844
 					]
 				}
 			]
 		},
 		{
-			"id": 217,
+			"id": 2818,
 			"name": "FilterableInventoryLevelProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -3067,7 +3067,7 @@
 			},
 			"children": [
 				{
-					"id": 218,
+					"id": 2819,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3100,7 +3100,7 @@
 					}
 				},
 				{
-					"id": 219,
+					"id": 2820,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3133,7 +3133,7 @@
 					}
 				},
 				{
-					"id": 220,
+					"id": 2821,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3165,7 +3165,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 313,
+								"target": 2914,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3173,7 +3173,7 @@
 					}
 				},
 				{
-					"id": 221,
+					"id": 2822,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3205,7 +3205,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 313,
+								"target": 2914,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3213,7 +3213,7 @@
 					}
 				},
 				{
-					"id": 222,
+					"id": 2823,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3245,7 +3245,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 313,
+								"target": 2914,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3257,17 +3257,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						218,
-						219,
-						220,
-						221,
-						222
+						2819,
+						2820,
+						2821,
+						2822,
+						2823
 					]
 				}
 			]
 		},
 		{
-			"id": 259,
+			"id": 2860,
 			"name": "CreateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3282,7 +3282,7 @@
 			},
 			"children": [
 				{
-					"id": 260,
+					"id": 2861,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3301,7 +3301,7 @@
 					}
 				},
 				{
-					"id": 261,
+					"id": 2862,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3320,7 +3320,7 @@
 					}
 				},
 				{
-					"id": 262,
+					"id": 2863,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3339,7 +3339,7 @@
 					}
 				},
 				{
-					"id": 263,
+					"id": 2864,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3360,7 +3360,7 @@
 					}
 				},
 				{
-					"id": 264,
+					"id": 2865,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3385,17 +3385,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						260,
-						261,
-						262,
-						263,
-						264
+						2861,
+						2862,
+						2863,
+						2864,
+						2865
 					]
 				}
 			]
 		},
 		{
-			"id": 270,
+			"id": 2871,
 			"name": "UpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3410,7 +3410,7 @@
 			},
 			"children": [
 				{
-					"id": 271,
+					"id": 2872,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3431,7 +3431,7 @@
 					}
 				},
 				{
-					"id": 272,
+					"id": 2873,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3456,14 +3456,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						271,
-						272
+						2872,
+						2873
 					]
 				}
 			]
 		},
 		{
-			"id": 265,
+			"id": 2866,
 			"name": "BulkUpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3478,7 +3478,7 @@
 			},
 			"children": [
 				{
-					"id": 268,
+					"id": 2869,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3499,7 +3499,7 @@
 					}
 				},
 				{
-					"id": 269,
+					"id": 2870,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3520,7 +3520,7 @@
 					}
 				},
 				{
-					"id": 266,
+					"id": 2867,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3539,7 +3539,7 @@
 					}
 				},
 				{
-					"id": 267,
+					"id": 2868,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3562,16 +3562,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						268,
-						269,
-						266,
-						267
+						2869,
+						2870,
+						2867,
+						2868
 					]
 				}
 			]
 		},
 		{
-			"id": 273,
+			"id": 2874,
 			"name": "UpdateReservationItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3586,7 +3586,7 @@
 			},
 			"children": [
 				{
-					"id": 274,
+					"id": 2875,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3607,7 +3607,7 @@
 					}
 				},
 				{
-					"id": 275,
+					"id": 2876,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3628,7 +3628,7 @@
 					}
 				},
 				{
-					"id": 276,
+					"id": 2877,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3649,7 +3649,7 @@
 					}
 				},
 				{
-					"id": 277,
+					"id": 2878,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3698,16 +3698,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						274,
-						275,
-						276,
-						277
+						2875,
+						2876,
+						2877,
+						2878
 					]
 				}
 			]
 		},
 		{
-			"id": 1,
+			"id": 2602,
 			"name": "IInventoryService",
 			"variant": "declaration",
 			"kind": 256,
@@ -3722,14 +3722,14 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 2603,
 					"name": "listInventoryItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 2604,
 							"name": "listInventoryItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -3816,7 +3816,7 @@
 							},
 							"parameters": [
 								{
-									"id": 4,
+									"id": 2605,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -3831,13 +3831,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 152,
+										"target": 2753,
 										"name": "FilterableInventoryItemProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 5,
+									"id": 2606,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -3870,11 +3870,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 160,
+										"target": 2761,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 172,
+												"target": 2773,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -3884,7 +3884,7 @@
 									}
 								},
 								{
-									"id": 6,
+									"id": 2607,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3901,7 +3901,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -3921,7 +3921,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 172,
+													"target": 2773,
 													"name": "InventoryItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -3940,14 +3940,14 @@
 					]
 				},
 				{
-					"id": 7,
+					"id": 2608,
 					"name": "listReservationItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8,
+							"id": 2609,
 							"name": "listReservationItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -4034,7 +4034,7 @@
 							},
 							"parameters": [
 								{
-									"id": 9,
+									"id": 2610,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -4049,13 +4049,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 195,
+										"target": 2796,
 										"name": "FilterableReservationItemProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 10,
+									"id": 2611,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4088,11 +4088,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 160,
+										"target": 2761,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 204,
+												"target": 2805,
 												"name": "ReservationItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -4102,7 +4102,7 @@
 									}
 								},
 								{
-									"id": 11,
+									"id": 2612,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4119,7 +4119,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4139,7 +4139,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 204,
+													"target": 2805,
 													"name": "ReservationItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -4158,14 +4158,14 @@
 					]
 				},
 				{
-					"id": 12,
+					"id": 2613,
 					"name": "listInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13,
+							"id": 2614,
 							"name": "listInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -4252,7 +4252,7 @@
 							},
 							"parameters": [
 								{
-									"id": 14,
+									"id": 2615,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -4267,13 +4267,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 217,
+										"target": 2818,
 										"name": "FilterableInventoryLevelProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 15,
+									"id": 2616,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4306,11 +4306,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 160,
+										"target": 2761,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 223,
+												"target": 2824,
 												"name": "InventoryLevelDTO",
 												"package": "@medusajs/types"
 											}
@@ -4320,7 +4320,7 @@
 									}
 								},
 								{
-									"id": 16,
+									"id": 2617,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4337,7 +4337,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4357,7 +4357,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 223,
+													"target": 2824,
 													"name": "InventoryLevelDTO",
 													"package": "@medusajs/types"
 												}
@@ -4376,14 +4376,14 @@
 					]
 				},
 				{
-					"id": 17,
+					"id": 2618,
 					"name": "retrieveInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 18,
+							"id": 2619,
 							"name": "retrieveInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4430,7 +4430,7 @@
 							},
 							"parameters": [
 								{
-									"id": 19,
+									"id": 2620,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -4449,7 +4449,7 @@
 									}
 								},
 								{
-									"id": 20,
+									"id": 2621,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4482,11 +4482,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 160,
+										"target": 2761,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 172,
+												"target": 2773,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -4496,7 +4496,7 @@
 									}
 								},
 								{
-									"id": 21,
+									"id": 2622,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4513,7 +4513,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4528,7 +4528,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 172,
+										"target": 2773,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4540,14 +4540,14 @@
 					]
 				},
 				{
-					"id": 22,
+					"id": 2623,
 					"name": "retrieveInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 23,
+							"id": 2624,
 							"name": "retrieveInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -4582,7 +4582,7 @@
 							},
 							"parameters": [
 								{
-									"id": 24,
+									"id": 2625,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -4601,7 +4601,7 @@
 									}
 								},
 								{
-									"id": 25,
+									"id": 2626,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -4620,7 +4620,7 @@
 									}
 								},
 								{
-									"id": 26,
+									"id": 2627,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4637,7 +4637,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4652,7 +4652,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 223,
+										"target": 2824,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -4664,14 +4664,14 @@
 					]
 				},
 				{
-					"id": 27,
+					"id": 2628,
 					"name": "retrieveReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 28,
+							"id": 2629,
 							"name": "retrieveReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4706,7 +4706,7 @@
 							},
 							"parameters": [
 								{
-									"id": 29,
+									"id": 2630,
 									"name": "reservationId",
 									"variant": "param",
 									"kind": 32768,
@@ -4725,7 +4725,7 @@
 									}
 								},
 								{
-									"id": 30,
+									"id": 2631,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4742,7 +4742,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4757,7 +4757,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 204,
+										"target": 2805,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4769,14 +4769,14 @@
 					]
 				},
 				{
-					"id": 31,
+					"id": 2632,
 					"name": "createReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 32,
+							"id": 2633,
 							"name": "createReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4811,7 +4811,7 @@
 							},
 							"parameters": [
 								{
-									"id": 33,
+									"id": 2634,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -4826,13 +4826,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 235,
+										"target": 2836,
 										"name": "CreateReservationItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 34,
+									"id": 2635,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4849,7 +4849,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4864,7 +4864,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 204,
+										"target": 2805,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4876,14 +4876,14 @@
 					]
 				},
 				{
-					"id": 35,
+					"id": 2636,
 					"name": "createReservationItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 36,
+							"id": 2637,
 							"name": "createReservationItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -4918,7 +4918,7 @@
 							},
 							"parameters": [
 								{
-									"id": 37,
+									"id": 2638,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -4935,14 +4935,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 235,
+											"target": 2836,
 											"name": "CreateReservationItemInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 38,
+									"id": 2639,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4959,7 +4959,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4976,7 +4976,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 204,
+											"target": 2805,
 											"name": "ReservationItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -4989,14 +4989,14 @@
 					]
 				},
 				{
-					"id": 39,
+					"id": 2640,
 					"name": "createInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 40,
+							"id": 2641,
 							"name": "createInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5031,7 +5031,7 @@
 							},
 							"parameters": [
 								{
-									"id": 41,
+									"id": 2642,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5046,13 +5046,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 244,
+										"target": 2845,
 										"name": "CreateInventoryItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 42,
+									"id": 2643,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5069,7 +5069,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5084,7 +5084,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 172,
+										"target": 2773,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5096,14 +5096,14 @@
 					]
 				},
 				{
-					"id": 43,
+					"id": 2644,
 					"name": "createInventoryItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 44,
+							"id": 2645,
 							"name": "createInventoryItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -5138,7 +5138,7 @@
 							},
 							"parameters": [
 								{
-									"id": 45,
+									"id": 2646,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5155,14 +5155,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 244,
+											"target": 2845,
 											"name": "CreateInventoryItemInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 46,
+									"id": 2647,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5179,7 +5179,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5196,7 +5196,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 172,
+											"target": 2773,
 											"name": "InventoryItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -5209,14 +5209,14 @@
 					]
 				},
 				{
-					"id": 47,
+					"id": 2648,
 					"name": "createInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 48,
+							"id": 2649,
 							"name": "createInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -5251,7 +5251,7 @@
 							},
 							"parameters": [
 								{
-									"id": 49,
+									"id": 2650,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5266,13 +5266,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 259,
+										"target": 2860,
 										"name": "CreateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 50,
+									"id": 2651,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5289,7 +5289,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5304,7 +5304,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 223,
+										"target": 2824,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5316,14 +5316,14 @@
 					]
 				},
 				{
-					"id": 51,
+					"id": 2652,
 					"name": "createInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 52,
+							"id": 2653,
 							"name": "createInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -5358,7 +5358,7 @@
 							},
 							"parameters": [
 								{
-									"id": 53,
+									"id": 2654,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5375,14 +5375,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 259,
+											"target": 2860,
 											"name": "CreateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 54,
+									"id": 2655,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5399,7 +5399,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5416,7 +5416,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 223,
+											"target": 2824,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5429,14 +5429,14 @@
 					]
 				},
 				{
-					"id": 55,
+					"id": 2656,
 					"name": "updateInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 56,
+							"id": 2657,
 							"name": "updateInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -5471,7 +5471,7 @@
 							},
 							"parameters": [
 								{
-									"id": 57,
+									"id": 2658,
 									"name": "updates",
 									"variant": "param",
 									"kind": 32768,
@@ -5488,14 +5488,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 265,
+											"target": 2866,
 											"name": "BulkUpdateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 58,
+									"id": 2659,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5512,7 +5512,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5529,7 +5529,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 223,
+											"target": 2824,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5542,14 +5542,14 @@
 					]
 				},
 				{
-					"id": 59,
+					"id": 2660,
 					"name": "updateInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 60,
+							"id": 2661,
 							"name": "updateInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -5584,7 +5584,7 @@
 							},
 							"parameters": [
 								{
-									"id": 61,
+									"id": 2662,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5603,7 +5603,7 @@
 									}
 								},
 								{
-									"id": 62,
+									"id": 2663,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -5622,7 +5622,7 @@
 									}
 								},
 								{
-									"id": 63,
+									"id": 2664,
 									"name": "update",
 									"variant": "param",
 									"kind": 32768,
@@ -5637,13 +5637,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 270,
+										"target": 2871,
 										"name": "UpdateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 64,
+									"id": 2665,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5660,7 +5660,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5675,7 +5675,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 223,
+										"target": 2824,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5687,14 +5687,14 @@
 					]
 				},
 				{
-					"id": 65,
+					"id": 2666,
 					"name": "updateInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 66,
+							"id": 2667,
 							"name": "updateInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5729,7 +5729,7 @@
 							},
 							"parameters": [
 								{
-									"id": 67,
+									"id": 2668,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5748,7 +5748,7 @@
 									}
 								},
 								{
-									"id": 68,
+									"id": 2669,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5770,7 +5770,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 244,
+												"target": 2845,
 												"name": "CreateInventoryItemInput",
 												"package": "@medusajs/types"
 											}
@@ -5780,7 +5780,7 @@
 									}
 								},
 								{
-									"id": 69,
+									"id": 2670,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5797,7 +5797,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5812,7 +5812,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 172,
+										"target": 2773,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5824,14 +5824,14 @@
 					]
 				},
 				{
-					"id": 70,
+					"id": 2671,
 					"name": "updateReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 71,
+							"id": 2672,
 							"name": "updateReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5866,7 +5866,7 @@
 							},
 							"parameters": [
 								{
-									"id": 72,
+									"id": 2673,
 									"name": "reservationItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5885,7 +5885,7 @@
 									}
 								},
 								{
-									"id": 73,
+									"id": 2674,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5900,13 +5900,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 273,
+										"target": 2874,
 										"name": "UpdateReservationItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 74,
+									"id": 2675,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5923,7 +5923,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5938,7 +5938,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 204,
+										"target": 2805,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5950,14 +5950,14 @@
 					]
 				},
 				{
-					"id": 75,
+					"id": 2676,
 					"name": "deleteReservationItemsByLineItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 76,
+							"id": 2677,
 							"name": "deleteReservationItemsByLineItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5992,7 +5992,7 @@
 							},
 							"parameters": [
 								{
-									"id": 77,
+									"id": 2678,
 									"name": "lineItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6023,7 +6023,7 @@
 									}
 								},
 								{
-									"id": 78,
+									"id": 2679,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6040,7 +6040,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6065,14 +6065,14 @@
 					]
 				},
 				{
-					"id": 79,
+					"id": 2680,
 					"name": "deleteReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 80,
+							"id": 2681,
 							"name": "deleteReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -6107,7 +6107,7 @@
 							},
 							"parameters": [
 								{
-									"id": 81,
+									"id": 2682,
 									"name": "reservationItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6138,7 +6138,7 @@
 									}
 								},
 								{
-									"id": 82,
+									"id": 2683,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6155,7 +6155,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6180,14 +6180,14 @@
 					]
 				},
 				{
-					"id": 83,
+					"id": 2684,
 					"name": "deleteInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 84,
+							"id": 2685,
 							"name": "deleteInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -6202,7 +6202,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "restoreInventoryItem",
-										"target": 87,
+										"target": 2688,
 										"tsLinkText": ""
 									},
 									{
@@ -6233,7 +6233,7 @@
 							},
 							"parameters": [
 								{
-									"id": 85,
+									"id": 2686,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6264,7 +6264,7 @@
 									}
 								},
 								{
-									"id": 86,
+									"id": 2687,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6281,7 +6281,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6306,14 +6306,14 @@
 					]
 				},
 				{
-					"id": 87,
+					"id": 2688,
 					"name": "restoreInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 88,
+							"id": 2689,
 							"name": "restoreInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -6328,7 +6328,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "deleteInventoryItem",
-										"target": 83,
+										"target": 2684,
 										"tsLinkText": ""
 									},
 									{
@@ -6359,7 +6359,7 @@
 							},
 							"parameters": [
 								{
-									"id": 89,
+									"id": 2690,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6390,7 +6390,7 @@
 									}
 								},
 								{
-									"id": 90,
+									"id": 2691,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6407,7 +6407,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6432,14 +6432,14 @@
 					]
 				},
 				{
-					"id": 91,
+					"id": 2692,
 					"name": "deleteInventoryItemLevelByLocationId",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 92,
+							"id": 2693,
 							"name": "deleteInventoryItemLevelByLocationId",
 							"variant": "signature",
 							"kind": 4096,
@@ -6474,7 +6474,7 @@
 							},
 							"parameters": [
 								{
-									"id": 93,
+									"id": 2694,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6505,7 +6505,7 @@
 									}
 								},
 								{
-									"id": 94,
+									"id": 2695,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6522,7 +6522,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6547,14 +6547,14 @@
 					]
 				},
 				{
-					"id": 95,
+					"id": 2696,
 					"name": "deleteReservationItemByLocationId",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 96,
+							"id": 2697,
 							"name": "deleteReservationItemByLocationId",
 							"variant": "signature",
 							"kind": 4096,
@@ -6589,7 +6589,7 @@
 							},
 							"parameters": [
 								{
-									"id": 97,
+									"id": 2698,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6620,7 +6620,7 @@
 									}
 								},
 								{
-									"id": 98,
+									"id": 2699,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6637,7 +6637,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6662,14 +6662,14 @@
 					]
 				},
 				{
-					"id": 99,
+					"id": 2700,
 					"name": "deleteInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 100,
+							"id": 2701,
 							"name": "deleteInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -6704,7 +6704,7 @@
 							},
 							"parameters": [
 								{
-									"id": 101,
+									"id": 2702,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6723,7 +6723,7 @@
 									}
 								},
 								{
-									"id": 102,
+									"id": 2703,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6742,7 +6742,7 @@
 									}
 								},
 								{
-									"id": 103,
+									"id": 2704,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6759,7 +6759,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6784,14 +6784,14 @@
 					]
 				},
 				{
-					"id": 104,
+					"id": 2705,
 					"name": "adjustInventory",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 105,
+							"id": 2706,
 							"name": "adjustInventory",
 							"variant": "signature",
 							"kind": 4096,
@@ -6826,7 +6826,7 @@
 							},
 							"parameters": [
 								{
-									"id": 106,
+									"id": 2707,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6845,7 +6845,7 @@
 									}
 								},
 								{
-									"id": 107,
+									"id": 2708,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6864,7 +6864,7 @@
 									}
 								},
 								{
-									"id": 108,
+									"id": 2709,
 									"name": "adjustment",
 									"variant": "param",
 									"kind": 32768,
@@ -6883,7 +6883,7 @@
 									}
 								},
 								{
-									"id": 109,
+									"id": 2710,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6900,7 +6900,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6915,7 +6915,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 223,
+										"target": 2824,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -6927,14 +6927,14 @@
 					]
 				},
 				{
-					"id": 110,
+					"id": 2711,
 					"name": "confirmInventory",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 111,
+							"id": 2712,
 							"name": "confirmInventory",
 							"variant": "signature",
 							"kind": 4096,
@@ -6969,7 +6969,7 @@
 							},
 							"parameters": [
 								{
-									"id": 112,
+									"id": 2713,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6988,7 +6988,7 @@
 									}
 								},
 								{
-									"id": 113,
+									"id": 2714,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7010,7 +7010,7 @@
 									}
 								},
 								{
-									"id": 114,
+									"id": 2715,
 									"name": "quantity",
 									"variant": "param",
 									"kind": 32768,
@@ -7029,7 +7029,7 @@
 									}
 								},
 								{
-									"id": 115,
+									"id": 2716,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7046,7 +7046,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7071,14 +7071,14 @@
 					]
 				},
 				{
-					"id": 116,
+					"id": 2717,
 					"name": "retrieveAvailableQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 117,
+							"id": 2718,
 							"name": "retrieveAvailableQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -7113,7 +7113,7 @@
 							},
 							"parameters": [
 								{
-									"id": 118,
+									"id": 2719,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -7132,7 +7132,7 @@
 									}
 								},
 								{
-									"id": 119,
+									"id": 2720,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7154,7 +7154,7 @@
 									}
 								},
 								{
-									"id": 120,
+									"id": 2721,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7171,7 +7171,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7196,14 +7196,14 @@
 					]
 				},
 				{
-					"id": 121,
+					"id": 2722,
 					"name": "retrieveStockedQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 122,
+							"id": 2723,
 							"name": "retrieveStockedQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -7238,7 +7238,7 @@
 							},
 							"parameters": [
 								{
-									"id": 123,
+									"id": 2724,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -7257,7 +7257,7 @@
 									}
 								},
 								{
-									"id": 124,
+									"id": 2725,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7279,7 +7279,7 @@
 									}
 								},
 								{
-									"id": 125,
+									"id": 2726,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7296,7 +7296,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7321,14 +7321,14 @@
 					]
 				},
 				{
-					"id": 126,
+					"id": 2727,
 					"name": "retrieveReservedQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 127,
+							"id": 2728,
 							"name": "retrieveReservedQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -7363,7 +7363,7 @@
 							},
 							"parameters": [
 								{
-									"id": 128,
+									"id": 2729,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -7382,7 +7382,7 @@
 									}
 								},
 								{
-									"id": 129,
+									"id": 2730,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7404,7 +7404,7 @@
 									}
 								},
 								{
-									"id": 130,
+									"id": 2731,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7421,7 +7421,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 192,
+										"target": 2793,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7450,48 +7450,48 @@
 				{
 					"title": "Methods",
 					"children": [
-						2,
-						7,
-						12,
-						17,
-						22,
-						27,
-						31,
-						35,
-						39,
-						43,
-						47,
-						51,
-						55,
-						59,
-						65,
-						70,
-						75,
-						79,
-						83,
-						87,
-						91,
-						95,
-						99,
-						104,
-						110,
-						116,
-						121,
-						126
+						2603,
+						2608,
+						2613,
+						2618,
+						2623,
+						2628,
+						2632,
+						2636,
+						2640,
+						2644,
+						2648,
+						2652,
+						2656,
+						2660,
+						2666,
+						2671,
+						2676,
+						2680,
+						2684,
+						2688,
+						2692,
+						2696,
+						2700,
+						2705,
+						2711,
+						2717,
+						2722,
+						2727
 					]
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 141,
+					"target": 2742,
 					"name": "IModuleService",
 					"package": "@medusajs/types"
 				}
 			]
 		},
 		{
-			"id": 339,
+			"id": 2940,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7499,14 +7499,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 340,
+					"id": 2941,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 341,
+							"id": 2942,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7517,7 +7517,7 @@
 							}
 						},
 						{
-							"id": 342,
+							"id": 2943,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7528,7 +7528,7 @@
 							}
 						},
 						{
-							"id": 343,
+							"id": 2944,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7539,7 +7539,7 @@
 							}
 						},
 						{
-							"id": 344,
+							"id": 2945,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7550,7 +7550,7 @@
 							}
 						},
 						{
-							"id": 345,
+							"id": 2946,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7571,7 +7571,7 @@
 							}
 						},
 						{
-							"id": 346,
+							"id": 2947,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7592,7 +7592,7 @@
 							}
 						},
 						{
-							"id": 347,
+							"id": 2948,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7613,7 +7613,7 @@
 							}
 						},
 						{
-							"id": 348,
+							"id": 2949,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7653,14 +7653,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								341,
-								342,
-								343,
-								344,
-								345,
-								346,
-								347,
-								348
+								2942,
+								2943,
+								2944,
+								2945,
+								2946,
+								2947,
+								2948,
+								2949
 							]
 						}
 					]
@@ -7668,14 +7668,14 @@
 			}
 		},
 		{
-			"id": 336,
+			"id": 2937,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 337,
+					"id": 2938,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7698,7 +7698,7 @@
 					}
 				},
 				{
-					"id": 338,
+					"id": 2939,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7738,21 +7738,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						337,
-						338
+						2938,
+						2939
 					]
 				}
 			]
 		},
 		{
-			"id": 318,
+			"id": 2919,
 			"name": "JoinerServiceConfig",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 319,
+					"id": 2920,
 					"name": "serviceName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7763,7 +7763,7 @@
 					}
 				},
 				{
-					"id": 320,
+					"id": 2921,
 					"name": "alias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7783,7 +7783,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 336,
+								"target": 2937,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -7791,7 +7791,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 336,
+									"target": 2937,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -7800,7 +7800,7 @@
 					}
 				},
 				{
-					"id": 321,
+					"id": 2922,
 					"name": "fieldAlias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7836,14 +7836,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 322,
+											"id": 2923,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 323,
+													"id": 2924,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7854,7 +7854,7 @@
 													}
 												},
 												{
-													"id": 324,
+													"id": 2925,
 													"name": "forwardArgumentsOnPath",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7872,8 +7872,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														323,
-														324
+														2924,
+														2925
 													]
 												}
 											]
@@ -7887,7 +7887,7 @@
 					}
 				},
 				{
-					"id": 325,
+					"id": 2926,
 					"name": "primaryKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7901,7 +7901,7 @@
 					}
 				},
 				{
-					"id": 326,
+					"id": 2927,
 					"name": "relationships",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7912,14 +7912,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 339,
+							"target": 2940,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 327,
+					"id": 2928,
 					"name": "extends",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7931,14 +7931,14 @@
 						"elementType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 328,
+								"id": 2929,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"children": [
 									{
-										"id": 329,
+										"id": 2930,
 										"name": "serviceName",
 										"variant": "declaration",
 										"kind": 1024,
@@ -7949,14 +7949,14 @@
 										}
 									},
 									{
-										"id": 330,
+										"id": 2931,
 										"name": "relationship",
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 339,
+											"target": 2940,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -7966,8 +7966,8 @@
 									{
 										"title": "Properties",
 										"children": [
-											329,
-											330
+											2930,
+											2931
 										]
 									}
 								]
@@ -7976,7 +7976,7 @@
 					}
 				},
 				{
-					"id": 331,
+					"id": 2932,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8016,19 +8016,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						319,
-						320,
-						321,
-						325,
-						326,
-						327,
-						331
+						2920,
+						2921,
+						2922,
+						2926,
+						2927,
+						2928,
+						2932
 					]
 				}
 			]
 		},
 		{
-			"id": 278,
+			"id": 2879,
 			"name": "ModuleJoinerConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -8045,7 +8045,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 318,
+								"target": 2919,
 								"name": "JoinerServiceConfig",
 								"package": "@medusajs/types"
 							},
@@ -8077,14 +8077,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 279,
+							"id": 2880,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 280,
+									"id": 2881,
 									"name": "schema",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8105,7 +8105,7 @@
 									}
 								},
 								{
-									"id": 281,
+									"id": 2882,
 									"name": "relationships",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8116,14 +8116,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 332,
+											"target": 2933,
 											"name": "ModuleJoinerRelationship",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 282,
+									"id": 2883,
 									"name": "extends",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8135,14 +8135,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 283,
+												"id": 2884,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 284,
+														"id": 2885,
 														"name": "serviceName",
 														"variant": "declaration",
 														"kind": 1024,
@@ -8153,7 +8153,7 @@
 														}
 													},
 													{
-														"id": 285,
+														"id": 2886,
 														"name": "fieldAlias",
 														"variant": "declaration",
 														"kind": 1024,
@@ -8181,14 +8181,14 @@
 																		{
 																			"type": "reflection",
 																			"declaration": {
-																				"id": 286,
+																				"id": 2887,
 																				"name": "__type",
 																				"variant": "declaration",
 																				"kind": 65536,
 																				"flags": {},
 																				"children": [
 																					{
-																						"id": 287,
+																						"id": 2888,
 																						"name": "path",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -8199,7 +8199,7 @@
 																						}
 																					},
 																					{
-																						"id": 288,
+																						"id": 2889,
 																						"name": "forwardArgumentsOnPath",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -8217,8 +8217,8 @@
 																					{
 																						"title": "Properties",
 																						"children": [
-																							287,
-																							288
+																							2888,
+																							2889
 																						]
 																					}
 																				]
@@ -8232,14 +8232,14 @@
 														}
 													},
 													{
-														"id": 289,
+														"id": 2890,
 														"name": "relationship",
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
 														"type": {
 															"type": "reference",
-															"target": 332,
+															"target": 2933,
 															"name": "ModuleJoinerRelationship",
 															"package": "@medusajs/types"
 														}
@@ -8249,9 +8249,9 @@
 													{
 														"title": "Properties",
 														"children": [
-															284,
-															285,
-															289
+															2885,
+															2886,
+															2890
 														]
 													}
 												]
@@ -8260,7 +8260,7 @@
 									}
 								},
 								{
-									"id": 290,
+									"id": 2891,
 									"name": "serviceName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8273,7 +8273,7 @@
 									}
 								},
 								{
-									"id": 291,
+									"id": 2892,
 									"name": "primaryKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8289,7 +8289,7 @@
 									}
 								},
 								{
-									"id": 292,
+									"id": 2893,
 									"name": "isLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8310,7 +8310,7 @@
 									}
 								},
 								{
-									"id": 293,
+									"id": 2894,
 									"name": "linkableKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8346,7 +8346,7 @@
 									}
 								},
 								{
-									"id": 294,
+									"id": 2895,
 									"name": "isReadOnlyLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8367,7 +8367,7 @@
 									}
 								},
 								{
-									"id": 295,
+									"id": 2896,
 									"name": "databaseConfig",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8377,14 +8377,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 296,
+											"id": 2897,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 297,
+													"id": 2898,
 													"name": "tableName",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8405,7 +8405,7 @@
 													}
 												},
 												{
-													"id": 298,
+													"id": 2899,
 													"name": "idPrefix",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8426,7 +8426,7 @@
 													}
 												},
 												{
-													"id": 299,
+													"id": 2900,
 													"name": "extraFields",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8447,14 +8447,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 300,
+																	"id": 2901,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 301,
+																			"id": 2902,
 																			"name": "type",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8550,7 +8550,7 @@
 																			}
 																		},
 																		{
-																			"id": 302,
+																			"id": 2903,
 																			"name": "defaultValue",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8563,7 +8563,7 @@
 																			}
 																		},
 																		{
-																			"id": 303,
+																			"id": 2904,
 																			"name": "nullable",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8576,7 +8576,7 @@
 																			}
 																		},
 																		{
-																			"id": 304,
+																			"id": 2905,
 																			"name": "options",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8616,10 +8616,10 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				301,
-																				302,
-																				303,
-																				304
+																				2902,
+																				2903,
+																				2904,
+																				2905
 																			]
 																		}
 																	]
@@ -8635,9 +8635,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														297,
-														298,
-														299
+														2898,
+														2899,
+														2900
 													]
 												}
 											]
@@ -8649,15 +8649,15 @@
 								{
 									"title": "Properties",
 									"children": [
-										280,
-										281,
-										282,
-										290,
-										291,
-										292,
-										293,
-										294,
-										295
+										2881,
+										2882,
+										2883,
+										2891,
+										2892,
+										2893,
+										2894,
+										2895,
+										2896
 									]
 								}
 							]
@@ -8667,7 +8667,7 @@
 			}
 		},
 		{
-			"id": 332,
+			"id": 2933,
 			"name": "ModuleJoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -8677,21 +8677,21 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 339,
+						"target": 2940,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 333,
+							"id": 2934,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 334,
+									"id": 2935,
 									"name": "isInternalService",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8712,7 +8712,7 @@
 									}
 								},
 								{
-									"id": 335,
+									"id": 2936,
 									"name": "deleteCascade",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8737,8 +8737,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										334,
-										335
+										2935,
+										2936
 									]
 								}
 							]
@@ -8748,7 +8748,7 @@
 			}
 		},
 		{
-			"id": 141,
+			"id": 2742,
 			"name": "IModuleService",
 			"variant": "declaration",
 			"kind": 256,
@@ -8756,13 +8756,13 @@
 			"extendedBy": [
 				{
 					"type": "reference",
-					"target": 1,
+					"target": 2602,
 					"name": "IInventoryService"
 				}
 			]
 		},
 		{
-			"id": 192,
+			"id": 2793,
 			"name": "SharedContext",
 			"variant": "declaration",
 			"kind": 256,
@@ -8791,7 +8791,7 @@
 			},
 			"children": [
 				{
-					"id": 193,
+					"id": 2794,
 					"name": "transactionManager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8817,7 +8817,7 @@
 					}
 				},
 				{
-					"id": 194,
+					"id": 2795,
 					"name": "manager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8847,8 +8847,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						193,
-						194
+						2794,
+						2795
 					]
 				}
 			]
@@ -8858,1344 +8858,1344 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				160,
-				305,
-				313,
-				195,
-				152,
-				244,
-				235,
-				217,
-				259,
-				270,
-				265,
-				273,
-				1,
-				336,
-				318,
-				141,
-				192
+				2761,
+				2906,
+				2914,
+				2796,
+				2753,
+				2845,
+				2836,
+				2818,
+				2860,
+				2871,
+				2866,
+				2874,
+				2602,
+				2937,
+				2919,
+				2742,
+				2793
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				172,
-				204,
-				223,
-				339,
-				278,
-				332
+				2773,
+				2805,
+				2824,
+				2940,
+				2879,
+				2933
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"0": {
+		"2601": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"2602": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService"
 		},
-		"2": {
+		"2603": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listInventoryItems"
 		},
-		"3": {
+		"2604": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listInventoryItems"
 		},
-		"4": {
+		"2605": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "selector"
 		},
-		"5": {
+		"2606": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "config"
 		},
-		"6": {
+		"2607": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"7": {
+		"2608": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listReservationItems"
 		},
-		"8": {
+		"2609": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listReservationItems"
 		},
-		"9": {
+		"2610": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "selector"
 		},
-		"10": {
+		"2611": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "config"
 		},
-		"11": {
+		"2612": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"12": {
+		"2613": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listInventoryLevels"
 		},
-		"13": {
+		"2614": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listInventoryLevels"
 		},
-		"14": {
+		"2615": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "selector"
 		},
-		"15": {
+		"2616": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "config"
 		},
-		"16": {
+		"2617": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"17": {
+		"2618": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveInventoryItem"
 		},
-		"18": {
+		"2619": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveInventoryItem"
 		},
-		"19": {
+		"2620": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"20": {
+		"2621": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "config"
 		},
-		"21": {
+		"2622": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"22": {
+		"2623": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
 		},
-		"23": {
+		"2624": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
 		},
-		"24": {
+		"2625": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"25": {
+		"2626": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"26": {
+		"2627": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"27": {
+		"2628": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveReservationItem"
 		},
-		"28": {
+		"2629": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveReservationItem"
 		},
-		"29": {
+		"2630": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "reservationId"
 		},
-		"30": {
+		"2631": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"31": {
+		"2632": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createReservationItem"
 		},
-		"32": {
+		"2633": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createReservationItem"
 		},
-		"33": {
+		"2634": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"34": {
+		"2635": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"35": {
+		"2636": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createReservationItems"
 		},
-		"36": {
+		"2637": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createReservationItems"
 		},
-		"37": {
+		"2638": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"38": {
+		"2639": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"39": {
+		"2640": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryItem"
 		},
-		"40": {
+		"2641": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryItem"
 		},
-		"41": {
+		"2642": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"42": {
+		"2643": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"43": {
+		"2644": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryItems"
 		},
-		"44": {
+		"2645": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryItems"
 		},
-		"45": {
+		"2646": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"46": {
+		"2647": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"47": {
+		"2648": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryLevel"
 		},
-		"48": {
+		"2649": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryLevel"
 		},
-		"49": {
+		"2650": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "data"
 		},
-		"50": {
+		"2651": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"51": {
+		"2652": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryLevels"
 		},
-		"52": {
+		"2653": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.createInventoryLevels"
 		},
-		"53": {
+		"2654": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "data"
 		},
-		"54": {
+		"2655": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"55": {
+		"2656": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryLevels"
 		},
-		"56": {
+		"2657": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryLevels"
 		},
-		"57": {
+		"2658": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "updates"
 		},
-		"58": {
+		"2659": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"59": {
+		"2660": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryLevel"
 		},
-		"60": {
+		"2661": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryLevel"
 		},
-		"61": {
+		"2662": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"62": {
+		"2663": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"63": {
+		"2664": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "update"
 		},
-		"64": {
+		"2665": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"65": {
+		"2666": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryItem"
 		},
-		"66": {
+		"2667": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateInventoryItem"
 		},
-		"67": {
+		"2668": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"68": {
+		"2669": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"69": {
+		"2670": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"70": {
+		"2671": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateReservationItem"
 		},
-		"71": {
+		"2672": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.updateReservationItem"
 		},
-		"72": {
+		"2673": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "reservationItemId"
 		},
-		"73": {
+		"2674": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "input"
 		},
-		"74": {
+		"2675": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"75": {
+		"2676": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
 		},
-		"76": {
+		"2677": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
 		},
-		"77": {
+		"2678": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "lineItemId"
 		},
-		"78": {
+		"2679": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"79": {
+		"2680": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItem"
 		},
-		"80": {
+		"2681": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItem"
 		},
-		"81": {
+		"2682": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "reservationItemId"
 		},
-		"82": {
+		"2683": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"83": {
+		"2684": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryItem"
 		},
-		"84": {
+		"2685": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryItem"
 		},
-		"85": {
+		"2686": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"86": {
+		"2687": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"87": {
+		"2688": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.restoreInventoryItem"
 		},
-		"88": {
+		"2689": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.restoreInventoryItem"
 		},
-		"89": {
+		"2690": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"90": {
+		"2691": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"91": {
+		"2692": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
 		},
-		"92": {
+		"2693": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
 		},
-		"93": {
+		"2694": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"94": {
+		"2695": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"95": {
+		"2696": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
 		},
-		"96": {
+		"2697": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
 		},
-		"97": {
+		"2698": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"98": {
+		"2699": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"99": {
+		"2700": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryLevel"
 		},
-		"100": {
+		"2701": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.deleteInventoryLevel"
 		},
-		"101": {
+		"2702": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"102": {
+		"2703": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"103": {
+		"2704": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"104": {
+		"2705": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.adjustInventory"
 		},
-		"105": {
+		"2706": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.adjustInventory"
 		},
-		"106": {
+		"2707": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"107": {
+		"2708": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationId"
 		},
-		"108": {
+		"2709": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "adjustment"
 		},
-		"109": {
+		"2710": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"110": {
+		"2711": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.confirmInventory"
 		},
-		"111": {
+		"2712": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.confirmInventory"
 		},
-		"112": {
+		"2713": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"113": {
+		"2714": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationIds"
 		},
-		"114": {
+		"2715": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "quantity"
 		},
-		"115": {
+		"2716": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"116": {
+		"2717": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
 		},
-		"117": {
+		"2718": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
 		},
-		"118": {
+		"2719": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"119": {
+		"2720": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationIds"
 		},
-		"120": {
+		"2721": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"121": {
+		"2722": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
 		},
-		"122": {
+		"2723": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
 		},
-		"123": {
+		"2724": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"124": {
+		"2725": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationIds"
 		},
-		"125": {
+		"2726": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"126": {
+		"2727": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
 		},
-		"127": {
+		"2728": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
 		},
-		"128": {
+		"2729": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "inventoryItemId"
 		},
-		"129": {
+		"2730": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "locationIds"
 		},
-		"130": {
+		"2731": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"141": {
+		"2742": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "IModuleService"
 		},
-		"152": {
+		"2753": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableInventoryItemProps"
 		},
-		"153": {
+		"2754": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"154": {
+		"2755": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"155": {
+		"2756": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.q"
 		},
-		"156": {
+		"2757": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.sku"
 		},
-		"157": {
+		"2758": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.origin_country"
 		},
-		"158": {
+		"2759": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.hs_code"
 		},
-		"159": {
+		"2760": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.requires_shipping"
 		},
-		"160": {
+		"2761": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig"
 		},
-		"161": {
+		"2762": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.select"
 		},
-		"162": {
+		"2763": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.skip"
 		},
-		"163": {
+		"2764": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.take"
 		},
-		"164": {
+		"2765": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.relations"
 		},
-		"165": {
+		"2766": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.order"
 		},
-		"166": {
+		"2767": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type"
 		},
-		"167": {
+		"2768": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"169": {
+		"2770": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.withDeleted"
 		},
-		"170": {
+		"2771": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.filters"
 		},
-		"171": {
+		"2772": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.Entity"
 		},
-		"172": {
+		"2773": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "InventoryItemDTO"
 		},
-		"173": {
+		"2774": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"174": {
+		"2775": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"175": {
+		"2776": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.sku"
 		},
-		"176": {
+		"2777": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.origin_country"
 		},
-		"177": {
+		"2778": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.hs_code"
 		},
-		"178": {
+		"2779": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.requires_shipping"
 		},
-		"179": {
+		"2780": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.mid_code"
 		},
-		"180": {
+		"2781": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.material"
 		},
-		"181": {
+		"2782": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.weight"
 		},
-		"182": {
+		"2783": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.length"
 		},
-		"183": {
+		"2784": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.height"
 		},
-		"184": {
+		"2785": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.width"
 		},
-		"185": {
+		"2786": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.title"
 		},
-		"186": {
+		"2787": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"187": {
+		"2788": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.thumbnail"
 		},
-		"188": {
+		"2789": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"189": {
+		"2790": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"190": {
+		"2791": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"191": {
+		"2792": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"192": {
+		"2793": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "SharedContext"
 		},
-		"193": {
+		"2794": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.transactionManager"
 		},
-		"194": {
+		"2795": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.manager"
 		},
-		"195": {
+		"2796": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableReservationItemProps"
 		},
-		"196": {
+		"2797": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"198": {
+		"2799": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"199": {
+		"2800": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"200": {
+		"2801": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"201": {
+		"2802": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"202": {
+		"2803": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_by"
 		},
-		"203": {
+		"2804": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"204": {
+		"2805": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "ReservationItemDTO"
 		},
-		"205": {
+		"2806": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"206": {
+		"2807": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"207": {
+		"2808": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"208": {
+		"2809": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"209": {
+		"2810": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"210": {
+		"2811": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"211": {
+		"2812": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"212": {
+		"2813": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_by"
 		},
-		"213": {
+		"2814": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"214": {
+		"2815": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"215": {
+		"2816": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"216": {
+		"2817": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"217": {
+		"2818": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableInventoryLevelProps"
 		},
-		"218": {
+		"2819": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"219": {
+		"2820": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"220": {
+		"2821": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"221": {
+		"2822": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.reserved_quantity"
 		},
-		"222": {
+		"2823": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"223": {
+		"2824": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "InventoryLevelDTO"
 		},
-		"224": {
+		"2825": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"225": {
+		"2826": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"226": {
+		"2827": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"227": {
+		"2828": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"228": {
+		"2829": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"229": {
+		"2830": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.reserved_quantity"
 		},
-		"230": {
+		"2831": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"231": {
+		"2832": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"232": {
+		"2833": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"233": {
+		"2834": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"234": {
+		"2835": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"235": {
+		"2836": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateReservationItemInput"
 		},
-		"236": {
+		"2837": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"237": {
+		"2838": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"238": {
+		"2839": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"239": {
+		"2840": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"240": {
+		"2841": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"241": {
+		"2842": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_by"
 		},
-		"242": {
+		"2843": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.external_id"
 		},
-		"243": {
+		"2844": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"244": {
+		"2845": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput"
 		},
-		"245": {
+		"2846": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.sku"
 		},
-		"246": {
+		"2847": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.origin_country"
 		},
-		"247": {
+		"2848": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.mid_code"
 		},
-		"248": {
+		"2849": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.material"
 		},
-		"249": {
+		"2850": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.weight"
 		},
-		"250": {
+		"2851": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.length"
 		},
-		"251": {
+		"2852": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.height"
 		},
-		"252": {
+		"2853": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.width"
 		},
-		"253": {
+		"2854": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.title"
 		},
-		"254": {
+		"2855": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.description"
 		},
-		"255": {
+		"2856": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.thumbnail"
 		},
-		"256": {
+		"2857": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.metadata"
 		},
-		"257": {
+		"2858": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.hs_code"
 		},
-		"258": {
+		"2859": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryItemInput.requires_shipping"
 		},
-		"259": {
+		"2860": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateInventoryLevelInput"
 		},
-		"260": {
+		"2861": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"261": {
+		"2862": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"262": {
+		"2863": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"263": {
+		"2864": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.reserved_quantity"
 		},
-		"264": {
+		"2865": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"265": {
+		"2866": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "BulkUpdateInventoryLevelInput"
 		},
-		"266": {
+		"2867": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"267": {
+		"2868": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"268": {
+		"2869": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"269": {
+		"2870": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"270": {
+		"2871": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "UpdateInventoryLevelInput"
 		},
-		"271": {
+		"2872": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"272": {
+		"2873": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"273": {
+		"2874": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "UpdateReservationItemInput"
 		},
-		"274": {
+		"2875": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"275": {
+		"2876": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"276": {
+		"2877": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"277": {
+		"2878": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"278": {
+		"2879": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModuleJoinerConfig"
 		},
-		"279": {
+		"2880": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"280": {
+		"2881": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.schema"
 		},
-		"281": {
+		"2882": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.relationships"
 		},
-		"282": {
+		"2883": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.extends"
 		},
-		"283": {
+		"2884": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"284": {
+		"2885": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"285": {
+		"2886": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.fieldAlias"
 		},
-		"286": {
+		"2887": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"287": {
+		"2888": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.path"
 		},
-		"288": {
+		"2889": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
-		"289": {
+		"2890": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.relationship"
 		},
-		"290": {
+		"2891": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"291": {
+		"2892": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.primaryKeys"
 		},
-		"292": {
+		"2893": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isLink"
 		},
-		"293": {
+		"2894": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.linkableKeys"
 		},
-		"294": {
+		"2895": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isReadOnlyLink"
 		},
-		"295": {
+		"2896": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.databaseConfig"
 		},
-		"296": {
+		"2897": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"297": {
+		"2898": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.tableName"
 		},
-		"298": {
+		"2899": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.idPrefix"
 		},
-		"299": {
+		"2900": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.extraFields"
 		},
-		"300": {
+		"2901": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"301": {
+		"2902": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.type"
 		},
-		"302": {
+		"2903": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.defaultValue"
 		},
-		"303": {
+		"2904": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.nullable"
 		},
-		"304": {
+		"2905": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.options"
 		},
-		"305": {
+		"2906": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator"
 		},
-		"306": {
+		"2907": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lt"
 		},
-		"307": {
+		"2908": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gt"
 		},
-		"308": {
+		"2909": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gte"
 		},
-		"309": {
+		"2910": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lte"
 		},
-		"310": {
+		"2911": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.contains"
 		},
-		"311": {
+		"2912": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.starts_with"
 		},
-		"312": {
+		"2913": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.ends_with"
 		},
-		"313": {
+		"2914": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator"
 		},
-		"314": {
+		"2915": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lt"
 		},
-		"315": {
+		"2916": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gt"
 		},
-		"316": {
+		"2917": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gte"
 		},
-		"317": {
+		"2918": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lte"
 		},
-		"318": {
+		"2919": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig"
 		},
-		"319": {
+		"2920": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.serviceName"
 		},
-		"320": {
+		"2921": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.alias"
 		},
-		"321": {
+		"2922": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.fieldAlias"
 		},
-		"322": {
+		"2923": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
-		"323": {
+		"2924": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.path"
 		},
-		"324": {
+		"2925": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
-		"325": {
+		"2926": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.primaryKeys"
 		},
-		"326": {
+		"2927": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.relationships"
 		},
-		"327": {
+		"2928": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.extends"
 		},
-		"328": {
+		"2929": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
-		"329": {
+		"2930": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"330": {
+		"2931": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.relationship"
 		},
-		"331": {
+		"2932": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.args"
 		},
-		"332": {
+		"2933": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModuleJoinerRelationship"
 		},
-		"333": {
+		"2934": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"334": {
+		"2935": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isInternalService"
 		},
-		"335": {
+		"2936": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.deleteCascade"
 		},
-		"336": {
+		"2937": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias"
 		},
-		"337": {
+		"2938": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias.name"
 		},
-		"338": {
+		"2939": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfigAlias.args"
 		},
-		"339": {
+		"2940": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerRelationship"
 		},
-		"340": {
+		"2941": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
-		"341": {
+		"2942": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.alias"
 		},
-		"342": {
+		"2943": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.foreignKey"
 		},
-		"343": {
+		"2944": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.primaryKey"
 		},
-		"344": {
+		"2945": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"345": {
+		"2946": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isInternalService"
 		},
-		"346": {
+		"2947": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.inverse"
 		},
-		"347": {
+		"2948": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isList"
 		},
-		"348": {
+		"2949": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
 		}

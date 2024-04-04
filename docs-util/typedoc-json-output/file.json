@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 10900,
 	"name": "file",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 10901,
 			"name": "IFileService",
 			"variant": "declaration",
 			"kind": 256,
@@ -85,14 +85,14 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 10902,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 10903,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
@@ -131,7 +131,7 @@
 							},
 							"parameters": [
 								{
-									"id": 4,
+									"id": 10904,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -188,14 +188,14 @@
 					]
 				},
 				{
-					"id": 5,
+					"id": 10905,
 					"name": "uploadProtected",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 6,
+							"id": 10906,
 							"name": "uploadProtected",
 							"variant": "signature",
 							"kind": 4096,
@@ -234,7 +234,7 @@
 							},
 							"parameters": [
 								{
-									"id": 7,
+									"id": 10907,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -291,14 +291,14 @@
 					]
 				},
 				{
-					"id": 8,
+					"id": 10908,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9,
+							"id": 10909,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -333,7 +333,7 @@
 							},
 							"parameters": [
 								{
-									"id": 10,
+									"id": 10910,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -376,14 +376,14 @@
 					]
 				},
 				{
-					"id": 11,
+					"id": 10911,
 					"name": "getUploadStreamDescriptor",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12,
+							"id": 10912,
 							"name": "getUploadStreamDescriptor",
 							"variant": "signature",
 							"kind": 4096,
@@ -418,7 +418,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13,
+									"id": 10913,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -466,14 +466,14 @@
 					]
 				},
 				{
-					"id": 14,
+					"id": 10914,
 					"name": "getDownloadStream",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 15,
+							"id": 10915,
 							"name": "getDownloadStream",
 							"variant": "signature",
 							"kind": 4096,
@@ -508,7 +508,7 @@
 							},
 							"parameters": [
 								{
-									"id": 16,
+									"id": 10916,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -557,14 +557,14 @@
 					]
 				},
 				{
-					"id": 17,
+					"id": 10917,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 18,
+							"id": 10918,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
@@ -599,7 +599,7 @@
 							},
 							"parameters": [
 								{
-									"id": 19,
+									"id": 10919,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -642,7 +642,7 @@
 					]
 				},
 				{
-					"id": 20,
+					"id": 10920,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -665,7 +665,7 @@
 					}
 				},
 				{
-					"id": 21,
+					"id": 10921,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -697,7 +697,7 @@
 					}
 				},
 				{
-					"id": 22,
+					"id": 10922,
 					"name": "activeManager_",
 					"variant": "declaration",
 					"kind": 262144,
@@ -705,7 +705,7 @@
 						"isProtected": true
 					},
 					"getSignature": {
-						"id": 23,
+						"id": 10923,
 						"name": "activeManager_",
 						"variant": "signature",
 						"kind": 524288,
@@ -732,7 +732,7 @@
 					}
 				},
 				{
-					"id": 24,
+					"id": 10924,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -751,7 +751,7 @@
 					}
 				},
 				{
-					"id": 25,
+					"id": 10925,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -786,7 +786,7 @@
 					}
 				},
 				{
-					"id": 26,
+					"id": 10926,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -821,21 +821,21 @@
 					}
 				},
 				{
-					"id": 27,
+					"id": 10927,
 					"name": "withTransaction",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 28,
+							"id": 10928,
 							"name": "withTransaction",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 29,
+									"id": 10929,
 									"name": "transactionManager",
 									"variant": "param",
 									"kind": 32768,
@@ -871,7 +871,7 @@
 					}
 				},
 				{
-					"id": 30,
+					"id": 10930,
 					"name": "shouldRetryTransaction_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -880,14 +880,14 @@
 					},
 					"signatures": [
 						{
-							"id": 31,
+							"id": 10931,
 							"name": "shouldRetryTransaction_",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 32,
+									"id": 10932,
 									"name": "err",
 									"variant": "param",
 									"kind": 32768,
@@ -917,14 +917,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 33,
+													"id": 10933,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 34,
+															"id": 10934,
 															"name": "code",
 															"variant": "declaration",
 															"kind": 1024,
@@ -939,7 +939,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																34
+																10934
 															]
 														}
 													]
@@ -967,7 +967,7 @@
 					}
 				},
 				{
-					"id": 35,
+					"id": 10935,
 					"name": "atomicPhase_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -976,7 +976,7 @@
 					},
 					"signatures": [
 						{
-							"id": 36,
+							"id": 10936,
 							"name": "atomicPhase_",
 							"variant": "signature",
 							"kind": 4096,
@@ -1002,14 +1002,14 @@
 							},
 							"typeParameter": [
 								{
-									"id": 37,
+									"id": 10937,
 									"name": "TResult",
 									"variant": "typeParam",
 									"kind": 131072,
 									"flags": {}
 								},
 								{
-									"id": 38,
+									"id": 10938,
 									"name": "TError",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -1018,7 +1018,7 @@
 							],
 							"parameters": [
 								{
-									"id": 39,
+									"id": 10939,
 									"name": "work",
 									"variant": "param",
 									"kind": 32768,
@@ -1034,21 +1034,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 40,
+											"id": 10940,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 41,
+													"id": 10941,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 42,
+															"id": 10942,
 															"name": "transactionManager",
 															"variant": "param",
 															"kind": 32768,
@@ -1073,7 +1073,7 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 37,
+																"target": 10937,
 																"name": "TResult",
 																"package": "@medusajs/medusa",
 																"refersToTypeParameter": true
@@ -1088,7 +1088,7 @@
 									}
 								},
 								{
-									"id": 43,
+									"id": 10943,
 									"name": "isolationOrErrorHandler",
 									"variant": "param",
 									"kind": 32768,
@@ -1118,28 +1118,28 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 44,
+													"id": 10944,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 45,
+															"id": 10945,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
 															"flags": {},
 															"parameters": [
 																{
-																	"id": 46,
+																	"id": 10946,
 																	"name": "error",
 																	"variant": "param",
 																	"kind": 32768,
 																	"flags": {},
 																	"type": {
 																		"type": "reference",
-																		"target": 38,
+																		"target": 10938,
 																		"name": "TError",
 																		"package": "@medusajs/medusa",
 																		"refersToTypeParameter": true
@@ -1162,7 +1162,7 @@
 																			},
 																			{
 																				"type": "reference",
-																				"target": 37,
+																				"target": 10937,
 																				"name": "TResult",
 																				"package": "@medusajs/medusa",
 																				"refersToTypeParameter": true
@@ -1181,7 +1181,7 @@
 									}
 								},
 								{
-									"id": 47,
+									"id": 10947,
 									"name": "maybeErrorHandlerOrDontFail",
 									"variant": "param",
 									"kind": 32768,
@@ -1199,28 +1199,28 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 48,
+											"id": 10948,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 49,
+													"id": 10949,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 50,
+															"id": 10950,
 															"name": "error",
 															"variant": "param",
 															"kind": 32768,
 															"flags": {},
 															"type": {
 																"type": "reference",
-																"target": 38,
+																"target": 10938,
 																"name": "TError",
 																"package": "@medusajs/medusa",
 																"refersToTypeParameter": true
@@ -1243,7 +1243,7 @@
 																	},
 																	{
 																		"type": "reference",
-																		"target": 37,
+																		"target": 10937,
 																		"name": "TResult",
 																		"package": "@medusajs/medusa",
 																		"refersToTypeParameter": true
@@ -1269,7 +1269,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 37,
+										"target": 10937,
 										"name": "TResult",
 										"package": "@medusajs/medusa",
 										"refersToTypeParameter": true
@@ -1296,31 +1296,31 @@
 				{
 					"title": "Properties",
 					"children": [
-						20,
-						21,
-						24,
-						25,
-						26
+						10920,
+						10921,
+						10924,
+						10925,
+						10926
 					]
 				},
 				{
 					"title": "Accessors",
 					"children": [
-						22
+						10922
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						2,
-						5,
-						8,
-						11,
-						14,
-						17,
-						27,
-						30,
-						35
+						10902,
+						10905,
+						10908,
+						10911,
+						10914,
+						10917,
+						10927,
+						10930,
+						10935
 					]
 				}
 			],
@@ -1338,13 +1338,13 @@
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 51,
+					"target": 10951,
 					"name": "AbstractFileService"
 				}
 			]
 		},
 		{
-			"id": 51,
+			"id": 10951,
 			"name": "AbstractFileService",
 			"variant": "declaration",
 			"kind": 128,
@@ -1353,7 +1353,7 @@
 			},
 			"children": [
 				{
-					"id": 56,
+					"id": 10956,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -1362,7 +1362,7 @@
 					},
 					"signatures": [
 						{
-							"id": 57,
+							"id": 10957,
 							"name": "new AbstractFileService",
 							"variant": "signature",
 							"kind": 16384,
@@ -1396,7 +1396,7 @@
 							},
 							"parameters": [
 								{
-									"id": 58,
+									"id": 10958,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -1438,7 +1438,7 @@
 									}
 								},
 								{
-									"id": 59,
+									"id": 10959,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -1476,7 +1476,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 51,
+								"target": 10951,
 								"name": "AbstractFileService",
 								"package": "@medusajs/medusa"
 							},
@@ -1494,7 +1494,7 @@
 					}
 				},
 				{
-					"id": 60,
+					"id": 10960,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1539,7 +1539,7 @@
 					}
 				},
 				{
-					"id": 61,
+					"id": 10961,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1577,7 +1577,7 @@
 					}
 				},
 				{
-					"id": 62,
+					"id": 10962,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1586,7 +1586,7 @@
 					},
 					"signatures": [
 						{
-							"id": 63,
+							"id": 10963,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
@@ -1625,7 +1625,7 @@
 							},
 							"parameters": [
 								{
-									"id": 64,
+									"id": 10964,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1680,19 +1680,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 3,
+								"target": 10903,
 								"name": "IFileService.upload"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 2,
+						"target": 10902,
 						"name": "IFileService.upload"
 					}
 				},
 				{
-					"id": 65,
+					"id": 10965,
 					"name": "uploadProtected",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1701,7 +1701,7 @@
 					},
 					"signatures": [
 						{
-							"id": 66,
+							"id": 10966,
 							"name": "uploadProtected",
 							"variant": "signature",
 							"kind": 4096,
@@ -1740,7 +1740,7 @@
 							},
 							"parameters": [
 								{
-									"id": 67,
+									"id": 10967,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1795,19 +1795,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 6,
+								"target": 10906,
 								"name": "IFileService.uploadProtected"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 5,
+						"target": 10905,
 						"name": "IFileService.uploadProtected"
 					}
 				},
 				{
-					"id": 68,
+					"id": 10968,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1816,7 +1816,7 @@
 					},
 					"signatures": [
 						{
-							"id": 69,
+							"id": 10969,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -1851,7 +1851,7 @@
 							},
 							"parameters": [
 								{
-									"id": 70,
+									"id": 10970,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1892,19 +1892,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 9,
+								"target": 10909,
 								"name": "IFileService.delete"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 8,
+						"target": 10908,
 						"name": "IFileService.delete"
 					}
 				},
 				{
-					"id": 71,
+					"id": 10971,
 					"name": "getUploadStreamDescriptor",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1913,7 +1913,7 @@
 					},
 					"signatures": [
 						{
-							"id": 72,
+							"id": 10972,
 							"name": "getUploadStreamDescriptor",
 							"variant": "signature",
 							"kind": 4096,
@@ -1948,7 +1948,7 @@
 							},
 							"parameters": [
 								{
-									"id": 73,
+									"id": 10973,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1994,19 +1994,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 12,
+								"target": 10912,
 								"name": "IFileService.getUploadStreamDescriptor"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 11,
+						"target": 10911,
 						"name": "IFileService.getUploadStreamDescriptor"
 					}
 				},
 				{
-					"id": 74,
+					"id": 10974,
 					"name": "getDownloadStream",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2015,7 +2015,7 @@
 					},
 					"signatures": [
 						{
-							"id": 75,
+							"id": 10975,
 							"name": "getDownloadStream",
 							"variant": "signature",
 							"kind": 4096,
@@ -2050,7 +2050,7 @@
 							},
 							"parameters": [
 								{
-									"id": 76,
+									"id": 10976,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -2097,19 +2097,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 15,
+								"target": 10915,
 								"name": "IFileService.getDownloadStream"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 14,
+						"target": 10914,
 						"name": "IFileService.getDownloadStream"
 					}
 				},
 				{
-					"id": 77,
+					"id": 10977,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2118,7 +2118,7 @@
 					},
 					"signatures": [
 						{
-							"id": 78,
+							"id": 10978,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
@@ -2153,7 +2153,7 @@
 							},
 							"parameters": [
 								{
-									"id": 79,
+									"id": 10979,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -2194,19 +2194,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 18,
+								"target": 10918,
 								"name": "IFileService.getPresignedDownloadUrl"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 17,
+						"target": 10917,
 						"name": "IFileService.getPresignedDownloadUrl"
 					}
 				},
 				{
-					"id": 80,
+					"id": 10980,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2229,12 +2229,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 20,
+						"target": 10920,
 						"name": "IFileService.manager_"
 					}
 				},
 				{
-					"id": 81,
+					"id": 10981,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2266,12 +2266,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 21,
+						"target": 10921,
 						"name": "IFileService.transactionManager_"
 					}
 				},
 				{
-					"id": 84,
+					"id": 10984,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2290,12 +2290,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 24,
+						"target": 10924,
 						"name": "IFileService.__container__"
 					}
 				},
 				{
-					"id": 85,
+					"id": 10985,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2330,12 +2330,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 25,
+						"target": 10925,
 						"name": "IFileService.__configModule__"
 					}
 				},
 				{
-					"id": 86,
+					"id": 10986,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2370,7 +2370,7 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 26,
+						"target": 10926,
 						"name": "IFileService.__moduleDeclaration__"
 					}
 				}
@@ -2379,30 +2379,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						56
+						10956
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						60,
-						61,
-						80,
-						81,
-						84,
-						85,
-						86
+						10960,
+						10961,
+						10980,
+						10981,
+						10984,
+						10985,
+						10986
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						62,
-						65,
-						68,
-						71,
-						74,
-						77
+						10962,
+						10965,
+						10968,
+						10971,
+						10974,
+						10977
 					]
 				}
 			],
@@ -2420,7 +2420,7 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 1,
+					"target": 10901,
 					"name": "IFileService",
 					"package": "@medusajs/medusa"
 				}
@@ -2431,443 +2431,443 @@
 		{
 			"title": "Classes",
 			"children": [
-				51
+				10951
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				1
+				10901
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"0": {
+		"10900": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"10901": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService"
 		},
-		"2": {
+		"10902": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.upload"
 		},
-		"3": {
+		"10903": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.upload"
 		},
-		"4": {
+		"10904": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "file"
 		},
-		"5": {
+		"10905": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.uploadProtected"
 		},
-		"6": {
+		"10906": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.uploadProtected"
 		},
-		"7": {
+		"10907": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "file"
 		},
-		"8": {
+		"10908": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.delete"
 		},
-		"9": {
+		"10909": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.delete"
 		},
-		"10": {
+		"10910": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"11": {
+		"10911": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getUploadStreamDescriptor"
 		},
-		"12": {
+		"10912": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getUploadStreamDescriptor"
 		},
-		"13": {
+		"10913": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"14": {
+		"10914": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getDownloadStream"
 		},
-		"15": {
+		"10915": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getDownloadStream"
 		},
-		"16": {
+		"10916": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"17": {
+		"10917": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getPresignedDownloadUrl"
 		},
-		"18": {
+		"10918": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService.getPresignedDownloadUrl"
 		},
-		"19": {
+		"10919": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"20": {
+		"10920": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"21": {
+		"10921": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"22": {
+		"10922": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"23": {
+		"10923": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"24": {
+		"10924": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"25": {
+		"10925": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"26": {
+		"10926": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"27": {
+		"10927": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"28": {
+		"10928": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"29": {
+		"10929": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"30": {
+		"10930": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"31": {
+		"10931": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"32": {
+		"10932": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"33": {
+		"10933": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"34": {
+		"10934": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"35": {
+		"10935": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"36": {
+		"10936": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"37": {
+		"10937": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"38": {
+		"10938": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"39": {
+		"10939": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"40": {
+		"10940": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"41": {
+		"10941": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"42": {
+		"10942": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"43": {
+		"10943": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"44": {
+		"10944": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"45": {
+		"10945": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"46": {
+		"10946": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"47": {
+		"10947": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"48": {
+		"10948": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"49": {
+		"10949": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"50": {
+		"10950": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"51": {
+		"10951": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService"
 		},
-		"56": {
+		"10956": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.__constructor"
 		},
-		"57": {
+		"10957": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService"
 		},
-		"58": {
+		"10958": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "container"
 		},
-		"59": {
+		"10959": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "config"
 		},
-		"60": {
+		"10960": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.container"
 		},
-		"61": {
+		"10961": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.config"
 		},
-		"62": {
+		"10962": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.upload"
 		},
-		"63": {
+		"10963": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.upload"
 		},
-		"64": {
+		"10964": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"65": {
+		"10965": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.uploadProtected"
 		},
-		"66": {
+		"10966": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.uploadProtected"
 		},
-		"67": {
+		"10967": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"68": {
+		"10968": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.delete"
 		},
-		"69": {
+		"10969": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.delete"
 		},
-		"70": {
+		"10970": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"71": {
+		"10971": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
 		},
-		"72": {
+		"10972": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
 		},
-		"73": {
+		"10973": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"74": {
+		"10974": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getDownloadStream"
 		},
-		"75": {
+		"10975": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getDownloadStream"
 		},
-		"76": {
+		"10976": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"77": {
+		"10977": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
 		},
-		"78": {
+		"10978": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
 		},
-		"79": {
+		"10979": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
-		"80": {
+		"10980": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"81": {
+		"10981": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"82": {
+		"10982": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"83": {
+		"10983": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"84": {
+		"10984": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"85": {
+		"10985": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"86": {
+		"10986": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"87": {
+		"10987": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"88": {
+		"10988": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"89": {
+		"10989": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"90": {
+		"10990": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"91": {
+		"10991": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"92": {
+		"10992": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"93": {
+		"10993": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"94": {
+		"10994": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"95": {
+		"10995": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"96": {
+		"10996": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"97": {
+		"10997": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"98": {
+		"10998": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"99": {
+		"10999": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"100": {
+		"11000": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"101": {
+		"11001": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"102": {
+		"11002": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"103": {
+		"11003": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"104": {
+		"11004": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"105": {
+		"11005": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"106": {
+		"11006": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"107": {
+		"11007": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"108": {
+		"11008": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"109": {
+		"11009": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"110": {
+		"11010": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		}

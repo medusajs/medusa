@@ -12,14 +12,7 @@ import {
   ParameterType,
 } from "typedoc"
 
-let hasMonkeyPatched = false
-
 export function load(app: Application) {
-  if (hasMonkeyPatched) {
-    throw new Error("typedoc-plugin-custom cannot be loaded multiple times")
-  }
-  hasMonkeyPatched = true
-
   app.options.addDeclaration({
     name: "internalModule",
     help: "Define the name of the module that internal symbols which are not exported should be placed into.",
@@ -40,9 +33,9 @@ export function load(app: Application) {
   })
 
   let activeReflection: Reflection | undefined
-  const referencedSymbols = new Map<ts.Program, Set<ts.Symbol>>()
-  const symbolToActiveRefl = new Map<ts.Symbol, Reflection>()
-  const knownPrograms = new Map<Reflection, ts.Program>()
+  let referencedSymbols = new Map<ts.Program, Set<ts.Symbol>>()
+  let symbolToActiveRefl = new Map<ts.Symbol, Reflection>()
+  let knownPrograms = new Map<Reflection, ts.Program>()
   let checkedVariableSymbols = false
 
   function discoverMissingExports(
@@ -214,6 +207,15 @@ export function load(app: Application) {
     void 0,
     1e9
   )
+
+  app.converter.on(Converter.EVENT_END, () => {
+    ReferenceType.createSymbolReference = origCreateSymbolReference
+    activeReflection = undefined
+    referencedSymbols = new Map()
+    symbolToActiveRefl = new Map()
+    knownPrograms = new Map()
+    checkedVariableSymbols = false
+  })
 }
 function shouldConvertSymbol(symbol: ts.Symbol, checker: ts.TypeChecker) {
   while (symbol.flags & ts.SymbolFlags.Alias) {

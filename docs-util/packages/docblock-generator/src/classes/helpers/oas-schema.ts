@@ -8,7 +8,7 @@ import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
 import { parse } from "yaml"
 import formatOas from "../../utils/format-oas.js"
 import pluralize from "pluralize"
-import { wordsToPascal } from "../../utils/str-formatting.js"
+import { wordsToPascal } from "utils"
 
 type ParsedSchema = {
   schema: OpenApiSchema

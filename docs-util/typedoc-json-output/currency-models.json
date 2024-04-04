@@ -1,33 +1,33 @@
 {
-	"id": 0,
+	"id": 1947,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 1948,
 			"name": "Currency",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 2,
+					"id": 1949,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 1950,
 							"name": "new Currency",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1,
+								"target": 1948,
 								"name": "Currency",
 								"package": "@medusajs/currency"
 							}
@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"id": 4,
+					"id": 1951,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -46,7 +46,7 @@
 					}
 				},
 				{
-					"id": 5,
+					"id": 1952,
 					"name": "symbol",
 					"variant": "declaration",
 					"kind": 1024,
@@ -57,7 +57,7 @@
 					}
 				},
 				{
-					"id": 6,
+					"id": 1953,
 					"name": "symbol_native",
 					"variant": "declaration",
 					"kind": 1024,
@@ -68,7 +68,7 @@
 					}
 				},
 				{
-					"id": 7,
+					"id": 1954,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -83,16 +83,16 @@
 				{
 					"title": "Constructors",
 					"children": [
-						2
+						1949
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4,
-						5,
-						6,
-						7
+						1951,
+						1952,
+						1953,
+						1954
 					]
 				}
 			]
@@ -102,33 +102,33 @@
 		{
 			"title": "Classes",
 			"children": [
-				1
+				1948
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"0": {
+		"1947": {
 			"sourceFileName": "../../../packages/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"1948": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency"
 		},
-		"4": {
+		"1951": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.code"
 		},
-		"5": {
+		"1952": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.symbol"
 		},
-		"6": {
+		"1953": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.symbol_native"
 		},
-		"7": {
+		"1954": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.name"
 		}

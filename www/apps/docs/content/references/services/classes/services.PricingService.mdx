@@ -18,7 +18,7 @@ ___
 
 ## Properties
 
-<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceSelectionStrategy","type":"[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantService","type":"[ProductVariantService](services.ProductVariantService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PricingService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceSelectionStrategy","type":"[IPriceSelectionStrategy](../../price_selection/interfaces/price_selection.IPriceSelectionStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantService","type":"[ProductVariantService](services.ProductVariantService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PricingService"/>
 
 ___
 
@@ -91,7 +91,7 @@ selection.
 
 #### Parameters
 
-<TypeList types={[{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="collectPricingContext"/>
+<TypeList types={[{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="collectPricingContext"/>
 
 #### Returns
 
@@ -113,7 +113,7 @@ Gets the prices for a product variant
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricing_"/>
+<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricing_"/>
 
 #### Returns
 
@@ -125,7 +125,7 @@ Gets the prices for a product variant.
 
 #### Parameters
 
-<TypeList types={[{"name":"variant","type":"Pick&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricing"/>
+<TypeList types={[{"name":"variant","type":"Pick&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx) \\| [PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricing"/>
 
 #### Returns
 
@@ -137,7 +137,7 @@ Gets the prices for a product variant by a variant id.
 
 #### Parameters
 
-<TypeList types={[{"name":"variantId","type":"`string`","description":"the id of the variant to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricingById"/>
+<TypeList types={[{"name":"variantId","type":"`string`","description":"the id of the variant to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx) \\| [PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantPricingById"/>
 
 #### Returns
 
@@ -153,7 +153,7 @@ Gets the prices for a collection of variants.
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantsPricing"/>
+<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx) \\| [PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductVariantsPricing"/>
 
 #### Returns
 
@@ -163,7 +163,7 @@ Gets the prices for a collection of variants.
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricing_"/>
+<TypeList types={[{"name":"data","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricing_"/>
 
 #### Returns
 
@@ -176,7 +176,7 @@ be fetched.
 
 #### Parameters
 
-<TypeList types={[{"name":"product","type":"Pick&#60;[Product](../../entities/classes/entities.Product.mdx), \"id\" \\| \"variants\"&#62;","description":"the product to get pricing for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricing"/>
+<TypeList types={[{"name":"product","type":"Pick&#60;[Product](../../entities/classes/entities.Product.mdx), \"id\" \\| \"variants\"&#62;","description":"the product to get pricing for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricing"/>
 
 #### Returns
 
@@ -188,7 +188,7 @@ Gets all the variant prices for a product by the product id
 
 #### Parameters
 
-<TypeList types={[{"name":"productId","type":"`string`","description":"the id of the product to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricingById"/>
+<TypeList types={[{"name":"productId","type":"`string`","description":"the id of the product to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProductPricingById"/>
 
 #### Returns
 
@@ -200,7 +200,7 @@ Set additional prices on a list of product variants.
 
 #### Parameters
 
-<TypeList types={[{"name":"variants","type":"[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setVariantPrices"/>
+<TypeList types={[{"name":"variants","type":"[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setVariantPrices"/>
 
 #### Returns
 
@@ -212,7 +212,7 @@ Set additional prices on a list of products.
 
 #### Parameters
 
-<TypeList types={[{"name":"products","type":"[Product](../../entities/classes/entities.Product.mdx)[]","description":"list of products on which to set additional prices","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setProductPrices"/>
+<TypeList types={[{"name":"products","type":"[Product](../../entities/classes/entities.Product.mdx)[]","description":"list of products on which to set additional prices","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setProductPrices"/>
 
 #### Returns
 
@@ -222,7 +222,7 @@ Set additional prices on a list of products.
 
 #### Parameters
 
-<TypeList types={[{"name":"variants","type":"[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx)","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setAdminVariantPricing"/>
+<TypeList types={[{"name":"variants","type":"[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx)","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setAdminVariantPricing"/>
 
 #### Returns
 
@@ -244,7 +244,7 @@ Gets the prices for a shipping option.
 
 #### Parameters
 
-<TypeList types={[{"name":"shippingOption","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the shipping option to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../types/interfaces/types.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingOptionPricing"/>
+<TypeList types={[{"name":"shippingOption","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the shipping option to get prices for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx) \\| [PricingContext](../../pricing/interfaces/pricing.PricingContext.mdx)","description":"the price selection context to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingOptionPricing"/>
 
 #### Returns
 
@@ -256,7 +256,7 @@ Set additional prices on a list of shipping options.
 
 #### Parameters
 
-<TypeList types={[{"name":"shippingOptions","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]","description":"list of shipping options on which to set additional prices","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"Omit&#60;[PriceSelectionContext](../../medusa/interfaces/medusa.PriceSelectionContext.mdx), \"region_id\"&#62;","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setShippingOptionPrices"/>
+<TypeList types={[{"name":"shippingOptions","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]","description":"list of shipping options on which to set additional prices","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"Omit&#60;[PriceSelectionContext](../../price_selection/interfaces/price_selection.PriceSelectionContext.mdx), \"region_id\"&#62;","description":"the price selection context to use","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="setShippingOptionPrices"/>
 
 #### Returns
 

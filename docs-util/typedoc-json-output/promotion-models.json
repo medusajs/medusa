@@ -1,5 +1,5 @@
 {
-	"id": 0,
+	"id": 6761,
 	"name": "promotion-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 1,
+			"id": 6762,
 			"name": "ApplicationMethod",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 2,
+					"id": 6763,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 6764,
 							"name": "new ApplicationMethod",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1,
+								"target": 6762,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -47,7 +47,7 @@
 					]
 				},
 				{
-					"id": 23,
+					"id": 6784,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -65,7 +65,7 @@
 					}
 				},
 				{
-					"id": 4,
+					"id": 6765,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -76,7 +76,7 @@
 					}
 				},
 				{
-					"id": 5,
+					"id": 6766,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -95,7 +95,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -106,7 +106,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 6,
+					"id": 6767,
 					"name": "raw_value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -132,7 +132,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7,
+					"id": 6768,
 					"name": "max_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -155,7 +155,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8,
+					"id": 6769,
 					"name": "apply_to_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -178,7 +178,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 9,
+					"id": 6770,
 					"name": "buy_rules_min_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -201,7 +201,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10,
+					"id": 6771,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -217,7 +217,7 @@
 					}
 				},
 				{
-					"id": 11,
+					"id": 6772,
 					"name": "target_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -233,7 +233,7 @@
 					}
 				},
 				{
-					"id": 12,
+					"id": 6773,
 					"name": "allocation",
 					"variant": "declaration",
 					"kind": 1024,
@@ -251,20 +251,20 @@
 					}
 				},
 				{
-					"id": 13,
+					"id": 6774,
 					"name": "promotion",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 62,
+						"target": 6823,
 						"name": "default",
 						"package": "@medusajs/promotion"
 					}
 				},
 				{
-					"id": 14,
+					"id": 6775,
 					"name": "target_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -278,7 +278,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 80,
+								"target": 6841,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -293,7 +293,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 15,
+					"id": 6776,
 					"name": "buy_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -307,7 +307,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 80,
+								"target": 6841,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -322,7 +322,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 16,
+					"id": 6777,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -338,7 +338,7 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 6778,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -354,7 +354,7 @@
 					}
 				},
 				{
-					"id": 18,
+					"id": 6779,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -380,14 +380,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 19,
+					"id": 6780,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20,
+							"id": 6781,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -400,14 +400,14 @@
 					]
 				},
 				{
-					"id": 21,
+					"id": 6782,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 22,
+							"id": 6783,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -424,62 +424,62 @@
 				{
 					"title": "Constructors",
 					"children": [
-						2
+						6763
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						23,
-						4,
-						5,
-						6,
-						7,
-						8,
-						9,
-						10,
-						11,
-						12,
-						13,
-						14,
-						15,
-						16,
-						17,
-						18
+						6784,
+						6765,
+						6766,
+						6767,
+						6768,
+						6769,
+						6770,
+						6771,
+						6772,
+						6773,
+						6774,
+						6775,
+						6776,
+						6777,
+						6778,
+						6779
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						19,
-						21
+						6780,
+						6782
 					]
 				}
 			]
 		},
 		{
-			"id": 44,
+			"id": 6805,
 			"name": "CampaignBudget",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 45,
+					"id": 6806,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 46,
+							"id": 6807,
 							"name": "new CampaignBudget",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 44,
+								"target": 6805,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -487,7 +487,7 @@
 					]
 				},
 				{
-					"id": 61,
+					"id": 6822,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -505,7 +505,7 @@
 					}
 				},
 				{
-					"id": 47,
+					"id": 6808,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -516,7 +516,7 @@
 					}
 				},
 				{
-					"id": 48,
+					"id": 6809,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -532,7 +532,7 @@
 					}
 				},
 				{
-					"id": 49,
+					"id": 6810,
 					"name": "campaign",
 					"variant": "declaration",
 					"kind": 1024,
@@ -546,7 +546,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 24,
+								"target": 6785,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -555,7 +555,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 50,
+					"id": 6811,
 					"name": "limit",
 					"variant": "declaration",
 					"kind": 1024,
@@ -574,7 +574,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -585,7 +585,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 51,
+					"id": 6812,
 					"name": "raw_limit",
 					"variant": "declaration",
 					"kind": 1024,
@@ -611,7 +611,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 52,
+					"id": 6813,
 					"name": "used",
 					"variant": "declaration",
 					"kind": 1024,
@@ -630,7 +630,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -641,7 +641,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 53,
+					"id": 6814,
 					"name": "raw_used",
 					"variant": "declaration",
 					"kind": 1024,
@@ -667,7 +667,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 54,
+					"id": 6815,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -683,7 +683,7 @@
 					}
 				},
 				{
-					"id": 55,
+					"id": 6816,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -699,7 +699,7 @@
 					}
 				},
 				{
-					"id": 56,
+					"id": 6817,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -725,14 +725,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 57,
+					"id": 6818,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 58,
+							"id": 6819,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -745,14 +745,14 @@
 					]
 				},
 				{
-					"id": 59,
+					"id": 6820,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 60,
+							"id": 6821,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -769,57 +769,57 @@
 				{
 					"title": "Constructors",
 					"children": [
-						45
+						6806
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						61,
-						47,
-						48,
-						49,
-						50,
-						51,
-						52,
-						53,
-						54,
-						55,
-						56
+						6822,
+						6808,
+						6809,
+						6810,
+						6811,
+						6812,
+						6813,
+						6814,
+						6815,
+						6816,
+						6817
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						57,
-						59
+						6818,
+						6820
 					]
 				}
 			]
 		},
 		{
-			"id": 24,
+			"id": 6785,
 			"name": "Campaign",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 25,
+					"id": 6786,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 26,
+							"id": 6787,
 							"name": "new Campaign",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 24,
+								"target": 6785,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -827,7 +827,7 @@
 					]
 				},
 				{
-					"id": 43,
+					"id": 6804,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -854,7 +854,7 @@
 					}
 				},
 				{
-					"id": 27,
+					"id": 6788,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -865,7 +865,7 @@
 					}
 				},
 				{
-					"id": 28,
+					"id": 6789,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -876,7 +876,7 @@
 					}
 				},
 				{
-					"id": 29,
+					"id": 6790,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -897,7 +897,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 30,
+					"id": 6791,
 					"name": "currency",
 					"variant": "declaration",
 					"kind": 1024,
@@ -918,7 +918,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 31,
+					"id": 6792,
 					"name": "campaign_identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -929,7 +929,7 @@
 					}
 				},
 				{
-					"id": 32,
+					"id": 6793,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -955,7 +955,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 33,
+					"id": 6794,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -981,7 +981,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 34,
+					"id": 6795,
 					"name": "budget",
 					"variant": "declaration",
 					"kind": 1024,
@@ -995,7 +995,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 44,
+								"target": 6805,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -1004,7 +1004,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 35,
+					"id": 6796,
 					"name": "promotions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1018,7 +1018,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 62,
+								"target": 6823,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1033,7 +1033,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 36,
+					"id": 6797,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1049,7 +1049,7 @@
 					}
 				},
 				{
-					"id": 37,
+					"id": 6798,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1065,7 +1065,7 @@
 					}
 				},
 				{
-					"id": 38,
+					"id": 6799,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1091,14 +1091,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 39,
+					"id": 6800,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 40,
+							"id": 6801,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1111,14 +1111,14 @@
 					]
 				},
 				{
-					"id": 41,
+					"id": 6802,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 42,
+							"id": 6803,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1135,59 +1135,59 @@
 				{
 					"title": "Constructors",
 					"children": [
-						25
+						6786
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						43,
-						27,
-						28,
-						29,
-						30,
-						31,
-						32,
-						33,
-						34,
-						35,
-						36,
-						37,
-						38
+						6804,
+						6788,
+						6789,
+						6790,
+						6791,
+						6792,
+						6793,
+						6794,
+						6795,
+						6796,
+						6797,
+						6798,
+						6799
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						39,
-						41
+						6800,
+						6802
 					]
 				}
 			]
 		},
 		{
-			"id": 99,
+			"id": 6860,
 			"name": "PromotionRuleValue",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 100,
+					"id": 6861,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 101,
+							"id": 6862,
 							"name": "new PromotionRuleValue",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 99,
+								"target": 6860,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -1195,7 +1195,7 @@
 					]
 				},
 				{
-					"id": 102,
+					"id": 6863,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1206,20 +1206,20 @@
 					}
 				},
 				{
-					"id": 103,
+					"id": 6864,
 					"name": "promotion_rule",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 80,
+						"target": 6841,
 						"name": "default",
 						"package": "@medusajs/promotion"
 					}
 				},
 				{
-					"id": 104,
+					"id": 6865,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1230,7 +1230,7 @@
 					}
 				},
 				{
-					"id": 105,
+					"id": 6866,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1246,7 +1246,7 @@
 					}
 				},
 				{
-					"id": 106,
+					"id": 6867,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1262,7 +1262,7 @@
 					}
 				},
 				{
-					"id": 107,
+					"id": 6868,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1288,14 +1288,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 108,
+					"id": 6869,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 109,
+							"id": 6870,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1308,14 +1308,14 @@
 					]
 				},
 				{
-					"id": 110,
+					"id": 6871,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 111,
+							"id": 6872,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1332,52 +1332,52 @@
 				{
 					"title": "Constructors",
 					"children": [
-						100
+						6861
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						102,
-						103,
-						104,
-						105,
-						106,
-						107
+						6863,
+						6864,
+						6865,
+						6866,
+						6867,
+						6868
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						108,
-						110
+						6869,
+						6871
 					]
 				}
 			]
 		},
 		{
-			"id": 80,
+			"id": 6841,
 			"name": "PromotionRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 81,
+					"id": 6842,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 82,
+							"id": 6843,
 							"name": "new PromotionRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 80,
+								"target": 6841,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -1385,7 +1385,7 @@
 					]
 				},
 				{
-					"id": 98,
+					"id": 6859,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1417,7 +1417,7 @@
 					}
 				},
 				{
-					"id": 83,
+					"id": 6844,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1428,7 +1428,7 @@
 					}
 				},
 				{
-					"id": 84,
+					"id": 6845,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1449,7 +1449,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 85,
+					"id": 6846,
 					"name": "attribute",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1460,7 +1460,7 @@
 					}
 				},
 				{
-					"id": 86,
+					"id": 6847,
 					"name": "operator",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1476,7 +1476,7 @@
 					}
 				},
 				{
-					"id": 87,
+					"id": 6848,
 					"name": "values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1490,7 +1490,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 99,
+								"target": 6860,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1505,7 +1505,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 88,
+					"id": 6849,
 					"name": "promotions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1519,7 +1519,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 62,
+								"target": 6823,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1534,7 +1534,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 89,
+					"id": 6850,
 					"name": "method_target_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1548,7 +1548,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 1,
+								"target": 6762,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1563,7 +1563,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 90,
+					"id": 6851,
 					"name": "method_buy_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1577,7 +1577,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 1,
+								"target": 6762,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1592,7 +1592,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 91,
+					"id": 6852,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1608,7 +1608,7 @@
 					}
 				},
 				{
-					"id": 92,
+					"id": 6853,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1624,7 +1624,7 @@
 					}
 				},
 				{
-					"id": 93,
+					"id": 6854,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1650,14 +1650,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 94,
+					"id": 6855,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 95,
+							"id": 6856,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1670,14 +1670,14 @@
 					]
 				},
 				{
-					"id": 96,
+					"id": 6857,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 97,
+							"id": 6858,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1694,58 +1694,58 @@
 				{
 					"title": "Constructors",
 					"children": [
-						81
+						6842
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						98,
-						83,
-						84,
-						85,
-						86,
-						87,
-						88,
-						89,
-						90,
-						91,
-						92,
-						93
+						6859,
+						6844,
+						6845,
+						6846,
+						6847,
+						6848,
+						6849,
+						6850,
+						6851,
+						6852,
+						6853,
+						6854
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						94,
-						96
+						6855,
+						6857
 					]
 				}
 			]
 		},
 		{
-			"id": 62,
+			"id": 6823,
 			"name": "Promotion",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 63,
+					"id": 6824,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 64,
+							"id": 6825,
 							"name": "new Promotion",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 62,
+								"target": 6823,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -1753,7 +1753,7 @@
 					]
 				},
 				{
-					"id": 79,
+					"id": 6840,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1785,7 +1785,7 @@
 					}
 				},
 				{
-					"id": 65,
+					"id": 6826,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1796,7 +1796,7 @@
 					}
 				},
 				{
-					"id": 66,
+					"id": 6827,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1807,7 +1807,7 @@
 					}
 				},
 				{
-					"id": 67,
+					"id": 6828,
 					"name": "campaign",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1821,7 +1821,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 24,
+								"target": 6785,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							}
@@ -1830,7 +1830,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 68,
+					"id": 6829,
 					"name": "is_automatic",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1842,7 +1842,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 69,
+					"id": 6830,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1858,20 +1858,20 @@
 					}
 				},
 				{
-					"id": 70,
+					"id": 6831,
 					"name": "application_method",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 1,
+						"target": 6762,
 						"name": "default",
 						"package": "@medusajs/promotion"
 					}
 				},
 				{
-					"id": 71,
+					"id": 6832,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1885,7 +1885,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 80,
+								"target": 6841,
 								"name": "default",
 								"package": "@medusajs/promotion"
 							},
@@ -1900,7 +1900,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 72,
+					"id": 6833,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1916,7 +1916,7 @@
 					}
 				},
 				{
-					"id": 73,
+					"id": 6834,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1932,7 +1932,7 @@
 					}
 				},
 				{
-					"id": 74,
+					"id": 6835,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1958,14 +1958,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 75,
+					"id": 6836,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 76,
+							"id": 6837,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1978,14 +1978,14 @@
 					]
 				},
 				{
-					"id": 77,
+					"id": 6838,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 78,
+							"id": 6839,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2002,30 +2002,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						63
+						6824
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						79,
-						65,
-						66,
-						67,
-						68,
-						69,
-						70,
-						71,
-						72,
-						73,
-						74
+						6840,
+						6826,
+						6827,
+						6828,
+						6829,
+						6830,
+						6831,
+						6832,
+						6833,
+						6834,
+						6835
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						75,
-						77
+						6836,
+						6838
 					]
 				}
 			]
@@ -2035,414 +2035,414 @@
 		{
 			"title": "Classes",
 			"children": [
-				1,
-				44,
-				24,
-				99,
-				80,
-				62
+				6762,
+				6805,
+				6785,
+				6860,
+				6841,
+				6823
 			]
 		}
 	],
 	"packageName": "@medusajs/promotion",
 	"symbolIdMap": {
-		"0": {
+		"6761": {
 			"sourceFileName": "../../../packages/promotion/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"6762": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default"
 		},
-		"4": {
+		"6765": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.id"
 		},
-		"5": {
+		"6766": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.value"
 		},
-		"6": {
+		"6767": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.raw_value"
 		},
-		"7": {
+		"6768": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.max_quantity"
 		},
-		"8": {
+		"6769": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.apply_to_quantity"
 		},
-		"9": {
+		"6770": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.buy_rules_min_quantity"
 		},
-		"10": {
+		"6771": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.type"
 		},
-		"11": {
+		"6772": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.target_type"
 		},
-		"12": {
+		"6773": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.allocation"
 		},
-		"13": {
+		"6774": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.promotion"
 		},
-		"14": {
+		"6775": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.target_rules"
 		},
-		"15": {
+		"6776": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.buy_rules"
 		},
-		"16": {
+		"6777": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"17": {
+		"6778": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"18": {
+		"6779": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"19": {
+		"6780": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"20": {
+		"6781": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"21": {
+		"6782": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"22": {
+		"6783": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"23": {
+		"6784": {
 			"sourceFileName": "../../../packages/promotion/src/models/application-method.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"24": {
+		"6785": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default"
 		},
-		"27": {
+		"6788": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.id"
 		},
-		"28": {
+		"6789": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.name"
 		},
-		"29": {
+		"6790": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.description"
 		},
-		"30": {
+		"6791": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.currency"
 		},
-		"31": {
+		"6792": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.campaign_identifier"
 		},
-		"32": {
+		"6793": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.starts_at"
 		},
-		"33": {
+		"6794": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.ends_at"
 		},
-		"34": {
+		"6795": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.budget"
 		},
-		"35": {
+		"6796": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.promotions"
 		},
-		"36": {
+		"6797": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"37": {
+		"6798": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"38": {
+		"6799": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"39": {
+		"6800": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"40": {
+		"6801": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"41": {
+		"6802": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"42": {
+		"6803": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"43": {
+		"6804": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"44": {
+		"6805": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default"
 		},
-		"47": {
+		"6808": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.id"
 		},
-		"48": {
+		"6809": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.type"
 		},
-		"49": {
+		"6810": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.campaign"
 		},
-		"50": {
+		"6811": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.limit"
 		},
-		"51": {
+		"6812": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.raw_limit"
 		},
-		"52": {
+		"6813": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.used"
 		},
-		"53": {
+		"6814": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.raw_used"
 		},
-		"54": {
+		"6815": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"55": {
+		"6816": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"56": {
+		"6817": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"57": {
+		"6818": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"58": {
+		"6819": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"59": {
+		"6820": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"60": {
+		"6821": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"61": {
+		"6822": {
 			"sourceFileName": "../../../packages/promotion/src/models/campaign-budget.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"62": {
+		"6823": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default"
 		},
-		"65": {
+		"6826": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.id"
 		},
-		"66": {
+		"6827": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.code"
 		},
-		"67": {
+		"6828": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.campaign"
 		},
-		"68": {
+		"6829": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.is_automatic"
 		},
-		"69": {
+		"6830": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.type"
 		},
-		"70": {
+		"6831": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.application_method"
 		},
-		"71": {
+		"6832": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.rules"
 		},
-		"72": {
+		"6833": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"73": {
+		"6834": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"74": {
+		"6835": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"75": {
+		"6836": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"76": {
+		"6837": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"77": {
+		"6838": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"78": {
+		"6839": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"79": {
+		"6840": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"80": {
+		"6841": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default"
 		},
-		"83": {
+		"6844": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"84": {
+		"6845": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.description"
 		},
-		"85": {
+		"6846": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.attribute"
 		},
-		"86": {
+		"6847": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.operator"
 		},
-		"87": {
+		"6848": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.values"
 		},
-		"88": {
+		"6849": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.promotions"
 		},
-		"89": {
+		"6850": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.method_target_rules"
 		},
-		"90": {
+		"6851": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.method_buy_rules"
 		},
-		"91": {
+		"6852": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"92": {
+		"6853": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"93": {
+		"6854": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"94": {
+		"6855": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"95": {
+		"6856": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"96": {
+		"6857": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"97": {
+		"6858": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"98": {
+		"6859": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"99": {
+		"6860": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default"
 		},
-		"102": {
+		"6863": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.id"
 		},
-		"103": {
+		"6864": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.promotion_rule"
 		},
-		"104": {
+		"6865": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.value"
 		},
-		"105": {
+		"6866": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"106": {
+		"6867": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"107": {
+		"6868": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"108": {
+		"6869": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"109": {
+		"6870": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"110": {
+		"6871": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"111": {
+		"6872": {
 			"sourceFileName": "../../../packages/promotion/src/models/promotion-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		}

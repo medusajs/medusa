@@ -116,7 +116,7 @@ Persists the tax lines relevant for an order to the database.
 
 #### Parameters
 
-<TypeList types={[{"name":"cartOrLineItems","type":"[Cart](../../entities/classes/entities.Cart.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the cart or line items to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
+<TypeList types={[{"name":"cartOrLineItems","type":"[Cart](../../entities/classes/entities.Cart.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the cart or line items to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
 
 #### Returns
 
@@ -129,7 +129,7 @@ for return shipping methods.
 
 #### Parameters
 
-<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createShippingTaxLines"/>
+<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to create tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createShippingTaxLines"/>
 
 #### Returns
 
@@ -143,7 +143,7 @@ persist the tax lines to the DB layer.
 
 #### Parameters
 
-<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to get tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingTaxLines"/>
+<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"the shipping method to get tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingTaxLines"/>
 
 #### Returns
 
@@ -159,7 +159,7 @@ wish to persist the tax lines to the DB layer.
 
 #### Parameters
 
-<TypeList types={[{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the cart or order to get tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getTaxLines"/>
+<TypeList types={[{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the cart or order to get tax lines for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)","description":"the calculation context to get tax lines by","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getTaxLines"/>
 
 #### Returns
 
@@ -171,7 +171,7 @@ Return a map of tax lines for line items and shipping methods
 
 #### Parameters
 
-<TypeList types={[{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getTaxLinesMap"/>
+<TypeList types={[{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getTaxLinesMap"/>
 
 #### Returns
 

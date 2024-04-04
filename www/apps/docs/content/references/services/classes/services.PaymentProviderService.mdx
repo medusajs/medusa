@@ -205,7 +205,7 @@ Finds a provider given an id
 
 #### Returns
 
-<TypeList types={[{"name":"TProvider extends AbstractPaymentService ? AbstractPaymentService : TProvider extends AbstractPaymentProcessor ? AbstractPaymentProcessor : any","type":"TProvider extends [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) ? [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) : TProvider extends [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) : `any`","optional":false,"defaultValue":"","description":"the payment provider","expandable":false,"children":[]}]}  sectionTitle="retrieveProvider"/>
+<TypeList types={[{"name":"TProvider extends AbstractPaymentService ? AbstractPaymentService : TProvider extends AbstractPaymentProcessor ? AbstractPaymentProcessor : any","type":"TProvider extends `AbstractPaymentService` ? `AbstractPaymentService` : TProvider extends [AbstractPaymentProcessor](../../payment_processor/classes/payment_processor.AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](../../payment_processor/classes/payment_processor.AbstractPaymentProcessor.mdx) : `any`","optional":false,"defaultValue":"","description":"the payment provider","expandable":false,"children":[]}]}  sectionTitle="retrieveProvider"/>
 
 ### createPayment
 
@@ -317,7 +317,7 @@ Build the create session context for both legacy and new API
 
 #### Returns
 
-<TypeList types={[{"name":"Cart","type":"`object`","description":"A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"PaymentContext","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="buildPaymentProcessorContext"/>
+<TypeList types={[{"name":"Cart","type":"`object`","description":"A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"PaymentContext","type":"`PaymentContext`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="buildPaymentProcessorContext"/>
 
 ### saveSession
 
@@ -337,7 +337,7 @@ Process the collected data. Can be used every time we need to process some colle
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"paymentResponse","type":"`Record<string, unknown>` \\| [PaymentSessionResponse](../../medusa/types/medusa.PaymentSessionResponse.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.customer","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data.customer.id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="processUpdateRequestsData"/>
+<TypeList types={[{"name":"data","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"paymentResponse","type":"`Record<string, unknown>` \\| `PaymentSessionResponse`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.customer","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data.customer.id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="processUpdateRequestsData"/>
 
 #### Returns
 
@@ -347,7 +347,7 @@ Process the collected data. Can be used every time we need to process some colle
 
 #### Parameters
 
-<TypeList types={[{"name":"errObj","type":"[PaymentProcessorError](../../medusa/interfaces/medusa.PaymentProcessorError.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="throwFromPaymentProcessorError"/>
+<TypeList types={[{"name":"errObj","type":"[PaymentProcessorError](../../payment_processor/interfaces/payment_processor.PaymentProcessorError.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="throwFromPaymentProcessorError"/>
 
 #### Returns
 

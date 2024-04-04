@@ -7,11 +7,6 @@ import FunctionKindGenerator, {
 import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
 import { basename, join } from "path"
 import {
-  capitalize,
-  kebabToTitle,
-  wordsToKebab,
-} from "../../utils/str-formatting.js"
-import {
   OpenApiDocument,
   OpenApiOperation,
   OpenApiSchema,
@@ -27,6 +22,7 @@ import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 import OasSchemaHelper from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
+import { capitalize, kebabToTitle, wordsToKebab } from "utils"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/

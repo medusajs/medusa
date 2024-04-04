@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 27387,
 	"name": "tax-calculation",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 27388,
 			"name": "ITaxCalculationStrategy",
 			"variant": "declaration",
 			"kind": 256,
@@ -61,14 +61,14 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 27389,
 					"name": "calculate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 27390,
 							"name": "calculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -107,7 +107,7 @@
 							},
 							"parameters": [
 								{
-									"id": 4,
+									"id": 27391,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -134,7 +134,7 @@
 									}
 								},
 								{
-									"id": 5,
+									"id": 27392,
 									"name": "taxLines",
 									"variant": "param",
 									"kind": 32768,
@@ -175,7 +175,7 @@
 									}
 								},
 								{
-									"id": 6,
+									"id": 27393,
 									"name": "calculationContext",
 									"variant": "param",
 									"kind": 32768,
@@ -222,20 +222,20 @@
 				{
 					"title": "Methods",
 					"children": [
-						2
+						27389
 					]
 				}
 			],
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 7,
+					"target": 27394,
 					"name": "AbstractTaxCalculationStrategy"
 				}
 			]
 		},
 		{
-			"id": 7,
+			"id": 27394,
 			"name": "AbstractTaxCalculationStrategy",
 			"variant": "declaration",
 			"kind": 128,
@@ -244,7 +244,7 @@
 			},
 			"children": [
 				{
-					"id": 12,
+					"id": 27399,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -253,7 +253,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13,
+							"id": 27400,
 							"name": "new AbstractTaxCalculationStrategy",
 							"variant": "signature",
 							"kind": 16384,
@@ -287,7 +287,7 @@
 							},
 							"parameters": [
 								{
-									"id": 14,
+									"id": 27401,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -329,7 +329,7 @@
 									}
 								},
 								{
-									"id": 15,
+									"id": 27402,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -367,7 +367,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 7,
+								"target": 27394,
 								"name": "AbstractTaxCalculationStrategy",
 								"package": "@medusajs/medusa"
 							},
@@ -385,7 +385,7 @@
 					}
 				},
 				{
-					"id": 16,
+					"id": 27403,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -430,7 +430,7 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 27404,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -468,7 +468,7 @@
 					}
 				},
 				{
-					"id": 18,
+					"id": 27405,
 					"name": "calculate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -477,7 +477,7 @@
 					},
 					"signatures": [
 						{
-							"id": 19,
+							"id": 27406,
 							"name": "calculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -516,7 +516,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20,
+									"id": 27407,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -543,7 +543,7 @@
 									}
 								},
 								{
-									"id": 21,
+									"id": 27408,
 									"name": "taxLines",
 									"variant": "param",
 									"kind": 32768,
@@ -584,7 +584,7 @@
 									}
 								},
 								{
-									"id": 22,
+									"id": 27409,
 									"name": "calculationContext",
 									"variant": "param",
 									"kind": 32768,
@@ -625,19 +625,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 3,
+								"target": 27390,
 								"name": "ITaxCalculationStrategy.calculate"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 2,
+						"target": 27389,
 						"name": "ITaxCalculationStrategy.calculate"
 					}
 				},
 				{
-					"id": 23,
+					"id": 27410,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -660,7 +660,7 @@
 					}
 				},
 				{
-					"id": 24,
+					"id": 27411,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -692,7 +692,7 @@
 					}
 				},
 				{
-					"id": 27,
+					"id": 27414,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -711,7 +711,7 @@
 					}
 				},
 				{
-					"id": 28,
+					"id": 27415,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -746,7 +746,7 @@
 					}
 				},
 				{
-					"id": 29,
+					"id": 27416,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -785,25 +785,25 @@
 				{
 					"title": "Constructors",
 					"children": [
-						12
+						27399
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						16,
-						17,
-						23,
-						24,
-						27,
-						28,
-						29
+						27403,
+						27404,
+						27410,
+						27411,
+						27414,
+						27415,
+						27416
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						18
+						27405
 					]
 				}
 			],
@@ -821,7 +821,7 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 1,
+					"target": 27388,
 					"name": "ITaxCalculationStrategy",
 					"package": "@medusajs/medusa"
 				}
@@ -832,215 +832,215 @@
 		{
 			"title": "Classes",
 			"children": [
-				7
+				27394
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				1
+				27388
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"0": {
+		"27387": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"27388": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "ITaxCalculationStrategy"
 		},
-		"2": {
+		"27389": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "ITaxCalculationStrategy.calculate"
 		},
-		"3": {
+		"27390": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "ITaxCalculationStrategy.calculate"
 		},
-		"4": {
+		"27391": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "items"
 		},
-		"5": {
+		"27392": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "taxLines"
 		},
-		"6": {
+		"27393": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "calculationContext"
 		},
-		"7": {
+		"27394": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy"
 		},
-		"12": {
+		"27399": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy.__constructor"
 		},
-		"13": {
+		"27400": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy"
 		},
-		"14": {
+		"27401": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "container"
 		},
-		"15": {
+		"27402": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "config"
 		},
-		"16": {
+		"27403": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy.container"
 		},
-		"17": {
+		"27404": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy.config"
 		},
-		"18": {
+		"27405": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy.calculate"
 		},
-		"19": {
+		"27406": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy.calculate"
 		},
-		"20": {
+		"27407": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "items"
 		},
-		"21": {
+		"27408": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "taxLines"
 		},
-		"22": {
+		"27409": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "calculationContext"
 		},
-		"23": {
+		"27410": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"24": {
+		"27411": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"25": {
+		"27412": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"26": {
+		"27413": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"27": {
+		"27414": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"28": {
+		"27415": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"29": {
+		"27416": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"30": {
+		"27417": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"31": {
+		"27418": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"32": {
+		"27419": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"33": {
+		"27420": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"34": {
+		"27421": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"35": {
+		"27422": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"36": {
+		"27423": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"37": {
+		"27424": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"38": {
+		"27425": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"39": {
+		"27426": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"40": {
+		"27427": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"41": {
+		"27428": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"42": {
+		"27429": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"43": {
+		"27430": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"44": {
+		"27431": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"45": {
+		"27432": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"46": {
+		"27433": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"47": {
+		"27434": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"48": {
+		"27435": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"49": {
+		"27436": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"50": {
+		"27437": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"51": {
+		"27438": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"52": {
+		"27439": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"53": {
+		"27440": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		}

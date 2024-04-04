@@ -20,7 +20,7 @@ ___
 
 ## Properties
 
-<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="TotalsService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../tax_calculation/interfaces/tax_calculation.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="TotalsService"/>
 
 ___
 
@@ -173,7 +173,7 @@ applies to a specific line item.
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;","optional":false,"defaultValue":"","description":"the allocation map for the line items in the cart or order.","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;LineAllocationsMap&#62;","optional":false,"defaultValue":"","description":"the allocation map for the line items in the cart or order.","expandable":false,"children":[]}]}  sectionTitle="getAllocationMap"/>
 
 ### getRefundedTotal
 
@@ -352,7 +352,7 @@ Prepares the calculation context for a tax total calculation.
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;","optional":false,"defaultValue":"","description":"the tax calculation context","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TaxCalculationContext](../../tax_service/types/tax_service.TaxCalculationContext.mdx)&#62;","optional":false,"defaultValue":"","description":"the tax calculation context","expandable":false,"children":[]}]}  sectionTitle="getCalculationContext"/>
 
 ### rounded
 

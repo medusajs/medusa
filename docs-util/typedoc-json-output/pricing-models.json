@@ -1,5 +1,5 @@
 {
-	"id": 0,
+	"id": 4965,
 	"name": "pricing-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 63,
+			"id": 5028,
 			"name": "PriceListRuleValue",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 64,
+					"id": 5029,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 65,
+							"id": 5030,
 							"name": "new PriceListRuleValue",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 63,
+								"target": 5028,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -47,7 +47,7 @@
 					]
 				},
 				{
-					"id": 77,
+					"id": 5042,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -65,7 +65,7 @@
 					}
 				},
 				{
-					"id": 66,
+					"id": 5031,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -76,7 +76,7 @@
 					}
 				},
 				{
-					"id": 67,
+					"id": 5032,
 					"name": "price_list_rule_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -87,20 +87,20 @@
 					}
 				},
 				{
-					"id": 68,
+					"id": 5033,
 					"name": "price_list_rule",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 46,
+						"target": 5011,
 						"name": "default",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 69,
+					"id": 5034,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -111,7 +111,7 @@
 					}
 				},
 				{
-					"id": 70,
+					"id": 5035,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127,7 +127,7 @@
 					}
 				},
 				{
-					"id": 71,
+					"id": 5036,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -143,7 +143,7 @@
 					}
 				},
 				{
-					"id": 72,
+					"id": 5037,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -169,14 +169,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 73,
+					"id": 5038,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 74,
+							"id": 5039,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -189,14 +189,14 @@
 					]
 				},
 				{
-					"id": 75,
+					"id": 5040,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 76,
+							"id": 5041,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -213,54 +213,54 @@
 				{
 					"title": "Constructors",
 					"children": [
-						64
+						5029
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						77,
-						66,
-						67,
-						68,
-						69,
-						70,
-						71,
-						72
+						5042,
+						5031,
+						5032,
+						5033,
+						5034,
+						5035,
+						5036,
+						5037
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						73,
-						75
+						5038,
+						5040
 					]
 				}
 			]
 		},
 		{
-			"id": 46,
+			"id": 5011,
 			"name": "PriceListRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 47,
+					"id": 5012,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 48,
+							"id": 5013,
 							"name": "new PriceListRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 46,
+								"target": 5011,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -268,7 +268,7 @@
 					]
 				},
 				{
-					"id": 62,
+					"id": 5027,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -284,7 +284,7 @@
 					}
 				},
 				{
-					"id": 49,
+					"id": 5014,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -295,7 +295,7 @@
 					}
 				},
 				{
-					"id": 50,
+					"id": 5015,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -306,20 +306,20 @@
 					}
 				},
 				{
-					"id": 51,
+					"id": 5016,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 125,
+						"target": 5090,
 						"name": "RuleType",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 52,
+					"id": 5017,
 					"name": "price_list_rule_values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -333,7 +333,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 63,
+								"target": 5028,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -348,7 +348,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 53,
+					"id": 5018,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -359,20 +359,20 @@
 					}
 				},
 				{
-					"id": 54,
+					"id": 5019,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 24,
+						"target": 4989,
 						"name": "default",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 55,
+					"id": 5020,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -388,7 +388,7 @@
 					}
 				},
 				{
-					"id": 56,
+					"id": 5021,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -404,7 +404,7 @@
 					}
 				},
 				{
-					"id": 57,
+					"id": 5022,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -430,14 +430,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 58,
+					"id": 5023,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 59,
+							"id": 5024,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -450,14 +450,14 @@
 					]
 				},
 				{
-					"id": 60,
+					"id": 5025,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 61,
+							"id": 5026,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -474,56 +474,56 @@
 				{
 					"title": "Constructors",
 					"children": [
-						47
+						5012
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						62,
-						49,
-						50,
-						51,
-						52,
-						53,
-						54,
-						55,
-						56,
-						57
+						5027,
+						5014,
+						5015,
+						5016,
+						5017,
+						5018,
+						5019,
+						5020,
+						5021,
+						5022
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						58,
-						60
+						5023,
+						5025
 					]
 				}
 			]
 		},
 		{
-			"id": 24,
+			"id": 4989,
 			"name": "PriceList",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 25,
+					"id": 4990,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 26,
+							"id": 4991,
 							"name": "new PriceList",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 24,
+								"target": 4989,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -531,7 +531,7 @@
 					]
 				},
 				{
-					"id": 45,
+					"id": 5010,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -547,7 +547,7 @@
 					}
 				},
 				{
-					"id": 27,
+					"id": 4992,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -558,7 +558,7 @@
 					}
 				},
 				{
-					"id": 28,
+					"id": 4993,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -569,7 +569,7 @@
 					}
 				},
 				{
-					"id": 29,
+					"id": 4994,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -580,7 +580,7 @@
 					}
 				},
 				{
-					"id": 30,
+					"id": 4995,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -588,7 +588,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/utils/dist/pricing/price-list.d.ts",
+							"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 							"qualifiedName": "PriceListStatus"
 						},
 						"name": "PriceListStatus",
@@ -596,7 +596,7 @@
 					}
 				},
 				{
-					"id": 31,
+					"id": 4996,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -604,7 +604,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/utils/dist/pricing/price-list.d.ts",
+							"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 							"qualifiedName": "PriceListType"
 						},
 						"name": "PriceListType",
@@ -612,7 +612,7 @@
 					}
 				},
 				{
-					"id": 32,
+					"id": 4997,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -638,7 +638,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 33,
+					"id": 4998,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -664,7 +664,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 34,
+					"id": 4999,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -678,7 +678,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 1,
+								"target": 4966,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -693,7 +693,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 35,
+					"id": 5000,
 					"name": "price_list_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -707,7 +707,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 46,
+								"target": 5011,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -722,7 +722,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 36,
+					"id": 5001,
 					"name": "rule_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -736,7 +736,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 125,
+								"target": 5090,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							},
@@ -751,7 +751,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 37,
+					"id": 5002,
 					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -763,7 +763,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 38,
+					"id": 5003,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -779,7 +779,7 @@
 					}
 				},
 				{
-					"id": 39,
+					"id": 5004,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -795,7 +795,7 @@
 					}
 				},
 				{
-					"id": 40,
+					"id": 5005,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -821,14 +821,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 41,
+					"id": 5006,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 42,
+							"id": 5007,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -841,14 +841,14 @@
 					]
 				},
 				{
-					"id": 43,
+					"id": 5008,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 44,
+							"id": 5009,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -865,61 +865,61 @@
 				{
 					"title": "Constructors",
 					"children": [
-						25
+						4990
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						45,
-						27,
-						28,
-						29,
-						30,
-						31,
-						32,
-						33,
-						34,
-						35,
-						36,
-						37,
-						38,
-						39,
-						40
+						5010,
+						4992,
+						4993,
+						4994,
+						4995,
+						4996,
+						4997,
+						4998,
+						4999,
+						5000,
+						5001,
+						5002,
+						5003,
+						5004,
+						5005
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						41,
-						43
+						5006,
+						5008
 					]
 				}
 			]
 		},
 		{
-			"id": 78,
+			"id": 5043,
 			"name": "PriceRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 79,
+					"id": 5044,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 80,
+							"id": 5045,
 							"name": "new PriceRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 78,
+								"target": 5043,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -927,7 +927,7 @@
 					]
 				},
 				{
-					"id": 97,
+					"id": 5062,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -945,7 +945,7 @@
 					}
 				},
 				{
-					"id": 81,
+					"id": 5046,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -956,7 +956,7 @@
 					}
 				},
 				{
-					"id": 82,
+					"id": 5047,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -967,20 +967,20 @@
 					}
 				},
 				{
-					"id": 83,
+					"id": 5048,
 					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 98,
+						"target": 5063,
 						"name": "default",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 84,
+					"id": 5049,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -991,20 +991,20 @@
 					}
 				},
 				{
-					"id": 85,
+					"id": 5050,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 125,
+						"target": 5090,
 						"name": "RuleType",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 86,
+					"id": 5051,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1015,7 +1015,7 @@
 					}
 				},
 				{
-					"id": 87,
+					"id": 5052,
 					"name": "priority",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1027,7 +1027,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 88,
+					"id": 5053,
 					"name": "price_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1038,20 +1038,20 @@
 					}
 				},
 				{
-					"id": 89,
+					"id": 5054,
 					"name": "price",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 1,
+						"target": 4966,
 						"name": "default",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 90,
+					"id": 5055,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1067,7 +1067,7 @@
 					}
 				},
 				{
-					"id": 91,
+					"id": 5056,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1083,7 +1083,7 @@
 					}
 				},
 				{
-					"id": 92,
+					"id": 5057,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1109,14 +1109,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 93,
+					"id": 5058,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 94,
+							"id": 5059,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1129,14 +1129,14 @@
 					]
 				},
 				{
-					"id": 95,
+					"id": 5060,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 96,
+							"id": 5061,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1153,59 +1153,59 @@
 				{
 					"title": "Constructors",
 					"children": [
-						79
+						5044
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						97,
-						81,
-						82,
-						83,
-						84,
-						85,
-						86,
-						87,
-						88,
-						89,
-						90,
-						91,
-						92
+						5062,
+						5046,
+						5047,
+						5048,
+						5049,
+						5050,
+						5051,
+						5052,
+						5053,
+						5054,
+						5055,
+						5056,
+						5057
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						93,
-						95
+						5058,
+						5060
 					]
 				}
 			]
 		},
 		{
-			"id": 112,
+			"id": 5077,
 			"name": "PriceSetRuleType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 113,
+					"id": 5078,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 114,
+							"id": 5079,
 							"name": "new PriceSetRuleType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 112,
+								"target": 5077,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -1213,7 +1213,7 @@
 					]
 				},
 				{
-					"id": 115,
+					"id": 5080,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1224,7 +1224,7 @@
 					}
 				},
 				{
-					"id": 116,
+					"id": 5081,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1235,7 +1235,7 @@
 					}
 				},
 				{
-					"id": 117,
+					"id": 5082,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1246,7 +1246,7 @@
 					}
 				},
 				{
-					"id": 118,
+					"id": 5083,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1262,7 +1262,7 @@
 					}
 				},
 				{
-					"id": 119,
+					"id": 5084,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1278,7 +1278,7 @@
 					}
 				},
 				{
-					"id": 120,
+					"id": 5085,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1304,14 +1304,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 121,
+					"id": 5086,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 122,
+							"id": 5087,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1324,14 +1324,14 @@
 					]
 				},
 				{
-					"id": 123,
+					"id": 5088,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 124,
+							"id": 5089,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1348,52 +1348,52 @@
 				{
 					"title": "Constructors",
 					"children": [
-						113
+						5078
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						115,
-						116,
-						117,
-						118,
-						119,
-						120
+						5080,
+						5081,
+						5082,
+						5083,
+						5084,
+						5085
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						121,
-						123
+						5086,
+						5088
 					]
 				}
 			]
 		},
 		{
-			"id": 98,
+			"id": 5063,
 			"name": "PriceSet",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 99,
+					"id": 5064,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 100,
+							"id": 5065,
 							"name": "new PriceSet",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 98,
+								"target": 5063,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -1401,7 +1401,7 @@
 					]
 				},
 				{
-					"id": 101,
+					"id": 5066,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1412,7 +1412,7 @@
 					}
 				},
 				{
-					"id": 102,
+					"id": 5067,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1426,7 +1426,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 1,
+								"target": 4966,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -1441,7 +1441,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 103,
+					"id": 5068,
 					"name": "price_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1455,7 +1455,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 78,
+								"target": 5043,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -1470,7 +1470,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 104,
+					"id": 5069,
 					"name": "rule_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1484,7 +1484,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 125,
+								"target": 5090,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							},
@@ -1499,7 +1499,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 105,
+					"id": 5070,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1515,7 +1515,7 @@
 					}
 				},
 				{
-					"id": 106,
+					"id": 5071,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1531,7 +1531,7 @@
 					}
 				},
 				{
-					"id": 107,
+					"id": 5072,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1557,14 +1557,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 108,
+					"id": 5073,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 109,
+							"id": 5074,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1577,14 +1577,14 @@
 					]
 				},
 				{
-					"id": 110,
+					"id": 5075,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 111,
+							"id": 5076,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1601,53 +1601,53 @@
 				{
 					"title": "Constructors",
 					"children": [
-						99
+						5064
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						101,
-						102,
-						103,
-						104,
-						105,
-						106,
-						107
+						5066,
+						5067,
+						5068,
+						5069,
+						5070,
+						5071,
+						5072
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						108,
-						110
+						5073,
+						5075
 					]
 				}
 			]
 		},
 		{
-			"id": 1,
+			"id": 4966,
 			"name": "Price",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 2,
+					"id": 4967,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3,
+							"id": 4968,
 							"name": "new Price",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1,
+								"target": 4966,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -1655,7 +1655,7 @@
 					]
 				},
 				{
-					"id": 23,
+					"id": 4988,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1673,7 +1673,7 @@
 					}
 				},
 				{
-					"id": 4,
+					"id": 4969,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1684,7 +1684,7 @@
 					}
 				},
 				{
-					"id": 5,
+					"id": 4970,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1705,7 +1705,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 6,
+					"id": 4971,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1716,7 +1716,7 @@
 					}
 				},
 				{
-					"id": 7,
+					"id": 4972,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1727,7 +1727,7 @@
 					}
 				},
 				{
-					"id": 8,
+					"id": 4973,
 					"name": "min_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1748,7 +1748,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 9,
+					"id": 4974,
 					"name": "max_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1769,7 +1769,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10,
+					"id": 4975,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1780,7 +1780,7 @@
 					}
 				},
 				{
-					"id": 11,
+					"id": 4976,
 					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1789,13 +1789,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 98,
+						"target": 5063,
 						"name": "default",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 12,
+					"id": 4977,
 					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1807,7 +1807,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 13,
+					"id": 4978,
 					"name": "price_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1821,7 +1821,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 78,
+								"target": 5043,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -1836,7 +1836,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 14,
+					"id": 4979,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1857,7 +1857,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 15,
+					"id": 4980,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1871,7 +1871,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 24,
+								"target": 4989,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							}
@@ -1880,7 +1880,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 16,
+					"id": 4981,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1896,7 +1896,7 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 4982,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1912,7 +1912,7 @@
 					}
 				},
 				{
-					"id": 18,
+					"id": 4983,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1938,14 +1938,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 19,
+					"id": 4984,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20,
+							"id": 4985,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1958,14 +1958,14 @@
 					]
 				},
 				{
-					"id": 21,
+					"id": 4986,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 22,
+							"id": 4987,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1982,62 +1982,62 @@
 				{
 					"title": "Constructors",
 					"children": [
-						2
+						4967
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						23,
-						4,
-						5,
-						6,
-						7,
-						8,
-						9,
-						10,
-						11,
-						12,
-						13,
-						14,
-						15,
-						16,
-						17,
-						18
+						4988,
+						4969,
+						4970,
+						4971,
+						4972,
+						4973,
+						4974,
+						4975,
+						4976,
+						4977,
+						4978,
+						4979,
+						4980,
+						4981,
+						4982,
+						4983
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						19,
-						21
+						4984,
+						4986
 					]
 				}
 			]
 		},
 		{
-			"id": 125,
+			"id": 5090,
 			"name": "RuleType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 126,
+					"id": 5091,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 127,
+							"id": 5092,
 							"name": "new RuleType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 125,
+								"target": 5090,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							}
@@ -2045,7 +2045,7 @@
 					]
 				},
 				{
-					"id": 140,
+					"id": 5105,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2058,7 +2058,7 @@
 					}
 				},
 				{
-					"id": 128,
+					"id": 5093,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2069,7 +2069,7 @@
 					}
 				},
 				{
-					"id": 129,
+					"id": 5094,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2080,7 +2080,7 @@
 					}
 				},
 				{
-					"id": 130,
+					"id": 5095,
 					"name": "rule_attribute",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2091,7 +2091,7 @@
 					}
 				},
 				{
-					"id": 131,
+					"id": 5096,
 					"name": "default_priority",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2102,7 +2102,7 @@
 					}
 				},
 				{
-					"id": 132,
+					"id": 5097,
 					"name": "price_sets",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2116,7 +2116,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 98,
+								"target": 5063,
 								"name": "default",
 								"package": "@medusajs/pricing"
 							},
@@ -2131,7 +2131,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 133,
+					"id": 5098,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2147,7 +2147,7 @@
 					}
 				},
 				{
-					"id": 134,
+					"id": 5099,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2163,7 +2163,7 @@
 					}
 				},
 				{
-					"id": 135,
+					"id": 5100,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2189,14 +2189,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 136,
+					"id": 5101,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 137,
+							"id": 5102,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2209,14 +2209,14 @@
 					]
 				},
 				{
-					"id": 138,
+					"id": 5103,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 139,
+							"id": 5104,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2233,28 +2233,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						126
+						5091
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						140,
-						128,
-						129,
-						130,
-						131,
-						132,
-						133,
-						134,
-						135
+						5105,
+						5093,
+						5094,
+						5095,
+						5096,
+						5097,
+						5098,
+						5099,
+						5100
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						136,
-						138
+						5101,
+						5103
 					]
 				}
 			]
@@ -2264,516 +2264,516 @@
 		{
 			"title": "Classes",
 			"children": [
-				63,
-				46,
-				24,
-				78,
-				112,
-				98,
-				1,
-				125
+				5028,
+				5011,
+				4989,
+				5043,
+				5077,
+				5063,
+				4966,
+				5090
 			]
 		}
 	],
 	"packageName": "@medusajs/pricing",
 	"symbolIdMap": {
-		"0": {
+		"4965": {
 			"sourceFileName": "../../../packages/pricing/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"4966": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default"
 		},
-		"4": {
+		"4969": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.id"
 		},
-		"5": {
+		"4970": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.title"
 		},
-		"6": {
+		"4971": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"7": {
+		"4972": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8": {
+		"4973": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.min_quantity"
 		},
-		"9": {
+		"4974": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.max_quantity"
 		},
-		"10": {
+		"4975": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"11": {
+		"4976": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_set"
 		},
-		"12": {
+		"4977": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.rules_count"
 		},
-		"13": {
+		"4978": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_rules"
 		},
-		"14": {
+		"4979": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_list_id"
 		},
-		"15": {
+		"4980": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_list"
 		},
-		"16": {
+		"4981": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"17": {
+		"4982": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"18": {
+		"4983": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"19": {
+		"4984": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"20": {
+		"4985": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"21": {
+		"4986": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"22": {
+		"4987": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"23": {
+		"4988": {
 			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"24": {
+		"4989": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default"
 		},
-		"27": {
+		"4992": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.id"
 		},
-		"28": {
+		"4993": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.title"
 		},
-		"29": {
+		"4994": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.description"
 		},
-		"30": {
+		"4995": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.status"
 		},
-		"31": {
+		"4996": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.type"
 		},
-		"32": {
+		"4997": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.starts_at"
 		},
-		"33": {
+		"4998": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.ends_at"
 		},
-		"34": {
+		"4999": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.prices"
 		},
-		"35": {
+		"5000": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.price_list_rules"
 		},
-		"36": {
+		"5001": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.rule_types"
 		},
-		"37": {
+		"5002": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.rules_count"
 		},
-		"38": {
+		"5003": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"39": {
+		"5004": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"40": {
+		"5005": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"41": {
+		"5006": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"42": {
+		"5007": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"43": {
+		"5008": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"44": {
+		"5009": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"45": {
+		"5010": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"46": {
+		"5011": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default"
 		},
-		"49": {
+		"5014": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"50": {
+		"5015": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"51": {
+		"5016": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.rule_type"
 		},
-		"52": {
+		"5017": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list_rule_values"
 		},
-		"53": {
+		"5018": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list_id"
 		},
-		"54": {
+		"5019": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list"
 		},
-		"55": {
+		"5020": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"56": {
+		"5021": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"57": {
+		"5022": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"58": {
+		"5023": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"59": {
+		"5024": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"60": {
+		"5025": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"61": {
+		"5026": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"62": {
+		"5027": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"63": {
+		"5028": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default"
 		},
-		"66": {
+		"5031": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.id"
 		},
-		"67": {
+		"5032": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.price_list_rule_id"
 		},
-		"68": {
+		"5033": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.price_list_rule"
 		},
-		"69": {
+		"5034": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.value"
 		},
-		"70": {
+		"5035": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"71": {
+		"5036": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"72": {
+		"5037": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"73": {
+		"5038": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"74": {
+		"5039": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"75": {
+		"5040": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"76": {
+		"5041": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"77": {
+		"5042": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"78": {
+		"5043": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default"
 		},
-		"81": {
+		"5046": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"82": {
+		"5047": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"83": {
+		"5048": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_set"
 		},
-		"84": {
+		"5049": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"85": {
+		"5050": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.rule_type"
 		},
-		"86": {
+		"5051": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.value"
 		},
-		"87": {
+		"5052": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.priority"
 		},
-		"88": {
+		"5053": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_id"
 		},
-		"89": {
+		"5054": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price"
 		},
-		"90": {
+		"5055": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"91": {
+		"5056": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"92": {
+		"5057": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"93": {
+		"5058": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"94": {
+		"5059": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"95": {
+		"5060": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"96": {
+		"5061": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"97": {
+		"5062": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"98": {
+		"5063": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default"
 		},
-		"101": {
+		"5066": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.id"
 		},
-		"102": {
+		"5067": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.prices"
 		},
-		"103": {
+		"5068": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.price_rules"
 		},
-		"104": {
+		"5069": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.rule_types"
 		},
-		"105": {
+		"5070": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"106": {
+		"5071": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"107": {
+		"5072": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"108": {
+		"5073": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"109": {
+		"5074": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"110": {
+		"5075": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"111": {
+		"5076": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"112": {
+		"5077": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default"
 		},
-		"115": {
+		"5080": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.id"
 		},
-		"116": {
+		"5081": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"117": {
+		"5082": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"118": {
+		"5083": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"119": {
+		"5084": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"120": {
+		"5085": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"121": {
+		"5086": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"122": {
+		"5087": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"123": {
+		"5088": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"124": {
+		"5089": {
 			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"125": {
+		"5090": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType"
 		},
-		"128": {
+		"5093": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.id"
 		},
-		"129": {
+		"5094": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.name"
 		},
-		"130": {
+		"5095": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.rule_attribute"
 		},
-		"131": {
+		"5096": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.default_priority"
 		},
-		"132": {
+		"5097": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.price_sets"
 		},
-		"133": {
+		"5098": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.created_at"
 		},
-		"134": {
+		"5099": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.updated_at"
 		},
-		"135": {
+		"5100": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.deleted_at"
 		},
-		"136": {
+		"5101": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onCreate"
 		},
-		"137": {
+		"5102": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onCreate"
 		},
-		"138": {
+		"5103": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onInit"
 		},
-		"139": {
+		"5104": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onInit"
 		},
-		"140": {
+		"5105": {
 			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.[OptionalProps]"
 		}

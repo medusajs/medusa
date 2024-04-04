@@ -2200,6 +2200,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-env@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "cross-env@npm:7.0.3"
+  dependencies:
+    cross-spawn: ^7.0.1
+  bin:
+    cross-env: src/bin/cross-env.js
+    cross-env-shell: src/bin/cross-env-shell.js
+  checksum: f3765c25746c69fcca369655c442c6c886e54ccf3ab8c16847d5ad0e91e2f337d36eedc6599c1227904bf2a228d721e690324446876115bc8e7b32a866735ecf
+  languageName: node
+  linkType: hard
+
 "cross-fetch@npm:3.1.5":
   version: 3.1.5
   resolution: "cross-fetch@npm:3.1.5"
@@ -2218,7 +2230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -2351,8 +2363,6 @@ __metadata:
     typescript: 5.2
     utils: "*"
     yaml: ^2.3.4
-  bin:
-    workflow-diagrams-generator: dist/index.js
   languageName: unknown
   linkType: soft
 
@@ -4564,7 +4574,7 @@ __metadata:
     react-docgen: ^7.0.1
     resolve: ^1.22.8
     ts-node: ^10.9.1
-    typedoc: ^0.25.7
+    typedoc: ^0.25.12
     typedoc-plugin-custom: "*"
     typescript: 5.2
     utils: "*"
@@ -4770,15 +4780,6 @@ __metadata:
     glob: ^10.3.10
     randomcolor: ^0.6.2
     ts-node: ^10.9.1
-    typedoc: ^0.25.7
-    typedoc-config: "*"
-    typedoc-monorepo-link-types: ^0.0.2
-    typedoc-plugin-custom: "*"
-    typedoc-plugin-markdown-medusa: "*"
-    typedoc-plugin-merge-modules: 5.1.0
-    typedoc-plugin-missing-exports: ^2.1.0
-    typedoc-plugin-reference-excluder: 1.1.3
-    typedoc-plugin-rename-defaults: ^0.7.0
     typescript: 5.2
   languageName: unknown
   linkType: soft
@@ -5265,7 +5266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-config@*, typedoc-config@workspace:packages/typedoc-config":
+"typedoc-config@workspace:packages/typedoc-config":
   version: 0.0.0-use.local
   resolution: "typedoc-config@workspace:packages/typedoc-config"
   dependencies:
@@ -5276,14 +5277,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typedoc-monorepo-link-types@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "typedoc-monorepo-link-types@npm:0.0.2"
+"typedoc-generate-references@workspace:packages/typedoc-generate-references":
+  version: 0.0.0-use.local
+  resolution: "typedoc-generate-references@workspace:packages/typedoc-generate-references"
+  dependencies:
+    "@types/node": ^20.9.4
+    "@types/pluralize": ^0.0.33
+    chalk: ^5.3.0
+    commander: ^11.1.0
+    cross-env: ^7.0.3
+    dotenv: ^16.3.1
+    randomcolor: ^0.6.2
+    ts-node: ^10.9.1
+    typedoc-plugin-custom: "*"
+    typedoc-plugin-markdown-medusa: "*"
+    typedoc-plugin-rename-defaults: ^0.7.0
+    types: "*"
+    typescript: 5.2
+    utils: "*"
+    yaml: ^2.3.4
   peerDependencies:
-    typedoc: 0.22.x
-  checksum: f282e6c0b1becdc36fd3cce5f4a79573b31098ec64c4e92bc17cc9001920e4e196b2973fa666f027643da5d34cbf3344c768a0ffd8f1907e04416b20c0af6ce6
-  languageName: node
-  linkType: hard
+    typedoc: 0.25.x
+  languageName: unknown
+  linkType: soft
 
 "typedoc-plugin-custom@*, typedoc-plugin-custom@workspace:packages/typedoc-plugin-custom":
   version: 0.0.0-use.local
@@ -5316,33 +5332,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typedoc-plugin-merge-modules@npm:5.1.0":
-  version: 5.1.0
-  resolution: "typedoc-plugin-merge-modules@npm:5.1.0"
-  peerDependencies:
-    typedoc: 0.24.x || 0.25.x
-  checksum: 59b44c5afe02372367db2be237546c9ab1a755ff8eab9b696ff8649f0eee87d5c7290b931642371907877fdf4754875076056d8cc29cfef582a665aaf49894ca
-  languageName: node
-  linkType: hard
-
-"typedoc-plugin-missing-exports@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "typedoc-plugin-missing-exports@npm:2.1.0"
-  peerDependencies:
-    typedoc: 0.24.x || 0.25.x
-  checksum: 65ba23913e389b473df770ad4b0e29cb1f90c9a11bc6f554863203618d5db23c5296686d03fb6b37dcad75e902d3f7711b5c6589a513cd0a2494f2440c170690
-  languageName: node
-  linkType: hard
-
-"typedoc-plugin-reference-excluder@npm:1.1.3":
-  version: 1.1.3
-  resolution: "typedoc-plugin-reference-excluder@npm:1.1.3"
-  peerDependencies:
-    typedoc: ">=0.22.0"
-  checksum: df3ffb7cade292d8f3001d41d541e11644b04b120c96ef7dad417ee4e75caf1aeffcfbb4ec025251c6510e82b690596087b9bdf79f3bbcdb8f968d1e5bb53e74
-  languageName: node
-  linkType: hard
-
 "typedoc-plugin-rename-defaults@npm:^0.7.0":
   version: 0.7.0
   resolution: "typedoc-plugin-rename-defaults@npm:0.7.0"
@@ -5354,19 +5343,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.25.7":
-  version: 0.25.7
-  resolution: "typedoc@npm:0.25.7"
+"typedoc@npm:^0.25.12":
+  version: 0.25.12
+  resolution: "typedoc@npm:0.25.12"
   dependencies:
     lunr: ^2.3.9
     marked: ^4.3.0
     minimatch: ^9.0.3
     shiki: ^0.14.7
   peerDependencies:
-    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x
+    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x
   bin:
     typedoc: bin/typedoc
-  checksum: e663be0534dd56f45f041a478ee0613a1bf96cad7208a5cfc771981c904d0f30d8dca51956486f125f8004237264acc5dd45920fa6a0a32e351e36d74279abb1
+  checksum: 35157a90954ed67243bc1ad430781de381431959c62e24f8a8688c4ebae62c2ee11d404002dfd43a0df3bf96721d94fce928423fe1f91f1ed40c99f29c5276aa
   languageName: node
   linkType: hard
 
