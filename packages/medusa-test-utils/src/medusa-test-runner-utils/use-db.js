@@ -26,7 +26,9 @@ module.exports = {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
-    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const configModuleLoader =
+      require("@medusajs/medusa/dist/loaders/config").default
+    const configModule = configModuleLoader(cwd)
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default

@@ -258,7 +258,6 @@ const ComboboxImpl = <T extends Value = string>(
         </Popover.Anchor>
         <Popover.Portal>
           <Popover.Content
-            asChild
             align="center"
             side="bottom"
             sideOffset={8}
@@ -322,6 +321,16 @@ const ComboboxImpl = <T extends Value = string>(
           </Popover.Content>
         </Popover.Portal>
       </PrimitiveComboboxProvider>
+      {open && (
+        <div
+          tabIndex={-1}
+          aria-hidden="true"
+          data-aria-hidden="true"
+          data-state="open"
+          className="fixed inset-0 size-full"
+          onClick={() => setOpen(false)}
+        />
+      )}
     </Popover.Root>
   )
 }

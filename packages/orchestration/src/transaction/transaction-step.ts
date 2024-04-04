@@ -3,6 +3,7 @@ import {
   DistributedTransaction,
   TransactionPayload,
 } from "./distributed-transaction"
+import { TransactionOrchestrator } from "./transaction-orchestrator"
 import {
   TransactionHandlerType,
   TransactionState,
@@ -14,7 +15,9 @@ export type TransactionStepHandler = (
   actionId: string,
   handlerType: TransactionHandlerType,
   payload: TransactionPayload,
-  transaction?: DistributedTransaction
+  transaction: DistributedTransaction,
+  step: TransactionStep,
+  orchestrator: TransactionOrchestrator
 ) => Promise<unknown>
 
 /**

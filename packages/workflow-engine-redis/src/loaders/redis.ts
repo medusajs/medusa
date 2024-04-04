@@ -7,6 +7,7 @@ export default async ({
   container,
   logger,
   options,
+                        dataLoaderOnly
 }: LoaderOptions): Promise<void> => {
   const {
     url,
@@ -58,6 +59,7 @@ export default async ({
   }
 
   container.register({
+    partialLoading: asValue(true),
     redisConnection: asValue(connection),
     redisWorkerConnection: asValue(workerConnection),
     redisPublisher: asValue(redisPublisher),
