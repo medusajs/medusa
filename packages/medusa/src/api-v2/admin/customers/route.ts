@@ -12,17 +12,6 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  // const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-  //   ModuleRegistrationName.CUSTOMER
-  // )
-
-  // // console.warn(req.filterableFields)
-  // // console.warn(req.listConfig)
-  // // const [customers, count] = await customerModuleService.listAndCount(
-  // //   req.filterableFields,
-  // //   req.listConfig
-  // // )
-
   const { skip, take } = req.remoteQueryConfig.pagination
 
   const remoteQuery = req.scope.resolve("remoteQuery")

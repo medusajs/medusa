@@ -44,6 +44,10 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   offset: 0,
 }) {
   @IsOptional()
+  @IsString()
+  q?: string
+
+  @IsOptional()
   @IsString({ each: true })
   id?: string | string[]
 
