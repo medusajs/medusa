@@ -59,10 +59,16 @@ export type TransactionStepsDefinition = {
 
   /**
    * If true, the step is executed asynchronously. This means that the workflow will not wait for the response of this step.
-   * Async steps require to have their responses set using "setStepSuccess" or "setStepFailure".
+   * Async steps require to have their responses set using "setStepSuccess" or "setStepFailure", unless it is combined with "backgroundExecution: true".
    * If combined with a timeout, and any response is not set within that interval, the step will be marked as "TransactionStepStatus.TIMEOUT" and the workflow will be reverted immediately.
    */
   async?: boolean
+
+  /**
+   * It applies to "async" steps only, allowing them to run in the background and automatically complete without external intervention.
+   * It is ideal for time-consuming tasks that will be complete after the execution, contrasting with standard "async" operations that require a response to be set in a later stage.
+   */
+  backgroundExecution?: boolean
 
   /**
    * If true, the compensation function for this step is executed asynchronously. Which means, the response has to be set using "setStepSuccess" or "setStepFailure".
