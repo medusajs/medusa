@@ -100,7 +100,7 @@ class Product {
   @Searchable()
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: ["soft-remove"] as any,
-  } as any)
+  })
   variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "text", nullable: true })
@@ -134,7 +134,7 @@ class Product {
     fieldName: "collection_id",
     mapToPk: true,
     onDelete: "set null",
-  } as any)
+  })
   collection_id: string | null
 
   @ManyToOne(() => ProductCollection, {
