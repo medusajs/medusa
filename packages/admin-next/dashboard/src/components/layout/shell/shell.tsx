@@ -132,9 +132,6 @@ const UserBadge = () => {
     enabled: isV2Enabled,
   })
 
-  console.warn(v1)
-  console.warn(v2)
-
   // Comment: Only place where we switch between the two modes inline.
   //  This is to avoid having to rebuild the shell for the app.
   const { user, isLoading, isError, error } = !isV2Enabled ? v1 : v2
