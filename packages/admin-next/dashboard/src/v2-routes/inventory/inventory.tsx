@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { InventoryTabs } from "./shared/components/inventory-tabs"
+import { InventoryTabs } from "./common/components/inventory-tabs"
 
 export function Inventory() {
   return (

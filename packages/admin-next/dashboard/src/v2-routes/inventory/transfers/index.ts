@@ -1,1 +1,1 @@
-export { Trasnfers as Component } from "./trasnfers"
+export { Transfers as Component } from "./transfers.tsx"
