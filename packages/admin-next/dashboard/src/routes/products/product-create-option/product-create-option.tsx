@@ -3,9 +3,9 @@ import { useAdminProduct } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import { EditProductOptionsForm } from "./components/edit-product-options-form"
+import { CreateProductOptionForm } from "./components/create-product-option-form"
 
-export const ProductOptions = () => {
+export const ProductCreateOption = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
@@ -18,9 +18,9 @@ export const ProductOptions = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("products.editOptions")}</Heading>
+        <Heading>{t("products.options.create.header")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && product && <EditProductOptionsForm product={product} />}
+      {!isLoading && product && <CreateProductOptionForm product={product} />}
     </RouteDrawer>
   )
 }

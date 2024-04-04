@@ -1,4 +1,4 @@
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare, Plus } from "@medusajs/icons"
 import { Product, ProductOption } from "@medusajs/medusa"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -16,15 +16,15 @@ export const ProductOptionSection = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("products.options")}</Heading>
+        <Heading level="h2">{t("products.options.header")}</Heading>
         <ActionMenu
           groups={[
             {
               actions: [
                 {
-                  label: t("actions.edit"),
-                  to: "options",
-                  icon: <PencilSquare />,
+                  label: t("actions.create"),
+                  to: "options/create",
+                  icon: <Plus />,
                 },
               ],
             },
@@ -35,7 +35,7 @@ export const ProductOptionSection = ({
         return (
           <div
             key={option.id}
-            className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4"
+            className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_28px] items-start gap-4 px-6 py-4"
           >
             <Text size="small" leading="compact" weight="plus">
               {option.title}
@@ -53,6 +53,19 @@ export const ProductOptionSection = ({
                 )
               })}
             </div>
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("actions.edit"),
+                      to: `options/${option.id}/edit`,
+                      icon: <PencilSquare />,
+                    },
+                  ],
+                },
+              ]}
+            />
           </div>
         )
       })}
