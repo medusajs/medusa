@@ -27,7 +27,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
     reset,
   } = form
   const { mutate, isLoading } = useAdminCreateShippingOption()
-  const { getShippingOptionData } = useShippingOptionFormData(region.id)
+  const { getShippingOptionData } = useShippingOptionFormData(region.id, true)
   const notifcation = useNotification()
   const { isFeatureEnabled } = useFeatureFlag()
 
