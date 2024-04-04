@@ -53,8 +53,7 @@ export const listTransformQueryConfig = {
 }
 
 export const listRuleValueTransformQueryConfig = {
-  defaultFields: [],
-  defaultRelations: [],
-  allowedRelations: [],
+  defaults: [],
+  allowed: [],
   isList: true,
 }

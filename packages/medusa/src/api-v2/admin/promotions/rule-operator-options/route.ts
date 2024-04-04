@@ -1,31 +1,31 @@
-import { PromotionRuleOperator } from "@medusajs/utils"
+import { RuleOperator } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
 
+const operators = [
+  {
+    id: RuleOperator.IN,
+    value: RuleOperator.IN,
+    label: "In",
+  },
+  {
+    id: RuleOperator.EQ,
+    value: RuleOperator.EQ,
+    label: "Equals",
+  },
+  {
+    id: RuleOperator.NE,
+    value: RuleOperator.NE,
+    label: "Not In",
+  },
+]
+
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const operators = [
-    {
-      id: "in",
-      value: PromotionRuleOperator.IN,
-      label: "In",
-    },
-    {
-      id: "eq",
-      value: PromotionRuleOperator.EQ,
-      label: "Equals",
-    },
-    {
-      id: "ne",
-      value: PromotionRuleOperator.NE,
-      label: "Not In",
-    },
-  ]
-
   res.json({
     operators,
   })
