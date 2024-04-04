@@ -109,9 +109,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       }
     }
 
-    Array.from(parentMpaths).forEach((mpath) => {
-      mpaths.push({ mpath })
-    })
+    mpaths.push({ mpath: Array.from(parentMpaths) })
 
     const whereOptions = {
       ...findOptions.where,
