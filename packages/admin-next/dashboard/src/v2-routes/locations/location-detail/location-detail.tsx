@@ -10,7 +10,7 @@ export const LocationDetail = () => {
   const { stock_locations, isLoading, isError, error } = useAdminStockLocations(
     {
       id,
-      expand: "address,sales_channels",
+      fields: "*address,*sales_channels",
     }
   )
 
