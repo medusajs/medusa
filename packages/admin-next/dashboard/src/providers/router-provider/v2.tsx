@@ -5,10 +5,9 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { Outlet } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
+import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
-import { SalesChannelDTO } from "@medusajs/types"
-import { UserDTO } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -135,7 +134,7 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/store/store-edit"),
               },
               {
-                path: "add-currencies",
+                path: "currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
               },
