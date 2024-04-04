@@ -16,7 +16,6 @@ const fetchQuery = async (
 ) => {
   try {
     const res = await queryClient.fetchQuery(query)
-    console.log("bib", res)
     // TODO: Reconsider store retrieval
     return res
   } catch (error) {
