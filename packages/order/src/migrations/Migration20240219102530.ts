@@ -34,6 +34,7 @@ export class Migration20240219102530 extends Migration {
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
           "status" text NOT NULL,
+          "is_draft_order" BOOLEAN NOT NULL DEFAULT false,
           "email" text NULL,
           "currency_code" text NOT NULL,
           "shipping_address_id" text NULL,
@@ -50,6 +51,9 @@ export class Migration20240219102530 extends Migration {
       ALTER TABLE "order"
       ADD COLUMN if NOT exists "deleted_at" timestamptz NULL;
 
+      ALTER TABLE "order"
+      ADD COLUMN if NOT exists "is_draft_order" BOOLEAN NOT NULL DEFAULT false;
+      
       ALTER TABLE "order"
       ADD COLUMN if NOT exists "version" INTEGER NOT NULL DEFAULT 1;
 
@@ -139,6 +143,10 @@ export class Migration20240219102530 extends Migration {
 
       CREATE INDEX IF NOT EXISTS "IDX_order_deleted_at" ON "order" (
           deleted_at
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_is_draft_order" ON "order" (
+          is_draft_order
       )
       WHERE deleted_at IS NOT NULL;
 

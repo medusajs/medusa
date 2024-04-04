@@ -20,7 +20,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     variables: {
       filters: {
         ...req.filterableFields,
-        status: OrderStatus.DRAFT,
+        is_draft_order: true,
       },
       ...req.remoteQueryConfig.pagination,
     },
@@ -46,6 +46,7 @@ export const POST = async (
     ...input,
     no_notification: !!input.no_notification_order,
     status: OrderStatus.DRAFT,
+    is_draft_order: true,
   }
 
   if (!input.currency_code) {
