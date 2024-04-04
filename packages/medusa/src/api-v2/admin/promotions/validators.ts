@@ -31,7 +31,7 @@ import { AdminPostCampaignsReq } from "../campaigns/validators"
 export class AdminGetPromotionsPromotionParams extends FindParams {}
 
 export class AdminGetPromotionsRuleValueParams extends extendedFindParamsMixin({
-  limit: 10,
+  limit: 100,
   offset: 0,
 }) {
   /**
@@ -83,7 +83,6 @@ export class AdminPostPromotionsReq {
   @IsOptional()
   is_automatic?: boolean
 
-  @IsOptional()
   @IsEnum(PromotionType)
   type?: PromotionTypeValues
 
@@ -98,8 +97,8 @@ export class AdminPostPromotionsReq {
 
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => ApplicationMethodsPostReq)
-  application_method: ApplicationMethodsPostReq
+  @Type(() => AdminPostApplicationMethodsReq)
+  application_method: AdminPostApplicationMethodsReq
 
   @IsOptional()
   @IsArray()
@@ -125,7 +124,7 @@ export class PromotionRule {
   values: string[]
 }
 
-export class ApplicationMethodsPostReq {
+export class AdminPostApplicationMethodsReq {
   @IsOptional()
   @IsString()
   description?: string
@@ -142,7 +141,6 @@ export class ApplicationMethodsPostReq {
   @IsEnum(ApplicationMethodType)
   type?: ApplicationMethodType
 
-  @IsOptional()
   @IsEnum(ApplicationMethodTargetType)
   target_type?: ApplicationMethodTargetType
 
@@ -173,7 +171,7 @@ export class ApplicationMethodsPostReq {
   buy_rules_min_quantity?: number
 }
 
-export class ApplicationMethodsMethodPostReq {
+export class AdminPostApplicationMethodsMethodReq {
   @IsOptional()
   @IsString()
   description?: string
@@ -245,8 +243,8 @@ export class AdminPostPromotionsPromotionReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => ApplicationMethodsMethodPostReq)
-  application_method?: ApplicationMethodsMethodPostReq
+  @Type(() => AdminPostApplicationMethodsMethodReq)
+  application_method?: AdminPostApplicationMethodsMethodReq
 
   @IsOptional()
   @IsArray()

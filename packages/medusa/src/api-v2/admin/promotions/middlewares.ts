@@ -4,6 +4,7 @@ import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
+  AdminGetPromotionsRuleValueParams,
   AdminPostPromotionsPromotionReq,
   AdminPostPromotionsPromotionRulesBatchAddReq,
   AdminPostPromotionsPromotionRulesBatchRemoveReq,
@@ -90,6 +91,17 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/promotions/:id/buy-rules/batch/remove",
     middlewares: [
       transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher:
+      "/admin/promotions/rule-value-options/:rule_type/:rule_attribute_id",
+    middlewares: [
+      transformQuery(
+        AdminGetPromotionsRuleValueParams,
+        QueryConfig.listRuleValueTransformQueryConfig
+      ),
     ],
   },
 ]

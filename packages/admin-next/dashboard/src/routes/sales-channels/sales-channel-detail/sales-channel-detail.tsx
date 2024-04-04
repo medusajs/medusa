@@ -2,7 +2,7 @@ import { useAdminSalesChannel } from "medusa-react"
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
+import { SalesChannelGeneralSection } from "../../../modules/sales-channels/sales-channel-detail/components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
 import { salesChannelLoader } from "./loader"
 

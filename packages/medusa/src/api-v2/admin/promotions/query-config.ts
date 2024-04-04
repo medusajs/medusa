@@ -54,3 +54,9 @@ export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
 }
+
+export const listRuleValueTransformQueryConfig = {
+  defaults: [],
+  allowed: [],
+  isList: true,
+}

@@ -5,15 +5,21 @@ import {
   AdminPromotionRes,
   AdminPromotionsListRes,
 } from "@medusajs/medusa"
-import { useMutation } from "@tanstack/react-query"
-import { queryKeysFactory, useAdminCustomQuery } from "medusa-react"
-import { medusa } from "../medusa"
+import { Response } from "@medusajs/medusa-js"
+import {
+  UseQueryOptionsWrapper,
+  queryKeysFactory,
+  useAdminCustomQuery,
+} from "medusa-react"
 
-const QUERY_KEY = "admin_promotions"
+const ADMIN_PROMOTIONS_QUERY_KEY = "admin_promotions"
+
 export const adminPromotionKeys = queryKeysFactory<
-  typeof QUERY_KEY,
+  typeof ADMIN_PROMOTIONS_QUERY_KEY,
   AdminGetPromotionsParams
->(QUERY_KEY)
+>(ADMIN_PROMOTIONS_QUERY_KEY)
+
+type PromotionQueryKey = typeof adminPromotionKeys
 
 export const adminPromotionQueryFns = {
   list: (query: AdminGetPromotionsParams) =>
@@ -27,12 +33,16 @@ export const adminPromotionQueryFns = {
 
 export const useV2Promotions = (
   query?: AdminGetPromotionsParams,
-  options?: object
+  options?: UseQueryOptionsWrapper<
+    Response<AdminPromotionsListRes>,
+    Error,
+    ReturnType<PromotionQueryKey["list"]>
+  >
 ) => {
   const { data, ...rest } = useAdminCustomQuery<
     AdminGetPromotionsParams,
     AdminPromotionsListRes
-  >("/admin/promotions", adminPromotionKeys.list(query), query, options)
+  >("/promotions", adminPromotionKeys.list(query), query, options as any)
 
   return { ...data, ...rest }
 }
