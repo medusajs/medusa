@@ -6,45 +6,47 @@ import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createCustomersWorkflow } from "@medusajs/core-flows"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  // const customerModuleService = req.scope.resolve<ICustomerModuleService>(
+  //   ModuleRegistrationName.CUSTOMER
+  // )
 
-  const [customers, count] = await customerModuleService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+  // // console.warn(req.filterableFields)
+  // // console.warn(req.listConfig)
+  // // const [customers, count] = await customerModuleService.listAndCount(
+  // //   req.filterableFields,
+  // //   req.listConfig
+  // // )
 
-  const { offset, limit } = req.validatedQuery
+  const { skip, take } = req.remoteQueryConfig.pagination
 
-  // TODO: Replace with remote query
-  //const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve("remoteQuery")
 
-  //const variables = {
-  //  filters: req.filterableFields,
-  //  order: req.listConfig.order,
-  //  skip: req.listConfig.skip,
-  //  take: req.listConfig.take,
-  //}
+  const variables = {
+    filters: req.filterableFields,
+    ...req.remoteQueryConfig.pagination,
+  }
 
-  //const query = remoteQueryObjectFromString({
-  //  entryPoint: "customer",
-  //  variables,
-  //  fields: [...req.listConfig.select!, ...req.listConfig.relations!],
-  //})
+  console.warn(variables)
 
-  //const results = await remoteQuery(query)
+  const query = remoteQueryObjectFromString({
+    entryPoint: "customers",
+    variables,
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const { rows: customers, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
+    count: metadata.count,
     customers,
-    offset,
-    limit,
+    offset: skip,
+    limit: take,
   })
 }
 
