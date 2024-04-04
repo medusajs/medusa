@@ -618,7 +618,10 @@
     "addCurrencies": "Add currencies",
     "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
     "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
-    "currencyAlreadyAdded": "The currency has already been added to your store."
+    "currencyAlreadyAdded": "The currency has already been added to your store.",
+    "edit": {
+      "header": "Edit Store"
+    }
   },
   "regions": {
     "domain": "Regions",
