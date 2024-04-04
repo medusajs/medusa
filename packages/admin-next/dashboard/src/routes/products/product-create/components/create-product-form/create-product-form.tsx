@@ -15,15 +15,19 @@ const CreateProductSchema = zod.object({
   title: zod.string(),
   subtitle: zod.string().optional(),
   handle: zod.string().optional(),
-  material: zod.string().optional(),
   description: zod.string().optional(),
   discountable: zod.boolean(),
+  type_id: zod.string().optional(),
+  collection_id: zod.string().optional(),
+  category_ids: zod.array(zod.string()).optional(),
+  tags: zod.array(zod.string()).optional(),
   sales_channels: zod.array(zod.string()).optional(),
+  origin_country: zod.string().optional(),
+  material: zod.string().optional(),
   width: zod.string().optional(),
   length: zod.string().optional(),
   height: zod.string().optional(),
   weight: zod.string().optional(),
-  origin_country: zod.string().optional(),
   mid_code: zod.string().optional(),
   hs_code: zod.string().optional(),
   variants: zod.array(
@@ -31,6 +35,8 @@ const CreateProductSchema = zod.object({
       variant_rank: zod.number(),
     })
   ),
+  images: zod.array(zod.string()).optional(),
+  thumbnail: zod.string().optional(),
 })
 
 type Schema = zod.infer<typeof CreateProductSchema>
@@ -45,18 +51,12 @@ export const CreateProductForm = () => {
       title: "",
       subtitle: "",
       handle: "",
-      material: "",
       description: "",
       discountable: true,
-      height: "",
-      length: "",
-      weight: "",
-      width: "",
-      origin_country: "",
-      mid_code: "",
-      hs_code: "",
+      tags: [],
       sales_channels: [],
       variants: [],
+      images: [],
     },
     resolver: zodResolver(CreateProductSchema),
   })
@@ -66,13 +66,15 @@ export const CreateProductForm = () => {
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
-        title: values.title,
-        discountable: values.discountable,
+        ...values,
         is_giftcard: false,
+        tags: values.tags?.map((tag) => ({ value: tag })),
+        sales_channels: values.sales_channels?.map((sc) => ({ id: sc })),
         width: values.width ? parseFloat(values.width) : undefined,
         length: values.length ? parseFloat(values.length) : undefined,
         height: values.height ? parseFloat(values.height) : undefined,
         weight: values.weight ? parseFloat(values.weight) : undefined,
+        variants: values.variants.map((v) => ({ title: "", prices: [] })),
       },
       {
         onSuccess: ({ product }) => {
@@ -93,7 +95,7 @@ export const CreateProductForm = () => {
               </Button>
             </RouteFocusModal.Close>
             <Button type="submit" size="small" isLoading={isLoading}>
-              {t("actions.save")}
+              {t("actions.saveAsDraft")}
             </Button>
           </div>
         </RouteFocusModal.Header>
