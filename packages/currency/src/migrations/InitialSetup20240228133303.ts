@@ -14,7 +14,7 @@ export class InitialSetup20240228133303 extends Migration {
         constraint "currency_pkey" primary key ("code")
       );
 
-      ALTER TABLE "currency" ADD COLUMN IF NOT EXISTS "created_at" TEXT NOT NULL DEFAULT now();
+      ALTER TABLE "currency" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMPTZ NOT NULL DEFAULT now();
       ALTER TABLE "currency" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMPTZ NULL DEFAULT now();
     `)
   }
