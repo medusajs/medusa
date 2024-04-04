@@ -68,8 +68,8 @@ const useDeveloperRoutes = (): NavItemProps[] => {
         to: "/settings/api-key-management",
       },
       {
-        label: t("executions.domain"),
-        to: "/settings/executions",
+        label: t("workflowExecutions.domain"),
+        to: "/settings/workflows",
       },
     ],
     [t]
