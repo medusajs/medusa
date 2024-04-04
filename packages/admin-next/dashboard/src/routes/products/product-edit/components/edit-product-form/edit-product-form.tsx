@@ -140,7 +140,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                 className="text-ui-fg-subtle"
               >
                 <Trans
-                  i18nKey="products.titleHint"
+                  i18nKey="products.fields.title.hint"
                   t={t}
                   components={[<br key="break" />]}
                 />
@@ -204,7 +204,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                       <Form.ErrorMessage />
                       <Form.Hint>
                         <Trans
-                          i18nKey="products.descriptionHint"
+                          i18nKey="products.fields.description.hint"
                           t={t}
                           components={[<br key="break" />]}
                         />
