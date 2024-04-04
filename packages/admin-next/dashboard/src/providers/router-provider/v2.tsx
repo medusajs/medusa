@@ -1,14 +1,13 @@
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
+import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { Outlet } from "react-router-dom"
-import { SalesChannelDTO } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
 import { Spinner } from "@medusajs/icons"
-import { UserDTO } from "@medusajs/types"
 import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
@@ -134,7 +133,7 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/store/store-edit"),
               },
               {
-                path: "add-currencies",
+                path: "currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
               },
