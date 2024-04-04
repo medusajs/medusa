@@ -24,7 +24,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
-import { FreeTextSearchFilterKey } from "../dal/mikro-orm/mikro-orm-fre-text-search-filter"
+import { FreeTextSearchFilterKey } from "../dal"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>

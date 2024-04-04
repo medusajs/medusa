@@ -3,6 +3,7 @@ import {
   DALUtils,
   generateEntityId,
   optionalNumericSerializer,
+  Searchable,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -76,10 +77,12 @@ class ProductVariant {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", searchable: true } as any)
+  @Searchable()
+  @Property({ columnType: "text" })
   title: string
 
-  @Property({ columnType: "text", nullable: true, searchable: true } as any)
+  @Searchable()
+  @Property({ columnType: "text", nullable: true })
   sku?: string | null
 
   @Property({ columnType: "text", nullable: true })

@@ -8,12 +8,12 @@ import {
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 import { asValue } from "awilix"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
-import { mikroOrmCreateConnection } from "../../dal"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import {
   FreeTextSearchFilterKey,
+  mikroOrmCreateConnection,
   mikroOrmFreeTextSearchFilterOptionsFactory,
-} from "../../dal/mikro-orm/mikro-orm-fre-text-search-filter"
+} from "../../dal"
+import { loadDatabaseConfig } from "../load-module-database-config"
 
 /**
  * Load a MikroORM connection into the container

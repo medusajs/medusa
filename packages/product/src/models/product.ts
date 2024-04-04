@@ -19,6 +19,7 @@ import {
   generateEntityId,
   kebabCase,
   ProductUtils,
+  Searchable,
 } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
@@ -64,7 +65,8 @@ class Product {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", searchable: true } as any)
+  @Searchable()
+  @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text" })
@@ -73,7 +75,11 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   subtitle?: string | null
 
-  @Property({ columnType: "text", nullable: true, searchable: true } as any)
+  @Searchable()
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
   description?: string | null
 
   @Property({ columnType: "boolean", default: false })
@@ -91,9 +97,9 @@ class Product {
   })
   options = new Collection<ProductOption>(this)
 
+  @Searchable()
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: ["soft-remove"] as any,
-    searchable: true
   } as any)
   variants = new Collection<ProductVariant>(this)
 
@@ -121,13 +127,13 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
+  @Searchable()
   @ManyToOne(() => ProductCollection, {
     columnType: "text",
     nullable: true,
     fieldName: "collection_id",
     mapToPk: true,
     onDelete: "set null",
-    searchable: true
   } as any)
   collection_id: string | null
 

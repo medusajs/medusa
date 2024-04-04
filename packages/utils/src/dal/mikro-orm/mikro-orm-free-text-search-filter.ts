@@ -1,3 +1,4 @@
+import "@mikro-orm/core"
 import { EntityClass, EntityProperty } from "@mikro-orm/core/typings"
 import { EntityMetadata, EntitySchema, ReferenceType } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"

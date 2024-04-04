@@ -1,9 +1,5 @@
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/types"
 import { mikroOrmConnectionLoader } from "./mikro-orm-connection-loader"
-import {
-  FreeTextSearchFilterKey,
-  mikroOrmFreeTextSearchFilterOptionsFactory,
-} from "../../dal/mikro-orm/mikro-orm-fre-text-search-filter"
 
 /**
  * Factory for creating a MikroORM connection loader for the modules

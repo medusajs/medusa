@@ -15,6 +15,7 @@ import {
   DALUtils,
   generateEntityId,
   kebabCase,
+  Searchable,
 } from "@medusajs/utils"
 import Product from "./product"
 
@@ -34,7 +35,8 @@ class ProductCollection {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", searchable: true } as any)
+  @Searchable()
+  @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text" })
