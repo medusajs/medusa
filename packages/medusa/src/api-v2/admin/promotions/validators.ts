@@ -30,6 +30,18 @@ import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
 
+export class AdminGetPromotionsRuleValueParams extends extendedFindParamsMixin({
+  limit: 10,
+  offset: 0,
+}) {
+  /**
+   * Search terms to search fields.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+}
+
 export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,

@@ -27,7 +27,7 @@ function RuleBlock({ rule }: RuleProps) {
         <Badge
           size="small"
           key="rule-value"
-          className="mx-1 max-w-[120px] txt-compact-xsmall-plus tag-neutral-text"
+          className="mx-1 max-w-[120px] txt-compact-xsmall-plus tag-neutral-text truncate"
         >
           {rule.values?.map((v) => v.value).join(",")}
         </Badge>

@@ -3,7 +3,11 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
-import { useV2Promotion } from "../../../lib/api-v2/promotion"
+import {
+  useV2Promotion,
+  useV2PromotionRuleAttributeOptions,
+  useV2PromotionRuleOperatorOptions,
+} from "../../../lib/api-v2/promotion"
 import { EditRulesForm } from "./components/edit-rules-form"
 
 export const EditRules = () => {
@@ -12,6 +16,8 @@ export const EditRules = () => {
   const ruleType = ruleTypeParam!.split("-").join("_")
 
   const { promotion, isLoading, isError, error } = useV2Promotion(id!)
+  const { attributes } = useV2PromotionRuleAttributeOptions("rules")
+  const { operators } = useV2PromotionRuleOperatorOptions()
 
   if (isError) {
     throw error
@@ -24,7 +30,12 @@ export const EditRules = () => {
       </RouteDrawer.Header>
 
       {!isLoading && promotion && (
-        <EditRulesForm promotion={promotion} ruleType={ruleType} />
+        <EditRulesForm
+          promotion={promotion}
+          ruleType={ruleType}
+          attributes={attributes}
+          operators={operators}
+        />
       )}
     </RouteDrawer>
   )

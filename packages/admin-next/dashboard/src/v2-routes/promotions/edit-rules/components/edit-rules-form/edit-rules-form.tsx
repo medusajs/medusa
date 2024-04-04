@@ -6,6 +6,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Combobox } from "../../../../../components/common/combobox"
+import { useV2PromotionRuleValueOptions } from "../../../../../lib/api-v2/promotion"
 
 import { Fragment } from "react"
 import { Form } from "../../../../../components/common/form"
@@ -18,9 +19,11 @@ import { useV2PostPromotion } from "../../../../../lib/api-v2"
 type EditPromotionFormProps = {
   promotion: PromotionDTO
   ruleType: string
+  attributes: any[]
+  operators: any[]
 }
 
-const ruleValidation = zod.object({
+const RuleValidation = zod.object({
   id: zod.string().optional(),
   attribute: zod.string().min(1, { message: "Required field" }),
   operator: zod.string().min(1, { message: "Required field" }),
@@ -30,22 +33,27 @@ const ruleValidation = zod.object({
 })
 
 const EditRules = zod.object({
-  rules: zod.array(ruleValidation),
+  rules: zod.array(RuleValidation),
 })
 
 export const EditRulesForm = ({
   promotion,
   ruleType,
+  attributes,
+  operators,
 }: EditPromotionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { rules = [] } = promotion
+  const requiredAttributes = attributes
+    ?.filter((ra) => ra.required)
+    ?.map((ra) => ra.value)
 
   const form = useForm<zod.infer<typeof EditRules>>({
     defaultValues: {
       rules: rules.map((rule) => ({
         id: rule.id,
-        required: rule.attribute === "currency.code",
+        required: requiredAttributes.includes(rule.attribute),
         attribute: rule.attribute!,
         operator: rule.operator!,
         values: rule.values.map((v) => v.value!),
@@ -54,7 +62,19 @@ export const EditRulesForm = ({
     resolver: zodResolver(EditRules),
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const fetchOptionsForRule = (rule: zod.infer<typeof RuleValidation>) => {
+    const attribute = attributes.find((attr) => attr.value === rule.attribute)
+
+    if (!attribute) {
+      return []
+    }
+
+    const { values } = useV2PromotionRuleValueOptions(ruleType, attribute.id)
+
+    return values || []
+  }
+
+  const { fields, append, remove, update } = useFieldArray({
     control: form.control,
     name: "rules",
   })
@@ -72,73 +92,6 @@ export const EditRulesForm = ({
       }
     )
   })
-
-  // TODO: Replace with an endpoint
-  const attributes = [
-    {
-      required: true,
-      title: "Currency Code",
-      value: "currency.code",
-    },
-    {
-      title: "Customer Group",
-      value: "customer_group.id",
-    },
-    {
-      title: "Region",
-      value: "region.id",
-    },
-    {
-      title: "Country",
-      value: "address.country_code",
-    },
-    {
-      title: "Sales Channel",
-      value: "sales_channel_id",
-    },
-  ]
-
-  const operators = [
-    {
-      title: "In",
-      value: "in",
-    },
-    {
-      title: "Equals",
-      value: "eq",
-    },
-    {
-      title: "Not In",
-      value: "nin",
-    },
-  ]
-
-  const values = [
-    {
-      title: "France",
-      value: "region_id",
-    },
-    {
-      title: "USD",
-      value: "usd",
-    },
-    {
-      title: "Customer Group",
-      value: "cusgro_id",
-    },
-  ]
-
-  const attributesMap = {
-    rules: attributes,
-  }
-
-  const operatorMap = {
-    rules: operators,
-  }
-
-  const valuesMap = {
-    rules: values,
-  }
 
   return (
     <RouteDrawer.Form form={form}>
@@ -182,7 +135,10 @@ export const EditRulesForm = ({
                               <Form.Control>
                                 <Select
                                   {...field}
-                                  onValueChange={onChange}
+                                  onValueChange={(e) => {
+                                    update(index, { values: [] } as any)
+                                    onChange(e)
+                                  }}
                                   disabled={rule.required}
                                 >
                                   <Select.Trigger
@@ -193,15 +149,15 @@ export const EditRulesForm = ({
                                   </Select.Trigger>
 
                                   <Select.Content>
-                                    {attributesMap["rules"].map((c) => (
+                                    {attributes?.map((c) => (
                                       <Select.Item
                                         key={`${
                                           rule.id || rule.frontend_id
-                                        }-${c.title.split(" ").join("-")}`}
+                                        }-${c.label.split(" ").join("-")}`}
                                         value={c.value}
                                       >
                                         <span className="text-ui-fg-subtle">
-                                          {c.title}
+                                          {c.label}
                                         </span>
                                       </Select.Item>
                                     ))}
@@ -234,15 +190,15 @@ export const EditRulesForm = ({
                                     </Select.Trigger>
 
                                     <Select.Content>
-                                      {operatorMap["rules"].map((c) => (
+                                      {operators?.map((c) => (
                                         <Select.Item
                                           key={`${
                                             rule.id || rule.frontend_id
-                                          }-${c.title.split(" ").join("-")}`}
+                                          }-${c.label.split(" ").join("-")}`}
                                           value={c.value}
                                         >
                                           <span className="text-ui-fg-subtle">
-                                            {c.title}
+                                            {c.label}
                                           </span>
                                         </Select.Item>
                                       ))}
@@ -258,14 +214,13 @@ export const EditRulesForm = ({
                         <Form.Field
                           {...valuesFields}
                           render={({ field: { onChange, ref, ...field } }) => {
+                            const options = fetchOptionsForRule(rule)
+
                             return (
                               <Form.Item className="basis-1/2">
                                 <Form.Control>
                                   <Combobox
-                                    options={valuesMap["rules"].map((v) => ({
-                                      label: v.title,
-                                      value: v.value,
-                                    }))}
+                                    options={options}
                                     placeholder="Select Values"
                                     {...field}
                                     onChange={onChange}

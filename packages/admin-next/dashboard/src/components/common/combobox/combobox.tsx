@@ -208,7 +208,7 @@ const ComboboxImpl = <T extends Value = string>(
             )}
           >
             {showTag && (
-              <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive relative flex h-[28px] items-center rounded-[4px] border py-[3px] pl-1.5 pr-1">
+              <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive relative flex h-[28px] items-center rounded-[4px] border py-[5px] pl-1.5 pr-1">
                 <span>{selectedValues.length}</span>
                 <button
                   type="button"
