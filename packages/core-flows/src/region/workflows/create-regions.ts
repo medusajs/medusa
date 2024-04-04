@@ -41,7 +41,7 @@ export const createRegionsWorkflow = createWorkflow(
           ({ region_index, payment_providers }) => {
             return {
               id: data.regions[region_index].id,
-              payment_providers: payment_providers ?? [],
+              payment_providers,
             }
           }
         )

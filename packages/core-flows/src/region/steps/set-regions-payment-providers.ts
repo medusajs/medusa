@@ -14,8 +14,13 @@ import {
 export interface SetRegionsPaymentProvidersStepInput {
   input: {
     id: string
-    payment_providers: string[]
+    payment_providers?: string[]
   }[]
+}
+
+interface FilteredSetRegionsPaymentProvidersStepInput {
+  id: string
+  payment_providers: string[]
 }
 
 type LinkItems = {
@@ -89,7 +94,11 @@ export const setRegionsPaymentProvidersStepId =
 export const setRegionsPaymentProvidersStep = createStep(
   setRegionsPaymentProvidersStepId,
   async (data: SetRegionsPaymentProvidersStepInput, { container }) => {
-    if (!data.input.length) {
+    const dataInputToProcess = data.input.filter((inputData) => {
+      return inputData.payment_providers?.length
+    }) as FilteredSetRegionsPaymentProvidersStepInput[]
+
+    if (!dataInputToProcess.length) {
       return new StepResponse(void 0)
     }
 
@@ -103,27 +112,29 @@ export const setRegionsPaymentProvidersStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const allPaymentProviderIds = data.input
+    const allPaymentProviderIds = dataInputToProcess
       .map((inputData) => {
-        return inputData.payment_providers
+        return inputData.payment_providers!
       })
       .flat()
-    const uniquePaymentProviderIds = Array.from(new Set(allPaymentProviderIds))
+    const uniquePaymentProviderIds = Array.from(
+      new Set<string>(allPaymentProviderIds)
+    )
 
     await validatePaymentProvidersExists(
       paymentService,
       uniquePaymentProviderIds
     )
 
-    const regionIds = data.input.map((inputData) => inputData.id)
+    const regionIds = dataInputToProcess.map((inputData) => inputData.id)
     const currentExistingLinks = await getCurrentRegionPaymentProvidersLinks(
       regionIds,
       { remoteQuery }
     )
 
-    const linksToRemove = currentExistingLinks
+    const linksToRemove: LinkItems = currentExistingLinks
       .filter((existingLink) => {
-        return !data.input.some((input) => {
+        return !dataInputToProcess.some((input) => {
           return (
             input.id === existingLink[Modules.REGION].region_id &&
             input.payment_providers.includes(
@@ -141,7 +152,7 @@ export const setRegionsPaymentProvidersStep = createStep(
         }
       })
 
-    const linksToCreate = data.input
+    const linksToCreate = dataInputToProcess
       .map((inputData) => {
         return inputData.payment_providers.map((provider) => {
           const alreadyExists = currentExistingLinks.some((link) => {

@@ -1,5 +1,5 @@
 import { BaseFilterable } from "../dal"
-import { OperatorMap } from "../dal/utils" /* ********** PAYMENT COLLECTION ********** */
+import { OperatorMap } from "../dal/utils"
 
 /* ********** PAYMENT COLLECTION ********** */
 /**
