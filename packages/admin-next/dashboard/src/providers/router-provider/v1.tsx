@@ -805,58 +805,6 @@ export const v1Routes: RouteObject[] = [
             ],
           },
           {
-            path: "api-key-management",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "API Key Management",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () =>
-                  import(
-                    "../../routes/api-key-management/api-key-management-list"
-                  ),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-create"
-                      ),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () =>
-                  import(
-                    "../../routes/api-key-management/api-key-management-detail"
-                  ),
-                handle: {
-                  crumb: (data: AdminPublishableApiKeysRes) =>
-                    data.publishable_api_key.title,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-edit"
-                      ),
-                  },
-                  {
-                    path: "add-sales-channels",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-add-sales-channels"
-                      ),
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "executions",
             element: <Outlet />,
             handle: {
