@@ -1,4 +1,14 @@
-export const defaultAdminOrderRelations = []
+export const defaultAdminOrderRelations = [
+  "items",
+  "items.tax_lines",
+  "items.adjustments",
+  "items.detail",
+  "shipping_address",
+  "billing_address",
+  "shipping_methods",
+  "shipping_methods.tax_lines",
+  "shipping_methods.adjustments",
+]
 export const allowedAdminOrderRelations = []
 
 export const defaultAdminListOrderFields = [
@@ -17,8 +27,8 @@ export const defaultAdminOrderFields = [
   "status",
   "version",
   "*items",
-  "items.tax_lines",
-  "items.adjustments",
+  "*items.tax_lines",
+  "*items.adjustments",
   "*items.detail",
   "*items.tax_lines",
   "*items.adjustments",
@@ -35,6 +45,8 @@ export const defaultAdminOrderFields = [
 
 export const retrieveTransformQueryConfig = {
   defaultFields: defaultAdminOrderFields,
+  defaultRelations: defaultAdminOrderRelations,
+  allowedRelations: allowedAdminOrderRelations,
   isList: false,
 }
 
