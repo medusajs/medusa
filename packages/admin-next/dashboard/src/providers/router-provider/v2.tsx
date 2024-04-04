@@ -220,6 +220,38 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "workflows",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Workflows",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/workflow-executions/workflow-execution-list"
+                  ),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/workflow-executions/workflow-execution-detail"
+                  ),
+                handle: {
+                  crumb: (data: { workflow: any }) => {
+                    if (!data) {
+                      return ""
+                    }
+
+                    return data.workflow.name
+                  },
+                },
+              },
+            ],
+          },
         ],
       },
     ],

@@ -1,7 +1,7 @@
 import { AdminGetWorkflowExecutionsParams } from "@medusajs/medusa"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
-export const useExecutionTableQuery = ({
+export const useWorkflowExecutionTableQuery = ({
   pageSize = 20,
   prefix,
 }: {

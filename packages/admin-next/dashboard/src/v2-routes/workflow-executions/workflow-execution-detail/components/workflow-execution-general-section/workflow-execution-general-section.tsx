@@ -15,13 +15,13 @@ import {
 } from "../../../types"
 import { getTransactionState, getTransactionStateColor } from "../../../utils"
 
-type ExecutionGeneralSectionProps = {
+type WorkflowExecutionGeneralSectionProps = {
   execution: WorkflowExecutionDTO
 }
 
-export const ExecutionGeneralSection = ({
+export const WorkflowExecutionGeneralSection = ({
   execution,
-}: ExecutionGeneralSectionProps) => {
+}: WorkflowExecutionGeneralSectionProps) => {
   const { t } = useTranslation()
 
   const cleanId = execution.id.replace("wf_exec_", "")
@@ -39,7 +39,7 @@ export const ExecutionGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("executions.workflowIdLabel")}
+          {t("workflowExecutions.workflowIdLabel")}
         </Text>
         <Badge size="2xsmall" className="w-fit">
           {execution.workflow_id}
@@ -47,7 +47,7 @@ export const ExecutionGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("executions.transactionIdLabel")}
+          {t("workflowExecutions.transactionIdLabel")}
         </Text>
         <Badge size="2xsmall" className="w-fit">
           {execution.transaction_id}
@@ -55,7 +55,7 @@ export const ExecutionGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("executions.progressLabel")}
+          {t("workflowExecutions.progressLabel")}
         </Text>
         <Progress steps={execution.execution?.steps} />
       </div>
@@ -75,7 +75,7 @@ const Progress = ({
   if (!steps) {
     return (
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        {t("executions.stepsCompletedLabel", {
+        {t("workflowExecutions.stepsCompletedLabel", {
           completed: 0,
           total: 0,
         })}
@@ -108,7 +108,7 @@ const Progress = ({
         ))}
       </div>
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        {t("executions.stepsCompletedLabel", {
+        {t("workflowExecutions.stepsCompletedLabel", {
           completed: completedSteps.length,
           count: actionableSteps.length,
         })}
