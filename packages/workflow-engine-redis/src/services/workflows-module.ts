@@ -9,9 +9,9 @@ import {
 import {
   InjectManager,
   InjectSharedContext,
-  isString,
   MedusaContext,
   MedusaError,
+  isString,
 } from "@medusajs/utils"
 import type {
   IWorkflowEngineService,
