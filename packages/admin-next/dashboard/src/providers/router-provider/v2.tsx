@@ -1,6 +1,7 @@
 import { Navigate, RouteObject, useLocation } from "react-router-dom"
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 
+import { AdminCollectionsRes } from "@medusajs/medusa"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { Outlet } from "react-router-dom"
@@ -86,6 +87,48 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+            ],
+          },
+          {
+            path: "/collections",
+            handle: {
+              crumb: () => "Collections",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/collections/collection-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/collections/collection-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/collections/collection-detail"),
+                handle: {
+                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/collections/collection-edit"),
+                  },
+                  {
+                    path: "products",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/collections/collection-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },
