@@ -23,7 +23,6 @@ import {
   adminPublishableApiKeysKeys,
   useAdminCustomPost,
   useAdminCustomQuery,
-  useAdminPublishableApiKeySalesChannels,
   useAdminRemovePublishableKeySalesChannelsBatch,
 } from "medusa-react"
 import { useMemo, useState } from "react"
@@ -71,7 +70,7 @@ export const ApiKeySalesChannelSection = ({
 
   const query = {
     ...params,
-    fields: "id,sales_channels",
+    fields: "id,*sales_channels",
   }
 
   const { data, isLoading, isError, error } = useAdminCustomQuery(

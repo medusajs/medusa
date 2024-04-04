@@ -10,18 +10,18 @@ export const ApiKeyManagementAddSalesChannels = () => {
     `/api-keys/${id}`,
     [adminPublishableApiKeysKeys.detailSalesChannels(id!)],
     {
-      fields: "id,sales_channels",
+      fields: "id,*sales_channels",
     },
     {
       keepPreviousData: true,
     }
   )
 
-  const salesChannels = data?.api_key?.sales_channels
-
   if (isError) {
     throw error
   }
+
+  const salesChannels = data?.api_key?.sales_channels
 
   return (
     <RouteFocusModal>
