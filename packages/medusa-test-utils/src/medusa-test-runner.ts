@@ -34,6 +34,10 @@ const dbTestUtilFactory = (): any => ({
     schema,
   }: { forceDelete?: string[]; schema?: string } = {}) {
     forceDelete ??= []
+    if (!this.db_) {
+      return
+    }
+
     const manager = this.db_.manager
 
     schema ??= "public"
@@ -54,6 +58,7 @@ const dbTestUtilFactory = (): any => ({
   shutdown: async function (dbName: string) {
     await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
+    await this.pgConnection_?.destroy()
 
     return await dropDatabase(
       { databaseName: dbName, errorIfNonExist: false },
@@ -89,9 +94,7 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   force_modules_migration?: boolean
-  testSuite: <TService = unknown>(
-    options: MedusaSuiteOptions<TService>
-  ) => () => void
+  testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
@@ -111,12 +114,18 @@ export function medusaIntegrationTestRunner({
   ) => {
     const config = originalConfigLoader(rootDirectory)
     config.projectConfig.database_url = dbConfig.clientUrl
+    config.projectConfig.database_driver_options = dbConfig.clientUrl.includes("localhost") ? {} : {
+      connection: {
+        ssl: { rejectUnauthorized: false },
+      },
+      idle_in_transaction_session_timeout: 20000,
+    }
     return config
   }
 
   const cwd = process.cwd()
 
-  let shutdown: () => Promise<void>
+  let shutdown = async () => void 0
   let dbUtils = dbTestUtilFactory()
   let container: ContainerLike
   let apiUtils: any
@@ -142,59 +151,111 @@ export function medusaIntegrationTestRunner({
     getContainer: () => container,
   } as MedusaSuiteOptions
 
+  let isFirstTime = true
+
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
-    const { dbDataSource, pgConnection } = await initDb({
-      cwd,
-      env,
-      force_modules_migration,
-      database_extra: {},
-      dbUrl: dbConfig.clientUrl,
-      dbSchema: dbConfig.schema,
+
+    let dataSourceRes
+    let pgConnectionRes
+
+    try {
+      const { dbDataSource, pgConnection } = await initDb({
+        cwd,
+        env,
+        force_modules_migration,
+        database_extra: {},
+        dbUrl: dbConfig.clientUrl,
+        dbSchema: dbConfig.schema,
+      })
+
+      dataSourceRes = dbDataSource
+      pgConnectionRes = pgConnection
+    } catch (error) {
+      console.error("Error initializing database", error?.message)
+      throw error
+    }
+
+    dbUtils.db_ = dataSourceRes
+    dbUtils.pgConnection_ = pgConnectionRes
+
+    let containerRes
+    let serverShutdownRes
+    let portRes
+    try {
+      const {
+        shutdown = () => void 0,
+        container,
+        port,
+      } = await startBootstrapApp({
+        cwd,
+        env,
+      })
+
+      containerRes = container
+      serverShutdownRes = shutdown
+      portRes = port
+    } catch (error) {
+      console.error("Error starting the app", error?.message)
+      throw error
+    }
+
+    const cancelTokenSource = axios.CancelToken.source()
+
+    container = containerRes
+    shutdown = async () => {
+      await serverShutdownRes()
+      cancelTokenSource.cancel("Request canceled by shutdown")
+    }
+
+    apiUtils = axios.create({
+      baseURL: `http://localhost:${portRes}`,
+      cancelToken: cancelTokenSource.token,
     })
-    dbUtils.db_ = dbDataSource
-    dbUtils.pgConnection_ = pgConnection
-
-    const {
-      shutdown: shutdown_,
-      container: container_,
-      port,
-    } = await startBootstrapApp({
-      cwd,
-      env,
-    })
-
-    apiUtils = axios.create({ baseURL: `http://localhost:${port}` })
-
-    container = container_
-    shutdown = shutdown_
   }
 
   const beforeEach_ = async () => {
+    // The beforeAll already run everything, so lets not re run the loaders for the first iteration
+    if (isFirstTime) {
+      isFirstTime = false
+      return
+    }
+
     const container = options.getContainer()
     const copiedContainer = createMedusaContainer({}, container)
 
     if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
-      const defaultLoader =
-        require("@medusajs/medusa/dist/loaders/defaults").default
-      await defaultLoader({
-        container: copiedContainer,
-      })
+      try {
+        const defaultLoader =
+          require("@medusajs/medusa/dist/loaders/defaults").default
+        await defaultLoader({
+          container: copiedContainer,
+        })
+      } catch (error) {
+        console.error("Error runner medusa loaders", error?.message)
+        throw error
+      }
     }
 
-    const medusaAppLoaderRunner =
-      require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
-    await medusaAppLoaderRunner({
-      container: copiedContainer,
-      configModule: container.resolve("configModule"),
-    })
+    try {
+      const medusaAppLoaderRunner =
+        require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
+      await medusaAppLoaderRunner({
+        container: copiedContainer,
+        configModule: container.resolve("configModule"),
+      })
+    } catch (error) {
+      console.error("Error runner modules loaders", error?.message)
+      throw error
+    }
   }
 
   const afterEach_ = async () => {
     try {
       await dbUtils.teardown({ schema })
     } catch (error) {
-      console.error("Error tearing down database:", error)
+      console.error("Error tearing down database:", error?.message)
+      throw error
     }
   }
 

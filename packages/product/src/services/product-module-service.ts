@@ -51,6 +51,7 @@ import {
   UpdateProductInput,
   UpdateProductOptionInput,
   UpdateProductVariantInput,
+  UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 
@@ -245,6 +246,7 @@ export default class ProductModuleService<
       },
       {
         take: null,
+        relations: ["values"],
       },
       sharedContext
     )
@@ -425,34 +427,118 @@ export default class ProductModuleService<
     return await this.baseRepository_.serialize(productTags)
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async createTypes(
+  createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTypeDTO[]> {
-    const productTypes = await this.productTypeService_.create(
-      data,
-      sharedContext
-    )
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO[]>
+  createTypes(
+    data: ProductTypes.CreateProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO>
 
-    return await this.baseRepository_.serialize(productTypes, {
-      populate: true,
-    })
+  @InjectManager("baseRepository_")
+  async createTypes(
+    data:
+      | ProductTypes.CreateProductTypeDTO[]
+      | ProductTypes.CreateProductTypeDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTypeDTO[] | ProductTypes.ProductTypeDTO> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const types = await this.productTypeService_.create(input, sharedContext)
+
+    const createdTypes = await this.baseRepository_.serialize<
+      ProductTypes.ProductTypeDTO[]
+    >(types)
+
+    return Array.isArray(data) ? createdTypes : createdTypes[0]
   }
 
+  async upsertTypes(
+    data: ProductTypes.UpsertProductTypeDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO[]>
+  async upsertTypes(
+    data: ProductTypes.UpsertProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO>
+
   @InjectTransactionManager("baseRepository_")
-  async updateTypes(
-    data: ProductTypes.UpdateProductTypeDTO[],
+  async upsertTypes(
+    data:
+      | ProductTypes.UpsertProductTypeDTO[]
+      | ProductTypes.UpsertProductTypeDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTypeDTO[]> {
-    const productTypes = await this.productTypeService_.update(
-      data,
+  ): Promise<ProductTypes.ProductTypeDTO[] | ProductTypes.ProductTypeDTO> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter((type): type is UpdateTypeInput => !!type.id)
+    const forCreate = input.filter(
+      (type): type is ProductTypes.CreateProductTypeDTO => !type.id
+    )
+
+    let created: ProductType[] = []
+    let updated: ProductType[] = []
+
+    if (forCreate.length) {
+      created = await this.productTypeService_.create(forCreate, sharedContext)
+    }
+    if (forUpdate.length) {
+      updated = await this.productTypeService_.update(forUpdate, sharedContext)
+    }
+
+    const result = [...created, ...updated]
+    const allTypes = await this.baseRepository_.serialize<
+      ProductTypes.ProductTypeDTO[] | ProductTypes.ProductTypeDTO
+    >(result)
+
+    return Array.isArray(data) ? allTypes : allTypes[0]
+  }
+
+  updateTypes(
+    id: string,
+    data: ProductTypes.UpdateProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO>
+  updateTypes(
+    selector: ProductTypes.FilterableProductTypeProps,
+    data: ProductTypes.UpdateProductTypeDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateTypes(
+    idOrSelector: string | ProductTypes.FilterableProductTypeProps,
+    data: ProductTypes.UpdateProductTypeDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTypeDTO[] | ProductTypes.ProductTypeDTO> {
+    let normalizedInput: UpdateTypeInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the type exists in the first place
+      await this.productTypeService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const types = await this.productTypeService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = types.map((type) => ({
+        id: type.id,
+        ...data,
+      }))
+    }
+
+    const types = await this.productTypeService_.update(
+      normalizedInput,
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(productTypes, {
-      populate: true,
-    })
+    const updatedTypes = await this.baseRepository_.serialize<
+      ProductTypes.ProductTypeDTO[]
+    >(types)
+
+    return isString(idOrSelector) ? updatedTypes[0] : updatedTypes
   }
 
   createOptions(
@@ -1023,7 +1109,7 @@ export default class ProductModuleService<
     const productData = await this.productService_.upsertWithReplace(
       normalizedInput,
       {
-        relations: ["type", "collection", "images", "tags", "categories"],
+        relations: ["images", "tags", "categories"],
       },
       sharedContext
     )
@@ -1079,7 +1165,7 @@ export default class ProductModuleService<
     const productData = await this.productService_.upsertWithReplace(
       normalizedInput,
       {
-        relations: ["type", "collection", "images", "tags", "categories"],
+        relations: ["images", "tags", "categories"],
       },
       sharedContext
     )
@@ -1264,6 +1350,10 @@ export default class ProductModuleService<
           }
         }
       )
+
+      if (!variantOptions.length) {
+        return variant
+      }
 
       return {
         ...variant,

@@ -62,6 +62,12 @@ export const LINKS = {
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
+  PublishableApiKeySalesChannel: composeLinkName(
+    Modules.API_KEY,
+    "api_key_id",
+    Modules.SALES_CHANNEL,
+    "sales_channel_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(
@@ -73,13 +79,6 @@ export const LINKS = {
   ProductSalesChannel: composeLinkName(
     Modules.PRODUCT,
     "product_id",
-    Modules.SALES_CHANNEL,
-    "sales_channel_id"
-  ),
-
-  PublishableApiKeySalesChannel: composeLinkName(
-    Modules.API_KEY,
-    "api_key_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),

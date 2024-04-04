@@ -5,6 +5,7 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { Outlet } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
+import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
 import { SearchProvider } from "../search-provider"
@@ -77,6 +78,18 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/promotions",
+            handle: {
+              crumb: () => "Promotions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+            ],
+          },
         ],
       },
     ],
@@ -121,9 +134,89 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/store/store-edit"),
               },
               {
-                path: "add-currencies",
+                path: "currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
+              },
+            ],
+          },
+          {
+            path: "users",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Users",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/users/user-list"),
+                children: [
+                  {
+                    path: "invite",
+                    lazy: () => import("../../v2-routes/users/user-invite"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/users/user-detail"),
+                handle: {
+                  crumb: (data: { user: UserDTO }) => data.user.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/users/user-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "sales-channels",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Sales Channels",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/sales-channels/sales-channel-detail"),
+                handle: {
+                  crumb: (data: { sales_channel: SalesChannelDTO }) =>
+                    data.sales_channel.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-edit"
+                      ),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },

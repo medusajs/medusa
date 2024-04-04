@@ -5,7 +5,7 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
+import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
@@ -76,11 +76,15 @@ export class WorkflowOrchestratorService {
   protected redisSubscriber: Redis
   private subscribers: Subscribers = new Map()
 
+  protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
+
   constructor({
+    dataLoaderOnly,
     redisDistributedTransactionStorage,
     redisPublisher,
     redisSubscriber,
   }: {
+    dataLoaderOnly: boolean
     redisDistributedTransactionStorage: RedisDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
     redisPublisher: Redis
@@ -90,13 +94,23 @@ export class WorkflowOrchestratorService {
     this.redisSubscriber = redisSubscriber
 
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
-    DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+
+    if (!dataLoaderOnly) {
+      DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+    }
+
+    this.redisDistributedTransactionStorage_ =
+      redisDistributedTransactionStorage
 
     this.redisSubscriber.on("message", async (_, message) => {
       const { instanceId, data } = JSON.parse(message)
 
       await this.notify(data, false, instanceId)
     })
+  }
+
+  async onApplicationShutdown() {
+    await this.redisDistributedTransactionStorage_.onApplicationShutdown()
   }
 
   @InjectSharedContext()

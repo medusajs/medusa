@@ -1,14 +1,14 @@
-import { AdminExtendedStoresRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { adminStoreKeys } from "medusa-react"
 import { redirect } from "react-router-dom"
 
+import { StoreDTO } from "@medusajs/types"
 import { FetchQueryOptions } from "@tanstack/react-query"
 import { medusa, queryClient } from "../../../lib/medusa"
 
 const storeDetailQuery = () => ({
   queryKey: adminStoreKeys.details(),
-  queryFn: async () => medusa.client.request("GET", "/admin/stores"),
+  queryFn: async () => medusa.admin.custom.get("/stores"),
 })
 
 const fetchQuery = async (
@@ -31,7 +31,7 @@ export const storeLoader = async () => {
   const query = storeDetailQuery()
 
   return (
-    queryClient.getQueryData<Response<AdminExtendedStoresRes>>(
+    queryClient.getQueryData<Response<{ stores: StoreDTO[] }>>(
       query.queryKey
     ) ?? (await fetchQuery(query))
   )
