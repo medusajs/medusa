@@ -2,11 +2,7 @@ import { Button, Input, Select, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import {
-  PaymentProviderDTO,
-  RegionCountryDTO,
-  RegionDTO,
-} from "@medusajs/types"
+import { CurrencyDTO, PaymentProviderDTO, RegionDTO } from "@medusajs/types"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
@@ -19,7 +15,7 @@ import { useV2UpdateRegion } from "../../../../../lib/api-v2/region"
 
 type EditRegionFormProps = {
   region: RegionDTO
-  currencies: RegionCountryDTO[]
+  currencies: CurrencyDTO[]
   paymentProviders: PaymentProviderDTO[]
 }
 
