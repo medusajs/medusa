@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { composeLinkName } from "./utils"
+import { Modules } from "../modules-sdk"
+import { composeLinkName } from "./compose-link-name"
 
 export const LINKS = {
   ProductVariantInventoryItem: composeLinkName(
