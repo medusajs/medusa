@@ -100,7 +100,7 @@ The API Route accepts the following request body parameters:
 
 After subscribing to the out-of-stock variant, change its stock quantity to the minimum inventory required to test out the event trigger. The new stock quantity should be any value above `0` if you didn't set the `inventory_required` option.
 
-You can use the [Medusa Admin](../../user-guide/products/manage/index.mdx#manage-product-variants) or the [Admin REST API Routes](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) to update the quantity.
+You can use the [Medusa Admin](../../user-guide/products/manage.mdx#manage-product-variants) or the [Admin REST API Routes](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) to update the quantity.
 
 After you update the quantity, you can see the `restock-notification.restocked` triggered and logged in the Medusa backend logs. If you've implemented the notification sending, this is where it'll be triggered and a notification will be sent.
 

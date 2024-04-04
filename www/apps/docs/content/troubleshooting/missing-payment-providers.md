@@ -25,7 +25,7 @@ npm install medusa-payment-stripe
 
 However, to also show them as part of your checkout flow you need to add them to your regions.
 
-Then, refer to [this user guide](../user-guide/settings/regions/providers/index.mdx) to learn how to enable the payment processor in a region.
+Then, refer to [this user guide](../user-guide/regions/providers.mdx) to learn how to enable the payment processor in a region.
 
 ---
 
