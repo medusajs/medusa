@@ -28,7 +28,7 @@ export const LocationEdit = () => {
       <RouteDrawer.Header>
         <Heading className="capitalize">{t("locations.editLocation")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && stock_location && (
+      {!isLoading && !!stock_location && (
         <EditLocationForm location={stock_location} />
       )}
     </RouteDrawer>
