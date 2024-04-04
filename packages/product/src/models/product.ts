@@ -64,7 +64,7 @@ class Product {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", searchable: true } as any)
   title: string
 
   @Property({ columnType: "text" })
@@ -73,7 +73,7 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   subtitle?: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true, searchable: true } as any)
   description?: string | null
 
   @Property({ columnType: "boolean", default: false })
@@ -93,7 +93,8 @@ class Product {
 
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: ["soft-remove"] as any,
-  })
+    searchable: true
+  } as any)
   variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "text", nullable: true })
@@ -126,7 +127,8 @@ class Product {
     fieldName: "collection_id",
     mapToPk: true,
     onDelete: "set null",
-  })
+    searchable: true
+  } as any)
   collection_id: string | null
 
   @ManyToOne(() => ProductCollection, {

@@ -4,15 +4,15 @@ import {
   Entity,
   Filter,
   Index,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   kebabCase,
 } from "@medusajs/utils"
@@ -34,7 +34,7 @@ class ProductCollection {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", searchable: true } as any)
   title: string
 
   @Property({ columnType: "text" })
