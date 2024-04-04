@@ -1,10 +1,11 @@
-import { removeRulesFromPromotionsWorkflow } from "@medusajs/core-flows"
-import { RuleType } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
+
 import { AdminPostPromotionsPromotionRulesBatchRemoveReq } from "../../../../validators"
+import { RuleType } from "@medusajs/utils"
+import { removeRulesFromPromotionsWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostPromotionsPromotionRulesBatchRemoveReq>,

@@ -1,18 +1,32 @@
-import { adminStoreKeys, useAdminCustomQuery } from "medusa-react"
+import {
+  adminStoreKeys,
+  useAdminCustomPost,
+  useAdminCustomQuery,
+} from "medusa-react"
+import { Store } from "./types/store"
 
-export const useV2Store = ({ initialData }: { initialData?: any }) => {
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
+// TODO: Add types once we export V2 API types
+export const useV2Store = (options?: any) => {
+  const { data, isLoading, isError, error, ...rest } = useAdminCustomQuery(
     "/admin/stores",
     adminStoreKeys.details(),
-    {},
-    { initialData }
+    undefined,
+    options
   )
 
-  const store = data?.stores[0]
+  const store = data?.stores[0] as Store | undefined
+
+  let hasError = isError
+  let err: Error | null = error
 
   if (!isLoading && !isError && typeof store === "undefined") {
-    throw new Error("Store does not exist")
+    hasError = true
+    err = new Error("Store not found")
   }
 
-  return { store, isLoading, isError, error }
+  return { store, isLoading, isError: hasError, error: err, ...rest }
+}
+
+export const useV2UpdateStore = (id: string) => {
+  return useAdminCustomPost(`/admin/stores/${id}`, adminStoreKeys.detail(id))
 }

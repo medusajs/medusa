@@ -5,10 +5,10 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { Outlet } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
+import { AdminCollectionsRes } from "@medusajs/medusa"
+import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
-import { SalesChannelDTO } from "@medusajs/types"
-import { UserDTO } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -91,6 +91,48 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/collections",
+            handle: {
+              crumb: () => "Collections",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/collections/collection-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/collections/collection-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/collections/collection-detail"),
+                handle: {
+                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/collections/collection-edit"),
+                  },
+                  {
+                    path: "products",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/collections/collection-add-products"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],
@@ -135,7 +177,7 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/store/store-edit"),
               },
               {
-                path: "add-currencies",
+                path: "currencies",
                 lazy: () =>
                   import("../../v2-routes/store/store-add-currencies"),
               },

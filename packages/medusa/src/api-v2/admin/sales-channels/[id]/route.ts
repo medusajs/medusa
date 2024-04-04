@@ -25,7 +25,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "sales_channels",
     variables,
-    fields: defaultAdminSalesChannelFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [sales_channel] = await remoteQuery(queryObject)

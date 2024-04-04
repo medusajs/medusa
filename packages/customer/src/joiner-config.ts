@@ -23,10 +23,19 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.CUSTOMER,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: {
-    name: ["customer", "customers"],
-    args: {
-      entity: Customer.name,
+  alias: [
+    {
+      name: ["customer", "customers"],
+      args: {
+        entity: Customer.name,
+      },
     },
-  },
+    {
+      name: ["customer_group", "customer_groups"],
+      args: {
+        entity: CustomerGroup.name,
+        methodSuffix: "CustomerGroups",
+      },
+    },
+  ],
 }

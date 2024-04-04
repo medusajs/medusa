@@ -1,10 +1,25 @@
-import { Button, Checkbox, Heading, Input, Text, Textarea } from "@medusajs/ui"
+import {
+  Button,
+  Checkbox,
+  Heading,
+  Input,
+  Select,
+  Switch,
+  Text,
+  Textarea,
+} from "@medusajs/ui"
 import { Trans, useTranslation } from "react-i18next"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
 import { SalesChannel } from "@medusajs/medusa"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { useAdminSalesChannels } from "medusa-react"
+import {
+  useAdminCollections,
+  useAdminProductCategories,
+  useAdminProductTags,
+  useAdminProductTypes,
+  useAdminSalesChannels,
+} from "medusa-react"
 import { Fragment, useMemo, useState } from "react"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
@@ -15,14 +30,38 @@ import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { CreateProductFormReturn } from "./create-product-form"
+import { Combobox } from "../../../../../components/common/combobox"
+import { FileUpload } from "../../../../../components/common/file-upload"
 
 type CreateProductPropsProps = {
   form: CreateProductFormReturn
 }
 
+const SUPPORTED_FORMATS = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "image/heic",
+  "image/svg+xml",
+]
+
 export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
   const { t } = useTranslation()
   const [open, onOpenChange] = useState(false)
+  const { product_types, isLoading: isLoadingTypes } = useAdminProductTypes()
+  const { product_tags, isLoading: isLoadingTags } = useAdminProductTags()
+  const { collections, isLoading: isLoadingCollections } = useAdminCollections()
+  const { sales_channels, isLoading: isLoadingSalesChannels } =
+    useAdminSalesChannels()
+  const { product_categories, isLoading: isLoadingCategories } =
+    useAdminProductCategories()
+
+  // const { append } = useFieldArray({
+  //   name: "images",
+  //   control: form.control,
+  //   // keyName: "field_id",
+  // })
 
   return (
     <PanelGroup
@@ -51,7 +90,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                       render={({ field }) => {
                         return (
                           <Form.Item>
-                            <Form.Label>{t("fields.title")}</Form.Label>
+                            <Form.Label>
+                              {t("products.fields.title.label")}
+                            </Form.Label>
                             <Form.Control>
                               <Input {...field} />
                             </Form.Control>
@@ -66,7 +107,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                         return (
                           <Form.Item>
                             <Form.Label optional>
-                              {t("fields.subtitle")}
+                              {t("products.fields.subtitle.label")}
                             </Form.Label>
                             <Form.Control>
                               <Input {...field} />
@@ -76,17 +117,13 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                       }}
                     />
                   </div>
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-subtle"
-                  >
+                  <Form.Hint>
                     <Trans
-                      i18nKey="products.titleHint"
+                      i18nKey="products.fields.title.hint"
                       t={t}
                       components={[<br key="break" />]}
                     />
-                  </Text>
+                  </Form.Hint>
                 </div>
                 <div className="grid grid-cols-2 gap-x-4">
                   <Form.Field
@@ -96,29 +133,13 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                       return (
                         <Form.Item>
                           <Form.Label
-                            tooltip={t("products.handleTooltip")}
+                            tooltip={t("products.fields.handle.tooltip")}
                             optional
                           >
                             {t("fields.handle")}
                           </Form.Label>
                           <Form.Control>
                             <HandleInput {...field} />
-                          </Form.Control>
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="material"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>
-                            {t("fields.material")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
                           </Form.Control>
                         </Form.Item>
                       )
@@ -132,14 +153,14 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     return (
                       <Form.Item>
                         <Form.Label optional>
-                          {t("fields.description")}
+                          {t("products.fields.description.label")}
                         </Form.Label>
                         <Form.Control>
                           <Textarea {...field} />
                         </Form.Control>
                         <Form.Hint>
                           <Trans
-                            i18nKey={"products.descriptionHint"}
+                            i18nKey={"products.fields.description.hint"}
                             components={[<br key="break" />]}
                           />
                         </Form.Hint>
@@ -150,16 +171,224 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
               </div>
               <div id="organize" className="flex flex-col gap-y-8">
                 <Heading level="h2">{t("products.organization")}</Heading>
-                <Button
+                <div className="grid grid-cols-1 gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="discountable"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <div className="flex items-center justify-between">
+                            <Form.Label optional>
+                              {t("products.fields.discountable.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Switch
+                                {...field}
+                                checked={!!value}
+                                onCheckedChange={onChange}
+                              />
+                            </Form.Control>
+                          </div>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Hint>
+                    <Trans i18nKey={"products.fields.discountable.hint"} />
+                  </Form.Hint>
+                </div>
+                <div className="grid grid-cols-2 gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="type_id"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.type.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Select disabled={isLoadingTypes} {...field}>
+                              <Select.Trigger ref={field.ref}>
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                {(product_types ?? []).map((type) => (
+                                  <Select.Item key={type.id} value={type.id}>
+                                    {type.value}
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="collection_id"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.collection.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Select disabled={isLoadingCollections} {...field}>
+                              <Select.Trigger ref={field.ref}>
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                {(collections ?? []).map((collection) => (
+                                  <Select.Item
+                                    key={collection.id}
+                                    value={collection.id}
+                                  >
+                                    {collection.title}
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="category_ids"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.categories.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Combobox
+                              disabled={isLoadingCategories}
+                              options={(product_categories ?? []).map(
+                                (category) => ({
+                                  label: category.name,
+                                  value: category.id,
+                                })
+                              )}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.tags.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Combobox
+                              disabled={isLoadingTags}
+                              options={(product_tags ?? []).map((tag) => ({
+                                label: tag.value,
+                                value: tag.id,
+                              }))}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+
+                {/* TODO: Align to match designs */}
+                <div className="grid grid-cols-1 gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="sales_channels"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.sales_channels.label")}
+                          </Form.Label>
+                          <Form.Hint>
+                            <Trans
+                              i18nKey={"products.fields.sales_channels.hint"}
+                            />
+                          </Form.Hint>
+                          <Form.Control>
+                            <Combobox
+                              disabled={isLoadingSalesChannels}
+                              options={(sales_channels ?? []).map(
+                                (salesChannel) => ({
+                                  label: salesChannel.name,
+                                  value: salesChannel.id,
+                                })
+                              )}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+                {/* <Button
                   size="small"
                   variant="secondary"
                   onClick={() => onOpenChange(!open)}
                 >
                   {t("actions.edit")}
-                </Button>
+                </Button> */}
               </div>
+              <div id="variants" className="flex flex-col gap-y-8">
+                <Heading level="h2">{t("products.variants")}</Heading>
+              </div>
+
               <div id="attributes" className="flex flex-col gap-y-8">
                 <Heading level="h2">{t("products.attributes")}</Heading>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-8">
+                  <Form.Field
+                    control={form.control}
+                    name="origin_country"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.countryOrigin.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <CountrySelect {...field} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="material"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("products.fields.material.label")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-8">
                   <Form.Field
                     control={form.control}
@@ -167,7 +396,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>{t("fields.width")}</Form.Label>
+                          <Form.Label optional>
+                            {t("products.fields.width.label")}
+                          </Form.Label>
                           <Form.Control>
                             <Input {...field} type="number" min={0} />
                           </Form.Control>
@@ -181,7 +412,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>{t("fields.length")}</Form.Label>
+                          <Form.Label optional>
+                            {t("products.fields.length.label")}
+                          </Form.Label>
                           <Form.Control>
                             <Input {...field} type="number" min={0} />
                           </Form.Control>
@@ -195,7 +428,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>{t("fields.height")}</Form.Label>
+                          <Form.Label optional>
+                            {t("products.fields.height.label")}
+                          </Form.Label>
                           <Form.Control>
                             <Input {...field} type="number" min={0} />
                           </Form.Control>
@@ -209,7 +444,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>{t("fields.weight")}</Form.Label>
+                          <Form.Label optional>
+                            {t("products.fields.weight.label")}
+                          </Form.Label>
                           <Form.Control>
                             <Input {...field} type="number" min={0} />
                           </Form.Control>
@@ -217,18 +454,45 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                       )
                     }}
                   />
+                </div>
+                {/* TODO: Add missing attribute fields */}
+              </div>
+              <div id="media" className="flex flex-col gap-y-8">
+                <Heading level="h2">{t("products.media.label")}</Heading>
+                <div className="grid grid-cols-1 gap-x-4 gap-y-8">
                   <Form.Field
                     control={form.control}
-                    name="origin_country"
-                    render={({ field }) => {
+                    name="images"
+                    render={() => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>
-                            {t("fields.countryOfOrigin")}
-                          </Form.Label>
-                          <Form.Control>
-                            <CountrySelect {...field} />
-                          </Form.Control>
+                          <div className="flex flex-col gap-y-4">
+                            <div className="flex flex-col gap-y-1">
+                              <Form.Label optional>
+                                {t("products.media.label")}
+                              </Form.Label>
+                              <Form.Hint>
+                                {t("products.media.editHint")}
+                              </Form.Hint>
+                            </div>
+                            <Form.Control>
+                              <FileUpload
+                                label={t("products.media.uploadImagesLabel")}
+                                hint={t("products.media.uploadImagesHint")}
+                                hasError={!!form.formState.errors.images}
+                                formats={SUPPORTED_FORMATS}
+                                onUploaded={() => {
+                                  form.clearErrors("images")
+                                  // if (hasInvalidFiles(files)) {
+                                  //   return
+                                  // }
+
+                                  // files.forEach((f) => append(f))
+                                }}
+                              />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </div>
                         </Form.Item>
                       )
                     }}

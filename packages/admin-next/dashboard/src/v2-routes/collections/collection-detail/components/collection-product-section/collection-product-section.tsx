@@ -1,6 +1,6 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import type { Product, ProductCollection } from "@medusajs/medusa"
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import {
   adminProductKeys,
@@ -9,7 +9,6 @@ import {
 } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
@@ -96,11 +95,19 @@ export const CollectionProductSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
-        <Link to={`/collections/${collection.id}/add-products`}>
-          <Button size="small" variant="secondary">
-            {t("general.add")}
-          </Button>
-        </Link>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  icon: <Plus />,
+                  label: t("actions.add"),
+                  to: "products",
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <DataTable
         table={table}
