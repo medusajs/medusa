@@ -5,7 +5,7 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { Outlet } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes } from "@medusajs/medusa"
+import { AdminCollectionsRes, type AdminRegionsRes } from "@medusajs/medusa"
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { useV2Session } from "../../lib/api-v2"
@@ -79,6 +79,7 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+
           {
             path: "/promotions",
             handle: {
@@ -162,6 +163,43 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "edit",
                 lazy: () => import("../../v2-routes/profile/profile-edit"),
+              },
+            ],
+          },
+          {
+            path: "regions",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Regions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/regions/region-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../v2-routes/regions/region-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/regions/region-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/regions/region-edit"),
+                  },
+                  {
+                    path: "countries/add",
+                    lazy: () =>
+                      import("../../v2-routes/regions/region-add-countries"),
+                  },
+                ],
               },
             ],
           },

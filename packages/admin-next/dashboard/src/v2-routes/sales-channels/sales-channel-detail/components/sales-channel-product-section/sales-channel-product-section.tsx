@@ -22,7 +22,6 @@ import {
   adminProductKeys,
   adminSalesChannelsKeys,
   useAdminCustomPost,
-  useAdminDeleteProductsFromSalesChannel,
   useAdminProducts,
 } from "medusa-react"
 import { useMemo, useState } from "react"

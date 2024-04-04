@@ -1,5 +1,11 @@
-import { RegionDTO } from "@medusajs/types"
-import { adminRegionKeys, useAdminCustomQuery } from "medusa-react"
+import { CreateRegionDTO, RegionDTO, UpdateRegionDTO } from "@medusajs/types"
+import {
+  adminRegionKeys,
+  useAdminCustomDelete,
+  useAdminCustomPost,
+  useAdminCustomQuery,
+} from "medusa-react"
+
 import { V2ListRes } from "./types/common"
 
 export const useV2Regions = (query?: any, options?: any) => {
@@ -20,4 +26,35 @@ export const useV2Regions = (query?: any, options?: any) => {
   }
 
   return { ...typedData, ...rest }
+}
+
+export const useV2Region = (id: string, options?: any) => {
+  const { data, ...rest } = useAdminCustomQuery(
+    `/regions/${id}`,
+    adminRegionKeys.detail(id),
+    undefined,
+    options
+  )
+
+  const region: RegionDTO | undefined = data?.region
+
+  return { region, ...rest }
+}
+
+export const useV2CreateRegion = () => {
+  return useAdminCustomPost<CreateRegionDTO, { region: RegionDTO }>(
+    `/regions`,
+    adminRegionKeys.list()
+  )
+}
+
+export const useV2UpdateRegion = (id: string) => {
+  return useAdminCustomPost<UpdateRegionDTO, { region: RegionDTO }>(
+    `/regions/${id}`,
+    adminRegionKeys.detail(id)
+  )
+}
+
+export const useV2DeleteRegion = (id: string) => {
+  return useAdminCustomDelete(`/regions/${id}`, adminRegionKeys.list())
 }

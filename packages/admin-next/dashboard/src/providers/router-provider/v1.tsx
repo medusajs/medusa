@@ -596,57 +596,6 @@ export const v1Routes: RouteObject[] = [
             ],
           },
           {
-            path: "regions",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Regions",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/regions/region-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () => import("../../routes/regions/region-create"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/regions/region-detail"),
-                handle: {
-                  crumb: (data: AdminRegionsRes) => data.region.name,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/regions/region-edit"),
-                  },
-                  {
-                    path: "countries/add",
-                    lazy: () =>
-                      import("../../routes/regions/region-add-countries"),
-                  },
-                  {
-                    path: "shipping-options/:so_id/edit",
-                    lazy: () =>
-                      import(
-                        "../../routes/regions/region-edit-shipping-option"
-                      ),
-                  },
-                  {
-                    path: "shipping-options/create",
-                    lazy: () =>
-                      import(
-                        "../../routes/regions/region-create-shipping-option"
-                      ),
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "users",
             element: <Outlet />,
             handle: {

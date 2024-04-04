@@ -688,7 +688,7 @@
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
-    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
+    "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
