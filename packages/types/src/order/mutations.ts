@@ -39,7 +39,7 @@ export interface CreateOrderDTO {
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   no_notification?: boolean
   items?: CreateOrderLineItemDTO[]
-  shipping_methods?: CreateOrderShippingMethodDTO[]
+  shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[]
   transactions?: CreateOrderTransactionDTO[]
   metadata?: Record<string, unknown>
 
@@ -198,9 +198,9 @@ export interface UpdateOrderLineItemDTO
 
 export interface CreateOrderShippingMethodDTO {
   name: string
-  shipping_method_id: string
   order_id: string
   amount: BigNumberInput
+  shipping_option_id?: string
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -209,7 +209,7 @@ export interface CreateOrderShippingMethodDTO {
 export interface UpdateOrderShippingMethodDTO {
   id: string
   name?: string
-  shipping_method_id: string
+  shipping_option_id?: string
   amount?: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: UpdateOrderTaxLineDTO[] | CreateOrderTaxLineDTO[]
