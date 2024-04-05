@@ -7,7 +7,8 @@ import { medusa, queryClient } from "../../../lib/medusa"
 
 const regionQuery = (id: string) => ({
   queryKey: adminRegionKeys.detail(id),
-  queryFn: async () => medusa.admin.regions.retrieve(id),
+  queryFn: async () =>
+    medusa.admin.regions.retrieve(id, { fields: "*payment_providers" }),
 })
 
 export const regionLoader = async ({ params }: LoaderFunctionArgs) => {

@@ -26,6 +26,7 @@ export const RegionListTable = () => {
   const { regions, count, isLoading, isError, error } = useV2Regions(
     {
       ...searchParams,
+      fields: "*payment_providers",
     },
     {
       keepPreviousData: true,

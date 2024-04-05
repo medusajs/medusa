@@ -23,7 +23,7 @@ type EditRegionFormProps = {
 const EditRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string(),
-  // payment_providers: zod.array(zod.string()), // TODO
+  payment_providers: zod.array(zod.string()),
 })
 
 export const EditRegionForm = ({
@@ -49,7 +49,7 @@ export const EditRegionForm = ({
       {
         name: values.name,
         currency_code: values.currency_code.toLowerCase(),
-        // payment_providers: values.payment_providers, // TODO
+        payment_providers: values.payment_providers,
       },
       {
         onSuccess: () => {

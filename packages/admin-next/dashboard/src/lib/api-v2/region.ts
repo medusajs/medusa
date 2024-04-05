@@ -28,9 +28,9 @@ export const useV2Regions = (query?: any, options?: any) => {
   return { ...typedData, ...rest }
 }
 
-export const useV2Region = (id: string, options?: any) => {
+export const useV2Region = (id: string, query?: any, options?: any) => {
   const { data, ...rest } = useAdminCustomQuery(
-    `/regions/${id}`,
+    `/regions/${id}?fields=*payment_providers`,
     adminRegionKeys.detail(id),
     undefined,
     options

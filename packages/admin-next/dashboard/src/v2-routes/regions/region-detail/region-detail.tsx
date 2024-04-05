@@ -11,9 +11,13 @@ export const RegionDetail = () => {
   >
 
   const { id } = useParams()
-  const { region, isLoading, isError, error } = useV2Region(id!, {
-    initialData,
-  })
+  const { region, isLoading, isError, error } = useV2Region(
+    id!,
+    { fields: "*payment_providers" },
+    {
+      initialData,
+    }
+  )
 
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
   if (isLoading || !region) {
