@@ -1,5 +1,5 @@
 import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
-import { PublishableApiKey } from "@medusajs/medusa"
+import { ApiKeyDTO } from "@medusajs/types"
 import {
   Container,
   Copy,
@@ -8,18 +8,16 @@ import {
   Text,
   usePrompt,
 } from "@medusajs/ui"
-import {
-  useAdminCustomQuery,
-  useAdminDeletePublishableApiKey,
-  useAdminRevokePublishableApiKey,
-  useAdminUser,
-} from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { UserLink } from "../../../../../components/common/user-link"
-import { ApiKeyDTO } from "@medusajs/types"
+import {
+  useDeleteApiKey,
+  useRevokeApiKey,
+} from "../../../../../hooks/api/api-keys"
+import { useUser } from "../../../../../hooks/api/users"
 
 type ApiKeyGeneralSectionProps = {
   apiKey: ApiKeyDTO
@@ -30,12 +28,8 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const navigate = useNavigate()
   const prompt = usePrompt()
 
-  const { mutateAsync: revokeAsync } = useAdminRevokePublishableApiKey(
-    apiKey.id
-  )
-  const { mutateAsync: deleteAsync } = useAdminDeletePublishableApiKey(
-    apiKey.id
-  )
+  const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
+  const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -151,12 +145,9 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 }
 
 const ActionBy = ({ userId }: { userId: string | null }) => {
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    `/users/${userId}`,
-    [],
-    {},
-    { enabled: !!userId }
-  )
+  const { user, isLoading, isError, error } = useUser(userId!, undefined, {
+    enabled: !!userId,
+  })
 
   if (!userId) {
     return (
@@ -179,7 +170,7 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
     )
   }
 
-  if (!data?.user) {
+  if (!user) {
     return (
       <Text size="small" className="text-ui-fg-subtle">
         -
@@ -187,5 +178,5 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
     )
   }
 
-  return <UserLink {...data.user} />
+  return <UserLink {...user} />
 }

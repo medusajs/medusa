@@ -1,12 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import type { ProductCollection } from "@medusajs/medusa"
+import { ProductCollectionDTO } from "@medusajs/types"
 import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
-import { useAdminDeleteCollection } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteCollection } from "../../../../../hooks/api/collections"
 
 type CollectionGeneralSectionProps = {
-  collection: ProductCollection
+  collection: ProductCollectionDTO
 }
 
 export const CollectionGeneralSection = ({
@@ -15,7 +15,7 @@ export const CollectionGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminDeleteCollection(collection.id)
+  const { mutateAsync } = useDeleteCollection(collection.id)
 
   const handleDelete = async () => {
     const res = await prompt({
