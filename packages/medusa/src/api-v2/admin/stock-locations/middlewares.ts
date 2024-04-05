@@ -1,5 +1,6 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetStockLocationsLocationParams,
   AdminGetStockLocationsParams,
@@ -9,11 +10,10 @@ import {
   AdminPostStockLocationsReq,
   AdminStockLocationsLocationSalesChannelBatchReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { applySalesChannelsFilter } from "./utils/apply-sales-channel-filter"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -40,7 +40,11 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-      applySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "sales_channel_location",
+        resourceId: "stock_location_id",
+        filterableField: "sales_channel_id",
+      }),
     ],
   },
   {
