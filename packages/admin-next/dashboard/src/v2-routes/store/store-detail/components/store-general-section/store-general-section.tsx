@@ -2,10 +2,10 @@ import { PencilSquare } from "@medusajs/icons"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { Store } from "../../../../../lib/api-v2/types/store"
+import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type StoreGeneralSectionProps = {
-  store: Store
+  store: ExtendedStoreDTO
 }
 
 export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {

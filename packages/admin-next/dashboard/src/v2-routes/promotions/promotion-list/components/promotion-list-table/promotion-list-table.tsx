@@ -1,19 +1,19 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare } from "@medusajs/icons"
 import { PromotionDTO } from "@medusajs/types"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminDeleteDiscount } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData } from "react-router-dom"
 
+import { keepPreviousData } from "@tanstack/react-query"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { usePromotions } from "../../../../../hooks/api/promotions"
 import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/use-promotion-table-columns"
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters-v2/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useV2Promotions } from "../../../../../lib/api-v2"
 import { promotionsLoader } from "../../loader"
 
 const PAGE_SIZE = 20
@@ -25,11 +25,11 @@ export const PromotionListTable = () => {
   >
 
   const { searchParams, raw } = usePromotionTableQuery({ pageSize: PAGE_SIZE })
-  const { promotions, count, isLoading, isError, error } = useV2Promotions(
+  const { promotions, count, isLoading, isError, error } = usePromotions(
     { ...searchParams },
     {
       initialData,
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -79,27 +79,6 @@ export const PromotionListTable = () => {
 
 const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
   const { t } = useTranslation()
-  const prompt = usePrompt()
-  // TODO: change to promotions delete endpoint
-  const { mutateAsync } = useAdminDeleteDiscount(promotion.id)
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("promotions.deleteWarning", {
-        code: promotion.code,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    // TODO: handle error scenario here
-    await mutateAsync()
-  }
 
   return (
     <ActionMenu
@@ -110,15 +89,6 @@ const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
               icon: <PencilSquare />,
               label: t("actions.edit"),
               to: `/promotions/${promotion.id}/edit`,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
             },
           ],
         },
