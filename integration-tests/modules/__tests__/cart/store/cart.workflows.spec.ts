@@ -471,7 +471,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(`Failed to create cart`),
+                error: expect.objectContaining({
+                  message: `Failed to create cart`,
+                }),
               },
             ])
 
@@ -508,7 +510,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(`Failed to create cart`),
+                error: expect.objectContaining({
+                  message: `Failed to create cart`,
+                }),
               },
             ])
 
@@ -734,7 +738,9 @@ medusaIntegrationTestRunner({
             {
               action: "validate-variants-exist",
               handlerType: "invoke",
-              error: new Error(`Variants with IDs prva_foo do not exist`),
+              error: expect.objectContaining({
+                message: `Variants with IDs prva_foo do not exist`,
+              }),
             },
           ])
         })
@@ -975,7 +981,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(`Failed to update something after line items`),
+                error: expect.objectContaining({
+                  message: `Failed to update something after line items`,
+                }),
               },
             ])
 
