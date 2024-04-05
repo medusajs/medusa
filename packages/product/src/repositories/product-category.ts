@@ -112,7 +112,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     mpaths.push({ mpath: Array.from(parentMpaths) })
 
     const whereOptions = {
+      ...findOptions.where,
       $or: mpaths,
+    }
+
+    if ("parent_category_id" in whereOptions) {
+      delete whereOptions.parent_category_id
+    }
+
+    if ("id" in whereOptions) {
+      delete whereOptions.id
     }
 
     let allCategories = await manager.find(
