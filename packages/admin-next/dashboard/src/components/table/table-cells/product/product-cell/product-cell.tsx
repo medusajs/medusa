@@ -1,11 +1,10 @@
-import type { Product } from "@medusajs/medusa"
-import type { PricedProduct } from "@medusajs/medusa/dist/types/pricing"
 import { useTranslation } from "react-i18next"
 
+import { ProductDTO } from "@medusajs/types"
 import { Thumbnail } from "../../../../common/thumbnail"
 
 type ProductCellProps = {
-  product: Product | PricedProduct
+  product: ProductDTO
 }
 
 export const ProductCell = ({ product }: ProductCellProps) => {

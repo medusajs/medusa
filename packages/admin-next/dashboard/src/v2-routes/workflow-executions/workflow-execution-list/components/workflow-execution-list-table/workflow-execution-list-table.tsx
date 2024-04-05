@@ -1,11 +1,10 @@
-import { AdminGetWorkflowExecutionsParams } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
-import { useAdminCustomQuery } from "medusa-react"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useWorkflowExecutions } from "../../../../../hooks/api/workflow-executions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { WorkflowExecutionDTO } from "../../../types"
-import { adminExecutionKey } from "../../../utils"
 import { useWorkflowExecutionTableColumns } from "./use-workflow-execution-table-columns"
 import { useWorkflowExecutionTableQuery } from "./use-workflow-execution-table-query"
 
@@ -27,27 +26,23 @@ export const WorkflowExecutionListTable = () => {
   const { searchParams, raw } = useWorkflowExecutionTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { data, isLoading, isError, error } = useAdminCustomQuery<
-    AdminGetWorkflowExecutionsParams,
-    WorkflowExecutionsRes
-  >(
-    "/workflows-executions",
-    adminExecutionKey.list(searchParams),
-    {
-      ...searchParams,
-      fields: "execution,state",
-    },
-    {
-      keepPreviousData: true,
-    }
-  )
+  const { workflow_executions, count, isLoading, isError, error } =
+    useWorkflowExecutions(
+      {
+        ...searchParams,
+        fields: "execution,state",
+      },
+      {
+        placeholderData: keepPreviousData,
+      }
+    )
 
   const columns = useWorkflowExecutionTableColumns()
 
   const { table } = useDataTable({
-    data: data?.workflow_executions || [],
+    data: workflow_executions || [],
     columns,
-    count: data?.count,
+    count: count,
     pageSize: PAGE_SIZE,
     enablePagination: true,
     getRowId: (row) => row.id,
@@ -65,7 +60,7 @@ export const WorkflowExecutionListTable = () => {
       <DataTable
         table={table}
         columns={columns}
-        count={data?.count}
+        count={count}
         isLoading={isLoading}
         pageSize={PAGE_SIZE}
         navigateTo={(row) => `${row.id}`}

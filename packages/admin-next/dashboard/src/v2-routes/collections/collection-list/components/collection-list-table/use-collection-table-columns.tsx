@@ -1,13 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { ProductCollection } from "@medusajs/medusa"
+import { ProductCollectionDTO } from "@medusajs/types"
 import { usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminDeleteCollection } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteCollection } from "../../../../../hooks/api/collections"
 
-const columnHelper = createColumnHelper<ProductCollection>()
+const columnHelper = createColumnHelper<ProductCollectionDTO>()
 
 export const useCollectionTableColumns = () => {
   const { t } = useTranslation()
@@ -41,12 +41,12 @@ export const useCollectionTableColumns = () => {
 const CollectionActions = ({
   collection,
 }: {
-  collection: ProductCollection
+  collection: ProductCollectionDTO
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminDeleteCollection(collection.id)
+  const { mutateAsync } = useDeleteCollection(collection.id)
 
   const handleDeleteCollection = async () => {
     const res = await prompt({

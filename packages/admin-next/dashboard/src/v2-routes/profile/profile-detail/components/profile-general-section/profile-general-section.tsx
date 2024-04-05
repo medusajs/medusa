@@ -1,11 +1,11 @@
+import { UserDTO } from "@medusajs/types"
 import { Button, Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { languages } from "../../../../../i18n/config"
-import { UserDTO } from "@medusajs/types"
 
 type ProfileGeneralSectionProps = {
-  user: Partial<Omit<UserDTO, "password_hash">>
+  user: UserDTO
 }
 
 export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {

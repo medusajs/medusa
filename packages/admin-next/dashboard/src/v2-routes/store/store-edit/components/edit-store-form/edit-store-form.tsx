@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { StoreDTO } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -10,10 +9,11 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useV2UpdateStore } from "../../../../../lib/api-v2"
+import { useUpdateStore } from "../../../../../hooks/api/store"
+import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type EditStoreFormProps = {
-  store: StoreDTO
+  store: ExtendedStoreDTO
 }
 
 const EditStoreSchema = z.object({
@@ -34,7 +34,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
     resolver: zodResolver(EditStoreSchema),
   })
 
-  const { mutateAsync, isLoading } = useV2UpdateStore(store.id)
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {
@@ -72,7 +72,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" isLoading={isLoading} type="submit">
+            <Button size="small" isLoading={isPending} type="submit">
               {t("actions.save")}
             </Button>
           </div>
