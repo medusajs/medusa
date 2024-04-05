@@ -465,7 +465,7 @@ export interface FilterablePaymentProviderProps
   /**
    * The IDs to filter the payment collection by.
    */
-  id?: string | string[]
+  id?: string | string[] | OperatorMap<string | string[]>
 
   /**
    * Filter by enabled status

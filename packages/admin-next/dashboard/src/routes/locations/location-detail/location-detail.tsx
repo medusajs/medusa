@@ -1,8 +1,9 @@
-import { useAdminStockLocations } from "medusa-react"
 import { Outlet, json, useParams } from "react-router-dom"
+
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { LocationGeneralSection } from "./components/location-general-section"
-import { LocationSalesChannelSection } from "./components/location-sales-channel-section"
+import { LocationGeneralSection } from "../../../modules/locations/location-detail/components/location-general-section"
+import { LocationSalesChannelSection } from "../../../modules/locations/location-detail/components/location-sales-channel-section"
+import { useAdminStockLocations } from "medusa-react"
 
 export const LocationDetail = () => {
   const { id } = useParams()

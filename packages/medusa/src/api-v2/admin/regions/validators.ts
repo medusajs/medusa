@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { extendedFindParamsMixin, FindParams } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
 export class AdminGetRegionsRegionParams extends FindParams {}
@@ -90,6 +90,11 @@ export class AdminPostRegionsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers?: string[]
 }
 
 export class AdminPostRegionsRegionReq {
@@ -108,4 +113,9 @@ export class AdminPostRegionsRegionReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers?: string[]
 }
