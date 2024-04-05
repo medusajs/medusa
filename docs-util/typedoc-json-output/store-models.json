@@ -1,33 +1,33 @@
 {
-	"id": 8399,
+	"id": 9491,
 	"name": "store-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 8400,
+			"id": 9492,
 			"name": "Store",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8401,
+					"id": 9493,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8402,
+							"id": 9494,
 							"name": "new Store",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8400,
+								"target": 9492,
 								"name": "default",
 								"package": "@medusajs/store"
 							}
@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"id": 8418,
+					"id": 9510,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -53,7 +53,7 @@
 					}
 				},
 				{
-					"id": 8403,
+					"id": 9495,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -64,7 +64,7 @@
 					}
 				},
 				{
-					"id": 8404,
+					"id": 9496,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -75,7 +75,7 @@
 					}
 				},
 				{
-					"id": 8405,
+					"id": 9497,
 					"name": "supported_currency_codes",
 					"variant": "declaration",
 					"kind": 1024,
@@ -90,7 +90,7 @@
 					"defaultValue": "[]"
 				},
 				{
-					"id": 8406,
+					"id": 9498,
 					"name": "default_currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -111,7 +111,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8407,
+					"id": 9499,
 					"name": "default_sales_channel_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -132,7 +132,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8408,
+					"id": 9500,
 					"name": "default_region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -153,7 +153,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8409,
+					"id": 9501,
 					"name": "default_location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -174,7 +174,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8410,
+					"id": 9502,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -210,7 +210,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8411,
+					"id": 9503,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -226,7 +226,7 @@
 					}
 				},
 				{
-					"id": 8412,
+					"id": 9504,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -242,7 +242,7 @@
 					}
 				},
 				{
-					"id": 8413,
+					"id": 9505,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -268,14 +268,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8414,
+					"id": 9506,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8415,
+							"id": 9507,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -288,14 +288,14 @@
 					]
 				},
 				{
-					"id": 8416,
+					"id": 9508,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8417,
+							"id": 9509,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -312,31 +312,31 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8401
+						9493
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8418,
-						8403,
-						8404,
-						8405,
-						8406,
-						8407,
-						8408,
-						8409,
-						8410,
-						8411,
-						8412,
-						8413
+						9510,
+						9495,
+						9496,
+						9497,
+						9498,
+						9499,
+						9500,
+						9501,
+						9502,
+						9503,
+						9504,
+						9505
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8414,
-						8416
+						9506,
+						9508
 					]
 				}
 			]
@@ -346,81 +346,81 @@
 		{
 			"title": "Classes",
 			"children": [
-				8400
+				9492
 			]
 		}
 	],
 	"packageName": "@medusajs/store",
 	"symbolIdMap": {
-		"8399": {
+		"9491": {
 			"sourceFileName": "../../../packages/store/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"8400": {
+		"9492": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default"
 		},
-		"8403": {
+		"9495": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.id"
 		},
-		"8404": {
+		"9496": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.name"
 		},
-		"8405": {
+		"9497": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.supported_currency_codes"
 		},
-		"8406": {
+		"9498": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.default_currency_code"
 		},
-		"8407": {
+		"9499": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.default_sales_channel_id"
 		},
-		"8408": {
+		"9500": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.default_region_id"
 		},
-		"8409": {
+		"9501": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.default_location_id"
 		},
-		"8410": {
+		"9502": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"8411": {
+		"9503": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8412": {
+		"9504": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8413": {
+		"9505": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8414": {
+		"9506": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8415": {
+		"9507": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8416": {
+		"9508": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8417": {
+		"9509": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8418": {
+		"9510": {
 			"sourceFileName": "../../../packages/store/src/models/store.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}

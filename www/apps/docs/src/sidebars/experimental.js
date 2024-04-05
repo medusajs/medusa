@@ -335,7 +335,7 @@ module.exports = {
         {
           type: "doc",
           label: "Relations to Other Modules",
-          id: "experimental/inventory/relations-to-other-modules/index",
+          id: "experimental/order/relations-to-other-modules/index",
         },
         {
           type: "html",
@@ -352,6 +352,79 @@ module.exports = {
         {
           type: "ref",
           id: "references/modules/inventory_next_models",
+          label: "Data Models Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Order Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/order/index",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "experimental/order/concepts/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/order-items/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/promotion-adjustments/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/tax-lines/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/transactions/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/order-change/index",
+        },
+        {
+          type: "doc",
+          id: "experimental/order/order-versioning/index",
+        },
+        {
+          type: "doc",
+          label: "Relations to Other Modules",
+          id: "experimental/inventory/relations-to-other-modules/index",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/order/interfaces/order.IOrderModuleService",
+          label: "Interface Reference",
+        },
+        {
+          type: "ref",
+          id: "references/modules/order_models",
           label: "Data Models Reference",
         },
       ],

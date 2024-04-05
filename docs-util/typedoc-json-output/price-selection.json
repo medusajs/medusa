@@ -1,12 +1,12 @@
 {
-	"id": 20962,
+	"id": 22054,
 	"name": "price-selection",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 20963,
+			"id": 22055,
 			"name": "IPriceSelectionStrategy",
 			"variant": "declaration",
 			"kind": 256,
@@ -45,14 +45,14 @@
 			},
 			"children": [
 				{
-					"id": 20964,
+					"id": 22056,
 					"name": "calculateVariantPrice",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20965,
+							"id": 22057,
 							"name": "calculateVariantPrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -91,7 +91,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20966,
+									"id": 22058,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -109,14 +109,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 20967,
+												"id": 22059,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 20968,
+														"id": 22060,
 														"name": "variantId",
 														"variant": "declaration",
 														"kind": 1024,
@@ -135,7 +135,7 @@
 														}
 													},
 													{
-														"id": 20969,
+														"id": 22061,
 														"name": "quantity",
 														"variant": "declaration",
 														"kind": 1024,
@@ -160,8 +160,8 @@
 													{
 														"title": "Properties",
 														"children": [
-															20968,
-															20969
+															22060,
+															22061
 														]
 													}
 												]
@@ -170,7 +170,7 @@
 									}
 								},
 								{
-									"id": 20970,
+									"id": 22062,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -185,7 +185,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 21030,
+										"target": 22122,
 										"name": "PriceSelectionContext",
 										"package": "@medusajs/medusa"
 									}
@@ -211,7 +211,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21045,
+												"target": 22137,
 												"name": "PriceSelectionResult",
 												"package": "@medusajs/medusa"
 											}
@@ -227,14 +227,14 @@
 					]
 				},
 				{
-					"id": 20971,
+					"id": 22063,
 					"name": "onVariantsPricesUpdate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20972,
+							"id": 22064,
 							"name": "onVariantsPricesUpdate",
 							"variant": "signature",
 							"kind": 4096,
@@ -277,7 +277,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20973,
+									"id": 22065,
 									"name": "variantIds",
 									"variant": "param",
 									"kind": 32768,
@@ -318,21 +318,21 @@
 					]
 				},
 				{
-					"id": 20974,
+					"id": 22066,
 					"name": "withTransaction",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20975,
+							"id": 22067,
 							"name": "withTransaction",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 20976,
+									"id": 22068,
 									"name": "transactionManager",
 									"variant": "param",
 									"kind": 32768,
@@ -372,9 +372,9 @@
 				{
 					"title": "Methods",
 					"children": [
-						20964,
-						20971,
-						20974
+						22056,
+						22063,
+						22066
 					]
 				}
 			],
@@ -392,13 +392,13 @@
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 20977,
+					"target": 22069,
 					"name": "AbstractPriceSelectionStrategy"
 				}
 			]
 		},
 		{
-			"id": 20977,
+			"id": 22069,
 			"name": "AbstractPriceSelectionStrategy",
 			"variant": "declaration",
 			"kind": 128,
@@ -407,7 +407,7 @@
 			},
 			"children": [
 				{
-					"id": 20982,
+					"id": 22074,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -416,7 +416,7 @@
 					},
 					"signatures": [
 						{
-							"id": 20983,
+							"id": 22075,
 							"name": "new AbstractPriceSelectionStrategy",
 							"variant": "signature",
 							"kind": 16384,
@@ -450,7 +450,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20984,
+									"id": 22076,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -492,7 +492,7 @@
 									}
 								},
 								{
-									"id": 20985,
+									"id": 22077,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -530,7 +530,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 20977,
+								"target": 22069,
 								"name": "AbstractPriceSelectionStrategy",
 								"package": "@medusajs/medusa"
 							},
@@ -548,7 +548,7 @@
 					}
 				},
 				{
-					"id": 20986,
+					"id": 22078,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -593,7 +593,7 @@
 					}
 				},
 				{
-					"id": 20987,
+					"id": 22079,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -631,7 +631,7 @@
 					}
 				},
 				{
-					"id": 20988,
+					"id": 22080,
 					"name": "calculateVariantPrice",
 					"variant": "declaration",
 					"kind": 2048,
@@ -641,7 +641,7 @@
 					},
 					"signatures": [
 						{
-							"id": 20989,
+							"id": 22081,
 							"name": "calculateVariantPrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -680,7 +680,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20990,
+									"id": 22082,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -698,14 +698,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 20991,
+												"id": 22083,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 20992,
+														"id": 22084,
 														"name": "variantId",
 														"variant": "declaration",
 														"kind": 1024,
@@ -716,7 +716,7 @@
 														}
 													},
 													{
-														"id": 20994,
+														"id": 22086,
 														"name": "quantity",
 														"variant": "declaration",
 														"kind": 1024,
@@ -733,8 +733,8 @@
 													{
 														"title": "Properties",
 														"children": [
-															20992,
-															20994
+															22084,
+															22086
 														]
 													}
 												]
@@ -743,7 +743,7 @@
 									}
 								},
 								{
-									"id": 20995,
+									"id": 22087,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -758,7 +758,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 21030,
+										"target": 22122,
 										"name": "PriceSelectionContext",
 										"package": "@medusajs/medusa"
 									}
@@ -784,7 +784,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21045,
+												"target": 22137,
 												"name": "PriceSelectionResult",
 												"package": "@medusajs/medusa"
 											}
@@ -798,19 +798,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 20965,
+								"target": 22057,
 								"name": "IPriceSelectionStrategy.calculateVariantPrice"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 20964,
+						"target": 22056,
 						"name": "IPriceSelectionStrategy.calculateVariantPrice"
 					}
 				},
 				{
-					"id": 20996,
+					"id": 22088,
 					"name": "onVariantsPricesUpdate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -819,7 +819,7 @@
 					},
 					"signatures": [
 						{
-							"id": 20997,
+							"id": 22089,
 							"name": "onVariantsPricesUpdate",
 							"variant": "signature",
 							"kind": 4096,
@@ -862,7 +862,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20998,
+									"id": 22090,
 									"name": "variantIds",
 									"variant": "param",
 									"kind": 32768,
@@ -901,19 +901,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 20972,
+								"target": 22064,
 								"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 20971,
+						"target": 22063,
 						"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
 					}
 				},
 				{
-					"id": 20999,
+					"id": 22091,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -936,7 +936,7 @@
 					}
 				},
 				{
-					"id": 21000,
+					"id": 22092,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -968,7 +968,7 @@
 					}
 				},
 				{
-					"id": 21003,
+					"id": 22095,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -987,7 +987,7 @@
 					}
 				},
 				{
-					"id": 21004,
+					"id": 22096,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1022,7 +1022,7 @@
 					}
 				},
 				{
-					"id": 21005,
+					"id": 22097,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1061,26 +1061,26 @@
 				{
 					"title": "Constructors",
 					"children": [
-						20982
+						22074
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						20986,
-						20987,
-						20999,
-						21000,
-						21003,
-						21004,
-						21005
+						22078,
+						22079,
+						22091,
+						22092,
+						22095,
+						22096,
+						22097
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						20988,
-						20996
+						22080,
+						22088
 					]
 				}
 			],
@@ -1098,14 +1098,14 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 20963,
+					"target": 22055,
 					"name": "IPriceSelectionStrategy",
 					"package": "@medusajs/medusa"
 				}
 			]
 		},
 		{
-			"id": 21030,
+			"id": 22122,
 			"name": "PriceSelectionContext",
 			"variant": "declaration",
 			"kind": 256,
@@ -1120,7 +1120,7 @@
 			},
 			"children": [
 				{
-					"id": 21031,
+					"id": 22123,
 					"name": "cart_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1141,7 +1141,7 @@
 					}
 				},
 				{
-					"id": 21032,
+					"id": 22124,
 					"name": "customer_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1162,7 +1162,7 @@
 					}
 				},
 				{
-					"id": 21033,
+					"id": 22125,
 					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1183,7 +1183,7 @@
 					}
 				},
 				{
-					"id": 21034,
+					"id": 22126,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1220,7 +1220,7 @@
 					}
 				},
 				{
-					"id": 21035,
+					"id": 22127,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1241,7 +1241,7 @@
 					}
 				},
 				{
-					"id": 21036,
+					"id": 22128,
 					"name": "include_discount_prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1262,7 +1262,7 @@
 					}
 				},
 				{
-					"id": 21037,
+					"id": 22129,
 					"name": "tax_rates",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1291,7 +1291,7 @@
 					}
 				},
 				{
-					"id": 21038,
+					"id": 22130,
 					"name": "ignore_cache",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1316,20 +1316,20 @@
 				{
 					"title": "Properties",
 					"children": [
-						21031,
-						21032,
-						21033,
-						21034,
-						21035,
-						21036,
-						21037,
-						21038
+						22123,
+						22124,
+						22125,
+						22126,
+						22127,
+						22128,
+						22129,
+						22130
 					]
 				}
 			]
 		},
 		{
-			"id": 21039,
+			"id": 22131,
 			"name": "PriceType",
 			"variant": "declaration",
 			"kind": 32,
@@ -1337,14 +1337,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 21040,
+					"id": 22132,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 21043,
+							"id": 22135,
 							"name": "DEFAULT",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1362,7 +1362,7 @@
 							"defaultValue": "\"default\""
 						},
 						{
-							"id": 21041,
+							"id": 22133,
 							"name": "SALE",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1380,7 +1380,7 @@
 							"defaultValue": "\"sale\""
 						},
 						{
-							"id": 21042,
+							"id": 22134,
 							"name": "OVERRIDE",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1402,9 +1402,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								21043,
-								21041,
-								21042
+								22135,
+								22133,
+								22134
 							]
 						}
 					]
@@ -1412,7 +1412,7 @@
 			}
 		},
 		{
-			"id": 21044,
+			"id": 22136,
 			"name": "PriceType",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1442,7 +1442,7 @@
 			}
 		},
 		{
-			"id": 21045,
+			"id": 22137,
 			"name": "PriceSelectionResult",
 			"variant": "declaration",
 			"kind": 256,
@@ -1457,7 +1457,7 @@
 			},
 			"children": [
 				{
-					"id": 21046,
+					"id": 22138,
 					"name": "originalPrice",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1485,7 +1485,7 @@
 					}
 				},
 				{
-					"id": 21047,
+					"id": 22139,
 					"name": "originalPriceIncludesTax",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1515,7 +1515,7 @@
 					}
 				},
 				{
-					"id": 21048,
+					"id": 22140,
 					"name": "calculatedPrice",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1543,7 +1543,7 @@
 					}
 				},
 				{
-					"id": 21049,
+					"id": 22141,
 					"name": "calculatedPriceIncludesTax",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1573,7 +1573,7 @@
 					}
 				},
 				{
-					"id": 21050,
+					"id": 22142,
 					"name": "calculatedPriceType",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1598,13 +1598,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 21044,
+						"target": 22136,
 						"name": "PriceType",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 21051,
+					"id": 22143,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1643,12 +1643,12 @@
 				{
 					"title": "Properties",
 					"children": [
-						21046,
-						21047,
-						21048,
-						21049,
-						21050,
-						21051
+						22138,
+						22139,
+						22140,
+						22141,
+						22142,
+						22143
 					]
 				}
 			]
@@ -1658,369 +1658,369 @@
 		{
 			"title": "Classes",
 			"children": [
-				20977
+				22069
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				20963,
-				21030,
-				21045
+				22055,
+				22122,
+				22137
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				21044
+				22136
 			]
 		},
 		{
 			"title": "Variables",
 			"children": [
-				21039
+				22131
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"20962": {
+		"22054": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": ""
 		},
-		"20963": {
+		"22055": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "IPriceSelectionStrategy"
 		},
-		"20964": {
+		"22056": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "IPriceSelectionStrategy.calculateVariantPrice"
 		},
-		"20965": {
+		"22057": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "IPriceSelectionStrategy.calculateVariantPrice"
 		},
-		"20966": {
+		"22058": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "data"
 		},
-		"20967": {
+		"22059": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type"
 		},
-		"20968": {
+		"22060": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.variantId"
 		},
-		"20969": {
+		"22061": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"20970": {
+		"22062": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "context"
 		},
-		"20971": {
+		"22063": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "IPriceSelectionStrategy.onVariantsPricesUpdate"
 		},
-		"20972": {
+		"22064": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "IPriceSelectionStrategy.onVariantsPricesUpdate"
 		},
-		"20973": {
+		"22065": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "variantIds"
 		},
-		"20974": {
+		"22066": {
 			"sourceFileName": "../../../packages/types/src/transaction-base/transaction-base.ts",
 			"qualifiedName": "ITransactionBaseService.withTransaction"
 		},
-		"20975": {
+		"22067": {
 			"sourceFileName": "../../../packages/types/src/transaction-base/transaction-base.ts",
 			"qualifiedName": "ITransactionBaseService.withTransaction"
 		},
-		"20976": {
+		"22068": {
 			"sourceFileName": "../../../packages/types/src/transaction-base/transaction-base.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"20977": {
+		"22069": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy"
 		},
-		"20982": {
+		"22074": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.__constructor"
 		},
-		"20983": {
+		"22075": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy"
 		},
-		"20984": {
+		"22076": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "container"
 		},
-		"20985": {
+		"22077": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "config"
 		},
-		"20986": {
+		"22078": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.container"
 		},
-		"20987": {
+		"22079": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.config"
 		},
-		"20988": {
+		"22080": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.calculateVariantPrice"
 		},
-		"20989": {
+		"22081": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.calculateVariantPrice"
 		},
-		"20990": {
+		"22082": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "data"
 		},
-		"20991": {
+		"22083": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type"
 		},
-		"20992": {
+		"22084": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.variantId"
 		},
-		"20994": {
+		"22086": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"20995": {
+		"22087": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "context"
 		},
-		"20996": {
+		"22088": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.onVariantsPricesUpdate"
 		},
-		"20997": {
+		"22089": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy.onVariantsPricesUpdate"
 		},
-		"20998": {
+		"22090": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "variantIds"
 		},
-		"20999": {
+		"22091": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"21000": {
+		"22092": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"21001": {
+		"22093": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"21002": {
+		"22094": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"21003": {
+		"22095": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"21004": {
+		"22096": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"21005": {
+		"22097": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"21006": {
+		"22098": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"21007": {
+		"22099": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"21008": {
+		"22100": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"21009": {
+		"22101": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"21010": {
+		"22102": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"21011": {
+		"22103": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"21012": {
+		"22104": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21013": {
+		"22105": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"21014": {
+		"22106": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"21015": {
+		"22107": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"21016": {
+		"22108": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"21017": {
+		"22109": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"21018": {
+		"22110": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"21019": {
+		"22111": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21020": {
+		"22112": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21021": {
+		"22113": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"21022": {
+		"22114": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"21023": {
+		"22115": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21024": {
+		"22116": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21025": {
+		"22117": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"21026": {
+		"22118": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"21027": {
+		"22119": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21028": {
+		"22120": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"21029": {
+		"22121": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"21030": {
+		"22122": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "PriceSelectionContext"
 		},
-		"21031": {
+		"22123": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.cart_id"
 		},
-		"21032": {
+		"22124": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.customer_id"
 		},
-		"21033": {
+		"22125": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.region_id"
 		},
-		"21034": {
+		"22126": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"21035": {
+		"22127": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.currency_code"
 		},
-		"21036": {
+		"22128": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.include_discount_prices"
 		},
-		"21037": {
+		"22129": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.tax_rates"
 		},
-		"21038": {
+		"22130": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.ignore_cache"
 		},
-		"21039": {
+		"22131": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "PriceType"
 		},
-		"21040": {
+		"22132": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__object"
 		},
-		"21041": {
+		"22133": {
 			"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
 			"qualifiedName": "SALE"
 		},
-		"21042": {
+		"22134": {
 			"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
 			"qualifiedName": "OVERRIDE"
 		},
-		"21043": {
+		"22135": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "DEFAULT"
 		},
-		"21044": {
+		"22136": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "PriceType"
 		},
-		"21045": {
+		"22137": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "PriceSelectionResult"
 		},
-		"21046": {
+		"22138": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.originalPrice"
 		},
-		"21047": {
+		"22139": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.originalPriceIncludesTax"
 		},
-		"21048": {
+		"22140": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.calculatedPrice"
 		},
-		"21049": {
+		"22141": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.calculatedPriceIncludesTax"
 		},
-		"21050": {
+		"22142": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.calculatedPriceType"
 		},
-		"21051": {
+		"22143": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "__type.prices"
 		}

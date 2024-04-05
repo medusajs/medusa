@@ -1089,7 +1089,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -2276,7 +2276,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -2328,7 +2328,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -2744,7 +2744,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -3590,7 +3590,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",

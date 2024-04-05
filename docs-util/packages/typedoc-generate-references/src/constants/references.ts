@@ -6,6 +6,7 @@ export const modules = [
   "customer",
   "inventory",
   "inventory-next",
+  "order",
   "payment",
   "pricing",
   "product",

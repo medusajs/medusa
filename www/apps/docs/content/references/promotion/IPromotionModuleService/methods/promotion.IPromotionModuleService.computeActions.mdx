@@ -10,10 +10,42 @@ import TypeList from "@site/src/components/TypeList"
 
 This documentation provides a reference to the `computeActions` method. This belongs to the Promotion Module.
 
+This method provides the actions to perform on a cart based on the specified promotions
+and context.
+
+## Example
+
+```ts
+const actions = await promotionModuleService.computeActions(
+  ["50OFF"],
+  {
+    items: [
+      {
+        id: "cali_123",
+        quantity: 2,
+        subtotal: 1000,
+      },
+    ],
+    shipping_methods: [
+      {
+        id: "casm_123",
+        subtotal: 0,
+        adjustments: [
+          {
+            id: "adj_123",
+            code: "FREESHIPPING",
+          },
+        ],
+      },
+    ],
+  }
+)
+```
+
 ## Parameters
 
-<TypeList types={[{"name":"promotionCodesToApply","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"applicationContext","type":"[ComputeActionContext](../../interfaces/promotion.ComputeActionContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[ComputeActionItemLine](../../interfaces/promotion.ComputeActionItemLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"[ComputeActionShippingLine](../../interfaces/promotion.ComputeActionShippingLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"options","type":"`Record<string, any>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="computeActions"/>
+<TypeList types={[{"name":"promotionCodesToApply","type":"`string`[]","description":"The promotion codes to be applied on the cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"applicationContext","type":"[ComputeActionContext](../../interfaces/promotion.ComputeActionContext.mdx)","description":"The items and shipping methods of the cart.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[ComputeActionItemLine](../../interfaces/promotion.ComputeActionItemLine.mdx)[]","description":"The cart's line items.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the item line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"The adjustments applied before on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"[ComputeActionShippingLine](../../interfaces/promotion.ComputeActionShippingLine.mdx)[]","description":"The cart's shipping methods.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../../interfaces/promotion.ComputeActionAdjustmentLine.mdx)[]","description":"The adjustments applied before on the shipping method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"options","type":"`Record<string, any>`","description":"Any relevant options that may change how the actions are computed.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="computeActions"/>
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[ComputeActions](../../types/promotion.ComputeActions.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeActions[]","type":"[ComputeActions](../../types/promotion.ComputeActions.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeActions","type":"[AddItemAdjustmentAction](../../interfaces/promotion.AddItemAdjustmentAction.mdx) \\| [RemoveItemAdjustmentAction](../../interfaces/promotion.RemoveItemAdjustmentAction.mdx) \\| [AddShippingMethodAdjustment](../../interfaces/promotion.AddShippingMethodAdjustment.mdx) \\| [RemoveShippingMethodAdjustment](../../interfaces/promotion.RemoveShippingMethodAdjustment.mdx) \\| [CampaignBudgetExceededAction](../../interfaces/promotion.CampaignBudgetExceededAction.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="computeActions"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ComputeActions](../../interfaces/promotion.ComputeActions.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of computed actions to be applied on the cart.","expandable":false,"children":[{"name":"ComputeActions[]","type":"[ComputeActions](../../interfaces/promotion.ComputeActions.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeActions","type":"`object`","description":"A compute action informs you what adjustment must be made to a cart item or shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="computeActions"/>

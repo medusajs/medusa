@@ -1,15 +1,13 @@
-# Relations between API Key Module and Other Modules
+# Relations between Order Module and Other Modules
 
 When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
 
-This document showcases the relation between the API Key Module and other Commerce Modules.
+This document showcases the relation between the Order Module and other Commerce Modules.
 
 ## Sales Channel Module
 
-You can create a publishable API key and associate it with a sales channel. The Medusa application forms a relation between the `ApiKey` and the `SalesChannel` data models.
+Orders can be scoped to a sales channel. The Medusa application forms a relation between the `Order` and the `SalesChannel` data models.
 
-![A diagram showcasing an example of how resources from the API Key and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1710170465/Medusa%20Resources/api-key-sales-channel_ylpl6t.jpg)
+![A diagram showcasing an example of how resources from the Order and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712315409/Medusa%20Resources/order-sales-channel_dy72gx.jpg)
 
-This is useful to avoid passing the sales channel's ID as a parameter of every request, and instead pass the publishable API key in the header of any request to the Store API route.
-
-Learn more about this in the [Sales Channel Module's documentation](../../sales-channel/publishable-api-keys/index.mdx).
+This is useful for omnichannel purposes. Associating an order with a sales channel in turn ensures that associated products, inventory, and other details are also scoped to that sales channel.

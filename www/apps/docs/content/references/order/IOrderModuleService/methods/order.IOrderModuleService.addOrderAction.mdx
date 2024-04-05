@@ -1,0 +1,34 @@
+---
+displayed_sidebar: orderReference
+slug: /references/order/addOrderAction
+sidebar_label: addOrderAction
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# addOrderAction - Order Module Reference
+
+This documentation provides a reference to the `addOrderAction` method. This belongs to the Order Module.
+
+This method &#123;summary&#125;
+
+## Example
+
+```typescript
+await orderModuleService.addOrderAction({
+    action: 'create',
+    orderId: '12345',
+    details: {
+        productId: 'abc123',
+        quantity: 2
+    }
+});
+```
+
+## Parameters
+
+<TypeList types={[{"name":"data","type":"`any`","description":"&#123;summary&#125;","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../interfaces/order.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/order.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addOrderAction"/>
+
+## Returns
+
+<TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"&#123;summary&#125;","expandable":false,"children":[]}]}  sectionTitle="addOrderAction"/>

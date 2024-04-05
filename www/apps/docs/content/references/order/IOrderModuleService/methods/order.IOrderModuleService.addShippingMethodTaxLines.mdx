@@ -1,0 +1,85 @@
+---
+displayed_sidebar: orderReference
+slug: /references/order/addShippingMethodTaxLines
+sidebar_label: addShippingMethodTaxLines
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# addShippingMethodTaxLines - Order Module Reference
+
+This documentation provides a reference to the `addShippingMethodTaxLines` method. This belongs to the Order Module.
+
+## addShippingMethodTaxLines(taxLines): Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]&#62;
+
+This method Represents the completion of an asynchronous operation
+
+### Example
+
+```typescript
+const result = await orderModuleService.addShippingMethodTaxLines([
+  {
+    code: "VAT20",
+    rate: 20,
+  }
+]);
+```
+
+### Parameters
+
+<TypeList types={[{"name":"taxLines","type":"[CreateOrderShippingMethodTaxLineDTO](../../interfaces/order.CreateOrderShippingMethodTaxLineDTO.mdx)[]","description":"The order shipping method tax line to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"[BigNumberInput](../../types/order.BigNumberInput.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"Represents the completion of an asynchronous operation","expandable":false,"children":[{"name":"OrderShippingMethodTaxLineDTO[]","type":"[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"OrderShippingMethodTaxLineDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
+
+## addShippingMethodTaxLines(taxLine): Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)&#62;
+
+This method Represents the completion of an asynchronous operation
+
+### Example
+
+```typescript
+const taxLine: CreateOrderShippingMethodTaxLineDTO = {
+  code: "VAT20",
+  rate: 20,
+};
+
+orderModuleService.addShippingMethodTaxLines(taxLine).then((result) => {
+  console.log(result);
+});
+```
+
+### Parameters
+
+<TypeList types={[{"name":"taxLine","type":"[CreateOrderShippingMethodTaxLineDTO](../../interfaces/order.CreateOrderShippingMethodTaxLineDTO.mdx)","description":"The order shipping method tax line to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"[BigNumberInput](../../types/order.BigNumberInput.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"Represents the completion of an asynchronous operation","expandable":false,"children":[{"name":"OrderShippingMethodTaxLineDTO","type":"[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the tax line","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The code of the tax line","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`number`","description":"The rate of the tax line","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the tax line was created","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the tax line was updated","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_method","type":"[OrderShippingMethodDTO](../../interfaces/order.OrderShippingMethodDTO.mdx)","description":"The associated shipping method","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the shipping method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"The ID of the associated order","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the shipping method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The price of the shipping method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Whether the shipping method price is tax inclusive or not","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the shipping method was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the shipping method was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the shipping method","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_id","type":"`string`","description":"The ID of the shipping option the method was created from","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Additional data needed for fulfillment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_lines","type":"[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]","description":"The associated tax lines.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"adjustments","type":"[OrderShippingMethodAdjustmentDTO](../../interfaces/order.OrderShippingMethodAdjustmentDTO.mdx)[]","description":"The associated adjustments.","optional":true,"defaultValue":"","expandable":true,"children":[]}]},{"name":"shipping_method_id","type":"`string`","description":"The ID of the associated shipping method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the tax line","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"The ID of the associated tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The ID of the associated provider","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
+
+## addShippingMethodTaxLines(orderId, taxLines, sharedContext?): Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]&#62;
+
+This method Represents the completion of an asynchronous operation
+
+### Example
+
+```typescript
+const orderId = '123';
+const taxLines = [
+  {
+    code: "VAT20",
+    rate: 20,
+  }
+];
+
+const addedTaxLines = await orderModuleService.addShippingMethodTaxLines(orderId, taxLines);
+```
+
+### Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxLines","type":"[CreateOrderShippingMethodTaxLineDTO](../../interfaces/order.CreateOrderShippingMethodTaxLineDTO.mdx) \\| [CreateOrderShippingMethodTaxLineDTO](../../interfaces/order.CreateOrderShippingMethodTaxLineDTO.mdx)[]","description":"The order shipping method tax line d t o \\|  create order shipping method tax line to be created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../interfaces/order.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/order.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"Represents the completion of an asynchronous operation","expandable":false,"children":[{"name":"OrderShippingMethodTaxLineDTO[]","type":"[OrderShippingMethodTaxLineDTO](../../interfaces/order.OrderShippingMethodTaxLineDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"OrderShippingMethodTaxLineDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addShippingMethodTaxLines"/>
