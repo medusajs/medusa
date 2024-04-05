@@ -196,6 +196,12 @@ moduleIntegrationTestRunner({
           countries: ["us", "ca"],
         })
 
+        const shouldNotBeChangedRegion = await service.create({
+          name: "Europe",
+          currency_code: "EUR",
+          countries: ["hr"],
+        })
+
         await service.update(createdRegion.id, {
           name: "Americas",
           currency_code: "MXN",
@@ -206,13 +212,26 @@ moduleIntegrationTestRunner({
           relations: ["countries"],
         })
 
+        const shouldNotBeChangedRegionAfter = await service.retrieve(
+          shouldNotBeChangedRegion.id,
+          {
+            relations: ["countries"],
+          }
+        )
+
         expect(latestRegion).toMatchObject({
           id: createdRegion.id,
           name: "Americas",
           currency_code: "mxn",
         })
 
-        expect(latestRegion.countries.map((c) => c.iso_2)).toEqual(["mx", "us"])
+        expect(
+          shouldNotBeChangedRegionAfter.countries.map((c) => c.iso_2)
+        ).toEqual(["hr"])
+
+        expect(latestRegion.countries.map((c) => c.iso_2)).toEqual(
+          expect.arrayContaining(["mx", "us"])
+        )
       })
 
       it("should update the region without affecting countries if countries are undefined", async () => {
