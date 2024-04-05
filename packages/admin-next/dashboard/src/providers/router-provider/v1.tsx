@@ -231,8 +231,14 @@ export const v1Routes: RouteObject[] = [
                       import("../../routes/products/product-attributes"),
                   },
                   {
-                    path: "options",
-                    lazy: () => import("../../routes/products/product-options"),
+                    path: "options/create",
+                    lazy: () =>
+                      import("../../routes/products/product-create-option"),
+                  },
+                  {
+                    path: "options/:option_id/edit",
+                    lazy: () =>
+                      import("../../routes/products/product-edit-option"),
                   },
                   {
                     path: "media",
@@ -760,23 +766,6 @@ export const v1Routes: RouteObject[] = [
                       ),
                   },
                 ],
-              },
-            ],
-          },
-          {
-            path: "executions",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Executions",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/executions/execution-list"),
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/executions/execution-detail"),
               },
             ],
           },

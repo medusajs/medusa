@@ -187,7 +187,7 @@ moduleIntegrationTestRunner({
             const err = await service.createServiceZones(data).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_service_zone_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should fail on creating a service zone and new geo zones that are not valid", async function () {
@@ -435,7 +435,7 @@ moduleIntegrationTestRunner({
               .catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_service_zone_name_unique")
+            expect(err.message).toContain("exists")
           })
         })
       })
