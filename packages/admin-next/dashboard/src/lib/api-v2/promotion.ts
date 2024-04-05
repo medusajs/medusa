@@ -6,11 +6,14 @@ import {
   AdminPromotionsListRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
+import { AdminGetPromotionRulesRes } from "@medusajs/types"
+import { useMutation } from "@tanstack/react-query"
 import {
   UseQueryOptionsWrapper,
   queryKeysFactory,
   useAdminCustomQuery,
 } from "medusa-react"
+import { medusa } from "../../lib/medusa"
 
 const ADMIN_PROMOTIONS_QUERY_KEY = "admin_promotions"
 
@@ -49,13 +52,32 @@ export const useV2Promotions = (
 
 export const useV2Promotion = (
   id: string,
-  query?: AdminGetPromotionsParams,
+  query?: AdminGetPromotionRuleRes,
   options?: object
 ) => {
   const { data, ...rest } = useAdminCustomQuery<
     AdminGetPromotionsPromotionParams,
     AdminPromotionRes
   >(`/admin/promotions/${id}`, adminPromotionKeys.detail(id), query, options)
+
+  return { ...data, ...rest }
+}
+
+export const useV2PromotionRules = (
+  id: string,
+  ruleType: string,
+  query?: AdminGetPromotionRulesRes,
+  options?: object
+) => {
+  const { data, ...rest } = useAdminCustomQuery<
+    AdminGetPromotionsPromotionParams,
+    AdminPromotionRes
+  >(
+    `/admin/promotions/${id}/${ruleType}`,
+    adminPromotionKeys.detail(id),
+    query,
+    options
+  )
 
   return { ...data, ...rest }
 }
@@ -69,6 +91,36 @@ export const useV2DeletePromotion = (id: string) => {
 export const useV2PostPromotion = (id: string) => {
   return useMutation((args: AdminPostPromotionsPromotionReq) =>
     medusa.client.request("POST", `/admin/promotions/${id}`, args)
+  )
+}
+
+export const useV2PostAddPromotionRules = (id: string, ruleType: string) => {
+  return useMutation((args: AdminPostPromotionsPromotionReq) =>
+    medusa.client.request(
+      "POST",
+      `/admin/promotions/${id}/${ruleType}/batch/add`,
+      args
+    )
+  )
+}
+
+export const useV2PostRemovePromotionRules = (id: string, ruleType: string) => {
+  return useMutation((args: AdminPostPromotionsPromotionReq) =>
+    medusa.client.request(
+      "POST",
+      `/admin/promotions/${id}/${ruleType}/batch/remove`,
+      args
+    )
+  )
+}
+
+export const useV2PostUpdatePromotionRules = (id: string, ruleType: string) => {
+  return useMutation((args: AdminPostPromotionsPromotionReq) =>
+    medusa.client.request(
+      "POST",
+      `/admin/promotions/${id}/rules/batch/update`,
+      args
+    )
   )
 }
 

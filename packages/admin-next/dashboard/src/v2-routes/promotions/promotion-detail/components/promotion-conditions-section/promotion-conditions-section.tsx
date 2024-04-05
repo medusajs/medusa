@@ -1,5 +1,5 @@
 import { PencilSquare } from "@medusajs/icons"
-import { PromotionRuleDTO, PromotionRuleTypes } from "@medusajs/types"
+import { AdminGetPromotionRulesRes, PromotionRuleTypes } from "@medusajs/types"
 import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -7,37 +7,39 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type RuleProps = {
-  rule: PromotionRuleDTO
+  rule: AdminGetPromotionRulesRes
 }
 
 function RuleBlock({ rule }: RuleProps) {
   return (
-    <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2">
-      <span className="text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap">
+    <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2 align-center">
+      <div className="flex text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap items-center">
         <Badge
           size="small"
           key="rule-attribute"
-          className="mx-1 max-w-[120px] txt-compact-xsmall-plus tag-neutral-text"
+          className="mx-1 max-w-[220px] txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
         >
-          {rule.attribute}
+          {rule.attribute_label}
         </Badge>
 
-        <span className="mx-1 txt-compact-small">{rule.operator}</span>
+        <span className="mx-1 txt-compact-small inline-block">
+          {rule.operator_label}
+        </span>
 
         <Badge
           size="small"
           key="rule-value"
-          className="mx-1 max-w-[120px] txt-compact-xsmall-plus tag-neutral-text truncate"
+          className="mx-1 max-w-[220px] txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
         >
-          {rule.values?.map((v) => v.value).join(",")}
+          {rule.values?.map((v) => v.label).join(",")}
         </Badge>
-      </span>
+      </div>
     </div>
   )
 }
 
 type PromotionConditionsSectionProps = {
-  rules: PromotionRuleDTO[]
+  rules: AdminGetPromotionRulesRes
   ruleType: PromotionRuleTypes
 }
 
@@ -63,7 +65,7 @@ export const PromotionConditionsSection = ({
                 {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
-                  to: `${ruleType.split("_").join("-")}/edit`,
+                  to: `${ruleType}/edit`,
                 },
               ],
             },

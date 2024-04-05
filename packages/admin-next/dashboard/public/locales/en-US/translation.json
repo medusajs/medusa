@@ -605,11 +605,11 @@
           "title": "Who can use this code?",
           "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
         },
-        "target_rules": {
+        "target-rules": {
           "title": "What needs to be in the cart to unlock the promotion?",
           "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
         },
-        "buy_rules": {
+        "buy-rules": {
           "title": "What will the promotion be applied to?",
           "description": "The promotion will be applied to items that match these conditions"
         }
@@ -620,10 +620,10 @@
       "rules": {
         "title": "Edit rules"
       },
-      "target_rules": {
+      "target-rules": {
         "title": "Edit target rules"
       },
-      "buy_rules": {
+      "buy-rules": {
         "title": "Edit buy rules"
       }
     },

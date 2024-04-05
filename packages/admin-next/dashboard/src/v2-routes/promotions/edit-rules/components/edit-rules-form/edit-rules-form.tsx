@@ -1,96 +1,169 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { XMarkMini } from "@medusajs/icons"
-import { PromotionDTO } from "@medusajs/types"
-import { Badge, Button, Heading, Select, Text } from "@medusajs/ui"
+import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
+import { Badge, Button, Heading, Input, Select, Text } from "@medusajs/ui"
+import { Fragment, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Combobox } from "../../../../../components/common/combobox"
-import { useV2PromotionRuleValueOptions } from "../../../../../lib/api-v2/promotion"
-
-import { Fragment } from "react"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useV2PostPromotion } from "../../../../../lib/api-v2"
+import {
+  useV2PostAddPromotionRules,
+  useV2PostPromotion,
+  useV2PostRemovePromotionRules,
+  useV2PostUpdatePromotionRules,
+} from "../../../../../lib/api-v2"
+import { useV2PromotionRuleValueOptions } from "../../../../../lib/api-v2/promotion"
+import { RuleTypeValues } from "../../edit-rules"
+import { getDisguisedRules } from "./utils"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
-  ruleType: string
+  rules: PromotionRuleDTO[]
+  ruleType: RuleTypeValues
   attributes: any[]
   operators: any[]
 }
 
-const RuleValidation = zod.object({
-  id: zod.string().optional(),
-  attribute: zod.string().min(1, { message: "Required field" }),
-  operator: zod.string().min(1, { message: "Required field" }),
-  values: zod.string().array().min(1, { message: "Required field" }),
-  required: zod.boolean(),
-  frontend_id: zod.string().optional(),
+const EditRules = zod.object({
+  rules: zod.array(
+    zod.object({
+      id: zod.string().optional(),
+      attribute: zod.string().min(1, { message: "Required field" }),
+      operator: zod.string().min(1, { message: "Required field" }),
+      values: zod.union([
+        zod.number().min(1, { message: "Required field" }),
+        zod.string().min(1, { message: "Required field" }),
+        zod.array(zod.string()).min(1, { message: "Required field" }),
+      ]),
+      required: zod.boolean().optional(),
+      field_type: zod.string().optional(),
+    })
+  ),
 })
 
-const EditRules = zod.object({
-  rules: zod.array(RuleValidation),
-})
+const fetchOptionsForRule = (ruleType: string, attribute: string) => {
+  const { values } = useV2PromotionRuleValueOptions(ruleType, attribute)
+
+  return values || []
+}
 
 export const EditRulesForm = ({
   promotion,
+  rules,
   ruleType,
   attributes,
   operators,
 }: EditPromotionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { rules = [] } = promotion
-  const requiredAttributes = attributes
-    ?.filter((ra) => ra.required)
-    ?.map((ra) => ra.value)
+  const requiredAttributes = attributes?.filter((ra) => ra.required) || []
+  const requiredAttributeValues = requiredAttributes?.map((ra) => ra.value)
+  const disguisedRules =
+    getDisguisedRules(promotion, requiredAttributes, ruleType) || []
+  const [rulesToRemove, setRulesToRemove] = useState([])
 
   const form = useForm<zod.infer<typeof EditRules>>({
     defaultValues: {
-      rules: rules.map((rule) => ({
+      rules: [...disguisedRules, ...rules].map((rule) => ({
         id: rule.id,
-        required: requiredAttributes.includes(rule.attribute),
+        required: requiredAttributeValues.includes(rule.attribute),
+        field_type: rule.field_type,
         attribute: rule.attribute!,
         operator: rule.operator!,
-        values: rule.values.map((v) => v.value!),
+        values: rule?.values?.map((v: { value: string }) => v.value!),
       })),
     },
     resolver: zodResolver(EditRules),
   })
 
-  const fetchOptionsForRule = (rule: zod.infer<typeof RuleValidation>) => {
-    const attribute = attributes.find((attr) => attr.value === rule.attribute)
-
-    if (!attribute) {
-      return []
-    }
-
-    const { values } = useV2PromotionRuleValueOptions(ruleType, attribute.id)
-
-    return values || []
-  }
-
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
     name: "rules",
+    keyName: "rules_id",
   })
 
-  const { mutateAsync, isLoading } = useV2PostPromotion(promotion.id)
+  const { mutateAsync: updatePromotion } = useV2PostPromotion(promotion.id)
+  const { mutateAsync: addPromotionRules } = useV2PostAddPromotionRules(
+    promotion.id,
+    ruleType
+  )
+
+  const { mutateAsync: removePromotionRules } = useV2PostRemovePromotionRules(
+    promotion.id,
+    ruleType
+  )
+
+  const { mutateAsync: updatePromotionRules } = useV2PostUpdatePromotionRules(
+    promotion.id,
+    ruleType
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    // TODO: update rules
-    await mutateAsync(
-      {},
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
+    const applicationMethodData: Record<any, any> = {}
+    const { rules: allRules = [] } = data
+
+    const disguisedRulesData = allRules.filter((rule) =>
+      disguisedRules.map((maskedRule) => maskedRule.id).includes(rule.id!)
     )
+
+    // For all the rules that were disguised, convert them to actual values in the
+    // database, they are currently all under application_method. If more of these are coming
+    // up, abstract this away.
+    for (const rule of disguisedRulesData) {
+      applicationMethodData[rule.id!] = parseInt(rule.values as string)
+    }
+
+    // This variable will contain the rules that are actual rule objects, without the disguised
+    // objects
+    const rulesData = allRules.filter(
+      (rule) =>
+        !disguisedRules.map((maskedRule) => maskedRule.id).includes(rule.id!)
+    )
+
+    const rulesToCreate = rulesData.filter((rule) => !("id" in rule))
+    const rulesToUpdate = rulesData.filter(
+      (rule) => typeof rule.id === "string"
+    )
+
+    if (Object.keys(applicationMethodData).length) {
+      await updatePromotion({ application_method: applicationMethodData })
+    }
+
+    rulesToCreate.length &&
+      (await addPromotionRules({
+        rules: rulesToCreate.map((rule) => {
+          return {
+            attribute: rule.attribute,
+            operator: rule.operator,
+            values: rule.values,
+          }
+        }),
+      }))
+
+    rulesToRemove.length &&
+      (await removePromotionRules({
+        rule_ids: rulesToRemove.map((r) => r.id!),
+      }))
+
+    rulesToUpdate.length &&
+      (await updatePromotionRules({
+        rules: rulesToUpdate.map((rule) => {
+          return {
+            id: rule.id,
+            attribute: rule.attribute,
+            operator: rule.operator,
+            values: rule.values,
+          }
+        }),
+      }))
+
+    handleSuccess()
   })
 
   return (
@@ -106,7 +179,8 @@ export const EditRulesForm = ({
               {t(`promotions.fields.conditions.${ruleType}.description`)}
             </Text>
 
-            {fields.map((rule, index) => {
+            {fields.map((fieldRule, index) => {
+              const identifier = fieldRule.id
               const { ref: attributeRef, ...attributeFields } = form.register(
                 `rules.${index}.attribute`
               )
@@ -118,15 +192,27 @@ export const EditRulesForm = ({
               )
 
               return (
-                <Fragment key={rule.id || rule.frontend_id}>
+                <Fragment key={index}>
                   <div className="flex flex-row gap-2 bg-ui-bg-subtle py-2 px-2 rounded-xl border border-ui-border-base">
                     <div className="grow">
                       <Form.Field
+                        key={`${identifier}.${attributeFields.name}`}
                         {...attributeFields}
                         render={({ field: { onChange, ref, ...field } }) => {
+                          const existingAttributes =
+                            fields?.map((field) => field.attribute) || []
+                          const attributeOptions =
+                            attributes?.filter((attr) => {
+                              if (attr.value === fieldRule.attribute) {
+                                return true
+                              }
+
+                              return !existingAttributes.includes(attr.value)
+                            }) || []
+
                           return (
                             <Form.Item className="mb-2">
-                              {rule.required && (
+                              {fieldRule.required && (
                                 <p className="text text-ui-fg-muted txt-small">
                                   Required
                                 </p>
@@ -136,24 +222,22 @@ export const EditRulesForm = ({
                                 <Select
                                   {...field}
                                   onValueChange={(e) => {
-                                    update(index, { values: [] } as any)
+                                    update(index, { ...fieldRule, values: [] })
                                     onChange(e)
                                   }}
-                                  disabled={rule.required}
+                                  disabled={fieldRule.required}
                                 >
                                   <Select.Trigger
-                                    ref={ref}
+                                    ref={attributeRef}
                                     className="bg-ui-bg-base"
                                   >
                                     <Select.Value placeholder="Select Attribute" />
                                   </Select.Trigger>
 
                                   <Select.Content>
-                                    {attributes?.map((c) => (
+                                    {attributeOptions?.map((c, i) => (
                                       <Select.Item
-                                        key={`${
-                                          rule.id || rule.frontend_id
-                                        }-${c.label.split(" ").join("-")}`}
+                                        key={`${identifier}-attribute-option-${i}`}
                                         value={c.value}
                                       >
                                         <span className="text-ui-fg-subtle">
@@ -172,6 +256,7 @@ export const EditRulesForm = ({
 
                       <div className="flex gap-2">
                         <Form.Field
+                          key={`${identifier}.${operatorFields.name}`}
                           {...operatorFields}
                           render={({ field: { onChange, ref, ...field } }) => {
                             return (
@@ -180,21 +265,19 @@ export const EditRulesForm = ({
                                   <Select
                                     {...field}
                                     onValueChange={onChange}
-                                    disabled={rule.required}
+                                    disabled={fieldRule.required}
                                   >
                                     <Select.Trigger
-                                      ref={ref}
+                                      ref={operatorRef}
                                       className="bg-ui-bg-base"
                                     >
                                       <Select.Value placeholder="Select Operator" />
                                     </Select.Trigger>
 
                                     <Select.Content>
-                                      {operators?.map((c) => (
+                                      {operators?.map((c, i) => (
                                         <Select.Item
-                                          key={`${
-                                            rule.id || rule.frontend_id
-                                          }-${c.label.split(" ").join("-")}`}
+                                          key={`${identifier}-operator-option-${i}`}
                                           value={c.value}
                                         >
                                           <span className="text-ui-fg-subtle">
@@ -212,24 +295,62 @@ export const EditRulesForm = ({
                         />
 
                         <Form.Field
+                          key={`${identifier}.${valuesFields.name}-${fieldRule.attribute}`}
                           {...valuesFields}
                           render={({ field: { onChange, ref, ...field } }) => {
-                            const options = fetchOptionsForRule(rule)
+                            if (fieldRule.field_type === "number") {
+                              return (
+                                <Form.Item className="basis-1/2">
+                                  <Form.Control>
+                                    <Input
+                                      {...field}
+                                      type="number"
+                                      onChange={onChange}
+                                      className="bg-ui-bg-base"
+                                      ref={valuesRef}
+                                      min={1}
+                                    />
+                                  </Form.Control>
+                                  <Form.ErrorMessage />
+                                </Form.Item>
+                              )
+                            } else if (fieldRule.field_type === "text") {
+                              return (
+                                <Form.Item className="basis-1/2">
+                                  <Form.Control>
+                                    <Input
+                                      {...field}
+                                      onChange={onChange}
+                                      className="bg-ui-bg-base"
+                                    />
+                                  </Form.Control>
+                                  <Form.ErrorMessage />
+                                </Form.Item>
+                              )
+                            } else {
+                              const attribute = attributes?.find(
+                                (attr) => attr.value === fieldRule.attribute
+                              )
+                              const options = attribute
+                                ? fetchOptionsForRule(ruleType, attribute.id)
+                                : []
 
-                            return (
-                              <Form.Item className="basis-1/2">
-                                <Form.Control>
-                                  <Combobox
-                                    options={options}
-                                    placeholder="Select Values"
-                                    {...field}
-                                    onChange={onChange}
-                                    className="bg-ui-bg-base placeholder:text-green-200"
-                                  />
-                                </Form.Control>
-                                <Form.ErrorMessage />
-                              </Form.Item>
-                            )
+                              return (
+                                <Form.Item className="basis-1/2">
+                                  <Form.Control>
+                                    <Combobox
+                                      {...field}
+                                      placeholder="Select Values"
+                                      options={options}
+                                      onChange={onChange}
+                                      className="bg-ui-bg-base"
+                                    />
+                                  </Form.Control>
+
+                                  <Form.ErrorMessage />
+                                </Form.Item>
+                              )
+                            }
                           }}
                         />
                       </div>
@@ -238,10 +359,14 @@ export const EditRulesForm = ({
                     <div className="flex-none self-center px-1">
                       <XMarkMini
                         className={`text-ui-fg-muted cursor-pointer ${
-                          rule.required ? "invisible" : "visible"
+                          fieldRule.required ? "invisible" : "visible"
                         }`}
                         onClick={() => {
-                          if (!rule.required) {
+                          if (!fieldRule.required) {
+                            if (fieldRule.id) {
+                              setRulesToRemove([...rulesToRemove, fieldRule])
+                            }
+
                             remove(index)
                           }
                         }}
@@ -273,8 +398,6 @@ export const EditRulesForm = ({
                     operator: "",
                     values: [],
                     required: false,
-                    // TODO: come up with a better way to handle this
-                    frontend_id: Math.floor(Math.random() * 100).toString(),
                   })
                 }}
               >
@@ -290,6 +413,7 @@ export const EditRulesForm = ({
                     .map((field, index) => (field.required ? null : index))
                     .filter((f) => f !== null)
 
+                  setRulesToRemove(fields.filter((f) => !f.required))
                   remove(indicesToRemove)
                 }}
               >
@@ -307,7 +431,7 @@ export const EditRulesForm = ({
               </Button>
             </RouteDrawer.Close>
 
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit">
               {t("actions.save")}
             </Button>
           </div>

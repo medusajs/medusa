@@ -12,6 +12,7 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
+import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 import {
   Link,
   Outlet,
@@ -20,15 +21,14 @@ import {
   useMatches,
   useNavigate,
 } from "react-router-dom"
-import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 
 import { PropsWithChildren } from "react"
-import { Skeleton } from "../../common/skeleton"
+import { useV2Session } from "../../../lib/api-v2"
 import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
-import { useV2Session } from "../../../lib/api-v2"
+import { Skeleton } from "../../common/skeleton"
 
 const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || "false"
 
@@ -121,7 +121,6 @@ const Breadcrumbs = () => {
 const UserBadge = () => {
   const isV2Enabled = V2_ENABLED === "true"
 
-  console.warn(isV2Enabled)
   // Medusa V2 disabled
   const v1 = useAdminGetSession({
     enabled: !isV2Enabled,

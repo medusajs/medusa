@@ -1,7 +1,10 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useV2Promotion } from "../../../lib/api-v2/promotion"
+import {
+  useV2Promotion,
+  useV2PromotionRules,
+} from "../../../lib/api-v2/promotion"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
@@ -17,6 +20,9 @@ export const PromotionDetail = () => {
 
   const { id } = useParams()
   const { promotion, isLoading } = useV2Promotion(id!, {}, { initialData })
+  const { rules } = useV2PromotionRules(id!, "rules")
+  const { rules: targetRules } = useV2PromotionRules(id!, "target-rules")
+  const { rules: buyRules } = useV2PromotionRules(id!, "buy-rules")
 
   if (isLoading || !promotion) {
     return <div>Loading...</div>
@@ -36,20 +42,17 @@ export const PromotionDetail = () => {
         <div className="flex w-full flex-col gap-y-2">
           <PromotionGeneralSection promotion={promotion} />
 
-          <PromotionConditionsSection
-            rules={promotion.rules || []}
-            ruleType={"rules"}
-          />
+          <PromotionConditionsSection rules={rules || []} ruleType={"rules"} />
 
           <PromotionConditionsSection
-            rules={promotion.application_method?.target_rules || []}
-            ruleType={"target_rules"}
+            rules={targetRules || []}
+            ruleType={"target-rules"}
           />
 
           {promotion.type === "buyget" && (
             <PromotionConditionsSection
-              rules={promotion.application_method?.buy_rules || []}
-              ruleType={"buy_rules"}
+              rules={buyRules || []}
+              ruleType={"buy-rules"}
             />
           )}
 
