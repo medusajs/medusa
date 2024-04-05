@@ -1,8 +1,9 @@
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   optionalNumericSerializer,
+  Searchable,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -12,8 +13,8 @@ import {
   Filter,
   Index,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -76,9 +77,11 @@ class ProductVariant {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   sku?: string | null
 
