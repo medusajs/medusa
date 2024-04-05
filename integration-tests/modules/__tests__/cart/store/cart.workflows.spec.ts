@@ -326,7 +326,7 @@ medusaIntegrationTestRunner({
             {
               action: "find-one-or-any-region",
               handlerType: "invoke",
-              error: new Error("No regions found"),
+              error: expect.objectContaining({ message: "No regions found" }),
             },
           ])
         })
@@ -417,9 +417,9 @@ medusaIntegrationTestRunner({
             {
               action: "confirm-inventory-step",
               handlerType: "invoke",
-              error: new Error(
-                "Some variant does not have the required inventory"
-              ),
+              error: expect.objectContaining({
+                message: "Some variant does not have the required inventory",
+              }),
             },
           ])
         })
@@ -441,9 +441,9 @@ medusaIntegrationTestRunner({
             {
               action: "find-sales-channel",
               handlerType: "invoke",
-              error: new Error(
-                `Unable to assign cart to disabled Sales Channel: Webshop`
-              ),
+              error: expect.objectContaining({
+                message: `Unable to assign cart to disabled Sales Channel: Webshop`,
+              }),
             },
           ])
         })
@@ -705,9 +705,9 @@ medusaIntegrationTestRunner({
             {
               action: "get-variant-price-sets",
               handlerType: "invoke",
-              error: new Error(
-                `Variants with IDs ${product.variants[0].id} do not have a price`
-              ),
+              error: expect.objectContaining({
+                message: `Variants with IDs ${product.variants[0].id} do not have a price`,
+              }),
             },
           ])
         })
@@ -1064,9 +1064,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(
-                  `Failed to do something after deleting line items`
-                ),
+                error: expect.objectContaining({
+                  message: `Failed to do something after deleting line items`,
+                }),
               },
             ])
 
@@ -1178,9 +1178,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(
-                  `Failed to do something after linking cart and payment collection`
-                ),
+                error: expect.objectContaining({
+                  message: `Failed to do something after linking cart and payment collection`,
+                }),
               },
             ])
 
@@ -1353,9 +1353,9 @@ medusaIntegrationTestRunner({
               {
                 action: "throw",
                 handlerType: "invoke",
-                error: new Error(
-                  `Failed to do something after updating payment collections`
-                ),
+                error: expect.objectContaining({
+                  message: `Failed to do something after updating payment collections`,
+                }),
               },
             ])
 
@@ -1807,9 +1807,9 @@ medusaIntegrationTestRunner({
           expect(errors).toEqual([
             {
               action: "get-shipping-option-price-sets",
-              error: new Error(
-                `Shipping options with IDs ${shippingOption.id} do not have a price`
-              ),
+              error: expect.objectContaining({
+                message: `Shipping options with IDs ${shippingOption.id} do not have a price`,
+              }),
               handlerType: "invoke",
             },
           ])
