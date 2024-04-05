@@ -206,6 +206,7 @@ export function createWorkflow<
     config: () => {
       // TODO: config default value?
       throw new Error("Config is not available for the input object.")
+      throw new Error("Config is not available for the input object.")
     },
   })
 
