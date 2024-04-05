@@ -11,16 +11,12 @@ type StepInput = Omit<
   "prices"
 >[]
 
-type StepOutput = {
-  id: string
-}[]
-
 export const createShippingOptionsStepId = "create-shipping-options-step"
 export const createShippingOptionsStep = createStep(
   createShippingOptionsStepId,
   async (input: StepInput, { container }) => {
     if (!input?.length) {
-      return new StepResponse([] as StepOutput, [])
+      return new StepResponse([], [])
     }
 
     const fulfillmentService = container.resolve<IFulfillmentModuleService>(
@@ -31,10 +27,7 @@ export const createShippingOptionsStep = createStep(
 
     const shippingOptionIds = createdShippingOptions.map((s) => s.id)
 
-    return new StepResponse(
-      createdShippingOptions as StepOutput,
-      shippingOptionIds
-    )
+    return new StepResponse(createdShippingOptions, shippingOptionIds)
   },
   async (shippingOptionIds, { container }) => {
     if (!shippingOptionIds?.length) {
