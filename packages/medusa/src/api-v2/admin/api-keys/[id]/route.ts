@@ -30,7 +30,7 @@ export const GET = async (
 
   const [apiKey] = await remoteQuery(queryObject)
 
-  res.status(200).json({ apiKey })
+  res.status(200).json({ api_key: apiKey })
 }
 
 export const POST = async (
