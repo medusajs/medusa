@@ -8,8 +8,10 @@ import {
 } from "@medusajs/core-flows"
 
 import { UpdateRegionDTO } from "@medusajs/types"
-import { defaultAdminRegionFields } from "../query-config"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString
+} from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -22,7 +24,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "region",
     variables,
-    fields: defaultAdminRegionFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [region] = await remoteQuery(queryObject)
@@ -46,7 +48,19 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ region: result[0] })
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "region",
+    variables: {
+      filters: { id: req.params.id },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const regions = await remoteQuery(queryObject)
+
+  res.status(200).json({ region: regions[0] })
 }
 
 export const DELETE = async (
