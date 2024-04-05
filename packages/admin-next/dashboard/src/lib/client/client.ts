@@ -1,5 +1,6 @@
 import { apiKeys } from "./api-keys"
 import { auth } from "./auth"
+import { collections } from "./collections"
 import { currencies } from "./currencies"
 import { customers } from "./customers"
 import { invites } from "./invites"
@@ -18,6 +19,7 @@ export const client = {
   apiKeys: apiKeys,
   customers: customers,
   currencies: currencies,
+  collections: collections,
   promotions: promotions,
   stores: stores,
   salesChannels: salesChannels,

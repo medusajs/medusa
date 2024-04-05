@@ -1,9 +1,10 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-import { useAdminCollections } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { keepPreviousData } from "@tanstack/react-query"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useCollections } from "../../../../../hooks/api/collections"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCollectionTableColumns } from "./use-collection-table-columns"
 import { useCollectionTableFilters } from "./use-collection-table-filters"
@@ -14,12 +15,12 @@ const PAGE_SIZE = 20
 export const CollectionListTable = () => {
   const { t } = useTranslation()
   const { searchParams, raw } = useCollectionTableQuery({ pageSize: PAGE_SIZE })
-  const { collections, count, isError, error, isLoading } = useAdminCollections(
+  const { collections, count, isError, error, isLoading } = useCollections(
     {
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
