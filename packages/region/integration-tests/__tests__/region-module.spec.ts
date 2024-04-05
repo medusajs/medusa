@@ -359,10 +359,14 @@ moduleIntegrationTestRunner({
 
         await service.delete(createdRegion.id)
 
-        const resp = await service.create({
+        const newRegion = await service.create({
           name: "North America",
           currency_code: "USD",
           countries: ["us", "ca"],
+        })
+
+        const resp = await service.retrieve(newRegion.id, {
+          relations: ["countries"],
         })
 
         expect(resp.countries).toHaveLength(2)
