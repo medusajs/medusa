@@ -8,8 +8,10 @@ import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
 import { salesChannels } from "./sales-channels"
+import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { users } from "./users"
+import { workflowExecutions } from "./workflow-executions"
 
 export const client = {
   auth: auth,
@@ -24,4 +26,6 @@ export const client = {
   invites: invites,
   products: products,
   productTypes: productTypes,
+  stockLocations: stockLocations,
+  workflowExecutions: workflowExecutions,
 }

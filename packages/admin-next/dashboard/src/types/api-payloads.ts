@@ -8,10 +8,12 @@ import {
   CreateInviteDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
+  CreateStockLocationInput,
   UpdateApiKeyDTO,
   UpdateCustomerDTO,
   UpdateRegionDTO,
   UpdateSalesChannelDTO,
+  UpdateStockLocationInput,
   UpdateStoreDTO,
   UpdateUserDTO,
 } from "@medusajs/types"
@@ -45,3 +47,7 @@ export type UpdateUserReq = Omit<UpdateUserDTO, "id">
 
 // Invites
 export type CreateInviteReq = CreateInviteDTO
+
+// Stock Locations
+export type CreateStockLocationReq = CreateStockLocationInput
+export type UpdateStockLocationReq = UpdateStockLocationInput

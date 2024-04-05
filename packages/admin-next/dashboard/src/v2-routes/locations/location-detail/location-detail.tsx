@@ -1,31 +1,22 @@
-import { Outlet, json, useParams } from "react-router-dom"
+import { Outlet, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { LocationGeneralSection } from "../../../modules/locations/location-detail/components/location-general-section"
-import { LocationSalesChannelSection } from "../../../modules/locations/location-detail/components/location-sales-channel-section"
-import { useAdminStockLocations } from "medusa-react"
+import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { LocationGeneralSection } from "./components/location-general-section"
+import { LocationSalesChannelSection } from "./components/location-sales-channel-section"
 
 export const LocationDetail = () => {
   const { id } = useParams()
-  const { stock_locations, isLoading, isError, error } = useAdminStockLocations(
-    {
-      id,
-      fields: "*address,*sales_channels",
-    }
-  )
+  const { stock_location, isLoading, isError, error } = useStockLocation(id!, {
+    fields: "*address,*sales_channels",
+  })
 
-  if (isLoading) {
+  if (isLoading || !stock_location) {
     return <div>Loading...</div>
   }
 
   if (isError) {
     throw error
-  }
-
-  const stock_location = stock_locations?.[0]
-
-  if (!stock_location) {
-    throw json({ message: "Not found" }, 404)
   }
 
   return (

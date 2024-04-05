@@ -1,13 +1,12 @@
-import type {
-  StockLocationAddressDTO,
-  StockLocationExpandedDTO,
-} from "@medusajs/types"
-import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
+import { PencilSquare } from "@medusajs/icons"
+import type { StockLocationAddressDTO } from "@medusajs/types"
+import { Container, Heading, Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ExtendedStockLocationDTO } from "../../../../../types/api-responses"
 
 type LocationGeneralSectionProps = {
-  location: StockLocationExpandedDTO
+  location: ExtendedStockLocationDTO
 }
 
 export const LocationGeneralSection = ({
@@ -19,11 +18,19 @@ export const LocationGeneralSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{location.name}</Heading>
-        <Link to={"edit"}>
-          <Button size="small" variant="secondary">
-            {t("locations.editLocation")}
-          </Button>
-        </Link>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  icon: <PencilSquare />,
+                  label: t("actions.edit"),
+                  to: `edit`,
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" weight="plus" leading="compact">

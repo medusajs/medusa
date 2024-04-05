@@ -15,9 +15,12 @@ import {
   PromotionDTO,
   RegionDTO,
   SalesChannelDTO,
+  StockLocationAddressDTO,
+  StockLocationDTO,
   StoreDTO,
   UserDTO,
 } from "@medusajs/types"
+import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
 
 type ListRes = {
   count: number
@@ -96,3 +99,20 @@ export type ProductDeleteRes = DeleteRes
 // Product Types
 export type ProductTypeRes = { product_type: ProductTypeDTO }
 export type ProductTypeListRes = { product_types: ProductTypeDTO[] } & ListRes
+
+// Stock Locations
+export type ExtendedStockLocationDTO = StockLocationDTO & {
+  address: StockLocationAddressDTO | null
+  sales_channels: SalesChannelDTO[] | null
+}
+export type StockLocationRes = { stock_location: ExtendedStockLocationDTO }
+export type StockLocationListRes = {
+  stock_locations: ExtendedStockLocationDTO[]
+} & ListRes
+export type StockLocationDeleteRes = DeleteRes
+
+// Worfklow Executions
+export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }
+export type WorkflowExecutionListRes = {
+  workflow_executions: WorkflowExecutionDTO[]
+} & ListRes

@@ -1,6 +1,6 @@
 import { AdminGetPromotionsParams } from "@medusajs/medusa"
 
-import { PromotionRes } from "../../types/api-responses"
+import { PromotionListRes, PromotionRes } from "../../types/api-responses"
 import { getRequest } from "./common"
 
 const retrievePromotion = async (
@@ -13,6 +13,11 @@ const retrievePromotion = async (
   )
 }
 
+const listPromotions = async (query?: AdminGetPromotionsParams) => {
+  return getRequest<PromotionListRes>(`/admin/promotions`, query)
+}
+
 export const promotions = {
   retrieve: retrievePromotion,
+  list: listPromotions,
 }

@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreateStockLocation } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
 import { RouteFocusModal } from "../../../../../components/route-modal"
+import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 const CreateLocationSchema = zod.object({
   name: zod.string().min(1),
@@ -42,7 +42,7 @@ export const CreateLocationForm = () => {
     resolver: zodResolver(CreateLocationSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateStockLocation()
+  const { mutateAsync, isPending } = useCreateStockLocation()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(
@@ -69,7 +69,7 @@ export const CreateLocationForm = () => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

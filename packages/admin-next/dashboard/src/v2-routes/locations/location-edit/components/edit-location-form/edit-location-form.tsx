@@ -1,17 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { StockLocationExpandedDTO } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateStockLocation } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
-import { RouteDrawer } from "../../../../../components/route-modal"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
+import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
+import { ExtendedStockLocationDTO } from "../../../../../types/api-responses"
 
 type EditLocationFormProps = {
-  location: StockLocationExpandedDTO
+  location: ExtendedStockLocationDTO
 }
 
 const EditLocationSchema = zod.object({
@@ -29,6 +32,9 @@ const EditLocationSchema = zod.object({
 })
 
 export const EditLocationForm = ({ location }: EditLocationFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof EditLocationSchema>>({
     defaultValues: {
       name: location.name,
@@ -46,15 +52,20 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
     resolver: zodResolver(EditLocationSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateStockLocation(location.id)
-
-  const { t } = useTranslation()
+  const { mutateAsync, isPending } = useUpdateStockLocation(location.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync({
-      name: values.name,
-      address: values.address,
-    })
+    mutateAsync(
+      {
+        name: values.name,
+        address: values.address,
+      },
+      {
+        onSuccess: () => {
+          handleSuccess()
+        },
+      }
+    )
   })
 
   return (
@@ -211,7 +222,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
