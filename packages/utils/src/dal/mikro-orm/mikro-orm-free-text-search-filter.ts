@@ -1,7 +1,7 @@
-import "@mikro-orm/core"
 import { EntityClass, EntityProperty } from "@mikro-orm/core/typings"
 import { EntityMetadata, EntitySchema, ReferenceType } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import type { FindOneOptions, FindOptions } from "@mikro-orm/core/drivers"
 
 export const FreeTextSearchFilterKey = "freeTextSearch"
 
@@ -126,13 +126,28 @@ export const mikroOrmFreeTextSearchFilterOptionsFactory = (
     cond: (
       freeTextSearchArgs: FilterArgument,
       operation: string,
-      manager: SqlEntityManager
+      manager: SqlEntityManager,
+      options?: (FindOptions<any, any> | FindOneOptions<any, any>) & {
+        visited?: Set<EntityClass<any>>
+      }
     ) => {
       if (!freeTextSearchArgs || !freeTextSearchArgs.value) {
         return {}
       }
 
       const { value, fromEntity } = freeTextSearchArgs
+
+      if (options?.visited?.size) {
+        /**
+         * When being in select in strategy, the filter gets applied to all queries even the ones that are not related to the entity
+         */
+        const hasFilterAlreadyBeenAppliedForEntity = [
+          ...options.visited.values(),
+        ].some((v) => v.constructor.name === freeTextSearchArgs.fromEntity)
+        if (hasFilterAlreadyBeenAppliedForEntity) {
+          return {}
+        }
+      }
 
       const entityMetadata = manager.getDriver().getMetadata().get(fromEntity)
 
