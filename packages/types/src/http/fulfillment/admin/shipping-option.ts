@@ -9,7 +9,7 @@ import { AdminFulfillmentResponse } from "./fulfillment"
 /**
  * @experimental
  */
-export interface AdminPostCreateShippingOptionResponse {
+export interface AdminShippingOptionResponse {
   id: string
   name: string
   price_type: ShippingOptionPriceType
