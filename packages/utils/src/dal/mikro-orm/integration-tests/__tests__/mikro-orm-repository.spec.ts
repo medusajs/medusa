@@ -385,6 +385,38 @@ describe("mikroOrmRepository", () => {
       )
     })
 
+    it("should clear the parent entity from the one-to-many relation", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ title: "en2-1", entity1: null }],
+      }
+
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+      const listedEntities = await manager1().find({
+        where: { id: "1" },
+        options: { populate: ["entity2"] },
+      })
+
+      expect(listedEntities).toHaveLength(1)
+      expect(listedEntities[0]).toEqual(
+        expect.objectContaining({
+          id: "1",
+          title: "en1",
+        })
+      )
+      expect(listedEntities[0].entity2.getItems()).toHaveLength(1)
+      expect(listedEntities[0].entity2.getItems()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "en2-1",
+          }),
+        ])
+      )
+    })
+
     it("should only update the parent entity of a one-to-many if relation is not included", async () => {
       const entity1 = {
         id: "1",
