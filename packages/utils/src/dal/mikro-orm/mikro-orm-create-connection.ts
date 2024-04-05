@@ -1,6 +1,7 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { isString } from "../../common"
+import { FilterDef } from "@mikro-orm/core/typings"
 
 // Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
 const originalCreateStatement = TSMigrationGenerator.prototype.createStatement
@@ -67,8 +68,15 @@ TSMigrationGenerator.prototype.createStatement = function (
 
 export { TSMigrationGenerator }
 
+export type Filter = {
+  name?: string
+} & Omit<FilterDef, "name">
+
 export async function mikroOrmCreateConnection(
-  database: ModuleServiceInitializeOptions["database"] & { connection?: any },
+  database: ModuleServiceInitializeOptions["database"] & {
+    connection?: any
+    filters?: Record<string, Filter>
+  },
   entities: any[],
   pathToMigrations: string
 ) {
@@ -100,6 +108,7 @@ export async function mikroOrmCreateConnection(
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
+    filters: database.filters ?? {},
     migrations: {
       path: pathToMigrations,
       generator: TSMigrationGenerator,
