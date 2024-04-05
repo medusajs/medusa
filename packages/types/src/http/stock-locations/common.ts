@@ -1,4 +1,4 @@
-import { AdminFulfillmentSetResponse } from "../fulfillment-sets"
+import { AdminFulfillmentSetResponse } from "../fulfillment"
 
 export type AdminStockLocationAddressResponse = {
   id?: string
