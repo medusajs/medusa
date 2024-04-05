@@ -211,7 +211,7 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("includes the entire list of parents when include_parents_tree is true", async () => {
+        it("includes the entire list of parents when include_ancestors_tree is true", async () => {
           await createProductCategories(
             MikroOrmWrapper.forkManager(),
             eletronicsCategoriesData
@@ -220,7 +220,7 @@ moduleIntegrationTestRunner({
           const productCategoryResults = await service.list(
             {
               id: "4k-gaming",
-              include_parents_tree: true,
+              include_ancestors_tree: true,
             },
             {
               select: ["id", "handle"],
@@ -339,7 +339,7 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("includes the entire list of descendants an parents when include_descendants_tree and include_parents_tree are true", async () => {
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true", async () => {
           await createProductCategories(
             MikroOrmWrapper.forkManager(),
             eletronicsCategoriesData
@@ -349,7 +349,7 @@ moduleIntegrationTestRunner({
             {
               id: "gaming-laptops",
               include_descendants_tree: true,
-              include_parents_tree: true,
+              include_ancestors_tree: true,
             },
             {
               select: ["id", "handle"],
@@ -405,11 +405,11 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("includes the entire list of parents when include_parents_tree is true for multiple results", async () => {
+        it("includes the entire list of parents when include_ancestors_tree is true for multiple results", async () => {
           const productCategoryResults = await service.list(
             {
               parent_category_id: "category-1",
-              include_parents_tree: true,
+              include_ancestors_tree: true,
             },
             {
               select: ["id", "handle"],
@@ -462,12 +462,12 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("includes the entire list of descendants an parents when include_descendants_tree and include_parents_tree are true for multiple results", async () => {
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
           const productCategoryResults = await service.list(
             {
               parent_category_id: "category-1",
               include_descendants_tree: true,
-              include_parents_tree: true,
+              include_ancestors_tree: true,
             },
             {
               select: ["id", "handle"],

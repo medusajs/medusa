@@ -71,10 +71,10 @@ export default class ProductCategoryService<
   ): Promise<TEntity[]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
-      includeParentsTree: filters?.include_parents_tree || false,
+      includeParentsTree: filters?.include_ancestors_tree || false,
     }
     delete filters.include_descendants_tree
-    delete filters.include_parents_tree
+    delete filters.include_ancestors_tree
 
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
@@ -97,10 +97,10 @@ export default class ProductCategoryService<
   ): Promise<[TEntity[], number]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
-      includeParentsTree: filters?.include_parents_tree || false,
+      includeParentsTree: filters?.include_ancestors_tree || false,
     }
     delete filters.include_descendants_tree
-    delete filters.include_parents_tree
+    delete filters.include_ancestors_tree
 
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
