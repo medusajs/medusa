@@ -1,5 +1,5 @@
-import { LocationsListTable } from "../../../modules/locations/location-list/components/locations-list-table"
 import { Outlet } from "react-router-dom"
+import { LocationsListTable } from "./components/locations-list-table"
 
 export const LocationList = () => {
   return (

@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input } from "@medusajs/ui"
-import { adminPublishableApiKeysKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { ApiKeyDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { ApiKeyDTO } from "@medusajs/types"
+import { useUpdateApiKey } from "../../../../../hooks/api/api-keys"
 
 type EditApiKeyFormProps = {
   apiKey: ApiKeyDTO
@@ -31,22 +31,12 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
     resolver: zodResolver(EditApiKeySchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCustomPost(
-    `/api-keys/${apiKey.id}`,
-    [
-      adminPublishableApiKeysKeys.lists(),
-      adminPublishableApiKeysKeys.detail(apiKey.id),
-      adminPublishableApiKeysKeys.details(),
-    ]
-  )
+  const { mutateAsync, isPending } = useUpdateApiKey(apiKey.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: () => {
         handleSuccess()
-      },
-      onError: (error) => {
-        console.log(error)
       },
     })
   })
@@ -80,7 +70,7 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

@@ -1,19 +1,17 @@
-import { EditLocationForm } from "../../../modules/locations/location-edit/components/edit-location-form/edit-location-form"
 import { Heading } from "@medusajs/ui"
-import { RouteDrawer } from "../../../components/route-modal"
-import { useAdminStockLocations } from "medusa-react"
-import { useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { useParams } from "react-router-dom"
+import { RouteDrawer } from "../../../components/route-modal"
+import { useStockLocations } from "../../../hooks/api/stock-locations"
+import { EditLocationForm } from "./components/edit-location-form"
 
 export const LocationEdit = () => {
   const { id } = useParams()
 
-  const { stock_locations, isLoading, isError, error } = useAdminStockLocations(
-    {
-      id,
-      expand: "address",
-    }
-  )
+  const { stock_locations, isLoading, isError, error } = useStockLocations({
+    id,
+    fields: "*address",
+  })
 
   const { t } = useTranslation()
 

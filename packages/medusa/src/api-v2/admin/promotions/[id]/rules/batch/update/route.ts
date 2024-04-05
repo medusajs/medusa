@@ -9,10 +9,10 @@ import {
   defaultAdminPromotionFields,
   defaultAdminPromotionRelations,
 } from "../../../../query-config"
-import { AdminPostPromotionsPromotionRulesBatchUpdateReq } from "../../../../validators"
+import { AdminPostBatchUpdateRules } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPromotionsPromotionRulesBatchUpdateReq>,
+  req: AuthenticatedMedusaRequest<AdminPostBatchUpdateRules>,
   res: MedusaResponse
 ) => {
   const id = req.params.id

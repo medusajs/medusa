@@ -9,6 +9,7 @@ import {
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 
 import { StockLocationAddress } from "./stock-location-address"
@@ -43,6 +44,7 @@ export class StockLocation {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
+  @Searchable()
   @Property({ columnType: "text" })
   name: string
 

@@ -1,1 +1,1 @@
-export { CollectionEdit as Component } from "./collection-add-edit"
+export { CollectionEdit as Component } from "./collection-edit"

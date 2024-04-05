@@ -1,16 +1,8 @@
-export type ShippingOptionRuleOperatorType =
-  | "in"
-  | "eq"
-  | "ne"
-  | "gt"
-  | "gte"
-  | "lt"
-  | "lte"
-  | "nin"
+import { RuleOperatorType } from "../../common"
 
 export interface CreateShippingOptionRuleDTO {
   attribute: string
-  operator: ShippingOptionRuleOperatorType
+  operator: RuleOperatorType
   value: string | string[]
   shipping_option_id: string
 }

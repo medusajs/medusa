@@ -1,11 +1,11 @@
-import type { SalesChannel } from "@medusajs/medusa"
 import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import { SalesChannelDTO } from "@medusajs/types"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
 type SalesChannelsCellProps = {
-  salesChannels?: SalesChannel[] | null
+  salesChannels?: SalesChannelDTO[] | null
 }
 
 export const SalesChannelsCell = ({
