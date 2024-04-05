@@ -12,17 +12,17 @@ A payment collection can have multiple payment sessions. For example, during che
 
 ---
 
-## data Field
+## data attribute
 
-Payment providers may need some additional data to process the payment later. The `PaymentSession` data model has a `data` field used to store that data.
+Payment providers may need some additional data to process the payment later. The `PaymentSession` data model has a `data` attribute used to store that data.
 
-For example, for Stripe, you must pass Stripe’s customer ID when processing the payment. So, when you create a payment session, the Stripe payment provider creates the customer in Stripe and stores the ID in the `data` field.
+For example, for Stripe, you must pass Stripe’s customer ID when processing the payment. So, when you create a payment session, the Stripe payment provider creates the customer in Stripe and stores the ID in the `data` attribute.
 
 ---
 
 ## Payment Session Status
 
-The `status` field of a payment session indicates its current status. Its value can be:
+The `status` attribute of a payment session indicates its current status. Its value can be:
 
 - `pending`: The payment session is awaiting authorization.
 - `requires_more`: The payment session requires an action before it’s authorized. For example, to enter a 3DS code.

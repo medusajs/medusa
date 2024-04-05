@@ -10,7 +10,7 @@ In this document, you’ll learn about the user-creation flow and how to use it 
 
 In the [Auth Provider](../auth-providers/index.mdx) documentation, you learned about the authentication flows supported by the Auth Module. These flows are used when an `AuthUser` is already available for the specified authentication data, such as email/password credentials.
 
-However, the `emailpass` and `google` providers support creating an `AuthUser` if none exists. If an email is provided that doesn’t have an `AuthUser` associated with it (checked via its `entity_id` field) for the specified provider (checked via its `provider` field), a new `AuthUser` is created for that email and provider.
+However, the `emailpass` and `google` providers support creating an `AuthUser` if none exists. If an email is provided that doesn’t have an `AuthUser` associated with it (checked via its `entity_id` attribute) for the specified provider (checked via its `provider` attribute), a new `AuthUser` is created for that email and provider.
 
 ![Diagram showcasing the AuthUser creation part of the authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711441638/Medusa%20Resources/auth-user-creation_gmahvl.jpg)
 

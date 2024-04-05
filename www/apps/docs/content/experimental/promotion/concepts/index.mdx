@@ -74,17 +74,17 @@ A promotion can be restricted by a set of rules, each rule is represented by the
 
 ![A diagram showcasing the relation between Promotion and PromotionRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1709833196/Medusa%20Resources/promotion-promotion-rule_msbx0w.jpg)
 
-A `PromotionRule`'s `attribute` field indicates the attribute's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
+A `PromotionRule`'s `attribute` attribute indicates the attribute's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
 
-When testing whether a promotion can be applied to a cart, the rule's `attribute` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
+When testing whether a promotion can be applied to a cart, the rule's `attribute` attribute and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
 
 ### Flexible Rules
 
-The `PromotionRule`'s `operator` field adds more flexibility to the rule’s condition rather than simple equality (`eq`).
+The `PromotionRule`'s `operator` attribute adds more flexibility to the rule’s condition rather than simple equality (`eq`).
 
 For example, to restrict the promotion to only `VIP` and `B2B` customer groups:
 
-- Add a `PromotionRule` with its `attribute` field set to `customer_group_id` and `operator` field to `in`.
+- Add a `PromotionRule` with its `attribute` attribute set to `customer_group_id` and `operator` attribute to `in`.
 - Add two `PromotionRuleValue` associated with the rule: one with the value `VIP` and the other `B2B`.
 
 ![A diagram showcasing the relation between PromotionRule and PromotionRuleValue when a rule has multiple values](https://res.cloudinary.com/dza7lstvk/image/upload/v1709897383/Medusa%20Resources/promotion-promotion-rule-multiple_hctpmt.jpg)
@@ -102,7 +102,7 @@ The `ApplicationMethod` data model defines how a promotion is applied:
     <Table.Row>
       <Table.HeaderCell>
       
-      Field
+      attribute
       
       </Table.HeaderCell>
       <Table.HeaderCell>
@@ -156,7 +156,7 @@ The `ApplicationMethod` data model defines how a promotion is applied:
 
 When the promotion is applied to a cart item or a shipping method, you can restrict which items/shipping methods the promotion is applied to.
 
-The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` field represents this relation. 
+The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` attribute represents this relation. 
 
 ![A diagram showcasing the target_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898273/Medusa%20Resources/application-method-target-rules_hqaymz.jpg)
 
@@ -166,7 +166,7 @@ In this example, the promotion is only applied on products in the cart having th
 
 When the promotion’s type is `buyget`, you must specify the “buy X” condition. For example, a cart must have two shirts before the promotion can be applied.
 
-The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` field represents this relation. 
+The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` attribute represents this relation. 
 
 ![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
 

@@ -16,7 +16,7 @@ The `InventoryItem` data model mainly holds details related to the underlying st
 
 An inventory level, represented by the `InventoryLevel` data model, holds the inventory and quantity details of an inventory item in a specific location.
 
-It has three quantity-related fields:
+It has three quantity-related attributes:
 
 - `stocked_quantity`: The available stock quantity of an item in the associated location.
 - `reserved_quantity`: The quantity reserved from the available `stocked_quantity`. It indicates the quantity that's still not removed from stock, but considered as unavailable when checking whether an item is in stock.
@@ -24,7 +24,7 @@ It has three quantity-related fields:
 
 ### Associated Location
 
-The inventory level's location is determined by the `location_id` field. The Medusa application links the `InventoryLevel` data model with the `StockLocation` data model from the Stock Location Module.
+The inventory level's location is determined by the `location_id` attribute. The Medusa application links the `InventoryLevel` data model with the `StockLocation` data model from the Stock Location Module.
 
 Learn more about this relation in [this guide](../relations-to-other-modules/index.mdx#stock-location-module)
 

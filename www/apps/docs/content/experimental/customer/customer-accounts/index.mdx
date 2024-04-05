@@ -2,9 +2,9 @@
 
 In this document, you’ll learn how registered and unregistered accounts are distinguished in the Medusa application.
 
-## `has_account` Field
+## `has_account` attribute
 
-The `Customer` data model has a `has_account` field, which is a boolean that indicates whether a customer is registerd.
+The `Customer` data model has a `has_account` attribute, which is a boolean that indicates whether a customer is registerd.
 
 When a guest customer places an order, a new `Customer` record is created with `has_account` set to `false`.
 
@@ -14,6 +14,6 @@ When this or another guest customer registers an account with the same email, a 
 
 ## Email Uniqueness
 
-The above behavior means that two `Customer` records may exist of the same email. However, the main difference is the `has_account` field’s value.
+The above behavior means that two `Customer` records may exist of the same email. However, the main difference is the `has_account` attribute’s value.
 
 So, there can only be one guest customer (having `has_account=false`) and one registered customer (having `has_account=true`) with the same email. If another customer tries to create an account with the same email, they’ll get an error that an account with this email already exists.

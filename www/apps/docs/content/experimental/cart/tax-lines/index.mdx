@@ -8,11 +8,13 @@ A tax line indicates the tax rate of a line item or a shipping method. The `Line
 
 ![A diagram showcasing the relation between other data models and the tax line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534431/Medusa%20Resources/cart-tax-lines_oheaq6.jpg)
 
-### Tax Inclusivity
+---
 
-By default, the tax amout is calculated by taking the tax rate from the line item or shipping method’s amount, and then added to the item/method’s subtotal.
+## Tax Inclusivity
 
-However, line items and shipping methods have an `is_tax_inclusive` field that, when enabled, indicates that the item or method’s price already includes taxes.
+By default, the tax amount is calculated by taking the tax rate from the line item or shipping method’s amount, and then added to the item/method’s subtotal.
+
+However, line items and shipping methods have an `is_tax_inclusive` attribute that, when enabled, indicates that the item or method’s price already includes taxes.
 
 So, instead of calculating the tax rate and adding it to the item/method’s subtotal, it’s calculated as part of the subtotal.
 

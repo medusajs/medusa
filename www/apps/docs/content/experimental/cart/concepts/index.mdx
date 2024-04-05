@@ -14,7 +14,7 @@ A cart has a shipping and billing address. Both of these addresses are represent
 
 A line item, represented by the `LineItem` data model, is a product added to the cart. A cart has multiple line items.
 
-A line item stores some of the product’s fields, such as the `product_title` and `product_description`. It also stores data related to the item’s quantity and price.
+A line item stores some of the product’s attributes, such as the `product_title` and `product_description`. It also stores data related to the item’s quantity and price.
 
 <Note>
 
@@ -32,10 +32,10 @@ If the shipping method is created from a shipping option, typically available th
 
 A shipping method can also be a custom method associated with this cart only.
 
-### data Field
+### data Attribute
 
 When fulfilling the order after its placed, you may use a third-party fulfillment provider that requires additional custom data to be passed along from the checkout process.
 
-The `ShippingMethod` data model has a `data` field is an object used to store custom data relevant later for fulfillment.
+The `ShippingMethod` data model has a `data` attribute. It's an object used to store custom data relevant later for fulfillment.
 
 In the Medusa application, it's the `data` is passed to the Fulfillment Module when fulfilling items.
