@@ -408,6 +408,25 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      // This is really just to test the new Zod middleware. We don't need more of these.
+      it("should throw a validation error on wrong input", async () => {
+        const errorResponse = await api
+          .post(
+            `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
+            {
+              name: "Fulfillment Set",
+              type: "shipping",
+              foo: "bar",
+            },
+            adminHeaders
+          )
+          .catch((e) => e.response)
+
+        expect(errorResponse.status).toEqual(400)
+
+        expect(errorResponse.data.message).toContain("Invalid request body: ")
+      })
     })
   },
 })

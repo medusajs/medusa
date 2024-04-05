@@ -8,6 +8,7 @@ import {
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
+import { z } from "zod"
 import { IsType } from "../../../utils"
 
 /**
@@ -287,12 +288,9 @@ export class AdminStockLocationsLocationSalesChannelBatchReq {
   sales_channel_ids: string[]
 }
 
-export class AdminPostStockLocationsFulfillmentSetReq {
-  @IsString()
-  @IsNotEmpty()
-  name: string
-
-  @IsString()
-  @IsNotEmpty()
-  type: string
-}
+export const AdminCreateStockLocationFulfillmentSet = z
+  .object({
+    name: z.string(),
+    type: z.string(),
+  })
+  .strict()

@@ -3,11 +3,12 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { z } from "zod"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { AdminPostStockLocationsFulfillmentSetReq } from "../../validators"
+import { AdminCreateStockLocationFulfillmentSet } from "../../validators"
 
 export const POST = async (
-  req: MedusaRequest<AdminPostStockLocationsFulfillmentSetReq>,
+  req: MedusaRequest<z.infer<typeof AdminCreateStockLocationFulfillmentSet>>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

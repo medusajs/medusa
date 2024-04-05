@@ -4,7 +4,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 interface StepInput {
-  links: {
+  input: {
     location_id: string
     fulfillment_set_ids: string[]
   }[]
@@ -15,13 +15,13 @@ export const associateFulfillmentSetsWithLocationStepId =
 export const associateFulfillmentSetsWithLocationStep = createStep(
   associateFulfillmentSetsWithLocationStepId,
   async (data: StepInput, { container }) => {
-    if (!data.links.length) {
+    if (!data.input.length) {
       return new StepResponse([], [])
     }
 
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
-    const links = data.links
+    const links = data.input
       .map((link) => {
         return link.fulfillment_set_ids.map((id) => {
           return {
@@ -35,7 +35,6 @@ export const associateFulfillmentSetsWithLocationStep = createStep(
         })
       })
       .flat()
-
 
     const createdLinks = await remoteLink.create(links)
 

@@ -19,7 +19,7 @@ export const createLocationFulfillmentSetWorkflow = createWorkflow(
       },
     ])
 
-    const links = transform({ input, fulfillmentSet }, (data) => [
+    const data = transform({ input, fulfillmentSet }, (data) => [
       {
         location_id: data.input.location_id,
         fulfillment_set_ids: [data.fulfillmentSet[0].id],
@@ -27,7 +27,7 @@ export const createLocationFulfillmentSetWorkflow = createWorkflow(
     ])
 
     associateFulfillmentSetsWithLocationStep({
-      links,
+      input: data,
     })
   }
 )
