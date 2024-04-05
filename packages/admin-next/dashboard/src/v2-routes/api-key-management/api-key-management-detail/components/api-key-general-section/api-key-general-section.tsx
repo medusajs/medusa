@@ -9,6 +9,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import {
+  useAdminCustomQuery,
   useAdminDeletePublishableApiKey,
   useAdminRevokePublishableApiKey,
   useAdminUser,
@@ -18,9 +19,10 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { UserLink } from "../../../../../components/common/user-link"
+import { ApiKeyDTO } from "@medusajs/types"
 
 type ApiKeyGeneralSectionProps = {
-  apiKey: PublishableApiKey
+  apiKey: ApiKeyDTO
 }
 
 export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
@@ -121,10 +123,10 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         </Text>
         <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
           <Text size="xsmall" leading="compact" className="truncate">
-            {apiKey.id}
+            {apiKey.redacted}
           </Text>
           <Copy
-            content={apiKey.id}
+            content={apiKey.token}
             variant="mini"
             className="text-ui-fg-subtle"
           />
@@ -149,9 +151,12 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 }
 
 const ActionBy = ({ userId }: { userId: string | null }) => {
-  const { user, isLoading, isError, error } = useAdminUser(userId!, {
-    enabled: !!userId,
-  })
+  const { data, isLoading, isError, error } = useAdminCustomQuery(
+    `/users/${userId}`,
+    [],
+    {},
+    { enabled: !!userId }
+  )
 
   if (!userId) {
     return (
@@ -174,7 +179,7 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
     )
   }
 
-  if (!user) {
+  if (!data?.user) {
     return (
       <Text size="small" className="text-ui-fg-subtle">
         -
@@ -182,5 +187,5 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
     )
   }
 
-  return <UserLink {...user} />
+  return <UserLink {...data.user} />
 }

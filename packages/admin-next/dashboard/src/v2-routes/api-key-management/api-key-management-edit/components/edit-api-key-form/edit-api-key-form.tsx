@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { PublishableApiKey } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdatePublishableApiKey } from "medusa-react"
+import { adminPublishableApiKeysKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -11,9 +10,10 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { ApiKeyDTO } from "@medusajs/types"
 
 type EditApiKeyFormProps = {
-  apiKey: PublishableApiKey
+  apiKey: ApiKeyDTO
 }
 
 const EditApiKeySchema = zod.object({
@@ -31,7 +31,14 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
     resolver: zodResolver(EditApiKeySchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdatePublishableApiKey(apiKey.id)
+  const { mutateAsync, isLoading } = useAdminCustomPost(
+    `/api-keys/${apiKey.id}`,
+    [
+      adminPublishableApiKeysKeys.lists(),
+      adminPublishableApiKeysKeys.detail(apiKey.id),
+      adminPublishableApiKeysKeys.details(),
+    ]
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {

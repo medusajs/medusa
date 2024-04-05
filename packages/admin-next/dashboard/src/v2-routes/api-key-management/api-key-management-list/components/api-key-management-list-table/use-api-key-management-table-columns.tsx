@@ -3,6 +3,9 @@ import { PublishableApiKey } from "@medusajs/medusa"
 import { Copy, Text, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import {
+  adminPublishableApiKeysKeys,
+  useAdminCustomDelete,
+  useAdminCustomPost,
   useAdminDeletePublishableApiKey,
   useAdminRevokePublishableApiKey,
 } from "medusa-react"
@@ -12,8 +15,9 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
+import { ApiKeyDTO } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<PublishableApiKey>()
+const columnHelper = createColumnHelper<ApiKeyDTO>()
 
 export const useApiKeyManagementTableColumns = () => {
   const { t } = useTranslation()
@@ -28,9 +32,9 @@ export const useApiKeyManagementTableColumns = () => {
           </div>
         ),
       }),
-      columnHelper.accessor("id", {
-        header: "Key",
-        cell: ({ getValue }) => {
+      columnHelper.accessor("redacted", {
+        header: "Token",
+        cell: ({ getValue, row }) => {
           const token = getValue()
 
           return (
@@ -42,7 +46,7 @@ export const useApiKeyManagementTableColumns = () => {
                 {token}
               </Text>
               <Copy
-                content={token}
+                content={row.original.token}
                 variant="mini"
                 className="text-ui-fg-subtle"
               />
@@ -73,7 +77,7 @@ export const useApiKeyManagementTableColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          return <ApiKeyActions apiKey={row.original} />
+          return <ApiKeyActions apiKey={row.original as any} />
         },
       }),
     ],
@@ -82,11 +86,19 @@ export const useApiKeyManagementTableColumns = () => {
 }
 
 const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
-  const { mutateAsync: revokeAsync } = useAdminRevokePublishableApiKey(
-    apiKey.id
+  const { mutateAsync: revokeAsync } = useAdminCustomPost(
+    `/api-keys/${apiKey.id}/revoke`,
+    [
+      adminPublishableApiKeysKeys.lists(),
+      adminPublishableApiKeysKeys.detail(apiKey.id),
+    ]
   )
-  const { mutateAsync: deleteAsync } = useAdminDeletePublishableApiKey(
-    apiKey.id
+  const { mutateAsync: deleteAsync } = useAdminCustomDelete(
+    `/api-keys/${apiKey.id}`,
+    [
+      adminPublishableApiKeysKeys.lists(),
+      adminPublishableApiKeysKeys.detail(apiKey.id),
+    ]
   )
 
   const { t } = useTranslation()
@@ -123,7 +135,7 @@ const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
       return
     }
 
-    await revokeAsync()
+    await revokeAsync({})
   }
 
   return (

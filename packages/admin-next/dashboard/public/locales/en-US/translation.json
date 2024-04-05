@@ -803,9 +803,10 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domain": "API Key Management",
+    "domainTitle": "API Keys",
+    "domain": "{{ keyType }} API Keys",
     "createKey": "Create key",
-    "createPublishableApiKey": "Create Publishable API Key",
+    "createPublishableApiKey": "Create {{ keyType }} API Key",
     "editKey": "Edit key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",

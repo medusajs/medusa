@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom"
 import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
+import { ApiKeyDTO } from "@medusajs/types"
 import { Spinner } from "@medusajs/icons"
 import { useV2Session } from "../../lib/api-v2"
 
@@ -329,6 +330,57 @@ export const v2Routes: RouteObject[] = [
                     return data.workflow.name
                   },
                 },
+              },
+            ],
+          },
+          {
+            path: "api-key-management",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "API Key Management",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: { api_key: ApiKeyDTO }) => data.api_key.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                      ),
+                  },
+                ],
               },
             ],
           },
