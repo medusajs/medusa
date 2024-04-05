@@ -5,7 +5,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
@@ -205,7 +205,6 @@ export function createWorkflow<
     __step__: "",
     config: () => {
       // TODO: config default value?
-      throw new Error("Config is not available for the input object.")
       throw new Error("Config is not available for the input object.")
     },
   })
