@@ -14,43 +14,8 @@ This method retrieves a currency by its code and and optionally based on the pro
 
 ## Example
 
-A simple example that retrieves a currency by its code:
-
 ```ts
-import {
-  initialize as initializeCurrencyModule,
-} from "@medusajs/currency"
-
-async function retrieveCurrency (code: string) {
-  const currencyModule = await initializeCurrencyModule()
-
-  const currency = await currencyModule.retrieve(
-    code
-  )
-
-  // do something with the currency or return it
-}
-```
-
-To specify attributes that should be retrieved:
-
-```ts
-import {
-  initialize as initializeCurrencyModule,
-} from "@medusajs/currency"
-
-async function retrieveCurrency (code: string) {
-  const currencyModule = await initializeCurrencyModule()
-
-  const currency = await currencyModule.retrieve(
-    code,
-    {
-      select: ["symbol_native"]
-    }
-  )
-
-  // do something with the currency or return it
-}
+const currency = await currencyModuleService.retrieve("usd")
 ```
 
 ## Parameters
@@ -59,4 +24,4 @@ async function retrieveCurrency (code: string) {
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[CurrencyDTO](../../interfaces/currency.CurrencyDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"The retrieved currency.","expandable":false,"children":[{"name":"CurrencyDTO","type":"[CurrencyDTO](../../interfaces/currency.CurrencyDTO.mdx)","optional":false,"defaultValue":"","description":"A currency's data.","expandable":false,"children":[{"name":"code","type":"`string`","description":"The ISO 3 code of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol","type":"`string`","description":"The symbol of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol_native","type":"`string`","description":"The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CurrencyDTO](../../interfaces/currency.CurrencyDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"The retrieved currency.","expandable":false,"children":[{"name":"CurrencyDTO","type":"[CurrencyDTO](../../interfaces/currency.CurrencyDTO.mdx)","optional":false,"defaultValue":"","description":"A currency's data.","expandable":false,"children":[{"name":"code","type":"`string`","description":"The ISO 3 character code of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol","type":"`string`","description":"The symbol of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol_native","type":"`string`","description":"The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the currency.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="retrieve"/>

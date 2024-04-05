@@ -15,24 +15,19 @@ This method is used to add prices to price lists.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addPriceListPrices (items: {
-  priceListId: string,
-  prices: {
-    currency_code: string,
-    amount: number,
-    price_set_id: string
-  }[]
-}[]) {
-  const pricingService = await initializePricingModule()
-
-  const priceLists = await pricingService.addPriceListPrices(items)
-
-  // do something with the price lists or return them
-}
+const priceLists =
+  await pricingModuleService.addPriceListPrices([
+    {
+      price_list_id: "plist_123",
+      prices: [
+        {
+          currency_code: "usd",
+          amount: 500,
+          price_set_id: "pset_123",
+        },
+      ],
+    },
+  ])
 ```
 
 ## Parameters

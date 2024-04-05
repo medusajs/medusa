@@ -15,15 +15,7 @@ This method deletes price sets by their IDs.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function removePriceSetRule (priceSetIds: string[]) {
-  const pricingService = await initializePricingModule()
-
-  await pricingService.delete(priceSetIds)
-}
+await pricingModuleService.delete(["pset_123", "pset_321"])
 ```
 
 ## Parameters

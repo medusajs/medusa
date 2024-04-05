@@ -17,90 +17,37 @@ This method is used to retrieve a paginated list of price rules based on optiona
 To retrieve a list of price rules using their IDs:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRules (id: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.listPriceRules({
-    id: [id]
-  })
-
-  // do something with the price rules or return them
-}
+const priceRules = await pricingModuleService.listPriceRules({
+  id: ["prule_123", "prule_321"],
+})
 ```
 
 To specify relations that should be retrieved within the price rules:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRules (id: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.listPriceRules({
-    id: [id],
-  }, {
-    relations: ["price_set"]
-  })
-
-  // do something with the price rules or return them
-}
+const priceRules = await pricingModuleService.listPriceRules(
+  {
+    id: ["prule_123", "prule_321"],
+  },
+  {
+    relations: ["price_set"],
+  }
+)
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRules (id: string, skip: number, take: number) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.listPriceRules({
-    id: [id],
-  }, {
+const priceRules = await pricingModuleService.listPriceRules(
+  {
+    id: ["prule_123", "prule_321"],
+  },
+  {
     relations: ["price_set"],
-    skip,
-    take
-  })
-
-  // do something with the price rules or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.listPriceRules({
-    $and: [
-      {
-        id: ids
-      },
-      {
-        name
-      }
-    ]
-  }, {
-    relations: ["price_set"],
-    skip,
-    take
-  })
-
-  // do something with the price rules or return them
-}
+    take: 20,
+    skip: 2,
+  }
+)
 ```
 
 ## Parameters

@@ -5650,7 +5650,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The rules to add to a price list."
+						"text": "The rules to set in a price list."
 					}
 				]
 			},
@@ -5665,7 +5665,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the price list to add rules to."
+								"text": "The ID of the price list to set its rules."
 							}
 						]
 					},
@@ -6758,7 +6758,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "Filters to apply on prices."
+						"text": "Filters to apply when calculating prices."
 					}
 				]
 			},
@@ -6773,7 +6773,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "IDs to filter prices."
+								"text": "IDs of the price sets to use in the\ncalculation."
 							}
 						]
 					},
@@ -8092,15 +8092,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The data to upsert in a price set. The "
-					},
-					{
-						"kind": "code",
-						"text": "`id`"
-					},
-					{
-						"kind": "text",
-						"text": " is used in the case we are doing an update."
+						"text": "The data to upsert in a price set."
 					}
 				]
 			},
@@ -8117,7 +8109,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "A string indicating the ID of the price set to update."
+								"text": "A string indicating the ID of the price set to update.\nIf not provided, a price set is created."
 							}
 						]
 					},
@@ -8259,15 +8251,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The data to update in a price set. The "
-					},
-					{
-						"kind": "code",
-						"text": "`id`"
-					},
-					{
-						"kind": "text",
-						"text": " is used to identify which price set to update."
+						"text": "The data to update in a price set."
 					}
 				]
 			},
@@ -9846,7 +9830,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The main service interface for the pricing module."
+						"text": "The main service interface for the Pricing Module."
 					}
 				]
 			},
@@ -9890,7 +9874,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\nasync function calculatePrice (priceSetId: string, currencyCode: string) {\n  const pricingService = await initializePricingModule()\n\n  const price = await pricingService.calculatePrices(\n    { id: [priceSetId] },\n    {\n      context: {\n        currency_code: currencyCode\n      }\n    }\n  )\n\n  // do something with the price or return it\n}\n```"
+												"text": "```ts\nconst price = await pricingModuleService.calculatePrices(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    context: {\n      currency_code: \"usd\",\n    },\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -9898,7 +9882,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\nasync function calculatePrice (priceSetId: string, currencyCode: string) {\n  const pricingService = await initializePricingModule()\n\n  const price = await pricingService.calculatePrices(\n    { id: [priceSetId] },\n    {\n      context: {\n        currency_code: currencyCode,\n        min_quantity: 4\n      }\n    }\n  )\n\n  // do something with the price or return it\n}\n```"
+												"text": "```ts\nconst price = await pricingModuleService.calculatePrices(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    context: {\n      currency_code: \"usd\",\n      min_quantity: 4,\n    },\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -9906,7 +9890,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\nasync function calculatePrice (priceSetId: string, currencyCode: string) {\n  const pricingService = await initializePricingModule()\n\n  const price = await pricingService.calculatePrices(\n    { id: [priceSetId] },\n    {\n      context: {\n        currency_code: currencyCode,\n        region_id: \"US\"\n      }\n    }\n  )\n\n  // do something with the price or return it\n}\n```"
+												"text": "```ts\nconst price = await pricingModuleService.calculatePrices(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    context: {\n      currency_code: \"usd\",\n      region_id: \"US\",\n    },\n  }\n)\n```"
 											}
 										]
 									}
@@ -10043,7 +10027,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.retrieve(\n    priceSetId\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet =\n  await pricingModuleService.retrieve(\"pset_123\")\n```"
 											},
 											{
 												"kind": "text",
@@ -10051,7 +10035,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.retrieve(\n    priceSetId,\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.retrieve(\n  \"pset_123\",\n  {\n    relations: [\"prices\"],\n  }\n)\n```"
 											}
 										]
 									}
@@ -10207,7 +10191,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.list(\n    {\n      id: priceSetIds\n    },\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.list({\n  id: [\"pset_123\", \"pset_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -10215,7 +10199,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.list(\n    {\n      id: priceSetIds\n    },\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.list(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    relations: [\"prices\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -10255,39 +10239,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.list(\n    {\n      id: priceSetIds\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[], priceIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.list(\n    {\n      $and: [\n        {\n          id: priceSetIds\n        },\n        {\n          prices: {\n            id: priceIds\n          }\n        }\n      ]\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.list(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    relations: [\"prices\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -10450,7 +10402,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceSets, count] = await pricingService.listAndCount(\n    {\n      id: priceSetIds\n    },\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst [priceSets, count] =\n  await pricingModuleService.listAndCount({\n    id: [\"pset_123\", \"pset_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -10458,7 +10410,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceSets, count] = await pricingService.listAndCount(\n    {\n      id: priceSetIds\n    },\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst [priceSets, count] =\n  await pricingModuleService.listAndCount(\n    {\n      id: [\"pset_123\", \"pset_321\"],\n    },\n    {\n      relations: [\"prices\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10498,39 +10450,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceSets, count] = await pricingService.listAndCount(\n    {\n      id: priceSetIds\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceSets (priceSetIds: string[], priceIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceSets, count] = await pricingService.listAndCount(\n    {\n      $and: [\n        {\n          id: priceSetIds\n        },\n        {\n          prices: {\n            id: priceIds\n          }\n        }\n      ]\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst [priceSets, count] =\n  await pricingModuleService.listAndCount(\n    {\n      id: [\"pset_123\", \"pset_321\"],\n    },\n    {\n      relations: [\"prices\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10702,7 +10622,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceSet () {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.create(\n    {\n      rules: [],\n      prices: [\n        {\n          amount: 500,\n          currency_code: \"USD\",\n          min_quantity: 0,\n          max_quantity: 4,\n          rules: {},\n        },\n        {\n          amount: 400,\n          currency_code: \"USD\",\n          min_quantity: 5,\n          max_quantity: 10,\n          rules: {},\n        },\n      ],\n    },\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.create({\n  rules: [],\n  prices: [\n    {\n      amount: 500,\n      currency_code: \"USD\",\n      min_quantity: 0,\n      max_quantity: 4,\n      rules: {},\n    },\n    {\n      amount: 400,\n      currency_code: \"USD\",\n      min_quantity: 5,\n      max_quantity: 10,\n      rules: {},\n    },\n  ],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -10710,7 +10630,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceSet () {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.create(\n    {\n      rules: [{ rule_attribute: \"region_id\" }, { rule_attribute: \"city\" }],\n      prices: [\n        {\n          amount: 300,\n          currency_code: \"EUR\",\n          rules: {\n            region_id: \"PL\",\n            city: \"krakow\"\n          },\n        },\n        {\n          amount: 400,\n          currency_code: \"EUR\",\n          rules: {\n            region_id: \"PL\"\n          },\n        },\n        {\n          amount: 450,\n          currency_code: \"EUR\",\n          rules: {\n            city: \"krakow\"\n          },\n        }\n      ],\n    },\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.create({\n  rules: [\n    { rule_attribute: \"region_id\" },\n    { rule_attribute: \"city\" },\n  ],\n  prices: [\n    {\n      amount: 300,\n      currency_code: \"EUR\",\n      rules: {\n        region_id: \"PL\",\n        city: \"krakow\",\n      },\n    },\n    {\n      amount: 400,\n      currency_code: \"EUR\",\n      rules: {\n        region_id: \"PL\",\n      },\n    },\n    {\n      amount: 450,\n      currency_code: \"EUR\",\n      rules: {\n        city: \"krakow\",\n      },\n    },\n  ],\n})\n```"
 											}
 										]
 									}
@@ -10807,28 +10727,8 @@
 										"tag": "@example",
 										"content": [
 											{
-												"kind": "text",
-												"text": "To create price sets with a default price, don't pass any rules and make sure to pass the "
-											},
-											{
 												"kind": "code",
-												"text": "`currency_code`"
-											},
-											{
-												"kind": "text",
-												"text": " of the price. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceSets () {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.create([\n    {\n      rules: [],\n      prices: [\n        {\n          amount: 500,\n          currency_code: \"USD\",\n          rules: {},\n        },\n      ],\n    },\n  ])\n\n  // do something with the price sets or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo create price sets and associate them with rule types:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceSets () {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.create([\n    {\n      rules: [{ rule_attribute: \"region_id\" }, { rule_attribute: \"city\" }],\n      prices: [\n        {\n          amount: 300,\n          currency_code: \"EUR\",\n          rules: {\n            region_id: \"PL\",\n            city: \"krakow\"\n          },\n        },\n        {\n          amount: 400,\n          currency_code: \"EUR\",\n          min_quantity: 0,\n          max_quantity: 4,\n          rules: {\n            region_id: \"PL\"\n          },\n        },\n        {\n          amount: 450,\n          currency_code: \"EUR\",\n          rules: {\n            city: \"krakow\"\n          },\n        }\n      ],\n    },\n  ])\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.create([\n  // default price set\n  {\n    rules: [],\n    prices: [\n      {\n        amount: 500,\n        currency_code: \"USD\",\n        min_quantity: 0,\n        max_quantity: 4,\n        rules: {},\n      },\n      {\n        amount: 400,\n        currency_code: \"USD\",\n        min_quantity: 5,\n        max_quantity: 10,\n        rules: {},\n      },\n    ],\n  },\n  // price set with rules\n  {\n    rules: [\n      { rule_attribute: \"region_id\" },\n      { rule_attribute: \"city\" },\n    ],\n    prices: [\n      {\n        amount: 300,\n        currency_code: \"EUR\",\n        rules: {\n          region_id: \"PL\",\n          city: \"krakow\",\n        },\n      },\n      {\n        amount: 400,\n        currency_code: \"EUR\",\n        rules: {\n          region_id: \"PL\",\n        },\n      },\n      {\n        amount: 450,\n        currency_code: \"EUR\",\n        rules: {\n          city: \"krakow\",\n        },\n      },\n    ],\n  },\n])\n```"
 											}
 										]
 									}
@@ -10941,7 +10841,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function upsertPriceSet (title: string) {\n  const pricingModule = await initializePricingModule()\n\n  const createdPriceSets = await pricingModule.upsert([\n    {\n      prices: [{amount: 100, currency_code: \"USD\"}]\n    }\n  ])\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.upsert([\n  {\n    prices: [\n      {\n        amount: 100,\n        currency_code: \"USD\",\n      },\n    ],\n  },\n  {\n    id: \"pset_123\",\n    rules: [{ rule_attribute: \"region_id\" }],\n  },\n])\n```"
 											}
 										]
 									}
@@ -11045,7 +10945,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function upsertPriceSet (title: string) {\n  const pricingModule = await initializePricingModule()\n\n  const createdPriceSet = await pricingModule.upsert(\n    {\n      prices: [{amount: 100, currency_code: \"USD\"}]\n    }\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.upsert({\n  id: \"pset_123\",\n  rules: [{ rule_attribute: \"region_id\" }],\n})\n```"
 											}
 										]
 									}
@@ -11152,7 +11052,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updatePriceSet (id: string, title: string) {\n  const pricingtModule = await initializePricingModule()\n\n  const priceSet = await pricingtModule.update(id, {\n      prices: [{amount: 100, currency_code: \"USD\"}]\n    }\n  )\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.update(\n  \"pset_123\",\n  {\n    rules: [{ rule_attribute: \"region_id\" }],\n  }\n)\n```"
 											}
 										]
 									}
@@ -11269,7 +11169,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updatePriceSet(id: string, title: string) {\n  const pricingModule = await initializePricingModule()\n\n  const priceSets = await pricingModule.update({id}, {\n      prices: [{amount: 100, currency_code: \"USD\"}]\n    }\n  )\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.update(\n  {\n    id: [\"pset_123\", \"pset_321\"],\n  },\n  {\n    rules: [{ rule_attribute: \"region_id\" }],\n  }\n)\n```"
 											}
 										]
 									}
@@ -11400,7 +11300,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function removePriceSetRule (priceSetId: string, ruleAttributes: []) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.removeRules([\n    {\n      id: priceSetId,\n      rules: ruleAttributes\n    },\n  ])\n}\n```"
+												"text": "```ts\nawait pricingModuleService.removeRules([\n  {\n    id: \"pset_123\",\n    rules: [\"region_id\"],\n  },\n])\n```"
 											}
 										]
 									}
@@ -11508,7 +11408,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function removePriceSetRule (priceSetIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.delete(priceSetIds)\n}\n```"
+												"text": "```ts\nawait pricingModuleService.delete([\"pset_123\", \"pset_321\"])\n```"
 											}
 										]
 									}
@@ -11626,7 +11526,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addPricesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.addPrices({\n    priceSetId,\n    prices: [\n     {\n        amount: 500,\n        currency_code: \"USD\",\n        rules: {},\n      },\n    ],\n  })\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.addPrices({\n  priceSetId: \"pset_123\",\n  prices: [\n    {\n      amount: 500,\n      currency_code: \"USD\",\n      rules: {},\n    },\n  ],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -11634,7 +11534,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addPricesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.addPrices({\n    priceSetId,\n    prices: [\n      {\n        amount: 300,\n        currency_code: \"EUR\",\n        rules: {\n          region_id: \"PL\",\n          city: \"krakow\"\n        },\n      },\n      {\n        amount: 400,\n        currency_code: \"EUR\",\n        min_quantity: 0,\n        max_quantity: 4,\n        rules: {\n          region_id: \"PL\"\n        },\n      },\n      {\n        amount: 450,\n        currency_code: \"EUR\",\n        rules: {\n          city: \"krakow\"\n        },\n      }\n    ],\n  })\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.addPrices({\n  priceSetId: \"pset_123\",\n  prices: [\n    {\n      amount: 300,\n      currency_code: \"EUR\",\n      rules: {\n        region_id: \"PL\",\n        city: \"krakow\",\n      },\n    },\n    {\n      amount: 400,\n      currency_code: \"EUR\",\n      min_quantity: 0,\n      max_quantity: 4,\n      rules: {\n        region_id: \"PL\",\n      },\n    },\n    {\n      amount: 450,\n      currency_code: \"EUR\",\n      rules: {\n        city: \"krakow\",\n      },\n    },\n  ],\n})\n```"
 											}
 										]
 									}
@@ -11731,28 +11631,8 @@
 										"tag": "@example",
 										"content": [
 											{
-												"kind": "text",
-												"text": "To add a default price to a price set, don't pass it any rules and make sure to pass it the "
-											},
-											{
 												"kind": "code",
-												"text": "`currency_code`"
-											},
-											{
-												"kind": "text",
-												"text": ":\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addPricesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.addPrices([{\n    priceSetId,\n    prices: [\n     {\n        amount: 500,\n        currency_code: \"USD\",\n        rules: {},\n      },\n    ],\n  }])\n\n  // do something with the price sets or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo add prices with rules:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addPricesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.addPrices([{\n    priceSetId,\n    prices: [\n      {\n        amount: 300,\n        currency_code: \"EUR\",\n        rules: {\n          region_id: \"PL\",\n          city: \"krakow\"\n        },\n      },\n      {\n        amount: 400,\n        currency_code: \"EUR\",\n        min_quantity: 0,\n        max_quantity: 4,\n        rules: {\n          region_id: \"PL\"\n        },\n      },\n      {\n        amount: 450,\n        currency_code: \"EUR\",\n        rules: {\n          city: \"krakow\"\n        },\n      }\n    ],\n  }])\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.addPrices([\n  {\n    priceSetId: \"pset_123\",\n    prices: [\n      // default price because it doesn't\n      // have rules\n      {\n        amount: 500,\n        currency_code: \"USD\",\n        rules: {},\n      },\n    ],\n  },\n  {\n    priceSetId: \"pset_321\",\n    prices: [\n      // prices with rules\n      {\n        amount: 300,\n        currency_code: \"EUR\",\n        rules: {\n          region_id: \"PL\",\n          city: \"krakow\",\n        },\n      },\n    ],\n  },\n])\n```"
 											}
 										]
 									}
@@ -11865,7 +11745,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addRulesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSet = await pricingService.addRules({\n    priceSetId,\n    rules: [{\n      attribute: \"region_id\"\n    }]\n  })\n\n  // do something with the price set or return it\n}\n```"
+												"text": "```ts\nconst priceSet = await pricingModuleService.addRules({\n  priceSetId: \"pset_123\",\n  rules: [\n    {\n      attribute: \"region_id\",\n    },\n  ],\n})\n```"
 											}
 										]
 									}
@@ -11963,7 +11843,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addRulesToPriceSet (priceSetId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceSets = await pricingService.addRules([{\n    priceSetId,\n    rules: [{\n      attribute: \"region_id\"\n    }]\n  }])\n\n  // do something with the price sets or return them\n}\n```"
+												"text": "```ts\nconst priceSets = await pricingModuleService.addRules([\n  {\n    priceSetId: \"pset_123\",\n    rules: [\n      {\n        attribute: \"region_id\",\n      },\n    ],\n  },\n  {\n    priceSetId: \"pset_321\",\n    rules: [\n      {\n        attribute: \"customer_group_id\",\n      },\n    ],\n  },\n])\n```"
 											}
 										]
 									}
@@ -12080,15 +11960,15 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleType (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const ruleType = await pricingService.retrieveRuleType(ruleTypeId)\n\n  // do something with the rule type or return it\n}\n```"
+												"text": "```ts\nconst ruleType =\n  await pricingModuleService.retrieveRuleType(\"rul-typ_123\")\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify attributes that should be retrieved:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleType (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const ruleType = await pricingService.retrieveRuleType(ruleTypeId, {\n    select: [\"name\"]\n  })\n\n  // do something with the rule type or return it\n}\n```"
+												"text": "```ts\nconst ruleType = await pricingModuleService.retrieveRuleType(\n  \"rul-typ_123\",\n  {\n    relations: [\"price_sets\"],\n  }\n)\n```"
 											}
 										]
 									}
@@ -12244,15 +12124,15 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.listRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.listRuleTypes({\n  id: [\"rul-typ_123\", \"rul-typ_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify attributes that should be retrieved within the rule types:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.listRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  }, {\n    select: [\"name\"]\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.listRuleTypes(\n  {\n    id: [\"rul-typ_123\", \"rul-typ_321\"],\n  },\n  {\n    relations: [\"price_sets\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -12292,39 +12172,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.listRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  }, {\n    select: [\"name\"],\n    skip,\n    take\n  })\n\n  // do something with the rule types or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.listRuleTypes({\n    $and: [\n      {\n        id: ruleTypeId\n      },\n      {\n        name\n      }\n    ]\n  }, {\n    select: [\"name\"],\n    skip,\n    take\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.listRuleTypes(\n  {\n    id: [\"rul-typ_123\", \"rul-typ_321\"],\n  },\n  {\n    relations: [\"price_sets\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -12487,7 +12335,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst [ruleTypes, count] =\n  await pricingModuleService.listAndCountRuleTypes({\n    id: [\"rul-typ_123\", \"rul-typ_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -12495,7 +12343,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  }, {\n    select: [\"name\"]\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst [ruleTypes, count] =\n  await pricingModuleService.listAndCountRuleTypes(\n    {\n      id: [\"rul-typ_123\", \"rul-typ_321\"],\n    },\n    {\n      relations: [\"price_sets\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -12535,39 +12383,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({\n    id: [\n      ruleTypeId\n    ]\n  }, {\n    select: [\"name\"],\n    skip,\n    take\n  })\n\n  // do something with the rule types or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({\n    $and: [\n      {\n        id: ruleTypeId\n      },\n      {\n        name\n      }\n    ]\n  }, {\n    select: [\"name\"],\n    skip,\n    take\n  })\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst [ruleTypes, count] =\n  await pricingModuleService.listAndCountRuleTypes(\n    {\n      id: [\"rul-typ_123\", \"rul-typ_321\"],\n    },\n    {\n      relations: [\"price_sets\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -12735,7 +12551,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createRuleTypes () {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.createRuleTypes([\n    {\n      name: \"Region\",\n      rule_attribute: \"region_id\"\n    }\n  ])\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.createRuleTypes([\n  {\n    name: \"Region\",\n    rule_attribute: \"region_id\",\n  },\n  {\n    name: \"Customer Group\",\n    rule_attribute: \"customer_group_id\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -12848,7 +12664,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updateRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  const ruleTypes = await pricingService.updateRuleTypes([\n    {\n      id: ruleTypeId,\n      name: \"Region\",\n    }\n  ])\n\n  // do something with the rule types or return them\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.updateRuleTypes([\n  {\n    id: \"rul-typ_123\",\n    name: \"Region\",\n  },\n  {\n    id: \"rul-typ_321\",\n    name: \"Customer Group\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -12961,7 +12777,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function deleteRuleTypes (ruleTypeId: string) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.deleteRuleTypes([ruleTypeId])\n}\n```"
+												"text": "```ts\nconst ruleTypes = await pricingModuleService.deleteRuleTypes([\n  \"rul-typ_123\",\n  \"rul-typ_321\",\n])\n```"
 											}
 										]
 									}
@@ -13071,7 +12887,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const prices = await pricingService.listPrices({\n    id: [id]\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst prices = await pricingModuleService.listPrices({\n  id: [\"price_123\", \"price_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -13079,7 +12895,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const prices = await pricingService.listPrices({\n    id: [id]\n  }, {\n    relations: [\"price_rules\"]\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst prices = await pricingModuleService.listPrices(\n  {\n    id: [\"price_123\", \"price_321\"],\n  },\n  {\n    relations: [\"price_rules\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -13119,39 +12935,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const prices = await pricingService.listPrices({\n    id: [id]\n  }, {\n    relations: [\"price_rules\"],\n    skip,\n    take\n  })\n\n  // do something with the prices or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (ids: string[], titles: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const prices = await pricingService.listPrices({\n    $and: [\n      {\n        id: ids\n      },\n      {\n        title: titles\n      }\n    ]\n  }, {\n    relations: [\"price_rules\"],\n    skip,\n    take\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst prices = await pricingModuleService.listPrices(\n  {\n    id: [\"price_123\", \"price_321\"],\n  },\n  {\n    relations: [\"price_rules\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -13288,6 +13072,50 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method soft deletes prices by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated price rules.\nThe object's keys are the ID attribute names of the price entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`price_rule_id`"
+											},
+											{
+												"kind": "text",
+												"text": ", and its value is an array of strings, each being the ID of a record associated\nwith the price through this relation, such as the IDs of associated price rule.\n\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait pricingModuleService.softDeletePrices([\n  \"price_123\",\n  \"price_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 4402,
@@ -13312,6 +13140,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the prices."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -13327,6 +13163,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -13351,6 +13195,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -13418,6 +13270,25 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method restores soft deleted prices by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait pricingModuleService.restorePrices([\n  \"price_123\",\n  \"price_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 4408,
@@ -13442,6 +13313,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the prices."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -13457,6 +13336,38 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configurations determining which relations to restore along with each of the prices. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the price's relation attribute names, such as price_rules"
+											},
+											{
+												"kind": "code",
+												"text": "`.\n@param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.\n@returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated price rules.\nThe object's keys are the ID attribute names of the prices entity's relations, such as `"
+											},
+											{
+												"kind": "text",
+												"text": "price_rule_id"
+											},
+											{
+												"kind": "code",
+												"text": "`,\nand its value is an array of strings, each being the ID of the record associated with the prices through this relation,\nsuch as the IDs of associated price rules.\n\nIf there are no related records restored, the promise resolves to `"
+											},
+											{
+												"kind": "text",
+												"text": "void`."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -13574,7 +13485,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const [prices, count] = await pricingService.listAndCountPrices({\n    id: [id]\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst [prices, count] = await pricingModuleService.listPrices(\n  {\n    id: [\"price_123\", \"price_321\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -13582,7 +13493,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const [prices, count] = await pricingService.listAndCountPrices({\n    id: [id]\n  }, {\n    relations: [\"price_rules\"],\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst [prices, count] = await pricingModuleService.listPrices(\n  {\n    id: [\"price_123\", \"price_321\"],\n  },\n  {\n    relations: [\"price_rules\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -13622,39 +13533,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (id: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [prices, count] = await pricingService.listAndCountPrices({\n    id: [id]\n  }, {\n    relations: [\"price_rules\"],\n    skip,\n    take\n  })\n\n  // do something with the prices or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePrices (ids: string[], titles: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [prices, count] = await pricingService.listAndCountPrices({\n    $and: [\n      {\n        id: ids\n      },\n      {\n        title: titles\n      }\n    ]\n  }, {\n    relations: [\"price_rules\"],\n    skip,\n    take\n  })\n\n  // do something with the prices or return them\n}\n```"
+												"text": "```ts\nconst [prices, count] = await pricingModuleService.listPrices(\n  {\n    id: [\"price_123\", \"price_321\"],\n  },\n  {\n    relations: [\"price_rules\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -13826,7 +13705,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRule (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceRule = await pricingService.retrievePriceRule(id)\n\n  // do something with the price rule or return it\n}\n```"
+												"text": "```ts\nconst priceRule =\n  await pricingModuleService.retrievePriceRule(\"prule_123\")\n```"
 											},
 											{
 												"kind": "text",
@@ -13834,7 +13713,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRule (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceRule = await pricingService.retrievePriceRule(id, {\n    relations: [\"price_set\"]\n  })\n\n  // do something with the price rule or return it\n}\n```"
+												"text": "```ts\nconst priceRule =\n  await pricingModuleService.retrievePriceRule(\"prule_123\", {\n    relations: [\"price_set\"],\n  })\n```"
 											}
 										]
 									}
@@ -13990,7 +13869,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.listPriceRules({\n    id: [id]\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst priceRules = await pricingModuleService.listPriceRules({\n  id: [\"prule_123\", \"prule_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -13998,7 +13877,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.listPriceRules({\n    id: [id],\n  }, {\n    relations: [\"price_set\"]\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst priceRules = await pricingModuleService.listPriceRules(\n  {\n    id: [\"prule_123\", \"prule_321\"],\n  },\n  {\n    relations: [\"price_set\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -14038,39 +13917,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.listPriceRules({\n    id: [id],\n  }, {\n    relations: [\"price_set\"],\n    skip,\n    take\n  })\n\n  // do something with the price rules or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.listPriceRules({\n    $and: [\n      {\n        id: ids\n      },\n      {\n        name\n      }\n    ]\n  }, {\n    relations: [\"price_set\"],\n    skip,\n    take\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst priceRules = await pricingModuleService.listPriceRules(\n  {\n    id: [\"prule_123\", \"prule_321\"],\n  },\n  {\n    relations: [\"price_set\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -14233,7 +14080,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const [priceRules, count] = await pricingService.listAndCountPriceRules({\n    id: [id]\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst [priceRules, count] =\n  await pricingModuleService.listAndCountPriceListRules({\n    id: [\"prule_123\", \"prule_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -14241,7 +14088,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string) {\n  const pricingService = await initializePricingModule()\n\n  const [priceRules, count] = await pricingService.listAndCountPriceRules({\n    id: [id],\n  }, {\n    relations: [\"price_set\"]\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst [priceRules, count] =\n  await pricingModuleService.listAndCountPriceListRules(\n    {\n      id: [\"prule_123\", \"prule_321\"],\n    },\n    {\n      relations: [\"price_set\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -14281,39 +14128,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (id: string, skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceRules, count] = await pricingService.listAndCountPriceRules({\n    id: [id],\n  }, {\n    relations: [\"price_set\"],\n    skip,\n    take\n  })\n\n  // do something with the price rules or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceRules, count] = await pricingService.listAndCountPriceRules({\n    $and: [\n      {\n        id: ids\n      },\n      {\n        name\n      }\n    ]\n  }, {\n    relations: [\"price_set\"],\n    skip,\n    take\n  })\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst [priceRules, count] =\n  await pricingModuleService.listAndCountPriceListRules(\n    {\n      id: [\"prule_123\", \"prule_321\"],\n    },\n    {\n      relations: [\"price_set\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -14481,7 +14296,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceRules (\n  id: string,\n  priceSetId: string,\n  ruleTypeId: string,\n  value: string,\n  priceId: string,\n  priceListId: string\n) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.createPriceRules([\n    {\n      id,\n      price_set_id: priceSetId,\n      rule_type_id: ruleTypeId,\n      value,\n      price_id: priceId,\n      price_list_id: priceListId\n    }\n  ])\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst priceRules =\n  await pricingModuleService.createPriceRules([\n    {\n      value: \"VIP\",\n      rule_type_id: \"rul-typ_123\",\n      price_set_id: \"pset_123\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -14594,7 +14409,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updatePriceRules (\n  id: string,\n  priceSetId: string,\n) {\n  const pricingService = await initializePricingModule()\n\n  const priceRules = await pricingService.updatePriceRules([\n    {\n      id,\n      price_set_id: priceSetId,\n    }\n  ])\n\n  // do something with the price rules or return them\n}\n```"
+												"text": "```ts\nconst priceRules =\n  await pricingModuleService.updatePriceRules([\n    {\n      id: \"prule_123\",\n      price_id: \"price_123\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -14707,7 +14522,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function deletePriceRules (\n  id: string,\n) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.deletePriceRules([id])\n}\n```"
+												"text": "```ts\nawait pricingModuleService.deletePriceRules([\n  \"prule_123\",\n  \"prule_321\",\n])\n```"
 											}
 										]
 									}
@@ -14817,7 +14632,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceList (priceListId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.retrievePriceList(\n    priceListId\n  )\n\n  // do something with the price list or return it\n}\n```"
+												"text": "```ts\nconst priceList =\n  await pricingModuleService.retrievePriceList(\"plist_123\")\n```"
 											},
 											{
 												"kind": "text",
@@ -14825,7 +14640,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceList (priceListId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.retrievePriceList(\n    priceListId,\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price list or return it\n}\n```"
+												"text": "```ts\nconst priceList =\n  await pricingModuleService.retrievePriceList(\"plist_123\", {\n    relations: [\"prices\"],\n  })\n```"
 											}
 										]
 									}
@@ -14981,7 +14796,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceLists (priceListIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceLists = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists = await pricingModuleService.listPriceLists({\n  id: [\"plist_123\", \"plist_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -14989,7 +14804,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceLists (priceListIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceLists = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists = await pricingModuleService.listPriceLists(\n  {\n    id: [\"plist_123\", \"plist_321\"],\n  },\n  {\n    relations: [\"prices\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -15029,39 +14844,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceLists (priceListIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceLists = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceLists (priceListIds: string[], titles: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceLists = await pricingService.listPriceLists(\n    {\n      $and: [\n        {\n          id: priceListIds\n        },\n        {\n          title: titles\n        }\n      ]\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists = await pricingModuleService.listPriceLists(\n  {\n    id: [\"plist_123\", \"plist_321\"],\n  },\n  {\n    relations: [\"prices\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -15224,7 +15007,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceLists (priceListIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceLists, count] = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst [priceLists, count] =\n  await pricingModuleService.listAndCountPriceLists({\n    id: [\"plist_123\", \"plist_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -15232,7 +15015,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceLists (priceListIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceLists, count] = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n    {\n      relations: [\"prices\"]\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst [priceLists, count] =\n  await pricingModuleService.listAndCountPriceLists(\n    {\n      id: [\"plist_123\", \"plist_321\"],\n    },\n    {\n      relations: [\"prices\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -15272,39 +15055,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceLists (priceListIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceLists, count] = await pricingService.listPriceLists(\n    {\n      id: priceListIds\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceLists (priceListIds: string[], titles: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceLists, count] = await pricingService.listPriceLists(\n    {\n      $and: [\n        {\n          id: priceListIds\n        },\n        {\n          title: titles\n        }\n      ]\n    },\n    {\n      relations: [\"prices\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst [priceLists, count] =\n  await pricingModuleService.listAndCountPriceLists(\n    {\n      id: [\"plist_123\", \"plist_321\"],\n    },\n    {\n      relations: [\"prices\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -15472,7 +15223,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceList (items: {\n  title: string\n  description: string\n  starts_at?: string\n  ends_at?: string\n}[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.createPriceLists(items)\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists =\n  await pricingModuleService.createPriceLists([\n    {\n      title: \"Sale 1\",\n      description: \"Summer sale\",\n    },\n    {\n      title: \"Sale 2\",\n      description: \"Winter sale\",\n      starts_at: \"2024-12-21\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -15585,7 +15336,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updatePriceLists (items: {\n  id: string\n  title: string\n  description: string\n  starts_at?: string\n  ends_at?: string\n}[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.updatePriceLists(items)\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists =\n  await pricingModuleService.updatePriceLists([\n    {\n      id: \"plist_123\",\n      title: \"Sale 1\",\n    },\n    {\n      id: \"plist_321\",\n      description: \"Winter sale\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -15602,7 +15353,15 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in each price list."
+												"text": "The attributes to update in each price list. The price list is identifed by the "
+											},
+											{
+												"kind": "code",
+												"text": "`id`"
+											},
+											{
+												"kind": "text",
+												"text": " field."
 											}
 										]
 									},
@@ -15698,7 +15457,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function deletePriceLists (ids: string[]) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.deletePriceLists(ids)\n}\n```"
+												"text": "```ts\nawait pricingModuleService.deletePriceLists([\n  \"plist_123\",\n  \"plist_321\",\n])\n```"
 											}
 										]
 									}
@@ -15782,6 +15541,50 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method soft deletes price lists by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated price list rules.\nThe object's keys are the ID attribute names of the price list entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_rule_id`"
+											},
+											{
+												"kind": "text",
+												"text": ", and its value is an array of strings, each being the ID of a record associated\nwith the price list through this relation, such as the IDs of associated price list rule.\n\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait pricingModuleService.softDeletePriceLists([\n  \"plist_123\",\n  \"plist_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 4473,
@@ -15806,6 +15609,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the price lists."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -15821,6 +15632,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -15845,6 +15664,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -15912,6 +15739,50 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method restores a soft deleted price lists by its IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were restored, such as the ID of associated price list rules.\nThe object's keys are the ID attribute names of the price list entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_rule_id`"
+											},
+											{
+												"kind": "text",
+												"text": ",\nand its value is an array of strings, each being the ID of the record associated with the price list through this relation,\nsuch as the IDs of associated price list rules.\n\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait pricingModuleService.restorePriceLists([\n  \"plist_123\",\n  \"plist_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 4479,
@@ -15936,6 +15807,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of {summary}"
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -15951,6 +15830,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configurations determining which relations to restore along with each of the price lists. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the price list's relation attribute names, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_rules`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -15975,6 +15878,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -16068,7 +15979,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceListRule (priceListRuleId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRule = await pricingService.retrievePriceListRule(\n    priceListRuleId\n  )\n\n  // do something with the price list rule or return it\n}\n```"
+												"text": "```ts\nconst priceListRule =\n  await pricingModuleService.retrievePriceListRule(\n    \"plrule_123\"\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -16076,7 +15987,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function retrievePriceListRule (priceListRuleId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRule = await pricingService.retrievePriceListRule(\n    priceListRuleId,\n    {\n      relations: [\"price_list\"]\n    }\n  )\n\n  // do something with the price list rule or return it\n}\n```"
+												"text": "```ts\nconst priceListRule =\n  await pricingModuleService.retrievePriceListRule(\n    \"plrule_123\",\n    {\n      relations: [\"price_list\"],\n    }\n  )\n```"
 											}
 										]
 									}
@@ -16232,7 +16143,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceListRules (priceListRuleIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.listPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst priceListRules =\n  await pricingModuleService.listPriceListRules({\n    id: [\"plrule_123\", \"plrule_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -16240,7 +16151,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceListRules (priceListRuleIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.listPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n    {\n      relations: [\"price_list_rule_values\"]\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst priceListRules =\n  await pricingModuleService.listPriceListRules(\n    {\n      id: [\"plrule_123\", \"plrule_321\"],\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -16280,39 +16191,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceListRules (priceListRuleIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.listPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.listPriceListRules(\n    {\n      $and: [\n        {\n          id: priceListRuleIds\n        },\n        {\n          rule_types: ruleTypeIDs\n        }\n      ]\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst priceListRules =\n  await pricingModuleService.listPriceListRules(\n    {\n      id: [\"plrule_123\", \"plrule_321\"],\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -16475,7 +16354,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listAndCountPriceListRules (priceListRuleIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst [priceListRules, count] =\n  await pricingModuleService.listAndCountPriceListRules({\n    id: [\"plrule_123\", \"plrule_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -16483,7 +16362,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listAndCountPriceListRules (priceListRuleIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n    {\n      relations: [\"price_list_rule_values\"]\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst [priceListRules, count] =\n  await pricingModuleService.listAndCountPriceListRules(\n    {\n      id: [\"plrule_123\", \"plrule_321\"],\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -16523,39 +16402,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listAndCountPriceListRules (priceListRuleIds: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(\n    {\n      id: priceListRuleIds\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nYou can also use the "
-											},
-											{
-												"kind": "code",
-												"text": "`$and`"
-											},
-											{
-												"kind": "text",
-												"text": " or "
-											},
-											{
-												"kind": "code",
-												"text": "`$or`"
-											},
-											{
-												"kind": "text",
-												"text": " properties of the "
-											},
-											{
-												"kind": "code",
-												"text": "`filter`"
-											},
-											{
-												"kind": "text",
-												"text": " parameter to use and/or conditions in your filters. For example:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeIDs: string[], skip: number, take: number) {\n  const pricingService = await initializePricingModule()\n\n  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(\n    {\n      $and: [\n        {\n          id: priceListRuleIds\n        },\n        {\n          rule_types: ruleTypeIDs\n        }\n      ]\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the price list rules or return them\n}\n```"
+												"text": "```ts\nconst [priceListRules, count] =\n  await pricingModuleService.listAndCountPriceListRules(\n    {\n      id: [\"plrule_123\", \"plrule_321\"],\n    },\n    {\n      relations: [\"price_list_rule_values\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -16723,7 +16570,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function createPriceListRules (items: {\n  rule_type_id: string\n  price_list_id: string\n}[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.createPriceListRules(items)\n\n  // do something with the price list rule or return them\n}\n```"
+												"text": "```ts\nconst priceListRules =\n  await pricingModuleService.createPriceListRules([\n    {\n      rule_type_id: \"rul-typ_123\",\n      price_list_id: \"plist_123\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -16836,7 +16683,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function updatePriceListRules (items: {\n  id: string\n  rule_type_id?: string\n  price_list_id?: string\n}[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceListRules = await pricingService.updatePriceListRules(items)\n\n  // do something with the price list rule or return them\n}\n```"
+												"text": "```ts\nconst priceListRules =\n  await pricingModuleService.updatePriceListRules([\n    {\n      id: \"plrule_123\",\n      rule_type_id: \"rul-typ_123\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -16853,7 +16700,15 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update for each price list rule."
+												"text": "The attributes to update for each price list rule. The price list rule is identified by the "
+											},
+											{
+												"kind": "code",
+												"text": "`id`"
+											},
+											{
+												"kind": "text",
+												"text": " property."
 											}
 										]
 									},
@@ -16949,7 +16804,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function deletePriceListRules (priceListRuleIds: string[]) {\n  const pricingService = await initializePricingModule()\n\n  await pricingService.deletePriceListRules(priceListRuleIds)\n}\n```"
+												"text": "```ts\nawait pricingModuleService.deletePriceListRules([\n  \"plrule_123\",\n  \"plrule_321\",\n])\n```"
 											}
 										]
 									}
@@ -17055,7 +16910,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function addPriceListPrices (items: {\n  priceListId: string,\n  prices: {\n    currency_code: string,\n    amount: number,\n    price_set_id: string\n  }[]\n}[]) {\n  const pricingService = await initializePricingModule()\n\n  const priceLists = await pricingService.addPriceListPrices(items)\n\n  // do something with the price lists or return them\n}\n```"
+												"text": "```ts\nconst priceLists =\n  await pricingModuleService.addPriceListPrices([\n    {\n      price_list_id: \"plist_123\",\n      prices: [\n        {\n          currency_code: \"usd\",\n          amount: 500,\n          price_set_id: \"pset_123\",\n        },\n      ],\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -17146,6 +17001,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing price list's prices."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated price list's prices."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst priceLists =\n  await pricingModuleService.updatePriceListPrices([\n    {\n      price_list_id: \"plist_123\",\n      prices: [\n        {\n          id: \"price_123\",\n          currency_code: \"usd\",\n          amount: 500,\n          price_set_id: \"pset_123\",\n        },\n      ],\n    },\n  ])\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 4516,
@@ -17153,6 +17036,22 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in a price list's prices. The price list's ID is specified\nin the "
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_id`"
+											},
+											{
+												"kind": "text",
+												"text": " field."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -17170,6 +17069,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -17219,7 +17126,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to set the rules of a price list."
+										"text": "This method is used to set the rules of a price list. Previous rules are removed."
 									}
 								],
 								"blockTags": [
@@ -17228,7 +17135,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated price lists."
+												"text": "The updated price list."
 											}
 										]
 									},
@@ -17237,7 +17144,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function setPriceListRules (priceListId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.setPriceListRules({\n    priceListId,\n    rules: {\n      region_id: \"US\"\n    }\n  })\n\n  // do something with the price list or return it\n}\n```"
+												"text": "```ts\nconst priceList =\n  await pricingModuleService.setPriceListRules({\n    price_list_id: \"plist_123\",\n    rules: {\n      region_id: \"reg_123\",\n    },\n  })\n```"
 											}
 										]
 									}
@@ -17254,7 +17161,15 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The rules to set for a price list."
+												"text": "The rules to set for a price list. The price list is identified by the\n"
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_id`"
+											},
+											{
+												"kind": "text",
+												"text": " property."
 											}
 										]
 									},
@@ -17344,7 +17259,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializePricingModule,\n} from \"@medusajs/pricing\"\n\nasync function setPriceListRules (priceListId: string) {\n  const pricingService = await initializePricingModule()\n\n  const priceList = await pricingService.removePriceListRules({\n    priceListId,\n    rules: [\"region_id\"]\n  })\n\n  // do something with the price list or return it\n}\n```"
+												"text": "```ts\nconst priceList =\n  await pricingModuleService.removePriceListRules({\n    price_list_id: \"plist_123\",\n    rules: [\"region_id\"],\n  })\n```"
 											}
 										]
 									}
@@ -17361,7 +17276,15 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The rules to remove from a price list."
+												"text": "The rules to remove from a price list. The price list is identified by the\n"
+											},
+											{
+												"kind": "code",
+												"text": "`price_list_id`"
+											},
+											{
+												"kind": "text",
+												"text": " property."
 											}
 										]
 									},
@@ -17429,6 +17352,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes prices by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the prices are deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait pricingModuleService.removePrices([\n  \"price_123\",\n  \"price_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 4528,
@@ -17436,6 +17387,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the prices."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -17451,6 +17410,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",

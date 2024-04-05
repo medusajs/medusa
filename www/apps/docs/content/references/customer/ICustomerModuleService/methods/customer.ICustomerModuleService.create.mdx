@@ -12,12 +12,18 @@ This documentation provides a reference to the `create` method. This belongs to 
 
 ## create(data, sharedContext?): Promise&#60;[CustomerDTO](../../interfaces/customer.CustomerDTO.mdx)[]&#62;
 
-This method creates customers
+This method creates customers.
 
 ### Example
 
 ```ts
-{example-code}
+const customers = await customerModuleService.create([
+  {
+    email: "john@smith.com",
+    first_name: "John",
+    last_name: "Smith",
+  },
+])
 ```
 
 ### Parameters
@@ -30,12 +36,16 @@ This method creates customers
 
 ## create(data, sharedContext?): Promise&#60;[CustomerDTO](../../interfaces/customer.CustomerDTO.mdx)&#62;
 
-This method creates customer
+This method creates a customer.
 
 ### Example
 
 ```ts
-{example-code}
+const customer = await customerModuleService.create({
+  email: "john@smith.com",
+  first_name: "John",
+  last_name: "Smith",
+})
 ```
 
 ### Parameters

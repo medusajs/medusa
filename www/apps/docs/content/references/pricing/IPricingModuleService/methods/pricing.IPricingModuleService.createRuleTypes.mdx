@@ -15,22 +15,16 @@ This method is used to create new rule types.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createRuleTypes () {
-  const pricingService = await initializePricingModule()
-
-  const ruleTypes = await pricingService.createRuleTypes([
-    {
-      name: "Region",
-      rule_attribute: "region_id"
-    }
-  ])
-
-  // do something with the rule types or return them
-}
+const ruleTypes = await pricingModuleService.createRuleTypes([
+  {
+    name: "Region",
+    rule_attribute: "region_id",
+  },
+  {
+    name: "Customer Group",
+    rule_attribute: "customer_group_id",
+  },
+])
 ```
 
 ## Parameters

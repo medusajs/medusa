@@ -15,15 +15,10 @@ This method is used to delete price lists.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function deletePriceLists (ids: string[]) {
-  const pricingService = await initializePricingModule()
-
-  await pricingService.deletePriceLists(ids)
-}
+await pricingModuleService.deletePriceLists([
+  "plist_123",
+  "plist_321",
+])
 ```
 
 ## Parameters

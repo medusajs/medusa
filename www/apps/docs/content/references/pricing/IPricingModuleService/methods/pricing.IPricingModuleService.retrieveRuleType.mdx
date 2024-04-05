@@ -17,35 +17,19 @@ This method is used to retrieve a rule type by its ID and and optionally based o
 A simple example that retrieves a rule type by its code:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrieveRuleType (ruleTypeId: string) {
-  const pricingService = await initializePricingModule()
-
-  const ruleType = await pricingService.retrieveRuleType(ruleTypeId)
-
-  // do something with the rule type or return it
-}
+const ruleType =
+  await pricingModuleService.retrieveRuleType("rul-typ_123")
 ```
 
-To specify attributes that should be retrieved:
+To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrieveRuleType (ruleTypeId: string) {
-  const pricingService = await initializePricingModule()
-
-  const ruleType = await pricingService.retrieveRuleType(ruleTypeId, {
-    select: ["name"]
-  })
-
-  // do something with the rule type or return it
-}
+const ruleType = await pricingModuleService.retrieveRuleType(
+  "rul-typ_123",
+  {
+    relations: ["price_sets"],
+  }
+)
 ```
 
 ## Parameters

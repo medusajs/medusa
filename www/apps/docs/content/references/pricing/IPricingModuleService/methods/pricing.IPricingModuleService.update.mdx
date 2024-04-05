@@ -17,20 +17,12 @@ This method is used to update a price set.
 ### Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function updatePriceSet (id: string, title: string) {
-  const pricingtModule = await initializePricingModule()
-
-  const priceSet = await pricingtModule.update(id, {
-      prices: [{amount: 100, currency_code: "USD"}]
-    }
-  )
-
-  // do something with the price set or return it
-}
+const priceSet = await pricingModuleService.update(
+  "pset_123",
+  {
+    rules: [{ rule_attribute: "region_id" }],
+  }
+)
 ```
 
 ### Parameters
@@ -48,20 +40,14 @@ This method is used to update a list of price sets determined by the selector fi
 ### Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function updatePriceSet(id: string, title: string) {
-  const pricingModule = await initializePricingModule()
-
-  const priceSets = await pricingModule.update({id}, {
-      prices: [{amount: 100, currency_code: "USD"}]
-    }
-  )
-
-  // do something with the price sets or return them
-}
+const priceSets = await pricingModuleService.update(
+  {
+    id: ["pset_123", "pset_321"],
+  },
+  {
+    rules: [{ rule_attribute: "region_id" }],
+  }
+)
 ```
 
 ### Parameters

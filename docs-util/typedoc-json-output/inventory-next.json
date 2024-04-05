@@ -2849,6 +2849,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The inventory item details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3224,
@@ -2860,7 +2868,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The inventory item's ID."
+								"text": "The ID of the inventory item."
 							}
 						]
 					},
@@ -2881,7 +2889,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The Stock Keeping Unit (SKU) code of the Inventory Item."
+								"text": "The SKU of the inventory item."
 							}
 						]
 					},
@@ -2911,7 +2919,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+								"text": "The origin country of the inventory item."
 							}
 						]
 					},
@@ -2941,7 +2949,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+								"text": "The HS code of the inventory item."
 							}
 						]
 					},
@@ -2969,7 +2977,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether the item requires shipping."
+								"text": "Whether the inventory item requires shipping."
 							}
 						]
 					},
@@ -2990,7 +2998,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+								"text": "The mid code of the inventory item."
 							}
 						]
 					},
@@ -3020,7 +3028,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers."
+								"text": "The material of the inventory item."
 							}
 						]
 					},
@@ -3050,7 +3058,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The weight of the Inventory Item. May be used in shipping rate calculations."
+								"text": "The weight of the inventory item."
 							}
 						]
 					},
@@ -3080,7 +3088,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The length of the Inventory Item. May be used in shipping rate calculations."
+								"text": "The length of the inventory item."
 							}
 						]
 					},
@@ -3110,7 +3118,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The height of the Inventory Item. May be used in shipping rate calculations."
+								"text": "The height of the inventory item."
 							}
 						]
 					},
@@ -3140,7 +3148,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The width of the Inventory Item. May be used in shipping rate calculations."
+								"text": "The width of the inventory item."
 							}
 						]
 					},
@@ -3170,7 +3178,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Title of the inventory item"
+								"text": "The title of the inventory item."
 							}
 						]
 					},
@@ -3200,7 +3208,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Description of the inventory item"
+								"text": "The description of the inventory item."
 							}
 						]
 					},
@@ -3230,7 +3238,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Thumbnail for the inventory item"
+								"text": "The thumbnail of the inventory item."
 							}
 						]
 					},
@@ -3260,7 +3268,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An optional key-value map with additional details"
+								"text": "Holds custom data in key-value pairs."
 							}
 						]
 					},
@@ -3303,7 +3311,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was created."
+								"text": "The creation date of the inventory item."
 							}
 						]
 					},
@@ -3336,7 +3344,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was updated."
+								"text": "The update date of the inventory item."
 							}
 						]
 					},
@@ -3369,7 +3377,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was deleted."
+								"text": "The deletion date of the inventory item."
 							}
 						]
 					},
@@ -3679,6 +3687,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The inventory level details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3284,
@@ -3686,6 +3702,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the inventory level."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -3697,6 +3721,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated inventory item's ID."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -3712,7 +3744,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "the item location ID"
+								"text": "The associated location's ID."
 							}
 						]
 					},
@@ -3731,7 +3763,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "the total stock quantity of an inventory item at the given location ID"
+								"text": "The stocked quantity of the inventory level."
 							}
 						]
 					},
@@ -3750,7 +3782,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "the reserved stock quantity of an inventory item at the given location ID"
+								"text": "The reserved quantity of the inventory level."
 							}
 						]
 					},
@@ -3769,7 +3801,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "the incoming stock quantity of an inventory item at the given location ID"
+								"text": "The incoming quantity of the inventory level."
 							}
 						]
 					},
@@ -3784,6 +3816,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The available quantity of the inventory level."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "number"
@@ -3799,7 +3839,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An optional key-value map with additional details"
+								"text": "Holds custom data in key-value pairs."
 							}
 						]
 					},
@@ -3842,7 +3882,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was created."
+								"text": "The creation date of the inventory level."
 							}
 						]
 					},
@@ -3875,7 +3915,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was updated."
+								"text": "The update date of the inventory level."
 							}
 						]
 					},
@@ -3908,7 +3948,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was deleted."
+								"text": "The deletion date of the inventory level."
 							}
 						]
 					},
@@ -3965,7 +4005,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved inventory levels."
 					}
 				]
 			},
@@ -4331,7 +4371,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "Represents a reservation of an inventory item at a stock location"
+						"text": "The reservation item details."
 					}
 				]
 			},
@@ -4346,7 +4386,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The id of the reservation item"
+								"text": "The ID of the reservation item."
 							}
 						]
 					},
@@ -4365,7 +4405,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The id of the location of the reservation"
+								"text": "The associated location's ID."
 							}
 						]
 					},
@@ -4384,7 +4424,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The id of the inventory item the reservation relates to"
+								"text": "The associated inventory item's ID."
 							}
 						]
 					},
@@ -4403,7 +4443,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The id of the reservation item"
+								"text": "The quantity of the reservation item."
 							}
 						]
 					},
@@ -4419,6 +4459,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated line item's ID."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -4446,7 +4494,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Description of the reservation item"
+								"text": "The description of the reservation item."
 							}
 						]
 					},
@@ -4476,7 +4524,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "UserId of user who created the reservation item"
+								"text": "The created by of the reservation item."
 							}
 						]
 					},
@@ -4504,7 +4552,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An optional key-value map with additional details"
+								"text": "Holds custom data in key-value pairs."
 							}
 						]
 					},
@@ -4547,7 +4595,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was created."
+								"text": "The creation date of the reservation item."
 							}
 						]
 					},
@@ -4580,7 +4628,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was updated."
+								"text": "The update date of the reservation item."
 							}
 						]
 					},
@@ -4613,7 +4661,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The date with timezone at which the resource was deleted."
+								"text": "The deletion date of the reservation item."
 							}
 						]
 					},
@@ -6583,7 +6631,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The main service interface for the inventory module."
+						"text": "The main service interface for the Inventory Module."
 					}
 				]
 			},
@@ -6605,7 +6653,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters."
+										"text": "This method retrieves a paginated list of inventory items based on optional filters and configuration."
 									}
 								],
 								"blockTags": [
@@ -6614,7 +6662,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The list of inventory items along with the total count."
+												"text": "The list of inventory items."
 											}
 										]
 									},
@@ -6627,7 +6675,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nconst inventoryItems = await inventoryModuleService.list({\n  id: [\"iitem_123\", \"iitem_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -6635,7 +6683,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nconst inventoryItems = await inventoryModuleService.list(\n  {\n    id: [\"iitem_123\", \"iitem_321\"],\n  },\n  {\n    relations: [\"location_levels\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -6675,7 +6723,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nconst inventoryItems = await inventoryModuleService.list(\n  {\n    id: [\"iitem_123\", \"iitem_321\"],\n  },\n  {\n    relations: [\"location_levels\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -6715,7 +6763,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the inventory items are retrieved. Its properties, such as "
+												"text": "The configurations determining how the inventory item is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -6810,6 +6858,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of inventory items along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of inventory items using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryItems, count] =\n  await inventoryModuleService.listAndCount({\n    id: [\"iitem_123\", \"iitem_321\"],\n  })\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the inventory items:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryItems, count] =\n  await inventoryModuleService.listAndCount(\n    {\n      id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"location_levels\"],\n    }\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`10`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryItems, count] =\n  await inventoryModuleService.listAndCount(\n    {\n      id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"location_levels\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3017,
@@ -6817,6 +6945,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved inventory items."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3203,
@@ -6831,6 +6967,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the inventory item is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a inventory item."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -6854,6 +7014,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -6912,7 +7080,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters."
+										"text": "This method retrieves a paginated list of reservation items based on optional filters and configuration."
 									}
 								],
 								"blockTags": [
@@ -6921,7 +7089,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The list of reservation items along with the total count."
+												"text": "The list of reservation items."
 											}
 										]
 									},
@@ -6934,7 +7102,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nconst reservationItems =\n  await inventoryModuleService.listReservationItems({\n    id: [\"resitem_123\", \"resitem_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -6942,7 +7110,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nconst reservationItems =\n  await inventoryModuleService.listReservationItems(\n    {\n      id: [\"resitem_123\", \"resitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -6982,7 +7150,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nconst reservationItems =\n  await inventoryModuleService.listReservationItems(\n    {\n      id: [\"resitem_123\", \"resitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7022,7 +7190,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the reservation items are retrieved. Its properties, such as "
+												"text": "The configurations determining how the reservation item is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -7117,6 +7285,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of reservation items along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of reservation items using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [reservationItems, count] =\n  await inventoryModuleService.listAndCountReservationItems({\n    id: [\"resitem_123\", \"resitem_321\"],\n  })\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the reservation items:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [reservationItems, count] =\n  await inventoryModuleService.listAndCountReservationItems(\n    {\n      id: [\"resitem_123\", \"resitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`10`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [reservationItems, count] =\n  await inventoryModuleService.listAndCountReservationItems(\n    {\n      id: [\"resitem_123\", \"resitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3027,
@@ -7124,6 +7372,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved reservation items."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3254,
@@ -7138,6 +7394,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the reservation item is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a reservation item."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7161,6 +7441,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7219,7 +7507,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve a paginated list of inventory levels along with the total count of available inventory levels satisfying the provided filters."
+										"text": "This method retrieves a paginated list of inventory levels based on optional filters and configuration."
 									}
 								],
 								"blockTags": [
@@ -7228,7 +7516,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The list of inventory levels along with the total count."
+												"text": "The list of inventory levels."
 											}
 										]
 									},
@@ -7237,11 +7525,11 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of inventory levels using their IDs:\n\n"
+												"text": "To retrieve a list of inventory levels using the IDs of their associated inventory items:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.listInventoryLevels({\n    inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -7249,7 +7537,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.listInventoryLevels(\n    {\n      inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -7289,7 +7577,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.listInventoryLevels(\n    {\n      inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7329,7 +7617,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the inventory levels are retrieved. Its properties, such as "
+												"text": "The configurations determining how the inventory level is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -7424,6 +7712,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of inventory levels along with the total count of available inventory levels satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of inventory levels along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of inventory levels using the IDs of their associated inventory items:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryLevels, count] =\n  await inventoryModuleService.listAndCountInventoryLevels(\n    {\n      inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the inventory levels:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryLevels, count] =\n  await inventoryModuleService.listAndCountInventoryLevels(\n    {\n      inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n    },\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`10`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [inventoryLevels, count] =\n  await inventoryModuleService.listAndCountInventoryLevels({\n    inventory_item_id: [\"iitem_123\", \"iitem_321\"],\n  })\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3037,
@@ -7431,6 +7799,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved inventory levels."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3275,
@@ -7445,6 +7821,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the inventory level is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a inventory level."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7468,6 +7868,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7526,7 +7934,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve an inventory item by its ID"
+										"text": "This method retrieves an inventory item by its ID."
 									}
 								],
 								"blockTags": [
@@ -7548,7 +7956,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id)\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nconst inventoryItem =\n  await inventoryModuleService.retrieve(\"iitem_123\")\n```"
 											},
 											{
 												"kind": "text",
@@ -7556,7 +7964,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nconst inventoryItem = await inventoryModuleService.retrieve(\n  \"iitem_123\",\n  {\n    relations: [\"location_levels\"],\n  }\n)\n```"
 											}
 										]
 									}
@@ -7573,7 +7981,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item to retrieve."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -7690,7 +8098,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve an inventory level for an inventory item and a location."
+										"text": "This method retrieves an inventory level based on its associated inventory item and location."
 									}
 								],
 								"blockTags": [
@@ -7708,7 +8116,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevel (\n  inventoryItemId: string,\n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.retrieveInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n\n  // do something with the inventory level or return it\n}\n```"
+												"text": "```ts\nconst inventoryLevel =\n  await inventoryModuleService.retrieveInventoryLevelByItemAndLocation(\n    \"iitem_123\",\n    \"loc_123\"\n  )\n```"
 											}
 										]
 									}
@@ -7725,7 +8133,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -7744,7 +8152,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the location."
+												"text": "The location's ID."
 											}
 										]
 									},
@@ -7810,6 +8218,46 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves an inventory level by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrieved inventory level."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A simple example that retrieves a inventory level by its ID:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryLevel =\n  await inventoryModuleService.retrieveInventoryLevel(\n    \"iitem_123\"\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryLevel =\n  await inventoryModuleService.retrieveInventoryLevel(\n    \"iitem_123\",\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3052,
@@ -7817,6 +8265,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory level's ID."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -7829,6 +8285,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the inventory level is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a inventory level."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7852,6 +8332,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -7898,7 +8386,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve a reservation item by its ID."
+										"text": "This method retrieves a reservation item by its ID."
 									}
 								],
 								"blockTags": [
@@ -7915,8 +8403,20 @@
 										"tag": "@example",
 										"content": [
 											{
+												"kind": "text",
+												"text": "A simple example that retrieves a reservation item by its ID:\n\n"
+											},
+											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.retrieveReservationItem(id)\n\n  // do something with the reservation item or return it\n}\n```"
+												"text": "```ts\nconst reservationItem =\n  await inventoryModuleService.retrieveReservationItem(\n    \"resitem\"\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst reservationItem =\n  await inventoryModuleService.retrieveReservationItem(\n    \"resitem\",\n    {\n      relations: [\"inventory_item\"],\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7933,7 +8433,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the reservation item."
+												"text": "The reservation's ID."
 											}
 										]
 									},
@@ -7949,6 +8449,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the reservation item is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a reservation item."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8026,7 +8550,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to create reservation items."
+										"text": "This method creates reservation items."
 									}
 								],
 								"blockTags": [
@@ -8035,7 +8559,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The created reservation items' details."
+												"text": "The created reservation items."
 											}
 										]
 									},
@@ -8044,7 +8568,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createReservationItems (items: {\n  inventory_item_id: string,\n  location_id: string,\n  quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItems = await inventoryModule.createReservationItems(\n    items\n  )\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nconst reservationItems =\n  await inventoryModuleService.createReservationItems([\n    {\n      inventory_item_id: \"iitem_123\",\n      location_id: \"loc_123\",\n      quantity: 10,\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -8061,7 +8585,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the reservation items to create."
+												"text": "The details of the reservation items to be created."
 											}
 										]
 									},
@@ -8126,6 +8650,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates a reservation item."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created reservation item."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst reservationItem =\n  await inventoryModuleService.createReservationItems({\n    inventory_item_id: \"iitem_123\",\n    location_id: \"loc_123\",\n    quantity: 10,\n  })\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3065,
@@ -8133,6 +8685,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the reservation item to be created."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3295,
@@ -8147,6 +8707,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8193,7 +8761,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to create inventory items."
+										"text": "This method creates inventory items."
 									}
 								],
 								"blockTags": [
@@ -8202,7 +8770,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The created inventory items' details."
+												"text": "The created inventory items."
 											}
 										]
 									},
@@ -8211,7 +8779,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryItems (items: {\n  sku: string,\n  requires_shipping: boolean\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItems = await inventoryModule.createInventoryItems(\n    items\n  )\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nconst inventoryItems = await inventoryModuleService.create([\n  {\n    sku: \"SHIRT\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -8228,7 +8796,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the inventory items to create."
+												"text": "The details of the inventory items to be created."
 											}
 										]
 									},
@@ -8293,6 +8861,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates an inventory item."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created inventory item."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryItem = await inventoryModuleService.create({\n  sku: \"SHIRT\",\n})\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3072,
@@ -8300,6 +8896,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the inventory item to be created."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3304,
@@ -8314,6 +8918,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8360,7 +8972,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to create inventory levels."
+										"text": "This method creates inventory levels."
 									}
 								],
 								"blockTags": [
@@ -8369,7 +8981,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The created inventory levels' details."
+												"text": "The created inventory levels."
 											}
 										]
 									},
@@ -8378,7 +8990,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryLevels (items: {\n  inventory_item_id: string\n  location_id: string\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.createInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.createInventoryLevels([\n    {\n      inventory_item_id: \"iitem_123\",\n      location_id: \"loc_123\",\n      stocked_quantity: 10,\n    },\n    {\n      inventory_item_id: \"iitem_321\",\n      location_id: \"loc_321\",\n      stocked_quantity: 20,\n      reserved_quantity: 10,\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -8395,7 +9007,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the inventory levels to create."
+												"text": "The details of the inventory levels to be created."
 											}
 										]
 									},
@@ -8460,6 +9072,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates an inventory level."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created inventory level."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.createInventoryLevels({\n    inventory_item_id: \"iitem_123\",\n    location_id: \"loc_123\",\n    stocked_quantity: 10,\n  })\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3079,
@@ -8467,6 +9107,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the inventory level to be created."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3319,
@@ -8481,6 +9129,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8527,7 +9183,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to update inventory levels. Each inventory level is identified by the IDs of its associated inventory item and location."
+										"text": "This method updates existing inventory levels."
 									}
 								],
 								"blockTags": [
@@ -8536,7 +9192,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated inventory levels' details."
+												"text": "The updated inventory levels."
 											}
 										]
 									},
@@ -8545,7 +9201,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryLevels (items: {\n  inventory_item_id: string,\n  location_id: string,\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.updateInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nconst inventoryLevels =\n  await inventoryModuleService.updateInventoryLevels([\n    {\n      inventory_item_id: \"iitem_123\",\n      location_id: \"loc_123\",\n      id: \"ilev_123\",\n      stocked_quantity: 20,\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -8562,7 +9218,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in each inventory level."
+												"text": "The list of The attributes to update in an inventory level. The inventory level is identified by the IDs of its associated inventory item and location."
 											}
 										]
 									},
@@ -8627,6 +9283,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates an existing inventory level."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated inventory level."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryLevel =\n  await inventoryModuleService.updateInventoryLevels({\n    inventory_item_id: \"iitem_123\",\n    location_id: \"loc_123\",\n    stocked_quantity: 20,\n  })\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3086,
@@ -8634,6 +9318,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in an inventory level. The inventory level is identified by the IDs of its associated inventory item and location."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3325,
@@ -8648,6 +9340,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8694,7 +9394,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to update an inventory item."
+										"text": "This method updates an existing inventory item."
 									}
 								],
 								"blockTags": [
@@ -8703,7 +9403,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated inventory item's details."
+												"text": "The updated inventory item."
 											}
 										]
 									},
@@ -8712,7 +9412,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryItem (\n  inventoryItemId: string,\n  sku: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.updateInventoryItem(\n    inventoryItemId,\n    {\n      sku\n    }\n  )\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nconst inventoryItem = await inventoryModuleService.update({\n  id: \"iitem_123\",\n  title: \"Medusa Shirt Inventory\",\n})\n```"
 											}
 										]
 									}
@@ -8788,6 +9488,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing inventory items."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated inventory items."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst inventoryItems = await inventoryModuleService.update([\n  {\n    id: \"iitem_123\",\n    title: \"Medusa Shirt Inventory\",\n  },\n  {\n    id: \"iitem_321\",\n    description: \"The inventory of Medusa pants\",\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3093,
@@ -8795,6 +9523,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the inventory items."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -8812,6 +9548,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -8861,7 +9605,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to update a reservation item."
+										"text": "This method updates an existing reservation item."
 									}
 								],
 								"blockTags": [
@@ -8879,7 +9623,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateReservationItem (\n  reservationItemId: string,\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.updateReservationItem(\n    reservationItemId,\n    {\n      quantity\n    }\n  )\n\n  // do something with the reservation item or return it\n}\n```"
+												"text": "```ts\nconst reservationItem =\n  await inventoryModuleService.updateReservationItems({\n    id: \"resitem_123\",\n    quantity: 10,\n  })\n```"
 											}
 										]
 									}
@@ -8896,7 +9640,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in the reservation item."
+												"text": "The attributes to update in a reservation item."
 											}
 										]
 									},
@@ -8955,6 +9699,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing reservation items."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated reservation items."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst reservationItems =\n  await inventoryModuleService.updateReservationItems([\n    {\n      id: \"resitem_123\",\n      quantity: 10,\n    },\n  ])\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3100,
@@ -8962,6 +9734,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the reservation items."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -8979,6 +9759,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -9028,7 +9816,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to delete the reservation items associated with a line item or multiple line items."
+										"text": "This method deletes a reservation item by its associated line item."
 									}
 								],
 								"blockTags": [
@@ -9037,7 +9825,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the reservation items are successfully deleted."
+												"text": "Resolves when the reservation item is deleted."
 											}
 										]
 									},
@@ -9046,7 +9834,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemsByLineItem (\n  lineItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemsByLineItem(\n    lineItemIds\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.deleteReservationItemByLocationId(\n  \"cali_123\"\n)\n```"
 											}
 										]
 									}
@@ -9063,7 +9851,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID(s) of the line item(s)."
+												"text": "The line item's ID."
 											}
 										]
 									},
@@ -9096,7 +9884,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "A context used to share re9sources, such as transaction manager, between the application and the module."
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
 											}
 										]
 									},
@@ -9143,7 +9931,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to delete a reservation item or multiple reservation items by their IDs."
+										"text": "This method deletes reservation items by their IDs."
 									}
 								],
 								"blockTags": [
@@ -9152,7 +9940,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the reservation item(s) are successfully deleted."
+												"text": "Resolves when the reservation item is deleted."
 											}
 										]
 									},
@@ -9161,7 +9949,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItems (\n  reservationItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItem(\n    reservationItemIds\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.deleteReservationItems(\n  \"resitem_123\"\n)\n```"
 											}
 										]
 									}
@@ -9178,7 +9966,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID(s) of the reservation item(s) to delete."
+												"text": "The reservation items' IDs."
 											}
 										]
 									},
@@ -9258,16 +10046,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to delete an inventory item or multiple inventory items. The inventory items are only soft deleted and can be restored using the\n"
-									},
-									{
-										"kind": "inline-tag",
-										"tag": "@link",
-										"text": "restoreInventoryItem"
-									},
-									{
-										"kind": "text",
-										"text": " method."
+										"text": "This method deletes inventory items by their IDs."
 									}
 								],
 								"blockTags": [
@@ -9276,7 +10055,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the inventory item(s) are successfully deleted."
+												"text": "Resolves when the inventory items are deleted."
 											}
 										]
 									},
@@ -9285,7 +10064,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItem(\n    inventoryItems\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.delete(\"iitem_123\")\n```"
 											}
 										]
 									}
@@ -9302,7 +10081,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID(s) of the inventory item(s) to delete."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -9382,7 +10161,43 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Soft delete inventory items"
+										"text": "This method soft deletes inventory items by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated location levels.\nThe object's keys are the ID attribute names of the inventory service next entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`location_level_id`"
+											},
+											{
+												"kind": "text",
+												"text": ", and its value is an array of strings, each being the ID of a record associated\nwith the inventory item through this relation, such as the IDs of associated location levels.\n\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait inventoryModuleService.softDelete(\n  [\"iitem_123\", \"iitem_321\"],\n  {\n    returnLinkableKeys: [\"location_level\"],\n  }\n)\n```"
+											}
+										]
 									}
 								]
 							},
@@ -9410,6 +10225,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory items' IDs."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -9425,6 +10248,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -9449,6 +10280,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -9520,16 +10359,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to restore an inventory item or multiple inventory items that were previously deleted using the "
-									},
-									{
-										"kind": "inline-tag",
-										"tag": "@link",
-										"text": "deleteInventoryItem"
-									},
-									{
-										"kind": "text",
-										"text": " method."
+										"text": "This method restores soft deleted inventory items by their IDs."
 									}
 								],
 								"blockTags": [
@@ -9538,7 +10368,23 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the inventory item(s) are successfully restored."
+												"text": "An object that includes the IDs of related records that were restored, such as the ID of associated location levels.\nThe object's keys are the ID attribute names of the inventory item entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`location_level_id`"
+											},
+											{
+												"kind": "text",
+												"text": ",\nand its value is an array of strings, each being the ID of the record associated with the inventory item through this relation,\nsuch as the IDs of associated location levels.\n\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -9547,7 +10393,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function restoreInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.restoreInventoryItem(\n    inventoryItems\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.restore(\n  [\"iitem_123\", \"iitem_321\"],\n  {\n    returnLinkableKeys: [\"location_level\"],\n  }\n)\n```"
 											}
 										]
 									}
@@ -9577,6 +10423,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory items' IDs."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -9597,7 +10451,23 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Restore config"
+												"text": "Configurations determining which relations to restore along with each of the inventory items. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the inventory item's relation attribute names, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`location_levels`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -9624,6 +10494,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -9695,7 +10573,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes the inventory item level(s) for the ID(s) of associated location(s)."
+										"text": "This method soft deletes inventory item's level by the associated location."
 									}
 								],
 								"blockTags": [
@@ -9704,7 +10582,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the inventory item level(s) are successfully restored."
+												"text": "An array, where the first item is an array includes the soft-deleted inventory levels,\nand the second is an object that includes the IDs of related records that were soft-deleted."
 											}
 										]
 									},
@@ -9713,7 +10591,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItemLevelByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItemLevelByLocationId(\n    locationIds\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.deleteInventoryItemLevelByLocationId(\n  \"loc_123\"\n)\n```"
 											}
 										]
 									}
@@ -9730,7 +10608,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID(s) of the associated location(s)."
+												"text": "The locations' IDs."
 											}
 										]
 									},
@@ -9840,7 +10718,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes reservation item(s) by the ID(s) of associated location(s)."
+										"text": "This method deletes reservation items by their associated location."
 									}
 								],
 								"blockTags": [
@@ -9849,7 +10727,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the reservation item(s) are successfully restored."
+												"text": "Resolves when then reservation items are deleted successfully."
 											}
 										]
 									},
@@ -9858,7 +10736,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemByLocationId(\n    locationIds\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.deleteReservationItemByLocationId(\n  \"loc_123\"\n)\n```"
 											}
 										]
 									}
@@ -9875,7 +10753,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID(s) of the associated location(s)."
+												"text": "The location's ID."
 											}
 										]
 									},
@@ -9955,7 +10833,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to delete an inventory level. The inventory level is identified by the IDs of its associated inventory item and location."
+										"text": "This method deletes an inventory level by its associated inventory item and location."
 									}
 								],
 								"blockTags": [
@@ -9964,7 +10842,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the inventory level(s) are successfully restored."
+												"text": "Resolves when the inventory level is deleted successfully."
 											}
 										]
 									},
@@ -9973,7 +10851,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryLevel (\n  inventoryItemId: string,\n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n}\n```"
+												"text": "```ts\nawait inventoryModuleService.deleteInventoryLevel(\n  \"iitem_123\",\n  \"loc_123\"\n)\n```"
 											}
 										]
 									}
@@ -9990,7 +10868,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the associated inventory item."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10009,7 +10887,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the associated location."
+												"text": "The location's ID."
 											}
 										]
 									},
@@ -10073,6 +10951,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes inventory levels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the inventory levels are deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait inventoryModuleService.deleteInventoryLevels(\"ilev_123\")\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3141,
@@ -10080,6 +10986,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory levels' IDs."
+											}
+										]
+									},
 									"type": {
 										"type": "union",
 										"types": [
@@ -10104,6 +11018,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10144,6 +11066,42 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method soft deletes inventory levels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were also soft deleted.\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait inventoryModuleService.softDeleteInventoryLevels([\n  \"ilev_123\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 3145,
@@ -10168,6 +11126,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory levels' IDs."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -10183,6 +11149,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10207,6 +11181,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10274,6 +11256,42 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method restores soft deleted inventory levels by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were restored.\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait inventoryModuleService.restoreInventoryLevels([\n  \"ilev_123\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
 							"typeParameter": [
 								{
 									"id": 3151,
@@ -10298,6 +11316,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The inventory levels' IDs."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -10313,6 +11339,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configurations determining which relations to restore along with each of the inventory level. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the inventory level's relation attribute names, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`{type relation name}`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10337,6 +11387,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10408,7 +11466,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to adjust the inventory level's stocked quantity. The inventory level is identified by the IDs of its associated inventory item and location."
+										"text": "This method adjusts the inventory quantity of an item in a location."
 									}
 								],
 								"blockTags": [
@@ -10417,7 +11475,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The inventory level's details."
+												"text": "The updated inventory level."
 											}
 										]
 									},
@@ -10426,7 +11484,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function adjustInventory (\n  inventoryItemId: string,\n  locationId: string,\n  adjustment: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.adjustInventory(\n    inventoryItemId,\n    locationId,\n    adjustment\n  )\n\n  // do something with the inventory level or return it.\n}\n```"
+												"text": "```ts\n// add to the inventory quantity\nconst inventoryLevel1 =\n  await inventoryModuleService.adjustInventory(\n    \"iitem_123\",\n    \"loc_123\",\n    5\n  )\n\n// subtract from the inventory quantity\nconst inventoryLevel2 =\n  await inventoryModuleService.adjustInventory(\n    \"iitem_123\",\n    \"loc_123\",\n    -5\n  )\n```"
 											}
 										]
 									}
@@ -10443,7 +11501,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the associated inventory item."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10462,7 +11520,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the associated location."
+												"text": "The location's ID."
 											}
 										]
 									},
@@ -10481,7 +11539,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "A positive or negative number used to adjust the inventory level's stocked quantity."
+												"text": "the adjustment to make to the quantity."
 											}
 										]
 									},
@@ -10551,7 +11609,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to confirm whether the specified quantity of an inventory item is available in the specified locations."
+										"text": "This method confirms that a quantity is available of an inventory item in the specified locations."
 									}
 								],
 								"blockTags": [
@@ -10560,7 +11618,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Whether the specified quantity is available for the inventory item in the specified locations."
+												"text": "Whether the quantity is available."
 											}
 										]
 									},
@@ -10569,7 +11627,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function confirmInventory (\n  inventoryItemId: string,\n  locationIds: string[],\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  return await inventoryModule.confirmInventory(\n    inventoryItemId,\n    locationIds,\n    quantity\n  )\n}\n```"
+												"text": "```ts\nconst isAvailable =\n  await inventoryModuleService.confirmInventory(\n    \"iitem_123\",\n    [\"loc_123\", \"loc_321\"],\n    10\n  )\n```"
 											}
 										]
 									}
@@ -10586,7 +11644,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item to check its availability."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10605,7 +11663,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The IDs of the locations to check the quantity availability in."
+												"text": "The locations' IDs."
 											}
 										]
 									},
@@ -10627,7 +11685,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The quantity to check if available for the inventory item in the specified locations."
+												"text": "The quantity to confirm its availability."
 											}
 										]
 									},
@@ -10695,7 +11753,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve the available quantity of an inventory item within the specified locations."
+										"text": "This method retrieves the available quantity of an inventory item in the specified locations."
 									}
 								],
 								"blockTags": [
@@ -10704,7 +11762,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The available quantity of the inventory item in the specified locations."
+												"text": "The available quantity of the item."
 											}
 										]
 									},
@@ -10713,7 +11771,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveAvailableQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveAvailableQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nconst availableQuantity =\n  await inventoryModuleService.retrieveAvailableQuantity(\n    \"iitem_123\",\n    [\"loc_123\", \"loc_321\"]\n  )\n```"
 											}
 										]
 									}
@@ -10730,7 +11788,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item to retrieve its quantity."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10749,7 +11807,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The IDs of the locations to retrieve the available quantity from."
+												"text": "The locations' IDs."
 											}
 										]
 									},
@@ -10820,7 +11878,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve the stocked quantity of an inventory item within the specified locations."
+										"text": "This method retrieves the stocked quantity of an inventory item in the specified location."
 									}
 								],
 								"blockTags": [
@@ -10829,7 +11887,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The stocked quantity of the inventory item in the specified locations."
+												"text": "The stocked quantity of the item."
 											}
 										]
 									},
@@ -10838,7 +11896,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveStockedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveStockedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nconst stockedQuantity =\n  await inventoryModuleService.retrieveStockedQuantity(\n    \"iitem_123\",\n    [\"loc_123\", \"loc_321\"]\n  )\n```"
 											}
 										]
 									}
@@ -10855,7 +11913,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item to retrieve its stocked quantity."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10874,7 +11932,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The IDs of the locations to retrieve the stocked quantity from."
+												"text": "The locations' IDs."
 											}
 										]
 									},
@@ -10945,7 +12003,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to retrieve the reserved quantity of an inventory item within the specified locations."
+										"text": "This method retrieves the reserved quantity of an inventory item in the specified location."
 									}
 								],
 								"blockTags": [
@@ -10954,7 +12012,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The reserved quantity of the inventory item in the specified locations."
+												"text": "The reserved quantity of the item."
 											}
 										]
 									},
@@ -10963,7 +12021,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveReservedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nconst reservedQuantity =\n  await inventoryModuleService.retrieveReservedQuantity(\n    \"iitem_123\",\n    [\"loc_123\", \"loc_321\"]\n  )\n```"
 											}
 										]
 									}
@@ -10980,7 +12038,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ID of the inventory item to retrieve its reserved quantity."
+												"text": "The inventory item's ID."
 											}
 										]
 									},
@@ -10999,7 +12057,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The IDs of the locations to retrieve the reserved quantity from."
+												"text": "The locations' IDs."
 											}
 										]
 									},

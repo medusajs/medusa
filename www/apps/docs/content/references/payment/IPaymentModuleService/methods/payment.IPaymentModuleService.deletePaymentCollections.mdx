@@ -17,7 +17,10 @@ This method deletes a payment collection by its ID.
 ### Example
 
 ```ts
-{example-code}
+await paymentModuleService.deletePaymentCollections([
+  "pay_col_123",
+  "pay_col_321",
+])
 ```
 
 ### Parameters
@@ -26,7 +29,7 @@ This method deletes a payment collection by its ID.
 
 ### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment collection is deleted.","expandable":false,"children":[]}]}  sectionTitle="deletePaymentCollections"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment collection is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="deletePaymentCollections"/>
 
 ## deletePaymentCollections(paymentCollectionId, sharedContext?): Promise&#60;void&#62;
 
@@ -35,7 +38,9 @@ This method deletes a payment collection by its ID.
 ### Example
 
 ```ts
-{example-code}
+await paymentModuleService.deletePaymentCollections(
+  "pay_col_123"
+)
 ```
 
 ### Parameters
@@ -44,4 +49,4 @@ This method deletes a payment collection by its ID.
 
 ### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment collection is deleted.","expandable":false,"children":[]}]}  sectionTitle="deletePaymentCollections"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment collection is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="deletePaymentCollections"/>

@@ -19,70 +19,50 @@ This method adds prices to a price set.
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addPricesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.addPrices({
-    priceSetId,
-    prices: [
-     {
-        amount: 500,
-        currency_code: "USD",
-        rules: {},
-      },
-    ],
-  })
-
-  // do something with the price set or return it
-}
+const priceSet = await pricingModuleService.addPrices({
+  priceSetId: "pset_123",
+  prices: [
+    {
+      amount: 500,
+      currency_code: "USD",
+      rules: {},
+    },
+  ],
+})
 ```
 
 To add prices with rules:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addPricesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.addPrices({
-    priceSetId,
-    prices: [
-      {
-        amount: 300,
-        currency_code: "EUR",
-        rules: {
-          region_id: "PL",
-          city: "krakow"
-        },
+const priceSet = await pricingModuleService.addPrices({
+  priceSetId: "pset_123",
+  prices: [
+    {
+      amount: 300,
+      currency_code: "EUR",
+      rules: {
+        region_id: "PL",
+        city: "krakow",
       },
-      {
-        amount: 400,
-        currency_code: "EUR",
-        min_quantity: 0,
-        max_quantity: 4,
-        rules: {
-          region_id: "PL"
-        },
+    },
+    {
+      amount: 400,
+      currency_code: "EUR",
+      min_quantity: 0,
+      max_quantity: 4,
+      rules: {
+        region_id: "PL",
       },
-      {
-        amount: 450,
-        currency_code: "EUR",
-        rules: {
-          city: "krakow"
-        },
-      }
-    ],
-  })
-
-  // do something with the price set or return it
-}
+    },
+    {
+      amount: 450,
+      currency_code: "EUR",
+      rules: {
+        city: "krakow",
+      },
+    },
+  ],
+})
 ```
 
 ### Parameters
@@ -99,73 +79,35 @@ This method adds prices to multiple price sets.
 
 ### Example
 
-To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
-
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addPricesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSets = await pricingService.addPrices([{
-    priceSetId,
+const priceSets = await pricingModuleService.addPrices([
+  {
+    priceSetId: "pset_123",
     prices: [
-     {
+      // default price because it doesn't
+      // have rules
+      {
         amount: 500,
         currency_code: "USD",
         rules: {},
       },
     ],
-  }])
-
-  // do something with the price sets or return them
-}
-```
-
-To add prices with rules:
-
-```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addPricesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSets = await pricingService.addPrices([{
-    priceSetId,
+  },
+  {
+    priceSetId: "pset_321",
     prices: [
+      // prices with rules
       {
         amount: 300,
         currency_code: "EUR",
         rules: {
           region_id: "PL",
-          city: "krakow"
+          city: "krakow",
         },
       },
-      {
-        amount: 400,
-        currency_code: "EUR",
-        min_quantity: 0,
-        max_quantity: 4,
-        rules: {
-          region_id: "PL"
-        },
-      },
-      {
-        amount: 450,
-        currency_code: "EUR",
-        rules: {
-          city: "krakow"
-        },
-      }
     ],
-  }])
-
-  // do something with the price sets or return them
-}
+  },
+])
 ```
 
 ### Parameters

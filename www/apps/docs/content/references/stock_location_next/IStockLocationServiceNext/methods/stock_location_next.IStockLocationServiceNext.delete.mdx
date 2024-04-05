@@ -10,20 +10,12 @@ import TypeList from "@site/src/components/TypeList"
 
 This documentation provides a reference to the `delete` method. This belongs to the Stock Location Next Module.
 
-This method is used to delete a stock location.
+This method deletes a stock location by its ID.
 
 ## Example
 
 ```ts
-import {
-  initialize as initializeStockLocationModule,
-} from "@medusajs/stock-location"
-
-async function deleteStockLocation (id:string) {
-  const stockLocationModule = await initializeStockLocationModule({})
-
-  await stockLocationModule.delete(id)
-}
+await stockLocationModuleService.delete("sloc_123")
 ```
 
 ## Parameters
@@ -32,4 +24,4 @@ async function deleteStockLocation (id:string) {
 
 ## Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the stock location is successfully deleted.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the stock location is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>

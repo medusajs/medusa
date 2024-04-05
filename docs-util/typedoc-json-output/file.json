@@ -1,12 +1,12 @@
 {
-	"id": 10900,
+	"id": 10903,
 	"name": "file",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 10901,
+			"id": 10904,
 			"name": "IFileService",
 			"variant": "declaration",
 			"kind": 256,
@@ -85,14 +85,14 @@
 			},
 			"children": [
 				{
-					"id": 10902,
+					"id": 10905,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10903,
+							"id": 10906,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
@@ -120,109 +120,6 @@
 											{
 												"kind": "code",
 												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async upload(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.publicPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath,\n    }\n  }\n  // ...\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\n:::tip\n\nThis example does not account for duplicate names to maintain simplicity in this guide. So, an uploaded file can replace another existing file that has the same name.\n\n:::"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10904,
-									"name": "file",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the "
-											},
-											{
-												"kind": "code",
-												"text": "`path`"
-											},
-											{
-												"kind": "text",
-												"text": " property of the file object."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../node_modules/@types/multer/index.d.ts",
-											"qualifiedName": "__global.Express.Multer.File"
-										},
-										"name": "File",
-										"package": "@types/multer",
-										"qualifiedName": "__global.Express.Multer.File"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "FileServiceUploadResult"
-										},
-										"name": "FileServiceUploadResult",
-										"package": "@medusajs/types"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 10905,
-					"name": "uploadProtected",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10906,
-							"name": "uploadProtected",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to upload a file to the Medusa backend, but to a protected storage. Typically, this would be used to store files that\nshouldn’t be accessible by using the file’s URL or should only be accessible by authenticated users. For example, exported or imported\nCSV files."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The details of the upload's result."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async uploadProtected(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.protectedPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath\n    }\n  }\n  // ...\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -292,14 +189,14 @@
 				},
 				{
 					"id": 10908,
-					"name": "delete",
+					"name": "uploadProtected",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
 							"id": 10909,
-							"name": "delete",
+							"name": "uploadProtected",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -307,1295 +204,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to delete a file from storage."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Resolves when the file is deleted successfully."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async delete(\n    fileData: DeleteFileType\n  ): Promise<void> {\n    fs.rmSync(fileData.fileKey)\n  }\n\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10910,
-									"name": "fileData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The details of the file to remove."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "DeleteFileType"
-										},
-										"name": "DeleteFileType",
-										"package": "@medusajs/types"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "void"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 10911,
-					"name": "getUploadStreamDescriptor",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10912,
-							"name": "getUploadStreamDescriptor",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to retrieve a write stream to be used to upload a file."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The result of the file-stream upload."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\n// ...\nimport { Stream } from \"stream\"\n\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async getUploadStreamDescriptor({\n      name,\n      ext,\n      isPrivate = true,\n    }: UploadStreamDescriptorType\n  ): Promise<FileServiceGetUploadStreamResult> {\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${name}.${ext}`\n\n    const pass = new Stream.PassThrough()\n    const writeStream = fs.createWriteStream(filePath)\n\n    pass.pipe(writeStream)\n\n    return {\n      writeStream: pass,\n      promise: Promise.resolve(),\n      url: `${this.serverUrl}/${filePath}`,\n      fileKey: filePath,\n    }\n  }\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10913,
-									"name": "fileData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The details of the file being uploaded."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "UploadStreamDescriptorType"
-										},
-										"name": "UploadStreamDescriptorType",
-										"package": "@medusajs/types"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "FileServiceGetUploadStreamResult"
-										},
-										"name": "FileServiceGetUploadStreamResult",
-										"package": "@medusajs/types"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 10914,
-					"name": "getDownloadStream",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10915,
-							"name": "getDownloadStream",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to retrieve a read stream for a file, which can then be used to download the file."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The [read stream](https://nodejs.org/api/webstreams.html#class-readablestream) to read and download the file."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async getDownloadStream({\n      fileKey,\n      isPrivate = true,\n    }: GetUploadedFileType\n  ): Promise<NodeJS.ReadableStream> {\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${fileKey}`\n    const readStream = fs.createReadStream(filePath)\n\n    return readStream\n  }\n\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10916,
-									"name": "fileData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The details of the file."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "GetUploadedFileType"
-										},
-										"name": "GetUploadedFileType",
-										"package": "@medusajs/types"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/@types/node/globals.d.ts",
-											"qualifiedName": "NodeJS.ReadableStream"
-										},
-										"name": "ReadableStream",
-										"package": "@types/node",
-										"qualifiedName": "NodeJS.ReadableStream"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 10917,
-					"name": "getPresignedDownloadUrl",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10918,
-							"name": "getPresignedDownloadUrl",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.\n\nIf your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The presigned URL to download the file"
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async getPresignedDownloadUrl({\n      fileKey,\n      isPrivate = true,\n    }: GetUploadedFileType\n  ): Promise<string> {\n    // Local upload doesn't provide\n    // support for presigned URLs,\n    // so just return the file's URL.\n\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${fileKey}`\n    return `${this.serverUrl}/${filePath}`\n  }\n\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10919,
-									"name": "fileData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The details of the file."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
-											"qualifiedName": "GetUploadedFileType"
-										},
-										"name": "GetUploadedFileType",
-										"package": "@medusajs/types"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							}
-						}
-					]
-				},
-				{
-					"id": 10920,
-					"name": "manager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-							"qualifiedName": "EntityManager"
-						},
-						"name": "EntityManager",
-						"package": "typeorm"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.manager_"
-					}
-				},
-				{
-					"id": 10921,
-					"name": "transactionManager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "intrinsic",
-								"name": "undefined"
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-									"qualifiedName": "EntityManager"
-								},
-								"name": "EntityManager",
-								"package": "typeorm"
-							}
-						]
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.transactionManager_"
-					}
-				},
-				{
-					"id": 10922,
-					"name": "activeManager_",
-					"variant": "declaration",
-					"kind": 262144,
-					"flags": {
-						"isProtected": true
-					},
-					"getSignature": {
-						"id": 10923,
-						"name": "activeManager_",
-						"variant": "signature",
-						"kind": 524288,
-						"flags": {},
-						"type": {
-							"type": "reference",
-							"target": {
-								"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-								"qualifiedName": "EntityManager"
-							},
-							"name": "EntityManager",
-							"package": "typeorm"
-						},
-						"inheritedFrom": {
-							"type": "reference",
-							"target": -1,
-							"name": "TransactionBaseService.activeManager_"
-						}
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.activeManager_"
-					}
-				},
-				{
-					"id": 10924,
-					"name": "__container__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "any"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__container__"
-					}
-				},
-				{
-					"id": 10925,
-					"name": "__configModule__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__configModule__"
-					}
-				},
-				{
-					"id": 10926,
-					"name": "__moduleDeclaration__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__moduleDeclaration__"
-					}
-				},
-				{
-					"id": 10927,
-					"name": "withTransaction",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10928,
-							"name": "withTransaction",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 10929,
-									"name": "transactionManager",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-											"qualifiedName": "EntityManager"
-										},
-										"name": "EntityManager",
-										"package": "typeorm"
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "this"
-							},
-							"inheritedFrom": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.withTransaction"
-							}
-						}
-					],
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.withTransaction"
-					}
-				},
-				{
-					"id": 10930,
-					"name": "shouldRetryTransaction_",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
-						{
-							"id": 10931,
-							"name": "shouldRetryTransaction_",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 10932,
-									"name": "err",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-													"qualifiedName": "Record"
-												},
-												"typeArguments": [
-													{
-														"type": "intrinsic",
-														"name": "string"
-													},
-													{
-														"type": "intrinsic",
-														"name": "unknown"
-													}
-												],
-												"name": "Record",
-												"package": "typescript"
-											},
-											{
-												"type": "reflection",
-												"declaration": {
-													"id": 10933,
-													"name": "__type",
-													"variant": "declaration",
-													"kind": 65536,
-													"flags": {},
-													"children": [
-														{
-															"id": 10934,
-															"name": "code",
-															"variant": "declaration",
-															"kind": 1024,
-															"flags": {},
-															"type": {
-																"type": "intrinsic",
-																"name": "string"
-															}
-														}
-													],
-													"groups": [
-														{
-															"title": "Properties",
-															"children": [
-																10934
-															]
-														}
-													]
-												}
-											}
-										]
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							},
-							"inheritedFrom": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.shouldRetryTransaction_"
-							}
-						}
-					],
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.shouldRetryTransaction_"
-					}
-				},
-				{
-					"id": 10935,
-					"name": "atomicPhase_",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
-						{
-							"id": 10936,
-							"name": "atomicPhase_",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "Wraps some work within a transactional block. If the service already has\na transaction manager attached this will be reused, otherwise a new\ntransaction manager is created."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "the result of the transactional work"
-											}
-										]
-									}
-								]
-							},
-							"typeParameter": [
-								{
-									"id": 10937,
-									"name": "TResult",
-									"variant": "typeParam",
-									"kind": 131072,
-									"flags": {}
-								},
-								{
-									"id": 10938,
-									"name": "TError",
-									"variant": "typeParam",
-									"kind": 131072,
-									"flags": {}
-								}
-							],
-							"parameters": [
-								{
-									"id": 10939,
-									"name": "work",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "the transactional work to be done"
-											}
-										]
-									},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 10940,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {},
-											"signatures": [
-												{
-													"id": 10941,
-													"name": "__type",
-													"variant": "signature",
-													"kind": 4096,
-													"flags": {},
-													"parameters": [
-														{
-															"id": 10942,
-															"name": "transactionManager",
-															"variant": "param",
-															"kind": 32768,
-															"flags": {},
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-																	"qualifiedName": "EntityManager"
-																},
-																"name": "EntityManager",
-																"package": "typeorm"
-															}
-														}
-													],
-													"type": {
-														"type": "reference",
-														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-															"qualifiedName": "Promise"
-														},
-														"typeArguments": [
-															{
-																"type": "reference",
-																"target": 10937,
-																"name": "TResult",
-																"package": "@medusajs/medusa",
-																"refersToTypeParameter": true
-															}
-														],
-														"name": "Promise",
-														"package": "typescript"
-													}
-												}
-											]
-										}
-									}
-								},
-								{
-									"id": 10943,
-									"name": "isolationOrErrorHandler",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "the isolation level to be used for the work."
-											}
-										]
-									},
-									"type": {
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../node_modules/typeorm/driver/types/IsolationLevel.d.ts",
-													"qualifiedName": "IsolationLevel"
-												},
-												"name": "IsolationLevel",
-												"package": "typeorm"
-											},
-											{
-												"type": "reflection",
-												"declaration": {
-													"id": 10944,
-													"name": "__type",
-													"variant": "declaration",
-													"kind": 65536,
-													"flags": {},
-													"signatures": [
-														{
-															"id": 10945,
-															"name": "__type",
-															"variant": "signature",
-															"kind": 4096,
-															"flags": {},
-															"parameters": [
-																{
-																	"id": 10946,
-																	"name": "error",
-																	"variant": "param",
-																	"kind": 32768,
-																	"flags": {},
-																	"type": {
-																		"type": "reference",
-																		"target": 10938,
-																		"name": "TError",
-																		"package": "@medusajs/medusa",
-																		"refersToTypeParameter": true
-																	}
-																}
-															],
-															"type": {
-																"type": "reference",
-																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-																	"qualifiedName": "Promise"
-																},
-																"typeArguments": [
-																	{
-																		"type": "union",
-																		"types": [
-																			{
-																				"type": "intrinsic",
-																				"name": "void"
-																			},
-																			{
-																				"type": "reference",
-																				"target": 10937,
-																				"name": "TResult",
-																				"package": "@medusajs/medusa",
-																				"refersToTypeParameter": true
-																			}
-																		]
-																	}
-																],
-																"name": "Promise",
-																"package": "typescript"
-															}
-														}
-													]
-												}
-											}
-										]
-									}
-								},
-								{
-									"id": 10947,
-									"name": "maybeErrorHandlerOrDontFail",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "Potential error handler"
-											}
-										]
-									},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 10948,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {},
-											"signatures": [
-												{
-													"id": 10949,
-													"name": "__type",
-													"variant": "signature",
-													"kind": 4096,
-													"flags": {},
-													"parameters": [
-														{
-															"id": 10950,
-															"name": "error",
-															"variant": "param",
-															"kind": 32768,
-															"flags": {},
-															"type": {
-																"type": "reference",
-																"target": 10938,
-																"name": "TError",
-																"package": "@medusajs/medusa",
-																"refersToTypeParameter": true
-															}
-														}
-													],
-													"type": {
-														"type": "reference",
-														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-															"qualifiedName": "Promise"
-														},
-														"typeArguments": [
-															{
-																"type": "union",
-																"types": [
-																	{
-																		"type": "intrinsic",
-																		"name": "void"
-																	},
-																	{
-																		"type": "reference",
-																		"target": 10937,
-																		"name": "TResult",
-																		"package": "@medusajs/medusa",
-																		"refersToTypeParameter": true
-																	}
-																]
-															}
-														],
-														"name": "Promise",
-														"package": "typescript"
-													}
-												}
-											]
-										}
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": 10937,
-										"name": "TResult",
-										"package": "@medusajs/medusa",
-										"refersToTypeParameter": true
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"inheritedFrom": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.atomicPhase_"
-							}
-						}
-					],
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.atomicPhase_"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Properties",
-					"children": [
-						10920,
-						10921,
-						10924,
-						10925,
-						10926
-					]
-				},
-				{
-					"title": "Accessors",
-					"children": [
-						10922
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						10902,
-						10905,
-						10908,
-						10911,
-						10914,
-						10917,
-						10927,
-						10930,
-						10935
-					]
-				}
-			],
-			"extendedTypes": [
-				{
-					"type": "reference",
-					"target": {
-						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-						"qualifiedName": "TransactionBaseService"
-					},
-					"name": "TransactionBaseService",
-					"package": "@medusajs/medusa"
-				}
-			],
-			"implementedBy": [
-				{
-					"type": "reference",
-					"target": 10951,
-					"name": "AbstractFileService"
-				}
-			]
-		},
-		{
-			"id": 10951,
-			"name": "AbstractFileService",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {
-				"isAbstract": true
-			},
-			"children": [
-				{
-					"id": 10956,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
-						{
-							"id": 10957,
-							"name": "new AbstractFileService",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "You can use the "
-									},
-									{
-										"kind": "code",
-										"text": "`constructor`"
-									},
-									{
-										"kind": "text",
-										"text": " of your file service to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nAdditionally, if you’re creating your file service as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,\nyou can access them in the constructor."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\n// ...\nimport { Logger } from \"@medusajs/medusa\"\nimport * as fs from \"fs\"\n\nclass LocalFileService extends AbstractFileService {\n  // can also be replaced by an environment variable\n  // or a plugin option\n  protected serverUrl = \"http://localhost:9000\"\n  protected publicPath = \"uploads\"\n  protected protectedPath = \"protected-uploads\"\n  protected logger_: Logger\n\n  constructor({ logger }: InjectedDependencies) {\n    // @ts-ignore\n    super(...arguments)\n    this.logger_ = logger\n\n    // for public uploads\n    if (!fs.existsSync(this.publicPath)) {\n      fs.mkdirSync(this.publicPath)\n    }\n\n    // for protected uploads\n    if (!fs.existsSync(this.protectedPath)) {\n      fs.mkdirSync(this.protectedPath)\n    }\n  }\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 10958,
-									"name": "container",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "An instance of "
-											},
-											{
-												"kind": "code",
-												"text": "`MedusaContainer`"
-											},
-											{
-												"kind": "text",
-												"text": " that allows you to access other resources, such as services, in your Medusa backend."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 10959,
-									"name": "config",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "If this file service is created in a plugin, the plugin's options are passed in this parameter."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": 10951,
-								"name": "AbstractFileService",
-								"package": "@medusajs/medusa"
-							},
-							"overwrites": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.constructor"
-							}
-						}
-					],
-					"overwrites": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.constructor"
-					}
-				},
-				{
-					"id": 10960,
-					"name": "container",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "An instance of "
-							},
-							{
-								"kind": "code",
-								"text": "`MedusaContainer`"
-							},
-							{
-								"kind": "text",
-								"text": " that allows you to access other resources, such as services, in your Medusa backend."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 10961,
-					"name": "config",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "If this file service is created in a plugin, the plugin's options are passed in this parameter."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 10962,
-					"name": "upload",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 10963,
-							"name": "upload",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is used to upload a file to the Medusa backend."
+										"text": "This method is used to upload a file to the Medusa backend, but to a protected storage. Typically, this would be used to store files that\nshouldn’t be accessible by using the file’s URL or should only be accessible by authenticated users. For example, exported or imported\nCSV files."
 									}
 								],
 								"blockTags": [
@@ -1613,7 +222,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async upload(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.publicPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath,\n    }\n  }\n  // ...\n}\n```"
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async uploadProtected(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.protectedPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath\n    }\n  }\n  // ...\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -1625,8 +234,8 @@
 							},
 							"parameters": [
 								{
-									"id": 10964,
-									"name": "fileData",
+									"id": 10910,
+									"name": "file",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
@@ -1677,23 +286,1299 @@
 								],
 								"name": "Promise",
 								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10911,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10912,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to delete a file from storage."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the file is deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async delete(\n    fileData: DeleteFileType\n  ): Promise<void> {\n    fs.rmSync(fileData.fileKey)\n  }\n\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
 							},
-							"implementationOf": {
+							"parameters": [
+								{
+									"id": 10913,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file to remove."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "DeleteFileType"
+										},
+										"name": "DeleteFileType",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
 								"type": "reference",
-								"target": 10903,
-								"name": "IFileService.upload"
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10914,
+					"name": "getUploadStreamDescriptor",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10915,
+							"name": "getUploadStreamDescriptor",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a write stream to be used to upload a file."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The result of the file-stream upload."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport { Stream } from \"stream\"\n\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async getUploadStreamDescriptor({\n      name,\n      ext,\n      isPrivate = true,\n    }: UploadStreamDescriptorType\n  ): Promise<FileServiceGetUploadStreamResult> {\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${name}.${ext}`\n\n    const pass = new Stream.PassThrough()\n    const writeStream = fs.createWriteStream(filePath)\n\n    pass.pipe(writeStream)\n\n    return {\n      writeStream: pass,\n      promise: Promise.resolve(),\n      url: `${this.serverUrl}/${filePath}`,\n      fileKey: filePath,\n    }\n  }\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 10916,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file being uploaded."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "UploadStreamDescriptorType"
+										},
+										"name": "UploadStreamDescriptorType",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "FileServiceGetUploadStreamResult"
+										},
+										"name": "FileServiceGetUploadStreamResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10917,
+					"name": "getDownloadStream",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10918,
+							"name": "getDownloadStream",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a read stream for a file, which can then be used to download the file."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The [read stream](https://nodejs.org/api/webstreams.html#class-readablestream) to read and download the file."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async getDownloadStream({\n      fileKey,\n      isPrivate = true,\n    }: GetUploadedFileType\n  ): Promise<NodeJS.ReadableStream> {\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${fileKey}`\n    const readStream = fs.createReadStream(filePath)\n\n    return readStream\n  }\n\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 10919,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "GetUploadedFileType"
+										},
+										"name": "GetUploadedFileType",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/@types/node/globals.d.ts",
+											"qualifiedName": "NodeJS.ReadableStream"
+										},
+										"name": "ReadableStream",
+										"package": "@types/node",
+										"qualifiedName": "NodeJS.ReadableStream"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10920,
+					"name": "getPresignedDownloadUrl",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10921,
+							"name": "getPresignedDownloadUrl",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.\n\nIf your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The presigned URL to download the file"
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n\n  async getPresignedDownloadUrl({\n      fileKey,\n      isPrivate = true,\n    }: GetUploadedFileType\n  ): Promise<string> {\n    // Local upload doesn't provide\n    // support for presigned URLs,\n    // so just return the file's URL.\n\n    const filePath = `${isPrivate ?\n      this.publicPath : this.protectedPath\n    }/${fileKey}`\n    return `${this.serverUrl}/${filePath}`\n  }\n\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 10922,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "GetUploadedFileType"
+										},
+										"name": "GetUploadedFileType",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10923,
+					"name": "manager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.manager_"
+					}
+				},
+				{
+					"id": 10924,
+					"name": "transactionManager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "undefined"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+									"qualifiedName": "EntityManager"
+								},
+								"name": "EntityManager",
+								"package": "typeorm"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.transactionManager_"
+					}
+				},
+				{
+					"id": 10925,
+					"name": "activeManager_",
+					"variant": "declaration",
+					"kind": 262144,
+					"flags": {
+						"isProtected": true
+					},
+					"getSignature": {
+						"id": 10926,
+						"name": "activeManager_",
+						"variant": "signature",
+						"kind": 524288,
+						"flags": {},
+						"type": {
+							"type": "reference",
+							"target": {
+								"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+								"qualifiedName": "EntityManager"
+							},
+							"name": "EntityManager",
+							"package": "typeorm"
+						},
+						"inheritedFrom": {
+							"type": "reference",
+							"target": -1,
+							"name": "TransactionBaseService.activeManager_"
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.activeManager_"
+					}
+				},
+				{
+					"id": 10927,
+					"name": "__container__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__container__"
+					}
+				},
+				{
+					"id": 10928,
+					"name": "__configModule__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__configModule__"
+					}
+				},
+				{
+					"id": 10929,
+					"name": "__moduleDeclaration__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__moduleDeclaration__"
+					}
+				},
+				{
+					"id": 10930,
+					"name": "withTransaction",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10931,
+							"name": "withTransaction",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 10932,
+									"name": "transactionManager",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+											"qualifiedName": "EntityManager"
+										},
+										"name": "EntityManager",
+										"package": "typeorm"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "this"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.withTransaction"
 							}
 						}
 					],
-					"implementationOf": {
+					"inheritedFrom": {
 						"type": "reference",
-						"target": 10902,
-						"name": "IFileService.upload"
+						"target": -1,
+						"name": "TransactionBaseService.withTransaction"
+					}
+				},
+				{
+					"id": 10933,
+					"name": "shouldRetryTransaction_",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 10934,
+							"name": "shouldRetryTransaction_",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 10935,
+									"name": "err",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 10936,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 10937,
+															"name": "code",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "intrinsic",
+																"name": "string"
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																10937
+															]
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.shouldRetryTransaction_"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.shouldRetryTransaction_"
+					}
+				},
+				{
+					"id": 10938,
+					"name": "atomicPhase_",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 10939,
+							"name": "atomicPhase_",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Wraps some work within a transactional block. If the service already has\na transaction manager attached this will be reused, otherwise a new\ntransaction manager is created."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "the result of the transactional work"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 10940,
+									"name": "TResult",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								},
+								{
+									"id": 10941,
+									"name": "TError",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 10942,
+									"name": "work",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "the transactional work to be done"
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 10943,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 10944,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"parameters": [
+														{
+															"id": 10945,
+															"name": "transactionManager",
+															"variant": "param",
+															"kind": 32768,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+																	"qualifiedName": "EntityManager"
+																},
+																"name": "EntityManager",
+																"package": "typeorm"
+															}
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": 10940,
+																"name": "TResult",
+																"package": "@medusajs/medusa",
+																"refersToTypeParameter": true
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 10946,
+									"name": "isolationOrErrorHandler",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "the isolation level to be used for the work."
+											}
+										]
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../node_modules/typeorm/driver/types/IsolationLevel.d.ts",
+													"qualifiedName": "IsolationLevel"
+												},
+												"name": "IsolationLevel",
+												"package": "typeorm"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 10947,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"signatures": [
+														{
+															"id": 10948,
+															"name": "__type",
+															"variant": "signature",
+															"kind": 4096,
+															"flags": {},
+															"parameters": [
+																{
+																	"id": 10949,
+																	"name": "error",
+																	"variant": "param",
+																	"kind": 32768,
+																	"flags": {},
+																	"type": {
+																		"type": "reference",
+																		"target": 10941,
+																		"name": "TError",
+																		"package": "@medusajs/medusa",
+																		"refersToTypeParameter": true
+																	}
+																}
+															],
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Promise"
+																},
+																"typeArguments": [
+																	{
+																		"type": "union",
+																		"types": [
+																			{
+																				"type": "intrinsic",
+																				"name": "void"
+																			},
+																			{
+																				"type": "reference",
+																				"target": 10940,
+																				"name": "TResult",
+																				"package": "@medusajs/medusa",
+																				"refersToTypeParameter": true
+																			}
+																		]
+																	}
+																],
+																"name": "Promise",
+																"package": "typescript"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								{
+									"id": 10950,
+									"name": "maybeErrorHandlerOrDontFail",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Potential error handler"
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 10951,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 10952,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"parameters": [
+														{
+															"id": 10953,
+															"name": "error",
+															"variant": "param",
+															"kind": 32768,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": 10941,
+																"name": "TError",
+																"package": "@medusajs/medusa",
+																"refersToTypeParameter": true
+															}
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "union",
+																"types": [
+																	{
+																		"type": "intrinsic",
+																		"name": "void"
+																	},
+																	{
+																		"type": "reference",
+																		"target": 10940,
+																		"name": "TResult",
+																		"package": "@medusajs/medusa",
+																		"refersToTypeParameter": true
+																	}
+																]
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 10940,
+										"name": "TResult",
+										"package": "@medusajs/medusa",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.atomicPhase_"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.atomicPhase_"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						10923,
+						10924,
+						10927,
+						10928,
+						10929
+					]
+				},
+				{
+					"title": "Accessors",
+					"children": [
+						10925
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						10905,
+						10908,
+						10911,
+						10914,
+						10917,
+						10920,
+						10930,
+						10933,
+						10938
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+						"qualifiedName": "TransactionBaseService"
+					},
+					"name": "TransactionBaseService",
+					"package": "@medusajs/medusa"
+				}
+			],
+			"implementedBy": [
+				{
+					"type": "reference",
+					"target": 10954,
+					"name": "AbstractFileService"
+				}
+			]
+		},
+		{
+			"id": 10954,
+			"name": "AbstractFileService",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
+			},
+			"children": [
+				{
+					"id": 10959,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 10960,
+							"name": "new AbstractFileService",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your file service to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nAdditionally, if you’re creating your file service as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,\nyou can access them in the constructor."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport { Logger } from \"@medusajs/medusa\"\nimport * as fs from \"fs\"\n\nclass LocalFileService extends AbstractFileService {\n  // can also be replaced by an environment variable\n  // or a plugin option\n  protected serverUrl = \"http://localhost:9000\"\n  protected publicPath = \"uploads\"\n  protected protectedPath = \"protected-uploads\"\n  protected logger_: Logger\n\n  constructor({ logger }: InjectedDependencies) {\n    // @ts-ignore\n    super(...arguments)\n    this.logger_ = logger\n\n    // for public uploads\n    if (!fs.existsSync(this.publicPath)) {\n      fs.mkdirSync(this.publicPath)\n    }\n\n    // for protected uploads\n    if (!fs.existsSync(this.protectedPath)) {\n      fs.mkdirSync(this.protectedPath)\n    }\n  }\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 10961,
+									"name": "container",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 10962,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If this file service is created in a plugin, the plugin's options are passed in this parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 10954,
+								"name": "AbstractFileService",
+								"package": "@medusajs/medusa"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.constructor"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.constructor"
+					}
+				},
+				{
+					"id": 10963,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 10964,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this file service is created in a plugin, the plugin's options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
 					}
 				},
 				{
 					"id": 10965,
-					"name": "uploadProtected",
+					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -1702,7 +1587,7 @@
 					"signatures": [
 						{
 							"id": 10966,
-							"name": "uploadProtected",
+							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
@@ -1710,7 +1595,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to upload a file to the Medusa backend, but to a protected storage. Typically, this would be used to store files that\nshouldn’t be accessible by using the file’s URL or should only be accessible by authenticated users. For example, exported or imported\nCSV files."
+										"text": "This method is used to upload a file to the Medusa backend."
 									}
 								],
 								"blockTags": [
@@ -1728,7 +1613,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async uploadProtected(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.protectedPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath\n    }\n  }\n  // ...\n}\n```"
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async upload(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.publicPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath,\n    }\n  }\n  // ...\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -1796,19 +1681,19 @@
 							"implementationOf": {
 								"type": "reference",
 								"target": 10906,
-								"name": "IFileService.uploadProtected"
+								"name": "IFileService.upload"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
 						"target": 10905,
-						"name": "IFileService.uploadProtected"
+						"name": "IFileService.upload"
 					}
 				},
 				{
 					"id": 10968,
-					"name": "delete",
+					"name": "uploadProtected",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {
@@ -1817,6 +1702,121 @@
 					"signatures": [
 						{
 							"id": 10969,
+							"name": "uploadProtected",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to upload a file to the Medusa backend, but to a protected storage. Typically, this would be used to store files that\nshouldn’t be accessible by using the file’s URL or should only be accessible by authenticated users. For example, exported or imported\nCSV files."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The details of the upload's result."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass LocalFileService extends AbstractFileService {\n  // ...\n  async uploadProtected(\n    fileData: Express.Multer.File\n  ): Promise<FileServiceUploadResult> {\n    const filePath =\n      `${this.protectedPath}/${fileData.originalname}`\n    fs.copyFileSync(fileData.path, filePath)\n    return {\n      url: `${this.serverUrl}/${filePath}`,\n      key: filePath\n    }\n  }\n  // ...\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\n:::tip\n\nThis example does not account for duplicate names to maintain simplicity in this guide. So, an uploaded file can replace another existing file that has the same name.\n\n:::"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 10970,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A [multer file object](http://expressjs.com/en/resources/middleware/multer.html#file-information).\nThe file is uploaded to a temporary directory by default. Among the file’s details, you can access the file’s path in the "
+											},
+											{
+												"kind": "code",
+												"text": "`path`"
+											},
+											{
+												"kind": "text",
+												"text": " property of the file object."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../node_modules/@types/multer/index.d.ts",
+											"qualifiedName": "__global.Express.Multer.File"
+										},
+										"name": "File",
+										"package": "@types/multer",
+										"qualifiedName": "__global.Express.Multer.File"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/file-service/index.ts",
+											"qualifiedName": "FileServiceUploadResult"
+										},
+										"name": "FileServiceUploadResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 10909,
+								"name": "IFileService.uploadProtected"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 10908,
+						"name": "IFileService.uploadProtected"
+					}
+				},
+				{
+					"id": 10971,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 10972,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -1851,7 +1851,7 @@
 							},
 							"parameters": [
 								{
-									"id": 10970,
+									"id": 10973,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1892,19 +1892,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 10909,
+								"target": 10912,
 								"name": "IFileService.delete"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 10908,
+						"target": 10911,
 						"name": "IFileService.delete"
 					}
 				},
 				{
-					"id": 10971,
+					"id": 10974,
 					"name": "getUploadStreamDescriptor",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1913,7 +1913,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10972,
+							"id": 10975,
 							"name": "getUploadStreamDescriptor",
 							"variant": "signature",
 							"kind": 4096,
@@ -1948,7 +1948,7 @@
 							},
 							"parameters": [
 								{
-									"id": 10973,
+									"id": 10976,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -1994,19 +1994,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 10912,
+								"target": 10915,
 								"name": "IFileService.getUploadStreamDescriptor"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 10911,
+						"target": 10914,
 						"name": "IFileService.getUploadStreamDescriptor"
 					}
 				},
 				{
-					"id": 10974,
+					"id": 10977,
 					"name": "getDownloadStream",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2015,7 +2015,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10975,
+							"id": 10978,
 							"name": "getDownloadStream",
 							"variant": "signature",
 							"kind": 4096,
@@ -2050,7 +2050,7 @@
 							},
 							"parameters": [
 								{
-									"id": 10976,
+									"id": 10979,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -2097,19 +2097,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 10915,
+								"target": 10918,
 								"name": "IFileService.getDownloadStream"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 10914,
+						"target": 10917,
 						"name": "IFileService.getDownloadStream"
 					}
 				},
 				{
-					"id": 10977,
+					"id": 10980,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2118,7 +2118,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10978,
+							"id": 10981,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
@@ -2153,7 +2153,7 @@
 							},
 							"parameters": [
 								{
-									"id": 10979,
+									"id": 10982,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -2194,19 +2194,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 10918,
+								"target": 10921,
 								"name": "IFileService.getPresignedDownloadUrl"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 10917,
+						"target": 10920,
 						"name": "IFileService.getPresignedDownloadUrl"
 					}
 				},
 				{
-					"id": 10980,
+					"id": 10983,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2229,12 +2229,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 10920,
+						"target": 10923,
 						"name": "IFileService.manager_"
 					}
 				},
 				{
-					"id": 10981,
+					"id": 10984,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2266,12 +2266,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 10921,
+						"target": 10924,
 						"name": "IFileService.transactionManager_"
 					}
 				},
 				{
-					"id": 10984,
+					"id": 10987,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2290,12 +2290,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 10924,
+						"target": 10927,
 						"name": "IFileService.__container__"
 					}
 				},
 				{
-					"id": 10985,
+					"id": 10988,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2330,12 +2330,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 10925,
+						"target": 10928,
 						"name": "IFileService.__configModule__"
 					}
 				},
 				{
-					"id": 10986,
+					"id": 10989,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2370,7 +2370,7 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 10926,
+						"target": 10929,
 						"name": "IFileService.__moduleDeclaration__"
 					}
 				}
@@ -2379,30 +2379,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10956
+						10959
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						10960,
-						10961,
-						10980,
-						10981,
+						10963,
+						10964,
+						10983,
 						10984,
-						10985,
-						10986
+						10987,
+						10988,
+						10989
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						10962,
 						10965,
 						10968,
 						10971,
 						10974,
-						10977
+						10977,
+						10980
 					]
 				}
 			],
@@ -2420,7 +2420,7 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 10901,
+					"target": 10904,
 					"name": "IFileService",
 					"package": "@medusajs/medusa"
 				}
@@ -2431,45 +2431,33 @@
 		{
 			"title": "Classes",
 			"children": [
-				10951
+				10954
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				10901
+				10904
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"10900": {
+		"10903": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": ""
 		},
-		"10901": {
+		"10904": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "IFileService"
 		},
-		"10902": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.upload"
-		},
-		"10903": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.upload"
-		},
-		"10904": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "file"
-		},
 		"10905": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.uploadProtected"
+			"qualifiedName": "IFileService.upload"
 		},
 		"10906": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.uploadProtected"
+			"qualifiedName": "IFileService.upload"
 		},
 		"10907": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2477,23 +2465,23 @@
 		},
 		"10908": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.delete"
+			"qualifiedName": "IFileService.uploadProtected"
 		},
 		"10909": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.delete"
+			"qualifiedName": "IFileService.uploadProtected"
 		},
 		"10910": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "fileData"
+			"qualifiedName": "file"
 		},
 		"10911": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getUploadStreamDescriptor"
+			"qualifiedName": "IFileService.delete"
 		},
 		"10912": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getUploadStreamDescriptor"
+			"qualifiedName": "IFileService.delete"
 		},
 		"10913": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2501,11 +2489,11 @@
 		},
 		"10914": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getDownloadStream"
+			"qualifiedName": "IFileService.getUploadStreamDescriptor"
 		},
 		"10915": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getDownloadStream"
+			"qualifiedName": "IFileService.getUploadStreamDescriptor"
 		},
 		"10916": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2513,111 +2501,111 @@
 		},
 		"10917": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getPresignedDownloadUrl"
+			"qualifiedName": "IFileService.getDownloadStream"
 		},
 		"10918": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "IFileService.getPresignedDownloadUrl"
+			"qualifiedName": "IFileService.getDownloadStream"
 		},
 		"10919": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
 		"10920": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.manager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "IFileService.getPresignedDownloadUrl"
 		},
 		"10921": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.transactionManager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "IFileService.getPresignedDownloadUrl"
 		},
 		"10922": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.activeManager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "fileData"
 		},
 		"10923": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.activeManager_"
+			"qualifiedName": "TransactionBaseService.manager_"
 		},
 		"10924": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__container__"
+			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
 		"10925": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__configModule__"
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"10926": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"10927": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.withTransaction"
+			"qualifiedName": "TransactionBaseService.__container__"
 		},
 		"10928": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.withTransaction"
+			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
 		"10929": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
 		"10930": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
 		"10931": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
 		"10932": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "err"
+			"qualifiedName": "transactionManager"
 		},
 		"10933": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"10934": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type.code"
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"10935": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.atomicPhase_"
+			"qualifiedName": "err"
 		},
 		"10936": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.atomicPhase_"
+			"qualifiedName": "__type"
 		},
 		"10937": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TResult"
+			"qualifiedName": "__type.code"
 		},
 		"10938": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TError"
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"10939": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "work"
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"10940": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TResult"
 		},
 		"10941": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TError"
 		},
 		"10942": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "work"
 		},
 		"10943": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "isolationOrErrorHandler"
+			"qualifiedName": "__type"
 		},
 		"10944": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -2625,15 +2613,15 @@
 		},
 		"10945": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "transactionManager"
 		},
 		"10946": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "isolationOrErrorHandler"
 		},
 		"10947": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "maybeErrorHandlerOrDontFail"
+			"qualifiedName": "__type"
 		},
 		"10948": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -2641,59 +2629,59 @@
 		},
 		"10949": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "error"
 		},
 		"10950": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
 		"10951": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"10952": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"10953": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
+		},
+		"10954": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "AbstractFileService"
-		},
-		"10956": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.__constructor"
-		},
-		"10957": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService"
-		},
-		"10958": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "container"
 		},
 		"10959": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "AbstractFileService.__constructor"
 		},
 		"10960": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.container"
+			"qualifiedName": "AbstractFileService"
 		},
 		"10961": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.config"
+			"qualifiedName": "container"
 		},
 		"10962": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.upload"
+			"qualifiedName": "config"
 		},
 		"10963": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.upload"
+			"qualifiedName": "AbstractFileService.container"
 		},
 		"10964": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "fileData"
+			"qualifiedName": "AbstractFileService.config"
 		},
 		"10965": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.uploadProtected"
+			"qualifiedName": "AbstractFileService.upload"
 		},
 		"10966": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.uploadProtected"
+			"qualifiedName": "AbstractFileService.upload"
 		},
 		"10967": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2701,11 +2689,11 @@
 		},
 		"10968": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.delete"
+			"qualifiedName": "AbstractFileService.uploadProtected"
 		},
 		"10969": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.delete"
+			"qualifiedName": "AbstractFileService.uploadProtected"
 		},
 		"10970": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2713,11 +2701,11 @@
 		},
 		"10971": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
+			"qualifiedName": "AbstractFileService.delete"
 		},
 		"10972": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
+			"qualifiedName": "AbstractFileService.delete"
 		},
 		"10973": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2725,11 +2713,11 @@
 		},
 		"10974": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getDownloadStream"
+			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
 		},
 		"10975": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getDownloadStream"
+			"qualifiedName": "AbstractFileService.getUploadStreamDescriptor"
 		},
 		"10976": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
@@ -2737,111 +2725,111 @@
 		},
 		"10977": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
+			"qualifiedName": "AbstractFileService.getDownloadStream"
 		},
 		"10978": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
-			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
+			"qualifiedName": "AbstractFileService.getDownloadStream"
 		},
 		"10979": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
 			"qualifiedName": "fileData"
 		},
 		"10980": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.manager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
 		},
 		"10981": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.transactionManager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "AbstractFileService.getPresignedDownloadUrl"
 		},
 		"10982": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.activeManager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/file-service.ts",
+			"qualifiedName": "fileData"
 		},
 		"10983": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.activeManager_"
+			"qualifiedName": "TransactionBaseService.manager_"
 		},
 		"10984": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__container__"
+			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
 		"10985": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__configModule__"
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"10986": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"10987": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.withTransaction"
+			"qualifiedName": "TransactionBaseService.__container__"
 		},
 		"10988": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.withTransaction"
+			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
 		"10989": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
 		"10990": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
 		"10991": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
 		"10992": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "err"
+			"qualifiedName": "transactionManager"
 		},
 		"10993": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"10994": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type.code"
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"10995": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.atomicPhase_"
+			"qualifiedName": "err"
 		},
 		"10996": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.atomicPhase_"
+			"qualifiedName": "__type"
 		},
 		"10997": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TResult"
+			"qualifiedName": "__type.code"
 		},
 		"10998": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TError"
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"10999": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "work"
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"11000": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TResult"
 		},
 		"11001": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TError"
 		},
 		"11002": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "work"
 		},
 		"11003": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "isolationOrErrorHandler"
+			"qualifiedName": "__type"
 		},
 		"11004": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -2849,15 +2837,15 @@
 		},
 		"11005": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "transactionManager"
 		},
 		"11006": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "isolationOrErrorHandler"
 		},
 		"11007": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "maybeErrorHandlerOrDontFail"
+			"qualifiedName": "__type"
 		},
 		"11008": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -2865,9 +2853,21 @@
 		},
 		"11009": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "error"
 		},
 		"11010": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "maybeErrorHandlerOrDontFail"
+		},
+		"11011": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"11012": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"11013": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		}

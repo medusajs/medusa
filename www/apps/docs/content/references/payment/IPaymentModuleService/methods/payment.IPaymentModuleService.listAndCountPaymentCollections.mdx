@@ -17,19 +17,40 @@ This method retrieves a paginated list of payment collections along with the tot
 To retrieve a list of &#123;type name&#125; using their IDs:
 
 ```ts
-{example-code}
+const paymentCollections =
+  await paymentModuleService.listAndCountPaymentCollections({
+    id: ["pay_col_123", "pay_col_321"],
+  })
 ```
 
 To specify relations that should be retrieved within the &#123;type name&#125;:
 
 ```ts
-{example-code}
+const paymentCollections =
+  await paymentModuleService.listAndCountPaymentCollections(
+    {
+      id: ["pay_col_123", "pay_col_321"],
+    },
+    {
+      relations: ["payment_sessions"],
+    }
+  )
 ```
 
 By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-{example-code}
+const paymentCollections =
+  await paymentModuleService.listAndCountPaymentCollections(
+    {
+      id: ["pay_col_123", "pay_col_321"],
+    },
+    {
+      relations: ["payment_sessions"],
+      take: 20,
+      skip: 2,
+    }
+  )
 ```
 
 ## Parameters

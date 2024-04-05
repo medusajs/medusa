@@ -15,33 +15,14 @@ This method is used to create new price rules based on the provided data.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceRules (
-  id: string,
-  priceSetId: string,
-  ruleTypeId: string,
-  value: string,
-  priceId: string,
-  priceListId: string
-) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.createPriceRules([
+const priceRules =
+  await pricingModuleService.createPriceRules([
     {
-      id,
-      price_set_id: priceSetId,
-      rule_type_id: ruleTypeId,
-      value,
-      price_id: priceId,
-      price_list_id: priceListId
-    }
+      value: "VIP",
+      rule_type_id: "rul-typ_123",
+      price_set_id: "pset_123",
+    },
   ])
-
-  // do something with the price rules or return them
-}
 ```
 
 ## Parameters

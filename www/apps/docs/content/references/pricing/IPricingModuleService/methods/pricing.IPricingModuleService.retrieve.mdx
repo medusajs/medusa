@@ -17,40 +17,19 @@ This method is used to retrieve a price set by its ID.
 A simple example that retrieves a price set by its ID:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.retrieve(
-    priceSetId
-  )
-
-  // do something with the price set or return it
-}
+const priceSet =
+  await pricingModuleService.retrieve("pset_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.retrieve(
-    priceSetId,
-    {
-      relations: ["prices"]
-    }
-  )
-
-  // do something with the price set or return it
-}
+const priceSet = await pricingModuleService.retrieve(
+  "pset_123",
+  {
+    relations: ["prices"],
+  }
+)
 ```
 
 ## Parameters

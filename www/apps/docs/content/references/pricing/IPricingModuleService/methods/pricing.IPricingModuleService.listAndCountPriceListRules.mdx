@@ -17,101 +17,40 @@ This method is used to retrieve a paginated list of price list ruless along with
 To retrieve a list of price list vs using their IDs:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function listAndCountPriceListRules (priceListRuleIds: string[]) {
-  const pricingService = await initializePricingModule()
-
-  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
-    {
-      id: priceListRuleIds
-    },
-  )
-
-  // do something with the price list rules or return them
-}
+const [priceListRules, count] =
+  await pricingModuleService.listAndCountPriceListRules({
+    id: ["plrule_123", "plrule_321"],
+  })
 ```
 
 To specify relations that should be retrieved within the price list rules:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function listAndCountPriceListRules (priceListRuleIds: string[]) {
-  const pricingService = await initializePricingModule()
-
-  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+const [priceListRules, count] =
+  await pricingModuleService.listAndCountPriceListRules(
     {
-      id: priceListRuleIds
+      id: ["plrule_123", "plrule_321"],
     },
     {
-      relations: ["price_list_rule_values"]
+      relations: ["price_list_rule_values"],
     }
   )
-
-  // do something with the price list rules or return them
-}
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function listAndCountPriceListRules (priceListRuleIds: string[], skip: number, take: number) {
-  const pricingService = await initializePricingModule()
-
-  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+const [priceListRules, count] =
+  await pricingModuleService.listAndCountPriceListRules(
     {
-      id: priceListRuleIds
+      id: ["plrule_123", "plrule_321"],
     },
     {
       relations: ["price_list_rule_values"],
-      skip,
-      take
+      take: 20,
+      skip: 2,
     }
   )
-
-  // do something with the price list rules or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeIDs: string[], skip: number, take: number) {
-  const pricingService = await initializePricingModule()
-
-  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
-    {
-      $and: [
-        {
-          id: priceListRuleIds
-        },
-        {
-          rule_types: ruleTypeIDs
-        }
-      ]
-    },
-    {
-      relations: ["price_list_rule_values"],
-      skip,
-      take
-    }
-  )
-
-  // do something with the price list rules or return them
-}
 ```
 
 ## Parameters

@@ -19,81 +19,60 @@ This method is used to create a new price set.
 To create a default price set, don't pass any rules. For example:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceSet () {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.create(
+const priceSet = await pricingModuleService.create({
+  rules: [],
+  prices: [
     {
-      rules: [],
-      prices: [
-        {
-          amount: 500,
-          currency_code: "USD",
-          min_quantity: 0,
-          max_quantity: 4,
-          rules: {},
-        },
-        {
-          amount: 400,
-          currency_code: "USD",
-          min_quantity: 5,
-          max_quantity: 10,
-          rules: {},
-        },
-      ],
+      amount: 500,
+      currency_code: "USD",
+      min_quantity: 0,
+      max_quantity: 4,
+      rules: {},
     },
-  )
-
-  // do something with the price set or return it
-}
+    {
+      amount: 400,
+      currency_code: "USD",
+      min_quantity: 5,
+      max_quantity: 10,
+      rules: {},
+    },
+  ],
+})
 ```
 
 To create a price set and associate it with rule types:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceSet () {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.create(
+const priceSet = await pricingModuleService.create({
+  rules: [
+    { rule_attribute: "region_id" },
+    { rule_attribute: "city" },
+  ],
+  prices: [
     {
-      rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
-      prices: [
-        {
-          amount: 300,
-          currency_code: "EUR",
-          rules: {
-            region_id: "PL",
-            city: "krakow"
-          },
-        },
-        {
-          amount: 400,
-          currency_code: "EUR",
-          rules: {
-            region_id: "PL"
-          },
-        },
-        {
-          amount: 450,
-          currency_code: "EUR",
-          rules: {
-            city: "krakow"
-          },
-        }
-      ],
+      amount: 300,
+      currency_code: "EUR",
+      rules: {
+        region_id: "PL",
+        city: "krakow",
+      },
     },
-  )
-
-  // do something with the price set or return it
-}
+    {
+      amount: 400,
+      currency_code: "EUR",
+      rules: {
+        region_id: "PL",
+      },
+    },
+    {
+      amount: 450,
+      currency_code: "EUR",
+      rules: {
+        city: "krakow",
+      },
+    },
+  ],
+})
 ```
 
 ### Parameters
@@ -110,77 +89,60 @@ This method is used to create multiple price sets.
 
 ### Example
 
-To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
-
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceSets () {
-  const pricingService = await initializePricingModule()
-
-  const priceSets = await pricingService.create([
-    {
-      rules: [],
-      prices: [
-        {
-          amount: 500,
-          currency_code: "USD",
-          rules: {},
+const priceSets = await pricingModuleService.create([
+  // default price set
+  {
+    rules: [],
+    prices: [
+      {
+        amount: 500,
+        currency_code: "USD",
+        min_quantity: 0,
+        max_quantity: 4,
+        rules: {},
+      },
+      {
+        amount: 400,
+        currency_code: "USD",
+        min_quantity: 5,
+        max_quantity: 10,
+        rules: {},
+      },
+    ],
+  },
+  // price set with rules
+  {
+    rules: [
+      { rule_attribute: "region_id" },
+      { rule_attribute: "city" },
+    ],
+    prices: [
+      {
+        amount: 300,
+        currency_code: "EUR",
+        rules: {
+          region_id: "PL",
+          city: "krakow",
         },
-      ],
-    },
-  ])
-
-  // do something with the price sets or return them
-}
-```
-
-To create price sets and associate them with rule types:
-
-```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceSets () {
-  const pricingService = await initializePricingModule()
-
-  const priceSets = await pricingService.create([
-    {
-      rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
-      prices: [
-        {
-          amount: 300,
-          currency_code: "EUR",
-          rules: {
-            region_id: "PL",
-            city: "krakow"
-          },
+      },
+      {
+        amount: 400,
+        currency_code: "EUR",
+        rules: {
+          region_id: "PL",
         },
-        {
-          amount: 400,
-          currency_code: "EUR",
-          min_quantity: 0,
-          max_quantity: 4,
-          rules: {
-            region_id: "PL"
-          },
+      },
+      {
+        amount: 450,
+        currency_code: "EUR",
+        rules: {
+          city: "krakow",
         },
-        {
-          amount: 450,
-          currency_code: "EUR",
-          rules: {
-            city: "krakow"
-          },
-        }
-      ],
-    },
-  ])
-
-  // do something with the price sets or return them
-}
+      },
+    ],
+  },
+])
 ```
 
 ### Parameters

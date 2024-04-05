@@ -15,25 +15,13 @@ This method is used to update price rules, each with their provided data.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function updatePriceRules (
-  id: string,
-  priceSetId: string,
-) {
-  const pricingService = await initializePricingModule()
-
-  const priceRules = await pricingService.updatePriceRules([
+const priceRules =
+  await pricingModuleService.updatePriceRules([
     {
-      id,
-      price_set_id: priceSetId,
-    }
+      id: "prule_123",
+      price_id: "price_123",
+    },
   ])
-
-  // do something with the price rules or return them
-}
 ```
 
 ## Parameters

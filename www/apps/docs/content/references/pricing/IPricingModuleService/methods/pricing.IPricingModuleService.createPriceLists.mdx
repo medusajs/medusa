@@ -15,22 +15,18 @@ This method is used to create price lists.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceList (items: {
-  title: string
-  description: string
-  starts_at?: string
-  ends_at?: string
-}[]) {
-  const pricingService = await initializePricingModule()
-
-  const priceList = await pricingService.createPriceLists(items)
-
-  // do something with the price lists or return them
-}
+const priceLists =
+  await pricingModuleService.createPriceLists([
+    {
+      title: "Sale 1",
+      description: "Summer sale",
+    },
+    {
+      title: "Sale 2",
+      description: "Winter sale",
+      starts_at: "2024-12-21",
+    },
+  ])
 ```
 
 ## Parameters

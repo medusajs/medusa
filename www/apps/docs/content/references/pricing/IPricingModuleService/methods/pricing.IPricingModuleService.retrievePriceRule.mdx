@@ -17,35 +17,17 @@ This method is used to retrieve a price rule by its ID.
 A simple example that retrieves a price rule by its ID:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRule (id: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceRule = await pricingService.retrievePriceRule(id)
-
-  // do something with the price rule or return it
-}
+const priceRule =
+  await pricingModuleService.retrievePriceRule("prule_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function retrievePriceRule (id: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceRule = await pricingService.retrievePriceRule(id, {
-    relations: ["price_set"]
+const priceRule =
+  await pricingModuleService.retrievePriceRule("prule_123", {
+    relations: ["price_set"],
   })
-
-  // do something with the price rule or return it
-}
 ```
 
 ## Parameters

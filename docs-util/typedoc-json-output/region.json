@@ -4299,6 +4299,30 @@
 									"type": "intrinsic",
 									"name": "string"
 								}
+							},
+							{
+								"type": "reference",
+								"target": 7096,
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "intrinsic",
+													"name": "string"
+												}
+											}
+										]
+									}
+								],
+								"name": "OperatorMap",
+								"package": "@medusajs/types"
 							}
 						]
 					}

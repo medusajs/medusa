@@ -15,20 +15,13 @@ This method is used to create price list rules.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function createPriceListRules (items: {
-  rule_type_id: string
-  price_list_id: string
-}[]) {
-  const pricingService = await initializePricingModule()
-
-  const priceListRules = await pricingService.createPriceListRules(items)
-
-  // do something with the price list rule or return them
-}
+const priceListRules =
+  await pricingModuleService.createPriceListRules([
+    {
+      rule_type_id: "rul-typ_123",
+      price_list_id: "plist_123",
+    },
+  ])
 ```
 
 ## Parameters

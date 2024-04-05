@@ -5604,7 +5604,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The main service interface for the customer module."
+						"text": "The main service interface for the Customer Module."
 					}
 				]
 			},
@@ -5644,11 +5644,11 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "A simple example that retrieves a {type name} by its ID:\n\n"
+												"text": "A simple example that retrieves a customer by its ID:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{\n  example - code\n}\n```"
+												"text": "```ts\nconst customer = await customerModuleService.retrieve(\"cus_123\")\n```"
 											},
 											{
 												"kind": "text",
@@ -5656,7 +5656,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{\n  example - code\n}\n```"
+												"text": "```ts\nconst customer = await customerModuleService.retrieve(\"cus_123\", {\n  relations: [\"groups\"],\n})\n```"
 											}
 										]
 									}
@@ -5790,7 +5790,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method creates customers"
+										"text": "This method creates customers."
 									}
 								],
 								"blockTags": [
@@ -5808,7 +5808,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.create([\n  {\n    email: \"john@smith.com\",\n    first_name: \"John\",\n    last_name: \"Smith\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -5894,7 +5894,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method creates customer"
+										"text": "This method creates a customer."
 									}
 								],
 								"blockTags": [
@@ -5912,7 +5912,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customer = await customerModuleService.create({\n  email: \"john@smith.com\",\n  first_name: \"John\",\n  last_name: \"Smith\",\n})\n```"
 											}
 										]
 									}
@@ -6001,7 +6001,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates existing customer."
+										"text": "This method updates an existing customer."
 									}
 								],
 								"blockTags": [
@@ -6019,7 +6019,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customer = await customerModuleService.update(\n  \"cus_123\",\n  {\n    first_name: \"Matt\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -6055,7 +6055,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customer."
+												"text": "The updatable fields of a customer."
 											}
 										]
 									},
@@ -6136,7 +6136,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.update(\n  [\"cus_123\", \"cus_321\"],\n  {\n    company_name: \"Acme\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -6153,7 +6153,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of customer ID's to update."
+												"text": "The IDs of customers to update."
 											}
 										]
 									},
@@ -6175,7 +6175,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customers."
+												"text": "The attributes to update in the customers."
 											}
 										]
 									},
@@ -6241,15 +6241,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates existing customers. Updated customers are selected based on the filters provided in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method updates existing customers."
 									}
 								],
 								"blockTags": [
@@ -6267,7 +6259,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.update(\n  { company_name: \"Acme\" },\n  {\n    company_name: \"Acme Inc.\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -6284,7 +6276,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which customers should be updated."
+												"text": "The filters that specify which API keys should be updated."
 											}
 										]
 									},
@@ -6305,7 +6297,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customers."
+												"text": "The attributes to update in the customers."
 											}
 										]
 									},
@@ -6398,7 +6390,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.delete(\"cus_123\")\n```"
 											}
 										]
 									}
@@ -6492,7 +6484,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.delete([\"cus_123\", \"cus_321\"])\n```"
 											}
 										]
 									}
@@ -6509,7 +6501,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customers to delete."
+												"text": "The IDs of customers."
 											}
 										]
 									},
@@ -6571,15 +6563,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes customers matching the specified filters in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method deletes a customer matching the specified filters."
 									}
 								],
 								"blockTags": [
@@ -6588,7 +6572,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the customers are deleted."
+												"text": "Resolves when the customers are deleted successfully."
 											}
 										]
 									},
@@ -6597,7 +6581,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.delete({\n  id: [\"cus_123\"],\n})\n```"
 											}
 										]
 									}
@@ -6614,7 +6598,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which customers should be deleted."
+												"text": "The filters that specify which customers should be deleted."
 											}
 										]
 									},
@@ -6696,6 +6680,15 @@
 												"text": "The created customer groups."
 											}
 										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst customerGroup =\n  await customerModuleService.createCustomerGroup([\n    {\n      name: \"VIP\",\n    },\n  ])\n```"
+											}
+										]
 									}
 								]
 							},
@@ -6710,7 +6703,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the customer groups to create."
+												"text": "The customer groups to be created."
 											}
 										]
 									},
@@ -6791,6 +6784,15 @@
 												"text": "The created customer group."
 											}
 										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst customerGroup =\n  await customerModuleService.createCustomerGroup({\n    name: \"VIP\",\n  })\n```"
+											}
+										]
 									}
 								]
 							},
@@ -6805,7 +6807,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the customer group to create."
+												"text": "The customer group to be created."
 											}
 										]
 									},
@@ -6886,7 +6888,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The retrieved customer group(s)."
+												"text": "The retrieved customer group."
 											}
 										]
 									},
@@ -6894,20 +6896,8 @@
 										"tag": "@example",
 										"content": [
 											{
-												"kind": "text",
-												"text": "A simple example that retrieves a {type name} by its ID:\n\n"
-											},
-											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroup =\n  await customerModuleService.retrieve(\"cusgroup_123\")\n```"
 											}
 										]
 									}
@@ -6924,7 +6914,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The group's ID."
+												"text": "The customer group's ID."
 											}
 										]
 									},
@@ -7041,7 +7031,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates existing customer group."
+										"text": "This method updates an existing customer group."
 									}
 								],
 								"blockTags": [
@@ -7059,7 +7049,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroup =\n  await customerModuleService.updateCustomerGroups(\n    \"cusgroup_123\",\n    {\n      name: \"Very Important\",\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7095,7 +7085,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customer group."
+												"text": "The attributes to update in the customer group."
 											}
 										]
 									},
@@ -7176,7 +7166,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroups =\n  await customerModuleService.updateCustomerGroups(\n    [\"cusgroup_123\", \"cusgroup_321\"],\n    {\n      name: \"Very Important\",\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7193,7 +7183,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of customer groups IDs to update."
+												"text": "The IDs of customer groups."
 											}
 										]
 									},
@@ -7215,7 +7205,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customer groups."
+												"text": "The attributes to update in the customer groups."
 											}
 										]
 									},
@@ -7281,15 +7271,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates existing customer groups. Updated groups are selected based on the filters provided in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method updates existing customer groups."
 									}
 								],
 								"blockTags": [
@@ -7307,7 +7289,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroups =\n  await customerModuleService.updateCustomerGroups(\n    {\n      name: \"VIP\",\n    },\n    {\n      name: \"Very Important\",\n    }\n  )\n```"
 											}
 										]
 									}
@@ -7324,7 +7306,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which groups should be updated."
+												"text": "The filters that specify which customer groups should be updates."
 											}
 										]
 									},
@@ -7345,7 +7327,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details to update in the customer groups."
+												"text": "The attributes to update in the customer groups."
 											}
 										]
 									},
@@ -7429,7 +7411,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the customer group is deleted."
+												"text": "Resolves when the customer group is deleted successfully."
 											}
 										]
 									},
@@ -7438,7 +7420,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteCustomerGroups(\n  \"cusgroup_123\"\n)\n```"
 											}
 										]
 									}
@@ -7455,7 +7437,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The group's ID."
+												"text": "The customer group's ID."
 											}
 										]
 									},
@@ -7514,7 +7496,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes customer groups by their ID."
+										"text": "This method deletes customer groups by their IDs."
 									}
 								],
 								"blockTags": [
@@ -7523,7 +7505,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the customer groups are deleted."
+												"text": "Resolves when the customer groups are deleted successfully."
 											}
 										]
 									},
@@ -7532,7 +7514,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteCustomerGroups([\n  \"cusgroup_123\",\n  \"cusgroup_321\",\n])\n```"
 											}
 										]
 									}
@@ -7549,7 +7531,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customer groups to delete."
+												"text": "The IDs of customer groups."
 											}
 										]
 									},
@@ -7611,15 +7593,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes customer groups matching the specified filters in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method deletes customer groups matching the specified filters."
 									}
 								],
 								"blockTags": [
@@ -7628,7 +7602,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the customer groups are deleted."
+												"text": "Resolves when the customer groups are deleted successfully."
 											}
 										]
 									},
@@ -7637,7 +7611,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteCustomerGroups({\n  name: \"VIP\",\n})\n```"
 											}
 										]
 									}
@@ -7654,7 +7628,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which groups should be deleted."
+												"text": "The filters that specify which customer group to delete."
 											}
 										]
 									},
@@ -7724,7 +7698,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method adds customers to a group."
+										"text": "This method adds a customer to a group."
 									}
 								],
 								"blockTags": [
@@ -7742,7 +7716,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroupCustomerId =\n  await customerModuleService.addCustomerToGroup({\n    customer_id: \"cus_123\",\n    customer_group_id: \"cus_321\",\n  })\n```"
 											}
 										]
 									}
@@ -7864,7 +7838,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of the relations created between the customers and the groups."
+												"text": "The IDs of the relations between each of the customer and group pairs."
 											}
 										]
 									},
@@ -7873,7 +7847,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroupCustomerIds =\n  await customerModuleService.addCustomerToGroup([\n    {\n      customer_id: \"cus_123\",\n      customer_group_id: \"cus_321\",\n    },\n  ])\n```"
 											}
 										]
 									}
@@ -7890,7 +7864,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "A list of customer-group pairs, where each item in the list indicates the customer and what\ngroup it should be added to."
+												"text": "A list of items, each being the details of a customer and the group it should be added to."
 											}
 										]
 									},
@@ -8013,6 +7987,15 @@
 												"text": "Resolves when the customer is removed from the group successfully."
 											}
 										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait customerModuleService.removeCustomerFromGroup({\n  customer_id: \"cus_123\",\n  customer_group_id: \"cus_321\",\n})\n```"
+											}
+										]
 									}
 								]
 							},
@@ -8027,7 +8010,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The details of the customer and which group to remove it from."
+												"text": "The details of the customer and the group it should be removed from."
 											}
 										]
 									},
@@ -8100,6 +8083,15 @@
 												"text": "Resolves when the customers are removed from the groups successfully."
 											}
 										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait customerModuleService.removeCustomerFromGroup([\n  {\n    customer_id: \"cus_123\",\n    customer_group_id: \"cus_321\",\n  },\n])\n```"
+											}
+										]
 									}
 								]
 							},
@@ -8114,7 +8106,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "A list of customer-group pairs, where each item in the list indicates the customer and what\ngroup it should be removed from."
+												"text": "A list of items, each being the details of a customer and the group it should be removed from."
 											}
 										]
 									},
@@ -8187,7 +8179,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method adds addresses to a customer."
+										"text": "This method adds addresses to customers."
 									}
 								],
 								"blockTags": [
@@ -8196,7 +8188,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The created customer addresses."
+												"text": "The list of created addresses."
 											}
 										]
 									},
@@ -8205,7 +8197,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.addAddresses([\n  {\n    customer_id: \"cus_123\",\n    address_name: \"Home\",\n    address_1: \"432 Stierlin Rd\",\n    city: \"Mountain View\",\n    country_code: \"us\",\n  },\n])\n```"
 											}
 										]
 									}
@@ -8222,7 +8214,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The customer addresses to be created."
+												"text": "A list of items, each being the details of the address to add to a customer."
 											}
 										]
 									},
@@ -8291,7 +8283,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method adds an address to a customer"
+										"text": "This method adds an address to a customer."
 									}
 								],
 								"blockTags": [
@@ -8300,7 +8292,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The created customer address."
+												"text": "The created address."
 											}
 										]
 									},
@@ -8309,7 +8301,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst address = await customerModuleService.addAddresses({\n  customer_id: \"cus_123\",\n  address_name: \"Home\",\n  address_1: \"432 Stierlin Rd\",\n  city: \"Mountain View\",\n  country_code: \"us\",\n})\n```"
 											}
 										]
 									}
@@ -8326,7 +8318,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The customer address to be created."
+												"text": "The details of the address to add to a customer."
 											}
 										]
 									},
@@ -8398,7 +8390,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates an existing address by its ID."
+										"text": "This method updates an address."
 									}
 								],
 								"blockTags": [
@@ -8407,7 +8399,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated addresses."
+												"text": "The updated address."
 											}
 										]
 									},
@@ -8416,7 +8408,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst address = await customerModuleService.updateAddresses(\n  \"cuaddr_123\",\n  {\n    first_name: \"John\",\n    last_name: \"Smith\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -8452,7 +8444,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in the customer address."
+												"text": "The attributes to update in the address."
 											}
 										]
 									},
@@ -8524,7 +8516,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated customer addresses."
+												"text": "The updated addresses."
 											}
 										]
 									},
@@ -8533,7 +8525,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.updateAddresses(\n  [\"cuaddr_123\", \"cuaddr_321\"],\n  {\n    first_name: \"John\",\n    last_name: \"Smith\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -8550,7 +8542,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of addresses to update."
+												"text": "The IDs of addresses to update."
 											}
 										]
 									},
@@ -8572,7 +8564,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in each customer address."
+												"text": "The attributes to update in the addresses."
 											}
 										]
 									},
@@ -8638,15 +8630,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method updates addresses matching the specified filters in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method updates existing addresses matching the specified filters."
 									}
 								],
 								"blockTags": [
@@ -8655,7 +8639,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The updated customer addresses."
+												"text": "The updated addresses."
 											}
 										]
 									},
@@ -8664,7 +8648,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.updateAddresses(\n  { first_name: \"John\" },\n  {\n    last_name: \"Smith\",\n  }\n)\n```"
 											}
 										]
 									}
@@ -8681,7 +8665,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which addresses should be updated."
+												"text": "The filters that specify which address should be updated."
 											}
 										]
 									},
@@ -8702,7 +8686,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The attributes to update in each customer address."
+												"text": "The attributes to update in the addresses."
 											}
 										]
 									},
@@ -8795,7 +8779,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteAddresses(\"cuaddr_123\")\n```"
 											}
 										]
 									}
@@ -8889,7 +8873,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteAddresses([\n  \"cuaddr_123\",\n  \"cuaddr_321\",\n])\n```"
 											}
 										]
 									}
@@ -8906,7 +8890,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of addresses to delete."
+												"text": "The IDs of addresses."
 											}
 										]
 									},
@@ -8968,15 +8952,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes addresses matching the specified filters in the "
-									},
-									{
-										"kind": "code",
-										"text": "`selector`"
-									},
-									{
-										"kind": "text",
-										"text": " parameter."
+										"text": "This method deletes addresses matching the specified filters."
 									}
 								],
 								"blockTags": [
@@ -8985,7 +8961,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the addresses are deleted."
+												"text": "Resolves when the addresses are deleted successfully."
 											}
 										]
 									},
@@ -8994,7 +8970,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.deleteAddresses({\n  first_name: \"John\",\n  last_name: \"Smith\",\n})\n```"
 											}
 										]
 									}
@@ -9011,7 +8987,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to specify which addresses should be deleted."
+												"text": "The filters that specify which addresses should be deleted."
 											}
 										]
 									},
@@ -9099,19 +9075,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of addresses using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.listAddresses({\n  id: [\"cuaddr_123\", \"cuaddr_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the addresses:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.listAddresses(\n  {\n    id: [\"cuaddr_123\", \"cuaddr_321\"],\n  },\n  {\n    relations: [\"customer\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -9119,7 +9095,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -9151,7 +9127,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst addresses = await customerModuleService.listAddresses(\n  {\n    id: [\"cuaddr_123\", \"cuaddr_321\"],\n  },\n  {\n    relations: [\"customer\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -9170,7 +9146,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer address."
+												"text": "The filters to apply on the retrieved addresss."
 											}
 										]
 									},
@@ -9193,7 +9169,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the customer address is retrieved. Its properties, such as "
+												"text": "The configurations determining how the address is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -9209,7 +9185,7 @@
 											},
 											{
 												"kind": "text",
-												"text": ", accept the\nattributes or relations associated with a customer address."
+												"text": ", accept the\nattributes or relations associated with a address."
 											}
 										]
 									},
@@ -9310,19 +9286,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of addresses using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [addresses, count] =\n  await customerModuleService.listAndCountAddresses({\n    id: [\"cuaddr_123\", \"cuaddr_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the addresses:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [addresses, count] =\n  await customerModuleService.listAndCountAddresses(\n    {\n      id: [\"cuaddr_123\", \"cuaddr_321\"],\n    },\n    {\n      relations: [\"customer\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -9330,7 +9306,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -9362,7 +9338,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [addresses, count] =\n  await customerModuleService.listAndCountAddresses(\n    {\n      id: [\"cuaddr_123\", \"cuaddr_321\"],\n    },\n    {\n      relations: [\"customer\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -9381,7 +9357,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer address."
+												"text": "The filters to apply on the retrieved addresss."
 											}
 										]
 									},
@@ -9404,7 +9380,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the customer address is retrieved. Its properties, such as "
+												"text": "The configurations determining how the address is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -9420,7 +9396,7 @@
 											},
 											{
 												"kind": "text",
-												"text": ", accept the\nattributes or relations associated with a customer address."
+												"text": ", accept the\nattributes or relations associated with a address."
 											}
 										]
 									},
@@ -9512,7 +9488,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method retrieves a paginated list of customer group's customers based on optional filters and configuration."
+										"text": "This method retrieves a paginated list of relations between customer and groups based on optional filters and configuration."
 									}
 								],
 								"blockTags": [
@@ -9521,7 +9497,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The list of customer group's customers."
+												"text": "The list of customer-group relations."
 											}
 										]
 									},
@@ -9530,19 +9506,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of customer-group relations using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroupCustomerRels =\n  await customerModuleService.listCustomerGroupCustomers({\n    id: [\"cusgc_123\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the customer-group relations:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroupCustomerRels =\n  await customerModuleService.listCustomerGroupCustomers(\n    {\n      id: [\"cusgc_123\"],\n    },\n    {\n      relations: [\"customer\", \"customer_group\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -9550,7 +9526,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -9582,7 +9558,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroupCustomerRels =\n  await customerModuleService.listCustomerGroupCustomers(\n    {\n      id: [\"cusgc_123\"],\n    },\n    {\n      relations: [\"customer\", \"customer_group\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -9601,7 +9577,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer group customer."
+												"text": "The filters to apply on the retrieved customer-group relations."
 											}
 										]
 									},
@@ -9624,7 +9600,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The configurations determining how the customer group customer is retrieved. Its properties, such as "
+												"text": "The configurations determining how the customer-group relations is retrieved. Its properties, such as "
 											},
 											{
 												"kind": "code",
@@ -9640,7 +9616,7 @@
 											},
 											{
 												"kind": "text",
-												"text": ", accept the\nattributes or relations associated with a customer group customer."
+												"text": ", accept the\nattributes or relations associated with a customer-group relations."
 											}
 										]
 									},
@@ -9741,19 +9717,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of customers using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.list({\n  id: [\"cus_123\", \"cus_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the customers:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.list(\n  {\n    id: [\"cus_123\", \"cus_321\"],\n  },\n  {\n    relations: [\"groups\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -9761,7 +9737,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -9793,7 +9769,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customers = await customerModuleService.list(\n  {\n    id: [\"cus_123\", \"cus_321\"],\n  },\n  {\n    relations: [\"groups\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -9812,7 +9788,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer."
+												"text": "The filters to apply on the retrieved customers."
 											}
 										]
 									},
@@ -9952,19 +9928,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of customers using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customers, count] = await customerModuleService.list({\n  id: [\"cus_123\", \"cus_321\"],\n})\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the customers:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customers, count] = await customerModuleService.list(\n  {\n    id: [\"cus_123\", \"cus_321\"],\n  },\n  {\n    relations: [\"groups\"],\n  }\n)\n```"
 											},
 											{
 												"kind": "text",
@@ -9972,7 +9948,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -10004,7 +9980,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customers, count] = await customerModuleService.list(\n  {\n    id: [\"cus_123\", \"cus_321\"],\n  },\n  {\n    relations: [\"groups\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -10023,7 +9999,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer."
+												"text": "The filters to apply on the retrieved customers."
 											}
 										]
 									},
@@ -10172,19 +10148,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of customer groups using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroups =\n  await customerModuleService.listCustomerGroups({\n    id: [\"cusgroup_123\", \"cusgroup_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the customer groups:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroups =\n  await customerModuleService.listCustomerGroups(\n    {\n      id: [\"cusgroup_123\", \"cusgroup_321\"],\n    },\n    {\n      relations: [\"customers\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10192,7 +10168,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -10224,7 +10200,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst customerGroups =\n  await customerModuleService.listCustomerGroups(\n    {\n      id: [\"cusgroup_123\", \"cusgroup_321\"],\n    },\n    {\n      relations: [\"customers\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10243,7 +10219,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer group."
+												"text": "The filters to apply on the retrieved customer groups."
 											}
 										]
 									},
@@ -10383,19 +10359,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of customer groups using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customerGroups, count] =\n  await customerModuleService.listCustomerGroups({\n    id: [\"cusgroup_123\", \"cusgroup_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the customer groups:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customerGroups, count] =\n  await customerModuleService.listCustomerGroups(\n    {\n      id: [\"cusgroup_123\", \"cusgroup_321\"],\n    },\n    {\n      relations: [\"customers\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10403,7 +10379,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -10435,7 +10411,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst [customerGroups, count] =\n  await customerModuleService.listCustomerGroups(\n    {\n      id: [\"cusgroup_123\", \"cusgroup_321\"],\n    },\n    {\n      relations: [\"customers\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10454,7 +10430,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The filters to apply on the retrieved customer group."
+												"text": "The filters to apply on the retrieved customer groups."
 											}
 										]
 									},
@@ -10594,7 +10570,23 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the customers are deleted successfully."
+												"text": "An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated address.\nThe object's keys are the ID attribute names of the customer entity's relations, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`address_id`"
+											},
+											{
+												"kind": "text",
+												"text": ", and its value is an array of strings, each being the ID of a record associated\nwith the customer through this relation, such as the IDs of associated address.\n\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -10603,7 +10595,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.softDelete([\"cus_123\"])\n```"
 											}
 										]
 									}
@@ -10637,7 +10629,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customers to soft delete."
+												"text": "The IDs of customers."
 											}
 										]
 									},
@@ -10770,7 +10762,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method restores soft deleted customers by their IDs."
+										"text": "This method restores soft deleted customer by their IDs."
 									}
 								],
 								"blockTags": [
@@ -10779,7 +10771,15 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "An object that includes the IDs of related records that were restored, such as the ID of associated address.\nThe object's keys are the ID attribute names of the customer entity's relations,\nand its value is an array of strings, each being the ID of the record associated with the customer through this relation,\nsuch as the IDs of associated addresses."
+												"text": "An object that includes the IDs of related records that were restored.\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -10788,7 +10788,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.restore([\"cus_123\"])\n```"
 											}
 										]
 									}
@@ -10822,7 +10822,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customers to restore."
+												"text": "The IDs of customers."
 											}
 										]
 									},
@@ -10846,7 +10846,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Configurations determining which relations to restore along with each of the customers. You can pass to its "
+												"text": "Configurations determining which relations to restore along with each of the customer. You can pass to its "
 											},
 											{
 												"kind": "code",
@@ -10858,7 +10858,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`addresses`"
+												"text": "`groups`"
 											},
 											{
 												"kind": "text",
@@ -10980,7 +10980,15 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves whe the customer groups are soft-deleted successfully."
+												"text": "An object that includes the IDs of related records that were also soft deleted.\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -10989,7 +10997,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.softDeleteCustomerGroups([\n  \"cusgroup_123\",\n])\n```"
 											}
 										]
 									}
@@ -11023,7 +11031,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customer groups to soft delete."
+												"text": "The IDs of customer groups."
 											}
 										]
 									},
@@ -11156,7 +11164,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method restores soft deleted customer groups by their IDs."
+										"text": "This method restores a soft deleted customer group by its IDs."
 									}
 								],
 								"blockTags": [
@@ -11165,7 +11173,15 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "An object that includes the IDs of related records that were restored, such as the ID of associated customer.\nThe object's keys are the ID attribute names of the customer group entity's relations,\nand its value is an array of strings, each being the ID of the record associated with the customer through this relation,\nsuch as the IDs of associated customer."
+												"text": "An object that includes the IDs of related records that were restored.\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
 											}
 										]
 									},
@@ -11174,7 +11190,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait customerModuleService.restoreCustomerGroups([\n  \"cusgroup_123\",\n])\n```"
 											}
 										]
 									}
@@ -11208,7 +11224,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The list of IDs of customer groups to restore."
+												"text": "The IDs of customer groups."
 											}
 										]
 									},
@@ -11232,7 +11248,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Configurations determining which relations to restore along with each of the customer group. You can pass to its "
+												"text": "Configurations determining which relations to restore along with each of the customer groups. You can pass to its "
 											},
 											{
 												"kind": "code",

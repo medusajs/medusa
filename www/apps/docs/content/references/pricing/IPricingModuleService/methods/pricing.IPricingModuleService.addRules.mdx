@@ -17,22 +17,14 @@ This method adds rules to a price set.
 ### Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addRulesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSet = await pricingService.addRules({
-    priceSetId,
-    rules: [{
-      attribute: "region_id"
-    }]
-  })
-
-  // do something with the price set or return it
-}
+const priceSet = await pricingModuleService.addRules({
+  priceSetId: "pset_123",
+  rules: [
+    {
+      attribute: "region_id",
+    },
+  ],
+})
 ```
 
 ### Parameters
@@ -50,22 +42,24 @@ This method adds rules to multiple price sets.
 ### Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function addRulesToPriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
-
-  const priceSets = await pricingService.addRules([{
-    priceSetId,
-    rules: [{
-      attribute: "region_id"
-    }]
-  }])
-
-  // do something with the price sets or return them
-}
+const priceSets = await pricingModuleService.addRules([
+  {
+    priceSetId: "pset_123",
+    rules: [
+      {
+        attribute: "region_id",
+      },
+    ],
+  },
+  {
+    priceSetId: "pset_321",
+    rules: [
+      {
+        attribute: "customer_group_id",
+      },
+    ],
+  },
+])
 ```
 
 ### Parameters

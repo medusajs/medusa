@@ -5031,7 +5031,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment collection is awaiting payment."
+								"text": "The payment sessions in the payment collection are await authorization."
 							}
 						]
 					},
@@ -5050,7 +5050,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment collection is authorized."
+								"text": "The payment sessions in the payment collection are authorized."
 							}
 						]
 					},
@@ -5088,7 +5088,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment collection is canceled."
+								"text": "The payments in the payment collection are canceled."
 							}
 						]
 					},
@@ -5260,7 +5260,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the Payment Collection"
+								"text": "The ID of the payment collection."
 							}
 						]
 					},
@@ -5279,7 +5279,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The currency of the payments/sessions associated with payment collection"
+								"text": "The ISO 3 character currency code of the payment sessions and payments associated with payment collection."
 							}
 						]
 					},
@@ -5298,7 +5298,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The id of the region"
+								"text": "The id of the associated region."
 							}
 						]
 					},
@@ -5317,7 +5317,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The amount"
+								"text": "The total amount to be authorized and captured."
 							}
 						]
 					},
@@ -5338,7 +5338,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The amount authorized within associated payment sessions"
+								"text": "The amount authorized within the associated payment sessions."
 							}
 						]
 					},
@@ -5359,7 +5359,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The amount refunded from associated payments"
+								"text": "The amount refunded within the associated payments."
 							}
 						]
 					},
@@ -5380,7 +5380,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment collection was completed"
+								"text": "When the payment collection was completed."
 							}
 						]
 					},
@@ -5415,7 +5415,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment collection was created"
+								"text": "When the payment collection was created."
 							}
 						]
 					},
@@ -5450,7 +5450,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment collection was updated"
+								"text": "When the payment collection was updated."
 							}
 						]
 					},
@@ -5485,7 +5485,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Holds custom data in key-value pairs"
+								"text": "Holds custom data in key-value pairs."
 							}
 						]
 					},
@@ -5519,7 +5519,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The status of the payment collection"
+								"text": "The status of the payment collection."
 							}
 						]
 					},
@@ -5540,7 +5540,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment provider for the payments"
+								"text": "The payment provider used to process the associated payment sessions and payments."
 							}
 						],
 						"modifierTags": [
@@ -5569,7 +5569,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated payment sessions"
+								"text": "The associated payment sessions."
 							}
 						],
 						"modifierTags": [
@@ -5598,7 +5598,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated payments"
+								"text": "The associated payments."
 							}
 						],
 						"modifierTags": [
@@ -5930,7 +5930,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved payment sessions."
 					}
 				]
 			},
@@ -6043,6 +6043,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the payment sessions by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6068,6 +6076,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by their currency code."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6092,6 +6108,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by their amount."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -6123,6 +6147,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by the ID of their associated payment provider."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6148,6 +6180,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by the ID of their associated payment collection."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6172,6 +6212,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by the ID of their associated region."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -6210,6 +6258,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by their creation date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6231,6 +6287,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by their update date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6251,6 +6315,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payment sessions by their deletion date."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -6311,7 +6383,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved captures."
 					}
 				]
 			},
@@ -6424,6 +6496,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the captures by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6449,6 +6529,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by their currency code."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6473,6 +6561,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by their amounts."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -6504,6 +6600,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by the ID of their associated payment."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6529,6 +6633,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by their creation date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6550,6 +6662,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by their update date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6570,6 +6690,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the captures by their deletion date."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -6628,7 +6756,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved refunds."
 					}
 				]
 			},
@@ -6741,6 +6869,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the refunds by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6766,6 +6902,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by their currency code."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6790,6 +6934,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by their amount."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -6821,6 +6973,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by the ID of their associated payment."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -6846,6 +7006,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by their creation date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6867,6 +7035,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by their update date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -6887,6 +7063,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the refunds by their deletion date."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -6952,7 +7136,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the Payment"
+								"text": "The ID of the payment."
 							}
 						]
 					},
@@ -6971,7 +7155,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment amount"
+								"text": "The payment's total amount."
 							}
 						]
 					},
@@ -7011,7 +7195,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Payment currency"
+								"text": "The ISO 3 character currency code of the payment."
 							}
 						]
 					},
@@ -7030,7 +7214,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of payment provider"
+								"text": "The ID of the associated payment provider."
 							}
 						]
 					},
@@ -7051,7 +7235,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated cart's ID."
+								"text": "The ID of the associated cart."
 							}
 						]
 					},
@@ -7072,7 +7256,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated order's ID."
+								"text": "The ID of the associated order."
 							}
 						]
 					},
@@ -7093,7 +7277,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated order edit's ID."
+								"text": "The ID of the associated order edit."
 							}
 						]
 					},
@@ -7114,7 +7298,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated customer's ID."
+								"text": "The ID of the associated customer."
 							}
 						]
 					},
@@ -7135,7 +7319,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Payment provider data"
+								"text": "The data relevant for the payment provider to process the payment."
 							}
 						]
 					},
@@ -7171,7 +7355,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment collection was created"
+								"text": "When the payment was created."
 							}
 						]
 					},
@@ -7206,7 +7390,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment collection was updated"
+								"text": "When the payment was updated."
 							}
 						]
 					},
@@ -7241,7 +7425,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment was captured"
+								"text": "When the payment was captured."
 							}
 						]
 					},
@@ -7276,7 +7460,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the payment was canceled"
+								"text": "When the payment was canceled."
 							}
 						]
 					},
@@ -7311,7 +7495,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The sum of the associated captures"
+								"text": "The sum of the associated captures' amounts."
 							}
 						]
 					},
@@ -7332,7 +7516,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The sum of the associated refunds"
+								"text": "The sum of the associated refunds' amounts."
 							}
 						]
 					},
@@ -7353,7 +7537,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated payment captures"
+								"text": "The associated captures."
 							}
 						],
 						"modifierTags": [
@@ -7382,7 +7566,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The associated refunds of the payment"
+								"text": "The associated refunds."
 							}
 						],
 						"modifierTags": [
@@ -7411,7 +7595,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment collection the payment is associated with"
+								"text": "The associated payment collection."
 							}
 						],
 						"modifierTags": [
@@ -7437,7 +7621,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment session from which the payment is created"
+								"text": "The payment session from which the payment is created."
 							}
 						],
 						"modifierTags": [
@@ -7490,7 +7674,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved payments."
 					}
 				]
 			},
@@ -7603,6 +7787,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the payments by."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -7627,6 +7819,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by the ID of their associated payment session."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -7665,6 +7865,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by the ID of their associated customer."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -7701,6 +7909,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by the ID of their associated cart."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -7739,6 +7955,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by the ID of their associated order."
+							}
+						]
+					},
 					"type": {
 						"type": "union",
 						"types": [
@@ -7775,6 +7999,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by the ID of their associated order edit."
+							}
+						]
 					},
 					"type": {
 						"type": "union",
@@ -7813,6 +8045,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by their creation date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -7833,6 +8073,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by their update date."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -7855,6 +8103,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by their capture date."
+							}
+						]
+					},
 					"type": {
 						"type": "reference",
 						"target": 3989,
@@ -7875,6 +8131,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the payments by their cancelation date."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -7951,7 +8215,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the Capture"
+								"text": "The ID of the capture."
 							}
 						]
 					},
@@ -7970,7 +8234,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Captured amount"
+								"text": "The captured amount."
 							}
 						]
 					},
@@ -8015,7 +8279,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Who the capture was created by."
+								"text": "Who the capture was created by. For example,\nthe ID of a user."
 							}
 						]
 					},
@@ -8084,7 +8348,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the Refund"
+								"text": "The ID of the refund"
 							}
 						]
 					},
@@ -8103,7 +8367,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Refunded amount"
+								"text": "The refunded amount."
 							}
 						]
 					},
@@ -8148,7 +8412,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Who created the refund."
+								"text": "Who created the refund. For example,\nthe user's ID."
 							}
 						]
 					},
@@ -8198,6 +8462,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The payment session details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3815,
@@ -8209,7 +8481,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the Payment Session"
+								"text": "The ID of the payment session."
 							}
 						]
 					},
@@ -8228,7 +8500,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The amount"
+								"text": "The amount to authorize."
 							}
 						]
 					},
@@ -8247,7 +8519,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Payment session currency"
+								"text": "The 3 character currency code of the payment session."
 							}
 						]
 					},
@@ -8266,7 +8538,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of payment provider"
+								"text": "The ID of the associated payment provider."
 							}
 						]
 					},
@@ -8285,7 +8557,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Payment provider data"
+								"text": "The data necessary for the payment provider to process the payment session."
 							}
 						]
 					},
@@ -8321,7 +8593,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Payment session context"
+								"text": "The context necessary for the payment provider."
 							}
 						]
 					},
@@ -8355,7 +8627,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The status of the payment session"
+								"text": "The status of the payment session."
 							}
 						]
 					},
@@ -8378,7 +8650,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "When the session was authorized"
+								"text": "When the payment session was authorized."
 							}
 						]
 					},
@@ -8404,7 +8676,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment collection the session is associated with"
+								"text": "The payment collection the session is associated with."
 							}
 						],
 						"modifierTags": [
@@ -8430,7 +8702,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment created from the session"
+								"text": "The payment created from the session."
 							}
 						],
 						"modifierTags": [
@@ -8537,7 +8809,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object used to allow specifying flexible queries with and/or conditions."
+						"text": "The filters to apply on the retrieved payment providers."
 					}
 				]
 			},
@@ -8671,6 +8943,30 @@
 									"type": "intrinsic",
 									"name": "string"
 								}
+							},
+							{
+								"type": "reference",
+								"target": 3989,
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "intrinsic",
+													"name": "string"
+												}
+											}
+										]
+									}
+								],
+								"name": "OperatorMap",
+								"package": "@medusajs/types"
 							}
 						]
 					}
@@ -8687,7 +8983,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Filter by enabled status"
+								"text": "Filter by whether the payment provider is enabled."
 							}
 						]
 					},
@@ -8769,7 +9065,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The currency code of the payment collection."
+								"text": "The ISO 3 character currency code of the payment collection."
 							}
 						]
 					},
@@ -8852,6 +9148,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes in the payment collection to be created or updated."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3803,
@@ -8860,6 +9164,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the payment collection."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -8874,6 +9186,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated region's ID."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -8886,6 +9206,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ISO 3 character currency code of the payment collection."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -8900,6 +9228,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The amount of the payment collection."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "number"
@@ -8912,6 +9248,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -8970,6 +9314,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated region's ID."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -8982,6 +9334,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "{The ISO 3 character currency code of the payment collection."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -8996,6 +9356,14 @@
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The amount of the payment collection."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "number"
@@ -9008,6 +9376,14 @@
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
 					},
 					"type": {
 						"type": "reference",
@@ -9241,7 +9617,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The captured by of the capture."
+								"text": "Who captured the payment. For example,\na user's ID."
 							}
 						]
 					},
@@ -9329,7 +9705,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The created by of the refund."
+								"text": "Who refunded the payment. For example,\na user's ID."
 							}
 						]
 					},
@@ -9394,7 +9770,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The selected currency code."
+								"text": "The ISO 3 character currency code of the payment session."
 							}
 						]
 					},
@@ -9413,7 +9789,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment's amount."
+								"text": "The amount to be authorized."
 							}
 						]
 					},
@@ -9432,15 +9808,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The value of the payment session's "
-							},
-							{
-								"kind": "code",
-								"text": "`data`"
-							},
-							{
-								"kind": "text",
-								"text": " field."
+								"text": "Necessary data for the associated payment provider to process the payment."
 							}
 						]
 					},
@@ -9476,7 +9844,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment session's context."
+								"text": "Necessary context data for the associated payment provider."
 							}
 						]
 					},
@@ -9545,15 +9913,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The value of the payment session's "
-							},
-							{
-								"kind": "code",
-								"text": "`data`"
-							},
-							{
-								"kind": "text",
-								"text": " field."
+								"text": "Necessary data for the associated payment provider to process the payment."
 							}
 						]
 					},
@@ -9587,7 +9947,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The selected currency code."
+								"text": "The ISO 3 character currency code."
 							}
 						]
 					},
@@ -9606,7 +9966,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment's amount."
+								"text": "The amount to be authorized."
 							}
 						]
 					},
@@ -9627,7 +9987,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The payment session's context."
+								"text": "Necessary context data for the associated payment provider."
 							}
 						]
 					},
@@ -9662,7 +10022,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "Webhook"
+						"text": "The details of the webhook event payload."
 					}
 				]
 			},
@@ -9673,6 +10033,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the provider to pass the webhook event payload to."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -9684,6 +10052,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The webhook event payload passed to the specified provider."
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -9703,7 +10079,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Parsed webhook body"
+												"text": "The parsed webhook body."
 											}
 										]
 									},
@@ -9737,7 +10113,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Raw request body"
+												"text": "The raw webhook request body."
 											}
 										]
 									},
@@ -9767,6 +10143,14 @@
 									"variant": "declaration",
 									"kind": 1024,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The headers of the webhook request."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -9822,7 +10206,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "A payment's context."
+						"text": "Context data provided to the payment provider when authorizing a payment session."
 					}
 				]
 			},
@@ -9873,7 +10257,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The customer's email."
+								"text": "The associated customer's email."
 							}
 						]
 					},
@@ -9894,7 +10278,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the resource the payment is associated with i.e. the ID of the PaymentSession in Medusa"
+								"text": "The ID of the resource the payment is associated with. For example, the ID of the payment session."
 							}
 						]
 					},
@@ -9997,7 +10381,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The main service interface for the payment module."
+						"text": "The main service interface for the Payment Module."
 					}
 				]
 			},
@@ -10037,7 +10421,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{\n  example - code\n}\n```"
+												"text": "```ts\nconst paymentCollections = await paymentModuleService.createPaymentCollections([\n  {\n    region_id: \"reg_123\",\n    currency_code: \"usd\",\n    amount: 3000,\n  },\n  {\n    region_id: \"reg_321\",\n    currency_code: \"eur\",\n    amount: 2000,\n  },\n])\n```"
 											}
 										]
 									}
@@ -10141,7 +10525,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.createPaymentCollections({\n    region_id: \"reg_123\",\n    currency_code: \"usd\",\n    amount: 3000,\n  })\n```"
 											}
 										]
 									}
@@ -10252,7 +10636,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.retrievePaymentCollection(\n    \"pay_col_123\"\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10260,7 +10644,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.retrievePaymentCollection(\n    \"pay_col_123\",\n    {\n      relations: [\"payment_sessions\"],\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10412,19 +10796,19 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "To retrieve a list of {type name} using their IDs:\n\n"
+												"text": "To retrieve a list of payment collections using their IDs:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listPaymentCollections({\n    id: [\"pay_col_123\", \"pay_col_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
-												"text": "\n\nTo specify relations that should be retrieved within the {type name}:\n\n"
+												"text": "\n\nTo specify relations that should be retrieved within the payment collection:\n\n"
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listPaymentCollections(\n    {\n      id: [\"pay_col_123\", \"pay_col_321\"],\n    },\n    {\n      relations: [\"payment_sessions\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10432,7 +10816,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "`{default limit}`"
+												"text": "`15`"
 											},
 											{
 												"kind": "text",
@@ -10464,7 +10848,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listPaymentCollections(\n    {\n      id: [\"pay_col_123\", \"pay_col_321\"],\n    },\n    {\n      relations: [\"payment_sessions\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10627,7 +11011,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listAndCountPaymentCollections({\n    id: [\"pay_col_123\", \"pay_col_321\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -10635,7 +11019,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listAndCountPaymentCollections(\n    {\n      id: [\"pay_col_123\", \"pay_col_321\"],\n    },\n    {\n      relations: [\"payment_sessions\"],\n    }\n  )\n```"
 											},
 											{
 												"kind": "text",
@@ -10675,7 +11059,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.listAndCountPaymentCollections(\n    {\n      id: [\"pay_col_123\", \"pay_col_321\"],\n    },\n    {\n      relations: [\"payment_sessions\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}
@@ -10821,6 +11205,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates an existing payment collection."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated payment collection."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.updatePaymentCollections(\n    \"pay_col_123\",\n    {\n      amount: 3000,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3632,
@@ -10828,6 +11240,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The payment collection's ID."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -10839,6 +11259,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the payment collection."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3797,
@@ -10853,6 +11281,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10886,6 +11322,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing payment collections matching the specified filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated payment collections."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.updatePaymentCollections(\n    {\n      id: [\"pay_col_123\", \"pay_col_321\"],\n    },\n    {\n      currency_code: \"usd\",\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3636,
@@ -10893,6 +11357,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters specifying which payment collections to update."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3790,
@@ -10906,6 +11378,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the payment collections."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3797,
@@ -10920,6 +11400,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -10965,6 +11453,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates payment collections if they don't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated payment collections."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentCollections =\n  await paymentModuleService.upsertPaymentCollections([\n    {\n      id: \"pay_col_123\",\n      region_id: \"reg_123\",\n    },\n    {\n      region_id: \"reg_123\",\n      currency_code: \"usd\",\n      amount: 3000,\n    },\n  ])\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3641,
@@ -10972,6 +11488,22 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the payment collections to be created or updated. If\nthe object includes the "
+											},
+											{
+												"kind": "code",
+												"text": "`id`"
+											},
+											{
+												"kind": "text",
+												"text": " field, then the payment collection is updated. Otherise, it's created."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -10989,6 +11521,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -11025,6 +11565,34 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates a payment collection if it doesn't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated payment collection."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.upsertPaymentCollections({\n    id: \"pay_col_123\",\n    region_id: \"reg_123\",\n  })\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3644,
@@ -11032,6 +11600,22 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the payment collection to be created or updated. If the "
+											},
+											{
+												"kind": "code",
+												"text": "`id`"
+											},
+											{
+												"kind": "text",
+												"text": "\nfield is included, the payment collection is updated. Otherwise, it's created."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3802,
@@ -11046,6 +11630,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -11101,7 +11693,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the payment collection is deleted."
+												"text": "Resolves when the payment collection is deleted successfully."
 											}
 										]
 									},
@@ -11110,7 +11702,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait paymentModuleService.deletePaymentCollections([\n  \"pay_col_123\",\n  \"pay_col_321\",\n])\n```"
 											}
 										]
 									}
@@ -11198,7 +11790,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves when the payment collection is deleted."
+												"text": "Resolves when the payment collection is deleted successfully."
 											}
 										]
 									},
@@ -11207,7 +11799,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait paymentModuleService.deletePaymentCollections(\n  \"pay_col_123\"\n)\n```"
 											}
 										]
 									}
@@ -11292,7 +11884,15 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method completes a payment collection."
+										"text": "This method marks a payment collection as completed by settings its "
+									},
+									{
+										"kind": "code",
+										"text": "`completed_at`"
+									},
+									{
+										"kind": "text",
+										"text": " field to the current date and time."
 									}
 								],
 								"blockTags": [
@@ -11310,7 +11910,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.completePaymentCollections(\n    \"pay_col_123\"\n  )\n```"
 											}
 										]
 									}
@@ -11388,7 +11988,15 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method completes payment collections."
+										"text": "This method marks payment collections as completed by settings their "
+									},
+									{
+										"kind": "code",
+										"text": "`completed_at`"
+									},
+									{
+										"kind": "text",
+										"text": " field to the current date and time."
 									}
 								],
 								"blockTags": [
@@ -11406,7 +12014,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentCollection =\n  await paymentModuleService.completePaymentCollections([\n    \"pay_col_123\",\n    \"pay_col_321\",\n  ])\n```"
 											}
 										]
 									}
@@ -11499,7 +12107,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method creates a payment session for a payment collection."
+										"text": "This method creates a payment session in a payment collection."
 									}
 								],
 								"blockTags": [
@@ -11517,7 +12125,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentSession =\n  await paymentModuleService.createPaymentSession(\n    \"pay_col_1\",\n    {\n      provider_id: \"stripe\",\n      currency_code: \"usd\",\n      amount: 3000,\n      data: {},\n    }\n  )\n```"
 											}
 										]
 									}
@@ -11643,7 +12251,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst paymentSession =\n  await paymentModuleService.updatePaymentSession({\n    id: \"payses_123\",\n    currency_code: \"usd\",\n    amount: 3000,\n    data: {},\n  })\n```"
 											}
 										]
 									}
@@ -11741,7 +12349,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves whent the payment session is deleted."
+												"text": "Resolves whent the payment session is deleted successfully."
 											}
 										]
 									},
@@ -11750,7 +12358,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nawait paymentModuleService.deletePaymentSession(\"payses_123\")\n```"
 											}
 										]
 									}
@@ -11835,7 +12443,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method authorizes a payment session."
+										"text": "This method authorizes a payment session using its associated payment provider. This creates a payment that can later be captured.\n\nLearn more about the payment flow in [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/)"
 									}
 								],
 								"blockTags": [
@@ -11844,7 +12452,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The details of the payment created from the authorized payment session."
+												"text": "The created payment."
 											}
 										]
 									},
@@ -11853,7 +12461,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payment =\n  await paymentModuleService.authorizePaymentSession(\n    \"payses_123\",\n    {}\n  )\n```"
 											}
 										]
 									}
@@ -11889,7 +12497,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The associated payment provider's context."
+												"text": "Context data to pass to the associated payment provider."
 											}
 										]
 									},
@@ -11970,6 +12578,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of payment sessions based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of payment sessions."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of payment sessions using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentSessions =\n  await paymentModuleService.listPaymentSessions({\n    id: [\"payses_123\", \"payses_321\"],\n  })\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the payment session:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentSessions =\n  await paymentModuleService.listPaymentSessions(\n    {\n      id: [\"payses_123\", \"payses_321\"],\n    },\n    {\n      relations: [\"payment\"],\n    }\n  )\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentSessions =\n  await paymentModuleService.listPaymentSessions(\n    {\n      id: [\"payses_123\", \"payses_321\"],\n    },\n    {\n      relations: [\"payment\"],\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3680,
@@ -11978,6 +12666,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved payment sessions."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -11993,6 +12689,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the payment session is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a payment session."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12016,6 +12736,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12082,8 +12810,60 @@
 										"tag": "@example",
 										"content": [
 											{
+												"kind": "text",
+												"text": "To retrieve a list of payments using their IDs:\n\n"
+											},
+											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payments = await paymentModuleService.listPayments({\n  id: [\"pay_123\", \"pay_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the payment:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst payments = await paymentModuleService.listPayments(\n  {\n    id: [\"pay_123\", \"pay_321\"],\n  },\n  {\n    relations: [\"payment_session\"],\n  }\n)\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst payments = await paymentModuleService.listPayments(\n  {\n    id: [\"pay_123\", \"pay_321\"],\n  },\n  {\n    relations: [\"payment_session\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -12242,7 +13022,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payment = await paymentModuleService.updatePayment({\n  id: \"pay_123\",\n  customer_id: \"cus_123\",\n})\n```"
 											}
 										]
 									}
@@ -12331,7 +13111,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method captures a payment."
+										"text": "This method captures a payment using its associated payment provider.\n\nLearn more about the payment flow in [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/)"
 									}
 								],
 								"blockTags": [
@@ -12349,7 +13129,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payment = await paymentModuleService.capturePayment({\n  payment_id: \"pay_123\",\n})\n```"
 											}
 										]
 									}
@@ -12438,7 +13218,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method refunds a payment."
+										"text": "This method refunds a payment using its associated payment provider. An amount can only be refunded if it has been captured first."
 									}
 								],
 								"blockTags": [
@@ -12456,7 +13236,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payment = await paymentModuleService.refundPayment({\n  payment_id: \"pay_123\",\n  amount: 300,\n})\n```"
 											}
 										]
 									}
@@ -12545,7 +13325,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method cancels a payment"
+										"text": "This method cancels a payment."
 									}
 								],
 								"blockTags": [
@@ -12563,7 +13343,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\n{example-code}\n```"
+												"text": "```ts\nconst payment =\n  await paymentModuleService.cancelPayment(\"pay_123\")\n```"
 											}
 										]
 									}
@@ -12646,6 +13426,78 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of payment providers based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of payment providers."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of payment providers using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentProviders =\n  await paymentModuleService.listPaymentProviders({\n    id: [\"stripe\", \"system\"],\n  })\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst paymentProviders =\n  await paymentModuleService.listPaymentProviders(\n    {\n      id: [\"stripe\", \"system\"],\n    },\n    {\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3706,
@@ -12654,6 +13506,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved payment providers."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12669,6 +13529,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the payment provider is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a payment provider."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12692,6 +13576,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12737,6 +13629,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of captures based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of captures."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of captures using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst captures = await paymentModuleService.listCaptures({\n  id: [\"capt_123\", \"capt_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the capture:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst captures = await paymentModuleService.listCaptures(\n  {\n    id: [\"capt_123\", \"capt_321\"],\n  },\n  {\n    relations: [\"payment\"],\n  }\n)\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst captures = await paymentModuleService.listCaptures(\n  {\n    id: [\"capt_123\", \"capt_321\"],\n  },\n  {\n    relations: [\"payment\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3711,
@@ -12745,6 +13717,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved captures."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12760,6 +13740,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the capture is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a capture."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12783,6 +13787,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12828,6 +13840,86 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of refunds based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of refunds."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of refunds using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst refunds = await paymentModuleService.listRefunds({\n  id: [\"ref_123\", \"ref_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the refund:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst refunds = await paymentModuleService.listRefunds(\n  {\n    id: [\"ref_123\", \"ref_321\"],\n  },\n  {\n    relations: [\"payment\"],\n  }\n)\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst refunds = await paymentModuleService.listRefunds(\n  {\n    id: [\"ref_123\", \"ref_321\"],\n  },\n  {\n    relations: [\"payment\"],\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3716,
@@ -12836,6 +13928,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved refunds."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12851,6 +13951,30 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the refund is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a refund."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12874,6 +13998,14 @@
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12919,6 +14051,54 @@
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method handles a webhook event with the associated payment provider.\n\nLearn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)"
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the webhook event is handled successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "In the following example, "
+											},
+											{
+												"kind": "code",
+												"text": "`req`"
+											},
+											{
+												"kind": "text",
+												"text": " is an instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaRequest`"
+											},
+											{
+												"kind": "text",
+												"text": ":\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nawait paymentModuleService.processEvent({\n  provider: \"stripe\",\n  payload: {\n    data: req.body,\n    rawData: req.rawBody,\n    headers: req.headers,\n  },\n})\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3721,
@@ -12926,6 +14106,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The webhook event's details."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": 3931,
@@ -12997,6 +14185,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The options that the Payment Module accepts."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3733,

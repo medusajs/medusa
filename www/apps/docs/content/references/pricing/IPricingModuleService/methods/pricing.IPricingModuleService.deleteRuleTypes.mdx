@@ -15,15 +15,10 @@ This method is used to delete rule types based on the provided IDs.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function deleteRuleTypes (ruleTypeId: string) {
-  const pricingService = await initializePricingModule()
-
-  await pricingService.deleteRuleTypes([ruleTypeId])
-}
+const ruleTypes = await pricingModuleService.deleteRuleTypes([
+  "rul-typ_123",
+  "rul-typ_321",
+])
 ```
 
 ## Parameters

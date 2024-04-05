@@ -15,17 +15,10 @@ This method is used to delete price rules based on the specified IDs.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function deletePriceRules (
-  id: string,
-) {
-  const pricingService = await initializePricingModule()
-
-  await pricingService.deletePriceRules([id])
-}
+await pricingModuleService.deletePriceRules([
+  "prule_123",
+  "prule_321",
+])
 ```
 
 ## Parameters

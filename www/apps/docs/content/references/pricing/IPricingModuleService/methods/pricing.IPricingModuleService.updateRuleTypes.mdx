@@ -15,22 +15,16 @@ This method is used to update existing rule types with the provided data.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function updateRuleTypes (ruleTypeId: string) {
-  const pricingService = await initializePricingModule()
-
-  const ruleTypes = await pricingService.updateRuleTypes([
-    {
-      id: ruleTypeId,
-      name: "Region",
-    }
-  ])
-
-  // do something with the rule types or return them
-}
+const ruleTypes = await pricingModuleService.updateRuleTypes([
+  {
+    id: "rul-typ_123",
+    name: "Region",
+  },
+  {
+    id: "rul-typ_321",
+    name: "Customer Group",
+  },
+])
 ```
 
 ## Parameters

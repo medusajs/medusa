@@ -15,20 +15,12 @@ This method remove rules from a price set.
 ## Example
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
-  const pricingService = await initializePricingModule()
-
-  await pricingService.removeRules([
-    {
-      id: priceSetId,
-      rules: ruleAttributes
-    },
-  ])
-}
+await pricingModuleService.removeRules([
+  {
+    id: "pset_123",
+    rules: ["region_id"],
+  },
+])
 ```
 
 ## Parameters

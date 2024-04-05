@@ -344,7 +344,18 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ISO 3 code of the currency."
+								"text": "The ISO 3 character code of the currency."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nusd\n```"
+									}
+								]
 							}
 						]
 					},
@@ -365,6 +376,17 @@
 								"kind": "text",
 								"text": "The symbol of the currency."
 							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\n$\n```"
+									}
+								]
+							}
 						]
 					},
 					"type": {
@@ -384,6 +406,17 @@
 								"kind": "text",
 								"text": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price."
 							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\n$\n```"
+									}
+								]
+							}
 						]
 					},
 					"type": {
@@ -402,6 +435,17 @@
 							{
 								"kind": "text",
 								"text": "The name of the currency."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nUS Dollar\n```"
+									}
+								]
 							}
 						]
 					},
@@ -600,7 +644,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The main service interface for the currency module."
+						"text": "The main service interface for the Currency Module."
 					}
 				]
 			},
@@ -639,20 +683,8 @@
 										"tag": "@example",
 										"content": [
 											{
-												"kind": "text",
-												"text": "A simple example that retrieves a currency by its code:\n\n"
-											},
-											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrency (code: string) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const currency = await currencyModule.retrieve(\n    code\n  )\n\n  // do something with the currency or return it\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo specify attributes that should be retrieved:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrency (code: string) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const currency = await currencyModule.retrieve(\n    code,\n    {\n      select: [\"symbol_native\"]\n    }\n  )\n\n  // do something with the currency or return it\n}\n```"
+												"text": "```ts\nconst currency = await currencyModuleService.retrieve(\"usd\")\n```"
 											}
 										]
 									}
@@ -808,15 +840,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[]) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const currencies = await currencyModule.list(\n    {\n      code: codes\n    },\n  )\n\n  // do something with the currencies or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo specify attributes that should be retrieved within the money amounts:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[]) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const currencies = await currencyModule.list(\n    {\n      code: codes\n    },\n    {\n      select: [\"symbol_native\"]\n    }\n  )\n\n  // do something with the currencies or return them\n}\n```"
+												"text": "```ts\nconst currencies = await currencyModuleService.list({\n  code: [\"usd\", \"eur\"],\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -856,7 +880,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[], skip: number, take: number) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const currencies = await currencyModule.list(\n    {\n      code: codes\n    },\n    {\n      select: [\"symbol_native\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the currencies or return them\n}\n```"
+												"text": "```ts\nconst currencies = await currencyModuleService.list(\n  {\n    code: [\"usd\", \"eur\"],\n  },\n  {\n    take: 20,\n    skip: 2,\n  }\n)\n```"
 											}
 										]
 									}
@@ -1019,15 +1043,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[]) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const [currencies, count] = await currencyModule.listAndCount(\n    {\n      code: codes\n    },\n  )\n\n  // do something with the currencies or return them\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\nTo specify attributes that should be retrieved within the money amounts:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[]) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const [currencies, count] = await currencyModule.listAndCount(\n    {\n      code: codes\n    },\n    {\n      select: [\"symbol_native\"]\n    }\n  )\n\n  // do something with the currencies or return them\n}\n```"
+												"text": "```ts\nconst [currencies, count] =\n  await currencyModuleService.listAndCount({\n    code: [\"usd\", \"eur\"],\n  })\n```"
 											},
 											{
 												"kind": "text",
@@ -1067,7 +1083,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  initialize as initializeCurrencyModule,\n} from \"@medusajs/currency\"\n\nasync function retrieveCurrencies (codes: string[], skip: number, take: number) {\n  const currencyModule = await initializeCurrencyModule()\n\n  const [currencies, count] = await currencyModule.listAndCount(\n    {\n      code: codes\n    },\n    {\n      select: [\"symbol_native\"],\n      skip,\n      take\n    }\n  )\n\n  // do something with the currencies or return them\n}\n```"
+												"text": "```ts\nconst [currencies, count] =\n  await currencyModuleService.listAndCount(\n    {\n      code: [\"usd\", \"eur\"],\n    },\n    {\n      take: 20,\n      skip: 2,\n    }\n  )\n```"
 											}
 										]
 									}

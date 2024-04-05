@@ -14,20 +14,18 @@ This method retrieves a customer by its ID.
 
 ## Example
 
-A simple example that retrieves a &#123;type name&#125; by its ID:
+A simple example that retrieves a customer by its ID:
 
 ```ts
-{
-  example - code
-}
+const customer = await customerModuleService.retrieve("cus_123")
 ```
 
 To specify relations that should be retrieved:
 
 ```ts
-{
-  example - code
-}
+const customer = await customerModuleService.retrieve("cus_123", {
+  relations: ["groups"],
+})
 ```
 
 ## Parameters
