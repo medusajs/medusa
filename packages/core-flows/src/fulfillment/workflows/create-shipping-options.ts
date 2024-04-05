@@ -4,8 +4,11 @@ import {
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
-import { createShippingOptionsStep } from "../steps/create-shipping-options"
-import { setShippingOptionsPricesStep } from "../steps/set-shipping-options-prices"
+import {
+  createShippingOptionsPriceSetsStep,
+  createShippingOptionsStep,
+} from "../steps"
+import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
 
 export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
@@ -51,7 +54,15 @@ export const createShippingOptionsWorkflow = createWorkflow(
       }
     )
 
-    setShippingOptionsPricesStep({ input: normalizedShippingOptionsPrices })
+    const shippingOptionsPriceSetsLinkData = createShippingOptionsPriceSetsStep(
+      {
+        input: normalizedShippingOptionsPrices,
+      }
+    )
+
+    setShippingOptionsPriceSetsStep({
+      input: shippingOptionsPriceSetsLinkData,
+    })
 
     return createdShippingOptions
   }
