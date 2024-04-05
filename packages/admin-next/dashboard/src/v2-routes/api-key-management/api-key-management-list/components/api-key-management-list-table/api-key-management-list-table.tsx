@@ -72,7 +72,7 @@ export const ApiKeyManagementListTable = ({
         table={table}
         filters={filters}
         columns={columns}
-        count={1}
+        count={count}
         pageSize={PAGE_SIZE}
         orderBy={["title", "created_at", "updated_at", "revoked_at"]}
         navigateTo={(row) => `/settings/api-key-management/${row.id}`}
