@@ -1,4 +1,4 @@
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { Transform, Type } from "class-transformer"
 import {
   IsNotEmpty,
   IsObject,
@@ -6,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
 import { IsType } from "../../../utils"
 
@@ -285,4 +285,14 @@ export class AdminGetStockLocationsLocationParams extends FindParams {}
 export class AdminStockLocationsLocationSalesChannelBatchReq {
   @IsString({ each: true })
   sales_channel_ids: string[]
+}
+
+export class AdminPostStockLocationsFulfillmentSetReq {
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
+  @IsString()
+  @IsNotEmpty()
+  type: string
 }
