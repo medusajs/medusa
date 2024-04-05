@@ -33,11 +33,12 @@ export interface PricingContext {
 /**
  * @interface
  *
- * Filters to apply on prices.
+ * Filters to apply when calculating prices.
  */
 export interface PricingFilters {
   /**
-   * IDs to filter prices.
+   * IDs of the price sets to use in the
+   * calculation.
    */
   id: string[]
 }
@@ -282,11 +283,12 @@ export interface CreatePriceSetDTO {
 /**
  * @interface
  *
- * The data to upsert in a price set. The `id` is used in the case we are doing an update.
+ * The data to upsert in a price set.
  */
 export interface UpsertPriceSetDTO extends UpdatePriceSetDTO {
   /**
    * A string indicating the ID of the price set to update.
+   * If not provided, a price set is created.
    */
   id?: string
 }
@@ -294,7 +296,7 @@ export interface UpsertPriceSetDTO extends UpdatePriceSetDTO {
 /**
  * @interface
  *
- * The data to update in a price set. The `id` is used to identify which price set to update.
+ * The data to update in a price set.
  */
 export interface UpdatePriceSetDTO {
   /**
