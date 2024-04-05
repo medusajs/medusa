@@ -40,8 +40,8 @@ export const CreatePublishableApiKeyForm = ({
       // @ts-ignore type is wrong compared to validation
       { title: values.title, type: "publishable" },
       {
-        onSuccess: ({ api_key }) => {
-          handleSuccess(`/settings/api-key-management/${api_key.id}`)
+        onSuccess: ({ apiKey }) => {
+          handleSuccess(`/settings/api-key-management/${apiKey.id}`)
         },
       }
     )
