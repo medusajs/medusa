@@ -154,7 +154,6 @@
     "editAttributes": "Edit Attributes",
     "organization": "Organize",
     "editOrganization": "Edit Organization",
-    "options": "Options",
     "editOptions": "Edit Options",
     "media": {
       "label": "Media",
@@ -249,6 +248,15 @@
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
         "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+      }
+    },
+    "options": {
+      "header": "Options",
+      "edit": {
+        "header": "Edit Option"
+      },
+      "create": {
+        "header": "Create Option"
       }
     }
   },
@@ -852,8 +860,8 @@
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
   },
-  "executions": {
-    "domain": "Executions",
+  "workflowExecutions": {
+    "domain": "Workflows",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
     "progressLabel": "Progress",

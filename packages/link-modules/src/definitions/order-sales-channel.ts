@@ -1,7 +1,7 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
 
 import { Modules } from "@medusajs/modules-sdk"
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const OrderSalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.OrderSalesChannel,
