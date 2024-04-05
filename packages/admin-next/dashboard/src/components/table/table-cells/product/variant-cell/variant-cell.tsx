@@ -1,10 +1,10 @@
-import { ProductVariant } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
 
+import { ProductVariantDTO } from "@medusajs/types"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
 type VariantCellProps = {
-  variants?: ProductVariant[] | null
+  variants?: ProductVariantDTO[] | null
 }
 
 export const VariantCell = ({ variants }: VariantCellProps) => {

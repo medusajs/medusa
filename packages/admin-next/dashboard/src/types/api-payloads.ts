@@ -5,6 +5,7 @@
 import {
   CreateApiKeyDTO,
   CreateCustomerDTO,
+  CreateInviteDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
   UpdateApiKeyDTO,
@@ -36,6 +37,11 @@ export type UpdateCustomerReq = UpdateCustomerDTO
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO
 export type UpdateSalesChannelReq = UpdateSalesChannelDTO
+export type AddProductsSalesChannelReq = { product_ids: string[] }
+export type RemoveProductsSalesChannelReq = { product_ids: string[] }
 
 // Users
 export type UpdateUserReq = Omit<UpdateUserDTO, "id">
+
+// Invites
+export type CreateInviteReq = CreateInviteDTO

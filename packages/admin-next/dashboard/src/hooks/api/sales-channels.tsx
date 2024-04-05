@@ -10,10 +10,17 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
+  AddProductsSalesChannelReq,
   CreateSalesChannelReq,
+  RemoveProductsSalesChannelReq,
   UpdateSalesChannelReq,
 } from "../../types/api-payloads"
-import { SalesChannelListRes, SalesChannelRes } from "../../types/api-responses"
+import {
+  SalesChannelDeleteRes,
+  SalesChannelListRes,
+  SalesChannelRes,
+} from "../../types/api-responses"
+import { productsQueryKeys } from "./products"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
 const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
@@ -77,6 +84,103 @@ export const useUpdateSalesChannel = (
       })
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<SalesChannelDeleteRes, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.salesChannels.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.detail(id),
+      })
+
+      // Invalidate all products to ensure they are updated if they were linked to the sales channel
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.all,
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useSalesChannelRemoveProducts = (
+  id: string,
+  options?: UseMutationOptions<
+    SalesChannelRes,
+    Error,
+    RemoveProductsSalesChannelReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.salesChannels.removeProducts(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.detail(id),
+      })
+
+      // Invalidate the products that were removed
+      for (const product of variables?.product_ids || []) {
+        queryClient.invalidateQueries({
+          queryKey: productsQueryKeys.detail(product),
+        })
+      }
+
+      // Invalidate the products list query
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useSalesChannelAddProducts = (
+  id: string,
+  options?: UseMutationOptions<
+    SalesChannelRes,
+    Error,
+    AddProductsSalesChannelReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.salesChannels.addProducts(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.detail(id),
+      })
+
+      // Invalidate the products that were removed
+      for (const product of variables?.product_ids || []) {
+        queryClient.invalidateQueries({
+          queryKey: productsQueryKeys.detail(product),
+        })
+      }
+
+      // Invalidate the products list query
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.lists(),
       })
 
       options?.onSuccess?.(data, variables, context)

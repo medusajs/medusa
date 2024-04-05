@@ -2,6 +2,9 @@ import { apiKeys } from "./api-keys"
 import { auth } from "./auth"
 import { currencies } from "./currencies"
 import { customers } from "./customers"
+import { invites } from "./invites"
+import { productTypes } from "./product-types"
+import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
 import { salesChannels } from "./sales-channels"
@@ -18,4 +21,7 @@ export const client = {
   salesChannels: salesChannels,
   users: users,
   regions: regions,
+  invites: invites,
+  products: products,
+  productTypes: productTypes,
 }

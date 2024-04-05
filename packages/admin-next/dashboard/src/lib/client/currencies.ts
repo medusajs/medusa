@@ -1,15 +1,12 @@
 import { CurrencyListRes, CurrencyRes } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { getRequest } from "./common"
 
-async function retrieveCurrency(id: string) {
-  return makeRequest<CurrencyRes>(`/admin/currencies/${id}`)
+async function retrieveCurrency(id: string, query?: Record<string, any>) {
+  return getRequest<CurrencyRes>(`/admin/currencies/${id}`, query)
 }
 
 async function listCurrencies(query?: Record<string, any>) {
-  return makeRequest<CurrencyListRes, Record<string, any>>(
-    "/admin/currencies",
-    query
-  )
+  return getRequest<CurrencyListRes>("/admin/currencies", query)
 }
 
 export const currencies = {

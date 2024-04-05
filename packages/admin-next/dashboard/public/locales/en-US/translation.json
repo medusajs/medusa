@@ -640,7 +640,7 @@
     "inviteUserHint": "Invite a new user to your store.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
-    "revokeInviteWarning": "You are about to revoke the invite for {{email}}. This action cannot be undone.",
+    "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
     "expiredOnDate": "Expired on {{date}}",

@@ -8,8 +8,6 @@ import type {
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
-  AdminSalesChannelsRes,
-  AdminUserRes,
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -647,38 +645,6 @@ export const v1Routes: RouteObject[] = [
             ],
           },
           {
-            path: "users",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Users",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/users/user-list"),
-                children: [
-                  {
-                    path: "invite",
-                    lazy: () => import("../../routes/users/user-invite"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/users/user-detail"),
-                handle: {
-                  crumb: (data: AdminUserRes) => data.user.email,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/users/user-edit"),
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "taxes",
             handle: {
               crumb: () => "Taxes",
@@ -711,52 +677,6 @@ export const v1Routes: RouteObject[] = [
                     path: "tax-rates/:rate_id/edit-overrides",
                     lazy: () =>
                       import("../../routes/taxes/tax-rate-edit-overrides"),
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "sales-channels",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Sales Channels",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () =>
-                  import("../../routes/sales-channels/sales-channel-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import(
-                        "../../routes/sales-channels/sales-channel-create"
-                      ),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () =>
-                  import("../../routes/sales-channels/sales-channel-detail"),
-                handle: {
-                  crumb: (data: AdminSalesChannelsRes) =>
-                    data.sales_channel.name,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import("../../routes/sales-channels/sales-channel-edit"),
-                  },
-                  {
-                    path: "add-products",
-                    lazy: () =>
-                      import(
-                        "../../routes/sales-channels/sales-channel-add-products"
-                      ),
                   },
                 ],
               },

@@ -6,6 +6,12 @@ import {
   ApiKeyDTO,
   CurrencyDTO,
   CustomerDTO,
+  InviteDTO,
+  ProductCategoryDTO,
+  ProductCollectionDTO,
+  ProductDTO,
+  ProductTypeDTO,
+  ProductVariantDTO,
   PromotionDTO,
   RegionDTO,
   SalesChannelDTO,
@@ -40,6 +46,7 @@ export type PromotionDeleteRes = DeleteRes
 // Users
 export type UserRes = { user: UserDTO }
 export type UserListRes = { users: UserDTO[] } & ListRes
+export type UserDeleteRes = DeleteRes
 
 // Stores
 export type ExtendedStoreDTO = StoreDTO & {
@@ -69,3 +76,23 @@ export type SalesChannelDeleteRes = DeleteRes
 // Currencies
 export type CurrencyRes = { currency: CurrencyDTO }
 export type CurrencyListRes = { currencies: CurrencyDTO[] } & ListRes
+
+// Invites
+export type InviteRes = { invite: InviteDTO }
+export type InviteListRes = { invites: InviteDTO[] } & ListRes
+export type InviteDeleteRes = DeleteRes
+
+// Products
+export type ExtendedProductDTO = ProductDTO & {
+  variants: ProductVariantDTO[] | null
+  sales_channels: SalesChannelDTO[] | null
+  collections: ProductCollectionDTO[] | null
+  categories: ProductCategoryDTO[] | null
+}
+export type ProductRes = { product: ExtendedProductDTO }
+export type ProductListRes = { products: ExtendedProductDTO[] } & ListRes
+export type ProductDeleteRes = DeleteRes
+
+// Product Types
+export type ProductTypeRes = { product_type: ProductTypeDTO }
+export type ProductTypeListRes = { product_types: ProductTypeDTO[] } & ListRes

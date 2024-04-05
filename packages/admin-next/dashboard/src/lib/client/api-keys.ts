@@ -1,18 +1,12 @@
 import { ApiKeyListRes, ApiKeyRes } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { getRequest } from "./common"
 
 const retrieveApiKey = async (id: string, query?: Record<string, any>) => {
-  return makeRequest<ApiKeyRes, Record<string, any>>(
-    `/admin/api-keys/${id}`,
-    query
-  )
+  return getRequest<ApiKeyRes>(`/admin/api-keys/${id}`, query)
 }
 
 const listApiKeys = async (query?: Record<string, any>) => {
-  return makeRequest<ApiKeyListRes, Record<string, any>>(
-    `/admin/api-keys`,
-    query
-  )
+  return getRequest<ApiKeyListRes>(`/admin/api-keys`, query)
 }
 
 export const apiKeys = {

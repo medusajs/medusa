@@ -1,24 +1,25 @@
 import { UpdateUserReq } from "../../types/api-payloads"
-import { UserListRes, UserRes } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { UserDeleteRes, UserListRes, UserRes } from "../../types/api-responses"
+import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function me() {
-  return makeRequest<UserRes>("/admin/users/me")
+  return getRequest<UserRes>("/admin/users/me")
 }
 
 async function retrieveUser(id: string, query?: Record<string, any>) {
-  return makeRequest<UserRes, Record<string, any>>(`/admin/users/${id}`, query)
+  return getRequest<UserRes>(`/admin/users/${id}`, query)
 }
 
 async function listUsers(query?: Record<string, any>) {
-  return makeRequest<UserListRes>(`/admin/users`, undefined, query)
+  return getRequest<UserListRes>(`/admin/users`, query)
 }
 
 async function updateUser(id: string, payload: UpdateUserReq) {
-  return makeRequest<UserRes>(`/admin/users/${id}`, undefined, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+  return postRequest<UserRes>(`/admin/users/${id}`, payload)
+}
+
+async function deleteUser(id: string) {
+  return deleteRequest<UserDeleteRes>(`/admin/users/${id}`)
 }
 
 export const users = {
@@ -26,4 +27,5 @@ export const users = {
   retrieve: retrieveUser,
   list: listUsers,
   update: updateUser,
+  delete: deleteUser,
 }

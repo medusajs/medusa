@@ -1,13 +1,13 @@
 import { AdminGetPromotionsParams } from "@medusajs/medusa"
 
 import { PromotionRes } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { getRequest } from "./common"
 
 const retrievePromotion = async (
   id: string,
   query?: AdminGetPromotionsParams
 ) => {
-  return makeRequest<PromotionRes, AdminGetPromotionsParams>(
+  return getRequest<PromotionRes, AdminGetPromotionsParams>(
     `/admin/promotions/${id}`,
     query
   )

@@ -4,40 +4,26 @@ import {
   RegionListRes,
   RegionRes,
 } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveRegion(id: string, query?: Record<string, any>) {
-  return makeRequest<RegionRes, Record<string, any>>(
-    `/admin/regions/${id}`,
-    query
-  )
+  return getRequest<RegionRes>(`/admin/regions/${id}`, query)
 }
 
 async function listRegions(query?: Record<string, any>) {
-  return makeRequest<RegionListRes, Record<string, any>>(
-    `/admin/regions`,
-    query
-  )
+  return getRequest<RegionListRes>(`/admin/regions`, query)
 }
 
-async function createRegion(region: CreateRegionDTO) {
-  return makeRequest<RegionRes>(`/admin/regions`, undefined, {
-    method: "POST",
-    body: JSON.stringify(region),
-  })
+async function createRegion(payload: CreateRegionDTO) {
+  return postRequest<RegionRes>(`/admin/regions`, payload)
 }
 
-async function updateRegion(id: string, region: UpdateRegionDTO) {
-  return makeRequest<RegionRes>(`/admin/regions/${id}`, undefined, {
-    method: "POST",
-    body: JSON.stringify(region),
-  })
+async function updateRegion(id: string, payload: UpdateRegionDTO) {
+  return postRequest<RegionRes>(`/admin/regions/${id}`, payload)
 }
 
 async function deleteRegion(id: string) {
-  return makeRequest<RegionDeleteRes>(`/admin/regions/${id}`, undefined, {
-    method: "DELETE",
-  })
+  return deleteRequest<RegionDeleteRes>(`/admin/regions/${id}`)
 }
 
 export const regions = {

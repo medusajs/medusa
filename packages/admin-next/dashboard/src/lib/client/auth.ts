@@ -1,17 +1,13 @@
 import { EmailPassReq } from "../../types/api-payloads"
 import { EmailPassRes } from "../../types/api-responses"
-import { makeRequest } from "./common"
+import { postRequest } from "./common"
 
 async function emailPass(payload: EmailPassReq) {
-  return makeRequest<EmailPassRes>("/auth/admin/emailpass", undefined, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+  return postRequest<EmailPassRes>("/auth/admin/emailpass", payload)
 }
 
 async function login(token: string) {
-  return makeRequest<void>("/auth/session", undefined, {
-    method: "POST",
+  return postRequest<void>("/auth/session", undefined, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
