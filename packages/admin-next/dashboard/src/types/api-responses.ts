@@ -21,6 +21,7 @@ import {
   UserDTO,
 } from "@medusajs/types"
 import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+import { ProductTagDTO } from "@medusajs/types/dist/product"
 
 type ListRes = {
   count: number
@@ -98,6 +99,14 @@ export type ExtendedProductDTO = ProductDTO & {
 export type ProductRes = { product: ExtendedProductDTO }
 export type ProductListRes = { products: ExtendedProductDTO[] } & ListRes
 export type ProductDeleteRes = DeleteRes
+
+// Categories
+export type CategoryRes = { category: ProductCategoryDTO }
+export type CategoriesListRes = { categories: ProductCategoryDTO[] } & ListRes
+
+// Tags
+export type TagRes = { tag: ProductTagDTO }
+export type TagsListRes = { tags: ProductTagDTO[] } & ListRes
 
 // Product Types
 export type ProductTypeRes = { product_type: ProductTypeDTO }
