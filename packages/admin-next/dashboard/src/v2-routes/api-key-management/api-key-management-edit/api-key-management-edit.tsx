@@ -9,7 +9,7 @@ export const ApiKeyManagementEdit = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { apiKey, isLoading, isError, error } = useApiKey(id!)
+  const { api_key, isLoading, isError, error } = useApiKey(id!)
 
   if (isError) {
     throw error
@@ -20,7 +20,7 @@ export const ApiKeyManagementEdit = () => {
       <RouteDrawer.Header>
         <Heading>{t("apiKeyManagement.editKey")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && !!apiKey && <EditApiKeyForm apiKey={apiKey} />}
+      {!isLoading && !!api_key && <EditApiKeyForm apiKey={api_key} />}
     </RouteDrawer>
   )
 }

@@ -10,11 +10,11 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
-  const { apiKey, isLoading, isError, error } = useApiKey(id!, undefined, {
+  const { api_key, isLoading, isError, error } = useApiKey(id!, undefined, {
     initialData: initialData,
   })
 
-  if (isLoading || !apiKey) {
+  if (isLoading || !api_key) {
     return <div>Loading...</div>
   }
 
@@ -24,9 +24,9 @@ export const ApiKeyManagementDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <ApiKeyGeneralSection apiKey={apiKey} />
+      <ApiKeyGeneralSection apiKey={api_key} />
       {/* <ApiKeySalesChannelSection apiKey={apiKey} /> */}
-      <JsonViewSection data={apiKey} />
+      <JsonViewSection data={api_key} />
       <Outlet />
     </div>
   )

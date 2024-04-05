@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { UserDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
@@ -12,17 +11,11 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
 
-type CreatePublishableApiKeyFormProps = {
-  user: UserDTO
-}
-
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const CreatePublishableApiKeyForm = ({
-  user,
-}: CreatePublishableApiKeyFormProps) => {
+export const CreatePublishableApiKeyForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -40,8 +33,8 @@ export const CreatePublishableApiKeyForm = ({
       // @ts-ignore type is wrong compared to validation
       { title: values.title, type: "publishable" },
       {
-        onSuccess: ({ apiKey }) => {
-          handleSuccess(`/settings/api-key-management/${apiKey.id}`)
+        onSuccess: ({ api_key }) => {
+          handleSuccess(`/settings/api-key-management/${api_key.id}`)
         },
       }
     )

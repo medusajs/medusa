@@ -30,8 +30,7 @@ export const ApiKeyManagementListTable = ({
       "id,title,redacted,token,type,created_at,updated_at,revoked_at,last_used_at,created_by,revoked_by",
   }
 
-  // @ts-ignore
-  const { apiKeys, count, isLoading, isError, error } = useApiKeys(query, {
+  const { api_keys, count, isLoading, isError, error } = useApiKeys(query, {
     placeholderData: keepPreviousData,
   })
 
@@ -39,7 +38,7 @@ export const ApiKeyManagementListTable = ({
   const columns = useApiKeyManagementTableColumns()
 
   const { table } = useDataTable({
-    data: apiKeys || [],
+    data: api_keys || [],
     columns,
     count,
     enablePagination: true,
