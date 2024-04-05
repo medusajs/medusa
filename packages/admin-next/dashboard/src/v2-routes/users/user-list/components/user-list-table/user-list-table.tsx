@@ -1,6 +1,7 @@
 import { PencilSquare } from "@medusajs/icons"
-import { User } from "@medusajs/medusa"
+import { UserDTO } from "@medusajs/types"
 import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import {
   PaginationState,
   createColumnHelper,
@@ -8,7 +9,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminUsers } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
@@ -20,6 +20,7 @@ import {
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { useUsers } from "../../../../../hooks/api/users"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 const PAGE_SIZE = 50
@@ -39,14 +40,14 @@ export const UserListTable = () => {
   )
 
   const params = useQueryParams(["q", "order"])
-  const { users, count, isLoading, isError, error } = useAdminUsers(
+  const { users, count, isLoading, isError, error } = useUsers(
     {
       limit: PAGE_SIZE,
       offset: pageIndex * PAGE_SIZE,
       ...params,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -174,7 +175,7 @@ export const UserListTable = () => {
   )
 }
 
-const UserActions = ({ user }: { user: Omit<User, "password_hash"> }) => {
+const UserActions = ({ user }: { user: UserDTO }) => {
   const { t } = useTranslation()
 
   return (
@@ -194,7 +195,7 @@ const UserActions = ({ user }: { user: Omit<User, "password_hash"> }) => {
   )
 }
 
-const columnHelper = createColumnHelper<Omit<User, "password_hash">>()
+const columnHelper = createColumnHelper<UserDTO>()
 
 const useColumns = () => {
   const { t } = useTranslation()

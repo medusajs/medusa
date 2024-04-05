@@ -8,12 +8,12 @@ import { Spinner } from "@medusajs/icons"
 import { AdminCollectionsRes } from "@medusajs/medusa"
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { useV2Session } from "../../lib/api-v2"
+import { useMe } from "../../hooks/api/users"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
 export const ProtectedRoute = () => {
-  const { user, isLoading } = useV2Session()
+  const { user, isLoading } = useMe()
   const location = useLocation()
 
   if (isLoading) {
