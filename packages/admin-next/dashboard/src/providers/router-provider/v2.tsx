@@ -7,6 +7,9 @@ import { Outlet } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
+import { SidebarProvider } from "../sidebar-provider"
+import { ApiKeyDTO } from "@medusajs/types"
+import { Spinner } from "@medusajs/icons"
 import { useV2Session } from "../../lib/api-v2"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
@@ -322,6 +325,89 @@ export const v2Routes: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../v2-routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "workflows",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Workflows",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/workflow-executions/workflow-execution-list"
+                  ),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/workflow-executions/workflow-execution-detail"
+                  ),
+                handle: {
+                  crumb: (data: { workflow: any }) => {
+                    if (!data) {
+                      return ""
+                    }
+
+                    return data.workflow.name
+                  },
+                },
+              },
+            ],
+          },
+          {
+            path: "api-key-management",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "API Key Management",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: { api_key: ApiKeyDTO }) => data.api_key.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
                       ),
                   },
                 ],
