@@ -70,7 +70,11 @@ export function toRemoteJoinerQuery(
       }
 
       if (isEntryPoint) {
-        remoteJoinerQuery.alias = key
+        if (value.isServiceAccess) {
+          remoteJoinerQuery.service = key
+        } else {
+          remoteJoinerQuery.alias = key
+        }
       } else {
         remoteJoinerQuery.expands!.push(expandObj)
       }

@@ -1,4 +1,9 @@
-import { ComponentPropsWithoutRef, forwardRef } from "react"
+import {
+  ComponentPropsWithoutRef,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from "react"
 
 import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
@@ -10,6 +15,11 @@ export const CountrySelect = forwardRef<
   ComponentPropsWithoutRef<"select"> & { placeholder?: string }
 >(({ className, disabled, placeholder, ...props }, ref) => {
   const { t } = useTranslation()
+  const innerRef = useRef<HTMLSelectElement>(null)
+
+  useImperativeHandle(ref, () => innerRef.current as HTMLSelectElement)
+
+  const isPlaceholder = innerRef.current?.value === ""
 
   return (
     <div className="relative">
@@ -31,13 +41,16 @@ export const CountrySelect = forwardRef<
           "aria-[invalid=true]:border-ui-border-error aria-[invalid=true]:shadow-borders-error",
           "invalid::border-ui-border-error invalid:shadow-borders-error",
           "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
+          {
+            "text-ui-fg-muted": isPlaceholder,
+          },
           className
         )}
         {...props}
-        ref={ref}
+        ref={innerRef}
       >
         {/* Add an empty option so the first option is preselected */}
-        <option value="" disabled hidden className="text-ui-fg-muted">
+        <option value="" disabled className="text-ui-fg-muted">
           {placeholder || t("fields.selectCountry")}
         </option>
         {countries.map((country) => {

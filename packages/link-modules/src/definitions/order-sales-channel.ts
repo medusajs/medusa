@@ -1,6 +1,5 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
-
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const OrderSalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.OrderSalesChannel,
