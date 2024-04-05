@@ -65,8 +65,11 @@ export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
 
 // API Keys
-export type ApiKeyRes = { api_key: ApiKeyDTO }
-export type ApiKeyListRes = { api_keys: ApiKeyDTO[] } & ListRes
+export type ExtendedApiKeyDTO = ApiKeyDTO & {
+  sales_channels: SalesChannelDTO[] | null
+}
+export type ApiKeyRes = { apiKey: ExtendedApiKeyDTO }
+export type ApiKeyListRes = { apiKeys: ExtendedApiKeyDTO[] } & ListRes
 export type ApiKeyDeleteRes = DeleteRes
 
 // Sales Channels

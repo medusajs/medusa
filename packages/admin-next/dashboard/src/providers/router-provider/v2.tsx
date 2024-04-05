@@ -3,11 +3,11 @@ import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
 import { AdminCollectionsRes } from "@medusajs/medusa"
-import { ApiKeyDTO } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
+import { ApiKeyRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -362,7 +362,10 @@ export const v2Routes: RouteObject[] = [
                     "../../v2-routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: { api_key: ApiKeyDTO }) => data.api_key.title,
+                  crumb: (data: ApiKeyRes) => {
+                    console.log("data", data)
+                    return data.apiKey.title
+                  },
                 },
                 children: [
                   {

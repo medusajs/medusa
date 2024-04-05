@@ -8,7 +8,10 @@ import {
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { UpdateProductCollectionReq } from "../../types/api-payloads"
+import {
+  CreateProductCollectionReq,
+  UpdateProductCollectionReq,
+} from "../../types/api-payloads"
 import {
   ProductCollectionDeleteRes,
   ProductCollectionListRes,
@@ -84,10 +87,14 @@ export const useUpdateCollection = (
 }
 
 export const useCreateCollection = (
-  options?: UseMutationOptions<ProductCollectionRes, Error, any>
+  options?: UseMutationOptions<
+    ProductCollectionRes,
+    Error,
+    CreateProductCollectionReq
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.collections.create(payload),
+    mutationFn: (payload) => client.collections.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
 

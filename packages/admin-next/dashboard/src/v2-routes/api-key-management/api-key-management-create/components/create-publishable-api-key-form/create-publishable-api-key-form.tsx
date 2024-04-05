@@ -1,21 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { adminPublishableApiKeysKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { UserDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
+
+type CreatePublishableApiKeyFormProps = {
+  user: UserDTO
+}
 
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const CreatePublishableApiKeyForm = () => {
+export const CreatePublishableApiKeyForm = ({
+  user,
+}: CreatePublishableApiKeyFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -26,16 +33,15 @@ export const CreatePublishableApiKeyForm = () => {
     resolver: zodResolver(CreatePublishableApiKeySchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCustomPost(`/admin/api-keys`, [
-    adminPublishableApiKeysKeys.lists(),
-  ])
+  const { mutateAsync, isPending } = useCreateApiKey()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
+      // @ts-ignore type is wrong compared to validation
       { title: values.title, type: "publishable" },
       {
-        onSuccess: () => {
-          handleSuccess(`/settings/api-key-management`)
+        onSuccess: ({ api_key }) => {
+          handleSuccess(`/settings/api-key-management/${api_key.id}`)
         },
       }
     )
@@ -54,7 +60,7 @@ export const CreatePublishableApiKeyForm = () => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

@@ -6,16 +6,14 @@ import {
   adminPublishableApiKeysKeys,
   useAdminCustomDelete,
   useAdminCustomPost,
-  useAdminDeletePublishableApiKey,
-  useAdminRevokePublishableApiKey,
 } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
+import { ApiKeyDTO } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
-import { ApiKeyDTO } from "@medusajs/types"
 
 const columnHelper = createColumnHelper<ApiKeyDTO>()
 

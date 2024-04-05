@@ -32,9 +32,7 @@ async function createProductCollection(payload: CreateProductCollectionReq) {
 }
 
 async function deleteProductCollection(id: string) {
-  return deleteRequest<ProductCollectionDeleteRes>(
-    `/admin/collections/${id}/delete`
-  )
+  return deleteRequest<ProductCollectionDeleteRes>(`/admin/collections/${id}`)
 }
 
 export const collections = {

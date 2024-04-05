@@ -1,5 +1,5 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { PublishableApiKey, SalesChannel } from "@medusajs/medusa"
+import { PencilSquare } from "@medusajs/icons"
+import { SalesChannelDTO } from "@medusajs/types"
 import {
   Button,
   Checkbox,
@@ -19,12 +19,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminPublishableApiKeysKeys,
-  useAdminCustomPost,
-  useAdminCustomQuery,
-  useAdminRemovePublishableKeySalesChannelsBatch,
-} from "medusa-react"
+import { adminPublishableApiKeysKeys, useAdminCustomPost } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
@@ -36,10 +31,10 @@ import {
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { ApiKeyDTO } from "@medusajs/types"
+import { ExtendedApiKeyDTO } from "../../../../../types/api-responses"
 
 type ApiKeySalesChannelSectionProps = {
-  apiKey: ApiKeyDTO
+  apiKey: ExtendedApiKeyDTO
 }
 
 const PAGE_SIZE = 10
@@ -73,16 +68,7 @@ export const ApiKeySalesChannelSection = ({
     fields: "id,*sales_channels",
   }
 
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    `/api-keys/${apiKey.id}`,
-    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey.id, query)],
-    query,
-    {
-      keepPreviousData: true,
-    }
-  )
-
-  const salesChannels = data?.api_key?.sales_channels
+  const salesChannels = apiKey?.sales_channels
   const count = salesChannels?.length || 0
 
   const columns = useColumns()
@@ -138,11 +124,7 @@ export const ApiKeySalesChannelSection = ({
     )
   }
 
-  const noRecords = !isLoading && !salesChannels?.length && !params.q
-
-  if (isError) {
-    throw error
-  }
+  const noRecords = !salesChannels?.length && !params.q
 
   return (
     <Container className="divide-y p-0">
@@ -164,7 +146,7 @@ export const ApiKeySalesChannelSection = ({
         <NoRecords />
       ) : (
         <div>
-          {!isLoading && salesChannels?.length !== 0 ? (
+          {salesChannels?.length !== 0 ? (
             <Table>
               <Table.Header className="border-t-0">
                 {table.getHeaderGroups().map((headerGroup) => {
@@ -252,30 +234,30 @@ const SalesChannelActions = ({
   salesChannel,
   apiKey,
 }: {
-  salesChannel: SalesChannel
+  salesChannel: SalesChannelDTO
   apiKey: string
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminRemovePublishableKeySalesChannelsBatch(apiKey)
+  // const { mutateAsync } = useAdminRemovePublishableKeySalesChannelsBatch(apiKey)
 
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("apiKeyManagement.removeSalesChannelWarning"),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
+  // const handleDelete = async () => {
+  //   const res = await prompt({
+  //     title: t("general.areYouSure"),
+  //     description: t("apiKeyManagement.removeSalesChannelWarning"),
+  //     confirmText: t("actions.delete"),
+  //     cancelText: t("actions.cancel"),
+  //   })
 
-    if (!res) {
-      return
-    }
+  //   if (!res) {
+  //     return
+  //   }
 
-    await mutateAsync({
-      sales_channel_ids: [{ id: salesChannel.id }],
-    })
-  }
+  //   await mutateAsync({
+  //     sales_channel_ids: [{ id: salesChannel.id }],
+  //   })
+  // }
 
   return (
     <ActionMenu
@@ -289,21 +271,21 @@ const SalesChannelActions = ({
             },
           ],
         },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
+        // {
+        //   actions: [
+        //     {
+        //       icon: <Trash />,
+        //       label: t("actions.delete"),
+        //       onClick: handleDelete,
+        //     },
+        //   ],
+        // },
       ]}
     />
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper = createColumnHelper<SalesChannelDTO>()
 
 const useColumns = () => {
   const { t } = useTranslation()
