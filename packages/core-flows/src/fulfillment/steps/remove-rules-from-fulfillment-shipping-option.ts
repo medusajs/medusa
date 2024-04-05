@@ -2,7 +2,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   RemoveFulfillmentShippingOptionRulesWorkflowDTO,
-  ShippingOptionRuleOperatorType,
+  RuleOperatorType,
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
@@ -41,7 +41,7 @@ export const removeRulesFromFulfillmentShippingOptionStep = createStep(
     await fulfillmentModule.createShippingOptionRules(
       shippingOptionRules.map((rule) => ({
         attribute: rule.attribute,
-        operator: rule.operator as ShippingOptionRuleOperatorType,
+        operator: rule.operator as RuleOperatorType,
         value: rule.value as unknown as string | string[],
         shipping_option_id: rule.shipping_option_id,
       }))
