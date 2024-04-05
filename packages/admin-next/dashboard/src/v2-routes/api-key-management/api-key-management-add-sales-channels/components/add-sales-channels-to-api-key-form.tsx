@@ -18,7 +18,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
+  adminPublishableApiKeysKeys,
   useAdminAddPublishableKeySalesChannelsBatch,
+  useAdminCustomPost,
   useAdminSalesChannels,
 } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
@@ -61,8 +63,10 @@ export const AddSalesChannelsToApiKeyForm = ({
 
   const { setValue } = form
 
-  const { mutateAsync, isLoading: isMutating } =
-    useAdminAddPublishableKeySalesChannelsBatch(apiKey)
+  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
+    `/api-keys/${apiKey}/sales-channels/batch/add`,
+    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey)]
+  )
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -128,7 +132,7 @@ export const AddSalesChannelsToApiKeyForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
-        sales_channel_ids: values.sales_channel_ids.map((p) => ({ id: p })),
+        sales_channel_ids: values.sales_channel_ids,
       },
       {
         onSuccess: () => {

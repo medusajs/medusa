@@ -1,7 +1,7 @@
 import { Heading } from "@medusajs/ui"
-import { useAdminPublishableApiKey } from "medusa-react"
+import { adminPublishableApiKeysKeys, useAdminCustomQuery } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { useParams } from "react-router-dom"
+import { json, useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
 import { EditApiKeyForm } from "./components/edit-api-key-form"
 
@@ -9,11 +9,17 @@ export const ApiKeyManagementEdit = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { publishable_api_key, isLoading, isError, error } =
-    useAdminPublishableApiKey(id!)
+  const { data, isLoading, isError, error } = useAdminCustomQuery(
+    `/api-keys/${id}`,
+    [adminPublishableApiKeysKeys.detail(id!)]
+  )
 
-  if (isError) {
-    throw error
+  if (isError || !data?.api_key) {
+    if (error) {
+      throw error
+    }
+
+    throw json("An unknown error has occured", 500)
   }
 
   return (
@@ -21,8 +27,8 @@ export const ApiKeyManagementEdit = () => {
       <RouteDrawer.Header>
         <Heading>{t("apiKeyManagement.editKey")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && publishable_api_key && (
-        <EditApiKeyForm apiKey={publishable_api_key} />
+      {!isLoading && !!data?.api_key && (
+        <EditApiKeyForm apiKey={data.api_key} />
       )}
     </RouteDrawer>
   )
