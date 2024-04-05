@@ -1,14 +1,14 @@
-import { AddFulfillmentShippingOptionRulesWorkflowDTO } from "@medusajs/types"
+import { FulfillmentWorkflow } from "@medusajs/types"
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
-import { addRulesToFulfillmentShippingOptionStep } from "../steps"
+import { createShippingOptionsStep } from "../steps/create-shipping-options"
 
 export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
 export const createShippingOptionsWorkflow = createWorkflow(
   createShippingOptionsWorkflowId,
   (
-    input: WorkflowData<AddFulfillmentShippingOptionRulesWorkflowDTO>
-  ): WorkflowData<void> => {
-    addRulesToFulfillmentShippingOptionStep(input)
+    input: WorkflowData<FulfillmentWorkflow.CreateShippingOptionsWorkflowInput>
+  ): WorkflowData<FulfillmentWorkflow.CreateShippingOptionsWorkflowOutput> => {
+    return createShippingOptionsStep(input)
   }
 )

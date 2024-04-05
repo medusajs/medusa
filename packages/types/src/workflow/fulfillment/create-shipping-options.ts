@@ -23,3 +23,7 @@ export interface CreateShippingOptionsWorkflowInput {
     value: string | string[]
   }[]
 }
+
+export type CreateShippingOptionsWorkflowOutput = {
+  id: string
+}[]
