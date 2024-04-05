@@ -6,8 +6,8 @@ import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { WorkflowExecutionDTO } from "../../../types"
 import { adminExecutionKey } from "../../../utils"
-import { useExecutionTableColumns } from "./use-execution-table-columns"
-import { useExecutionTableQuery } from "./use-execution-table-query"
+import { useWorkflowExecutionTableColumns } from "./use-workflow-execution-table-columns"
+import { useWorkflowExecutionTableQuery } from "./use-workflow-execution-table-query"
 
 /**
  * Type isn't exported from the package
@@ -21,10 +21,10 @@ type WorkflowExecutionsRes = {
 
 const PAGE_SIZE = 20
 
-export const ExecutionsListTable = () => {
+export const WorkflowExecutionListTable = () => {
   const { t } = useTranslation()
 
-  const { searchParams, raw } = useExecutionTableQuery({
+  const { searchParams, raw } = useWorkflowExecutionTableQuery({
     pageSize: PAGE_SIZE,
   })
   const { data, isLoading, isError, error } = useAdminCustomQuery<
@@ -42,7 +42,7 @@ export const ExecutionsListTable = () => {
     }
   )
 
-  const columns = useExecutionTableColumns()
+  const columns = useWorkflowExecutionTableColumns()
 
   const { table } = useDataTable({
     data: data?.workflow_executions || [],
@@ -60,7 +60,7 @@ export const ExecutionsListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("executions.domain")}</Heading>
+        <Heading>{t("workflowExecutions.domain")}</Heading>
       </div>
       <DataTable
         table={table}

@@ -1,5 +1,5 @@
 import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
-import { Container, Heading, Text, clx } from "@medusajs/ui"
+import { Container, DropdownMenu, Heading, Text, clx } from "@medusajs/ui"
 import {
   motion,
   useAnimationControls,
@@ -18,13 +18,13 @@ import {
 } from "../../../constants"
 import { WorkflowExecutionDTO, WorkflowExecutionStep } from "../../../types"
 
-type ExecutionTimelineSectionProps = {
+type WorkflowExecutionTimelineSectionProps = {
   execution: WorkflowExecutionDTO
 }
 
-export const ExecutionTimelineSection = ({
+export const WorkflowExecutionTimelineSection = ({
   execution,
-}: ExecutionTimelineSectionProps) => {
+}: WorkflowExecutionTimelineSectionProps) => {
   const { t } = useTranslation()
 
   return (
@@ -79,6 +79,7 @@ const ZOOM_STEP = 0.25
 
 const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
   const [zoom, setZoom] = useState<number>(1)
+  const [isDragging, setIsDragging] = useState(false)
 
   const scale = useMotionValue(defaultState.scale)
   const x = useMotionValue(defaultState.x)
@@ -152,6 +153,8 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
         <div className="relative size-full overflow-hidden object-contain">
           <div>
             <motion.div
+              onMouseDown={() => setIsDragging(true)}
+              onMouseUp={() => setIsDragging(false)}
               drag
               dragConstraints={dragConstraints}
               dragElastic={0}
@@ -165,7 +168,14 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
                 y,
                 scale,
               }}
-              className="bg-ui-bg-subtle relative size-[500rem] origin-top-left items-start justify-start overflow-hidden bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat"
+              className={clx(
+                "bg-ui-bg-subtle relative size-[500rem] origin-top-left items-start justify-start overflow-hidden",
+                "bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat",
+                {
+                  "cursor-grab": !isDragging,
+                  "cursor-grabbing": isDragging,
+                }
+              )}
             >
               <main className="size-full">
                 <div className="absolute left-[1100px] top-[1100px] flex select-none items-start">
@@ -188,25 +198,51 @@ const Canvas = ({ execution }: { execution: WorkflowExecutionDTO }) => {
             </motion.div>
           </div>
         </div>
-        <div className="bg-ui-bg-base shadow-borders-base text-ui-fg-subtle absolute bottom-4 left-6 h-7 overflow-hidden rounded-md">
-          <button
-            onClick={zoomIn}
-            type="button"
-            disabled={!canZoomIn}
-            aria-label="Zoom in"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
-          >
-            <PlusMini />
-          </button>
-          <button
-            onClick={zoomOut}
-            type="button"
-            disabled={!canZoomOut}
-            aria-label="Zoom out"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
-          >
-            <MinusMini />
-          </button>
+        <div className="bg-ui-bg-base shadow-borders-base text-ui-fg-subtle absolute bottom-4 left-6 flex h-7 items-center overflow-hidden rounded-md">
+          <div className="flex items-center">
+            <button
+              onClick={zoomIn}
+              type="button"
+              disabled={!canZoomIn}
+              aria-label="Zoom in"
+              className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
+            >
+              <PlusMini />
+            </button>
+            <div>
+              <DropdownMenu>
+                <DropdownMenu.Trigger className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed flex w-[50px] items-center justify-center border-r p-1 outline-none">
+                  <Text
+                    as="span"
+                    size="xsmall"
+                    leading="compact"
+                    className="select-none tabular-nums"
+                  >
+                    {Math.round(zoom * 100)}%
+                  </Text>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  {[50, 75, 100, 125, 150].map((value) => (
+                    <DropdownMenu.Item
+                      key={value}
+                      onClick={() => changeZoom(value / 100)}
+                    >
+                      {value}%
+                    </DropdownMenu.Item>
+                  ))}
+                </DropdownMenu.Content>
+              </DropdownMenu>
+            </div>
+            <button
+              onClick={zoomOut}
+              type="button"
+              disabled={!canZoomOut}
+              aria-label="Zoom out"
+              className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
+            >
+              <MinusMini />
+            </button>
+          </div>
           <button
             onClick={resetCanvas}
             type="button"

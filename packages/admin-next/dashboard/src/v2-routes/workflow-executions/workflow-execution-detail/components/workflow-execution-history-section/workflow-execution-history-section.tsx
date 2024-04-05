@@ -27,13 +27,13 @@ import {
   WorkflowExecutionStep,
 } from "../../../types"
 
-type ExecutionHistorySectionProps = {
+type WorkflowExecutionHistorySectionProps = {
   execution: WorkflowExecutionDTO
 }
 
-export const ExecutionHistorySection = ({
+export const WorkflowExecutionHistorySection = ({
   execution,
-}: ExecutionHistorySectionProps) => {
+}: WorkflowExecutionHistorySectionProps) => {
   const { t } = useTranslation()
 
   const map = Object.values(execution.execution?.steps || {})
@@ -57,7 +57,9 @@ export const ExecutionHistorySection = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("executions.history.sectionTitle")}</Heading>
+        <Heading level="h2">
+          {t("workflowExecutions.history.sectionTitle")}
+        </Heading>
       </div>
       <div className="flex flex-col gap-y-0.5 px-6 py-4">
         {steps.map((step, index) => {
@@ -178,13 +180,13 @@ const Event = ({
           <div className="flex flex-col gap-y-2 pb-4 pt-2">
             <div className="text-ui-fg-subtle flex flex-col gap-y-2">
               <Text size="small" leading="compact">
-                {t("executions.history.definitionLabel")}
+                {t("workflowExecutions.history.definitionLabel")}
               </Text>
               <CodeBlock
                 snippets={[
                   {
                     code: JSON.stringify(step.definition, null, 2),
-                    label: t("executions.history.definitionLabel"),
+                    label: t("workflowExecutions.history.definitionLabel"),
                     language: "json",
                     hideLineNumbers: true,
                   },
@@ -196,7 +198,7 @@ const Event = ({
             {stepInvokeContext && (
               <div className="text-ui-fg-subtle flex flex-col gap-y-2">
                 <Text size="small" leading="compact">
-                  {t("executions.history.outputLabel")}
+                  {t("workflowExecutions.history.outputLabel")}
                 </Text>
                 <CodeBlock
                   snippets={[
@@ -206,7 +208,7 @@ const Event = ({
                         null,
                         2
                       ),
-                      label: t("executions.history.outputLabel"),
+                      label: t("workflowExecutions.history.outputLabel"),
                       language: "json",
                       hideLineNumbers: true,
                     },
@@ -220,7 +222,7 @@ const Event = ({
               step.compensate.state === TransactionStepState.REVERTED && (
                 <div className="text-ui-fg-subtle flex flex-col gap-y-2">
                   <Text size="small" leading="compact">
-                    {t("executions.history.compensateInputLabel")}
+                    {t("workflowExecutions.history.compensateInputLabel")}
                   </Text>
                   <CodeBlock
                     snippets={[
@@ -230,7 +232,9 @@ const Event = ({
                           null,
                           2
                         ),
-                        label: t("executions.history.compensateInputLabel"),
+                        label: t(
+                          "workflowExecutions.history.compensateInputLabel"
+                        ),
                         language: "json",
                         hideLineNumbers: true,
                       },
@@ -243,7 +247,7 @@ const Event = ({
             {stepError && (
               <div className="text-ui-fg-subtle flex flex-col gap-y-2">
                 <Text size="small" leading="compact">
-                  {t("executions.history.errorLabel")}
+                  {t("workflowExecutions.history.errorLabel")}
                 </Text>
                 <CodeBlock
                   snippets={[
@@ -256,7 +260,7 @@ const Event = ({
                         null,
                         2
                       ),
-                      label: t("executions.history.errorLabel"),
+                      label: t("workflowExecutions.history.errorLabel"),
                       language: "json",
                       hideLineNumbers: true,
                     },
@@ -295,7 +299,7 @@ const StepState = ({
     return (
       <div className="flex items-center gap-x-1">
         <Text size="small" leading="compact" className="text-ui-fg-subtle">
-          {t("executions.history.runningState")}
+          {t("workflowExecutions.history.runningState")}
         </Text>
         <Spinner className="text-ui-fg-interactive animate-spin" />
       </div>
@@ -305,7 +309,7 @@ const StepState = ({
   if (isFailed) {
     return (
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        {t("executions.history.failedState")}
+        {t("workflowExecutions.history.failedState")}
       </Text>
     )
   }

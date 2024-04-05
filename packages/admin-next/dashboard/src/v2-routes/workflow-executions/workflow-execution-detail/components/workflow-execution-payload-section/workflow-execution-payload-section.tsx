@@ -1,21 +1,21 @@
 import { JsonViewSection } from "../../../../../components/common/json-view-section"
 import { WorkflowExecutionDTO } from "../../../types"
 
-type ExecutionPayloadSectionProps = {
+type WorkflowExecutionPayloadSectionProps = {
   execution: WorkflowExecutionDTO
 }
 
-export const ExecutionPayloadSection = ({
+export const WorkflowExecutionPayloadSection = ({
   execution,
-}: ExecutionPayloadSectionProps) => {
+}: WorkflowExecutionPayloadSectionProps) => {
   let payload = execution.context?.data?.payload
 
   if (!payload) {
     return null
   }
 
-  // payloads may be simple primitives, so we need to wrap them in an object
-  // to ensure the JsonViewSection component can render them
+  // payloads may be a primitive, so we need to wrap them in an object
+  // to ensure the JsonViewSection component can render them.
   if (typeof payload !== "object") {
     payload = { input: payload }
   }
