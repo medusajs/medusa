@@ -4,8 +4,7 @@ import { FulfillmentWorkflow } from "@medusajs/types"
 interface StepInput
   extends FulfillmentWorkflow.CreateShippingOptionsWorkflowInput {}
 
-export const createShippingOptionsStepId =
-  "add-rules-to-fulfillment-shipping-option"
+export const createShippingOptionsStepId = "create-shipping-options-step"
 export const createShippingOptionsStep = createStep(
   createShippingOptionsStepId,
   async (input: StepInput, { container }) => {
