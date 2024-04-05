@@ -12,10 +12,11 @@ import {
 } from "../../../../../components/route-modal"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useV2UpdateRegion } from "../../../../../lib/api-v2/region"
+import { CurrencyInfo } from "../../../../../lib/currencies"
 
 type EditRegionFormProps = {
   region: RegionDTO
-  currencies: CurrencyDTO[]
+  currencies: CurrencyInfo[]
   paymentProviders: PaymentProviderDTO[]
 }
 

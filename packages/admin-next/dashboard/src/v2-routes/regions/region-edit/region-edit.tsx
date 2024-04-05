@@ -7,6 +7,7 @@ import { EditRegionForm } from "./components/edit-region-form"
 import { useV2Region } from "../../../lib/api-v2/region"
 import { useV2Store } from "../../../lib/api-v2"
 import { currencies } from "../../../lib/currencies"
+import { useV2PaymentProviders } from "../../../lib/api-v2/payment.ts"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -31,7 +32,9 @@ export const RegionEdit = () => {
   const storeCurrencies = (store?.supported_currency_codes ?? []).map(
     (code) => currencies[code.toUpperCase()]
   )
-  const paymentProviders = store?.payment_providers || []
+  const { payment_providers: paymentProviders = [] } = useV2PaymentProviders({
+    is_enabled: true,
+  })
 
   if (isRegionError) {
     throw regionError

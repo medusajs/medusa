@@ -28,3 +28,12 @@ export const retrieveTransformQueryConfig = {
   allowedRelations: allowedAdminPaymentRelations,
   isList: false,
 }
+
+export const defaultAdminPaymentPaymentProviderFields = ["id", "is_enabled"]
+
+export const listTransformPaymentProvidersQueryConfig = {
+  defaultFields: defaultAdminPaymentPaymentProviderFields,
+  defaultRelations: [],
+  allowedRelations: [],
+  isList: true,
+}

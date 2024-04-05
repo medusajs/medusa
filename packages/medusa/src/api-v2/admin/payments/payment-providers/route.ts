@@ -5,9 +5,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { AdminGetPaymentsPaymentProvidersParams } from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetPaymentsPaymentProvidersParams>,
   res: MedusaResponse
 ) => {
   const paymentModule = req.scope.resolve<IPaymentModuleService>(
@@ -16,7 +17,6 @@ export const GET = async (
 
   const [payment_providers, count] =
     await paymentModule.listAndCountPaymentProviders(req.filterableFields, {
-      order: req.listConfig.order,
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     })
