@@ -6,7 +6,6 @@ import type {
   AdminGiftCardsRes,
   AdminOrdersRes,
   AdminProductsRes,
-  AdminPublishableApiKeysRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
@@ -229,8 +228,14 @@ export const v1Routes: RouteObject[] = [
                       import("../../routes/products/product-attributes"),
                   },
                   {
-                    path: "options",
-                    lazy: () => import("../../routes/products/product-options"),
+                    path: "options/create",
+                    lazy: () =>
+                      import("../../routes/products/product-create-option"),
+                  },
+                  {
+                    path: "options/:option_id/edit",
+                    lazy: () =>
+                      import("../../routes/products/product-edit-option"),
                   },
                   {
                     path: "media",
@@ -679,75 +684,6 @@ export const v1Routes: RouteObject[] = [
                       import("../../routes/taxes/tax-rate-edit-overrides"),
                   },
                 ],
-              },
-            ],
-          },
-          {
-            path: "api-key-management",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "API Key Management",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () =>
-                  import(
-                    "../../routes/api-key-management/api-key-management-list"
-                  ),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-create"
-                      ),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () =>
-                  import(
-                    "../../routes/api-key-management/api-key-management-detail"
-                  ),
-                handle: {
-                  crumb: (data: AdminPublishableApiKeysRes) =>
-                    data.publishable_api_key.title,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-edit"
-                      ),
-                  },
-                  {
-                    path: "add-sales-channels",
-                    lazy: () =>
-                      import(
-                        "../../routes/api-key-management/api-key-management-add-sales-channels"
-                      ),
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "executions",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Executions",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/executions/execution-list"),
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/executions/execution-detail"),
               },
             ],
           },

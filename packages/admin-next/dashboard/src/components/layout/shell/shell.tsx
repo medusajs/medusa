@@ -1,3 +1,5 @@
+import * as Dialog from "@radix-ui/react-dialog"
+
 import {
   ArrowRightOnRectangle,
   BellAlert,
@@ -10,7 +12,6 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import * as Dialog from "@radix-ui/react-dialog"
 import { PropsWithChildren } from "react"
 import {
   Link,
@@ -18,7 +19,6 @@ import {
   UIMatch,
   useLocation,
   useMatches,
-  useNavigate,
 } from "react-router-dom"
 
 import { Skeleton } from "../../common/skeleton"
@@ -201,7 +201,7 @@ const ThemeToggle = () => {
 }
 
 const Logout = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   // const { mutateAsync: logoutMutation } = useAdminDeleteSession()
 
   const handleLayout = async () => {

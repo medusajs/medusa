@@ -2630,8 +2630,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        // TODO: This needs to be fixed
-        it.skip("successfully creates product with soft-deleted product handle and deletes it again", async () => {
+        it("successfully creates product with soft-deleted product handle and deletes it again", async () => {
           // First we soft-delete the product
           const response = await api
             .delete(`/admin/products/${baseProduct.id}`, adminHeaders)
@@ -2708,8 +2707,7 @@ medusaIntegrationTestRunner({
           expect(response.data.id).toEqual(baseCollection.id)
         })
 
-        // TODO: This needs to be fixed, it returns 422 now.
-        it.skip("successfully creates soft-deleted product collection", async () => {
+        it("successfully creates soft-deleted product collection", async () => {
           const response = await api.delete(
             `/admin/collections/${baseCollection.id}`,
             adminHeaders
@@ -2749,8 +2747,7 @@ medusaIntegrationTestRunner({
           }
         })
 
-        // TODO: This needs to be fixed
-        it.skip("successfully creates soft-deleted product variant", async () => {
+        it("successfully creates soft-deleted product variant", async () => {
           const variant = baseProduct.variants[0]
           const response = await api.delete(
             `/admin/products/${baseProduct.id}/variants/${variant.id}`,
@@ -2771,6 +2768,22 @@ medusaIntegrationTestRunner({
             ean: variant.ean,
             upc: variant.upc,
             barcode: variant.barcode,
+            ...breaking(
+              () => ({
+                options: [
+                  {
+                    option_id: baseProduct.options[0].id,
+                    value: "newval",
+                  },
+                  {
+                    option_id: baseProduct.options[1].id,
+                    value: "newval",
+                  },
+                ],
+              }),
+              // TODO: Require that options are passed if they belong on the product, and the combos are unique per variant
+              () => ({})
+            ),
             prices: [
               {
                 currency_code: "usd",
