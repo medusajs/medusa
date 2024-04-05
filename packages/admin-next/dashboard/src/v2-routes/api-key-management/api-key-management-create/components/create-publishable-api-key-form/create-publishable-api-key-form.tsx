@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreatePublishableApiKey } from "medusa-react"
+import { adminPublishableApiKeysKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -26,14 +26,19 @@ export const CreatePublishableApiKeyForm = () => {
     resolver: zodResolver(CreatePublishableApiKeySchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreatePublishableApiKey()
+  const { mutateAsync, isLoading } = useAdminCustomPost(`/admin/api-keys`, [
+    adminPublishableApiKeysKeys.lists(),
+  ])
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(values, {
-      onSuccess: ({ publishable_api_key }) => {
-        handleSuccess(`/settings/api-key-management/${publishable_api_key.id}`)
-      },
-    })
+    await mutateAsync(
+      { title: values.title, type: "publishable" },
+      {
+        onSuccess: () => {
+          handleSuccess(`/settings/api-key-management`)
+        },
+      }
+    )
   })
 
   return (

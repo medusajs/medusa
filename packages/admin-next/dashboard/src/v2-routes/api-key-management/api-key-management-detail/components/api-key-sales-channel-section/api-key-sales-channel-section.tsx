@@ -20,7 +20,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
-  useAdminPublishableApiKeySalesChannels,
+  adminPublishableApiKeysKeys,
+  useAdminCustomPost,
+  useAdminCustomQuery,
   useAdminRemovePublishableKeySalesChannelsBatch,
 } from "medusa-react"
 import { useMemo, useState } from "react"
@@ -34,9 +36,10 @@ import {
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { ApiKeyDTO } from "@medusajs/types"
 
 type ApiKeySalesChannelSectionProps = {
-  apiKey: PublishableApiKey
+  apiKey: ApiKeyDTO
 }
 
 const PAGE_SIZE = 10
@@ -64,23 +67,28 @@ export const ApiKeySalesChannelSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const params = useQueryParams(["q"])
-  const { sales_channels, isLoading, isError, error } =
-    useAdminPublishableApiKeySalesChannels(
-      apiKey.id,
-      {
-        ...params,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
 
-  const count = sales_channels?.length || 0
+  const query = {
+    ...params,
+    fields: "id,*sales_channels",
+  }
+
+  const { data, isLoading, isError, error } = useAdminCustomQuery(
+    `/api-keys/${apiKey.id}`,
+    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey.id, query)],
+    query,
+    {
+      keepPreviousData: true,
+    }
+  )
+
+  const salesChannels = data?.api_key?.sales_channels
+  const count = salesChannels?.length || 0
 
   const columns = useColumns()
 
   const table = useReactTable({
-    data: sales_channels ?? [],
+    data: salesChannels ?? [],
     columns,
     pageCount: Math.ceil(count / PAGE_SIZE),
     state: {
@@ -97,8 +105,9 @@ export const ApiKeySalesChannelSection = ({
     },
   })
 
-  const { mutateAsync } = useAdminRemovePublishableKeySalesChannelsBatch(
-    apiKey.id
+  const { mutateAsync } = useAdminCustomPost(
+    `/api-keys/${apiKey.id}/sales-channels/batch/remove`,
+    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey.id)]
   )
 
   const handleRemove = async () => {
@@ -119,7 +128,7 @@ export const ApiKeySalesChannelSection = ({
 
     await mutateAsync(
       {
-        sales_channel_ids: keys.map((k) => ({ id: k })),
+        sales_channel_ids: keys,
       },
       {
         onSuccess: () => {
@@ -129,7 +138,7 @@ export const ApiKeySalesChannelSection = ({
     )
   }
 
-  const noRecords = !isLoading && !sales_channels?.length && !params.q
+  const noRecords = !isLoading && !salesChannels?.length && !params.q
 
   if (isError) {
     throw error
@@ -155,7 +164,7 @@ export const ApiKeySalesChannelSection = ({
         <NoRecords />
       ) : (
         <div>
-          {!isLoading && sales_channels?.length !== 0 ? (
+          {!isLoading && salesChannels?.length !== 0 ? (
             <Table>
               <Table.Header className="border-t-0">
                 {table.getHeaderGroups().map((headerGroup) => {
