@@ -48,6 +48,57 @@ describe("remoteQueryObjectFromString", function () {
           "url",
           "metadata",
         ],
+        isServiceAccess: false,
+        tags: {
+          fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
+        },
+
+        options: {
+          fields: [
+            "id",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+            "title",
+            "product_id",
+            "metadata",
+          ],
+          values: {
+            fields: [
+              "id",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+              "value",
+              "option_id",
+              "variant_id",
+              "metadata",
+            ],
+          },
+        },
+      },
+    })
+  })
+
+  it("should return a remote query object using service entry point", function () {
+    const output = remoteQueryObjectFromString({
+      service: "product",
+      variables: {},
+      fields,
+    })
+
+    expect(output).toEqual({
+      product: {
+        __args: {},
+        fields: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "url",
+          "metadata",
+        ],
+        isServiceAccess: true,
         tags: {
           fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
         },

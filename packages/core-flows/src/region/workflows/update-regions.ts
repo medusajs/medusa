@@ -1,22 +1,46 @@
+import { WorkflowTypes } from "@medusajs/types"
 import {
-  FilterableRegionProps,
-  RegionDTO,
-  UpdateRegionDTO,
-} from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+  createWorkflow,
+  transform,
+  WorkflowData,
+} from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
-
-type UpdateRegionsStepInput = {
-  selector: FilterableRegionProps
-  update: UpdateRegionDTO
-}
-
-type WorkflowInput = UpdateRegionsStepInput
+import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
 
 export const updateRegionsWorkflowId = "update-regions"
 export const updateRegionsWorkflow = createWorkflow(
   updateRegionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<RegionDTO[]> => {
-    return updateRegionsStep(input)
+  (
+    input: WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowInput>
+  ): WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
+    const data = transform(input, (data) => {
+      const { selector, update } = data
+      const { payment_providers = [], ...rest } = update
+      return {
+        selector,
+        update: rest,
+        payment_providers,
+      }
+    })
+
+    const regions = updateRegionsStep(data)
+
+    const upsertProvidersNormalizedInput = transform(
+      { data, regions },
+      (data) => {
+        return data.regions.map((region) => {
+          return {
+            id: region.id,
+            payment_providers: data.data.payment_providers,
+          }
+        })
+      }
+    )
+
+    setRegionsPaymentProvidersStep({
+      input: upsertProvidersNormalizedInput,
+    })
+
+    return regions
   }
 )

@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const CartPromotion: ModuleJoinerConfig = {
   serviceName: LINKS.CartPromotion,
