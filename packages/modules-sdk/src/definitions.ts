@@ -11,6 +11,7 @@ export enum LinkModuleUtils {
   REMOTE_LINK = "remoteLink",
 }
 
+// TODO: Remove this enum and use the one from @medusajs/utils
 export enum Modules {
   AUTH = "auth",
   CACHE = "cacheService",
