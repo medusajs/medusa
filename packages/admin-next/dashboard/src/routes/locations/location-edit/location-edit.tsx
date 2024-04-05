@@ -1,9 +1,9 @@
+import { EditLocationForm } from "../../../modules/locations/location-edit/components/edit-location-form/edit-location-form"
 import { Heading } from "@medusajs/ui"
-import { useAdminStockLocations } from "medusa-react"
-import { useTranslation } from "react-i18next"
-import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import { EditLocationForm } from "./components/edit-location-form/edit-location-form"
+import { useAdminStockLocations } from "medusa-react"
+import { useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const LocationEdit = () => {
   const { id } = useParams()

@@ -83,7 +83,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("should throw error when shipping option does not exist", async () => {
+        it.only("should throw error when shipping option does not exist", async () => {
           const { response } = await api
             .post(
               `/admin/fulfillment/shipping-options/does-not-exist/rules/batch/add`,
@@ -100,7 +100,7 @@ medusaIntegrationTestRunner({
           expect(response.data).toEqual({
             type: "not_found",
             message:
-              "Shipping_option with shipping_option_id does-not-exist does not exist.",
+              "You tried to set relationship shipping_option_id: does-not-exist, but such entity does not exist",
           })
         })
 

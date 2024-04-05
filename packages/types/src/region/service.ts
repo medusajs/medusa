@@ -8,7 +8,7 @@ import {
   RegionCountryDTO,
   RegionDTO,
 } from "./common"
-import { CreateRegionDTO, UpsertRegionDTO, UpdateRegionDTO } from "./mutations"
+import { CreateRegionDTO, UpdateRegionDTO, UpsertRegionDTO } from "./mutations"
 
 /**
  * The main service interface for the Region Module.

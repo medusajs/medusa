@@ -88,8 +88,7 @@ export interface FilterableRegionProps
   /**
    * The IDs to filter the regions by.
    */
-  id?: string[] | string
-
+  id?: string[] | string | OperatorMap<string | string[]>
   /**
    * Filter regions by their name.
    */
