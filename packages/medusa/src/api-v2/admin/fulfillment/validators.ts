@@ -101,6 +101,6 @@ export const AdminPostFulfillmentShippingOptionsShippingOption = z
       AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice.or(
         AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
       ).array(),
-    rules: z.array(AdminPostShippingOptionsFulfillmentRuleCreate).optional(),
+    rules: AdminPostShippingOptionsFulfillmentRuleCreate.array().optional(),
   })
   .strict()
