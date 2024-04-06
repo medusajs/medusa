@@ -9,12 +9,16 @@ export class MedusaWorkflow {
       container?: LoadedModule[] | MedusaContainer
     ) => Omit<
       LocalWorkflow,
-      "run" | "registerStepSuccess" | "registerStepFailure"
+      "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
     > &
       ExportedWorkflow
   > = {}
 
   static registerWorkflow(workflowId, exportedWorkflow) {
+    if (workflowId in MedusaWorkflow.workflows) {
+      throw new Error(`Workflow with id ${workflowId} already registered.`)
+    }
+
     MedusaWorkflow.workflows[workflowId] = exportedWorkflow
   }
 

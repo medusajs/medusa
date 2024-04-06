@@ -5,11 +5,12 @@ import {
 } from "@medusajs/types"
 
 import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
+import { Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
 import { linkingErrorMessage } from "./utils/linking-error"
 
 export type DeleteEntityInput = {
-  [moduleName: string]: { [linkableKey: string]: string | string[] }
+  [moduleName: string | Modules]: Record<string, string | string[]>
 }
 export type RestoreEntityInput = DeleteEntityInput
 

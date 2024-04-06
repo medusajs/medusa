@@ -12,7 +12,7 @@ import {
 import { retrieveTransformQueryConfig } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
 
-export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
+export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
