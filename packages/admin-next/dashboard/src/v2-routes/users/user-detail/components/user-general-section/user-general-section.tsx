@@ -1,13 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { User } from "@medusajs/medusa"
+import { UserDTO } from "@medusajs/types"
 import { Container, Heading, Text, clx, usePrompt } from "@medusajs/ui"
-import { useAdminDeleteUser } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteUser } from "../../../../../hooks/api/users"
 
 type UserGeneralSectionProps = {
-  user: Omit<User, "password_hash">
+  user: UserDTO
 }
 
 export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
@@ -15,7 +15,7 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
   const navigate = useNavigate()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminDeleteUser(user.id)
+  const { mutateAsync } = useDeleteUser(user.id)
 
   const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
 

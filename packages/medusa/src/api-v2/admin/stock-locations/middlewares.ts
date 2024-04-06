@@ -2,6 +2,7 @@ import * as QueryConfig from "./query-config"
 
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
+  AdminCreateStockLocationFulfillmentSet,
   AdminGetStockLocationsLocationParams,
   AdminGetStockLocationsParams,
   AdminPostStockLocationsLocationParams,
@@ -14,6 +15,7 @@ import {
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -75,6 +77,17 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetStockLocationsLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/fulfillment-sets",
+    middlewares: [
+      validateAndTransformBody(AdminCreateStockLocationFulfillmentSet),
+      transformQuery(
+        AdminPostStockLocationsParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
