@@ -27,7 +27,7 @@ export const POST = async (
       variables: {
         id: result[0].id,
       },
-      fields: req.retrieveConfig.select as string[],
+      fields: req.remoteQueryConfig.fields,
     })
   )
 
@@ -45,11 +45,9 @@ export const GET = async (
     entryPoint: "inventory_items",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: [...(req.listConfig.select as string[])],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: inventory_items, metadata } = await remoteQuery({
