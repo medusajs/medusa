@@ -5,18 +5,19 @@ import { adminCollectionRoutesMiddlewares } from "./admin/collections/middleware
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
-import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares"
+import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/middlewares"
 import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
 import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
-import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
+import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
+import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminStockLocationRoutesMiddlewares } from "./admin/stock-locations/middlewares"
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
 import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
@@ -65,5 +66,6 @@ export const config: MiddlewaresConfig = {
     ...adminStockLocationRoutesMiddlewares,
     ...adminProductTypeRoutesMiddlewares,
     ...adminUploadRoutesMiddlewares,
+    ...adminFulfillmentSetsRoutesMiddlewares,
   ],
 }
