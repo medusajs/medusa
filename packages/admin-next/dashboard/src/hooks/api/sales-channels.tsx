@@ -23,7 +23,7 @@ import {
 } from "@medusajs/types"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
-const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
+export const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
 
 export const useSalesChannel = (
   id: string,

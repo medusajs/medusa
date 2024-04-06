@@ -12,6 +12,7 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateApiKeyReq, UpdateApiKeyReq } from "../../types/api-payloads"
 import { ApiKeyDeleteRes } from "../../types/api-responses"
 import { AdminApiKeyResponse, AdminApiKeyListResponse } from "@medusajs/types"
+import { salesChannelsQueryKeys } from "./sales-channels"
 
 const API_KEYS_QUERY_KEY = "api_keys" as const
 export const apiKeysQueryKeys = queryKeysFactory(API_KEYS_QUERY_KEY)
@@ -128,6 +129,9 @@ export const useBatchRemoveSalesChannelsFromApiKey = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -148,6 +152,9 @@ export const useBatchAddSalesChannelsToApiKey = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },

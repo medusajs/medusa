@@ -111,7 +111,6 @@ export const ApiKeySalesChannelSection = ({
         pageSize={PAGE_SIZE}
         pagination
         search
-        navigateTo={(row) => row.id}
         isLoading={isLoading}
         queryObject={raw}
         orderBy={["name", "created_at", "updated_at"]}
@@ -142,7 +141,9 @@ const SalesChannelActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.removeSalesChannelWarning"),
+      description: t("apiKeyManagement.removeSalesChannelWarning", {
+        name: salesChannel.name,
+      }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
     })
