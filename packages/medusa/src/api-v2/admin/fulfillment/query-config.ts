@@ -1,7 +1,3 @@
-export const defaultAdminShippingOptionRelations = ["rules"]
-export const allowedAdminShippingOptionRelations = [
-  ...defaultAdminShippingOptionRelations,
-]
 export const defaultAdminShippingOptionFields = [
   "id",
   "name",
@@ -10,16 +6,16 @@ export const defaultAdminShippingOptionFields = [
   "metadata",
   "created_at",
   "updated_at",
-  "rules.id",
-  "rules.attribute",
-  "rules.operator",
-  "rules.value",
+  "*rules",
+  "*type",
+  "*prices",
+  "*service_zone",
+  "*shipping_profile",
+  "*provider",
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminShippingOptionFields,
-  defaultRelations: defaultAdminShippingOptionRelations,
-  allowedRelations: allowedAdminShippingOptionRelations,
+  defaults: defaultAdminShippingOptionFields,
   isList: false,
 }
 
