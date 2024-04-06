@@ -15,10 +15,10 @@ import { MoneyAmountCell } from "../../../../../../components/table/table-cells/
 import { PlaceholderCell } from "../../../../../../components/table/table-cells/common/placeholder-cell"
 import { ProductCell } from "../../../../../../components/table/table-cells/product/product-cell"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
-import { useProductVariantTableFilters } from "../../../../../products/product-detail/components/product-variant-section/use-variant-table-filters"
-import { useProductVariantTableQuery } from "../../../../../products/product-detail/components/product-variant-section/use-variant-table-query"
 import { useCreateDraftOrder } from "../hooks"
 import { ExistingItem } from "../types"
+import { useProductVariantTableQuery } from "../../../../../../v2-routes/products/product-detail/components/product-variant-section/use-variant-table-query"
+import { useProductVariantTableFilters } from "../../../../../../v2-routes/products/product-detail/components/product-variant-section/use-variant-table-filters"
 
 const PAGE_SIZE = 50
 const PREFIX = "av"
@@ -193,7 +193,7 @@ const useVariantTableColumns = () => {
         cell: ({ getValue }) => {
           const options = getValue()
 
-          const displayValue = options?.map((o) => o.value).join(" · ")
+          const displayValue = options?.map((o: any) => o.value).join(" · ")
 
           return (
             <div className="flex size-full items-center overflow-hidden">

@@ -46,6 +46,16 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["GET"],
+    matcher: "/admin/promotions/:id/:rule_type",
+    middlewares: [
+      transformQuery(
+        AdminGetPromotionsPromotionParams,
+        QueryConfig.retrieveNewTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/promotions/:id",
     middlewares: [transformBody(AdminPostPromotionsPromotionReq)],

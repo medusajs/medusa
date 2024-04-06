@@ -140,6 +140,15 @@
       },
       "required": ["domain"]
     },
+    "campaigns": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
     "giftCards": {
       "type": "object",
       "properties": {

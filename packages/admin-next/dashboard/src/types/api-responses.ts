@@ -4,6 +4,7 @@
 
 import {
   ApiKeyDTO,
+  CampaignDTO,
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
@@ -22,6 +23,7 @@ import {
   UserDTO,
 } from "@medusajs/types"
 import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+import { ProductTagDTO } from "@medusajs/types/dist/product"
 
 type ListRes = {
   count: number
@@ -45,6 +47,10 @@ export type CustomerListRes = { customers: CustomerDTO[] } & ListRes
 // Promotions
 export type PromotionRes = { promotion: PromotionDTO }
 export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
+export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
+export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
+export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: Record<any, any>[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users
@@ -64,6 +70,11 @@ export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 export type RegionRes = { region: RegionDTO }
 export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
+
+// Campaigns
+export type CampaignRes = { campaign: CampaignDTO }
+export type CampaignListRes = { campaigns: CampaignDTO[] } & ListRes
+export type CampaignDeleteRes = DeleteRes
 
 // API Keys
 export type ExtendedApiKeyDTO = ApiKeyDTO & {
@@ -99,6 +110,14 @@ export type ExtendedProductDTO = ProductDTO & {
 export type ProductRes = { product: ExtendedProductDTO }
 export type ProductListRes = { products: ExtendedProductDTO[] } & ListRes
 export type ProductDeleteRes = DeleteRes
+
+// Categories
+export type CategoryRes = { category: ProductCategoryDTO }
+export type CategoriesListRes = { categories: ProductCategoryDTO[] } & ListRes
+
+// Tags
+export type TagRes = { tag: ProductTagDTO }
+export type TagsListRes = { tags: ProductTagDTO[] } & ListRes
 
 // Product Types
 export type ProductTypeRes = { product_type: ProductTypeDTO }
