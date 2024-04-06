@@ -28,6 +28,7 @@ export const POST = async (
     throw errors[0].error
   }
 
+  console.log({ fileds: req.remoteQueryConfig.fields })
   const [stock_location] = await remoteQuery(
     remoteQueryObjectFromString({
       entryPoint: "stock_locations",

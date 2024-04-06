@@ -543,7 +543,10 @@
       "type": "Shipping type"
     },
     "fulfillmentSet": {
-      "placeholder": "Not covered by any shipping zones."
+      "placeholder": "Not covered by any shipping zones.",
+      "create": {
+        "title": "Add service zone for {{fulfillmentSet}}"
+      }
     }
   },
   "discounts": {

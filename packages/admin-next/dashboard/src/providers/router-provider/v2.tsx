@@ -280,12 +280,24 @@ export const v2Routes: RouteObject[] = [
             },
             children: [
               {
-                path: "location/:id",
+                path: "location/:location_id",
                 children: [
                   {
                     path: "create",
                     lazy: () =>
                       import("../../v2-routes/shipping/shipping-create"),
+                  },
+                  {
+                    path: "fulfillment-set/:fset_id",
+                    children: [
+                      {
+                        path: "service-zone/create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/shipping/service-zone-create"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },

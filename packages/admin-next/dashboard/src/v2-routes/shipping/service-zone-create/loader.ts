@@ -7,7 +7,8 @@ import { StockLocationRes } from "../../../types/api-responses"
 
 const fulfillmentSetCreateQuery = (id: string) => ({
   queryKey: adminStockLocationsKeys.detail(id),
-  queryFn: async () => client.stockLocations.retrieve(id),
+  queryFn: async () =>
+    client.stockLocations.retrieve(id, { fields: "*fulfillment_sets" }),
 })
 
 export const stockLocationLoader = async ({ params }: LoaderFunctionArgs) => {

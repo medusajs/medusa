@@ -6,6 +6,11 @@ import { Buildings } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
 
+enum FulfillmentSetType {
+  Delivery = "delivery",
+  Pickup = "pickup",
+}
+
 type FulfillmentSetProps = {
   fulfillmentSet: FulfillmentSetDTO
 }
@@ -95,7 +100,17 @@ function Location(props: LocationProps) {
               </Button>
             )}
             {hasFulfillmentSets && (
-              <Button variant="secondary">{t("shipping.addZone")}</Button>
+              <Button
+                onClick={() =>
+                  navigate(
+                    // TODO: do we render all fulfillemtn sets here
+                    `/settings/shipping/location/${location.id}/fulfillment-set/${location.fulfillment_sets[0].id}/service-zone/create`
+                  )
+                }
+                variant="secondary"
+              >
+                {t("shipping.addZone")}
+              </Button>
             )}
           </div>
         </div>
