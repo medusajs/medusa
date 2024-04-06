@@ -1,18 +1,18 @@
-import { Navigate, RouteObject, useLocation } from "react-router-dom"
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 
+import { Spinner } from "@medusajs/icons"
 import { AdminCollectionsRes } from "@medusajs/medusa"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
-import { Outlet } from "react-router-dom"
-import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
+import { useMe } from "../../hooks/api/users"
+import { ApiKeyRes } from "../../types/api-responses"
+import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
-import { Spinner } from "@medusajs/icons"
-import { useV2Session } from "../../lib/api-v2"
 
 export const ProtectedRoute = () => {
-  const { user, isLoading } = useV2Session()
+  const { user, isLoading } = useMe()
   const location = useLocation()
 
   if (isLoading) {
@@ -329,6 +329,60 @@ export const v2Routes: RouteObject[] = [
                     return data.workflow.name
                   },
                 },
+              },
+            ],
+          },
+          {
+            path: "api-key-management",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "API Key Management",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: ApiKeyRes) => {
+                    console.log("data", data)
+                    return data.apiKey.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                      ),
+                  },
+                ],
               },
             ],
           },

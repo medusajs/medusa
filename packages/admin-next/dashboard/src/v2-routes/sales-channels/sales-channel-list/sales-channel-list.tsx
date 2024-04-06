@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { SalesChannelListTable } from "../../../modules/sales-channels/sales-channel-list/components"
+import { SalesChannelListTable } from "./components/sales-channel-list-table"
 
 export const SalesChannelList = () => {
   return (

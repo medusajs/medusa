@@ -648,7 +648,7 @@
     "inviteUserHint": "Invite a new user to your store.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
-    "revokeInviteWarning": "You are about to revoke the invite for {{email}}. This action cannot be undone.",
+    "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
     "expiredOnDate": "Expired on {{date}}",
@@ -803,9 +803,10 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domain": "API Key Management",
+    "domainTitle": "API Keys",
+    "domain": "{{ keyType }} API Keys",
     "createKey": "Create key",
-    "createPublishableApiKey": "Create Publishable API Key",
+    "createPublishableApiKey": "Create {{ keyType }} API Key",
     "editKey": "Edit key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",

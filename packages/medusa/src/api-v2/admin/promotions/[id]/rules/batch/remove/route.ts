@@ -3,12 +3,12 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 
-import { AdminPostPromotionsPromotionRulesBatchRemoveReq } from "../../../../validators"
-import { RuleType } from "@medusajs/utils"
 import { removeRulesFromPromotionsWorkflow } from "@medusajs/core-flows"
+import { RuleType } from "@medusajs/utils"
+import { AdminPostBatchRemoveRules } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPromotionsPromotionRulesBatchRemoveReq>,
+  req: AuthenticatedMedusaRequest<AdminPostBatchRemoveRules>,
   res: MedusaResponse
 ) => {
   const id = req.params.id

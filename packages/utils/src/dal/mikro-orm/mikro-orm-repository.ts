@@ -640,6 +640,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             Object.assign(normalizedDataItem, {
               ...joinColumnsConstraints,
             })
+            // Non-persist relation columns should be removed before we do the upsert.
+            Object.entries(relation.targetMeta?.properties ?? {})
+              .filter(
+                ([_, propDef]) =>
+                  propDef.persist === false &&
+                  propDef.reference === ReferenceType.MANY_TO_ONE
+              )
+              .forEach(([key]) => {
+                delete normalizedDataItem[key]
+              })
           })
 
           await this.upsertMany_(manager, relation.type, normalizedData)
