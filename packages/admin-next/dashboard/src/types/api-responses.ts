@@ -4,6 +4,7 @@
 
 import {
   ApiKeyDTO,
+  CampaignDTO,
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
@@ -45,6 +46,10 @@ export type CustomerListRes = { customers: CustomerDTO[] } & ListRes
 // Promotions
 export type PromotionRes = { promotion: PromotionDTO }
 export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
+export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
+export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
+export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: Record<any, any>[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users
@@ -64,6 +69,11 @@ export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 export type RegionRes = { region: RegionDTO }
 export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
+
+// Campaigns
+export type CampaignRes = { campaign: CampaignDTO }
+export type CampaignListRes = { campaigns: CampaignDTO[] } & ListRes
+export type CampaignDeleteRes = DeleteRes
 
 // API Keys
 export type ExtendedApiKeyDTO = ApiKeyDTO & {

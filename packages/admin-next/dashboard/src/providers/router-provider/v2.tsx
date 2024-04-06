@@ -150,6 +150,34 @@ export const v2Routes: RouteObject[] = [
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-detail"),
+                handle: {
+                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-edit-details"
+                      ),
+                  },
+                  {
+                    path: "add-to-campaign",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-add-campaign"
+                      ),
+                  },
+                  {
+                    path: ":ruleType/edit",
+                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                  },
+                ],
+              },
             ],
           },
           {
