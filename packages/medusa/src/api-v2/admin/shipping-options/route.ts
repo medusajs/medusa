@@ -11,11 +11,8 @@ import {
 import { AdminCreateShippingOptionType } from "./validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<
-    AdminCreateShippingOptionType,
-    AdminShippingOptionRetrieveResponse
-  >,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionType>,
+  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody
 

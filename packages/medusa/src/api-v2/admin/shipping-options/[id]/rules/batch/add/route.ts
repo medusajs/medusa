@@ -12,10 +12,9 @@ import { AdminShippingOptionRulesBatchAddType } from "../../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    AdminShippingOptionRulesBatchAddType,
-    AdminShippingOptionRetrieveResponse
+    AdminShippingOptionRulesBatchAddType
   >,
-  res: MedusaResponse
+  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
 ) => {
   const id = req.params.id
   const workflow = addRulesToFulfillmentShippingOptionWorkflow(req.scope)

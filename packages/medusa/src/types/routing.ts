@@ -5,8 +5,8 @@ import { MedusaContainer, RequestQueryFields } from "@medusajs/types"
 import { FindConfig } from "./common"
 import * as core from "express-serve-static-core"
 
-export interface MedusaRequest<Body = unknown, Res = unknown>
-  extends Request<core.ParamsDictionary, Res, Body> {
+export interface MedusaRequest<Body = unknown>
+  extends Request<core.ParamsDictionary, any, Body> {
   validatedBody: Body
   validatedQuery: RequestQueryFields & Record<string, unknown>
   /**
@@ -52,8 +52,8 @@ export interface MedusaRequest<Body = unknown, Res = unknown>
   requestId?: string
 }
 
-export interface AuthenticatedMedusaRequest<Body = never, Res = never>
-  extends MedusaRequest<Body, Res> {
+export interface AuthenticatedMedusaRequest<Body = never>
+  extends MedusaRequest<Body> {
   user: (User | Customer) & { customer_id?: string; userId?: string } // TODO: Remove this property when v2 is released
   auth: {
     actor_id: string
@@ -63,12 +63,12 @@ export interface AuthenticatedMedusaRequest<Body = never, Res = never>
   }
 }
 
-export type MedusaResponse = Response
+export type MedusaResponse<Body = unknown> = Response<Body>
 
 export type MedusaNextFunction = NextFunction
 
-export type MedusaRequestHandler = (
-  req: MedusaRequest<unknown>,
-  res: MedusaResponse,
+export type MedusaRequestHandler<Body = unknown, Res = unknown> = (
+  req: MedusaRequest<Body>,
+  res: MedusaResponse<Res>,
   next: MedusaNextFunction
 ) => Promise<void> | void

@@ -11,11 +11,8 @@ import {
 import { AdminShippingOptionRulesBatchRemoveType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<
-    AdminShippingOptionRulesBatchRemoveType,
-    AdminShippingOptionRetrieveResponse
-  >,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminShippingOptionRulesBatchRemoveType>,
+  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
 ) => {
   const workflow = removeRulesFromFulfillmentShippingOptionWorkflow(req.scope)
 
