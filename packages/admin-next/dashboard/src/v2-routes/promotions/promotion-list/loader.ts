@@ -1,12 +1,24 @@
-import { AdminPromotionsListRes } from "@medusajs/medusa"
+import {
+  AdminGetPromotionsParams,
+  AdminPromotionsListRes,
+} from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { QueryClient } from "@tanstack/react-query"
-import { adminPromotionKeys, useV2Promotions } from "../../../lib/api-v2"
-import { queryClient } from "../../../lib/medusa"
+import { adminPromotionKeys } from "../../../lib/api-v2"
+import { medusa, queryClient } from "../../../lib/medusa"
+
+const params = {
+  limit: 20,
+  offset: 0,
+}
 
 const promotionsListQuery = () => ({
-  queryKey: adminPromotionKeys.list(),
-  queryFn: async () => useV2Promotions({ limit: 20, offset: 0 }),
+  queryKey: adminPromotionKeys.list(params),
+  queryFn: async () =>
+    medusa.admin.custom.get<AdminGetPromotionsParams, AdminPromotionsListRes>(
+      "/promotions",
+      params
+    ),
 })
 
 export const promotionsLoader = (client: QueryClient) => {

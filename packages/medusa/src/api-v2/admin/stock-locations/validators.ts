@@ -1,22 +1,14 @@
+import { Transform, Type } from "class-transformer"
 import {
-  DateComparisonOperator,
-  FindParams,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import {
-  IsBoolean,
-  IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
+import { z } from "zod"
 import { IsType } from "../../../utils"
 
 /**
@@ -290,3 +282,15 @@ export class AdminPostStockLocationsLocationReq {
 export class AdminPostStockLocationsLocationParams extends FindParams {}
 
 export class AdminGetStockLocationsLocationParams extends FindParams {}
+
+export class AdminStockLocationsLocationSalesChannelBatchReq {
+  @IsString({ each: true })
+  sales_channel_ids: string[]
+}
+
+export const AdminCreateStockLocationFulfillmentSet = z
+  .object({
+    name: z.string(),
+    type: z.string(),
+  })
+  .strict()

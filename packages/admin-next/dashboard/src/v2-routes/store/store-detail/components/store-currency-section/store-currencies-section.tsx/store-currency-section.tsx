@@ -1,72 +1,68 @@
-import { Trash } from "@medusajs/icons"
-import { Currency } from "@medusajs/medusa"
+import { Plus, Trash } from "@medusajs/icons"
+import { CurrencyDTO } from "@medusajs/types"
 import {
-  Button,
   Checkbox,
   CommandBar,
   Container,
   Heading,
-  StatusBadge,
-  Table,
-  clx,
   usePrompt,
 } from "@medusajs/ui"
-import {
-  RowSelectionState,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import {
-  adminStoreKeys,
-  useAdminCustomPost,
-  useAdminCustomQuery,
-} from "medusa-react"
+import { keepPreviousData } from "@tanstack/react-query"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../../components/common/action-menu"
-import { LocalizedTablePagination } from "../../../../../../components/localization/localized-table-pagination"
-import { StoreDTO } from "@medusajs/types"
+import { DataTable } from "../../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../../hooks/api/store"
+import { useDataTable } from "../../../../../../hooks/use-data-table"
+import { ExtendedStoreDTO } from "../../../../../../types/api-responses"
+import { useCurrenciesTableColumns } from "../../../../common/hooks/use-currencies-table-columns"
+import { useCurrenciesTableQuery } from "../../../../common/hooks/use-currencies-table-query"
 
 type StoreCurrencySectionProps = {
-  store: StoreDTO
+  store: ExtendedStoreDTO
 }
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-  const { data } = useAdminCustomQuery(
-    `/admin/currencies?code[]=${store.supported_currency_codes.join(",")}`,
-    adminStoreKeys.details()
+
+  const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
+
+  const { currencies, count, isLoading, isError, error } = useCurrencies(
+    {
+      code: store.supported_currency_codes,
+      ...searchParams,
+    },
+    {
+      placeholderData: keepPreviousData,
+    }
   )
 
   const columns = useColumns()
 
-  const table = useReactTable({
-    data: data?.currencies ?? [],
+  const { table } = useDataTable({
+    data: currencies ?? [],
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onRowSelectionChange: setRowSelection,
+    count: count,
     getRowId: (row) => row.code,
-    pageCount: Math.ceil(store.supported_currency_codes.length / PAGE_SIZE),
-    state: {
-      rowSelection,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
     },
+    enablePagination: true,
+    enableRowSelection: true,
+    pageSize: PAGE_SIZE,
     meta: {
       currencyCodes: store.supported_currency_codes,
       storeId: store.id,
     },
   })
 
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/stores/${store.id}`,
-    adminStoreKeys.details()
-  )
+  const { mutateAsync } = useUpdateStore(store.id)
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -100,67 +96,38 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     )
   }
 
+  if (isError) {
+    throw error
+  }
+
   return (
-    <Container className="p-0">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("store.currencies")}</Heading>
-        <div>
-          <Link to="/settings/store/add-currencies">
-            <Button size="small" variant="secondary">
-              {t("general.add")}
-            </Button>
-          </Link>
-        </div>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  icon: <Plus />,
+                  label: t("actions.add"),
+                  to: "currencies",
+                },
+              ],
+            },
+          ]}
+        />
       </div>
-      <Table>
-        <Table.Header>
-          {table.getHeaderGroups().map((headerGroup) => {
-            return (
-              <Table.Row
-                key={headerGroup.id}
-                className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <Table.HeaderCell key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </Table.HeaderCell>
-                  )
-                })}
-              </Table.Row>
-            )
-          })}
-        </Table.Header>
-        <Table.Body className="border-b-0">
-          {table.getRowModel().rows.map((row) => (
-            <Table.Row
-              key={row.id}
-              className={clx("transition-fg", {
-                "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                  row.getIsSelected(),
-              })}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <Table.Cell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Cell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-      <LocalizedTablePagination
-        canNextPage={table.getCanNextPage()}
-        canPreviousPage={table.getCanPreviousPage()}
-        nextPage={table.nextPage}
-        previousPage={table.previousPage}
-        count={store.supported_currency_codes.length}
-        pageIndex={table.getState().pagination.pageIndex}
-        pageCount={table.getPageCount()}
+      <DataTable
+        orderBy={["code", "name"]}
+        search
+        pagination
+        table={table}
         pageSize={PAGE_SIZE}
+        columns={columns}
+        count={count}
+        isLoading={isLoading}
+        queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>
         <CommandBar.Bar>
@@ -187,7 +154,7 @@ const CurrencyActions = ({
   currencyCodes,
 }: {
   storeId: string
-  currency: Currency
+  currency: CurrencyDTO
   currencyCodes: string[]
 }) => {
   const { mutateAsync } = useAdminCustomPost(
@@ -238,10 +205,10 @@ const CurrencyActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<Currency>()
+const columnHelper = createColumnHelper<CurrencyDTO>()
 
 const useColumns = () => {
-  const { t } = useTranslation()
+  const base = useCurrenciesTableColumns()
 
   return useMemo(
     () => [
@@ -273,25 +240,7 @@ const useColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("code", {
-        header: t("fields.code"),
-        cell: ({ getValue }) => getValue().toUpperCase(),
-      }),
-      columnHelper.accessor("name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("includes_tax", {
-        header: "Tax Inclusive Prices",
-        cell: ({ getValue }) => {
-          const value = getValue()
-          const text = value ? t("general.enabled") : t("general.disabled")
-
-          return (
-            <StatusBadge color={value ? "green" : "red"}>{text}</StatusBadge>
-          )
-        },
-      }),
+      ...base,
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
@@ -310,6 +259,6 @@ const useColumns = () => {
         },
       }),
     ],
-    [t]
+    [base]
   )
 }

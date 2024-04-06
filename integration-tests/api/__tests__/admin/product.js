@@ -11,7 +11,6 @@ const {
 const { PriceListStatus, PriceListType } = require("@medusajs/types")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
-let priceListSeeder = undefined
 let {
   ProductOptionValue,
   MoneyAmount,
@@ -96,7 +95,6 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       // Note: We have to lazily load everything because there are weird ordering issues when doing `require` of `@medusajs/medusa`
-      priceListSeeder = require("../../../helpers/price-list-seeder")
       ;({
         ProductOptionValue,
         MoneyAmount,
@@ -1958,10 +1956,9 @@ medusaIntegrationTestRunner({
         })
       })
 
-      // TODO: Enable variant price updates
-      describe.skip("updates a variant's default prices (ignores prices associated with a Price List)", () => {
+      describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
         beforeEach(async () => {
-          await priceListSeeder(dbConnection)
+          // await priceListSeeder(dbConnection)
           await simpleSalesChannelFactory(dbConnection, {
             name: "Default channel",
             id: "default-channel",
@@ -1979,23 +1976,24 @@ medusaIntegrationTestRunner({
             ],
           }
 
-          const response = await api
-            .post(
-              "/admin/products/test-product/variants/test-variant",
-              data,
-              adminHeaders
-            )
-            .catch((err) => {
-              console.log(err)
-            })
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}`,
+            data,
+            adminHeaders
+          )
 
+          expect(
+            baseProduct.variants[0].prices.find(
+              (p) => p.currency_code === "usd"
+            ).amount
+          ).toEqual(100)
           expect(response.status).toEqual(200)
           expect(response.data).toEqual({
             product: expect.objectContaining({
-              id: "test-product",
+              id: baseProduct.id,
               variants: expect.arrayContaining([
                 expect.objectContaining({
-                  id: "test-variant",
+                  id: baseProduct.variants[0].id,
                   prices: expect.arrayContaining([
                     expect.objectContaining({
                       amount: 1500,
@@ -2008,7 +2006,8 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
+        // TODO: Do we want to add support for region prices through the product APIs?
+        it.skip("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
           const data = {
             prices: [
               {
@@ -2049,14 +2048,16 @@ medusaIntegrationTestRunner({
         })
 
         it("successfully updates a variant's prices by adding a new price", async () => {
+          const usdPrice = baseProduct.variants[0].prices.find(
+            (p) => p.currency_code === "usd"
+          )
           const data = {
             title: "Test variant prices",
             prices: [
-              // usd price coming from the product seeder
               {
-                id: "test-price",
-                amount: 100,
+                id: usdPrice.id,
                 currency_code: "usd",
+                amount: 100,
               },
               {
                 currency_code: "eur",
@@ -2065,30 +2066,26 @@ medusaIntegrationTestRunner({
             ],
           }
 
-          const response = await api
-            .post(
-              "/admin/products/test-product/variants/test-variant",
-              data,
-              adminHeaders
-            )
-            .catch((err) => {
-              console.log(err)
-            })
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}`,
+            data,
+            adminHeaders
+          )
 
           expect(response.status).toEqual(200)
 
           expect(response.data).toEqual(
             expect.objectContaining({
               product: expect.objectContaining({
-                id: "test-product",
+                id: baseProduct.id,
                 variants: expect.arrayContaining([
                   expect.objectContaining({
-                    id: "test-variant",
+                    id: baseProduct.variants[0].id,
                     prices: expect.arrayContaining([
                       expect.objectContaining({
                         amount: 100,
                         currency_code: "usd",
-                        id: "test-price",
+                        id: usdPrice.id,
                       }),
                       expect.objectContaining({
                         amount: 4500,
@@ -2099,42 +2096,6 @@ medusaIntegrationTestRunner({
                 ]),
               }),
             })
-          )
-        })
-
-        it("successfully updates a variant's prices by replacing a price", async () => {
-          const variantId = "test-variant"
-          const data = {
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 4500,
-              },
-            ],
-          }
-
-          const response = await api
-            .post(
-              `/admin/products/test-product/variants/${variantId}`,
-              data,
-              adminHeaders
-            )
-            .catch((err) => {
-              console.log(err)
-            })
-
-          expect(response.status).toEqual(200)
-          const variant = response.data.product.variants.find(
-            (v) => v.id === variantId
-          )
-          expect(variant.prices.length).toEqual(1)
-          expect(variant.prices).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                amount: 4500,
-                currency_code: "usd",
-              }),
-            ])
           )
         })
 
@@ -2152,10 +2113,9 @@ medusaIntegrationTestRunner({
             ],
           }
 
-          const variantId = "test-variant"
           const response = await api
             .post(
-              `/admin/products/test-product/variants/${variantId}`,
+              `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}`,
               data,
               adminHeaders
             )
@@ -2165,9 +2125,7 @@ medusaIntegrationTestRunner({
 
           expect(response.status).toEqual(200)
 
-          const variant = response.data.product.variants.find(
-            (v) => v.id === variantId
-          )
+          const variant = response.data.product.variants[0]
           expect(variant.prices.length).toEqual(2)
 
           expect(variant.prices).toEqual(
@@ -2184,7 +2142,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {
+        // TODO: Similarly we need to decide how to handle regions
+        it.skip("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {
           const data = {
             prices: [
               {
@@ -2231,7 +2190,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("successfully deletes a region price", async () => {
+        // TODO: Similarly we need to decide how to handle regions
+        it.skip("successfully deletes a region price", async () => {
           const createRegionPricePayload = {
             prices: [
               {
@@ -2322,7 +2282,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("successfully updates a variants prices by deleting both a currency and region price", async () => {
+        // TODO: Similarly we need to decide how to handle regions
+        it.skip("successfully updates a variants prices by deleting both a currency and region price", async () => {
           // await Promise.all(
           //   ["reg_1", "reg_2", "reg_3"].map(async (regionId) => {
           //     return await simpleRegionFactory(dbConnection, {
@@ -2585,102 +2546,6 @@ medusaIntegrationTestRunner({
           expect(variantPost).not.toBeTruthy()
         })
 
-        // TODO: This one is a bit more complex, leaving for later
-        it.skip("successfully deletes a product variant and its associated option values", async () => {
-          // Validate that the option value exists
-          const optValPre = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            {
-              where: { variant_id: "test-variant_2" },
-            }
-          )
-
-          expect(optValPre).toBeTruthy()
-
-          // Soft delete the variant
-          const response = await api.delete(
-            "/admin/products/test-product/variants/test-variant_2",
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-
-          // Validate that the option value was deleted
-          const optValPost = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            { where: { variant_id: "test-variant_2" } }
-          )
-
-          expect(optValPost).not.toBeTruthy()
-
-          // Validate that the option still exists in the DB with deleted_at
-          const optValDeleted = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            {
-              where: {
-                variant_id: "test-variant_2",
-              },
-              withDeleted: true,
-            }
-          )
-
-          expect(optValDeleted).toEqual(
-            expect.objectContaining({
-              deleted_at: expect.any(Date),
-              variant_id: "test-variant_2",
-            })
-          )
-        })
-
-        // TODO: This will need a bit more rework
-        it.skip("successfully deletes a product and any option value associated with one of its variants", async () => {
-          // Validate that the option value exists
-          const optValPre = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            {
-              where: { variant_id: "test-variant_2" },
-            }
-          )
-
-          expect(optValPre).toBeTruthy()
-
-          // Soft delete the product
-          const response = await api.delete(
-            "/admin/products/test-product",
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-
-          // Validate that the option value has been deleted
-          const optValPost = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            {
-              where: { variant_id: "test-variant_2" },
-            }
-          )
-
-          expect(optValPost).not.toBeTruthy()
-
-          // Validate that the option still exists in the DB with deleted_at
-          const optValDeleted = await dbConnection.manager.findOne(
-            ProductOptionValue,
-            {
-              where: {
-                variant_id: "test-variant_2",
-              },
-              withDeleted: true,
-            }
-          )
-
-          expect(optValDeleted).toEqual(
-            expect.objectContaining({
-              deleted_at: expect.any(Date),
-              variant_id: "test-variant_2",
-            })
-          )
-        })
-
         it.skip("successfully deletes a product variant and its associated prices", async () => {
           // Validate that the price exists
           const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
@@ -2765,29 +2630,21 @@ medusaIntegrationTestRunner({
           )
         })
 
-        // TODO: This needs to be fixed
-        it.skip("successfully creates product with soft-deleted product handle and deletes it again", async () => {
+        it("successfully creates product with soft-deleted product handle and deletes it again", async () => {
           // First we soft-delete the product
           const response = await api
-            .delete("/admin/products/test-product", adminHeaders)
+            .delete(`/admin/products/${baseProduct.id}`, adminHeaders)
             .catch((err) => {
               console.log(err)
             })
 
           expect(response.status).toEqual(200)
-          expect(response.data.id).toEqual("test-product")
+          expect(response.data.id).toEqual(baseProduct.id)
 
           // Lets try to create a product with same handle as deleted one
           const payload = {
-            title: "Test product",
-            handle: "test-product",
-            description: "test-product-description",
-            images: breaking(
-              () => ["test-image.png", "test-image-2.png"],
-              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
-            ),
-            collection_id: "test-collection",
-            tags: [{ value: "123" }, { value: "456" }],
+            title: baseProduct.title,
+            handle: baseProduct.handle,
             variants: [
               {
                 title: "Test variant",
@@ -2800,31 +2657,26 @@ medusaIntegrationTestRunner({
           const res = await api.post("/admin/products", payload, adminHeaders)
 
           expect(res.status).toEqual(200)
-          expect(res.data.product.handle).toEqual("test-product")
+          expect(res.data.product.handle).toEqual(baseProduct.handle)
 
           // Delete product again to ensure uniqueness is enforced in all cases
           const response2 = await api
-            .delete("/admin/products/test-product", adminHeaders)
+            .delete(`/admin/products/${res.data.product.id}`, adminHeaders)
             .catch((err) => {
               console.log(err)
             })
 
           expect(response2.status).toEqual(200)
-          expect(response2.data.id).toEqual("test-product")
+          expect(response2.data.id).toEqual(res.data.product.id)
         })
 
+        // TODO: We just need to return the correct error message
         it.skip("should fail when creating a product with a handle that already exists", async () => {
           // Lets try to create a product with same handle as deleted one
           const payload = {
-            title: "Test product",
-            handle: "test-product",
+            title: baseProduct.title,
+            handle: baseProduct.handle,
             description: "test-product-description",
-            images: breaking(
-              () => ["test-image.png", "test-image-2.png"],
-              () => [{ url: "test-image.png" }, { url: "test-image-2.png" }]
-            ),
-            collection_id: "test-collection",
-            tags: [{ value: "123" }, { value: "456" }],
             variants: [
               {
                 title: "Test variant",
@@ -2855,21 +2707,18 @@ medusaIntegrationTestRunner({
           expect(response.data.id).toEqual(baseCollection.id)
         })
 
-        // TODO: This needs to be fixed, it returns 422 now.
-        it.skip("successfully creates soft-deleted product collection", async () => {
-          const response = await api
-            .delete("/admin/collections/test-collection", adminHeaders)
-            .catch((err) => {
-              console.log(err)
-            })
-
+        it("successfully creates soft-deleted product collection", async () => {
+          const response = await api.delete(
+            `/admin/collections/${baseCollection.id}`,
+            adminHeaders
+          )
           expect(response.status).toEqual(200)
-          expect(response.data.id).toEqual("test-collection")
+          expect(response.data.id).toEqual(baseCollection.id)
 
           // Lets try to create a product collection with same handle as deleted one
           const payload = {
             title: "Another test collection",
-            handle: "test-collection",
+            handle: baseCollection.handle,
           }
 
           const res = await api.post(
@@ -2879,7 +2728,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(res.status).toEqual(200)
-          expect(res.data.collection.handle).toEqual("test-collection")
+          expect(res.data.collection.handle).toEqual(baseCollection.handle)
         })
 
         it("should fail when creating a collection with a handle that already exists", async () => {
@@ -2898,22 +2747,12 @@ medusaIntegrationTestRunner({
           }
         })
 
-        // TODO: This needs to be fixed
-        it.skip("successfully creates soft-deleted product variant", async () => {
-          await api
-            .get("/admin/products/test-product", adminHeaders)
-            .catch((err) => {
-              console.log(err)
-            })
-
-          const response = await api
-            .delete(
-              "/admin/products/test-product/variants/test-variant",
-              adminHeaders
-            )
-            .catch((err) => {
-              console.log(err)
-            })
+        it("successfully creates soft-deleted product variant", async () => {
+          const variant = baseProduct.variants[0]
+          const response = await api.delete(
+            `/admin/products/${baseProduct.id}/variants/${variant.id}`,
+            adminHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(
@@ -2921,14 +2760,30 @@ medusaIntegrationTestRunner({
               () => response.data.variant_id,
               () => response.data.id
             )
-          ).toEqual("test-variant")
+          ).toEqual(baseProduct.variants[0].id)
 
           const payload = {
             title: "Second variant",
-            sku: "test-sku",
-            ean: "test-ean",
-            upc: "test-upc",
-            barcode: "test-barcode",
+            sku: variant.sku,
+            ean: variant.ean,
+            upc: variant.upc,
+            barcode: variant.barcode,
+            ...breaking(
+              () => ({
+                options: [
+                  {
+                    option_id: baseProduct.options[0].id,
+                    value: "newval",
+                  },
+                  {
+                    option_id: baseProduct.options[1].id,
+                    value: "newval",
+                  },
+                ],
+              }),
+              // TODO: Require that options are passed if they belong on the product, and the combos are unique per variant
+              () => ({})
+            ),
             prices: [
               {
                 currency_code: "usd",
@@ -2937,23 +2792,21 @@ medusaIntegrationTestRunner({
             ],
           }
 
-          const res = await api
-            .post(
-              "/admin/products/test-product/variants",
-              payload,
-              adminHeaders
-            )
-            .catch((err) => console.log(err))
+          const res = await api.post(
+            `/admin/products/${baseProduct.id}/variants`,
+            payload,
+            adminHeaders
+          )
 
           expect(res.status).toEqual(200)
           expect(res.data.product.variants).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 title: "Second variant",
-                sku: "test-sku",
-                ean: "test-ean",
-                upc: "test-upc",
-                barcode: "test-barcode",
+                sku: variant.sku,
+                ean: variant.ean,
+                upc: variant.upc,
+                barcode: variant.barcode,
               }),
             ])
           )

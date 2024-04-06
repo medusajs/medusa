@@ -246,6 +246,7 @@ export default class ProductModuleService<
       },
       {
         take: null,
+        relations: ["values"],
       },
       sharedContext
     )

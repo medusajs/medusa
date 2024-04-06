@@ -259,10 +259,7 @@ export interface IProductModuleService extends IModuleService {
    *   title: "Shirt",
    * })
    */
-  upsert(
-    data: UpsertProductDTO[],
-    sharedContext?: Context
-  ): Promise<ProductDTO[]>
+  upsert(data: UpsertProductDTO, sharedContext?: Context): Promise<ProductDTO>
 
   /**
    * This method is used to update a product.
