@@ -14,8 +14,8 @@ import {
 
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
-import { applySalesChannelsFilter } from "./utils/apply-sales-channel-filter"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -42,7 +42,11 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-      applySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "sales_channel_location",
+        resourceId: "stock_location_id",
+        filterableField: "sales_channel_id",
+      }),
     ],
   },
   {

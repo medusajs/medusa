@@ -1,6 +1,6 @@
 import { createStep } from "../create-step"
-import { StepResponse } from "../helpers"
 import { createWorkflow } from "../create-workflow"
+import { StepResponse } from "../helpers"
 import { transform } from "../transform"
 
 describe("Workflow composer", () => {
@@ -31,7 +31,9 @@ describe("Workflow composer", () => {
       {
         action: "step2",
         handlerType: "invoke",
-        error: new Error("step2 failed"),
+        error: expect.objectContaining({
+          message: "step2 failed",
+        }),
       },
       expect.objectContaining({
         message: "Cannot read properties of undefined (reading 'result')",
