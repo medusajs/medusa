@@ -1,4 +1,4 @@
-import { FulfillmentWorkflow } from "@medusajs/types"
+import { CreateRuleTypeDTO, FulfillmentWorkflow } from "@medusajs/types"
 import {
   createWorkflow,
   transform,
@@ -9,6 +9,7 @@ import {
   createShippingOptionsStep,
 } from "../steps"
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
+import { createPricingRuleTypesStep } from "../../pricing"
 
 export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
@@ -43,25 +44,56 @@ export const createShippingOptionsWorkflow = createWorkflow(
         shippingOptionsIndexToPrices: data.shippingOptionsIndexToPrices,
       },
       (data) => {
-        return data.shippingOptionsIndexToPrices.map(
+        const ruleTypes = new Set<CreateRuleTypeDTO>()
+        const shippingOptionsPrices = data.shippingOptionsIndexToPrices.map(
           ({ shipping_option_index, prices }) => {
+            prices.forEach((price) => {
+              if ("region_id" in price) {
+                ruleTypes.add({
+                  name: "region_id",
+                  rule_attribute: "region_id",
+                })
+              }
+            })
+
             return {
               id: data.shippingOptions[shipping_option_index].id,
               prices,
             }
           }
         )
+
+        return {
+          shippingOptionsPrices,
+          ruleTypes: Array.from(ruleTypes) as CreateRuleTypeDTO[],
+        }
       }
     )
 
+    createPricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
+
     const shippingOptionsPriceSetsLinkData = createShippingOptionsPriceSetsStep(
       {
-        input: normalizedShippingOptionsPrices,
+        input: normalizedShippingOptionsPrices.shippingOptionsPrices,
+      }
+    )
+
+    const normalizedLinkData = transform(
+      {
+        shippingOptionsPriceSetsLinkData,
+      },
+      (data) => {
+        return data.shippingOptionsPriceSetsLinkData.map((item) => {
+          return {
+            id: item.id,
+            price_sets: [item.priceSetId],
+          }
+        })
       }
     )
 
     setShippingOptionsPriceSetsStep({
-      input: shippingOptionsPriceSetsLinkData,
+      input: normalizedLinkData,
     })
 
     return createdShippingOptions

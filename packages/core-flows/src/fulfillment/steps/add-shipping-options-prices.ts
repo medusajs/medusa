@@ -27,6 +27,8 @@ function buildPriceSet(
   prices: StepInput["input"][0]["prices"],
   regionToCurrencyMap: Map<string, string>
 ): CreatePriceSetDTO {
+  const rules: CreatePriceSetDTO["rules"] = []
+
   const shippingOptionPrices = prices.map((price) => {
     if ("currency_code" in price) {
       return {
@@ -34,6 +36,10 @@ function buildPriceSet(
         amount: price.amount,
       }
     }
+
+    rules.push({
+      rule_attribute: "region_id",
+    })
 
     return {
       currency_code: regionToCurrencyMap.get(price.region_id)!,
@@ -44,7 +50,7 @@ function buildPriceSet(
     }
   })
 
-  return { prices: shippingOptionPrices }
+  return { rules, prices: shippingOptionPrices }
 }
 
 export const createShippingOptionsPriceSetsStepId =
