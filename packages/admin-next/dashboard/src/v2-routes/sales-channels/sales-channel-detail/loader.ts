@@ -1,9 +1,9 @@
 import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
+import { AdminSalesChannelResponse } from "@medusajs/types"
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
-import { SalesChannelRes } from "../../../types/api-responses"
 
 const salesChannelDetailQuery = (id: string) => ({
   queryKey: adminProductKeys.detail(id),
@@ -15,7 +15,7 @@ export const salesChannelLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = salesChannelDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<SalesChannelRes>(query.queryKey) ??
+    queryClient.getQueryData<AdminSalesChannelResponse>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }
