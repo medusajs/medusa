@@ -7,10 +7,10 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminCreateShippingOptionRulesBatchRemoveType } from "../../../../../validators"
+import { AdminShippingOptionRulesBatchRemoveType } from "../../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionRulesBatchRemoveType>,
+  req: AuthenticatedMedusaRequest<AdminShippingOptionRulesBatchRemoveType>,
   res: MedusaResponse
 ) => {
   const workflow = removeRulesFromFulfillmentShippingOptionWorkflow(req.scope)

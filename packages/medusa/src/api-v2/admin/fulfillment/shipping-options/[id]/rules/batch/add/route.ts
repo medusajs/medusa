@@ -7,10 +7,10 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminCreateShippingOptionRulesBatchAddType } from "../../../../../validators"
+import { AdminShippingOptionRulesBatchAddType } from "../../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionRulesBatchAddType>,
+  req: AuthenticatedMedusaRequest<AdminShippingOptionRulesBatchAddType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id

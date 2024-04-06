@@ -3,8 +3,8 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
-  AdminCreateShippingOptionRulesBatchAdd,
-  AdminCreateShippingOptionRulesBatchRemove,
+  AdminShippingOptionRulesBatchAdd,
+  AdminShippingOptionRulesBatchRemove,
   AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
   AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
   AdminPostShippingOptionsShippingOptionParams,
@@ -38,7 +38,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingOptionRulesBatchAdd),
+      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
     ],
   },
 
@@ -50,7 +50,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingOptionRulesBatchRemove),
+      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
     ],
   },
 ]

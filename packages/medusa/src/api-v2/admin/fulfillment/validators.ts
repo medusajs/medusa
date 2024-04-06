@@ -2,7 +2,6 @@ import {
   RuleOperator,
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
-import { ArrayNotEmpty, IsString } from "class-validator"
 import { FindParams } from "../../../types/common"
 import { z } from "zod"
 
@@ -21,24 +20,24 @@ export const AdminCreateShippingOptionRule = z
   })
   .strict()
 
-export const AdminCreateShippingOptionRulesBatchAdd = z
+export const AdminShippingOptionRulesBatchAdd = z
   .object({
     rules: AdminCreateShippingOptionRule.array(),
   })
   .strict()
 
-export type AdminCreateShippingOptionRulesBatchAddType = z.infer<
-  typeof AdminCreateShippingOptionRulesBatchAdd
+export type AdminShippingOptionRulesBatchAddType = z.infer<
+  typeof AdminShippingOptionRulesBatchAdd
 >
 
-export const AdminCreateShippingOptionRulesBatchRemove = z
+export const AdminShippingOptionRulesBatchRemove = z
   .object({
     rule_ids: z.array(z.string()),
   })
   .strict()
 
-export type AdminCreateShippingOptionRulesBatchRemoveType = z.infer<
-  typeof AdminCreateShippingOptionRulesBatchRemove
+export type AdminShippingOptionRulesBatchRemoveType = z.infer<
+  typeof AdminShippingOptionRulesBatchRemove
 >
 
 // eslint-disable-next-line max-len
