@@ -10,6 +10,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Unique,
   wrap,
 } from "@mikro-orm/core"
 import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
@@ -101,6 +102,7 @@ class Entity3 {
   @PrimaryKey()
   id: string
 
+  @Unique()
   @Property()
   title: string
 
@@ -124,44 +126,44 @@ const Entity2Repository = mikroOrmBaseRepositoryFactory<Entity2>(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory<Entity3>(Entity3)
 
 describe("mikroOrmRepository", () => {
+  let orm!: MikroORM
+  let manager!: EntityManager
+  const manager1 = () => {
+    return new Entity1Repository({ manager: manager.fork() })
+  }
+  const manager2 = () => {
+    return new Entity2Repository({ manager: manager.fork() })
+  }
+  const manager3 = () => {
+    return new Entity3Repository({ manager: manager.fork() })
+  }
+
+  beforeEach(async () => {
+    await dropDatabase(
+      { databaseName: DB_NAME, errorIfNonExist: false },
+      pgGodCredentials
+    )
+
+    orm = await MikroORM.init({
+      entities: [Entity1, Entity2],
+      clientUrl: getDatabaseURL(),
+      type: "postgresql",
+    })
+
+    const generator = orm.getSchemaGenerator()
+    await generator.ensureDatabase()
+    await generator.createSchema()
+
+    manager = orm.em.fork()
+  })
+
+  afterEach(async () => {
+    const generator = orm.getSchemaGenerator()
+    await generator.dropSchema()
+    await orm.close(true)
+  })
+
   describe("upsert with replace", () => {
-    let orm!: MikroORM
-    let manager!: EntityManager
-    const manager1 = () => {
-      return new Entity1Repository({ manager: manager.fork() })
-    }
-    const manager2 = () => {
-      return new Entity2Repository({ manager: manager.fork() })
-    }
-    const manager3 = () => {
-      return new Entity3Repository({ manager: manager.fork() })
-    }
-
-    beforeEach(async () => {
-      await dropDatabase(
-        { databaseName: DB_NAME, errorIfNonExist: false },
-        pgGodCredentials
-      )
-
-      orm = await MikroORM.init({
-        entities: [Entity1, Entity2],
-        clientUrl: getDatabaseURL(),
-        type: "postgresql",
-      })
-
-      const generator = orm.getSchemaGenerator()
-      await generator.ensureDatabase()
-      await generator.createSchema()
-
-      manager = orm.em.fork()
-    })
-
-    afterEach(async () => {
-      const generator = orm.getSchemaGenerator()
-      await generator.dropSchema()
-      await orm.close(true)
-    })
-
     it("should successfully create a flat entity", async () => {
       const entity1 = { id: "1", title: "en1" }
 
@@ -383,6 +385,38 @@ describe("mikroOrmRepository", () => {
       )
     })
 
+    it("should clear the parent entity from the one-to-many relation", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ title: "en2-1", entity1: null }],
+      }
+
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+      const listedEntities = await manager1().find({
+        where: { id: "1" },
+        options: { populate: ["entity2"] },
+      })
+
+      expect(listedEntities).toHaveLength(1)
+      expect(listedEntities[0]).toEqual(
+        expect.objectContaining({
+          id: "1",
+          title: "en1",
+        })
+      )
+      expect(listedEntities[0].entity2.getItems()).toHaveLength(1)
+      expect(listedEntities[0].entity2.getItems()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "en2-1",
+          }),
+        ])
+      )
+    })
+
     it("should only update the parent entity of a one-to-many if relation is not included", async () => {
       const entity1 = {
         id: "1",
@@ -585,7 +619,7 @@ describe("mikroOrmRepository", () => {
       )
     })
 
-    it("should successfully update, create, and delete subentities an entity with a many-to-many relation", async () => {
+    it("should successfully create subentities and delete pivot relationships on a many-to-many relation", async () => {
       const entity1 = {
         id: "1",
         title: "en1",
@@ -598,8 +632,11 @@ describe("mikroOrmRepository", () => {
       let resp = await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
+
       entity1.title = "newen1"
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
+
+      // We don't do many-to-many updates, so id: 4 entity should remain unchanged
       resp = await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
@@ -619,6 +656,7 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
+            // title: "en3-1",
             title: "newen3-1",
           }),
           expect.objectContaining({
@@ -673,8 +711,11 @@ describe("mikroOrmRepository", () => {
       const mainEntity = await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
+
       entity1.title = "newen1"
       entity1.entity3 = [{ id: "4", title: "newen3-1" }, { title: "en3-4" }]
+
+      // We don't do many-to-many updates, so id: 4 entity should remain unchanged
       await manager1().upsertWithReplace([entity1], {
         relations: ["entity3"],
       })
@@ -703,6 +744,7 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
+            // title: "en3-1",
             title: "newen3-1",
           }),
           expect.objectContaining({
@@ -772,6 +814,74 @@ describe("mikroOrmRepository", () => {
             title: "en3-2",
           }),
         ])
+      )
+    })
+
+    // it("should correctly handle many-to-many upserts with a uniqueness constriant on a non-primary key", async () => {
+    //   const entity1 = {
+    //     id: "1",
+    //     title: "en1",
+    //     entity3: [{ title: "en3-1" }, { title: "en3-2" }] as any,
+    //   }
+
+    //   await manager1().upsertWithReplace([entity1], {
+    //     relations: ["entity3"],
+    //   })
+
+    //   await manager1().upsertWithReplace([{ ...entity1, id: "2" }], {
+    //     relations: ["entity3"],
+    //   })
+
+    //   const listedEntities = await manager1().find({
+    //     where: {},
+    //     options: { populate: ["entity3"] },
+    //   })
+
+    //   expect(listedEntities).toHaveLength(2)
+    //   expect(listedEntities[0].entity3.getItems()).toEqual(
+    //     listedEntities[1].entity3.getItems()
+    //   )
+    // })
+  })
+
+  describe("error mapping", () => {
+    it("should map UniqueConstraintViolationException to MedusaError on upsertWithReplace", async () => {
+      const entity3 = { title: "en3" }
+      await manager3().upsertWithReplace([entity3])
+      const err = await manager3()
+        .upsertWithReplace([entity3])
+        .catch((e) => e.message)
+
+      expect(err).toEqual("Entity3 with title: en3 already exists.")
+    })
+
+    it("should map NotNullConstraintViolationException MedusaError on upsertWithReplace", async () => {
+      const entity3 = { title: null }
+      const err = await manager3()
+        .upsertWithReplace([entity3])
+        .catch((e) => e.message)
+
+      expect(err).toEqual("Cannot set field 'title' of Entity3 to null")
+    })
+
+    it("should map InvalidFieldNameException MedusaError on upsertWithReplace", async () => {
+      const entity3 = { othertitle: "en3" }
+      const err = await manager3()
+        .upsertWithReplace([entity3])
+        .catch((e) => e.message)
+
+      expect(err).toEqual(
+        'column "othertitle" of relation "entity3" does not exist'
+      )
+    })
+    it("should map ForeignKeyConstraintViolationException MedusaError on upsertWithReplace", async () => {
+      const entity2 = { title: "en2", entity1: { id: "1" } }
+      const err = await manager2()
+        .upsertWithReplace([entity2])
+        .catch((e) => e.message)
+
+      expect(err).toEqual(
+        "You tried to set relationship entity1_id: 1, but such entity does not exist"
       )
     })
   })

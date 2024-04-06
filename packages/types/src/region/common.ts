@@ -28,8 +28,20 @@ export interface RegionDTO {
    * The countries of the region.
    */
   countries: RegionCountryDTO[]
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, any>
+
+  /**
+   * The date the region was created.
+   */
   created_at: string
+
+  /**
+   * The date the region was updated.
+   */
   updated_at: string
 }
 
@@ -76,23 +88,27 @@ export interface FilterableRegionProps
   /**
    * The IDs to filter the regions by.
    */
-  id?: string[] | string
+  id?: string[] | string | OperatorMap<string | string[]>
   /**
    * Filter regions by their name.
    */
   name?: string | OperatorMap<string>
+
   /**
    * Filter regions by their currency code.
    */
   currency_code?: string | OperatorMap<string>
+
   /**
    * Filter regions by their metadata.
    */
   metadata?: Record<string, unknown> | OperatorMap<Record<string, unknown>>
+
   /**
    * Filter regions by their creation date.
    */
   created_at?: OperatorMap<string>
+
   /**
    * Filter regions by their update date.
    */

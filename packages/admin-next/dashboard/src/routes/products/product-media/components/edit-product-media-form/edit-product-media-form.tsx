@@ -1,22 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  ArrowDownTray,
-  CheckMini,
-  Spinner,
-  ThumbnailBadge,
-} from "@medusajs/icons"
+import { CheckMini, Spinner, ThumbnailBadge } from "@medusajs/icons"
 import { Image, Product } from "@medusajs/medusa"
-import { Button, CommandBar, Text, Tooltip, clx } from "@medusajs/ui"
+import { Button, CommandBar, Tooltip, clx } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
 import { useAdminUpdateProduct, useMedusa } from "medusa-react"
-import {
-  ChangeEvent,
-  DragEvent,
-  Fragment,
-  useCallback,
-  useRef,
-  useState,
-} from "react"
+import { Fragment, useCallback, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -27,6 +15,10 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import {
+  FileType,
+  FileUpload,
+} from "../../../../../components/common/file-upload"
 
 type ProductMediaViewProps = {
   product: Product
@@ -65,11 +57,6 @@ const EditProductMediaSchema = z.object({
 
 export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
   const [selection, setSelection] = useState<Record<string, true>>({})
-  const [isDragOver, setIsDragOver] = useState<boolean>(false)
-
-  const dropZoneRef = useRef<HTMLButtonElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -137,20 +124,16 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     )
   })
 
-  const handleOpenFileSelector = () => {
-    inputRef.current?.click()
-  }
-
-  const hasInvalidFiles = (fileList: File[]) => {
+  const hasInvalidFiles = (fileList: FileType[]) => {
     const invalidFile = fileList.find(
-      (f) => !SUPPORTED_FORMATS.includes(f.type)
+      (f) => !SUPPORTED_FORMATS.includes(f.file.type)
     )
 
     if (invalidFile) {
       form.setError("media", {
         type: "invalid_file",
         message: t("products.media.invalidFileType", {
-          name: invalidFile.name,
+          name: invalidFile.file.name,
           types: SUPPORTED_FORMATS_FILE_EXTENSIONS.join(", "),
         }),
       })
@@ -159,94 +142,6 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     }
 
     return false
-  }
-
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (files) {
-      const fileList = Array.from(files)
-
-      if (hasInvalidFiles(fileList)) {
-        return
-      }
-
-      form.clearErrors("media")
-
-      fileList.forEach((file) => {
-        const preview = URL.createObjectURL(file)
-
-        append({
-          id: crypto.randomUUID(),
-          url: preview,
-          isThumbnail: false,
-          file,
-        })
-      })
-    }
-  }
-
-  const handleDragEnter = (event: DragEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    const files = event.dataTransfer.files
-
-    if (files) {
-      const fileList = Array.from(files)
-
-      console.log(fileList.map((f) => f.type))
-
-      if (hasInvalidFiles(fileList)) {
-        console.log("invalid files")
-        setIsDragOver(false)
-        return
-      }
-
-      setIsDragOver(true)
-    }
-  }
-
-  const handleDragLeave = (event: DragEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    if (
-      !dropZoneRef.current ||
-      dropZoneRef.current.contains(event.relatedTarget as Node)
-    ) {
-      return
-    }
-
-    setIsDragOver(false)
-  }
-
-  const handleDrop = (event: DragEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    setIsDragOver(false)
-    form.clearErrors("media")
-
-    const files = event.dataTransfer.files
-
-    if (files) {
-      const fileList = Array.from(files)
-
-      if (hasInvalidFiles(fileList)) {
-        return
-      }
-
-      fileList.forEach((file) => {
-        const previewUrl = URL.createObjectURL(file)
-
-        append({
-          id: crypto.randomUUID(),
-          url: previewUrl,
-          isThumbnail: false,
-          file,
-        })
-      })
-    }
   }
 
   const handleCheckedChange = useCallback(
@@ -353,49 +248,22 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                           <Form.Hint>{t("products.media.editHint")}</Form.Hint>
                         </div>
                         <Form.Control>
-                          <div>
-                            <button
-                              ref={dropZoneRef}
-                              type="button"
-                              onClick={handleOpenFileSelector}
-                              onDrop={handleDrop}
-                              onDragOver={(e) => e.preventDefault()}
-                              onDragEnter={handleDragEnter}
-                              onDragLeave={handleDragLeave}
-                              className={clx(
-                                "bg-ui-bg-component border-ui-border-strong transition-fg group flex w-full flex-col items-center gap-y-2 rounded-lg border border-dashed p-8",
-                                "hover:border-ui-border-interactive focus:border-ui-border-interactive",
-                                "focus:shadow-borders-focus outline-none focus:border-solid",
-                                {
-                                  "!border-ui-border-error":
-                                    !!form.formState.errors.media,
-                                  "!border-ui-border-interactive": isDragOver,
-                                }
-                              )}
-                            >
-                              <div className="text-ui-fg-subtle group-disabled:text-ui-fg-disabled flex items-center gap-x-2">
-                                <ArrowDownTray />
-                                <Text>
-                                  {t("products.media.uploadImagesLabel")}
-                                </Text>
-                              </div>
-                              <Text
-                                size="small"
-                                leading="compact"
-                                className="text-ui-fg-muted group-disabled:text-ui-fg-disabled"
-                              >
-                                {t("products.media.uploadImagesHint")}
-                              </Text>
-                            </button>
-                            <input
-                              hidden
-                              ref={inputRef}
-                              onChange={handleFileChange}
-                              type="file"
-                              accept={SUPPORTED_FORMATS.join(",")}
-                              multiple
-                            />
-                          </div>
+                          <FileUpload
+                            label={t("products.media.uploadImagesLabel")}
+                            hint={t("products.media.uploadImagesHint")}
+                            hasError={!!form.formState.errors.media}
+                            formats={SUPPORTED_FORMATS}
+                            onUploaded={(files) => {
+                              form.clearErrors("media")
+                              if (hasInvalidFiles(files)) {
+                                return
+                              }
+
+                              files.forEach((f) =>
+                                append({ ...f, isThumbnail: false })
+                              )
+                            }}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </div>
