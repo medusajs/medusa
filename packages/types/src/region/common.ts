@@ -33,8 +33,20 @@ export interface RegionDTO {
    * Payment providers available in the region
    */
   payment_providers: PaymentProviderDTO[]
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, any>
+
+  /**
+   * The date the region was created.
+   */
   created_at: string
+
+  /**
+   * The date the region was updated.
+   */
   updated_at: string
 }
 
@@ -86,18 +98,22 @@ export interface FilterableRegionProps
    * Filter regions by their name.
    */
   name?: string | OperatorMap<string>
+
   /**
    * Filter regions by their currency code.
    */
   currency_code?: string | OperatorMap<string>
+
   /**
    * Filter regions by their metadata.
    */
   metadata?: Record<string, unknown> | OperatorMap<Record<string, unknown>>
+
   /**
    * Filter regions by their creation date.
    */
   created_at?: OperatorMap<string>
+
   /**
    * Filter regions by their update date.
    */
