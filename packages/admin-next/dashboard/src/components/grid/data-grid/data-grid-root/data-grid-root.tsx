@@ -30,7 +30,7 @@ export interface DataGridRootProps<
   TData,
   TFieldValues extends FieldValues = FieldValues,
 > {
-  data: TData[]
+  data?: TData[]
   columns: ColumnDef<TData>[]
   state: UseFormReturn<TFieldValues>
   getSubRows: (row: TData) => TData[] | undefined
@@ -42,7 +42,7 @@ export const DataGridRoot = <
   TData,
   TFieldValues extends FieldValues = FieldValues,
 >({
-  data,
+  data = [],
   columns,
   state,
   getSubRows,
@@ -106,9 +106,16 @@ export const DataGridRoot = <
      * Check if the click was on a presentation element.
      * If so, we don't want to set the anchor.
      */
+
+    console.log(
+      target instanceof HTMLElement &&
+        target.attributes.getNamedItem("data-role")?.value === "presentation",
+      target
+    )
+
     if (
       target instanceof HTMLElement &&
-      target.querySelector("[data-role=presentation]")
+      target.attributes.getNamedItem("data-role")?.value === "presentation"
     ) {
       return
     }
@@ -487,7 +494,7 @@ export const DataGridRoot = <
   }, [handleMouseUp, handleCopy, handlePaste, handleCommandHistory])
 
   return (
-    <div className="size-full overflow-hidden">
+    <div className="bg-ui-bg-subtle size-full overflow-hidden">
       <div
         ref={tableContainerRef}
         style={{
@@ -559,7 +566,7 @@ export const DataGridRoot = <
                         data-column-index={index}
                         className={clx(
                           "bg-ui-bg-base has-[[data-role='presentation']]:bg-ui-bg-subtle relative flex items-center border-b border-r p-0 outline-none",
-                          "after:transition-fg after:border-ui-fg-interactive after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
+                          "after:transition-fg after:border-ui-fg-interactive after:pointer-events-none after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                           {
                             "after:visible": isAnchor,
                             "bg-ui-bg-highlight": isSelected,

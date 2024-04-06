@@ -132,6 +132,45 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-add"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-edit"),
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],
@@ -363,8 +402,7 @@ export const v2Routes: RouteObject[] = [
                   ),
                 handle: {
                   crumb: (data: ApiKeyRes) => {
-                    console.log("data", data)
-                    return data.apiKey.title
+                    return data.api_key.title
                   },
                 },
                 children: [

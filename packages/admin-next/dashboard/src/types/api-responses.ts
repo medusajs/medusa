@@ -7,6 +7,7 @@ import {
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
+  PriceListDTO,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -126,3 +127,8 @@ export type ProductCollectionListRes = {
   collections: ProductCollectionDTO[]
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
+
+// Price Lists
+export type PriceListRes = { price_list: PriceListDTO }
+export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes
+export type PriceListDeleteRes = DeleteRes

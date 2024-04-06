@@ -1,12 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { PriceList } from "@medusajs/medusa"
+import { PriceListDTO } from "@medusajs/types"
 import { usePrompt } from "@medusajs/ui"
 import { useAdminDeletePriceList } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type PricingTableActionsProps = {
-  priceList: PriceList
+  priceList: PriceListDTO
 }
 
 export const PricingTableActions = ({
@@ -21,7 +21,7 @@ export const PricingTableActions = ({
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("pricing.deletePriceListWarning", {
-        name: priceList.name,
+        name: priceList.title,
       }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),

@@ -1,4 +1,4 @@
-import { PriceList } from "@medusajs/medusa"
+import { PriceListDTO } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -6,31 +6,16 @@ import { StatusCell } from "../../../../../components/table/table-cells/common/s
 import { getPriceListStatus } from "../../../common/utils"
 import { PricingTableActions } from "./pricing-table-actions"
 
-const columnHelper = createColumnHelper<PriceList>()
+const columnHelper = createColumnHelper<PriceListDTO>()
 
 export const usePricingTableColumns = () => {
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.accessor("name", {
+      columnHelper.accessor("title", {
         header: t("fields.name"),
         cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("type", {
-        header: t("fields.type"),
-        cell: ({ getValue }) => {
-          const label =
-            getValue() === "sale"
-              ? t("pricing.type.sale")
-              : t("pricing.type.override")
-
-          return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span>{label}</span>
-            </div>
-          )
-        },
       }),
       columnHelper.accessor("status", {
         header: t("fields.status"),
@@ -40,10 +25,10 @@ export const usePricingTableColumns = () => {
           return <StatusCell color={color}>{text}</StatusCell>
         },
       }),
-      columnHelper.accessor("customer_groups", {
-        header: t("customerGroups.domain"),
-        cell: (info) => info.getValue()?.length || "-",
-      }),
+      // columnHelper.accessor("customer_groups", {
+      //   header: t("customerGroups.domain"),
+      //   cell: (info) => info.getValue()?.length || "-",
+      // }),
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => <PricingTableActions priceList={row.original} />,

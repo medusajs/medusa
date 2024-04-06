@@ -1,8 +1,9 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-import { useAdminPriceLists } from "medusa-react"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
+import { usePriceLists } from "../../../../../hooks/api/price-lists"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { usePricingTableColumns } from "./use-pricing-table-columns"
 import { usePricingTableQuery } from "./use-pricing-table-query"
@@ -15,12 +16,13 @@ export const PricingListTable = () => {
   const { searchParams, raw } = usePricingTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { price_lists, count, isLoading, isError, error } = useAdminPriceLists(
+  const { price_lists, count, isLoading, isError, error } = usePriceLists(
+    // {
+    //   ...searchParams, // The query params are not implemented, and any search params other than expand and fields will throw an error
+    // },
+    undefined,
     {
-      ...searchParams,
-    },
-    {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 

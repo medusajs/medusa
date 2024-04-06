@@ -6,12 +6,14 @@ import {
   CreateApiKeyDTO,
   CreateCustomerDTO,
   CreateInviteDTO,
+  CreatePriceListDTO,
   CreateProductCollectionDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateStockLocationInput,
   UpdateApiKeyDTO,
   UpdateCustomerDTO,
+  UpdatePriceListDTO,
   UpdateProductCollectionDTO,
   UpdateRegionDTO,
   UpdateSalesChannelDTO,
@@ -57,3 +59,7 @@ export type UpdateStockLocationReq = UpdateStockLocationInput
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO
 export type UpdateProductCollectionReq = UpdateProductCollectionDTO
+
+// Price Lists
+export type CreatePriceListReq = CreatePriceListDTO
+export type UpdatePriceListReq = UpdatePriceListDTO
