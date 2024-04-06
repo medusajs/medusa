@@ -175,7 +175,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it.only("should revert the shipping options and prices", async () => {
+      it("should revert the shipping options and prices", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
