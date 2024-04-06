@@ -1,40 +1,25 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SalesChannel } from "@medusajs/medusa"
+import { Button, Checkbox, Hint, StatusBadge, Tooltip } from "@medusajs/ui"
 import {
-  Button,
-  Checkbox,
-  Hint,
-  StatusBadge,
-  Table,
-  Tooltip,
-  clx,
-} from "@medusajs/ui"
-import {
-  PaginationState,
+  OnChangeFn,
   RowSelectionState,
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminPublishableApiKeysKeys,
-  useAdminAddPublishableKeySalesChannelsBatch,
-  useAdminCustomPost,
-  useAdminSalesChannels,
-} from "medusa-react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { OrderBy } from "../../../../components/filtering/order-by"
-import { Query } from "../../../../components/filtering/query"
-import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../components/route-modal"
-import { useQueryParams } from "../../../../hooks/use-query-params"
+import { useBatchAddSalesChannelsToApiKey } from "../../../../hooks/api/api-keys"
+import { useSalesChannelTableQuery } from "../../../../hooks/table/query/use-sales-channel-table-query"
+import { useDataTable } from "../../../../hooks/use-data-table"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
+import { keepPreviousData } from "@tanstack/react-query"
+import { DataTable } from "../../../../components/table/data-table"
+import { AdminSalesChannelResponse } from "@medusajs/types"
 
 type AddSalesChannelsToApiKeyFormProps = {
   apiKey: string
@@ -63,69 +48,51 @@ export const AddSalesChannelsToApiKeyForm = ({
 
   const { setValue } = form
 
-  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
-    `/api-keys/${apiKey}/sales-channels/batch/add`,
-    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey)]
-  )
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
+  // @ts-ignore
+  const { mutateAsync, isLoading: isMutating } =
+    useBatchAddSalesChannelsToApiKey(apiKey)
+
+  const { raw, searchParams } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
   })
 
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
+  const columns = useColumns()
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
-  useEffect(() => {
-    setValue(
-      "sales_channel_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k]),
-      {
-        shouldDirty: true,
-        shouldTouch: true,
-      }
-    )
-  }, [rowSelection, setValue])
-
-  const params = useQueryParams(["q", "order"])
-  const { sales_channels, count } = useAdminSalesChannels(
+  const { sales_channels, count, isLoading } = useSalesChannels(
+    { ...searchParams },
     {
-      limit: PAGE_SIZE,
-      offset: PAGE_SIZE * pageIndex,
-      ...params,
-    },
-    {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
-  const columns = useColumns()
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const state = typeof fn === "function" ? fn(rowSelection) : fn
 
-  const table = useReactTable({
+    const ids = Object.keys(state)
+
+    setValue("sales_channel_ids", ids, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+
+    setRowSelection(state)
+  }
+
+  const { table } = useDataTable({
     data: sales_channels ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    getRowId: (row) => row.id,
+    count,
+    enablePagination: true,
     enableRowSelection: (row) => {
-      return !preSelected.includes(row.id)
+      return !preSelected.includes(row.original.id!)
     },
-    meta: {
-      preSelected,
+    getRowId: (row) => row.id,
+    pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater,
     },
   })
 
@@ -165,85 +132,26 @@ export const AddSalesChannelsToApiKeyForm = ({
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
-          <div className="flex w-full items-center justify-between px-6 py-4">
-            <div></div>
-            <div className="flex items-center gap-x-2">
-              <Query />
-              <OrderBy keys={["title"]} />
-            </div>
-          </div>
-          <div className="w-full flex-1 overflow-y-auto">
-            <Table>
-              <Table.Header className="border-t-0">
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <Table.Row
-                      key={headerGroup.id}
-                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
-                    >
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <Table.HeaderCell key={header.id}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </Table.HeaderCell>
-                        )
-                      })}
-                    </Table.Row>
-                  )
-                })}
-              </Table.Header>
-              <Table.Body className="border-b-0">
-                {table.getRowModel().rows.map((row) => (
-                  <Table.Row
-                    key={row.id}
-                    className={clx(
-                      "transition-fg",
-                      {
-                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                          row.getIsSelected(),
-                      },
-                      {
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                          preSelected.includes(row.original.id),
-                      }
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <Table.Cell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Cell>
-                    ))}
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-          <div className="w-full border-t">
-            <LocalizedTablePagination
-              canNextPage={table.getCanNextPage()}
-              canPreviousPage={table.getCanPreviousPage()}
-              nextPage={table.nextPage}
-              previousPage={table.previousPage}
-              count={count ?? 0}
-              pageIndex={pageIndex}
-              pageCount={table.getPageCount()}
-              pageSize={PAGE_SIZE}
-            />
-          </div>
+        <RouteFocusModal.Body>
+          <DataTable
+            table={table}
+            columns={columns}
+            count={count}
+            pageSize={PAGE_SIZE}
+            pagination
+            search
+            isLoading={isLoading}
+            queryObject={raw}
+            orderBy={["name", "created_at", "updated_at"]}
+          />
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper =
+  createColumnHelper<AdminSalesChannelResponse["sales_channel"]>()
 
 const useColumns = () => {
   const { t } = useTranslation()
@@ -266,28 +174,24 @@ const useColumns = () => {
             />
           )
         },
-        cell: ({ row, table }) => {
-          const { preSelected } = table.options.meta as {
-            preSelected: string[]
-          }
-
-          const isAdded = preSelected.includes(row.original.id)
-          const isSelected = row.getIsSelected() || isAdded
+        cell: ({ row }) => {
+          const isPreSelected = !row.getCanSelect()
+          const isSelected = row.getIsSelected() || isPreSelected
 
           const Component = (
             <Checkbox
               checked={isSelected}
-              disabled={isAdded}
+              disabled={isPreSelected}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
             />
           )
 
-          if (isAdded) {
+          if (isPreSelected) {
             return (
-              <Tooltip
-                content={t("salesChannels.productAlreadyAdded")}
-                side="right"
-              >
+              <Tooltip content={t("store.currencyAlreadyAdded")} side="right">
                 {Component}
               </Tooltip>
             )

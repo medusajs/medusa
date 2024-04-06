@@ -19,6 +19,10 @@ export interface CreateRegionDTO {
    */
   countries?: string[]
   /**
+   * The region's payment providers.
+   */
+  payment_providers?: string[]
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown>

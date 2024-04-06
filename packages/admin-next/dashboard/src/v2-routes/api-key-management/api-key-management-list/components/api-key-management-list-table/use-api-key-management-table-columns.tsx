@@ -9,13 +9,16 @@ import {
 } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-
-import { ApiKeyDTO } from "@medusajs/types"
+import { AdminApiKeyResponse } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
+import {
+  useDeleteApiKey,
+  useRevokeApiKey,
+} from "../../../../../hooks/api/api-keys"
 
-const columnHelper = createColumnHelper<ApiKeyDTO>()
+const columnHelper = createColumnHelper<AdminApiKeyResponse["api_key"]>()
 
 export const useApiKeyManagementTableColumns = () => {
   const { t } = useTranslation()
@@ -83,21 +86,9 @@ export const useApiKeyManagementTableColumns = () => {
   )
 }
 
-const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
-  const { mutateAsync: revokeAsync } = useAdminCustomPost(
-    `/api-keys/${apiKey.id}/revoke`,
-    [
-      adminPublishableApiKeysKeys.lists(),
-      adminPublishableApiKeysKeys.detail(apiKey.id),
-    ]
-  )
-  const { mutateAsync: deleteAsync } = useAdminCustomDelete(
-    `/api-keys/${apiKey.id}`,
-    [
-      adminPublishableApiKeysKeys.lists(),
-      adminPublishableApiKeysKeys.detail(apiKey.id),
-    ]
-  )
+export const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
+  const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
+  const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -133,7 +124,7 @@ const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
       return
     }
 
-    await revokeAsync({})
+    await revokeAsync(undefined)
   }
 
   return (
