@@ -1,11 +1,9 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import * as QueryConfig from "./query-config"
-import {
-  maybeApplyPriceListsFilter,
-  maybeApplySalesChannelsFilter,
-} from "./utils"
+import { maybeApplyPriceListsFilter } from "./utils"
 import {
   AdminGetProductsOptionsParams,
   AdminGetProductsParams,
@@ -35,7 +33,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig
       ),
-      maybeApplySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "product_sales_channel",
+        resourceId: "product_id",
+        filterableField: "sales_channel_id",
+      }),
       maybeApplyPriceListsFilter(),
     ],
   },
