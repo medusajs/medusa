@@ -8,6 +8,7 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { currencies } from "../../../../../lib/currencies"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
 import { ListSummary } from "../../../../../components/common/list-summary"
+import { useNavigate } from "react-router-dom"
 
 type RegionGeneralSectionProps = {
   region: RegionDTO
@@ -54,6 +55,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
 }
 
 const RegionActions = ({ region }: { region: RegionDTO }) => {
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const { mutateAsync } = useDeleteRegion(region.id)
   const prompt = usePrompt()
@@ -75,6 +77,7 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
     }
 
     await mutateAsync(undefined)
+    navigate("/settings/regions", { replace: true })
   }
 
   return (

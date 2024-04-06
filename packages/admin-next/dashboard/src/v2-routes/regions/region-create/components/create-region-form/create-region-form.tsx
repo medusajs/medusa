@@ -86,7 +86,7 @@ export const CreateRegionForm = ({
         name: values.name,
         countries: values.countries.map((c) => c.code),
         currency_code: values.currency_code,
-        // payment_providers: values.payment_providers, // TODO
+        payment_providers: values.payment_providers,
         automatic_taxes: values.includes_tax,
       },
       {
