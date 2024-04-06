@@ -54,7 +54,7 @@ export const AdminPostShippingOptionsFulfillmentRuleCreate = z
   .object({
     operator: z.nativeEnum(RuleOperator),
     attribute: z.string(),
-    value: z.union([z.string(), z.array(z.string())]),
+    value: z.string().or(z.array(z.string())),
   })
   .strict()
 
@@ -97,10 +97,10 @@ export const AdminPostFulfillmentShippingOptionsShippingOption = z
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum),
     provider_id: z.string(),
     type: AdminPostFulfillmentShippingOptionsShippingOptionType,
-    prices: z.array(
-      AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice,
-      AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
-    ),
+    prices:
+      AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice.or(
+        AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
+      ).array(),
     rules: z.array(AdminPostShippingOptionsFulfillmentRuleCreate).optional(),
   })
   .strict()
