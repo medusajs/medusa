@@ -3,10 +3,10 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-import { CreateProductOptionDTO } from "@medusajs/types"
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { refetchProduct, remapProduct } from "../../helpers"
+import { refetchProduct, remapProductResponse } from "../../helpers"
+import { AdminCreateProductOptionType } from "../../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -37,7 +37,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateProductOptionDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateProductOptionType>,
   res: MedusaResponse
 ) => {
   const productId = req.params.id
@@ -62,5 +62,5 @@ export const POST = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
-  res.status(200).json({ product: remapProduct(product) })
+  res.status(200).json({ product: remapProductResponse(product) })
 }
