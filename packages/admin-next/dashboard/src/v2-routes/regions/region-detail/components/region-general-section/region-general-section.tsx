@@ -7,6 +7,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { currencies } from "../../../../../lib/currencies"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
+import { ListSummary } from "../../../../../components/common/list-summary"
 
 type RegionGeneralSectionProps = {
   region: RegionDTO
@@ -38,13 +39,15 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
         <Text size="small" leading="compact" weight="plus">
           {t("fields.paymentProviders")}
         </Text>
-        <Text size="small" leading="compact">
-          {region.payment_providers?.length > 0
-            ? region.payment_providers
-                .map((p) => formatProvider(p.id))
-                .join(", ")
-            : "-"}
-        </Text>
+        <div className="inline-flex">
+          {region.payment_providers?.length > 0 ? (
+            <ListSummary
+              list={region.payment_providers.map((p) => formatProvider(p.id))}
+            />
+          ) : (
+            "-"
+          )}
+        </div>
       </div>
     </Container>
   )
