@@ -1,5 +1,6 @@
 import {
-  CartDTO,
+  BigNumberInput,
+  CartLikeWithTotals,
   CartLineItemDTO,
   CartShippingMethodDTO,
   RegionDTO,
@@ -18,15 +19,17 @@ interface TotalsConfig {
 }
 
 export interface DecorateCartTotalsInputDTO {
-  items?: CartLineItemDTO[]
-  shipping_methods?: CartShippingMethodDTO[]
+  items?: (Pick<CartLineItemDTO, "unit_price" | "quantity"> & {
+    adjustments?: { amount: BigNumberInput }
+  })[]
+  shipping_methods?: Pick<CartShippingMethodDTO, "amount">[]
   region?: RegionDTO
 }
 
 export function decorateCartTotals(
   cartLike: DecorateCartTotalsInputDTO,
   config: TotalsConfig = {}
-): CartDTO {
+): CartLikeWithTotals {
   transformPropertiesToBigNumber(cartLike)
 
   const items = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
@@ -44,11 +47,13 @@ export function decorateCartTotals(
   })
 
   let subtotal = MathBN.convert(0)
+  let subtotalWithoutTaxes = MathBN.convert(0)
 
   let discountTotal = MathBN.convert(0)
   let discountTaxTotal = MathBN.convert(0)
 
   let itemsSubtotal = MathBN.convert(0)
+  let itemsSubtotalWithoutTaxes = MathBN.convert(0)
 
   let itemsTotal = MathBN.convert(0)
   let itemsOriginalTotal = MathBN.convert(0)
@@ -64,10 +69,11 @@ export function decorateCartTotals(
   let shippingTaxTotal = MathBN.convert(0)
   let shippingOriginalTaxTotal = MathBN.convert(0)
 
-  const cartItems = items.map((item) => {
-    const itemTotals = Object.assign(item, itemsTotals[item.id] ?? {})
+  const cartItems = items.map((item, index) => {
+    const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
 
-    const itemSubtotal = MathBN.convert(itemTotals.subtotal)
+    const itemSubtotal = itemTotals.subtotal
+    const itemSubtotalWithoutTaxes = itemTotals.subtotal_without_taxes
 
     const itemTotal = MathBN.convert(itemTotals.total)
     const itemOriginalTotal = MathBN.convert(itemTotals.original_total)
@@ -79,6 +85,10 @@ export function decorateCartTotals(
     const itemDiscountTaxTotal = MathBN.convert(itemTotals.discount_tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
+    subtotalWithoutTaxes = subtotal = MathBN.add(
+      subtotalWithoutTaxes,
+      itemSubtotalWithoutTaxes
+    )
 
     discountTotal = MathBN.add(discountTotal, itemDiscountTotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, itemDiscountTaxTotal)
@@ -87,6 +97,10 @@ export function decorateCartTotals(
     itemsOriginalTotal = MathBN.add(itemsOriginalTotal, itemOriginalTotal)
 
     itemsSubtotal = MathBN.add(itemsSubtotal, itemSubtotal)
+    itemsSubtotalWithoutTaxes = MathBN.add(
+      itemsSubtotalWithoutTaxes,
+      itemSubtotalWithoutTaxes
+    )
 
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
     itemsOriginalTaxTotal = MathBN.add(
@@ -145,7 +159,7 @@ export function decorateCartTotals(
   // TODO: Gift Card calculations
 
   const originalTempTotal = MathBN.add(
-    subtotal,
+    subtotalWithoutTaxes,
     shippingOriginalTotal,
     originalTaxTotal
   )
@@ -154,48 +168,43 @@ export function decorateCartTotals(
   const tempTotal = MathBN.add(subtotal, shippingTotal, taxTotal)
   const total = MathBN.sub(tempTotal, discountTotal)
 
-  const cart = { ...cartLike } as unknown as CartDTO
+  const cart = { ...cartLike } as any
 
-  cart.items = cartItems
-  cart.shipping_methods = cartShippingMethods
+  cart.items = cartLike.items ?? cartItems
+  cart.shipping_methods = cartLike.shipping_methods && cartShippingMethods
 
-  cart.total = new BigNumber(total) as unknown as number
-  cart.subtotal = new BigNumber(subtotal) as unknown as number
-  cart.tax_total = new BigNumber(taxTotal) as unknown as number
+  cart.total = new BigNumber(total)
+  cart.subtotal = new BigNumber(subtotal)
+  cart.subtotal_without_taxes = new BigNumber(subtotalWithoutTaxes)
+  cart.tax_total = new BigNumber(taxTotal)
 
-  cart.discount_total = new BigNumber(discountTotal) as unknown as number
-  cart.discount_tax_total = new BigNumber(discountTaxTotal) as unknown as number
+  cart.discount_total = new BigNumber(discountTotal)
+  cart.discount_tax_total = new BigNumber(discountTaxTotal)
 
-  cart.item_total = new BigNumber(itemsTotal) as unknown as number
-  cart.item_subtotal = new BigNumber(itemsSubtotal) as unknown as number
-  cart.item_tax_total = new BigNumber(itemsTaxTotal) as unknown as number
-
-  cart.shipping_total = new BigNumber(shippingTotal) as unknown as number
-  cart.shipping_subtotal = new BigNumber(shippingSubtotal) as unknown as number
-  cart.shipping_tax_total = new BigNumber(shippingTaxTotal) as unknown as number
+  cart.item_total = new BigNumber(itemsTotal)
+  cart.item_subtotal = new BigNumber(itemsSubtotal)
+  cart.item_tax_total = new BigNumber(itemsTaxTotal)
 
   // cart.gift_card_total = giftCardTotal.total || 0
   // cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-  cart.original_total = new BigNumber(originalTotal) as unknown as number
-  cart.original_tax_total = new BigNumber(originalTaxTotal) as unknown as number
+  cart.original_total = new BigNumber(originalTotal)
+  cart.original_tax_total = new BigNumber(originalTaxTotal)
 
   // cart.original_gift_card_total =
   // cart.original_gift_card_tax_total =
 
-  cart.original_item_total = new BigNumber(
-    itemsOriginalTotal
-  ) as unknown as number
-  cart.original_item_tax_total = new BigNumber(
-    itemsOriginalTaxTotal
-  ) as unknown as number
+  cart.original_item_total = new BigNumber(itemsOriginalTotal)
+  cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
 
-  cart.original_shipping_tax_total = new BigNumber(
-    shippingOriginalTaxTotal
-  ) as unknown as number
-  cart.original_shipping_total = new BigNumber(
-    shippingOriginalTotal
-  ) as unknown as number
+  if (cart.shipping_methods) {
+    cart.shipping_total = new BigNumber(shippingTotal)
+    cart.shipping_subtotal = new BigNumber(shippingSubtotal)
+    cart.shipping_tax_total = new BigNumber(shippingTaxTotal)
 
-  return cart as CartDTO
+    cart.original_shipping_tax_total = new BigNumber(shippingOriginalTaxTotal)
+    cart.original_shipping_total = new BigNumber(shippingOriginalTotal)
+  }
+
+  return cart
 }

@@ -4,7 +4,7 @@ import { MathBN } from "../math"
 export function calculateAdjustmentTotal({
   adjustments,
 }: {
-  adjustments: AdjustmentLineDTO[]
+  adjustments: Pick<AdjustmentLineDTO, "amount">[]
 }) {
   return adjustments.reduce((acc, line) => {
     return MathBN.add(acc, line.amount)

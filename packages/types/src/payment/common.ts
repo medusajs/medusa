@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { BigNumberValue } from "../totals"
 /* ********** PAYMENT COLLECTION ********** */
 /**
  * @enum
@@ -87,17 +88,17 @@ export interface PaymentCollectionDTO {
   /**
    * The total amount to be authorized and captured.
    */
-  amount: number
+  amount: BigNumberValue
 
   /**
    * The amount authorized within the associated payment sessions.
    */
-  authorized_amount?: number
+  authorized_amount?: BigNumberValue
 
   /**
    * The amount refunded within the associated payments.
    */
-  refunded_amount?: number
+  refunded_amount?: BigNumberValue
 
   /**
    * When the payment collection was completed.
@@ -190,7 +191,7 @@ export interface FilterablePaymentSessionProps
   /**
    * Filter the payment sessions by their amount.
    */
-  amount?: number | OperatorMap<number>
+  amount?: BigNumberValue | OperatorMap<BigNumberValue>
 
   /**
    * Filter the payment sessions by the ID of their associated payment provider.
@@ -240,7 +241,7 @@ export interface FilterableCaptureProps extends BaseFilterable<CaptureDTO> {
   /**
    * Filter the captures by their amounts.
    */
-  amount?: number | OperatorMap<number>
+  amount?: BigNumberValue | OperatorMap<BigNumberValue>
 
   /**
    * Filter the captures by the ID of their associated payment.
@@ -280,7 +281,7 @@ export interface FilterableRefundProps extends BaseFilterable<RefundDTO> {
   /**
    * Filter the refunds by their amount.
    */
-  amount?: number | OperatorMap<number>
+  amount?: BigNumberValue | OperatorMap<BigNumberValue>
 
   /**
    * Filter the refunds by the ID of their associated payment.
@@ -312,12 +313,12 @@ export interface PaymentDTO {
   /**
    * The payment's total amount.
    */
-  amount: number
+  amount: BigNumberValue
 
   /**
    * The authorized amount of the payment.
    */
-  authorized_amount?: number
+  authorized_amount?: BigNumberValue
 
   /**
    * The ISO 3 character currency code of the payment.
@@ -377,12 +378,12 @@ export interface PaymentDTO {
   /**
    * The sum of the associated captures' amounts.
    */
-  captured_amount?: number
+  captured_amount?: BigNumberValue
 
   /**
    * The sum of the associated refunds' amounts.
    */
-  refunded_amount?: number
+  refunded_amount?: BigNumberValue
 
   /**
    * The associated captures.
@@ -481,7 +482,7 @@ export interface CaptureDTO {
   /**
    * The captured amount.
    */
-  amount: number
+  amount: BigNumberValue
 
   /**
    * The creation date of the capture.
@@ -512,7 +513,7 @@ export interface RefundDTO {
   /**
    * The refunded amount.
    */
-  amount: number
+  amount: BigNumberValue
 
   /**
    * The creation date of the refund.
@@ -543,7 +544,7 @@ export interface PaymentSessionDTO {
   /**
    * The amount to authorize.
    */
-  amount: number
+  amount: BigNumberValue
 
   /**
    * The 3 character currency code of the payment session.

@@ -11,17 +11,18 @@ interface GetLineItemsTotalsContext {
 export interface GetItemTotalInput {
   id: string
   unit_price: BigNumber
-  quantity: number
+  quantity: BigNumber
   is_tax_inclusive?: boolean
-  tax_lines?: TaxLineDTO[]
-  adjustments?: AdjustmentLineDTO[]
+  tax_lines?: Pick<TaxLineDTO, "rate">[]
+  adjustments?: Pick<AdjustmentLineDTO, "amount">[]
 }
 
 export interface GetItemTotalOutput {
-  quantity: number
+  quantity: BigNumber
   unit_price: BigNumber
 
   subtotal: BigNumber
+  subtotal_without_taxes: BigNumber
 
   total: BigNumber
   original_total: BigNumber
@@ -39,10 +40,12 @@ export function getLineItemsTotals(
 ) {
   const itemsTotals = {}
 
+  let index = 0
   for (const item of items) {
-    itemsTotals[item.id] = getLineItemTotals(item, {
-      includeTax: context.includeTax,
+    itemsTotals[item.id ?? index] = getLineItemTotals(item, {
+      includeTax: context.includeTax || item.is_tax_inclusive,
     })
+    index++
   }
 
   return itemsTotals
@@ -69,6 +72,7 @@ function getLineItemTotals(
     unit_price: item.unit_price,
 
     subtotal: new BigNumber(subtotal),
+    subtotal_without_taxes: new BigNumber(subtotal),
 
     total: new BigNumber(total),
     original_total: new BigNumber(subtotal),
@@ -102,15 +106,12 @@ function getLineItemTotals(
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = MathBN.sub(
-      MathBN.mult(item.unit_price, totals.quantity),
-      originalTaxTotal
+    totals.subtotal_without_taxes = new BigNumber(
+      MathBN.sub(
+        MathBN.mult(item.unit_price, totals.quantity),
+        originalTaxTotal
+      )
     )
-
-    const subtotalBn = new BigNumber(subtotal)
-    totals.subtotal = subtotalBn
-    totals.total = subtotalBn
-    totals.original_total = subtotalBn
   } else {
     const newTotal = MathBN.add(total, totals.tax_total)
     const originalTotal = MathBN.add(subtotal, totals.original_tax_total)

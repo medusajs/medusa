@@ -1,30 +1,30 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
-import { BigNumberRawValue } from "../totals"
+import { BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type OrderSummaryDTO = {
-  total: number
-  subtotal: number
-  total_tax: number
+  total: BigNumberValue
+  subtotal: BigNumberValue
+  total_tax: BigNumberValue
 
-  ordered_total: number
-  fulfilled_total: number
-  returned_total: number
-  return_request_total: number
-  write_off_total: number
-  projected_total: number
+  ordered_total: BigNumberValue
+  fulfilled_total: BigNumberValue
+  returned_total: BigNumberValue
+  return_request_total: BigNumberValue
+  write_off_total: BigNumberValue
+  projected_total: BigNumberValue
 
-  net_total: number
-  net_subtotal: number
-  net_total_tax: number
+  net_total: BigNumberValue
+  net_subtotal: BigNumberValue
+  net_total_tax: BigNumberValue
 
-  future_total: number
-  future_subtotal: number
-  future_total_tax: number
-  future_projected_total: number
+  future_total: BigNumberValue
+  future_subtotal: BigNumberValue
+  future_total_tax: BigNumberValue
+  future_projected_total: BigNumberValue
 
-  balance: number
-  future_balance: number
+  balance: BigNumberValue
+  future_balance: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {
@@ -39,7 +39,7 @@ export interface OrderAdjustmentLineDTO {
   /**
    * The amount of the adjustment line
    */
-  amount: number
+  amount: BigNumberValue
   /**
    * The ID of the associated order
    */
@@ -134,6 +134,16 @@ export interface OrderShippingMethodTaxLineDTO extends OrderTaxLineDTO {
    * The ID of the associated shipping method
    */
   shipping_method_id: string
+
+  /**
+   * The total tax relative to the shipping method.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal tax relative to the shipping method.
+   */
+  subtotal: BigNumberValue
 }
 
 export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
@@ -145,6 +155,16 @@ export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
    * The ID of the associated line item
    */
   item_id: string
+
+  /**
+   * The total tax relative to the item.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal tax relative to the item.
+   */
+  subtotal: BigNumberValue
 }
 
 export interface OrderAddressDTO {
@@ -276,11 +296,45 @@ export interface OrderShippingMethodDTO {
    */
   updated_at: Date | string
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  /**
+   * The original total of the order shipping method.
+   */
+  original_total: BigNumberValue
+
+  /**
+   * The original subtotal of the order shipping method.
+   */
+  original_subtotal: BigNumberValue
+
+  /**
+   * The original tax total of the order shipping method.
+   */
+  original_tax_total: BigNumberValue
+
+  /**
+   * The total of the order shipping method.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal of the order shipping method.
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The tax total of the order shipping method.
+   */
+  tax_total: BigNumberValue
+
+  /**
+   * The discount total of the order shipping method.
+   */
+  discount_total: BigNumberValue
+
+  /**
+   * The discount tax total of the order shipping method.
+   */
+  discount_tax_total: BigNumberValue
 }
 
 export interface OrderLineItemTotalsDTO {

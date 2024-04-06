@@ -13,7 +13,7 @@ export interface GetShippingMethodTotalInput {
   amount: BigNumber
   is_tax_inclusive?: boolean
   tax_lines?: TaxLineDTO[]
-  adjustments?: AdjustmentLineDTO[]
+  adjustments?: Pick<AdjustmentLineDTO, "amount">[]
 }
 
 export interface GetShippingMethodTotalOutput {
@@ -39,13 +39,15 @@ export function getShippingMethodsTotals(
 
   const shippingMethodsTotals = {}
 
+  let index = 0
   for (const shippingMethod of shippingMethods) {
-    shippingMethodsTotals[shippingMethod.id] = getShippingMethodTotals(
+    shippingMethodsTotals[shippingMethod.id ?? index] = getShippingMethodTotals(
       shippingMethod,
       {
         includeTax,
       }
     )
+    index++
   }
 
   return shippingMethodsTotals
