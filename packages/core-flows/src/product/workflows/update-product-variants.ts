@@ -11,7 +11,7 @@ import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 type UpdateProductVariantsStepInput = {
   selector: ProductTypes.FilterableProductVariantProps
   update: ProductTypes.UpdateProductVariantDTO & {
-    prices?: PricingTypes.CreateMoneyAmountDTO[]
+    prices?: Partial<PricingTypes.CreateMoneyAmountDTO>[]
   }
 }
 
