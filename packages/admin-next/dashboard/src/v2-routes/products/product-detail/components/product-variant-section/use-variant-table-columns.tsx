@@ -2,12 +2,12 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { Product, ProductVariant } from "@medusajs/medusa"
 import { Badge, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminDeleteVariant } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { useDeleteVariant } from "../../../../../hooks/api/products"
 
 const VariantActions = ({
   variant,
@@ -16,7 +16,7 @@ const VariantActions = ({
   variant: ProductVariant
   product: Product
 }) => {
-  const { mutateAsync } = useAdminDeleteVariant(product.id)
+  const { mutateAsync } = useDeleteVariant(product.id, variant.id)
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -34,7 +34,7 @@ const VariantActions = ({
       return
     }
 
-    await mutateAsync(variant.id)
+    await mutateAsync()
   }
 
   return (
