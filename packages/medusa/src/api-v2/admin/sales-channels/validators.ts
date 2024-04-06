@@ -47,6 +47,20 @@ export class AdminGetSalesChannelsParams extends extendedFindParamsMixin({
   created_at?: OperatorMap<string>
 
   /**
+   * Filter by location id
+   */
+  @IsString({ each: true })
+  @IsOptional()
+  location_id?: string | string[]
+
+  /**
+   * Filter by publishable api keys
+   */
+  @IsString({ each: true })
+  @IsOptional()
+  publishable_key_id?: string | string[]
+
+  /**
    * Date filters to apply on sales channels' `updated_at` field.
    */
   @IsOptional()
