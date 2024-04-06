@@ -21,6 +21,7 @@ import { adminStockLocationRoutesMiddlewares } from "./admin/stock-locations/mid
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
 import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
 import { adminTaxRegionRoutesMiddlewares } from "./admin/tax-regions/middlewares"
+import { adminUploadRoutesMiddlewares } from "./admin/uploads/middlewares"
 import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
@@ -63,5 +64,6 @@ export const config: MiddlewaresConfig = {
     ...adminSalesChannelRoutesMiddlewares,
     ...adminStockLocationRoutesMiddlewares,
     ...adminProductTypeRoutesMiddlewares,
+    ...adminUploadRoutesMiddlewares,
   ],
 }

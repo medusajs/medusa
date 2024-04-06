@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowPath, Link, XCircle } from "@medusajs/icons"
-import { Invite } from "@medusajs/medusa"
+import { ArrowPath, Trash } from "@medusajs/icons"
+import { InviteDTO } from "@medusajs/types"
 import {
   Button,
   Container,
@@ -21,13 +21,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { format } from "date-fns"
-import {
-  adminInviteKeys,
-  useAdminCustomPost,
-  useAdminDeleteInvite,
-  useAdminInvites,
-  useAdminResendInvite,
-} from "medusa-react"
 import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
@@ -37,8 +30,12 @@ import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { Form } from "../../../../../components/common/form"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { RouteFocusModal } from "../../../../../components/route-modal"
-import { useV2Store } from "../../../../../lib/api-v2"
-import { InviteDTO } from "@medusajs/types"
+import {
+  useCreateInvite,
+  useDeleteInvite,
+  useInvites,
+  useResendInvite,
+} from "../../../../../hooks/api/invites"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -56,7 +53,7 @@ export const InviteUserForm = () => {
     resolver: zodResolver(InviteUserSchema),
   })
 
-  const { invites, isLoading, isError, error } = useAdminInvites()
+  const { invites, isLoading, isError, error } = useInvites()
   const count = invites?.length ?? 0
 
   const noRecords = !isLoading && count === 0
@@ -72,10 +69,7 @@ export const InviteUserForm = () => {
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
-    "/admin/invites",
-    adminInviteKeys.lists()
-  )
+  const { mutateAsync, isPending } = useCreateInvite()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -133,7 +127,7 @@ export const InviteUserForm = () => {
                     size="small"
                     variant="secondary"
                     type="submit"
-                    isLoading={isMutating}
+                    isLoading={isPending}
                   >
                     {t("users.sendInvite")}
                   </Button>
@@ -215,20 +209,20 @@ export const InviteUserForm = () => {
 }
 
 const InviteActions = ({ invite }: { invite: InviteDTO }) => {
-  const { mutateAsync: revokeAsync } = useAdminDeleteInvite(invite.id)
-  const { mutateAsync: resendAsync } = useAdminResendInvite(invite.id)
-  const { store, isLoading, isError, error } = useV2Store({})
+  const { mutateAsync: revokeAsync } = useDeleteInvite(invite.id)
+  const { mutateAsync: resendAsync } = useResendInvite(invite.id)
+
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  const handleRevoke = async () => {
+  const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("users.revokeInviteWarning", {
+      description: t("users.deleteInviteWarning", {
         email: invite.email,
       }),
       cancelText: t("actions.cancel"),
-      confirmText: t("actions.revoke"),
+      confirmText: t("actions.delete"),
     })
 
     if (!res) {
@@ -242,32 +236,11 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
     await resendAsync()
   }
 
-  const handleCopyInviteLink = () => {
-    const template = store?.invite_link_template
-
-    if (!template) {
-      return
-    }
-
-    const link = template.replace("{invite_token}", invite.token)
-    navigator.clipboard.writeText(link)
-  }
-
-  if (isError) {
-    throw error
-  }
-
   return (
     <ActionMenu
       groups={[
         {
           actions: [
-            {
-              icon: <Link />,
-              label: t("users.copyInviteLink"),
-              disabled: isLoading || !store?.invite_link_template,
-              onClick: handleCopyInviteLink,
-            },
             {
               icon: <ArrowPath />,
               label: t("users.resendInvite"),
@@ -278,9 +251,9 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
         {
           actions: [
             {
-              icon: <XCircle />,
-              label: t("actions.revoke"),
-              onClick: handleRevoke,
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: handleDelete,
             },
           ],
         },

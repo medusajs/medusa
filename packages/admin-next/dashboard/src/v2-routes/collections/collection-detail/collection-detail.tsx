@@ -1,6 +1,6 @@
-import { useAdminCollection } from "medusa-react"
 import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { useCollection } from "../../../hooks/api/collections"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
@@ -11,7 +11,7 @@ export const CollectionDetail = () => {
   >
 
   const { id } = useParams()
-  const { collection, isLoading, isError, error } = useAdminCollection(id!, {
+  const { collection, isLoading, isError, error } = useCollection(id!, {
     initialData,
   })
 

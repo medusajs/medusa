@@ -1,6 +1,6 @@
-import { SalesChannel } from "@medusajs/medusa"
 import { createColumnHelper } from "@tanstack/react-table"
 
+import { SalesChannelDTO } from "@medusajs/types"
 import { useMemo } from "react"
 import {
   DescriptionCell,
@@ -11,7 +11,7 @@ import {
   NameHeader,
 } from "../../../components/table/table-cells/sales-channel/name-cell"
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper = createColumnHelper<SalesChannelDTO>()
 
 export const useSalesChannelTableColumns = () => {
   return useMemo(
