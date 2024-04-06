@@ -8,9 +8,13 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { AdminShippingOptionRulesBatchRemoveType } from "../../../../../validators"
+import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminShippingOptionRulesBatchRemoveType>,
+  req: AuthenticatedMedusaRequest<
+    AdminShippingOptionRulesBatchRemoveType,
+    AdminShippingOptionRetrieveResponse
+  >,
   res: MedusaResponse
 ) => {
   const workflow = removeRulesFromFulfillmentShippingOptionWorkflow(req.scope)

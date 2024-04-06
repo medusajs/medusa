@@ -8,9 +8,13 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { AdminShippingOptionRulesBatchAddType } from "../../../../../validators"
+import {AdminShippingOptionRetrieveResponse} from "@medusajs/types";
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminShippingOptionRulesBatchAddType>,
+  req: AuthenticatedMedusaRequest<
+    AdminShippingOptionRulesBatchAddType,
+    AdminShippingOptionRetrieveResponse
+  >,
   res: MedusaResponse
 ) => {
   const id = req.params.id

@@ -4,8 +4,7 @@ import { AdminShippingOptionTypeResponse } from "./shipping-option-type"
 import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
 import { AdminShippingProfileResponse } from "./shipping-profile"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
-import { AdminFulfillmentResponse } from "./fulfillment"
-import { PaginatedResponse } from "../../../common"
+import { AdminPrincingPriceSetPriceResponse } from "../../pricing"
 
 /**
  * @experimental
@@ -22,10 +21,10 @@ interface AdminShippingOptionResponse {
   metadata: Record<string, unknown> | null
   service_zone: AdminServiceZoneResponse
   shipping_profile: AdminShippingProfileResponse
-  fulfillment_provider: AdminFulfillmentProviderResponse
+  provider: AdminFulfillmentProviderResponse
   type: AdminShippingOptionTypeResponse
   rules: AdminShippingOptionRuleResponse[]
-  fulfillments: AdminFulfillmentResponse[]
+  prices: AdminPrincingPriceSetPriceResponse[]
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
@@ -34,6 +33,6 @@ interface AdminShippingOptionResponse {
 /**
  * @experimental
  */
-export interface AdminShippingOptionRetrieveResponse extends PaginatedResponse {
+export interface AdminShippingOptionRetrieveResponse {
   shipping_option: AdminShippingOptionResponse[]
 }
