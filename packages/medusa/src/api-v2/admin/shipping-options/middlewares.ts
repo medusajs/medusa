@@ -1,13 +1,10 @@
-import { transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
+  AdminGetShippingOptionParams,
   AdminShippingOptionRulesBatchAdd,
   AdminShippingOptionRulesBatchRemove,
-  AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
-  AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
-  AdminPostShippingOptionsShippingOptionParams,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -22,8 +19,8 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/shipping-options",
     middlewares: [
-      transformQuery(
-        AdminPostShippingOptionsShippingOptionParams,
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
       validateAndTransformBody(AdminCreateShippingOption),
@@ -34,8 +31,8 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch/add",
     middlewares: [
-      transformQuery(
-        AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
       validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
@@ -46,8 +43,8 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch/remove",
     middlewares: [
-      transformQuery(
-        AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
       validateAndTransformBody(AdminShippingOptionRulesBatchRemove),

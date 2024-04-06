@@ -2,15 +2,13 @@ import {
   RuleOperator,
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
-import { FindParams } from "../../../types/common"
 import { z } from "zod"
+
+export const AdminGetShippingOptionParams = createSelectParams()
 
 /**
  * SHIPPING OPTIONS RULES
  */
-
-// eslint-disable-next-line max-len
-export class AdminPostFulfillmentShippingOptionsRulesBatchAddParams extends FindParams {}
 
 export const AdminCreateShippingOptionRule = z
   .object({
@@ -40,9 +38,6 @@ export type AdminShippingOptionRulesBatchRemoveType = z.infer<
   typeof AdminShippingOptionRulesBatchRemove
 >
 
-// eslint-disable-next-line max-len
-export class AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams extends FindParams {}
-
 /**
  * SHIPPING OPTIONS
  */
@@ -54,9 +49,6 @@ export const AdminCreateShippingOptionType = z
     code: z.string(),
   })
   .strict()
-
-// TODO: WIP stev works to transform those to zod
-export class AdminPostShippingOptionsShippingOptionParams extends FindParams {}
 
 // eslint-disable-next-line max-len
 export const AdminCreateShippingOptionPriceWithCurrency = z
