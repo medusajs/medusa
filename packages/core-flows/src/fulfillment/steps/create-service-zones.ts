@@ -5,9 +5,7 @@ import {
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
-  data: CreateServiceZoneDTO[]
-}
+type StepInput = CreateServiceZoneDTO[]
 
 export const createServiceZonesStepId = "create-service-zones"
 export const createServiceZonesStep = createStep(
@@ -17,7 +15,7 @@ export const createServiceZonesStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const createdServiceZones = await service.createServiceZones(input.data)
+    const createdServiceZones = await service.createServiceZones(input)
 
     return new StepResponse(
       createdServiceZones,

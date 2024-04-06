@@ -8,7 +8,7 @@ export const createServiceZonesWorkflow = createWorkflow(
   (
     input: WorkflowData<FulfillmentWorkflow.CreateServiceZonesWorkflowInput>
   ): WorkflowData => {
-    const serviceZones = createServiceZonesStep({ data: input.data })
+    const serviceZones = createServiceZonesStep(input.data)
 
     return serviceZones
   }
