@@ -194,7 +194,7 @@ medusaIntegrationTestRunner({
             `/admin/pricing/rule-types/${ruleType.id}`,
             adminHeaders
           )
-          console.log("response.data -- ", response.data)
+
           expect(response.status).toEqual(200)
           expect(response.data).toEqual({
             id: ruleType.id,

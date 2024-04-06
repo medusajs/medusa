@@ -30,6 +30,7 @@
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
+    "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
@@ -236,6 +237,22 @@
       },
       "weight": {
         "label": "Weight"
+      },
+      "options": {
+        "label": "Product options",
+        "hint": "Options are used to define the color, size, etc. of the product",
+        "optionTitle": "Option title",
+        "variations": "Variations (comma-separated)"
+      },
+      "variants": {
+        "label": "Product variants",
+        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+      },
+      "mid_code": {
+        "label": "Mid code"
+      },
+      "hs_code": {
+        "label": "HS code"
       }
     },
     "variant": {
@@ -599,11 +616,115 @@
     "domain": "Promotions",
     "fields": {
       "method": "Method",
-      "campaign": "Campaign"
+      "type": "Type",
+      "value_type": "Value Type",
+      "value": "Value",
+      "campaign": "Campaign",
+      "allocation": "Allocation",
+      "conditions": {
+        "rules": {
+          "title": "Who can use this code?",
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "target-rules": {
+          "title": "What needs to be in the cart to unlock the promotion?",
+          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "buy-rules": {
+          "title": "What will the promotion be applied to?",
+          "description": "The promotion will be applied to items that match these conditions"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edit Promotion Details",
+      "rules": {
+        "title": "Edit rules"
+      },
+      "target-rules": {
+        "title": "Edit target rules"
+      },
+      "buy-rules": {
+        "title": "Edit buy rules"
+      }
+    },
+    "addToCampaign": {
+      "title": "Add Promotion To Campaign"
+    },
+    "form": {
+      "campaign": {
+        "existing": {
+          "title": "Existing Campaign",
+          "description": "Would you like to add promotion to an existing campaign?"
+        },
+        "new": {
+          "title": "New Campaign",
+          "description": "Would you like to create a new campaign with this promotion?"
+        }
+      },
+      "status": {
+        "title": "Status"
+      },
+      "method": {
+        "code": {
+          "title": "Promotion code",
+          "description": "Customers must enter this at checkout"
+        },
+        "automatic": {
+          "title": "Automatic",
+          "description": "Customers will automatically see this during checkout"
+        }
+      },
+      "allocation": {
+        "each": {
+          "title": "Each",
+          "description": "Applies value on each product"
+        },
+        "across": {
+          "title": "Across",
+          "description": "Applies value proportionally across products"
+        }
+      },
+      "code": {
+        "title": "Code",
+        "description": "The code your customers will enter during checkout."
+      },
+      "value": {
+        "title": "Value"
+      },
+      "value_type": {
+        "fixed": {
+          "title": "Fixed amount",
+          "description": "eg. 100"
+        },
+        "percentage": {
+          "title": "Percentage",
+          "description": "eg. 8%"
+        }
+      }
     },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type"
+  },
+  "campaigns": {
+    "domain": "Campaigns",
+    "details": "Campaign details",
+    "fields": {
+      "name": "Name",
+      "identifier": "Identifier",
+      "start_date": "Start date",
+      "end_date": "End date"
+    },
+    "budget": {
+      "details": "Campaign budget",
+      "fields": {
+        "type": "Type",
+        "currency": "Currency",
+        "limit": "Limit",
+        "used": "Used"
+      }
+    }
   },
   "pricing": {
     "domain": "Pricing",
