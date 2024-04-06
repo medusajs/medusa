@@ -2,6 +2,7 @@ import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsObject,
   IsOptional,
   IsString,
@@ -87,6 +88,10 @@ export class AdminPostRegionsReq {
   @IsOptional()
   countries?: string[]
 
+  @IsBoolean()
+  @IsOptional()
+  automatic_taxes?: boolean
+
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
@@ -109,6 +114,10 @@ export class AdminPostRegionsRegionReq {
   @IsArray()
   @IsOptional()
   countries?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  automatic_taxes?: boolean
 
   @IsObject()
   @IsOptional()

@@ -46,15 +46,12 @@ export default class ShippingMethod {
     columnType: "text",
     fieldName: "order_id",
     mapToPk: true,
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
   })
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order

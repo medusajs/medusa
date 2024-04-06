@@ -8,8 +8,8 @@ import {
 } from "@medusajs/core-flows"
 
 import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { UpdateProductOptionDTO } from "../../../../../../../../types/dist"
-import { refetchProduct, remapProduct } from "../../../helpers"
+import { refetchProduct, remapProductResponse } from "../../../helpers"
+import { AdminUpdateProductOptionType } from "../../../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -33,7 +33,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateProductOptionDTO>,
+  req: AuthenticatedMedusaRequest<AdminUpdateProductOptionType>,
   res: MedusaResponse
 ) => {
   const productId = req.params.id
@@ -56,7 +56,7 @@ export const POST = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
-  res.status(200).json({ product: remapProduct(product) })
+  res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const DELETE = async (

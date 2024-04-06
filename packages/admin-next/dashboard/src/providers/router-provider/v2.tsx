@@ -150,6 +150,34 @@ export const v2Routes: RouteObject[] = [
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-detail"),
+                handle: {
+                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-edit-details"
+                      ),
+                  },
+                  {
+                    path: "add-to-campaign",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-add-campaign"
+                      ),
+                  },
+                  {
+                    path: ":ruleType/edit",
+                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                  },
+                ],
+              },
             ],
           },
           {
@@ -223,6 +251,43 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "edit",
                 lazy: () => import("../../v2-routes/profile/profile-edit"),
+              },
+            ],
+          },
+          {
+            path: "regions",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Regions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/regions/region-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../v2-routes/regions/region-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/regions/region-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/regions/region-edit"),
+                  },
+                  {
+                    path: "countries/add",
+                    lazy: () =>
+                      import("../../v2-routes/regions/region-add-countries"),
+                  },
+                ],
               },
             ],
           },

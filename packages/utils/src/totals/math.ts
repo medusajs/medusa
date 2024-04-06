@@ -6,6 +6,10 @@ import { BigNumber } from "./big-number"
 type BNInput = BigNumberInput | BigNumber
 export class MathBN {
   static convert(num: BNInput): BigNumberJS {
+    if (num == null) {
+      return new BigNumberJS(0)
+    }
+
     if (num instanceof BigNumber) {
       return num.bigNumber!
     } else if (num instanceof BigNumberJS) {

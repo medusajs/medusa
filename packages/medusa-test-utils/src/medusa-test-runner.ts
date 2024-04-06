@@ -89,7 +89,7 @@ export function medusaIntegrationTestRunner({
   testSuite,
 }: {
   moduleName?: string
-  env?: Record<string, string | any>
+  env?: Record<string, any>
   dbName?: string
   schema?: string
   debug?: boolean

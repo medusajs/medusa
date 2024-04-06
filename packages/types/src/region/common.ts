@@ -1,4 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../dal"
+import { PaymentProviderDTO } from "../payment"
 
 /**
  * The region details.
@@ -28,6 +29,10 @@ export interface RegionDTO {
    * The countries of the region.
    */
   countries: RegionCountryDTO[]
+  /**
+   * Payment providers available in the region
+   */
+  payment_providers: PaymentProviderDTO[]
 
   /**
    * Holds custom data in key-value pairs.
