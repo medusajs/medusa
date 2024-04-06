@@ -236,6 +236,22 @@
       },
       "weight": {
         "label": "Weight"
+      },
+      "options": {
+        "label": "Product options",
+        "hint": "Options are used to define the color, size, etc. of the product",
+        "optionTitle": "Option title",
+        "variations": "Variations (comma-separated)"
+      },
+      "variants": {
+        "label": "Product variants",
+        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+      },
+      "mid_code": {
+        "label": "Mid code"
+      },
+      "hs_code": {
+        "label": "HS code"
       }
     },
     "variant": {

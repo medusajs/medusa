@@ -110,6 +110,7 @@ export async function mikroOrmCreateConnection(
     type: "postgresql",
     filters: database.filters ?? {},
     migrations: {
+      disableForeignKeys: false,
       path: pathToMigrations,
       generator: TSMigrationGenerator,
       silent: !(
@@ -117,6 +118,9 @@ export async function mikroOrmCreateConnection(
         process.env.NODE_ENV?.startsWith("dev") ??
         false
       ),
+    },
+    schemaGenerator: {
+      disableForeignKeys: false
     },
     pool: database.pool as any,
   })
