@@ -150,6 +150,15 @@ Now, if you run your Medusa backend and your storefront, on checkout you’ll be
 
 You can test out the payment with PayPal using your sandbox account.
 
+When you're ready to use live payments, don't forget to pass the `PayPalScriptProcessor` component your live PayPal Client ID. Make sure to replace `<CLIENT_ID>` with the live environment variable:
+
+```tsx
+<PayPalScriptProcessor options={{
+  // other options
+  "client-id": "<CLIENT_ID>",
+}}>
+```
+
 ### Add to Custom Storefront
 
 This section guides you to add PayPal into a React-based framework. The instructions are general instructions that you can use in your storefront.
