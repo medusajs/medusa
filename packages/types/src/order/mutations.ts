@@ -32,16 +32,18 @@ export interface CreateOrderDTO {
   sales_channel_id?: string
   status?: string
   email?: string
-  currency_code: string
+  currency_code?: string
   shipping_address_id?: string
   billing_address_id?: string
   shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   no_notification?: boolean
   items?: CreateOrderLineItemDTO[]
-  shipping_methods?: CreateOrderShippingMethodDTO[]
+  shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[]
   transactions?: CreateOrderTransactionDTO[]
   metadata?: Record<string, unknown>
+
+  promo_codes?: string[]
 }
 
 export interface UpdateOrderDTO {
@@ -162,6 +164,8 @@ export interface CreateOrderLineItemDTO {
 
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
+
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateOrderLineItemForOrderDTO extends CreateOrderLineItemDTO {
@@ -194,9 +198,9 @@ export interface UpdateOrderLineItemDTO
 
 export interface CreateOrderShippingMethodDTO {
   name: string
-  shipping_method_id: string
   order_id: string
   amount: BigNumberInput
+  shipping_option_id?: string
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -205,7 +209,7 @@ export interface CreateOrderShippingMethodDTO {
 export interface UpdateOrderShippingMethodDTO {
   id: string
   name?: string
-  shipping_method_id: string
+  shipping_option_id?: string
   amount?: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: UpdateOrderTaxLineDTO[] | CreateOrderTaxLineDTO[]
@@ -285,18 +289,14 @@ export interface CreateOrderChangeActionDTO {
   order_change_id: string
   reference: string
   reference_id: string
-  action: Record<string, unknown>
+  action: string
   internal_note?: string
-  metadata?: Record<string, unknown>
+  details?: Record<string, unknown>
 }
 
 export interface UpdateOrderChangeActionDTO {
   id: string
-  reference?: string
-  reference_id?: string
-  action?: Record<string, unknown>
   internal_note?: string
-  metadata?: Record<string, unknown>
 }
 
 /** ORDER TRANSACTION START */

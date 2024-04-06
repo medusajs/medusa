@@ -90,6 +90,7 @@ module.exports = {
     [Modules.STORE]: true,
     [Modules.TAX]: true,
     [Modules.CURRENCY]: true,
+    [Modules.ORDER]: true,
     [Modules.PAYMENT]: {
       resolve: "@medusajs/payment",
       /** @type {import('@medusajs/payment').PaymentModuleOptions}*/

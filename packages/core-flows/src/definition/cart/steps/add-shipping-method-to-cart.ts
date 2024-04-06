@@ -1,6 +1,6 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateShippingMethodDTO, ICartModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 
 interface StepInput {
   shipping_methods: CreateShippingMethodDTO[]
