@@ -1,4 +1,4 @@
-export interface AdminPrincingPriceSetPriceResponse {
+export interface AdminPriceSetPriceResponse {
   id: string
   amount: number
   currency_code: string

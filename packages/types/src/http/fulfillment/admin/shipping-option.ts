@@ -4,7 +4,7 @@ import { AdminShippingOptionTypeResponse } from "./shipping-option-type"
 import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
 import { AdminShippingProfileResponse } from "./shipping-profile"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
-import { AdminPrincingPriceSetPriceResponse } from "../../pricing"
+import { AdminPriceSetPriceResponse } from "../../pricing"
 
 /**
  * @experimental
@@ -24,7 +24,7 @@ interface AdminShippingOptionResponse {
   provider: AdminFulfillmentProviderResponse
   type: AdminShippingOptionTypeResponse
   rules: AdminShippingOptionRuleResponse[]
-  prices: AdminPrincingPriceSetPriceResponse[]
+  prices: AdminPriceSetPriceResponse[]
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
