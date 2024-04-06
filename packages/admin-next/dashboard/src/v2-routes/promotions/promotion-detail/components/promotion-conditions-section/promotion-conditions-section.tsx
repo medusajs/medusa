@@ -4,6 +4,7 @@ import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type RuleProps = {
@@ -15,24 +16,22 @@ function RuleBlock({ rule }: RuleProps) {
     <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2 align-center">
       <div className="flex text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap items-center">
         <Badge
-          size="small"
+          size="2xsmall"
           key="rule-attribute"
-          className="mx-1 max-w-[220px] txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
+          className="mx-1 txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
         >
           {rule.attribute_label}
         </Badge>
 
-        <span className="mx-1 txt-compact-small inline-block">
+        <span className="mx-1 txt-compact-2xsmall inline-block">
           {rule.operator_label}
         </span>
 
-        <Badge
-          size="small"
-          key="rule-value"
-          className="mx-1 max-w-[220px] txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
-        >
-          {rule.values?.map((v) => v.label).join(",")}
-        </Badge>
+        <BadgeListSummary
+          inline
+          className="!txt-compact-small-plus"
+          list={rule.values.map((v) => v.label)}
+        />
       </div>
     </div>
   )
