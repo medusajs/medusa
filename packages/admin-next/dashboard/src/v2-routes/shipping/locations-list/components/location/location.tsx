@@ -1,10 +1,40 @@
 import { Button, Container, Text } from "@medusajs/ui"
-import { StockLocationDTO } from "@medusajs/types"
+import { FulfillmentSetDTO, StockLocationDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 import { Buildings } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
-import { useNavigate } from "react-router-dom"
+
+type FulfillmentSetProps = {
+  fulfillmentSet: FulfillmentSetDTO
+}
+
+function FulfillmentSet(props: FulfillmentSetProps) {
+  const { t } = useTranslation()
+  const { fulfillmentSet } = props
+
+  const hasServiceZones = !!fulfillmentSet.service_zones?.length
+
+  return (
+    <div className="flex flex-col px-6 py-5">
+      <Text
+        size="small"
+        weight="plus"
+        className="text-ui-fg-subtle mb-4"
+        as="div"
+      >
+        {t("shipping.to")}
+      </Text>
+
+      {!hasServiceZones && (
+        <div className="text-ui-fg-muted txt-medium flex h-[120px] items-center justify-center">
+          {t("shipping.fulfillmentSet.placeholder")}
+        </div>
+      )}
+    </div>
+  )
+}
 
 type LocationProps = {
   location: StockLocationDTO
@@ -70,6 +100,11 @@ function Location(props: LocationProps) {
           </div>
         </div>
       </div>
+
+      {hasFulfillmentSets &&
+        location.fulfillment_sets.map((f) => (
+          <FulfillmentSet key={f.id} fulfillmentSet={f} />
+        ))}
     </Container>
   )
 }

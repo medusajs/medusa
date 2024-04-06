@@ -39,7 +39,9 @@ export function CreateShippingForm({ location }: CreateShippingFormProps) {
     resolver: zodResolver(CreateFulfillmentSetSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateFulfillmentSet(location.id)
+  const { mutateAsync, isPending: isLoading } = useCreateFulfillmentSet(
+    location.id
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync({

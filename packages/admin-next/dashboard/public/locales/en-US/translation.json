@@ -541,6 +541,9 @@
       "delivery": "Delivery",
       "pickup": "Pickup",
       "type": "Shipping type"
+    },
+    "fulfillmentSet": {
+      "placeholder": "Not covered by any shipping zones."
     }
   },
   "discounts": {
