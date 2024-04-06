@@ -1,10 +1,7 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import {
-  useV2Promotion,
-  useV2PromotionRules,
-} from "../../../lib/api-v2/promotion"
+import { usePromotion, usePromotionRules } from "../../../hooks/api/promotions"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
@@ -19,10 +16,10 @@ export const PromotionDetail = () => {
   >
 
   const { id } = useParams()
-  const { promotion, isLoading } = useV2Promotion(id!, {}, { initialData })
-  const { rules } = useV2PromotionRules(id!, "rules")
-  const { rules: targetRules } = useV2PromotionRules(id!, "target-rules")
-  const { rules: buyRules } = useV2PromotionRules(id!, "buy-rules")
+  const { promotion, isLoading } = usePromotion(id!, { initialData })
+  const { rules } = usePromotionRules(id!, "rules")
+  const { rules: targetRules } = usePromotionRules(id!, "target-rules")
+  const { rules: buyRules } = usePromotionRules(id!, "buy-rules")
 
   if (isLoading || !promotion) {
     return <div>Loading...</div>

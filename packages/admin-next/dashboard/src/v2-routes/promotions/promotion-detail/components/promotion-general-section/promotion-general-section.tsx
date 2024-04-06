@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useV2DeletePromotion } from "../../../../../lib/api-v2"
+import { useDeletePromotion } from "../../../../../hooks/api/promotions"
 import {
   getPromotionStatus,
   PromotionStatus,
@@ -28,7 +28,7 @@ export const PromotionGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-  const { mutateAsync } = useV2DeletePromotion(promotion.id)
+  const { mutateAsync } = useDeletePromotion(promotion.id)
 
   const handleDelete = async () => {
     const confirm = await prompt({

@@ -1,12 +1,13 @@
 import { AdminPromotionRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { LoaderFunctionArgs } from "react-router-dom"
-import { adminPromotionKeys, adminPromotionQueryFns } from "../../../lib/api-v2"
+import { promotionsQueryKeys } from "../../../hooks/api/promotions"
+import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
 
 const promotionDetailQuery = (id: string) => ({
-  queryKey: adminPromotionKeys.detail(id),
-  queryFn: () => adminPromotionQueryFns.detail(id),
+  queryKey: promotionsQueryKeys.detail(id),
+  queryFn: () => client.promotions.retrieve(id),
 })
 
 export const promotionLoader = async ({ params }: LoaderFunctionArgs) => {

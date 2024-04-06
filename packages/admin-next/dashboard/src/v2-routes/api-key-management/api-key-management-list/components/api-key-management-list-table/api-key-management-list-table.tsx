@@ -1,13 +1,14 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-import { adminPublishableApiKeysKeys, useAdminCustomQuery } from "medusa-react"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useApiKeys } from "../../../../../hooks/api/api-keys"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { upperCaseFirst } from "../../../../../lib/uppercase-first"
 import { useApiKeyManagementTableColumns } from "./use-api-key-management-table-columns"
 import { useApiKeyManagementTableFilters } from "./use-api-key-management-table-filters"
 import { useApiKeyManagementTableQuery } from "./use-api-key-management-table-query"
-import { upperCaseFirst } from "../../../../../lib/uppercase-first"
 
 const PAGE_SIZE = 20
 
@@ -29,28 +30,21 @@ export const ApiKeyManagementListTable = ({
       "id,title,redacted,token,type,created_at,updated_at,revoked_at,last_used_at,created_by,revoked_by",
   }
 
-  // @ts-ignore
-  const { data, count, isLoading, isError, error } = useAdminCustomQuery(
-    "/api-keys",
-    [adminPublishableApiKeysKeys.list(query)],
-    query
-  )
+  const { api_keys, count, isLoading, isError, error } = useApiKeys(query, {
+    placeholderData: keepPreviousData,
+  })
 
   const filters = useApiKeyManagementTableFilters()
   const columns = useApiKeyManagementTableColumns()
 
   const { table } = useDataTable({
-    data: data?.api_keys || [],
+    data: api_keys || [],
     columns,
     count,
     enablePagination: true,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
   })
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
 
   if (isError) {
     throw error

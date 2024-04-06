@@ -1,13 +1,13 @@
-import { AdminProductsRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
 import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
+import { client } from "../../../lib/client"
+import { queryClient } from "../../../lib/medusa"
+import { WorkflowExecutionRes } from "../../../types/api-responses"
 
 const executionDetailQuery = (id: string) => ({
   queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.custom.get(`/workflows-executions/${id}`),
+  queryFn: async () => client.workflowExecutions.retrieve(id),
 })
 
 export const executionLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -15,7 +15,7 @@ export const executionLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = executionDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminProductsRes>>(query.queryKey) ??
+    queryClient.getQueryData<WorkflowExecutionRes>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

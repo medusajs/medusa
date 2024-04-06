@@ -13,12 +13,12 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import {
-  useV2PostAddPromotionRules,
-  useV2PostPromotion,
-  useV2PostRemovePromotionRules,
-  useV2PostUpdatePromotionRules,
-} from "../../../../../lib/api-v2"
-import { useV2PromotionRuleValueOptions } from "../../../../../lib/api-v2/promotion"
+  usePromotionAddRules,
+  usePromotionRemoveRules,
+  usePromotionRuleValues,
+  usePromotionUpdateRules,
+  useUpdatePromotion,
+} from "../../../../../hooks/api/promotions"
 import { RuleTypeValues } from "../../edit-rules"
 import { getDisguisedRules } from "./utils"
 
@@ -48,7 +48,7 @@ const EditRules = zod.object({
 })
 
 const fetchOptionsForRule = (ruleType: string, attribute: string) => {
-  const { values } = useV2PromotionRuleValueOptions(ruleType, attribute)
+  const { values } = usePromotionRuleValues(ruleType, attribute)
 
   return values || []
 }
@@ -88,18 +88,18 @@ export const EditRulesForm = ({
     keyName: "rules_id",
   })
 
-  const { mutateAsync: updatePromotion } = useV2PostPromotion(promotion.id)
-  const { mutateAsync: addPromotionRules } = useV2PostAddPromotionRules(
+  const { mutateAsync: updatePromotion } = useUpdatePromotion(promotion.id)
+  const { mutateAsync: addPromotionRules } = usePromotionAddRules(
     promotion.id,
     ruleType
   )
 
-  const { mutateAsync: removePromotionRules } = useV2PostRemovePromotionRules(
+  const { mutateAsync: removePromotionRules } = usePromotionRemoveRules(
     promotion.id,
     ruleType
   )
 
-  const { mutateAsync: updatePromotionRules } = useV2PostUpdatePromotionRules(
+  const { mutateAsync: updatePromotionRules } = usePromotionUpdateRules(
     promotion.id,
     ruleType
   )
@@ -142,7 +142,7 @@ export const EditRulesForm = ({
             attribute: rule.attribute,
             operator: rule.operator,
             values: rule.values,
-          }
+          } as any
         }),
       }))
 
@@ -155,11 +155,11 @@ export const EditRulesForm = ({
       (await updatePromotionRules({
         rules: rulesToUpdate.map((rule) => {
           return {
-            id: rule.id,
+            id: rule.id!,
             attribute: rule.attribute,
             operator: rule.operator,
             values: rule.values,
-          }
+          } as any
         }),
       }))
 

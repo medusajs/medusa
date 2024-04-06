@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
 import {
-  useV2Promotion,
-  useV2PromotionRuleAttributeOptions,
-  useV2PromotionRuleOperatorOptions,
-} from "../../../lib/api-v2/promotion"
+  usePromotion,
+  usePromotionRuleAttributes,
+  usePromotionRuleOperators,
+} from "../../../hooks/api/promotions"
 import { EditRulesForm } from "./components/edit-rules-form"
 
 export enum RuleType {
@@ -33,17 +33,17 @@ export const EditRules = () => {
   const ruleType = params.ruleType as RuleTypeValues
   const id = params.id as string
   const rules: PromotionRuleDTO[] = []
-  const { promotion, isLoading, isError, error } = useV2Promotion(id)
+  const { promotion, isLoading, isError, error } = usePromotion(id)
   const {
     attributes,
     isError: isAttributesError,
     error: attributesError,
-  } = useV2PromotionRuleAttributeOptions(ruleType!)
+  } = usePromotionRuleAttributes(ruleType!)
   const {
     operators,
     isError: isOperatorsError,
     error: operatorsError,
-  } = useV2PromotionRuleOperatorOptions()
+  } = usePromotionRuleOperators()
 
   if (promotion) {
     if (ruleType === RuleType.RULES) {

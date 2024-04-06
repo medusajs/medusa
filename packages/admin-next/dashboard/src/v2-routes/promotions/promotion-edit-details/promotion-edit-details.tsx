@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
-import { useV2Promotion } from "../../../lib/api-v2/promotion"
+import { usePromotion } from "../../../hooks/api/promotions"
 import { EditPromotionDetailsForm } from "./components/edit-promotion-form"
 
 export const PromotionEditDetails = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { promotion, isLoading, isError, error } = useV2Promotion(id!)
+  const { promotion, isLoading, isError, error } = usePromotion(id!)
 
   if (isError) {
     throw error

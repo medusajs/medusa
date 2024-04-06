@@ -11,7 +11,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useV2PostPromotion } from "../../../../../lib/api-v2"
+import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
 
 type EditPromotionFormProps = {
@@ -50,7 +50,7 @@ export const EditPromotionDetailsForm = ({
 
   const isFixedValueType = watchValueType === "fixed"
 
-  const { mutateAsync, isLoading } = useV2PostPromotion(promotion.id)
+  const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -268,7 +268,7 @@ export const EditPromotionDetailsForm = ({
               </Button>
             </RouteDrawer.Close>
 
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

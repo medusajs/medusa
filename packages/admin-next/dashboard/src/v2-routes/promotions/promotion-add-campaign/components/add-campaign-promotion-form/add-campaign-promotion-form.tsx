@@ -11,7 +11,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useV2PostPromotion } from "../../../../../lib/api-v2"
+import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
@@ -45,11 +45,11 @@ export const AddCampaignPromotionForm = ({
   })
 
   const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
-  const { mutateAsync, isLoading } = useV2PostPromotion(promotion.id)
+  const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
-      { campaign_id: data.campaign_id },
+      { id: promotion.id, campaign_id: data.campaign_id },
       { onSuccess: () => handleSuccess() }
     )
   })
@@ -140,7 +140,7 @@ export const AddCampaignPromotionForm = ({
               </Button>
             </RouteDrawer.Close>
 
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

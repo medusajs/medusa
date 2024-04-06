@@ -6,16 +6,17 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData, useNavigate } from "react-router-dom"
 
+import { keepPreviousData } from "@tanstack/react-query"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import {
+  useDeletePromotion,
+  usePromotions,
+} from "../../../../../hooks/api/promotions"
 import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/use-promotion-table-columns"
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters-v2/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import {
-  useV2DeletePromotion,
-  useV2Promotions,
-} from "../../../../../lib/api-v2"
 import { promotionsLoader } from "../../loader"
 
 const PAGE_SIZE = 20
@@ -27,11 +28,11 @@ export const PromotionListTable = () => {
   >
 
   const { searchParams, raw } = usePromotionTableQuery({ pageSize: PAGE_SIZE })
-  const { promotions, count, isLoading, isError, error } = useV2Promotions(
+  const { promotions, count, isLoading, isError, error } = usePromotions(
     { ...searchParams },
     {
       initialData,
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -83,7 +84,7 @@ const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-  const { mutateAsync } = useV2DeletePromotion(promotion.id)
+  const { mutateAsync } = useDeletePromotion(promotion.id)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -122,10 +123,6 @@ const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
               label: t("actions.edit"),
               to: `/promotions/${promotion.id}/edit`,
             },
-          ],
-        },
-        {
-          actions: [
             {
               icon: <Trash />,
               label: t("actions.delete"),
