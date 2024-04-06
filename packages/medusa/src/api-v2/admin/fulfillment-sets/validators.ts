@@ -50,7 +50,7 @@ export const AdminCreateFulfillmentSetServiceZonesSchema = z
   })
   .strict()
 
-export type AdminCreateFulfillmentSetServiceZonesSchemaType = z.infer<
+export type AdminCreateFulfillmentSetServiceZonesType = z.infer<
   typeof AdminCreateFulfillmentSetServiceZonesSchema
 >
 

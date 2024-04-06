@@ -153,8 +153,25 @@ medusaIntegrationTestRunner({
               geo_zones: [
                 {
                   country_code: "dk",
-                  region_name: "SJAELLAND",
+                  type: "country",
+                },
+                {
+                  country_code: "fr",
+                  type: "province",
+                  province_code: "fr-idf",
+                },
+                {
+                  country_code: "it",
                   type: "region",
+                  city: "some region",
+                  province_code: "some-province",
+                },
+                {
+                  country_code: "it",
+                  type: "zip",
+                  city: "some city",
+                  province_code: "some-province",
+                  postal_expression: {},
                 },
               ],
             },
@@ -162,8 +179,75 @@ medusaIntegrationTestRunner({
           )
           .catch((err) => err.response)
 
+        const expectedErrors = [
+          {
+            code: "invalid_union",
+            unionErrors: [
+              {
+                issues: [
+                  {
+                    received: "region",
+                    code: "invalid_literal",
+                    expected: "country",
+                    path: ["geo_zones", 2, "type"],
+                    message: 'Invalid literal value, expected "country"',
+                  },
+                ],
+                name: "ZodError",
+              },
+              {
+                issues: [
+                  {
+                    received: "region",
+                    code: "invalid_literal",
+                    expected: "province",
+                    path: ["geo_zones", 2, "type"],
+                    message: 'Invalid literal value, expected "province"',
+                  },
+                ],
+                name: "ZodError",
+              },
+              {
+                issues: [
+                  {
+                    received: "region",
+                    code: "invalid_literal",
+                    expected: "city",
+                    path: ["geo_zones", 2, "type"],
+                    message: 'Invalid literal value, expected "city"',
+                  },
+                ],
+                name: "ZodError",
+              },
+              {
+                issues: [
+                  {
+                    received: "region",
+                    code: "invalid_literal",
+                    expected: "zip",
+                    path: ["geo_zones", 2, "type"],
+                    message: 'Invalid literal value, expected "zip"',
+                  },
+                  {
+                    code: "invalid_type",
+                    expected: "object",
+                    received: "undefined",
+                    path: ["geo_zones", 2, "postal_expression"],
+                    message: "Required",
+                  },
+                ],
+                name: "ZodError",
+              },
+            ],
+            path: ["geo_zones", 2],
+            message: "Invalid input",
+          },
+        ]
+
         expect(errorResponse.status).toEqual(400)
-        expect(errorResponse.data.message).toContain("Invalid request body: ")
+        expect(errorResponse.data.message).toContain(
+          `Invalid request body: ${JSON.stringify(expectedErrors)}`
+        )
       })
     })
   },
