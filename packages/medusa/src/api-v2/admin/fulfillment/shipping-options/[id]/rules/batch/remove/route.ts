@@ -3,14 +3,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../../types/routing"
-import { AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq } from "../../../../../validators"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { AdminCreateShippingOptionRulesBatchRemoveType } from "../../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionRulesBatchRemoveType>,
   res: MedusaResponse
 ) => {
   const workflow = removeRulesFromFulfillmentShippingOptionWorkflow(req.scope)

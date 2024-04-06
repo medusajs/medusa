@@ -2,16 +2,7 @@ import {
   RuleOperator,
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
-import { Type } from "class-transformer"
-import {
-  ArrayNotEmpty,
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { IsType } from "../../../utils"
+import { ArrayNotEmpty, IsString } from "class-validator"
 import { FindParams } from "../../../types/common"
 import { z } from "zod"
 
@@ -22,34 +13,6 @@ import { z } from "zod"
 // eslint-disable-next-line max-len
 export class AdminPostFulfillmentShippingOptionsRulesBatchAddParams extends FindParams {}
 
-export class AdminPostFulfillmentShippingOptionsRulesBatchAddReq {
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => FulfillmentRuleCreate)
-  rules: FulfillmentRuleCreate[]
-}
-
-// eslint-disable-next-line max-len
-export class AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams extends FindParams {}
-
-export class AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq {
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  rule_ids: string[]
-}
-
-export class FulfillmentRuleCreate {
-  @IsEnum(RuleOperator)
-  operator: RuleOperator
-
-  @IsNotEmpty()
-  @IsString()
-  attribute: string
-
-  @IsType([String, [String]])
-  value: string | string[]
-}
-
 export const AdminCreateShippingOptionRule = z
   .object({
     operator: z.nativeEnum(RuleOperator),
@@ -57,6 +20,29 @@ export const AdminCreateShippingOptionRule = z
     value: z.string().or(z.array(z.string())),
   })
   .strict()
+
+export const AdminCreateShippingOptionRulesBatchAdd = z
+  .object({
+    rules: AdminCreateShippingOptionRule.array(),
+  })
+  .strict()
+
+export type AdminCreateShippingOptionRulesBatchAddType = z.infer<
+  typeof AdminCreateShippingOptionRulesBatchAdd
+>
+
+export const AdminCreateShippingOptionRulesBatchRemove = z
+  .object({
+    rule_ids: z.array(z.string()),
+  })
+  .strict()
+
+export type AdminCreateShippingOptionRulesBatchRemoveType = z.infer<
+  typeof AdminCreateShippingOptionRulesBatchRemove
+>
+
+// eslint-disable-next-line max-len
+export class AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams extends FindParams {}
 
 /**
  * SHIPPING OPTIONS

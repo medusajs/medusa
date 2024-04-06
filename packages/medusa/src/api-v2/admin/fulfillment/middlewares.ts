@@ -1,12 +1,12 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
+import { transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
+  AdminCreateShippingOptionRulesBatchAdd,
+  AdminCreateShippingOptionRulesBatchRemove,
   AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
-  AdminPostFulfillmentShippingOptionsRulesBatchAddReq,
   AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
-  AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq,
   AdminPostShippingOptionsShippingOptionParams,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
@@ -38,7 +38,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
         retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostFulfillmentShippingOptionsRulesBatchAddReq),
+      validateAndTransformBody(AdminCreateShippingOptionRulesBatchAdd),
     ],
   },
 
@@ -50,7 +50,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
         retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq),
+      validateAndTransformBody(AdminCreateShippingOptionRulesBatchRemove),
     ],
   },
 ]

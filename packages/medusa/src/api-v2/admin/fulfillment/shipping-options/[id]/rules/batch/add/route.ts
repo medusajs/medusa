@@ -3,14 +3,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../../types/routing"
-import { AdminPostFulfillmentShippingOptionsRulesBatchAddReq } from "../../../../../validators"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { AdminCreateShippingOptionRulesBatchAddType } from "../../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostFulfillmentShippingOptionsRulesBatchAddReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionRulesBatchAddType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id
