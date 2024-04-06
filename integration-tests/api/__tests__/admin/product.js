@@ -2742,7 +2742,12 @@ medusaIntegrationTestRunner({
             await api.post("/admin/collections", payload, adminHeaders)
           } catch (error) {
             expect(error.response.data.message).toMatch(
-              `Product_collection with handle ${baseCollection.handle} already exists.`
+              breaking(
+                () =>
+                  `Product_collection with handle ${baseCollection.handle} already exists.`,
+                () =>
+                  `Product collection with handle: ${baseCollection.handle} already exists.`
+              )
             )
           }
         })
@@ -2764,10 +2769,10 @@ medusaIntegrationTestRunner({
 
           const payload = {
             title: "Second variant",
-            sku: variant.sku,
-            ean: variant.ean,
-            upc: variant.upc,
-            barcode: variant.barcode,
+            sku: "new-sku",
+            ean: "new-ean",
+            upc: "new-upc",
+            barcode: "new-barcode",
             ...breaking(
               () => ({
                 options: [
@@ -2803,10 +2808,10 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 title: "Second variant",
-                sku: variant.sku,
-                ean: variant.ean,
-                upc: variant.upc,
-                barcode: variant.barcode,
+                sku: "new-sku",
+                ean: "new-ean",
+                upc: "new-upc",
+                barcode: "new-barcode",
               }),
             ])
           )

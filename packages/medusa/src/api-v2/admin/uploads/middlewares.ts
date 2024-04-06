@@ -1,9 +1,6 @@
 import multer from "multer"
-import { transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
-import * as QueryConfig from "./query-config"
-import { AdminGetProductsProductParams } from "../products/validators"
 
 const upload = multer({ dest: "uploads/" })
 
