@@ -3,6 +3,7 @@ import {
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
 import { z } from "zod"
+import { createSelectParams } from "../../utils/validators"
 
 export const AdminGetShippingOptionParams = createSelectParams()
 

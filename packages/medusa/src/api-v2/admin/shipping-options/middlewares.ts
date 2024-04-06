@@ -8,6 +8,7 @@ import {
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {

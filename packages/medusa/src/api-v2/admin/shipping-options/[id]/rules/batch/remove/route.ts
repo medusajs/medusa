@@ -1,14 +1,14 @@
 import { removeRulesFromFulfillmentShippingOptionWorkflow } from "@medusajs/core-flows"
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../../../../types/routing"
-import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminShippingOptionRulesBatchRemoveType } from "../../../../../validators"
 import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../../types/routing"
+import { AdminShippingOptionRulesBatchRemoveType } from "../../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
