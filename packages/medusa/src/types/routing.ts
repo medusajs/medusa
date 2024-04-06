@@ -3,8 +3,10 @@ import type { Customer, User } from "../models"
 
 import { MedusaContainer, RequestQueryFields } from "@medusajs/types"
 import { FindConfig } from "./common"
+import * as core from "express-serve-static-core"
 
-export interface MedusaRequest<Body = unknown> extends Request {
+export interface MedusaRequest<Body = unknown, Res = unknown>
+  extends Request<core.ParamsDictionary, Res, Body> {
   validatedBody: Body
   validatedQuery: RequestQueryFields & Record<string, unknown>
   /**
@@ -22,7 +24,10 @@ export interface MedusaRequest<Body = unknown> extends Request {
   /**
    * An object containing fields and variables to be used with the remoteQuery
    */
-  remoteQueryConfig: { fields: string[]; pagination: { order?: Record<string, string>, skip?: number, take?: number } }
+  remoteQueryConfig: {
+    fields: string[]
+    pagination: { order?: Record<string, string>; skip?: number; take?: number }
+  }
   /**
    * An object containing the fields that are filterable e.g `{ id: Any<String> }`
    */
@@ -47,8 +52,8 @@ export interface MedusaRequest<Body = unknown> extends Request {
   requestId?: string
 }
 
-export interface AuthenticatedMedusaRequest<Body = never>
-  extends MedusaRequest<Body> {
+export interface AuthenticatedMedusaRequest<Body = never, Res = never>
+  extends MedusaRequest<Body, Res> {
   user: (User | Customer) & { customer_id?: string; userId?: string } // TODO: Remove this property when v2 is released
   auth: {
     actor_id: string

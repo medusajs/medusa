@@ -5,11 +5,12 @@ import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
 import { AdminShippingProfileResponse } from "./shipping-profile"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminFulfillmentResponse } from "./fulfillment"
+import { PaginatedResponse } from "../../../common"
 
 /**
  * @experimental
  */
-export interface AdminShippingOptionResponse {
+interface AdminShippingOptionResponse {
   id: string
   name: string
   price_type: ShippingOptionPriceType
@@ -28,4 +29,11 @@ export interface AdminShippingOptionResponse {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+/**
+ * @experimental
+ */
+export interface AdminShippingOptionRetrieveResponse extends PaginatedResponse {
+  shipping_option: AdminShippingOptionResponse[]
 }
