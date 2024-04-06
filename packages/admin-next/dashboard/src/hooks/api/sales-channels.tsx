@@ -15,12 +15,12 @@ import {
   RemoveProductsSalesChannelReq,
   UpdateSalesChannelReq,
 } from "../../types/api-payloads"
-import {
-  SalesChannelDeleteRes,
-  SalesChannelListRes,
-  SalesChannelRes,
-} from "../../types/api-responses"
+import { SalesChannelDeleteRes } from "../../types/api-responses"
 import { productsQueryKeys } from "./products"
+import {
+  AdminSalesChannelListResponse,
+  AdminSalesChannelResponse,
+} from "@medusajs/types"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
 const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
@@ -28,7 +28,12 @@ const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
 export const useSalesChannel = (
   id: string,
   options?: Omit<
-    UseQueryOptions<SalesChannelRes, Error, SalesChannelRes, QueryKey>,
+    UseQueryOptions<
+      AdminSalesChannelResponse,
+      Error,
+      AdminSalesChannelResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -44,11 +49,15 @@ export const useSalesChannel = (
 export const useSalesChannels = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<SalesChannelListRes, Error, SalesChannelListRes, QueryKey>,
+    UseQueryOptions<
+      AdminSalesChannelListResponse,
+      Error,
+      AdminSalesChannelListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
-  console.log("Query: ", query)
   const { data, ...rest } = useQuery({
     queryFn: () => client.salesChannels.list(query),
     queryKey: salesChannelsQueryKeys.list(query),
@@ -59,7 +68,11 @@ export const useSalesChannels = (
 }
 
 export const useCreateSalesChannel = (
-  options?: UseMutationOptions<SalesChannelRes, Error, CreateSalesChannelReq>
+  options?: UseMutationOptions<
+    AdminSalesChannelResponse,
+    Error,
+    CreateSalesChannelReq
+  >
 ) => {
   return useMutation({
     mutationFn: (payload) => client.salesChannels.create(payload),
@@ -75,7 +88,11 @@ export const useCreateSalesChannel = (
 
 export const useUpdateSalesChannel = (
   id: string,
-  options?: UseMutationOptions<SalesChannelRes, Error, UpdateSalesChannelReq>
+  options?: UseMutationOptions<
+    AdminSalesChannelResponse,
+    Error,
+    UpdateSalesChannelReq
+  >
 ) => {
   return useMutation({
     mutationFn: (payload) => client.salesChannels.update(id, payload),
@@ -121,7 +138,7 @@ export const useDeleteSalesChannel = (
 export const useSalesChannelRemoveProducts = (
   id: string,
   options?: UseMutationOptions<
-    SalesChannelRes,
+    AdminSalesChannelResponse,
     Error,
     RemoveProductsSalesChannelReq
   >
@@ -157,7 +174,7 @@ export const useSalesChannelRemoveProducts = (
 export const useSalesChannelAddProducts = (
   id: string,
   options?: UseMutationOptions<
-    SalesChannelRes,
+    AdminSalesChannelResponse,
     Error,
     AddProductsSalesChannelReq
   >

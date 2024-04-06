@@ -27,6 +27,26 @@ const updateApiKey = async (id: string, payload: UpdateApiKeyReq) => {
   return postRequest<AdminApiKeyResponse>(`/admin/api-keys/${id}`, payload)
 }
 
+const batchRemoveSalesChannelsFromApiKey = async (
+  id: string,
+  payload: { sales_channel_ids: string[] }
+) => {
+  return postRequest<AdminApiKeyResponse>(
+    `/admin/api-keys/${id}/sales-channels/batch/remove`,
+    payload
+  )
+}
+
+const batchAddSalesChannelsFromApiKey = async (
+  id: string,
+  payload: { sales_channel_ids: string[] }
+) => {
+  return postRequest<AdminApiKeyResponse>(
+    `/admin/api-keys/${id}/sales-channels/batch/add`,
+    payload
+  )
+}
+
 export const apiKeys = {
   retrieve: retrieveApiKey,
   list: listApiKeys,
@@ -34,4 +54,6 @@ export const apiKeys = {
   create: createApiKey,
   update: updateApiKey,
   revoke: revokeApiKey,
+  batchRemoveSalesChannels: batchRemoveSalesChannelsFromApiKey,
+  batchAddSalesChannels: batchAddSalesChannelsFromApiKey,
 }

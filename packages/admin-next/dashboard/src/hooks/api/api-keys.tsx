@@ -113,3 +113,44 @@ export const useDeleteApiKey = (
     },
   })
 }
+
+export const useBatchRemoveSalesChannelsFromApiKey = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminApiKeyResponse,
+    Error,
+    { sales_channel_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.apiKeys.batchRemoveSalesChannels(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useBatchAddSalesChannelsToApiKey = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminApiKeyResponse,
+    Error,
+    { sales_channel_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.apiKeys.batchAddSalesChannels(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

@@ -4,7 +4,7 @@ import { PaginatedResponse } from "../../../common"
 /**
  * @experimental
  */
-export interface ApiKeyResponse {
+interface ApiKeyResponse {
   id: string
   token: string
   redacted: string

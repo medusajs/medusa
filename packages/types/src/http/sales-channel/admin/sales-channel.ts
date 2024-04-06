@@ -3,7 +3,7 @@ import { PaginatedResponse } from "../../common"
 /**
  * @experimental
  */
-export interface SalesChannelResponse {
+interface SalesChannelResponse {
   id: string
   name: string
   description: string | null
@@ -22,5 +22,5 @@ export interface AdminSalesChannelListResponse extends PaginatedResponse {
  * @experimental
  */
 export interface AdminSalesChannelResponse {
-  sales_channel: SalesChannelResponse[]
+  sales_channel: SalesChannelResponse
 }

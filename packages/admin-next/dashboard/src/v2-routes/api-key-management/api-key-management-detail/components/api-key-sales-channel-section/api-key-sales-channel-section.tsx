@@ -17,16 +17,16 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { SalesChannelDTO } from "@medusajs/types"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { DataTable } from "../../../../../components/table/data-table"
 import { keepPreviousData } from "@tanstack/react-query"
 import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
+import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../../hooks/api/api-keys"
 
 type ApiKeySalesChannelSectionProps = {
-  apiKey: AdminApiKeyResponse
+  apiKey: AdminApiKeyResponse["api_key"]
 }
 
 const PAGE_SIZE = 10
@@ -34,17 +34,13 @@ const PAGE_SIZE = 10
 export const ApiKeySalesChannelSection = ({
   apiKey,
 }: ApiKeySalesChannelSectionProps) => {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const prompt = usePrompt()
 
   const { raw, searchParams } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
   })
-
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
-  const columns = useColumns({ apiKey })
 
   const { sales_channels, count, isLoading } = useSalesChannels(
     { ...searchParams, publishable_key_id: apiKey.id },
@@ -53,22 +49,27 @@ export const ApiKeySalesChannelSection = ({
     }
   )
 
+  const columns = useColumns({ apiKey: apiKey.id })
+  // const filters = useProductTableFilters(["sales_channel_id"])
+
   const { table } = useDataTable({
     data: sales_channels ?? [],
     columns,
     count,
     enablePagination: true,
+    enableRowSelection: true,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
   })
 
-  const { mutateAsync } = useAdminCustomPost(
-    `/api-keys/${apiKey.id}/sales-channels/batch/remove`,
-    [adminPublishableApiKeysKeys.detailSalesChannels(apiKey.id)]
-  )
+  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey(apiKey.id)
 
   const handleRemove = async () => {
-    const keys = Object.keys(rowSelection).filter((k) => rowSelection[k])
+    const keys = Object.keys(rowSelection)
 
     const res = await prompt({
       title: t("general.areYouSure"),
@@ -114,6 +115,13 @@ export const ApiKeySalesChannelSection = ({
         isLoading={isLoading}
         queryObject={raw}
         orderBy={["name", "created_at", "updated_at"]}
+        commands={[
+          {
+            action: handleRemove,
+            label: t("actions.remove"),
+            shortcut: "r",
+          },
+        ]}
       />
     </Container>
   )
@@ -123,13 +131,13 @@ const SalesChannelActions = ({
   salesChannel,
   apiKey,
 }: {
-  salesChannel: SalesChannelDTO
+  salesChannel: AdminSalesChannelResponse["sales_channel"]
   apiKey: string
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminRemovePublishableKeySalesChannelsBatch(apiKey)
+  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey(apiKey)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -144,7 +152,7 @@ const SalesChannelActions = ({
     }
 
     await mutateAsync({
-      sales_channel_ids: [{ id: salesChannel.id }],
+      sales_channel_ids: [salesChannel.id],
     })
   }
 
@@ -174,9 +182,10 @@ const SalesChannelActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<AdminSalesChannelResponse>()
+const columnHelper =
+  createColumnHelper<AdminSalesChannelResponse["sales_channel"]>()
 
-const useColumns = ({ apiKey }: { apiKey: AdminApiKeyResponse }) => {
+const useColumns = ({ apiKey }: { apiKey: string }) => {
   const { t } = useTranslation()
 
   return useMemo(

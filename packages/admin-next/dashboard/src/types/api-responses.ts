@@ -67,10 +67,6 @@ export type RegionDeleteRes = DeleteRes
 export type ApiKeyDeleteRes = DeleteRes
 
 // Sales Channels
-export type SalesChannelRes = { sales_channel: SalesChannelDTO }
-export type SalesChannelListRes = {
-  sales_channels: SalesChannelDTO[]
-} & ListRes
 export type SalesChannelDeleteRes = DeleteRes
 
 // Currencies
