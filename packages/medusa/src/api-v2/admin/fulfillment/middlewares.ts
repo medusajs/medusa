@@ -2,11 +2,11 @@ import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
+  AdminCreateShippingOption,
   AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
   AdminPostFulfillmentShippingOptionsRulesBatchAddReq,
   AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
   AdminPostFulfillmentShippingOptionsRulesBatchRemoveReq,
-  AdminPostFulfillmentShippingOptionsShippingOption,
   AdminPostShippingOptionsShippingOptionParams,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
@@ -26,9 +26,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostShippingOptionsShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(
-        AdminPostFulfillmentShippingOptionsShippingOption
-      ),
+      validateAndTransformBody(AdminCreateShippingOption),
     ],
   },
 

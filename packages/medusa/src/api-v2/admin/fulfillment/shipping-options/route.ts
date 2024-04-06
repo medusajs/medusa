@@ -3,17 +3,16 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminPostFulfillmentShippingOptionsShippingOption } from "../validators"
+import { AdminCreateShippingOptionType } from "../validators"
 import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { z } from "zod"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    z.infer<typeof AdminPostFulfillmentShippingOptionsShippingOption>,
+    AdminCreateShippingOptionType,
     AdminShippingOptionRetrieveResponse
   >,
   res: MedusaResponse

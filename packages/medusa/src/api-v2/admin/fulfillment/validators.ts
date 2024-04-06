@@ -50,7 +50,7 @@ export class FulfillmentRuleCreate {
   value: string | string[]
 }
 
-export const AdminPostShippingOptionsFulfillmentRuleCreate = z
+export const AdminCreateShippingOptionRule = z
   .object({
     operator: z.nativeEnum(RuleOperator),
     attribute: z.string(),
@@ -62,7 +62,7 @@ export const AdminPostShippingOptionsFulfillmentRuleCreate = z
  * SHIPPING OPTIONS
  */
 
-export const AdminPostFulfillmentShippingOptionsShippingOptionType = z
+export const AdminCreateShippingOptionType = z
   .object({
     label: z.string(),
     description: z.string(),
@@ -70,25 +70,25 @@ export const AdminPostFulfillmentShippingOptionsShippingOptionType = z
   })
   .strict()
 
+// TODO: WIP stev works to transform those to zod
 export class AdminPostShippingOptionsShippingOptionParams extends FindParams {}
 
 // eslint-disable-next-line max-len
-export const AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice =
-  z
-    .object({
-      currency_code: z.string(),
-      amount: z.number(),
-    })
-    .strict()
+export const AdminCreateShippingOptionPriceWithCurrency = z
+  .object({
+    currency_code: z.string(),
+    amount: z.number(),
+  })
+  .strict()
 
-export const AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice = z
+export const AdminCreateShippingOptionPriceWithRegion = z
   .object({
     region_id: z.string(),
     amount: z.number(),
   })
   .strict()
 
-export const AdminPostFulfillmentShippingOptionsShippingOption = z
+export const AdminCreateShippingOption = z
   .object({
     name: z.string(),
     service_zone_id: z.string(),
@@ -96,11 +96,14 @@ export const AdminPostFulfillmentShippingOptionsShippingOption = z
     data: z.record(z.unknown()).optional(),
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum),
     provider_id: z.string(),
-    type: AdminPostFulfillmentShippingOptionsShippingOptionType,
-    prices:
-      AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice.or(
-        AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
-      ).array(),
-    rules: AdminPostShippingOptionsFulfillmentRuleCreate.array().optional(),
+    type: AdminCreateShippingOptionType,
+    prices: AdminCreateShippingOptionPriceWithCurrency.or(
+      AdminCreateShippingOptionPriceWithRegion
+    ).array(),
+    rules: AdminCreateShippingOptionRule.array().optional(),
   })
   .strict()
+
+export type AdminCreateShippingOptionType = z.infer<
+  typeof AdminCreateShippingOption
+>
