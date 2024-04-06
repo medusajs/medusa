@@ -8,6 +8,7 @@ import {
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
+  PaymentProviderDTO,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -121,6 +122,12 @@ export type TagsListRes = { tags: ProductTagDTO[] } & ListRes
 // Product Types
 export type ProductTypeRes = { product_type: ProductTypeDTO }
 export type ProductTypeListRes = { product_types: ProductTypeDTO[] } & ListRes
+
+// Payments
+
+export type PaymentProvidersListRes = {
+  payment_providers: PaymentProviderDTO[]
+}
 
 // Stock Locations
 export type ExtendedStockLocationDTO = StockLocationDTO & {

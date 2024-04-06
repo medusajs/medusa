@@ -5,6 +5,7 @@ import { adminCollectionRoutesMiddlewares } from "./admin/collections/middleware
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
+import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares"
 import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/middlewares"
 import { adminFulfillmentRoutesMiddlewares } from "./admin/fulfillment/middlewares"
 import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
@@ -60,6 +61,7 @@ export const config: MiddlewaresConfig = {
     ...adminCollectionRoutesMiddlewares,
     ...adminPricingRoutesMiddlewares,
     ...adminFulfillmentRoutesMiddlewares,
+    ...adminDraftOrderRoutesMiddlewares,
     ...adminSalesChannelRoutesMiddlewares,
     ...adminStockLocationRoutesMiddlewares,
     ...adminProductTypeRoutesMiddlewares,

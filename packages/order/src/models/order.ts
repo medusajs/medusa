@@ -70,6 +70,12 @@ const BillingAddressIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const IsDraftOrderIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "is_draft_order",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "order" })
 export default class Order {
   [OptionalProps]?: OptionalOrderProps
@@ -106,6 +112,12 @@ export default class Order {
 
   @Enum({ items: () => OrderStatus, default: OrderStatus.PENDING })
   status: OrderStatus
+
+  @Property({
+    columnType: "boolean",
+  })
+  @IsDraftOrderIndex.MikroORMIndex()
+  is_draft_order = false
 
   @Property({ columnType: "text", nullable: true })
   email: string | null = null

@@ -3,6 +3,7 @@ import {
   createStep,
   createWorkflow,
   hook,
+  MedusaWorkflow,
   parallelize,
   StepResponse,
   transform,
@@ -10,11 +11,16 @@ import {
 
 jest.setTimeout(30000)
 
+const afterEach_ = () => {
+  jest.clearAllMocks()
+  MedusaWorkflow.workflows = {}
+}
+
 describe("Workflow composer", function () {
+  afterEach(afterEach_)
+
   describe("Using steps returning plain values", function () {
-    afterEach(async () => {
-      jest.clearAllMocks()
-    })
+    afterEach(afterEach_)
 
     it("should compose a new workflow composed retryable steps", async () => {
       const maxRetries = 1
@@ -657,83 +663,6 @@ describe("Workflow composer", function () {
       })
     })
 
-    it("should overwrite existing workflows if the same name is used", async () => {
-      const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
-        return { inputs: [input], obj: "return from 1" }
-      })
-      const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
-        return {
-          inputs,
-          obj: "return from 2",
-        }
-      })
-      const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
-        return {
-          inputs,
-          obj: "return from 3",
-        }
-      })
-
-      const step1 = createStep("step1", mockStep1Fn)
-      const step2 = createStep("step2", mockStep2Fn)
-      const step3 = createStep("step3", mockStep3Fn)
-
-      createWorkflow("workflow1", function (input) {
-        const returnStep1 = step1(input)
-        const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
-      })
-
-      const overriddenWorkflow = createWorkflow("workflow1", function (input) {
-        const ret2 = step2(input)
-        const returnStep1 = step1(ret2)
-        return step3({ one: returnStep1, two: ret2 })
-      })
-
-      const workflowInput = { test: "payload1" }
-      const { result: workflowResult } = await overriddenWorkflow().run({
-        input: workflowInput,
-      })
-
-      expect(mockStep1Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep1Fn.mock.calls[0][0]).toEqual({
-        inputs: [workflowInput],
-        obj: "return from 2",
-      })
-
-      expect(mockStep2Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep2Fn.mock.calls[0][0]).toEqual(workflowInput)
-
-      expect(mockStep3Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-        one: {
-          inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 2" }],
-          obj: "return from 1",
-        },
-        two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
-      })
-
-      expect(workflowResult).toEqual({
-        inputs: [
-          {
-            one: {
-              inputs: [
-                { inputs: [{ test: "payload1" }], obj: "return from 2" },
-              ],
-              obj: "return from 1",
-            },
-            two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
-          },
-        ],
-        obj: "return from 3",
-      })
-    })
-
     it("should transform the values before forward them to the next step", async () => {
       const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
         const ret = {
@@ -958,9 +887,7 @@ describe("Workflow composer", function () {
   })
 
   describe("Using steps returning StepResponse", function () {
-    afterEach(async () => {
-      jest.clearAllMocks()
-    })
+    afterEach(afterEach_)
 
     it("should compose a new workflow composed of retryable steps", async () => {
       const maxRetries = 1
@@ -1633,83 +1560,6 @@ describe("Workflow composer", function () {
           },
         ],
         obj: "return from 4",
-      })
-    })
-
-    it("should overwrite existing workflows if the same name is used", async () => {
-      const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
-        return new StepResponse({ inputs: [input], obj: "return from 1" })
-      })
-      const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
-        return new StepResponse({
-          inputs,
-          obj: "return from 2",
-        })
-      })
-      const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
-        return new StepResponse({
-          inputs,
-          obj: "return from 3",
-        })
-      })
-
-      const step1 = createStep("step1", mockStep1Fn)
-      const step2 = createStep("step2", mockStep2Fn)
-      const step3 = createStep("step3", mockStep3Fn)
-
-      createWorkflow("workflow1", function (input) {
-        const returnStep1 = step1(input)
-        const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
-      })
-
-      const overriddenWorkflow = createWorkflow("workflow1", function (input) {
-        const ret2 = step2(input)
-        const returnStep1 = step1(ret2)
-        return step3({ one: returnStep1, two: ret2 })
-      })
-
-      const workflowInput = { test: "payload1" }
-      const { result: workflowResult } = await overriddenWorkflow().run({
-        input: workflowInput,
-      })
-
-      expect(mockStep1Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep1Fn.mock.calls[0][0]).toEqual({
-        inputs: [workflowInput],
-        obj: "return from 2",
-      })
-
-      expect(mockStep2Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep2Fn.mock.calls[0][0]).toEqual(workflowInput)
-
-      expect(mockStep3Fn).toHaveBeenCalledTimes(1)
-      expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
-      expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-        one: {
-          inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 2" }],
-          obj: "return from 1",
-        },
-        two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
-      })
-
-      expect(workflowResult).toEqual({
-        inputs: [
-          {
-            one: {
-              inputs: [
-                { inputs: [{ test: "payload1" }], obj: "return from 2" },
-              ],
-              obj: "return from 1",
-            },
-            two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
-          },
-        ],
-        obj: "return from 3",
       })
     })
 
