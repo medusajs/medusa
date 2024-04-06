@@ -16,15 +16,13 @@ interface PriceRegionId {
   amount: number
 }
 
-interface StepInput {
-  input: {
-    id: string
-    prices: (PriceCurrencyCode | PriceRegionId)[]
-  }[]
-}
+type StepInput = {
+  id: string
+  prices: (PriceCurrencyCode | PriceRegionId)[]
+}[]
 
 function buildPriceSet(
-  prices: StepInput["input"][0]["prices"],
+  prices: StepInput[0]["prices"],
   regionToCurrencyMap: Map<string, string>
 ): CreatePriceSetDTO {
   const rules: CreatePriceSetDTO["rules"] = []
@@ -58,11 +56,11 @@ export const createShippingOptionsPriceSetsStepId =
 export const createShippingOptionsPriceSetsStep = createStep(
   createShippingOptionsPriceSetsStepId,
   async (data: StepInput, { container }) => {
-    if (!data?.input?.length) {
+    if (!data?.length) {
       return new StepResponse([], [])
     }
 
-    const regionIds = data.input
+    const regionIds = data
       .map((input) => input.prices)
       .flat()
       .filter((price): price is PriceRegionId => {
@@ -90,7 +88,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
       )
     }
 
-    const priceSetsData = data.input.map((input) =>
+    const priceSetsData = data.map((input) =>
       buildPriceSet(input.prices, regionToCurrencyMap)
     )
 
@@ -100,7 +98,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
 
     const priceSets = await pricingService.create(priceSetsData)
 
-    const shippingOptionPriceSetLinData = data.input.map((input, index) => {
+    const shippingOptionPriceSetLinData = data.map((input, index) => {
       return {
         id: input.id,
         priceSetId: priceSets[index].id,

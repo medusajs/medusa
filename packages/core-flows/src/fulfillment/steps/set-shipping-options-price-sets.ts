@@ -9,12 +9,10 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-export interface SetShippingOptionsPriceSetsStepInput {
-  input: {
-    id: string
-    price_sets?: string[]
-  }[]
-}
+type SetShippingOptionsPriceSetsStepInput = {
+  id: string
+  price_sets?: string[]
+}[]
 
 interface FilteredSetShippingOptionsPriceSetsStepInput {
   id: string
@@ -61,12 +59,16 @@ export const setShippingOptionsPriceSetsStepId =
 export const setShippingOptionsPriceSetsStep = createStep(
   setShippingOptionsPriceSetsStepId,
   async (data: SetShippingOptionsPriceSetsStepInput, { container }) => {
-    const dataInputToProcess = data.input.filter((inputData) => {
+    if (!data.length) {
+      return
+    }
+
+    const dataInputToProcess = data.filter((inputData) => {
       return inputData.price_sets?.length
     }) as FilteredSetShippingOptionsPriceSetsStepInput[]
 
     if (!dataInputToProcess.length) {
-      return new StepResponse(void 0)
+      return
     }
 
     const remoteLink = container.resolve<RemoteLink>(

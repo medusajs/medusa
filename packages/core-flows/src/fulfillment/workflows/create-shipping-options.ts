@@ -73,9 +73,7 @@ export const createShippingOptionsWorkflow = createWorkflow(
     createPricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
 
     const shippingOptionsPriceSetsLinkData = createShippingOptionsPriceSetsStep(
-      {
-        input: normalizedShippingOptionsPrices.shippingOptionsPrices,
-      }
+      normalizedShippingOptionsPrices.shippingOptionsPrices
     )
 
     const normalizedLinkData = transform(
@@ -92,9 +90,7 @@ export const createShippingOptionsWorkflow = createWorkflow(
       }
     )
 
-    setShippingOptionsPriceSetsStep({
-      input: normalizedLinkData,
-    })
+    setShippingOptionsPriceSetsStep(normalizedLinkData)
 
     return createdShippingOptions
   }
