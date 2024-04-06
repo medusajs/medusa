@@ -10,6 +10,7 @@ import {
   AdminPostShippingOptionsShippingOptionParams,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -25,7 +26,9 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminPostShippingOptionsShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostFulfillmentShippingOptionsShippingOption),
+      validateAndTransformBody(
+        AdminPostFulfillmentShippingOptionsShippingOption
+      ),
     ],
   },
 

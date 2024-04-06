@@ -9,10 +9,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { z } from "zod"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    AdminPostFulfillmentShippingOptionsShippingOption,
+    z.infer<typeof AdminPostFulfillmentShippingOptionsShippingOption>,
     AdminShippingOptionRetrieveResponse
   >,
   res: MedusaResponse

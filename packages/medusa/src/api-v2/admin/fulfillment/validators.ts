@@ -8,14 +8,12 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
-  IsObject,
-  IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { IsType } from "../../../utils"
-import { ShippingOptionPriceType } from "@medusajs/types"
 import { FindParams } from "../../../types/common"
+import { z } from "zod"
 
 /**
  * SHIPPING OPTIONS RULES
@@ -52,85 +50,57 @@ export class FulfillmentRuleCreate {
   value: string | string[]
 }
 
+export const AdminPostShippingOptionsFulfillmentRuleCreate = z
+  .object({
+    operator: z.nativeEnum(RuleOperator),
+    attribute: z.string(),
+    value: z.union([z.string(), z.array(z.string())]),
+  })
+  .strict()
+
 /**
  * SHIPPING OPTIONS
  */
 
+export const AdminPostFulfillmentShippingOptionsShippingOptionType = z
+  .object({
+    label: z.string(),
+    description: z.string(),
+    code: z.string(),
+  })
+  .strict()
+
 export class AdminPostShippingOptionsShippingOptionParams extends FindParams {}
 
-export class AdminPostFulfillmentShippingOptionsShippingOptionType {
-  @IsString()
-  @IsNotEmpty()
-  label: string
-
-  @IsString()
-  @IsNotEmpty()
-  description: string
-
-  @IsString()
-  @IsNotEmpty()
-  code: string
-}
-
 // eslint-disable-next-line max-len
-export class AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice {
-  @IsString()
-  @IsNotEmpty()
-  currency_code: string
+export const AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice =
+  z
+    .object({
+      currency_code: z.string(),
+      amount: z.number(),
+    })
+    .strict()
 
-  @IsNotEmpty()
-  amount: number
-}
+export const AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice = z
+  .object({
+    region_id: z.string(),
+    amount: z.number(),
+  })
+  .strict()
 
-export class AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice {
-  @IsString()
-  @IsNotEmpty()
-  region_id: string
-
-  @IsNotEmpty()
-  amount: number
-}
-
-export class AdminPostFulfillmentShippingOptionsShippingOption {
-  @IsString()
-  @IsNotEmpty()
-  name: string
-
-  @IsString()
-  @IsNotEmpty()
-  service_zone_id: string
-
-  @IsString()
-  @IsNotEmpty()
-  shipping_profile_id: string
-
-  @IsObject()
-  @IsOptional()
-  data?: Record<string, unknown>
-
-  @IsEnum(ShippingOptionPriceTypeEnum)
-  price_type: ShippingOptionPriceType
-
-  @IsString()
-  @IsNotEmpty()
-  provider_id: string
-
-  @IsType([AdminPostFulfillmentShippingOptionsShippingOptionType])
-  type: AdminPostFulfillmentShippingOptionsShippingOptionType
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @IsType([
-    AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice,
-    AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice,
-  ])
-  prices: (
-    | AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice
-    | AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
-  )[]
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => FulfillmentRuleCreate)
-  rules?: FulfillmentRuleCreate[]
-}
+export const AdminPostFulfillmentShippingOptionsShippingOption = z
+  .object({
+    name: z.string(),
+    service_zone_id: z.string(),
+    shipping_profile_id: z.string(),
+    data: z.record(z.unknown()).optional(),
+    price_type: z.nativeEnum(ShippingOptionPriceTypeEnum),
+    provider_id: z.string(),
+    type: AdminPostFulfillmentShippingOptionsShippingOptionType,
+    prices: z.array(
+      AdminPostFulfillmentShippingOptionsShippingOptionCurrencyCodePrice,
+      AdminPostFulfillmentShippingOptionsShippingOptionRegionPrice
+    ),
+    rules: z.array(AdminPostShippingOptionsFulfillmentRuleCreate).optional(),
+  })
+  .strict()
