@@ -48,6 +48,7 @@ export const useSalesChannels = (
     "queryFn" | "queryKey"
   >
 ) => {
+  console.log("Query: ", query)
   const { data, ...rest } = useQuery({
     queryFn: () => client.salesChannels.list(query),
     queryKey: salesChannelsQueryKeys.list(query),

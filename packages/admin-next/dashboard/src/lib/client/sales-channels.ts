@@ -1,36 +1,42 @@
 import {
+  AdminSalesChannelListResponse,
+  AdminSalesChannelResponse,
+} from "@medusajs/types"
+import {
   AddProductsSalesChannelReq,
   CreateSalesChannelReq,
   RemoveProductsSalesChannelReq,
   UpdateSalesChannelReq,
 } from "../../types/api-payloads"
-import {
-  SalesChannelDeleteRes,
-  SalesChannelListRes,
-  SalesChannelRes,
-} from "../../types/api-responses"
+import { SalesChannelDeleteRes } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveSalesChannel(id: string, query?: Record<string, any>) {
-  return getRequest<SalesChannelRes, Record<string, any>>(
+  return getRequest<AdminSalesChannelResponse, Record<string, any>>(
     `/admin/sales-channels/${id}`,
     query
   )
 }
 
 async function listSalesChannels(query?: Record<string, any>) {
-  return getRequest<SalesChannelListRes, Record<string, any>>(
+  return getRequest<AdminSalesChannelListResponse, Record<string, any>>(
     `/admin/sales-channels`,
     query
   )
 }
 
 async function createSalesChannel(payload: CreateSalesChannelReq) {
-  return postRequest<SalesChannelRes>(`/admin/sales-channels`, payload)
+  return postRequest<AdminSalesChannelResponse>(
+    `/admin/sales-channels`,
+    payload
+  )
 }
 
 async function updateSalesChannel(id: string, payload: UpdateSalesChannelReq) {
-  return postRequest<SalesChannelRes>(`/admin/sales-channels/${id}`, payload)
+  return postRequest<AdminSalesChannelResponse>(
+    `/admin/sales-channels/${id}`,
+    payload
+  )
 }
 
 async function deleteSalesChannel(id: string) {
@@ -41,7 +47,7 @@ async function batchRemoveProducts(
   id: string,
   payload: RemoveProductsSalesChannelReq
 ) {
-  return postRequest<SalesChannelRes>(
+  return postRequest<AdminSalesChannelResponse>(
     `/admin/sales-channels/${id}/products/batch/remove`,
     payload
   )
@@ -51,7 +57,7 @@ async function batchAddProducts(
   id: string,
   payload: AddProductsSalesChannelReq
 ) {
-  return postRequest<SalesChannelRes>(
+  return postRequest<AdminSalesChannelResponse>(
     `/admin/sales-channels/${id}/products/batch/add`,
     payload
   )

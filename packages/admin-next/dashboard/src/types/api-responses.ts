@@ -3,7 +3,6 @@
  */
 
 import {
-  ApiKeyDTO,
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
@@ -65,11 +64,6 @@ export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
 
 // API Keys
-export type ExtendedApiKeyDTO = ApiKeyDTO & {
-  sales_channels: SalesChannelDTO[] | null
-}
-export type ApiKeyRes = { api_key: ExtendedApiKeyDTO }
-export type ApiKeyListRes = { api_keys: ExtendedApiKeyDTO[] } & ListRes
 export type ApiKeyDeleteRes = DeleteRes
 
 // Sales Channels
