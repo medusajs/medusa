@@ -3,27 +3,23 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
+import { useCampaigns } from "../../../hooks/api/campaigns"
 import { usePromotion } from "../../../hooks/api/promotions"
-import { useV2Campaigns } from "../../../lib/api-v2/campaign"
 import { AddCampaignPromotionForm } from "./components/add-campaign-promotion-form"
 
 export const PromotionAddCampaign = () => {
   const { id } = useParams()
   const { t } = useTranslation()
-  const { promotion, isLoading, isError, error } = usePromotion(id!)
+  const { promotion, isPending, isError, error } = usePromotion(id!)
   const {
     campaigns,
-    isLoading: areCampaignsLoading,
+    isPending: areCampaignsLoading,
     isError: isCampaignError,
     error: campaignError,
-  } = useV2Campaigns()
+  } = useCampaigns()
 
-  if (isError) {
-    throw error
-  }
-
-  if (isCampaignError) {
-    throw campaignError
+  if (isError || isCampaignError) {
+    throw error || campaignError
   }
 
   return (
@@ -32,7 +28,7 @@ export const PromotionAddCampaign = () => {
         <Heading>{t("promotions.addToCampaign.title")}</Heading>
       </RouteDrawer.Header>
 
-      {!isLoading && !areCampaignsLoading && promotion && campaigns && (
+      {!isPending && !areCampaignsLoading && promotion && campaigns && (
         <AddCampaignPromotionForm promotion={promotion} campaigns={campaigns} />
       )}
     </RouteDrawer>

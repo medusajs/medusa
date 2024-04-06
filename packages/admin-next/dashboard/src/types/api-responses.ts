@@ -4,6 +4,7 @@
 
 import {
   ApiKeyDTO,
+  CampaignDTO,
   CurrencyDTO,
   CustomerDTO,
   InviteDTO,
@@ -67,6 +68,11 @@ export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 export type RegionRes = { region: RegionDTO }
 export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
+
+// Campaigns
+export type CampaignRes = { campaign: CampaignDTO }
+export type CampaignListRes = { campaigns: CampaignDTO[] } & ListRes
+export type CampaignDeleteRes = DeleteRes
 
 // API Keys
 export type ExtendedApiKeyDTO = ApiKeyDTO & {

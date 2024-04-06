@@ -1,5 +1,6 @@
 import { apiKeys } from "./api-keys"
 import { auth } from "./auth"
+import { campaigns } from "./campaigns"
 import { collections } from "./collections"
 import { currencies } from "./currencies"
 import { customers } from "./customers"
@@ -17,6 +18,7 @@ import { workflowExecutions } from "./workflow-executions"
 export const client = {
   auth: auth,
   apiKeys: apiKeys,
+  campaigns: campaigns,
   customers: customers,
   currencies: currencies,
   collections: collections,

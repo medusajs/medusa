@@ -49,7 +49,7 @@ export const AddCampaignPromotionForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
-      { id: promotion.id, campaign_id: data.campaign_id },
+      { campaign_id: data.campaign_id },
       { onSuccess: () => handleSuccess() }
     )
   })

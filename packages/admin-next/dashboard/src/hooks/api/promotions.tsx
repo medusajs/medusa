@@ -27,7 +27,21 @@ import {
 } from "../../types/api-responses"
 
 const PROMOTIONS_QUERY_KEY = "promotions" as const
-export const promotionsQueryKeys = queryKeysFactory(PROMOTIONS_QUERY_KEY)
+export const promotionsQueryKeys = {
+  ...queryKeysFactory(PROMOTIONS_QUERY_KEY),
+  listRules: (id: string, ruleType: string) => [
+    PROMOTIONS_QUERY_KEY,
+    id,
+    ruleType,
+  ],
+  listRuleAttributes: (ruleType: string) => [PROMOTIONS_QUERY_KEY, ruleType],
+  listRuleValues: (ruleType: string, ruleValue: string) => [
+    PROMOTIONS_QUERY_KEY,
+    ruleType,
+    ruleValue,
+  ],
+  listRuleOperators: () => [PROMOTIONS_QUERY_KEY],
+}
 
 export const usePromotion = (
   id: string,
@@ -59,7 +73,7 @@ export const usePromotionRules = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.detail(id),
+    queryKey: promotionsQueryKeys.listRules(id, ruleType),
     queryFn: async () => client.promotions.listRules(id, ruleType),
     ...options,
   })
@@ -95,7 +109,7 @@ export const usePromotionRuleOperators = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.list(),
+    queryKey: promotionsQueryKeys.listRuleOperators(),
     queryFn: async () => client.promotions.listRuleOperators(),
     ...options,
   })
@@ -116,7 +130,7 @@ export const usePromotionRuleAttributes = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.list(),
+    queryKey: promotionsQueryKeys.listRuleAttributes(ruleType),
     queryFn: async () => client.promotions.listRuleAttributes(ruleType),
     ...options,
   })
@@ -138,7 +152,7 @@ export const usePromotionRuleValues = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.list(),
+    queryKey: promotionsQueryKeys.listRuleValues(ruleType, ruleValue),
     queryFn: async () => client.promotions.listRuleValues(ruleType, ruleValue),
     ...options,
   })
@@ -252,6 +266,9 @@ export const usePromotionUpdateRules = (
       client.promotions.updateRules(id, ruleType, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: promotionsQueryKeys.listRules(id, ruleType),
+      })
       queryClient.invalidateQueries({
         queryKey: promotionsQueryKeys.detail(id),
       })

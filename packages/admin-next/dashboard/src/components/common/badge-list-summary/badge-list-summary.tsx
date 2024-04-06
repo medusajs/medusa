@@ -44,7 +44,11 @@ export const BadgeListSummary = ({
       )}
     >
       {list.slice(0, n).map((item) => {
-        return <Badge size="2xsmall">{item}</Badge>
+        return (
+          <Badge key={item} size="2xsmall">
+            {item}
+          </Badge>
+        )
       })}
 
       {list.length > n && (

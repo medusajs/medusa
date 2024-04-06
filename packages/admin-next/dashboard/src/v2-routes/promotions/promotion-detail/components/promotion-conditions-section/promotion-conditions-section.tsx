@@ -84,7 +84,7 @@ export const PromotionConditionsSection = ({
         )}
 
         {rules.map((rule) => (
-          <RuleBlock key={rule.id} rule={rule} />
+          <RuleBlock key={`${rule.id}-${rule.attribute}`} rule={rule} />
         ))}
       </div>
     </Container>
