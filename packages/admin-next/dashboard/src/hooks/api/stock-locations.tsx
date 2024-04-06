@@ -10,6 +10,7 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
+  CreateFulfillmentSetReq,
   CreateStockLocationReq,
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
@@ -110,6 +111,26 @@ export const useDeleteStockLocation = (
         queryKey: stockLocationsQueryKeys.detail(id),
       })
 
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateFulfillmentSet = (
+  locationId: string,
+  options?: UseMutationOptions<StockLocationRes, Error, CreateFulfillmentSetReq>
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.stockLocations.createFulfillmentSet(locationId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.detail(locationId),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

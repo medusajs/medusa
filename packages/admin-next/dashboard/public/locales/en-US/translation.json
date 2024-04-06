@@ -535,7 +535,13 @@
     "to": "Shipping to",
     "add": "Add shipping",
     "connectProvider": "Connect provider",
-    "addZone": "Add shipping zone"
+    "addZone": "Add shipping zone",
+    "create": {
+      "title": "Add shipping for {{location}}",
+      "delivery": "Delivery",
+      "pickup": "Pickup",
+      "type": "Shipping type"
+    }
   },
   "discounts": {
     "domain": "Discounts",

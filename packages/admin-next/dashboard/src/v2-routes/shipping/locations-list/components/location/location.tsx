@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { Buildings } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
+import { useNavigate } from "react-router-dom"
 
 type LocationProps = {
   location: StockLocationDTO
@@ -12,6 +13,7 @@ type LocationProps = {
 function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const hasFulfillmentSets = !!location.fulfillment_sets.length
 
@@ -53,7 +55,14 @@ function Location(props: LocationProps) {
           <div className="flex grow-0 gap-2">
             <Button variant="secondary">{t("shipping.connectProvider")}</Button>
             {!hasFulfillmentSets && (
-              <Button variant="secondary">{t("shipping.add")}</Button>
+              <Button
+                onClick={() =>
+                  navigate(`/settings/shipping/location/${location.id}/create`)
+                }
+                variant="secondary"
+              >
+                {t("shipping.add")}
+              </Button>
             )}
             {hasFulfillmentSets && (
               <Button variant="secondary">{t("shipping.addZone")}</Button>

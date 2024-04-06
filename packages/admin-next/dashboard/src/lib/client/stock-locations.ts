@@ -1,4 +1,5 @@
 import {
+  CreateFulfillmentSetReq,
   CreateStockLocationReq,
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
@@ -21,6 +22,16 @@ async function createStockLocation(payload: CreateStockLocationReq) {
   return postRequest<StockLocationRes>(`/admin/stock-locations`, payload)
 }
 
+async function createFulfillmentSet(
+  locationId: string,
+  payload: CreateFulfillmentSetReq
+) {
+  return postRequest<StockLocationRes>(
+    `/admin/stock-locations/${locationId}/fulfillment-sets`,
+    payload
+  )
+}
+
 async function updateStockLocation(
   id: string,
   payload: UpdateStockLocationReq
@@ -38,4 +49,5 @@ export const stockLocations = {
   create: createStockLocation,
   update: updateStockLocation,
   delete: deleteStockLocation,
+  createFulfillmentSet: createFulfillmentSet,
 }
