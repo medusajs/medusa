@@ -511,6 +511,10 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsNumber()
   @IsOptional()
+  variant_rank?: number
+
+  @IsNumber()
+  @IsOptional()
   weight?: number
 
   @IsNumber()
@@ -538,9 +542,10 @@ export class AdminPostProductsProductVariantsReq {
   metadata?: Record<string, unknown>
 
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesCreateReq)
-  prices: ProductVariantPricesCreateReq[]
+  prices?: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @IsObject()
@@ -587,6 +592,10 @@ export class AdminPostProductsProductVariantsVariantReq {
   @IsBoolean()
   @IsOptional()
   manage_inventory?: boolean
+
+  @IsNumber()
+  @IsOptional()
+  variant_rank?: number
 
   @IsNumber()
   @IsOptional()
