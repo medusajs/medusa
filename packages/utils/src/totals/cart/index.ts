@@ -1,10 +1,4 @@
-import {
-  BigNumberInput,
-  CartLikeWithTotals,
-  CartLineItemDTO,
-  CartShippingMethodDTO,
-  RegionDTO,
-} from "@medusajs/types"
+import { BigNumberInput, CartLikeWithTotals } from "@medusajs/types"
 import { BigNumber } from "../big-number"
 import { GetItemTotalInput, getLineItemsTotals } from "../line-item"
 import { MathBN } from "../math"
@@ -18,16 +12,33 @@ interface TotalsConfig {
   includeTaxes?: boolean
 }
 
-export interface DecorateCartTotalsInputDTO {
-  items?: (Pick<CartLineItemDTO, "unit_price" | "quantity"> & {
-    adjustments?: { amount: BigNumberInput }
-  })[]
-  shipping_methods?: Pick<CartShippingMethodDTO, "amount">[]
-  region?: RegionDTO
+export interface DecorateCartLikeInputDTO {
+  items?: {
+    id?: string
+    unit_price: BigNumberInput
+    quantity: BigNumberInput
+    adjustments?: { amount: BigNumberInput }[]
+    tax_lines?: {
+      rate: BigNumberInput
+      is_tax_inclusive?: boolean
+    }[]
+  }[]
+  shipping_methods?: {
+    id?: string
+    amount: BigNumberInput
+    adjustments?: { amount: BigNumberInput }[]
+    tax_lines?: {
+      rate: BigNumberInput
+      is_tax_inclusive?: boolean
+    }[]
+  }[]
+  region?: {
+    automatic_taxes?: boolean
+  }
 }
 
 export function decorateCartTotals(
-  cartLike: DecorateCartTotalsInputDTO,
+  cartLike: DecorateCartLikeInputDTO,
   config: TotalsConfig = {}
 ): CartLikeWithTotals {
   transformPropertiesToBigNumber(cartLike)
@@ -111,10 +122,10 @@ export function decorateCartTotals(
     return itemTotals
   })
 
-  const cartShippingMethods = shippingMethods.map((shippingMethod) => {
+  const cartShippingMethods = shippingMethods.map((shippingMethod, index) => {
     const methodTotals = Object.assign(
       shippingMethod,
-      shippingMethodsTotals[shippingMethod.id] ?? {}
+      shippingMethodsTotals[shippingMethod.id ?? index] ?? {}
     )
 
     const methodSubtotal = MathBN.convert(methodTotals.subtotal)
@@ -170,9 +181,6 @@ export function decorateCartTotals(
 
   const cart = { ...cartLike } as any
 
-  cart.items = cartLike.items ?? cartItems
-  cart.shipping_methods = cartLike.shipping_methods && cartShippingMethods
-
   cart.total = new BigNumber(total)
   cart.subtotal = new BigNumber(subtotal)
   cart.subtotal_without_taxes = new BigNumber(subtotalWithoutTaxes)
@@ -180,10 +188,6 @@ export function decorateCartTotals(
 
   cart.discount_total = new BigNumber(discountTotal)
   cart.discount_tax_total = new BigNumber(discountTaxTotal)
-
-  cart.item_total = new BigNumber(itemsTotal)
-  cart.item_subtotal = new BigNumber(itemsSubtotal)
-  cart.item_tax_total = new BigNumber(itemsTaxTotal)
 
   // cart.gift_card_total = giftCardTotal.total || 0
   // cart.gift_card_tax_total = giftCardTotal.tax_total || 0
@@ -194,10 +198,18 @@ export function decorateCartTotals(
   // cart.original_gift_card_total =
   // cart.original_gift_card_tax_total =
 
-  cart.original_item_total = new BigNumber(itemsOriginalTotal)
-  cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
+  if (cartLike.items) {
+    cart.items = cartItems
+    cart.item_total = new BigNumber(itemsTotal)
+    cart.item_subtotal = new BigNumber(itemsSubtotal)
+    cart.item_tax_total = new BigNumber(itemsTaxTotal)
+
+    cart.original_item_total = new BigNumber(itemsOriginalTotal)
+    cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
+  }
 
   if (cart.shipping_methods) {
+    cart.shipping_methods = cartShippingMethods
     cart.shipping_total = new BigNumber(shippingTotal)
     cart.shipping_subtotal = new BigNumber(shippingSubtotal)
     cart.shipping_tax_total = new BigNumber(shippingTaxTotal)

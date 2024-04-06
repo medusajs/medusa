@@ -23,9 +23,7 @@ export function formatOrder(
 
     order.summary = order.summary?.[0]?.totals
 
-    decorateCartTotals(order)
-
-    return order
+    return decorateCartTotals(order)
   })
 
   return isArray ? orders : orders[0]
