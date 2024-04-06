@@ -1,3 +1,17 @@
+export enum DisguisedRule {
+  APPLY_TO_QUANTITY = "apply_to_quantity",
+  BUY_RULES_MIN_QUANTITY = "buy_rules_min_quantity",
+}
+
+export const disguisedRulesMap = {
+  [DisguisedRule.APPLY_TO_QUANTITY]: {
+    relation: "application_method",
+  },
+  [DisguisedRule.BUY_RULES_MIN_QUANTITY]: {
+    relation: "application_method",
+  },
+}
+
 const ruleAttributes = [
   {
     id: "currency",
@@ -66,20 +80,24 @@ const commonAttributes = [
 
 const buyRuleAttributes = [
   {
-    id: "buy_rules_min_quantity",
-    value: "buy_rules_min_quantity",
+    id: DisguisedRule.BUY_RULES_MIN_QUANTITY,
+    value: DisguisedRule.BUY_RULES_MIN_QUANTITY,
     label: "Minimum quantity of items",
+    field_type: "number",
     required: true,
+    disguised: true,
   },
   ...commonAttributes,
 ]
 
 const targetRuleAttributes = [
   {
-    id: "apply_to_quantity",
-    value: "apply_to_quantity",
+    id: DisguisedRule.APPLY_TO_QUANTITY,
+    value: DisguisedRule.APPLY_TO_QUANTITY,
     label: "Quantity of items promotion will apply to",
+    field_type: "number",
     required: true,
+    disguised: true,
   },
   ...commonAttributes,
 ]

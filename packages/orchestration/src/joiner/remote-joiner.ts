@@ -841,6 +841,7 @@ export class RemoteJoiner {
     const alias = fieldAlias[property] as any
 
     const path = isString(alias) ? alias : alias.path
+    const fieldAliasIsList = isString(alias) ? false : !!alias.isList
     const fullPath = [...currentPath.concat(path.split("."))]
 
     if (aliasRealPathMap.has(aliasPath)) {
@@ -868,7 +869,7 @@ export class RemoteJoiner {
       location: [...currentPath],
       property,
       path: fullPath,
-      isList: !!serviceConfig.relationships?.find(
+      isList: fieldAliasIsList || !!serviceConfig.relationships?.find(
         (relationship) => relationship.alias === parentFieldAlias
       )?.isList,
     })

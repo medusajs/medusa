@@ -5,7 +5,9 @@ import type {
   AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
-  AdminProductsRes,
+  AdminRegionsRes,
+  AdminSalesChannelsRes,
+  AdminUserRes,
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -183,66 +185,6 @@ export const v1Routes: RouteObject[] = [
                     path: "email",
                     lazy: () =>
                       import("../../routes/draft-orders/draft-order-email"),
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "/products",
-            handle: {
-              crumb: () => "Products",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/products/product-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () => import("../../routes/products/product-create"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/products/product-detail"),
-                handle: {
-                  crumb: (data: AdminProductsRes) => data.product.title,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/products/product-edit"),
-                  },
-                  {
-                    path: "sales-channels",
-                    lazy: () =>
-                      import("../../routes/products/product-sales-channels"),
-                  },
-                  {
-                    path: "attributes",
-                    lazy: () =>
-                      import("../../routes/products/product-attributes"),
-                  },
-                  {
-                    path: "options/create",
-                    lazy: () =>
-                      import("../../routes/products/product-create-option"),
-                  },
-                  {
-                    path: "options/:option_id/edit",
-                    lazy: () =>
-                      import("../../routes/products/product-edit-option"),
-                  },
-                  {
-                    path: "media",
-                    lazy: () => import("../../routes/products/product-media"),
-                  },
-                  {
-                    path: "variants/:variant_id/edit",
-                    lazy: () =>
-                      import("../../routes/products/product-edit-variant"),
                   },
                 ],
               },

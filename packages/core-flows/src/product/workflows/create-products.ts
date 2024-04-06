@@ -45,7 +45,7 @@ export const createProductsWorkflow = createWorkflow(
             const inputProduct = data.input.products[i]
             return p.variants?.map((v, j) => ({
               ...v,
-              prices: inputProduct?.variants?.[j]?.prices,
+              prices: inputProduct?.variants?.[j]?.prices ?? [],
             }))
           })
           .flat()
@@ -54,7 +54,7 @@ export const createProductsWorkflow = createWorkflow(
 
     const pricesToCreate = transform({ variantsWithAssociatedPrices }, (data) =>
       data.variantsWithAssociatedPrices.map((v) => ({
-        prices: v.prices,
+        prices: v.prices ?? [],
       }))
     )
 

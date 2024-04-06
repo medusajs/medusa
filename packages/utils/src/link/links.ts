@@ -50,15 +50,21 @@ export const LINKS = {
     Modules.STOCK_LOCATION,
     "location_id"
   ),
-  PublishableApiKeySalesChannel: composeLinkName(
-    Modules.API_KEY,
-    "api_key_id",
+  OrderPromotion: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.PROMOTION,
+    "promotion_id"
+  ),
+  OrderSalesChannel: composeLinkName(
+    Modules.ORDER,
+    "order_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
-  ProductSalesChannel: composeLinkName(
-    Modules.PRODUCT,
-    "product_id",
+  PublishableApiKeySalesChannel: composeLinkName(
+    Modules.API_KEY,
+    "api_key_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
@@ -70,9 +76,9 @@ export const LINKS = {
     "shippingProfileService",
     "profile_id"
   ),
-  OrderSalesChannel: composeLinkName(
-    "orderService",
-    "order_id",
+  ProductSalesChannel: composeLinkName(
+    Modules.PRODUCT,
+    "product_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),

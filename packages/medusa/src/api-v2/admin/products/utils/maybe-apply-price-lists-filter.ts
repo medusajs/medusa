@@ -4,11 +4,11 @@ import {
 } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
-import { AdminGetProductsParams } from "../validators"
+import { AdminGetProductsParamsType } from "../validators"
 
 export function maybeApplyPriceListsFilter() {
   return async (req: MedusaRequest, _, next: NextFunction) => {
-    const filterableFields: AdminGetProductsParams = req.filterableFields
+    const filterableFields: AdminGetProductsParamsType = req.filterableFields
 
     if (!filterableFields.price_list_id) {
       return next()

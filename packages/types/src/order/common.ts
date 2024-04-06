@@ -233,8 +233,7 @@ export interface OrderShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
-
+  amount: BigNumberRawValue
   /**
    * Whether the shipping method price is tax inclusive or not
    */
@@ -417,6 +416,16 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   raw_unit_price: BigNumberRawValue
 
   /**
+   * The quantity of the order line item.
+   */
+  quantity: number
+
+  /**
+   * The raw quantity of the order line item.
+   */
+  raw_quantity: BigNumberRawValue
+
+  /**
    * The associated tax lines.
    *
    * @expandable
@@ -443,6 +452,11 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
    * The date when the order line item was last updated.
    */
   updated_at: Date
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface OrderItemDTO {
@@ -738,11 +752,11 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: Record<string, unknown>
+  action: string
   /**
-   * The metadata of the order change action
+   * The details of the order change action
    */
-  metadata?: Record<string, unknown> | null
+  details: Record<string, unknown> | null
   /**
    * The internal note of the order change action
    */
@@ -877,28 +891,42 @@ export interface FilterableOrderShippingMethodTaxLineProps
 
 export interface FilterableOrderChangeProps
   extends BaseFilterable<FilterableOrderChangeProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  status?: string | string[]
-  requested_by?: string | string[]
-  confirmed_by?: string | string[]
-  declined_by?: string | string[]
-  canceled_by?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  status?: string | string[] | OperatorMap<string>
+  requested_by?: string | string[] | OperatorMap<string>
+  confirmed_by?: string | string[] | OperatorMap<string>
+  declined_by?: string | string[] | OperatorMap<string>
+  canceled_by?: string | string[] | OperatorMap<string>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+  canceled_at?: OperatorMap<string>
 }
 
 export interface FilterableOrderChangeActionProps
   extends BaseFilterable<FilterableOrderChangeActionProps> {
-  id?: string | string[]
-  order_change_id?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_change_id?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableOrderTransactionProps
   extends BaseFilterable<FilterableOrderTransactionProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  currency_code?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  currency_code?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
+
+  created_at?: OperatorMap<string>
+}
+
+export interface FilterableOrderItemProps
+  extends BaseFilterable<FilterableOrderItemProps> {
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  version?: string | string[] | OperatorMap<string>
+  item_id?: string | string[] | OperatorMap<string>
 }

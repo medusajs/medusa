@@ -4,17 +4,23 @@
 
 import {
   CreateApiKeyDTO,
+  CreateCampaignDTO,
   CreateCustomerDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
   CreateProductCollectionDTO,
+  CreatePromotionDTO,
+  CreatePromotionRuleDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateStockLocationInput,
   UpdateApiKeyDTO,
+  UpdateCampaignDTO,
   UpdateCustomerDTO,
   UpdatePriceListDTO,
   UpdateProductCollectionDTO,
+  UpdatePromotionDTO,
+  UpdatePromotionRuleDTO,
   UpdateRegionDTO,
   UpdateSalesChannelDTO,
   UpdateStockLocationInput,
@@ -63,3 +69,14 @@ export type UpdateProductCollectionReq = UpdateProductCollectionDTO
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO
 export type UpdatePriceListReq = UpdatePriceListDTO
+
+// Promotion
+export type CreatePromotionReq = CreatePromotionDTO
+export type UpdatePromotionReq = UpdatePromotionDTO
+export type BatchAddPromotionRulesReq = { rules: CreatePromotionRuleDTO[] }
+export type BatchRemovePromotionRulesReq = { rule_ids: string[] }
+export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
+
+// Campaign
+export type CreateCampaignReq = CreateCampaignDTO
+export type UpdateCampaignReq = UpdateCampaignDTO

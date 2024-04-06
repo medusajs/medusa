@@ -8274,7 +8274,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
+"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
   dependencies:
@@ -8288,7 +8288,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment@workspace:packages/fulfillment":
+"@medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
   dependencies:
@@ -32134,6 +32134,8 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/fulfillment": "workspace:^"
+    "@medusajs/fulfillment-manual": "workspace:^"
     "@medusajs/inventory-next": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"

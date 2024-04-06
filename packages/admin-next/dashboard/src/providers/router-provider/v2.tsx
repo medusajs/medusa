@@ -2,7 +2,7 @@ import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes } from "@medusajs/medusa"
+import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
@@ -67,6 +67,68 @@ export const v2Routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           {
+            path: "/products",
+            handle: {
+              crumb: () => "Products",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/products/product-detail"),
+                handle: {
+                  crumb: (data: AdminProductsRes) => data.product.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/products/product-edit"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-attributes"),
+                  },
+                  {
+                    path: "options/create",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-create-option"),
+                  },
+                  {
+                    path: "options/:option_id/edit",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-edit-option"),
+                  },
+                  {
+                    path: "media",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-media"),
+                  },
+                  {
+                    path: "variants/:variant_id/edit",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-edit-variant"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "/orders",
             handle: {
               crumb: () => "Orders",
@@ -87,6 +149,34 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-detail"),
+                handle: {
+                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-edit-details"
+                      ),
+                  },
+                  {
+                    path: "add-to-campaign",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-add-campaign"
+                      ),
+                  },
+                  {
+                    path: ":ruleType/edit",
+                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                  },
+                ],
               },
             ],
           },
