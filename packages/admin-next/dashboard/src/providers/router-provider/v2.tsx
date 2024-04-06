@@ -255,6 +255,43 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "regions",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Regions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/regions/region-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../v2-routes/regions/region-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/regions/region-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/regions/region-edit"),
+                  },
+                  {
+                    path: "countries/add",
+                    lazy: () =>
+                      import("../../v2-routes/regions/region-add-countries"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "store",
             lazy: () => import("../../v2-routes/store/store-detail"),
             handle: {

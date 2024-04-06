@@ -19,9 +19,9 @@ import {
 } from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useV2UpdateStore } from "../../../../../lib/api-v2"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
+import { useUpdateStore } from "../../../../../hooks/api/store"
 
 type AddCurrenciesFormProps = {
   store: StoreDTO
@@ -95,7 +95,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     },
   })
 
-  const { mutateAsync, isLoading: isMutating } = useV2UpdateStore(store.id)
+  const { mutateAsync, isLoading: isMutating } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencies = Array.from(

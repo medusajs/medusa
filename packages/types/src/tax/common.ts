@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { BigNumberInput } from "../totals"
 
 /**
  * The tax rate details.
@@ -386,12 +387,12 @@ export interface TaxableItemDTO {
   /**
    * The quantity of the taxable item.
    */
-  quantity?: number
+  quantity?: BigNumberInput
 
   /**
    * The unit price of the taxable item.
    */
-  unit_price?: number
+  unit_price?: BigNumberInput
 
   /**
    * The ISO 3 character currency code of the taxable item.
@@ -416,7 +417,7 @@ export interface TaxableShippingDTO {
   /**
    * The unit price of the taxable shipping.
    */
-  unit_price?: number
+  unit_price?: BigNumberInput
 
   /**
    * The ISO 3 character currency code of the taxable shipping.
