@@ -59,7 +59,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should create shipping options", async () => {
+      it("should create shipping options and prices", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
@@ -173,6 +173,97 @@ medusaIntegrationTestRunner({
             rules_count: 1,
           })
         )
+      })
+
+      it.only("should revert the shipping options and prices", async () => {
+        const regionService = container.resolve(
+          ModuleRegistrationName.REGION
+        ) as IRegionModuleService
+
+        const [region] = await regionService.create([
+          {
+            name: "Test region",
+            currency_code: "eur",
+            countries: ["fr"],
+          },
+        ])
+
+        const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
+          {
+            name: "Test shipping option",
+            price_type: "flat",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id,
+            type: {
+              code: "manual-type",
+              label: "Manual Type",
+              description: "Manual Type Description",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 10,
+              },
+              {
+                region_id: region.id,
+                amount: 100,
+              },
+            ],
+            rules: [
+              {
+                attribute: "total",
+                operator: RuleOperator.EQ,
+                value: "100",
+              },
+            ],
+          }
+
+        const workflow = createShippingOptionsWorkflow(container)
+
+        workflow.addAction(
+          "throw",
+          {
+            invoke: async function failStep() {
+              throw new Error(`Failed to create shipping options`)
+            },
+          },
+          {
+            noCompensation: true,
+          }
+        )
+
+        const { errors } = await workflow.run({
+          input: [shippingOptionData],
+          throwOnError: false,
+        })
+
+        expect(errors).toHaveLength(1)
+        expect(errors[0].error.message).toEqual(
+          `Failed to create shipping options`
+        )
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+
+        const remoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "shipping_option",
+          fields: ["id"],
+        })
+
+        const createdShippingOptions = await remoteQuery(remoteQueryObject)
+
+        expect(createdShippingOptions).toHaveLength(0)
+
+        const priceSetsRemoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "price_sets",
+          fields: ["id"],
+        })
+
+        const createdPriceSets = await remoteQuery(priceSetsRemoteQueryObject)
+
+        expect(createdPriceSets).toHaveLength(0)
       })
     })
   },
