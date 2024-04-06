@@ -12,13 +12,13 @@ import {
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
-import { useV2Store } from "../../../lib/api-v2"
 
 import { Skeleton } from "../../common/skeleton"
 import { NavItem, NavItemProps } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import extensions from "medusa-admin:routes/links"
+import { useStore } from "../../../hooks/api/store"
 
 export const MainLayout = () => {
   return (
@@ -46,7 +46,7 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  const { store, isError, error } = useV2Store({})
+  const { store, isError, error } = useStore()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()

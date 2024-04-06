@@ -1,5 +1,5 @@
-import type { Customer, User } from "../models"
 import type { NextFunction, Request, Response } from "express"
+import type { Customer, User } from "../models"
 
 import { MedusaContainer, RequestQueryFields } from "@medusajs/types"
 import { FindConfig } from "./common"

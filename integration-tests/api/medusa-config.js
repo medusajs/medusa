@@ -84,6 +84,7 @@ module.exports = {
           [Modules.TAX]: true,
           [Modules.CURRENCY]: true,
           [Modules.PAYMENT]: true,
+          [Modules.FULFILLMENT]: true,
         }
       : {}),
   },

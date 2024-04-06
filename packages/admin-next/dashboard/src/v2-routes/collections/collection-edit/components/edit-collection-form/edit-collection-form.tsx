@@ -1,19 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { ProductCollection } from "@medusajs/medusa"
 import { Button, Input, Text } from "@medusajs/ui"
-import { useAdminUpdateCollection } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { ProductCollectionDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateCollection } from "../../../../../hooks/api/collections"
 
 type EditCollectionFormProps = {
-  collection: ProductCollection
+  collection: ProductCollectionDTO
 }
 
 const EditCollectionSchema = zod.object({
@@ -33,7 +33,7 @@ export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
     resolver: zodResolver(EditCollectionSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateCollection(collection.id)
+  const { mutateAsync, isPending } = useUpdateCollection(collection.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
@@ -101,7 +101,7 @@ export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
