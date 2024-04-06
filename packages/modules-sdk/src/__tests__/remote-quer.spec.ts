@@ -28,4 +28,20 @@ describe("Remote query", () => {
       },
     })
   })
+
+  it("should properly handle fields and relations transformation for top level entity", () => {
+    const expand = {
+      fields: ["*"],
+    }
+
+    const result = RemoteQuery.getAllFieldsAndRelations(expand)
+
+    expect(result).toEqual({
+      select: undefined,
+      relations: [],
+      args: {
+        "": undefined,
+      },
+    })
+  })
 })
