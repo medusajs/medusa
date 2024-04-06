@@ -99,20 +99,24 @@ export const DataGridRoot = <
     }
   }
 
+  const handleBlurAnchor = () => {
+    const activeElement = document.activeElement
+
+    if (anchor && activeElement instanceof HTMLElement) {
+      activeElement.blur()
+    }
+  }
+
   const handleMouseDown = (e: ReactMouseEvent<HTMLTableCellElement>) => {
+    e.stopPropagation()
+    e.preventDefault()
+
     const target = e.target
 
     /**
      * Check if the click was on a presentation element.
      * If so, we don't want to set the anchor.
      */
-
-    console.log(
-      target instanceof HTMLElement &&
-        target.attributes.getNamedItem("data-role")?.value === "presentation",
-      target
-    )
-
     if (
       target instanceof HTMLElement &&
       target.attributes.getNamedItem("data-role")?.value === "presentation"
@@ -128,6 +132,9 @@ export const DataGridRoot = <
     if (e.detail === 2 || isAnchor) {
       handleFocusInner(e.currentTarget)
       return
+    } else {
+      // reset focus so the previous cell doesn't keep the focus
+      handleBlurAnchor()
     }
 
     const coordinates: FieldCoordinates = {
@@ -569,7 +576,8 @@ export const DataGridRoot = <
                           "after:transition-fg after:border-ui-fg-interactive after:pointer-events-none after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                           {
                             "after:visible": isAnchor,
-                            "bg-ui-bg-highlight": isSelected,
+                            "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
+                              isSelected || isAnchor,
                             "bg-ui-bg-base-hover": isDragTarget,
                           }
                         )}
@@ -584,6 +592,13 @@ export const DataGridRoot = <
                             <div
                               onMouseDown={handleDragDown}
                               className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
+                            />
+                          )}
+                          {!isAnchor && (
+                            <div
+                              aria-hidden
+                              data-role="overlay"
+                              className="absolute inset-0"
                             />
                           )}
                         </div>

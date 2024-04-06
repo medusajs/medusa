@@ -1,13 +1,13 @@
 import { ProductVariantDTO } from "@medusajs/types"
 import { Button, DropdownMenu } from "@medusajs/ui"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { DataGrid } from "../../../../../components/grid/data-grid"
-import { TextField } from "../../../../../components/grid/grid-fields/common/text-field"
-import { DisplayField } from "../../../../../components/grid/grid-fields/non-interactive/display-field"
+import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
+import { DisplayField } from "../../../../../components/grid/grid-cells/non-interactive/display-field"
 import { DataGridMeta } from "../../../../../components/grid/types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useStore } from "../../../../../hooks/api/store"
@@ -23,18 +23,38 @@ enum ColumnType {
   CURRENCY = "currency",
 }
 
-export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
-  const ids = useWatch({
-    control: form.control,
-    name: "product_ids",
-  })
+type EnabledColumnRecord = Record<string, ColumnType>
 
+export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   const {
     store,
     isLoading: isLoadingStore,
     isError: isStoreError,
     error: storeError,
   } = useStore()
+
+  const [enabledColumns, setEnabledColumns] = useState<EnabledColumnRecord>({})
+
+  useEffect(() => {
+    if (
+      store?.default_currency_code &&
+      Object.keys(enabledColumns).length === 0
+    ) {
+      setEnabledColumns({
+        ...enabledColumns,
+        [store.default_currency_code]: ColumnType.CURRENCY,
+      })
+    }
+  }, [store, enabledColumns])
+
+  const ids = useWatch({
+    control: form.control,
+    name: "product_ids",
+  })
+  const existingProducts = useWatch({
+    control: form.control,
+    name: "products",
+  })
 
   const { products, isLoading, isError, error } = useProducts({
     id: ids,
@@ -47,23 +67,44 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   useEffect(() => {
     if (!isLoading && products) {
       products.forEach((product) => {
+        /**
+         * If the product already exists in the form, we don't want to overwrite it.
+         */
+        if (existingProducts[product.id]) {
+          return
+        }
+
         setValue(`products.${product.id}.variants`, {
           ...product.variants.reduce((variants, variant) => {
             variants[variant.id] = {
-              title: variant.title || "",
+              currency_prices: {},
+              region_prices: {},
             }
             return variants
           }, {} as PricingVariantsRecordType),
         })
       })
     }
-  }, [products, isLoading, setValue])
+  }, [products, existingProducts, isLoading, setValue])
 
   const toggleColumn = ({ type, id }: { type: ColumnType; id: string }) => {
-    console.log(type, id)
+    setEnabledColumns((prev) => {
+      if (prev[id]) {
+        const { [id]: _, ...rest } = prev
+
+        return {
+          ...rest,
+        }
+      }
+
+      return {
+        ...prev,
+        [id]: type,
+      }
+    })
   }
 
-  const columns = useColumns()
+  const columns = useColumns(enabledColumns)
 
   const initializing = isLoading || !products
 
@@ -77,18 +118,25 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
             </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
-            {store?.supported_currency_codes.map((currency) => (
-              <DropdownMenu.CheckboxItem
-                checked={currency === store.default_currency_code}
-                disabled={currency === store.default_currency_code}
-                key={currency}
-                onClick={() =>
-                  toggleColumn({ type: ColumnType.CURRENCY, id: currency })
-                }
-              >
-                {currency.toUpperCase()}
-              </DropdownMenu.CheckboxItem>
-            ))}
+            {store?.supported_currency_codes.map((currency) => {
+              const checked =
+                currency === store.default_currency_code ||
+                !!enabledColumns[currency]
+
+              return (
+                <DropdownMenu.CheckboxItem
+                  onSelect={(e) => e.preventDefault()}
+                  checked={checked}
+                  disabled={currency === store.default_currency_code}
+                  key={currency}
+                  onClick={() =>
+                    toggleColumn({ type: ColumnType.CURRENCY, id: currency })
+                  }
+                >
+                  {currency.toUpperCase()}
+                </DropdownMenu.CheckboxItem>
+              )
+            })}
           </DropdownMenu.Content>
         </DropdownMenu>
       </div>
@@ -120,7 +168,7 @@ const columnHelper = createColumnHelper<
   ExtendedProductDTO | ProductVariantDTO
 >()
 
-const useColumns = () => {
+const useColumns = (enabledColumns: EnabledColumnRecord) => {
   const { t } = useTranslation()
 
   const colDefs: ColumnDef<ExtendedProductDTO | ProductVariantDTO>[] =
@@ -152,65 +200,30 @@ const useColumns = () => {
             )
           },
         }),
-        columnHelper.accessor("sku", {
-          header: t("fields.sku"),
-          cell: ({ row, table }) => {
-            const entity = row.original
+        ...Object.entries(enabledColumns).map(([id, type]) => {
+          return columnHelper.display({
+            header: `Price ${id.toUpperCase()}`,
+            cell: ({ row, table }) => {
+              const entity = row.original
 
-            if (isProduct(entity)) {
-              return <DisplayField />
-            }
+              if (isProduct(entity)) {
+                return <DisplayField />
+              }
 
-            return (
-              <TextField
-                meta={
-                  table.options.meta as DataGridMeta<PricingCreateSchemaType>
-                }
-                field={`products.${entity.product_id}.variants.${entity.id}.sku`}
-              />
-            )
-          },
-        }),
-        columnHelper.accessor("ean", {
-          header: "EAN",
-          cell: ({ row, table }) => {
-            const entity = row.original
-
-            if (isProduct(entity)) {
-              return <DisplayField />
-            }
-
-            return (
-              <TextField
-                meta={
-                  table.options.meta as DataGridMeta<PricingCreateSchemaType>
-                }
-                field={`products.${entity.product_id}.variants.${entity.id}.ean`}
-              />
-            )
-          },
-        }),
-        columnHelper.accessor("upc", {
-          header: "UPC",
-          cell: ({ row, table }) => {
-            const entity = row.original
-
-            if (isProduct(entity)) {
-              return <DisplayField />
-            }
-
-            return (
-              <TextField
-                meta={
-                  table.options.meta as DataGridMeta<PricingCreateSchemaType>
-                }
-                field={`products.${entity.product_id}.variants.${entity.id}.upc`}
-              />
-            )
-          },
+              return (
+                <CurrencyCell
+                  code={id}
+                  meta={
+                    table.options.meta as DataGridMeta<PricingCreateSchemaType>
+                  }
+                  field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${id}`}
+                />
+              )
+            },
+          })
         }),
       ]
-    }, [t])
+    }, [t, enabledColumns])
 
   return colDefs
 }

@@ -1,8 +1,11 @@
 import { z } from "zod"
 
+const PricingVariantPricesRecordSchema = z.record(z.number())
+
 const PricingVariantsRecordSchema = z.record(
   z.object({
-    title: z.string(),
+    currency_prices: PricingVariantPricesRecordSchema,
+    region_prices: PricingVariantPricesRecordSchema,
   })
 )
 

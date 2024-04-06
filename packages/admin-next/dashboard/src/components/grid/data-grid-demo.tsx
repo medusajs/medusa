@@ -10,8 +10,8 @@ import * as zod from "zod"
 
 import { Thumbnail } from "../common/thumbnail"
 import { DataGrid } from "./data-grid"
-import { TextField } from "./grid-fields/common/text-field"
-import { DisplayField } from "./grid-fields/non-interactive/display-field"
+import { TextField } from "./grid-cells/common/text-field"
+import { DisplayField } from "./grid-cells/non-interactive/display-field"
 import { DataGridMeta } from "./types"
 
 const ProductEditorSchema = zod.object({
