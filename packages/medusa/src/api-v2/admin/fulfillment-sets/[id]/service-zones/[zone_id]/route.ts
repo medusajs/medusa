@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { deleteTaxRegionsWorkflow } from "../../../../../../../../core-flows/dist"
+import { deleteServiceZonesWorkflow } from "../../../../../../../../core-flows/dist"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -18,7 +18,7 @@ export const DELETE = async (
 
   const fulfillmentSet = await fulfillmentModuleService.retrieve(id)
 
-  const { errors } = await deleteTaxRegionsWorkflow(req.scope).run({
+  const { errors } = await deleteServiceZonesWorkflow(req.scope).run({
     input: { ids: [zone_id] },
     throwOnError: false,
   })
