@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/fulfillment/shipping-options", () => {
+      describe("POST /admin/shipping-options", () => {
         it("should throw error when required params are missing", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",
@@ -72,7 +72,7 @@ medusaIntegrationTestRunner({
 
           let err = await api
             .post(
-              `/admin/fulfillment/shipping-options`,
+              `/admin/shipping-options`,
               shippingOptionPayload,
               adminHeaders
             )
@@ -156,7 +156,7 @@ medusaIntegrationTestRunner({
           }
 
           const response = await api.post(
-            `/admin/fulfillment/shipping-options`,
+            `/admin/shipping-options`,
             shippingOptionPayload,
             adminHeaders
           )

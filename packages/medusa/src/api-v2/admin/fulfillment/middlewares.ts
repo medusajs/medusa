@@ -14,13 +14,13 @@ import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/fulfillment*",
+    matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
   },
 
   {
     method: ["POST"],
-    matcher: "/admin/fulfillment/shipping-options",
+    matcher: "/admin/shipping-options",
     middlewares: [
       transformQuery(
         AdminPostShippingOptionsShippingOptionParams,
@@ -32,7 +32,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
 
   {
     method: ["POST"],
-    matcher: "/admin/fulfillment/shipping-options/:id/rules/batch/add",
+    matcher: "/admin/shipping-options/:id/rules/batch/add",
     middlewares: [
       transformQuery(
         AdminPostFulfillmentShippingOptionsRulesBatchAddParams,
@@ -44,7 +44,7 @@ export const adminFulfillmentRoutesMiddlewares: MiddlewareRoute[] = [
 
   {
     method: ["POST"],
-    matcher: "/admin/fulfillment/shipping-options/:id/rules/batch/remove",
+    matcher: "/admin/shipping-options/:id/rules/batch/remove",
     middlewares: [
       transformQuery(
         AdminPostFulfillmentShippingOptionsRulesBatchRemoveParams,
