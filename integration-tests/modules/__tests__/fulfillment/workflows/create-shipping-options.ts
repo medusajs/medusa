@@ -59,7 +59,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should create a shipping options", async () => {
+      it("should create shipping options", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
@@ -166,11 +166,13 @@ medusaIntegrationTestRunner({
             amount: 10,
           })
         )
-        expect(prices).toContainEqual(expect.objectContaining({
-          currency_code: "eur",
-          amount: 100,
-          rules_count: 1,
-        }))
+        expect(prices).toContainEqual(
+          expect.objectContaining({
+            currency_code: "eur",
+            amount: 100,
+            rules_count: 1,
+          })
+        )
       })
     })
   },

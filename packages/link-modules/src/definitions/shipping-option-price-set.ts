@@ -44,6 +44,7 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
           path: "price_set_link.price_set.prices",
           isList: true,
         },
+        price: "price_set_link",
       },
       relationship: {
         serviceName: LINKS.ShippingOptionPriceSet,
