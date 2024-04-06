@@ -21,6 +21,15 @@ const customPaymentProvider = {
   },
 }
 
+const customFulfillmentProvider = {
+  resolve: "@medusajs/fulfillment-manual",
+  options: {
+    config: {
+      "test-provider": {},
+    },
+  },
+}
+
 module.exports = {
   plugins: [],
   projectConfig: {
@@ -91,16 +100,7 @@ module.exports = {
     [Modules.FULFILLMENT]: {
       /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
       options: {
-        providers: [
-          {
-            resolve: "@medusajs/fulfillment-manual",
-            options: {
-              config: {
-                "test-provider": {},
-              },
-            },
-          },
-        ],
+        providers: [customFulfillmentProvider],
       },
     },
   },
