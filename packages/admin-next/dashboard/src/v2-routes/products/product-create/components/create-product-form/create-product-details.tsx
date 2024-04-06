@@ -31,6 +31,7 @@ import { useCollections } from "../../../../../hooks/api/collections"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useCategories } from "../../../../../hooks/api/categories"
 import { useTags } from "../../../../../hooks/api/tags"
+import { Keypair } from "../../../../../components/common/keypair"
 
 type CreateProductPropsProps = {
   form: CreateProductFormReturn
@@ -394,7 +395,14 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                   <Form.Field
                     control={form.control}
                     name="options"
-                    render={({ field }) => {
+                    render={({ field: { onChange, value } }) => {
+                      const normalizedValue = value.map((v) => {
+                        return {
+                          key: v.title,
+                          value: v.values.join(","),
+                        }
+                      })
+
                       return (
                         <Form.Item>
                           <Form.Label optional>
@@ -404,20 +412,26 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                             {t("products.fields.options.hint")}
                           </Form.Hint>
                           <Form.Control>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                field.onChange([
-                                  {
-                                    title: "Color",
-                                    values: ["Red", "Blue", "Green"],
-                                  },
-                                  { title: "Size", values: ["S", "M", "L"] },
-                                ])
+                            <Keypair
+                              labels={{
+                                add: t("products.fields.options.add"),
+                                key: t("products.fields.options.optionTitle"),
+                                value: t("products.fields.options.variations"),
                               }}
-                            >
-                              Test
-                            </button>
+                              value={normalizedValue}
+                              onChange={(newVal) =>
+                                onChange(
+                                  newVal.map((v) => {
+                                    return {
+                                      title: v.key,
+                                      values: v.value
+                                        .split(",")
+                                        .map((v) => v.trim()),
+                                    }
+                                  })
+                                )
+                              }
+                            />
                           </Form.Control>
                         </Form.Item>
                       )

@@ -7,7 +7,6 @@ import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/mid
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares"
 import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/middlewares"
-import { adminFulfillmentRoutesMiddlewares } from "./admin/fulfillment/middlewares"
 import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
@@ -18,6 +17,7 @@ import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
+import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminStockLocationRoutesMiddlewares } from "./admin/stock-locations/middlewares"
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
 import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
@@ -60,7 +60,7 @@ export const config: MiddlewaresConfig = {
     ...adminInventoryRoutesMiddlewares,
     ...adminCollectionRoutesMiddlewares,
     ...adminPricingRoutesMiddlewares,
-    ...adminFulfillmentRoutesMiddlewares,
+    ...adminShippingOptionRoutesMiddlewares,
     ...adminDraftOrderRoutesMiddlewares,
     ...adminSalesChannelRoutesMiddlewares,
     ...adminStockLocationRoutesMiddlewares,
