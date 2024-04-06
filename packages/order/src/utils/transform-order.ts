@@ -1,5 +1,5 @@
 import { OrderTypes } from "@medusajs/types"
-import { deduplicate, isDefined } from "@medusajs/utils"
+import { decorateCartTotals, deduplicate, isDefined } from "@medusajs/utils"
 
 export function formatOrder(
   order
@@ -22,6 +22,8 @@ export function formatOrder(
     })
 
     order.summary = order.summary?.[0]?.totals
+
+    decorateCartTotals(order)
 
     return order
   })

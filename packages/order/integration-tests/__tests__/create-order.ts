@@ -15,7 +15,7 @@ moduleIntegrationTestRunner({
             title: "Item 1",
             subtitle: "Subtitle 1",
             thumbnail: "thumbnail1.jpg",
-            quantity: 1,
+            quantity: 2,
             product_id: "product1",
             product_title: "Product 1",
             product_description: "Description 1",
@@ -35,7 +35,7 @@ moduleIntegrationTestRunner({
             is_discountable: true,
             is_tax_inclusive: true,
             compare_at_unit_price: 10,
-            unit_price: 8,
+            unit_price: 30,
             tax_lines: [
               {
                 description: "Tax 1",
@@ -191,8 +191,14 @@ moduleIntegrationTestRunner({
         ],
       })
 
-      it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
+      it.only("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
         const createdOrder = await service.create(input)
+        console.log(JSON.stringify(createdOrder.items![0], null, 2))
+
+        console.log(
+          "=========================\n",
+          JSON.stringify(createdOrder.shipping_methods![0], null, 2)
+        )
 
         expect(createdOrder).toEqual(expectation)
       })
