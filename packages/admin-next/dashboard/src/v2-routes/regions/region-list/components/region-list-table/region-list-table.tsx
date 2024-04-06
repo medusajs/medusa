@@ -4,6 +4,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { RegionDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -11,11 +12,7 @@ import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-re
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import {
-  useV2DeleteRegion,
-  useV2Regions,
-} from "../../../../../lib/api-v2/region"
-import { RegionDTO } from "@medusajs/types"
+import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
 
 const PAGE_SIZE = 20
 
@@ -23,7 +20,7 @@ export const RegionListTable = () => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useRegionTableQuery({ pageSize: PAGE_SIZE })
-  const { regions, count, isLoading, isError, error } = useV2Regions(
+  const { regions, count, isLoading, isError, error } = useRegions(
     {
       ...searchParams,
       fields: "*payment_providers",
@@ -80,7 +77,7 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useV2DeleteRegion(region.id)
+  const { mutateAsync } = useDeleteRegion(region.id)
 
   const handleDelete = async () => {
     const res = await prompt({

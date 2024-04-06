@@ -20,6 +20,7 @@ const regionsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
 
 export const useRegion = (
   id: string,
+  query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<RegionRes, Error, RegionRes, QueryKey>,
     "queryFn" | "queryKey"
@@ -27,7 +28,7 @@ export const useRegion = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: regionsQueryKeys.detail(id),
-    queryFn: async () => client.regions.retrieve(id),
+    queryFn: async () => client.regions.retrieve(id, query),
     ...options,
   })
 

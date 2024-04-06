@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
 import { EditRegionForm } from "./components/edit-region-form"
-import { useV2Region } from "../../../lib/api-v2/region"
-import { useV2Store } from "../../../lib/api-v2"
 import { currencies } from "../../../lib/currencies"
-import { useV2PaymentProviders } from "../../../lib/api-v2/payment"
+import { useRegion } from "../../../hooks/api/regions"
+import { usePaymentProviders } from "../../../hooks/api/payments"
+import { useStore } from "../../../hooks/api/store"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -18,21 +18,21 @@ export const RegionEdit = () => {
     isLoading: isRegionLoading,
     isError: isRegionError,
     error: regionError,
-  } = useV2Region(id!, { fields: "*payment_providers" })
+  } = useRegion(id!, { fields: "*payment_providers" })
 
   const {
     store,
     isLoading: isStoreLoading,
     isError: isStoreError,
     error: storeError,
-  } = useV2Store()
+  } = useStore()
 
   const isLoading = isRegionLoading || isStoreLoading
 
   const storeCurrencies = (store?.supported_currency_codes ?? []).map(
     (code) => currencies[code.toUpperCase()]
   )
-  const { payment_providers: paymentProviders = [] } = useV2PaymentProviders({
+  const { payment_providers: paymentProviders = [] } = usePaymentProviders({
     limit: 999,
   })
 

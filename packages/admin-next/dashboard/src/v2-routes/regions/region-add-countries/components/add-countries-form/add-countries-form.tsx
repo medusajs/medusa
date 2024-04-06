@@ -21,7 +21,7 @@ import { countries as staticCountries } from "../../../../../lib/countries"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useV2UpdateRegion } from "../../../../../lib/api-v2/region"
+import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
 
 type AddCountriesFormProps = {
   region: RegionDTO
@@ -98,7 +98,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
     prefix: PREFIX,
   })
 
-  const { mutateAsync, isLoading } = useV2UpdateRegion(region.id)
+  const { mutateAsync, isLoading } = useUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload = [

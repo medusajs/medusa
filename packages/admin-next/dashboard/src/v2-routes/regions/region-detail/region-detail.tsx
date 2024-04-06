@@ -2,8 +2,8 @@ import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
-import { useV2Region } from "../../../lib/api-v2/region"
 import { regionLoader } from "./loader"
+import { useRegion } from "../../../hooks/api/regions"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -11,7 +11,7 @@ export const RegionDetail = () => {
   >
 
   const { id } = useParams()
-  const { region, isLoading, isError, error } = useV2Region(
+  const { region, isLoading, isError, error } = useRegion(
     id!,
     { fields: "*payment_providers" },
     {

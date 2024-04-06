@@ -1,15 +1,16 @@
 import { RouteFocusModal } from "../../../components/route-modal/route-focus-modal"
 import { CreateRegionForm } from "./components/create-region-form"
-import { useV2Store } from "../../../lib/api-v2"
 import { currencies } from "../../../lib/currencies"
+import { usePaymentProviders } from "../../../hooks/api/payments"
+import { useStore } from "../../../hooks/api/store"
 
 export const RegionCreate = () => {
-  const { store, isLoading, isError, error } = useV2Store()
+  const { store, isLoading, isError, error } = useStore()
 
   const storeCurrencies = (store?.supported_currency_codes ?? []).map(
     (code) => currencies[code.toUpperCase()]
   )
-  const paymentProviders = store?.payment_providers ?? [] // TODO: route not jet implemented
+  const { payment_providers: paymentProviders = [] } = usePaymentProviders()
 
   if (isError) {
     throw error

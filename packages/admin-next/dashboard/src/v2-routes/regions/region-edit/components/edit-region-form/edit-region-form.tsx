@@ -2,7 +2,7 @@ import { Button, Input, Select, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { CurrencyDTO, PaymentProviderDTO, RegionDTO } from "@medusajs/types"
+import { PaymentProviderDTO, RegionDTO } from "@medusajs/types"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
@@ -11,8 +11,8 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { useV2UpdateRegion } from "../../../../../lib/api-v2/region"
 import { CurrencyInfo } from "../../../../../lib/currencies"
+import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
 
 type EditRegionFormProps = {
   region: RegionDTO
@@ -42,7 +42,7 @@ export const EditRegionForm = ({
     },
   })
 
-  const { mutateAsync, isLoading } = useV2UpdateRegion(region.id)
+  const { mutateAsync, isLoading } = useUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(

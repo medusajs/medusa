@@ -16,11 +16,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import {
-  RegionCountryDTO,
-  CurrencyDTO,
-  PaymentProviderDTO,
-} from "@medusajs/types"
+import { RegionCountryDTO, PaymentProviderDTO } from "@medusajs/types"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
@@ -36,10 +32,11 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useV2CreateRegion } from "../../../../../lib/api-v2/region"
+import { CurrencyInfo } from "../../../../../lib/currencies"
+import { useCreateRegion } from "../../../../../hooks/api/regions"
 
 type CreateRegionFormProps = {
-  currencies: CurrencyDTO[]
+  currencies: CurrencyInfo[]
   paymentProviders: PaymentProviderDTO[]
 }
 
@@ -48,7 +45,7 @@ const CreateRegionSchema = zod.object({
   currency_code: zod.string().min(2, "Select a currency"),
   includes_tax: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
-  // payment_providers: zod.array(zod.string()).min(1), // TODO
+  payment_providers: zod.array(zod.string()).min(1),
 })
 
 const PREFIX = "cr"
@@ -81,7 +78,7 @@ export const CreateRegionForm = ({
 
   const { t } = useTranslation()
 
-  const { mutateAsync, isLoading } = useV2CreateRegion()
+  const { mutateAsync, isLoading } = useCreateRegion()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(

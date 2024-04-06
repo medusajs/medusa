@@ -14,7 +14,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useV2UpdateRegion } from "../../../../../lib/api-v2/region"
+import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
 
 type RegionCountrySectionProps = {
   region: RegionDTO
@@ -58,7 +58,7 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
     },
   })
 
-  const { mutateAsync } = useV2UpdateRegion(region.id)
+  const { mutateAsync } = useUpdateRegion(region.id)
 
   const handleRemoveCountries = async () => {
     const ids = Object.keys(rowSelection).filter((k) => rowSelection[k])
@@ -136,7 +136,7 @@ const CountryActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useV2UpdateRegion(region.id)
+  const { mutateAsync } = useUpdateRegion(region.id)
 
   const payload = region.countries
     ?.filter((c) => c.iso_2 !== country.iso_2)

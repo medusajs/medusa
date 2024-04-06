@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { useV2DeleteRegion } from "../../../../../lib/api-v2/region"
 import { currencies } from "../../../../../lib/currencies"
+import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
 
 type RegionGeneralSectionProps = {
   region: RegionDTO
@@ -39,7 +39,6 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
           {t("fields.paymentProviders")}
         </Text>
         <Text size="small" leading="compact">
-          {/*TODO*/}
           {region.payment_providers?.length > 0
             ? region.payment_providers
                 .map((p) => formatProvider(p.id))
@@ -53,7 +52,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
 
 const RegionActions = ({ region }: { region: RegionDTO }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useV2DeleteRegion(region.id)
+  const { mutateAsync } = useDeleteRegion(region.id)
   const prompt = usePrompt()
 
   const handleDelete = async () => {

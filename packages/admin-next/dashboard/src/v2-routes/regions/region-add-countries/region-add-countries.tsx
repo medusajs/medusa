@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/route-modal"
 import { AddCountriesForm } from "./components/add-countries-form"
-import { useV2Region } from "../../../lib/api-v2/region"
+import { useRegion } from "../../../hooks/api/regions"
 
 export const RegionAddCountries = () => {
   const { id } = useParams()
 
-  const { region, isLoading, isError, error } = useV2Region(id!)
+  const { region, isLoading, isError, error } = useRegion(id!, {
+    fields: "*payment_providers",
+  })
 
   if (isError) {
     throw error
