@@ -183,6 +183,19 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "shipping",
+            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            handle: {
+              crumb: () => "shipping",
+            },
+            // children: [
+            //   {
+            //     path: "service-zone",
+            //     lazy: () => import("../../v2-routes/shipping/create-service-zone"),
+            //   },
+            // ],
+          },
+          {
             path: "users",
             element: <Outlet />,
             handle: {
