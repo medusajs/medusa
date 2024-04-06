@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../dal"
 
 import { StringComparisonOperator } from "../common/common"
+import { FulfillmentSetDTO } from "../fulfillment"
 
 /**
  * @schema StockLocationAddressDTO
@@ -204,6 +205,11 @@ export type StockLocationDTO = {
    * The address of the stock location.
    */
   address?: StockLocationAddressDTO
+
+  /**
+   * Fulfillment sets for the location
+   */
+  fulfillment_sets: FulfillmentSetDTO[]
 
   /**
    * The creation date of the stock location.

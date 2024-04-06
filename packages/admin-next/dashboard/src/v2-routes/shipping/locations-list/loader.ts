@@ -7,10 +7,7 @@ import { StockLocationListRes } from "../../../types/api-responses"
 const shippingListQuery = () => ({
   queryKey: ["shipping_list"],
   queryFn: async () =>
-    client.stockLocations
-      .list
-      // { fields: "*fulfillment_sets" }
-      (),
+    client.stockLocations.list({ fields: "*fulfillment_sets" }),
 })
 
 export const shippingListLoader = async (_: LoaderFunctionArgs) => {
