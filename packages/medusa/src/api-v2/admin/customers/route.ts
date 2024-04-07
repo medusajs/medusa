@@ -59,5 +59,5 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer: result[0] })
+  res.status(200).json({ customer: result[0] as AdminCustomerResponse["customer"] })
 }

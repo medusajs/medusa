@@ -14,7 +14,7 @@ export interface CustomerAddressDTO {
   /**
    * The address name of the customer address.
    */
-  address_name: string | null
+  address_name?: string
 
   /**
    * Whether the customer address is default shipping.
@@ -34,57 +34,57 @@ export interface CustomerAddressDTO {
   /**
    * The company of the customer address.
    */
-  company: string | null
+  company?: string
 
   /**
    * The first name of the customer address.
    */
-  first_name: string | null
+  first_name?: string
 
   /**
    * The last name of the customer address.
    */
-  last_name: string | null
+  last_name?: string
 
   /**
    * The address 1 of the customer address.
    */
-  address_1: string | null
+  address_1?: string
 
   /**
    * The address 2 of the customer address.
    */
-  address_2: string | null
+  address_2?: string
 
   /**
    * The city of the customer address.
    */
-  city: string | null
+  city?: string
 
   /**
    * The country code of the customer address.
    */
-  country_code: string | null
+  country_code?: string
 
   /**
    * The province of the customer address.
    */
-  province: string | null
+  province?: string
 
   /**
    * The postal code of the customer address.
    */
-  postal_code: string | null
+  postal_code?: string
 
   /**
    * The phone of the customer address.
    */
-  phone: string | null
+  phone?: string
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata: Record<string, unknown> | null
+  metadata?: Record<string, unknown>
 
   /**
    * The created at of the customer address.

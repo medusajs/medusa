@@ -26,7 +26,7 @@ export const GET = async (
     relations: req.retrieveConfig.relations,
   })
 
-  res.status(200).json({ customer })
+  res.status(200).json({ customer: customer as AdminCustomerResponse["customer"] })
 }
 
 export const POST = async (
@@ -46,7 +46,7 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer: result[0] })
+  res.status(200).json({ customer: result[0] as AdminCustomerResponse["customer"] })
 }
 
 export const DELETE = async (
