@@ -9,8 +9,8 @@ export const AdminCustomerParams = createSelectParams()
 export const AdminCustomerGroupParams = createSelectParams()
 
 export const AdminCustomerGroupInCustomerParams = z.object({
-  id: z.union([z.string(), z.array(z.string())]),
-  name: z.union([z.string(), z.array(z.string())]),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
@@ -21,51 +21,51 @@ export const AdminCustomersParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
-    q: z.string(),
-    id: z.union([z.string(), z.array(z.string())]),
-    email: z.union([z.string(), z.array(z.string())]),
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    email: z.union([z.string(), z.array(z.string())]).optional(),
     groups: z.union([
       AdminCustomerGroupInCustomerParams,
       z.string(),
       z.array(z.string()),
-    ]),
-    company_name: z.union([z.string(), z.array(z.string())]),
-    first_name: z.union([z.string(), z.array(z.string())]),
-    last_name: z.union([z.string(), z.array(z.string())]),
-    created_by: z.union([z.string(), z.array(z.string())]),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
+    ]).optional(),
+    company_name: z.union([z.string(), z.array(z.string())]).optional(),
+    first_name: z.union([z.string(), z.array(z.string())]).optional(),
+    last_name: z.union([z.string(), z.array(z.string())]).optional(),
+    created_by: z.union([z.string(), z.array(z.string())]).optional(),
+    created_at: createOperatorMap().optional().optional(),
+    updated_at: createOperatorMap().optional().optional(),
+    deleted_at: createOperatorMap().optional().optional(),
     $and: z.lazy(() => AdminCustomersParams.array()).optional(),
     $or: z.lazy(() => AdminCustomersParams.array()).optional(),
   })
 )
 
 export const AdminCreateCustomer = z.object({
-  company_name: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
-  email: z.string(),
-  phone: z.string(),
+  company_name: z.string().optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 })
 
 export const AdminUpdateCustomer = AdminCreateCustomer
 
 export const AdminCreateCustomerAddress = z.object({
-  address_name: z.string(),
-  is_default_shipping: z.boolean(),
-  is_default_billing: z.boolean(),
-  company: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
-  address_1: z.string(),
-  address_2: z.string(),
-  city: z.string(),
-  country_code: z.string(),
-  province: z.string(),
-  postal_code: z.string(),
-  phone: z.string(),
-  metadata: z.record(z.unknown()),
+  address_name: z.string().optional(),
+  is_default_shipping: z.boolean().optional(),
+  is_default_billing: z.boolean().optional(),
+  company: z.string().optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  address_1: z.string().optional(),
+  address_2: z.string().optional(),
+  city: z.string().optional(),
+  country_code: z.string().optional(),
+  province: z.string().optional(),
+  postal_code: z.string().optional(),
+  phone: z.string().optional(),
+  metadata: z.record(z.unknown()).optional(),
 })
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
@@ -75,20 +75,20 @@ export const AdminCustomerAdressesParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
-    address_name: z.union([z.string(), z.array(z.string())]),
-    is_default_shipping: z.boolean(),
-    is_default_billing: z.boolean(),
-    company: z.union([z.string(), z.array(z.string())]),
-    first_name: z.union([z.string(), z.array(z.string())]),
-    last_name: z.union([z.string(), z.array(z.string())]),
-    address_1: z.union([z.string(), z.array(z.string())]),
-    address_2: z.union([z.string(), z.array(z.string())]),
-    city: z.union([z.string(), z.array(z.string())]),
-    country_code: z.union([z.string(), z.array(z.string())]),
-    province: z.union([z.string(), z.array(z.string())]),
-    postal_code: z.union([z.string(), z.array(z.string())]),
-    phone: z.union([z.string(), z.array(z.string())]),
-    metadata: z.record(z.unknown()),
+    address_name: z.union([z.string(), z.array(z.string())]).optional(),
+    is_default_shipping: z.boolean().optional(),
+    is_default_billing: z.boolean().optional(),
+    company: z.union([z.string(), z.array(z.string())]).optional(),
+    first_name: z.union([z.string(), z.array(z.string())]).optional(),
+    last_name: z.union([z.string(), z.array(z.string())]).optional(),
+    address_1: z.union([z.string(), z.array(z.string())]).optional(),
+    address_2: z.union([z.string(), z.array(z.string())]).optional(),
+    city: z.union([z.string(), z.array(z.string())]).optional(),
+    country_code: z.union([z.string(), z.array(z.string())]).optional(),
+    province: z.union([z.string(), z.array(z.string())]).optional(),
+    postal_code: z.union([z.string(), z.array(z.string())]).optional(),
+    phone: z.union([z.string(), z.array(z.string())]).optional(),
+    metadata: z.record(z.unknown()).optional(),
   })
 )
 
