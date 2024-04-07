@@ -570,7 +570,7 @@ export default class PaymentModuleService<
     const totalCaptured = MathBN.convert(
       MathBN.add(capturedAmount, newCaptureAmount)
     )
-    if (MathBN.eq(totalCaptured, authorizedAmount)) {
+    if (MathBN.gte(totalCaptured, authorizedAmount)) {
       await this.paymentService_.update(
         { id: payment.id, captured_at: new Date() },
         sharedContext
