@@ -26,7 +26,7 @@ moduleIntegrationTestRunner({
           options: [
             {
               title: "size",
-              values: ["large"],
+              values: ["large", "small"],
             },
           ],
         })
@@ -165,6 +165,54 @@ moduleIntegrationTestRunner({
 
           expect(error.message).toEqual(
             "ProductVariant with id: does-not-exist was not found"
+          )
+        })
+      })
+
+      describe("updateVariants", () => {
+        it("should update the title of the variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              title: "new test",
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id)
+          expect(productVariant.title).toEqual("new test")
+        })
+
+        it("should update the options of a variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              options: { size: "small" },
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options", "options.option_value", "options.variant"],
+          })
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                option_value: expect.objectContaining({ value: "small" }),
+              }),
+            ])
+          )
+        })
+
+        it("should throw an error when an id does not exist", async () => {
+          let error
+
+          try {
+            await service.updateVariants("does-not-exist", {})
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            `Cannot update non-existing variants with ids: does-not-exist`
           )
         })
       })
