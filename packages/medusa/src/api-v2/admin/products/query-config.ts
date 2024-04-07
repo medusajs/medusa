@@ -24,6 +24,7 @@ export const defaultAdminProductsVariantFields = [
   "barcode",
   "*prices",
   "*options",
+  "*options.option_value",
 ]
 
 export const retrieveVariantConfig = {
@@ -81,10 +82,10 @@ export const defaultAdminProductFields = [
   "*options.values",
   "*tags",
   "*images",
-  "*sales_channels",
   "*variants",
   "*variants.prices",
   "*variants.options",
+  "*variants.options.option_value",
   "*sales_channels",
 ]
 

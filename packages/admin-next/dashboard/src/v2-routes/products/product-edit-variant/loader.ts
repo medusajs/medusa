@@ -1,10 +1,10 @@
-import { adminProductKeys, adminStoreKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { medusa, queryClient } from "../../../lib/medusa"
+import { productsQueryKeys } from "../../../hooks/api/products"
 
 const queryKey = (id: string) => {
-  return [adminProductKeys.detail(id), adminStoreKeys.details()]
+  return [productsQueryKeys.detail(id)]
 }
 
 const queryFn = async (id: string) => {
