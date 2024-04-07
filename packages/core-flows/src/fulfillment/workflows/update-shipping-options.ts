@@ -1,9 +1,10 @@
-import { FulfillmentWorkflow, UpdateRuleTypeDTO } from "@medusajs/types"
-import {createWorkflow, transform, WorkflowData} from "@medusajs/workflows-sdk"
+import { FulfillmentWorkflow } from "@medusajs/types"
+import {
+  createWorkflow,
+  transform,
+  WorkflowData,
+} from "@medusajs/workflows-sdk"
 import { upsertShippingOptionsStep } from "../steps"
-import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
-import { updatePricingRuleTypesStep } from "../../pricing"
-import { RuleTypeDTO } from "@medusajs/types/dist"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
@@ -32,7 +33,7 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       data.shippingOptions
     )
 
-    const normalizedShippingOptionsPrices = transform(
+    /*const normalizedShippingOptionsPrices = transform(
       {
         shippingOptions: updatedShippingOptions,
         shippingOptionsIndexToPrices: data.shippingOptionsIndexToPrices,
@@ -62,9 +63,9 @@ export const updateShippingOptionsWorkflow = createWorkflow(
           ruleTypes: Array.from(ruleTypes) as UpdateRuleTypeDTO[],
         }
       }
-    )
+    )*/
 
-    updatePricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
+    /*updatePricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)*/
 
     /*const shippingOptionsPriceSetsLinkData = updateShippingOptionsPriceSetsStep(
       normalizedShippingOptionsPrices.shippingOptionsPrices
