@@ -567,12 +567,30 @@
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
         "zoneName": "Zone name"
       },
+      "shippingOptionsPlaceholder": "Not covered by any shipping options.",
+      "addShippingOptions": "Add shipping options",
       "shippingOptions": "Shipping options",
       "returnOptions": "Return options",
       "areas": {
         "title": "Areas affected by this rule",
         "description": "Select the geographical areas where this shipping zone should apply.",
         "manage": "Manage areas"
+      }
+    },
+    "shippingOptions": {
+      "create": {
+        "title": "Create shipping options for {{zone}}",
+        "subtitle": "General information",
+        "description": "To start selling, all you need is a name and a price",
+        "details": "Details",
+        "pricing": "Pricing",
+        "allocation": "Shipping amount",
+        "fixed": "Fixed",
+        "fixedDescription": "Fixed",
+        "enable": "Eanble in store",
+        "enableDescription": "Enable or disable the shipping option visiblity in store",
+        "calculated": "Calculated",
+        "calculatedDescription": "Calculated"
       }
     }
   },

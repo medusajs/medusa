@@ -18,13 +18,23 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type ServiceZoneOptionsProps = {
   zone: ServiceZoneDTO
+  locationId: string
+  fulfillmentSetId: string
 }
 
-function ServiceZoneOptions({ zone }: ServiceZoneOptionsProps) {
+function ServiceZoneOptions({
+  zone,
+  locationId,
+  fulfillmentSetId,
+}: ServiceZoneOptionsProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const shippingOptions = zone.shipping_options
+
   return (
     <>
-      <div className="py-4">
+      <div className="flex flex-col py-4">
         <Text
           size="small"
           weight="plus"
@@ -33,6 +43,21 @@ function ServiceZoneOptions({ zone }: ServiceZoneOptionsProps) {
         >
           {t("shipping.serviceZone.shippingOptions")}
         </Text>
+        {!shippingOptions.length && (
+          <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
+            <div>{t("shipping.serviceZone.shippingOptionsPlaceholder")}</div>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                navigate(
+                  `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
+                )
+              }
+            >
+              {t("shipping.serviceZone.addShippingOptions")}
+            </Button>
+          </div>
+        )}
       </div>
       <div className="py-4">
         <Text
@@ -50,12 +75,17 @@ function ServiceZoneOptions({ zone }: ServiceZoneOptionsProps) {
 
 type ServiceZoneProps = {
   zone: ServiceZoneDTO
+  locationId: string
+  fulfillmentSetId: string
 }
 
-function ServiceZone({ zone }: ServiceZoneProps) {
+function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
+  /**
+   * TODO: route not implemented
+   */
   const handleDelete = () => {}
 
   return (
@@ -103,7 +133,13 @@ function ServiceZone({ zone }: ServiceZoneProps) {
           </Button>
         </div>
       </div>
-      {open && <ServiceZoneOptions zone={zone} />}
+      {open && (
+        <ServiceZoneOptions
+          fulfillmentSetId={fulfillmentSetId}
+          locationId={locationId}
+          zone={zone}
+        />
+      )}
     </>
   )
 }
@@ -195,12 +231,18 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         </div>
       )}
 
-      <div className="mt-4 flex flex-col gap-6">
-        {hasServiceZones &&
-          fulfillmentSet?.service_zones.map((zone) => (
-            <ServiceZone key={zone.id} zone={zone} />
+      {hasServiceZones && (
+        <div className="mt-4 flex flex-col gap-6">
+          {fulfillmentSet?.service_zones.map((zone) => (
+            <ServiceZone
+              key={zone.id}
+              zone={zone}
+              locationId={locationId}
+              fulfillmentSetId={fulfillmentSet.id}
+            />
           ))}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -329,6 +329,18 @@ export const v2Routes: RouteObject[] = [
                             "../../v2-routes/shipping/service-zone-create"
                           ),
                       },
+                      {
+                        path: "service-zone/:zone_id",
+                        children: [
+                          {
+                            path: "shipping-options/create",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/shipping-options-create"
+                              ),
+                          },
+                        ],
+                      },
                     ],
                   },
                 ],
