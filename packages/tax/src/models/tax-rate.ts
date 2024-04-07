@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -11,8 +11,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -79,7 +79,6 @@ export default class TaxRate {
 
   @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
     cascade: ["soft-remove" as Cascade],
-    persist: false,
   })
   rules = new Collection<TaxRateRule>(this)
 
