@@ -6,6 +6,10 @@ export const deleteShippingOptionsStepId = "delete-shipping-options-step"
 export const deleteShippingOptionsStep = createStep(
   deleteShippingOptionsStepId,
   async (ids: string[], { container }) => {
+    if (!ids?.length) {
+      return
+    }
+
     const service = container.resolve<IFulfillmentModuleService>(
       ModuleRegistrationName.FULFILLMENT
     )

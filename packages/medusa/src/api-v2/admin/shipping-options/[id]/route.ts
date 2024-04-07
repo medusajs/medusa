@@ -14,7 +14,7 @@ import {AdminShippingOptionDeleteResponse} from "@medusajs/types";
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,
-  res: MedusaResponse<AdminShippingOptionDeleteResponse>
+  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody
 
@@ -47,7 +47,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminShippingOptionDeleteResponse>
 ) => {
   const shippingOptionId = req.params.id
 

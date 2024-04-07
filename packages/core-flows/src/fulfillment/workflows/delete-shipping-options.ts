@@ -9,7 +9,7 @@ export const deleteShippingOptionsWorkflow = createWorkflow(
   (
     input: WorkflowData<FulfillmentWorkflow.DeleteShippingOptionsWorkflowInput>
   ): WorkflowData => {
-    const serviceZones = deleteShippingOptionsStep(input.data)
+    const serviceZones = deleteShippingOptionsStep(input.ids)
 
     return serviceZones
   }
