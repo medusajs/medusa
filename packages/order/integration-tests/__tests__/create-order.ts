@@ -194,7 +194,8 @@ moduleIntegrationTestRunner({
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
         const createdOrder = await service.create(input)
 
-        expect(createdOrder).toEqual(expectation)
+        const serializedOrder = JSON.parse(JSON.stringify(createdOrder))
+        expect(serializedOrder).toEqual(expectation)
       })
 
       it("should transform requested fields and relations to match the db schema and return the order", async function () {
@@ -232,7 +233,8 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        expect(getOrder).toEqual(expectation)
+        const serializedOrder = JSON.parse(JSON.stringify(getOrder))
+        expect(serializedOrder).toEqual(expectation)
       })
 
       it("should return order transactions", async function () {
@@ -247,7 +249,8 @@ moduleIntegrationTestRunner({
           relations: ["transactions"],
         })
 
-        expect(getOrder).toEqual(
+        const serializedOrder = JSON.parse(JSON.stringify(getOrder))
+        expect(serializedOrder).toEqual(
           expect.objectContaining({
             id: createdOrder.id,
             transactions: [
