@@ -3,7 +3,11 @@ import {
   updateServiceZonesWorkflow,
 } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
+import {
+  AdminFulfillmentSetResponse,
+  AdminServiceZoneDeleteResponse,
+  IFulfillmentModuleService,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -18,7 +22,7 @@ import { AdminUpdateFulfillmentSetServiceZonesType } from "../../../validators"
 
 export const POST = async (
   req: MedusaRequest<AdminUpdateFulfillmentSetServiceZonesType>,
-  res: MedusaResponse
+  res: MedusaResponse<AdminFulfillmentSetResponse>
 ) => {
   const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
     ModuleRegistrationName.FULFILLMENT
@@ -68,7 +72,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminServiceZoneDeleteResponse>
 ) => {
   const { id, zone_id } = req.params
 
@@ -77,15 +81,14 @@ export const DELETE = async (
   )
 
   // ensure fulfillment set exists and that the service zone is part of it
-  const fulfillmentSet = await fulfillmentModuleService.retrieve(
-    req.params.id,
-    { relations: ["service_zones"] }
-  )
+  const fulfillmentSet = await fulfillmentModuleService.retrieve(id, {
+    relations: ["service_zones"],
+  })
 
-  if (!fulfillmentSet.service_zones.find((s) => s.id === req.params.zone_id)) {
+  if (!fulfillmentSet.service_zones.find((s) => s.id === zone_id)) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Service zone with id: ${req.params.zone_id} not found on fulfillment set`
+      `Service zone with id: ${zone_id} not found on fulfillment set`
     )
   }
 
