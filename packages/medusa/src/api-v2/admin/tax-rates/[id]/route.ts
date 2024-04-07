@@ -3,13 +3,13 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import { defaultAdminTaxRateFields } from "../query-config"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { AdminPostTaxRatesTaxRateReq } from "../../../../api/routes/admin/tax-rates"
 import {
   deleteTaxRatesWorkflow,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { AdminPostTaxRatesTaxRateReq } from "../../../../api/routes/admin/tax-rates"
+import { defaultAdminTaxRateFields } from "../query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostTaxRatesTaxRateReq>,

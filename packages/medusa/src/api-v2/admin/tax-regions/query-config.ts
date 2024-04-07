@@ -9,6 +9,14 @@ export const defaults = [
   "updated_at",
   "deleted_at",
   "metadata",
+  "tax_rates.id",
+  "tax_rates.rate",
+  "tax_rates.code",
+  "tax_rates.name",
+  "tax_rates.is_default",
+  "tax_rates.is_combinable",
+  "tax_rates.created_at",
+  "tax_rates.updated_at",
 ]
 
 export const retrieveTransformQueryConfig = {

@@ -45,13 +45,13 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const { rows: tax_regions, metadata } = await remoteQuery(
+  console.log("req.remoteQueryConfig.fields - ", req.remoteQueryConfig.fields)
+  console.log("req.filterableFields - ", req.filterableFields)
+  const tax_regions = await remoteQuery(
     remoteQueryObjectFromString({
       entryPoint: "tax_regions",
       variables: {
         filters: req.filterableFields,
-        ...req.remoteQueryConfig.pagination,
       },
       fields: req.remoteQueryConfig.fields,
     })
@@ -59,8 +59,5 @@ export const GET = async (
 
   res.status(200).json({
     tax_regions,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
   })
 }

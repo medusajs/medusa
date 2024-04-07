@@ -1,13 +1,13 @@
+import {
+  AdminTaxRegionListResponse,
+  AdminTaxRegionResponse,
+} from "@medusajs/types"
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
 import { client } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AdminTaxRegionResponse,
-  AdminTaxRegionListResponse,
-} from "@medusajs/types"
 
 const TAX_REGIONS_QUERY_KEY = "tax_regions" as const
-const taxRegionsQueryKeys = queryKeysFactory(TAX_REGIONS_QUERY_KEY)
+export const taxRegionsQueryKeys = queryKeysFactory(TAX_REGIONS_QUERY_KEY)
 
 export const useTaxRegion = (
   id: string,

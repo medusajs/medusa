@@ -1,19 +1,18 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { PencilSquare } from "@medusajs/icons"
+import { AdminTaxRegionResponse } from "@medusajs/types"
+import { Button, Container, Heading } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { t } from "i18next"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { AdminTaxRegionResponse } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useDeleteRegion } from "../../../../../hooks/api/regions"
-import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
-import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
-import { t } from "i18next"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
+import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
+import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
+import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
 const PAGE_SIZE = 20
 
@@ -97,8 +96,16 @@ const columnHelper = createColumnHelper<AdminTaxRegionResponse["tax_region"]>()
 const useColumns = () => {
   return useMemo(
     () => [
-      columnHelper.accessor("name", {
-        header: t("fields.code"),
+      columnHelper.accessor("country_code", {
+        header: t("fields.country"),
+        cell: ({ getValue }) => (
+          <div className="flex size-full items-center">
+            <span className="truncate">{getValue()}</span>
+          </div>
+        ),
+      }),
+      columnHelper.accessor("province_code", {
+        header: t("fields.province"),
         cell: ({ getValue }) => (
           <div className="flex size-full items-center">
             <span className="truncate">{getValue()}</span>

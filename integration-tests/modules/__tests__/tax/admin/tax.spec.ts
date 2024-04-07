@@ -1,8 +1,8 @@
-import { ITaxModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ITaxModuleService } from "@medusajs/types"
 
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -329,6 +329,34 @@ medusaIntegrationTestRunner({
         )
         expect(rates.length).toEqual(1)
         expect(rates[0].deleted_at).not.toBeNull()
+      })
+
+      it.only("can retrieve a tax region", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "us",
+        })
+
+        const response = await api.get(
+          `/admin/tax-regions/${region.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          tax_region: {
+            id: region.id,
+            country_code: "us",
+            province_code: null,
+            parent_id: null,
+            provider_id: null,
+            created_by: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            tax_rates: [],
+            deleted_at: null,
+            metadata: null,
+          },
+        })
       })
 
       it("can create a tax region and delete it", async () => {

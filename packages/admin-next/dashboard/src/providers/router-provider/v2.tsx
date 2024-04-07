@@ -3,11 +3,11 @@ import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
 import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
+import { AdminApiKeyResponse, AdminTaxRegionResponse } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
-import { AdminApiKeyResponse } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -523,6 +523,19 @@ export const v2Routes: RouteObject[] = [
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
                 children: [],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    if (data.tax_region.province_code) {
+                      return `${data.tax_region.country_code} / ${data.tax_region.province_code}`
+                    } else {
+                      return data.tax_region.country_code
+                    }
+                  },
+                },
               },
             ],
           },

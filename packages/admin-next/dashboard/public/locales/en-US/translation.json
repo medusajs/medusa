@@ -855,6 +855,7 @@
   },
   "taxes": {
     "domain": "Tax Regions",
+    "domainDescription": "Manage your tax region",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },

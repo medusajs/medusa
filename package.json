@@ -65,7 +65,7 @@
   "scripts": {
     "hooks:install": "husky install",
     "hooks:uninstall": "husky uninstall",
-    "build": "turbo run build --concurrency=50% --no-daemon",
+    "build": "turbo run build --concurrency=50% --no-daemon --no-cache",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "lint:path": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx",
     "prettier": "prettier",
