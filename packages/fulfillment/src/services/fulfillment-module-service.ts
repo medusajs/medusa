@@ -1151,7 +1151,7 @@ export default class FulfillmentModuleService<
       created.push(...toPush)
     }
     if (forUpdate.length) {
-      const updatedShippingOptions = await this.updateShippingOptions_(forCreate, sharedContext)
+      const updatedShippingOptions = await this.updateShippingOptions_(forUpdate, sharedContext)
       const toPush = Array.isArray(updatedShippingOptions) ? updatedShippingOptions : [updatedShippingOptions]
       updated.push(...toPush)
     }
