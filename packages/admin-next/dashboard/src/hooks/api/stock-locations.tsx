@@ -11,6 +11,7 @@ import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   CreateFulfillmentSetReq,
+  CreateServiceZoneReq,
   CreateStockLocationReq,
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
@@ -21,6 +22,7 @@ import {
   StockLocationRes,
 } from "../../types/api-responses"
 import { productsQueryKeys } from "./products.tsx"
+import { CreateServiceZoneDTO } from "@medusajs/types"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 const stockLocationsQueryKeys = queryKeysFactory(STOCK_LOCATIONS_QUERY_KEY)
@@ -132,6 +134,23 @@ export const useCreateFulfillmentSet = (
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.detail(locationId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateServiceZone = (
+  fulfillmentSetId: string,
+  options?: UseMutationOptions<StockLocationRes, Error, CreateServiceZoneReq>
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.stockLocations.createServiceZone(fulfillmentSetId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

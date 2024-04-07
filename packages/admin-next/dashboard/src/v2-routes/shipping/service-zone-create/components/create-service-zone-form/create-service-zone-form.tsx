@@ -1,17 +1,38 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import {
+  ColumnDef,
+  createColumnHelper,
+  RowSelectionState,
+} from "@tanstack/react-table"
 import * as zod from "zod"
 
-import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { FulfillmentSetDTO } from "@medusajs/types"
+import { Button, Checkbox, Heading, Input, Text } from "@medusajs/ui"
+import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
+import { Map } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
-import { useCreateFulfillmentSet } from "../../../../../hooks/api/stock-locations"
+import { SplitView } from "../../../../../components/layout/split-view"
+import {
+  useCreateFulfillmentSet,
+  useCreateServiceZone,
+} from "../../../../../hooks/api/stock-locations"
+import { useEffect, useMemo, useState } from "react"
+import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query.tsx"
+import { useCountries } from "../../../../regions/common/hooks/use-countries.tsx"
+import { countries as staticCountries } from "../../../../../lib/countries.ts"
+import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
+import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns.tsx"
+import { DataTable } from "../../../../../components/table/data-table"
+import { ListSummary } from "../../../../../components/common/list-summary"
+
+const PREFIX = "ac"
+const PAGE_SIZE = 50
 
 const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
@@ -27,6 +48,8 @@ export function CreateServiceZoneForm({
 }: CreateServiceZoneFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const [open, setOpen] = useState(false)
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
     defaultValues: {
@@ -36,18 +59,70 @@ export function CreateServiceZoneForm({
     resolver: zodResolver(CreateServiceZoneSchema),
   })
 
-  const { mutateAsync, isPending: isLoading } = useCreateFulfillmentSet(
-    fulfillmentSet.id
-  )
+  const { mutateAsync: createServiceZone, isPending: isLoading } =
+    useCreateServiceZone(fulfillmentSet.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    // await mutateAsync({
-    //   name: data.name,
-    //   type: data.type,
-    // })
+    await createServiceZone({
+      name: data.name,
+      geo_zones: data.countries.map((iso2) => ({
+        country_code: iso2,
+        type: "country",
+      })),
+    })
 
     handleSuccess("/settings/shipping")
   })
+
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open)
+  }
+
+  const { searchParams, raw } = useCountryTableQuery({
+    pageSize: PAGE_SIZE,
+    prefix: PREFIX,
+  })
+  const { countries, count } = useCountries({
+    countries: staticCountries.map((c, i) => ({
+      display_name: c.display_name,
+      name: c.name,
+      id: i as any,
+      iso_2: c.iso_2,
+      iso_3: c.iso_3,
+      num_code: c.num_code,
+      region_id: null,
+      region: {} as RegionDTO,
+    })),
+    ...searchParams,
+  })
+
+  const columns = useColumns()
+
+  const { table } = useDataTable({
+    data: countries || [],
+    columns,
+    count,
+    enablePagination: true,
+    enableRowSelection: true,
+    getRowId: (row) => row.iso_2,
+    pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
+    prefix: PREFIX,
+  })
+
+  useEffect(() => {
+    form.setValue("countries", Object.keys(rowSelection))
+  }, [rowSelection])
+
+  const selectedCountries = useMemo(() => {
+    return staticCountries.filter((c) => c.iso_2 in rowSelection)
+  }, [rowSelection])
+
+  const showAreasError =
+    form.formState.errors["countries"]?.type === "too_small"
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -68,58 +143,141 @@ export function CreateServiceZoneForm({
           </div>
         </RouteFocusModal.Header>
 
-        <RouteFocusModal.Body className="m-auto flex h-full w-full max-w-[700px] flex-col items-center divide-y overflow-hidden">
-          <div className="container mx-auto w-fit px-1 py-8">
-            <Heading className="mb-12 mt-8 text-2xl">
-              {t("shipping.fulfillmentSet.create.title", {
-                fulfillmentSet: fulfillmentSet.name,
-              })}
-            </Heading>
+        <RouteFocusModal.Body className="m-auto flex h-full w-full  flex-col items-center divide-y overflow-hidden">
+          <SplitView open={open} onOpenChange={handleOpenChange}>
+            <SplitView.Content className="mx-auto max-w-[700px]">
+              <div className="container  w-fit px-1 py-8">
+                <Heading className="mb-12 mt-8 text-2xl">
+                  {t("shipping.fulfillmentSet.create.title", {
+                    fulfillmentSet: fulfillmentSet.name,
+                  })}
+                </Heading>
 
-            <div>
-              <Text weight="plus">
-                {t("shipping.serviceZone.create.subtitle")}
-              </Text>
-              <Text className="text-ui-fg-subtle mb-8 mt-2">
-                {t("shipping.serviceZone.create.description")}
-              </Text>
-            </div>
+                <div>
+                  <Text weight="plus">
+                    {t("shipping.serviceZone.create.subtitle")}
+                  </Text>
+                  <Text className="text-ui-fg-subtle mb-8 mt-2">
+                    {t("shipping.serviceZone.create.description")}
+                  </Text>
+                </div>
 
-            <div className="flex max-w-[340px] flex-col gap-y-6">
-              <Form.Field
-                control={form.control}
-                name="name"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>
-                        {t("shipping.serviceZone.create.zoneName")}
-                      </Form.Label>
-                      <Form.Control>
-                        <Input {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-            </div>
-          </div>
+                <div className="flex max-w-[340px] flex-col gap-y-6">
+                  <Form.Field
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>
+                            {t("shipping.serviceZone.create.zoneName")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+              </div>
 
-          {/*AREAS*/}
-          <div className="container flex items-center justify-between py-8">
-            <div>
-              <Text weight="plus">{t("shipping.serviceZone.areas.title")}</Text>
-              <Text className="text-ui-fg-subtle mt-2">
-                {t("shipping.serviceZone.areas.description")}
-              </Text>
-            </div>
-            <Button variant="secondary" type="button">
-              {t("shipping.serviceZone.areas.manage")}
-            </Button>
-          </div>
+              {/*AREAS*/}
+              <div className="container flex items-center justify-between py-8">
+                <div>
+                  <Text weight="plus">
+                    {t("shipping.serviceZone.areas.title")}
+                  </Text>
+                  <Text className="text-ui-fg-subtle mt-2">
+                    {t("shipping.serviceZone.areas.description")}
+                  </Text>
+                </div>
+                <Button
+                  onClick={() => setOpen(true)}
+                  variant="secondary"
+                  type="button"
+                >
+                  {t("shipping.serviceZone.areas.manage")}
+                </Button>
+              </div>
+              {!!selectedCountries.length && (
+                <div className="flex items-center gap-4">
+                  <div className="grow-0 rounded-lg border">
+                    <div className="bg-ui-bg-field m-1 rounded-md p-2">
+                      <Map className="text-ui-fg-subtle" />
+                    </div>
+                  </div>
+                  <ListSummary
+                    inline
+                    list={selectedCountries.map((c) => c.display_name)}
+                  />
+                </div>
+              )}
+            </SplitView.Content>
+            <SplitView.Drawer>
+              <div className="flex size-full flex-col overflow-hidden">
+                <DataTable
+                  table={table}
+                  columns={columns}
+                  pageSize={PAGE_SIZE}
+                  count={count}
+                  search
+                  pagination
+                  layout="fill"
+                  orderBy={["name", "code"]}
+                  queryObject={raw}
+                  prefix={PREFIX}
+                />
+              </div>
+            </SplitView.Drawer>
+          </SplitView>
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
   )
+}
+
+const columnHelper = createColumnHelper<RegionCountryDTO>()
+
+const useColumns = () => {
+  const base = useCountryTableColumns()
+
+  return useMemo(
+    () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          const isPreselected = !row.getCanSelect()
+
+          return (
+            <Checkbox
+              checked={row.getIsSelected() || isPreselected}
+              disabled={isPreselected}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
+      ...base,
+    ],
+    [base]
+  ) as ColumnDef<RegionCountryDTO>[]
 }

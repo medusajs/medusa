@@ -1,15 +1,112 @@
 import { Button, Container, Text } from "@medusajs/ui"
-import { FulfillmentSetDTO, StockLocationDTO } from "@medusajs/types"
+import {
+  FulfillmentSetDTO,
+  ServiceZoneDTO,
+  StockLocationDTO,
+} from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { Buildings, Trash } from "@medusajs/icons"
+import { Buildings, ChevronDown, Map, Trash } from "@medusajs/icons"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
 import { countries } from "../../../../../lib/countries"
 import {
   useCreateFulfillmentSet,
   useDeleteFulfillmentSet,
-} from "../../../../../hooks/api/stock-locations.tsx"
+} from "../../../../../hooks/api/stock-locations"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useNavigate } from "react-router-dom"
+
+type ServiceZoneOptionsProps = {
+  zone: ServiceZoneDTO
+}
+
+function ServiceZoneOptions({ zone }: ServiceZoneOptionsProps) {
+  const { t } = useTranslation()
+  return (
+    <>
+      <div className="py-4">
+        <Text
+          size="small"
+          weight="plus"
+          className="text-ui-fg-subtle mb-4"
+          as="div"
+        >
+          {t("shipping.serviceZone.shippingOptions")}
+        </Text>
+      </div>
+      <div className="py-4">
+        <Text
+          size="small"
+          weight="plus"
+          className="text-ui-fg-subtle mb-4"
+          as="div"
+        >
+          {t("shipping.serviceZone.returnOptions")}
+        </Text>
+      </div>
+    </>
+  )
+}
+
+type ServiceZoneProps = {
+  zone: ServiceZoneDTO
+}
+
+function ServiceZone({ zone }: ServiceZoneProps) {
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+
+  const handleDelete = () => {}
+
+  return (
+    <>
+      <div className="flex flex-row items-center justify-between gap-x-4">
+        {/*ICON*/}
+        <div className="grow-0 rounded-lg border">
+          <div className="bg-ui-bg-field m-1 rounded-md p-2">
+            <Map className="text-ui-fg-subtle" />
+          </div>
+        </div>
+
+        {/*INFO*/}
+        <div className="grow-1 flex flex-1 flex-col">
+          <Text weight="plus">{zone.name}</Text>
+          <Text className="text-ui-fg-subtle txt-small">todo options</Text>
+        </div>
+
+        {/*ACTION*/}
+        <div className="itemx-center -m-2 flex grow-0 gap-2">
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.delete"),
+                    icon: <Trash />,
+                    onClick: handleDelete,
+                  },
+                ],
+              },
+            ]}
+          />
+          <Button
+            onClick={() => setOpen((s) => !s)}
+            className="flex items-center justify-center"
+            variant="transparent"
+          >
+            <ChevronDown
+              style={{
+                transform: `rotate(${!open ? 0 : 180}deg)`,
+                transition: ".2s transform ease-in-out",
+              }}
+            />
+          </Button>
+        </div>
+      </div>
+      {open && <ServiceZoneOptions zone={zone} />}
+    </>
+  )
+}
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -39,9 +136,6 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     fulfillmentSet?.id
   )
 
-  // const isPickup = fulfillmentSet?.type === FulfillmentSetType.Pickup
-  // const isDelivery = fulfillmentSet?.type === FulfillmentSetType.Delivery
-
   const handleCreate = async () => {
     await createFulfillmentSet({
       name: `${locationName} ${type}`,
@@ -69,7 +163,12 @@ function FulfillmentSet(props: FulfillmentSetProps) {
               {
                 actions: [
                   {
-                    label: t("actions.delete"),
+                    label: t("shipping.fulfillmentSet.addZone"),
+                    icon: <Map />,
+                    to: `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+                  },
+                  {
+                    label: t("shipping.fulfillmentSet.delete"),
                     icon: <Trash />,
                     onClick: handleDelete,
                   },
@@ -95,6 +194,13 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           </Button>
         </div>
       )}
+
+      <div className="mt-4 flex flex-col gap-6">
+        {hasServiceZones &&
+          fulfillmentSet?.service_zones.map((zone) => (
+            <ServiceZone key={zone.id} zone={zone} />
+          ))}
+      </div>
     </div>
   )
 }

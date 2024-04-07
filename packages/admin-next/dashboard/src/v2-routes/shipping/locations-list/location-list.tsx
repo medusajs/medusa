@@ -14,7 +14,10 @@ export function LocationList() {
   >
 
   const { stock_locations: stockLocations = [] } = useStockLocations(
-    { fields: "*fulfillment_sets" },
+    {
+      fields:
+        "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options",
+    },
     { initialData }
   )
 

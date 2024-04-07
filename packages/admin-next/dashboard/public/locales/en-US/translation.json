@@ -546,6 +546,7 @@
     },
     "fulfillmentSet": {
       "placeholder": "Not covered by any shipping zones.",
+      "delete": "Delete shipping",
       "create": {
         "title": "Add service zone for {{fulfillmentSet}}"
       },
@@ -566,6 +567,8 @@
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
         "zoneName": "Zone name"
       },
+      "shippingOptions": "Shipping options",
+      "returnOptions": "Return options",
       "areas": {
         "title": "Areas affected by this rule",
         "description": "Select the geographical areas where this shipping zone should apply.",

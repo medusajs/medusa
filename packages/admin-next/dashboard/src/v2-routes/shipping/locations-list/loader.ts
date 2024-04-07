@@ -7,7 +7,12 @@ import { StockLocationListRes } from "../../../types/api-responses"
 const shippingListQuery = () => ({
   queryKey: ["shipping_list"],
   queryFn: async () =>
-    client.stockLocations.list({ fields: "*fulfillment_sets" }),
+    client.stockLocations.list({
+      // fields: "*fulfillment_sets,*fulfillment_sets.service_zones",
+      // TODO: change this when RQ is fixed to work with the upper fields definition
+      fields:
+        "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options",
+    }),
 })
 
 export const shippingListLoader = async (_: LoaderFunctionArgs) => {
