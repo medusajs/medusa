@@ -94,8 +94,8 @@ medusaIntegrationTestRunner({
 
         expect(listLocationsResponse.status).toEqual(200)
         expect(listLocationsResponse.data.stock_locations).toEqual([
-          expect.objectContaining(location1),
           expect.objectContaining(location2),
+          expect.objectContaining(location1),
         ])
       })
 
