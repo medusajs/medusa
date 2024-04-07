@@ -93,11 +93,11 @@ export class RemoteQuery {
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
-    let hasStar = false
+    let shouldSelectAll = false
 
     for (const field of expand.fields ?? []) {
       if (field === "*") {
-        hasStar = true
+        shouldSelectAll = true
         break
       }
       fields.add(prefix ? `${prefix}.${field}` : field)
@@ -123,7 +123,11 @@ export class RemoteQuery {
 
     const allFields = Array.from(fields)
     const select =
-      allFields.length && !hasStar ? allFields : hasStar ? undefined : []
+      allFields.length && !shouldSelectAll
+        ? allFields
+        : shouldSelectAll
+        ? undefined
+        : []
     return { select, relations, args }
   }
 
