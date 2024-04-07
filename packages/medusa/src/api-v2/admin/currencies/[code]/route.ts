@@ -1,6 +1,5 @@
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { defaultAdminCurrencyFields } from "../query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
@@ -10,7 +9,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "currency",
     variables,
-    fields: defaultAdminCurrencyFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [currency] = await remoteQuery(queryObject)

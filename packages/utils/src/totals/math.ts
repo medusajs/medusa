@@ -31,7 +31,7 @@ export class MathBN {
   }
 
   static sum(...nums: BNInput[]): BigNumberJS {
-    return MathBN.add(...nums)
+    return MathBN.add(0, ...(nums ?? [0]))
   }
 
   static sub(...nums: BNInput[]): BigNumberJS {

@@ -1670,7 +1670,7 @@ export default class OrderModuleService<
         }
         return data.order_change_id
       })
-      .filter(Boolean)
+      .filter(Boolean) as string[]
 
     if (orderChangeIds.length) {
       const ordChanges = await this.getAndValidateOrderChange_(

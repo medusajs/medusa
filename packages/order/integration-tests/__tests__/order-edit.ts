@@ -1,8 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { ChangeActionType } from "../../src/utils"
 import { BigNumber } from "@medusajs/utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { ChangeActionType } from "../../src/utils"
 
 jest.setTimeout(100000)
 
@@ -212,8 +212,10 @@ moduleIntegrationTestRunner({
           ],
           relations: ["items", "shipping_methods", "transactions"],
         })
+        const serializedFinalOrder = JSON.parse(JSON.stringify(finalOrder))
 
-        expect(createdOrder.items).toEqual([
+        const serializedCreatedOrder = JSON.parse(JSON.stringify(createdOrder))
+        expect(serializedCreatedOrder.items).toEqual([
           expect.objectContaining({
             title: "Item 1",
             unit_price: 8,
@@ -252,12 +254,12 @@ moduleIntegrationTestRunner({
           }),
         ])
 
-        expect(finalOrder).toEqual(
+        expect(serializedFinalOrder).toEqual(
           expect.objectContaining({
             version: 1,
           })
         )
-        expect(finalOrder.items).toEqual([
+        expect(serializedFinalOrder.items).toEqual([
           expect.objectContaining({
             title: "Item 1",
             subtitle: "Subtitle 1",
@@ -396,7 +398,8 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.confirmOrderChange(orderChange.id, {
+        await service.confirmOrderChange({
+          id: orderChange.id,
           confirmed_by: "cx_agent_123",
         })
 
@@ -416,13 +419,15 @@ moduleIntegrationTestRunner({
           relations: ["items", "shipping_methods", "transactions"],
         })
 
-        expect(modified).toEqual(
+        const serializedModifiedOrder = JSON.parse(JSON.stringify(modified))
+
+        expect(serializedModifiedOrder).toEqual(
           expect.objectContaining({
             version: 2,
           })
         )
 
-        expect(modified.items).toEqual([
+        expect(serializedModifiedOrder.items).toEqual([
           expect.objectContaining({
             quantity: 2,
             detail: expect.objectContaining({
