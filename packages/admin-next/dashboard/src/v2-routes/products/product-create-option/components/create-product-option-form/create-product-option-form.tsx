@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminCreateProductOption } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -10,6 +9,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateProductOption } from "../../../../../hooks/api/products"
 
 type EditProductOptionsFormProps = {
   product: Product
@@ -32,7 +32,7 @@ export const CreateProductOptionForm = ({
     resolver: zodResolver(CreateProductOptionSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateProductOption(product.id)
+  const { mutateAsync, isLoading } = useCreateProductOption(product.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {

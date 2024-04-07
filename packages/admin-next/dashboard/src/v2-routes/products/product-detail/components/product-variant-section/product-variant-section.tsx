@@ -29,6 +29,9 @@ export const ProductVariantSection = ({
     product.id,
     {
       ...searchParams,
+    },
+    {
+      keepPreviousData: true,
     }
   )
 

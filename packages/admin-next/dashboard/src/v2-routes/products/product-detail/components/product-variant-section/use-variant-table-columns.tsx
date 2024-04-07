@@ -69,38 +69,38 @@ export const useProductVariantTableColumns = (product?: Product) => {
   const { t } = useTranslation()
 
   const optionColumns = useMemo(() => {
-    return product
-      ? product.options?.map((o) => {
-          return columnHelper.display({
-            id: o.id,
-            header: () => (
-              <div className="flex h-full w-full items-center">
-                <span className="truncate">{o.title}</span>
-              </div>
-            ),
-            cell: ({ row }) => {
-              const value = row.original.options.find(
-                (op) => op.option_id === o.id
-              )
+    if (!product) {
+      return []
+    }
+    return product.options?.map((option) => {
+      return columnHelper.display({
+        id: option.id,
+        header: () => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{option.title}</span>
+          </div>
+        ),
+        cell: ({ row }) => {
+          const variantOpt: any = row.original.options.find(
+            (opt: any) => opt.option_value.option_id === option.id
+          )
+          if (!variantOpt) {
+            return <PlaceholderCell />
+          }
 
-              if (!value) {
-                return <PlaceholderCell />
-              }
-
-              return (
-                <div className="flex h-full w-full items-center overflow-hidden">
-                  <Badge
-                    size="2xsmall"
-                    className="flex min-w-[20px] items-center justify-center"
-                  >
-                    {value.value}
-                  </Badge>
-                </div>
-              )
-            },
-          })
-        })
-      : []
+          return (
+            <div className="flex h-full w-full items-center overflow-hidden">
+              <Badge
+                size="2xsmall"
+                className="flex min-w-[20px] items-center justify-center"
+              >
+                {variantOpt.option_value.value}
+              </Badge>
+            </div>
+          )
+        },
+      })
+    })
   }, [product])
 
   return useMemo(

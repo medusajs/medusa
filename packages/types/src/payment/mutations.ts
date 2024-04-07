@@ -1,3 +1,4 @@
+import { BigNumberInput } from "../totals"
 import { PaymentProviderContext } from "./provider"
 
 /**
@@ -17,7 +18,7 @@ export interface CreatePaymentCollectionDTO {
   /**
    * The amount of the payment collection.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * Holds custom data in key-value pairs.
@@ -58,7 +59,7 @@ export interface UpsertPaymentCollectionDTO {
   /**
    * The amount of the payment collection.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * Holds custom data in key-value pairs.
@@ -83,7 +84,7 @@ export interface PaymentCollectionUpdatableFields {
   /**
    * The amount of the payment collection.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * Holds custom data in key-value pairs.
@@ -98,7 +99,7 @@ export interface CreatePaymentDTO {
   /**
    * The amount of the payment.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The ISO 3 character currency code of the payment.
@@ -183,7 +184,7 @@ export interface CreateCaptureDTO {
   /**
    * The amount of the capture.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * The associated payment's ID.
@@ -204,7 +205,7 @@ export interface CreateRefundDTO {
   /**
    * The amount of the refund.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * The associated payment's ID.
@@ -235,7 +236,7 @@ export interface CreatePaymentSessionDTO {
   /**
    * The amount to be authorized.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * Necessary data for the associated payment provider to process the payment.
@@ -270,7 +271,7 @@ export interface UpdatePaymentSessionDTO {
   /**
    * The amount to be authorized.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * Necessary context data for the associated payment provider.

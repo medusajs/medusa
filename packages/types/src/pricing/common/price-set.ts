@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { Context } from "../../shared-context"
+import { BigNumberInput, BigNumberValue } from "../../totals"
 import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,
@@ -24,10 +25,10 @@ export interface PricingRepositoryService {
  */
 export interface PricingContext {
   /**
-   * an object whose keys are the name of the context attribute. Its value can be a string or a number. For example, you can pass the `currency_code` property with its value being the currency code to calculate the price in.
+   * an object whose keys are the name of the context attribute. Its value can be a string or a BigNumberInput. For example, you can pass the `currency_code` property with its value being the currency code to calculate the price in.
    * Another example is passing the `quantity` property to calculate the price for that specified quantity, which finds a price set whose `min_quantity` and `max_quantity` conditions match the specified quantity.
    */
-  context?: Record<string, string | number>
+  context?: Record<string, string | BigNumberInput>
 }
 
 /**
@@ -124,7 +125,7 @@ export interface CalculatedPriceSet {
   /**
    * The amount of the calculated price, or `null` if there isn't a calculated price.
    */
-  calculated_amount: number | null
+  calculated_amount: BigNumberValue | null
 
   /**
    * Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override,
@@ -134,7 +135,7 @@ export interface CalculatedPriceSet {
   /**
    * The amount of the original price, or `null` if there isn't a calculated price.
    */
-  original_amount: number | null
+  original_amount: BigNumberValue | null
 
   /**
    * The currency code of the calculated price, or null if there isn't a calculated price.
@@ -160,11 +161,11 @@ export interface CalculatedPriceSet {
     /**
      * The `min_quantity` field defined on a price.
      */
-    min_quantity: number | null
+    min_quantity: BigNumberValue | null
     /**
      * The `max_quantity` field defined on a price.
      */
-    max_quantity: number | null
+    max_quantity: BigNumberValue | null
   }
 
   /**
@@ -186,11 +187,11 @@ export interface CalculatedPriceSet {
     /**
      * The `min_quantity` field defined on a price.
      */
-    min_quantity: number | null
+    min_quantity: BigNumberValue | null
     /**
      * The `max_quantity` field defined on a price.
      */
-    max_quantity: number | null
+    max_quantity: BigNumberValue | null
   }
 }
 
