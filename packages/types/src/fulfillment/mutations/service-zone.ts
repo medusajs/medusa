@@ -17,7 +17,7 @@ export interface CreateServiceZoneDTO {
 }
 
 export interface UpdateServiceZoneDTO {
-  id: string
+  id?: string
   name?: string
   geo_zones?: (
     | Omit<CreateCountryGeoZoneDTO, "service_zone_id">
@@ -27,3 +27,5 @@ export interface UpdateServiceZoneDTO {
     | { id: string }
   )[]
 }
+
+export interface UpsertServiceZoneDTO extends UpdateServiceZoneDTO {}

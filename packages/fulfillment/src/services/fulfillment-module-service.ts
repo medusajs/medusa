@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   Context,
   DAL,
@@ -11,20 +12,21 @@ import {
   ModulesSdkTypes,
   ShippingOptionDTO,
   UpdateFulfillmentSetDTO,
+  UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   EmitEvents,
   FulfillmentUtils,
-  getSetDifference,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
+  getSetDifference,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
-
 import {
   Fulfillment,
   FulfillmentSet,
@@ -38,7 +40,6 @@ import {
 import { isContextValid, validateRules } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
-import { Modules } from "@medusajs/modules-sdk"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -791,31 +792,56 @@ export default class FulfillmentModuleService<
   }
 
   updateServiceZones(
-    data: FulfillmentTypes.UpdateServiceZoneDTO[],
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
-  updateServiceZones(
+    id: string,
     data: FulfillmentTypes.UpdateServiceZoneDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
+  updateServiceZones(
+    selector: FulfillmentTypes.FilterableServiceZoneProps,
+    data: FulfillmentTypes.UpdateServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
   async updateServiceZones(
-    data:
-      | FulfillmentTypes.UpdateServiceZoneDTO[]
-      | FulfillmentTypes.UpdateServiceZoneDTO,
+    idOrSelector: string | FulfillmentTypes.FilterableServiceZoneProps,
+    data: FulfillmentTypes.UpdateServiceZoneDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO[] | FulfillmentTypes.ServiceZoneDTO
   > {
+    const normalizedInput: UpdateServiceZoneDTO[] = []
+
+    if (isString(idOrSelector)) {
+      normalizedInput.push({ id: idOrSelector, ...data })
+    } else {
+      const serviceZones = await this.serviceZoneService_.list(
+        { ...idOrSelector },
+        {},
+        sharedContext
+      )
+
+      if (!serviceZones.length) {
+        return []
+      }
+
+      for (const serviceZone of serviceZones) {
+        normalizedInput.push({ id: serviceZone.id, ...data })
+      }
+    }
+
     const updatedServiceZones = await this.updateServiceZones_(
-      data,
+      normalizedInput,
       sharedContext
     )
 
+    const toReturn = isString(idOrSelector)
+      ? updatedServiceZones[0]
+      : updatedServiceZones
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(updatedServiceZones, {
+    >(toReturn, {
       populate: true,
     })
   }
@@ -873,7 +899,7 @@ export default class FulfillmentModuleService<
 
     data_.forEach((serviceZone) => {
       if (serviceZone.geo_zones) {
-        const existingServiceZone = serviceZoneMap.get(serviceZone.id)!
+        const existingServiceZone = serviceZoneMap.get(serviceZone.id!)!
         const existingGeoZones = existingServiceZone.geo_zones
         const updatedGeoZones = serviceZone.geo_zones
         const toDeleteGeoZoneIds = getSetDifference(
@@ -920,7 +946,9 @@ export default class FulfillmentModuleService<
             FulfillmentModuleService.validateGeoZones([geoZone])
             return geoZone
           }
-          return geoZonesMap.get(geoZone.id)!
+          const existing = geoZonesMap.get(geoZone.id)!
+
+          return { ...existing, ...geoZone }
         })
       }
     })
@@ -940,6 +968,81 @@ export default class FulfillmentModuleService<
     )
 
     return Array.isArray(data) ? updatedServiceZones : updatedServiceZones[0]
+  }
+
+  upsertServiceZones(
+    data: FulfillmentTypes.UpsertServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ServiceZoneDTO>
+  upsertServiceZones(
+    data: FulfillmentTypes.UpsertServiceZoneDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
+
+  @InjectManager("baseRepository_")
+  async upsertServiceZones(
+    data:
+      | FulfillmentTypes.UpsertServiceZoneDTO
+      | FulfillmentTypes.UpsertServiceZoneDTO[],
+    sharedContext?: Context
+  ): Promise<
+    FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
+  > {
+    const upsertServiceZones = await this.upsertServiceZones_(
+      data,
+      sharedContext
+    )
+
+    const allServiceZones = await this.baseRepository_.serialize<
+      FulfillmentTypes.ServiceZoneDTO[] | FulfillmentTypes.ServiceZoneDTO
+    >(upsertServiceZones)
+
+    return Array.isArray(data) ? allServiceZones : allServiceZones[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertServiceZones_(
+    data:
+      | FulfillmentTypes.UpsertServiceZoneDTO[]
+      | FulfillmentTypes.UpsertServiceZoneDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TServiceZoneEntity[] | TServiceZoneEntity> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (serviceZone): serviceZone is FulfillmentTypes.UpdateServiceZoneDTO =>
+        !!serviceZone.id
+    )
+    const forCreate = input.filter(
+      (serviceZone): serviceZone is FulfillmentTypes.CreateServiceZoneDTO =>
+        !serviceZone.id
+    )
+
+    const created: TServiceZoneEntity[] = []
+    const updated: TServiceZoneEntity[] = []
+
+    if (forCreate.length) {
+      const createdServiceZones = await this.createServiceZones_(
+        forCreate,
+        sharedContext
+      )
+      const toPush = Array.isArray(createdServiceZones)
+        ? createdServiceZones
+        : [createdServiceZones]
+      created.push(...toPush)
+    }
+
+    if (forUpdate.length) {
+      const updatedServiceZones = await this.updateServiceZones_(
+        forUpdate,
+        sharedContext
+      )
+      const toPush = Array.isArray(updatedServiceZones)
+        ? updatedServiceZones
+        : [updatedServiceZones]
+      updated.push(...toPush)
+    }
+
+    return [...created, ...updated]
   }
 
   updateShippingOptions(
