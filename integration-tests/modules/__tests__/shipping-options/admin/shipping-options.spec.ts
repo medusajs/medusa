@@ -238,7 +238,6 @@ medusaIntegrationTestRunner({
           const shippingOptionId = response.data.shipping_option.id
 
           const updateShippingOptionPayload = {
-            id: shippingOptionId,
           }
 
           let err = await api
@@ -254,42 +253,7 @@ medusaIntegrationTestRunner({
               code: "invalid_type",
               expected: "string",
               received: "undefined",
-              path: ["service_zone_id"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["shipping_profile_id"],
-              message: "Required",
-            },
-            {
-              expected: "'calculated' | 'flat'",
-              received: "undefined",
-              code: "invalid_type",
-              path: ["price_type"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["provider_id"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "object",
-              received: "undefined",
-              path: ["type"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "array",
-              received: "undefined",
-              path: ["prices"],
+              path: ["id"],
               message: "Required",
             },
           ]
