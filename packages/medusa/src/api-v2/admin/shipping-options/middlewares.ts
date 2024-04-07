@@ -42,6 +42,11 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   },
 
   {
+    method: ["DELETE"],
+    matcher: "/admin/shipping-options/:id",
+  },
+
+  {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch/add",
     middlewares: [

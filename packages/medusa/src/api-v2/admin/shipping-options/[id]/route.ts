@@ -9,10 +9,12 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { deleteShippingOptionsWorkflow } from "../../../../../../core-flows/src/fulfillment/workflows/delete-shipping-options"
+import {AdminShippingOptionDeleteResponse} from "@medusajs/types";
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,
-  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
+  res: MedusaResponse<AdminShippingOptionDeleteResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody
 
@@ -41,4 +43,26 @@ export const POST = async (
   const [shippingOption] = await remoteQuery(query)
 
   res.status(200).json({ shipping_option: shippingOption })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const shippingOptionId = req.params.id
+
+  const workflow = deleteShippingOptionsWorkflow(req.scope)
+
+  const { result, errors } = await workflow.run({
+    input: { ids: [shippingOptionId] },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res
+    .status(200)
+    .json({ id: shippingOptionId, object: "shipping_options", deleted: true })
 }
