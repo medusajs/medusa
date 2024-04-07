@@ -1,6 +1,6 @@
 import { currencies } from "./currencies"
 
-const getDecimalDigits = (currency: string) => {
+export const getDecimalDigits = (currency: string) => {
   return currencies[currency.toUpperCase()]?.decimal_digits
 }
 

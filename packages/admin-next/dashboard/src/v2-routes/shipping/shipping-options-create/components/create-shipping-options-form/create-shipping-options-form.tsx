@@ -12,6 +12,7 @@ import {
   RadioGroup,
   Switch,
   Text,
+  clx,
 } from "@medusajs/ui"
 import { ServiceZoneDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -21,10 +22,11 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
+import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
 
 enum Tab {
-  PRICING = "pricing",
   DETAILS = "details",
+  PRICING = "pricing",
 }
 
 enum ShippingAllocation {
@@ -40,6 +42,8 @@ const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
   type: zod.nativeEnum(ShippingAllocation),
   enable_in_store: zod.boolean().optional(),
+  region_prices: zod.record(zod.string(), zod.string()),
+  currency_prices: zod.record(zod.string(), zod.string()),
 })
 
 type CreateServiceZoneFormProps = {
@@ -58,14 +62,14 @@ export function CreateShippingOptionsForm({
       name: "",
       type: ShippingAllocation.FlatRate,
       enable_in_store: true,
+      region_prices: {},
+      currency_prices: {},
     },
     resolver: zodResolver(CreateServiceZoneSchema),
   })
 
-  const isLoading = false
-
-  // const { mutateAsync: createServiceZone, isPending: isLoading } =
-  //   useCreateServiceZone(zone.id)
+  const { mutateAsync: createShippingOption, isPending: isLoading } = {}
+  // useCreateShippingOption()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     // await createServiceZone({
@@ -76,8 +80,12 @@ export function CreateShippingOptionsForm({
     //   })),
     // })
 
+    return
+
     handleSuccess("/settings/shipping")
   })
+
+  console.log(form.formState.errors)
 
   const [status, setStatus] = React.useState<StepStatus>({
     [Tab.PRICING]: "not-started",
@@ -90,8 +98,8 @@ export function CreateShippingOptionsForm({
 
   const onNext = React.useCallback(async () => {
     switch (tab) {
-      case Tab.PRICING: {
-        setTab(Tab.DETAILS)
+      case Tab.DETAILS: {
+        setTab(Tab.PRICING)
         break
       }
       case Tab.DETAILS:
@@ -163,9 +171,14 @@ export function CreateShippingOptionsForm({
             </div>
           </RouteFocusModal.Header>
 
-          <RouteFocusModal.Body className="mx-auto flex h-full w-fit flex-col items-center divide-y overflow-hidden">
+          <RouteFocusModal.Body
+            className={clx(
+              "flex h-full w-fit flex-col items-center divide-y overflow-hidden",
+              { "mx-auto": tab === Tab.DETAILS }
+            )}
+          >
             <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-              <div className="container  w-fit px-1 py-8">
+              <div className="container w-fit px-1 py-8">
                 <Heading className="mb-12 mt-8 text-2xl">
                   {t("shipping.shippingOptions.create.title", {
                     zone: zone.name,
@@ -268,12 +281,10 @@ export function CreateShippingOptionsForm({
                   </div>
                 </div>
               </div>
-              <ProgressTabs.Content
-                value={Tab.PRICING}
-                className="h-full w-full"
-              >
-                PRICING
-              </ProgressTabs.Content>
+            </ProgressTabs.Content>
+
+            <ProgressTabs.Content value={Tab.PRICING} className="h-full w-full">
+              <CreateShippingOptionsPricesForm form={form} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
         </ProgressTabs>
