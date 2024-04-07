@@ -1127,7 +1127,7 @@ export default class FulfillmentModuleService<
     return Array.isArray(data) ? allShippingOptions : allShippingOptions[0]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async upsertShippingOptions_(
     data:
       | FulfillmentTypes.UpsertShippingOptionDTO[]
