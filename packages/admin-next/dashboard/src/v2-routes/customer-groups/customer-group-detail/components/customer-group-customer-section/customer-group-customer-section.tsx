@@ -1,20 +1,23 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { Customer, CustomerGroup } from "@medusajs/medusa"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
+import { Customer, CustomerGroup } from "@medusajs/medusa"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import {
+  adminCustomerGroupKeys,
+  useAdminCustomPost,
   useAdminCustomerGroupCustomers,
   useAdminRemoveCustomersFromCustomerGroup,
 } from "medusa-react"
-import { useMemo } from "react"
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { Link } from "react-router-dom"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 type CustomerGroupCustomerSectionProps = {
   group: CustomerGroup
@@ -55,30 +58,6 @@ export const CustomerGroupCustomerSection = ({
     },
   })
 
-  const { mutateAsync } = useAdminRemoveCustomersFromCustomerGroup(group.id)
-  const prompt = usePrompt()
-
-  const handleRemoveCustomers = async (selection: Record<string, boolean>) => {
-    const selected = Object.keys(selection).filter((k) => selection[k])
-
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customerGroups.removeCustomersWarning", {
-        count: selected.length,
-      }),
-      confirmText: t("actions.continue"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync({
-      customer_ids: selected.map((s) => ({ id: s })),
-    })
-  }
-
   if (isError) {
     throw error
   }
@@ -111,13 +90,6 @@ export const CustomerGroupCustomerSection = ({
           "created_at",
           "updated_at",
         ]}
-        commands={[
-          {
-            action: handleRemoveCustomers,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
         queryObject={raw}
       />
     </Container>
@@ -132,8 +104,10 @@ const CustomerActions = ({
   customerGroupId: string
 }) => {
   const { t } = useTranslation()
-  const { mutateAsync } =
-    useAdminRemoveCustomersFromCustomerGroup(customerGroupId)
+  const { mutateAsync } = useAdminCustomPost(
+    `/admin/customer-groups/${customerGroupId}/customers/remove`,
+    adminCustomerGroupKeys.lists()
+  )
 
   const prompt = usePrompt()
 
