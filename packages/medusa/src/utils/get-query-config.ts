@@ -1,8 +1,8 @@
-import { pick } from "lodash"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { BaseEntity } from "../interfaces"
 import { getSetDifference, stringToSelectRelationObject } from "@medusajs/utils"
+import { pick } from "lodash"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { BaseEntity } from "../interfaces"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -181,8 +181,6 @@ export function prepareListQuery<
         `Order field ${orderField} is not valid`
       )
     }
-  } else {
-    orderBy["created_at"] = "DESC"
   }
 
   return {
