@@ -1,20 +1,18 @@
 import * as zod from "zod"
-
 import { Button, Input } from "@medusajs/ui"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-
-import { Customer } from "@medusajs/medusa"
 import { Form } from "../../../../../components/common/form"
-import { useAdminUpdateCustomer } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { AdminCustomerResponse } from "@medusajs/types"
+import { useUpdateCustomer } from "../../../../../hooks/api/customers"
 
 type EditCustomerFormProps = {
-  customer: Customer
+  customer: AdminCustomerResponse["customer"]
 }
 
 const EditCustomerSchema = zod.object({
@@ -38,7 +36,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
     resolver: zodResolver(EditCustomerSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateCustomer(customer.id)
+  const { mutateAsync, isLoading } = useUpdateCustomer(customer.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(

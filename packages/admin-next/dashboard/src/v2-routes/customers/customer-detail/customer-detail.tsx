@@ -1,10 +1,8 @@
 import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
-
 import { CustomerGeneralSection } from "./components/customer-general-section"
-import { CustomerOrderSection } from "./components/customer-order-section"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { customerLoader } from "./loader"
-import { useAdminCustomer } from "medusa-react"
+import { useCustomer } from "../../../hooks/api/customers"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
@@ -12,7 +10,7 @@ export const CustomerDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof customerLoader>
   >
-  const { customer, isLoading, isError, error } = useAdminCustomer(id!, {
+  const { customer, isLoading, isError, error } = useCustomer(id!, undefined, {
     initialData,
   })
 

@@ -1,20 +1,14 @@
 import * as zod from "zod"
-
-import {
-  AdminCustomersCreateRes,
-  AdminPostCustomersReq,
-} from "@medusajs/medusa"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { adminCustomerKeys, useAdminCustomPost } from "medusa-react"
-
 import { Form } from "../../../../../components/common/form"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useCreateCustomer } from "../../../../../hooks/api/customers"
 
 const CreateCustomerSchema = zod.object({
   email: zod.string().email(),
@@ -27,10 +21,7 @@ export const CreateCustomerForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { mutateAsync, isLoading } = useAdminCustomPost<
-    AdminPostCustomersReq,
-    AdminCustomersCreateRes
-  >("/admin/customers", adminCustomerKeys.lists())
+  const { mutateAsync, isLoading } = useCreateCustomer()
 
   const form = useForm<zod.infer<typeof CreateCustomerSchema>>({
     defaultValues: {

@@ -1,52 +1,54 @@
-import { Customer, CustomerGroup } from "@medusajs/medusa"
-import { Container, Heading } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminCustomerGroups } from "medusa-react"
-import { useMemo } from "react"
-import { useTranslation } from "react-i18next"
+// TODO: Should be added with Customer Groups UI
 
-// TODO: Continue working on this when there is a natural way to get customer groups related to a customer.
-type CustomerGroupSectionProps = {
-  customer: Customer
-}
+// import { Customer, CustomerGroup } from "@medusajs/medusa"
+// import { Container, Heading } from "@medusajs/ui"
+// import { createColumnHelper } from "@tanstack/react-table"
+// import { useAdminCustomerGroups } from "medusa-react"
+// import { useMemo } from "react"
+// import { useTranslation } from "react-i18next"
 
-export const CustomerGroupSection = ({
-  customer,
-}: CustomerGroupSectionProps) => {
-  const { customer_groups, isLoading, isError, error } = useAdminCustomerGroups(
-    {
-      id: customer.groups.map((g) => g.id).join(","),
-    }
-  )
+// // TODO: Continue working on this when there is a natural way to get customer groups related to a customer.
+// type CustomerGroupSectionProps = {
+//   customer: Customer
+// }
 
-  if (isError) {
-    throw error
-  }
+// export const CustomerGroupSection = ({
+//   customer,
+// }: CustomerGroupSectionProps) => {
+//   const { customer_groups, isLoading, isError, error } = useAdminCustomerGroups(
+//     {
+//       id: customer.groups.map((g) => g.id).join(","),
+//     }
+//   )
 
-  return (
-    <Container className="p-0 divide-y">
-      <div className="px-6 py-4">
-        <Heading level="h2">Groups</Heading>
-      </div>
-    </Container>
-  )
-}
+//   if (isError) {
+//     throw error
+//   }
 
-const columnHelper = createColumnHelper<CustomerGroup>()
+//   return (
+//     <Container className="p-0 divide-y">
+//       <div className="px-6 py-4">
+//         <Heading level="h2">Groups</Heading>
+//       </div>
+//     </Container>
+//   )
+// }
 
-const useColumns = () => {
-  const { t } = useTranslation()
+// const columnHelper = createColumnHelper<CustomerGroup>()
 
-  return useMemo(
-    () => [
-      columnHelper.display({
-        id: "select",
-      }),
-      columnHelper.accessor("name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-    ],
-    [t]
-  )
-}
+// const useColumns = () => {
+//   const { t } = useTranslation()
+
+//   return useMemo(
+//     () => [
+//       columnHelper.display({
+//         id: "select",
+//       }),
+//       columnHelper.accessor("name", {
+//         header: t("fields.name"),
+//         cell: ({ getValue }) => getValue(),
+//       }),
+//     ],
+//     [t]
+//   )
+// }
