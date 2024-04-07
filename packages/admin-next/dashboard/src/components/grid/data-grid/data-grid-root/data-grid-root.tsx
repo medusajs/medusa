@@ -20,6 +20,7 @@ import {
   Command,
   useCommandHistory,
 } from "../../../../hooks/use-command-history"
+import { GridCellType, NON_INTERACTIVE_CELL_TYPES } from "../../constants"
 
 type FieldCoordinates = {
   column: number
@@ -28,7 +29,7 @@ type FieldCoordinates = {
 
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
@@ -40,7 +41,7 @@ const ROW_HEIGHT = 40
 
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 >({
   data = [],
   columns,
@@ -107,6 +108,16 @@ export const DataGridRoot = <
     }
   }
 
+  const isNonInteractive = (element: HTMLElement) => {
+    const type = element.getAttribute("data-cell-type")
+
+    if (!type) {
+      return true
+    }
+
+    return NON_INTERACTIVE_CELL_TYPES.includes(type as GridCellType)
+  }
+
   const handleMouseDown = (e: ReactMouseEvent<HTMLTableCellElement>) => {
     e.stopPropagation()
     e.preventDefault()
@@ -117,10 +128,7 @@ export const DataGridRoot = <
      * Check if the click was on a presentation element.
      * If so, we don't want to set the anchor.
      */
-    if (
-      target instanceof HTMLElement &&
-      target.attributes.getNamedItem("data-role")?.value === "presentation"
-    ) {
+    if (target instanceof HTMLElement && isNonInteractive(target)) {
       return
     }
 
@@ -171,10 +179,7 @@ export const DataGridRoot = <
      * Check if the click was on a presentation element.
      * If so, we don't want to add it to the selection.
      */
-    if (
-      target instanceof HTMLElement &&
-      target.querySelector("[data-role=presentation]")
-    ) {
+    if (target instanceof HTMLElement && isNonInteractive(target)) {
       return
     }
 
@@ -592,13 +597,6 @@ export const DataGridRoot = <
                             <div
                               onMouseDown={handleDragDown}
                               className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
-                            />
-                          )}
-                          {!isAnchor && (
-                            <div
-                              aria-hidden
-                              data-role="overlay"
-                              className="absolute inset-0"
                             />
                           )}
                         </div>

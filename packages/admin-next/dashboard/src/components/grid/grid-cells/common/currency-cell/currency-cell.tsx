@@ -5,10 +5,10 @@ import { useRef } from "react"
 import { Controller, FieldValues } from "react-hook-form"
 import { getDecimalDigits } from "../../../../../lib/money-amount-helpers"
 import { GridCellType } from "../../../constants"
-import { FieldProps } from "../../../types"
+import { CellProps } from "../../../types"
 
 interface CurrencyCellProps<TFieldValues extends FieldValues = any>
-  extends FieldProps<TFieldValues> {
+  extends CellProps<TFieldValues> {
   currency: CurrencyDTO
 }
 

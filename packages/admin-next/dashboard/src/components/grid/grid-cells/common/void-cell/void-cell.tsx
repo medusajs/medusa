@@ -6,7 +6,7 @@ export const VoidCell = ({ children }: PropsWithChildren) => {
     <div
       role="cell"
       data-cell-type={GridCellType.VOID}
-      className="bg-ui-bg-subtle size-full cursor-not-allowed"
+      className="bg-ui-bg-subtle size-full cursor-not-allowed px-4 py-2.5"
     >
       {children}
     </div>

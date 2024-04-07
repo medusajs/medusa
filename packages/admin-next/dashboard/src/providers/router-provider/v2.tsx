@@ -252,6 +252,11 @@ export const v2Routes: RouteObject[] = [
                     lazy: () => import("../../v2-routes/pricing/pricing-edit"),
                   },
                   {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-configuration"),
+                  },
+                  {
                     path: "products/add",
                     lazy: () =>
                       import("../../v2-routes/pricing/pricing-products-add"),

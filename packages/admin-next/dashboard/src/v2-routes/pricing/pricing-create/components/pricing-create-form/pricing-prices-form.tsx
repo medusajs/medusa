@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { DataGrid } from "../../../../../components/grid/data-grid"
 import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
-import { DisplayField } from "../../../../../components/grid/grid-cells/non-interactive/display-field"
+import { ReadonlyCell } from "../../../../../components/grid/grid-cells/common/readonly-cell"
+import { VoidCell } from "../../../../../components/grid/grid-cells/common/void-cell"
 import { DataGridMeta } from "../../../../../components/grid/types"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useProducts } from "../../../../../hooks/api/products"
@@ -162,21 +163,21 @@ const useColumns = ({ currencies = [] }: { currencies?: CurrencyDTO[] }) => {
 
             if (isProduct(entity)) {
               return (
-                <DisplayField>
+                <VoidCell>
                   <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                     <Thumbnail src={entity.thumbnail} />
                     <span className="truncate">{entity.title}</span>
                   </div>
-                </DisplayField>
+                </VoidCell>
               )
             }
 
             return (
-              <DisplayField>
+              <ReadonlyCell>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <span className="truncate">{entity.title}</span>
                 </div>
-              </DisplayField>
+              </ReadonlyCell>
             )
           },
         }),
@@ -187,7 +188,7 @@ const useColumns = ({ currencies = [] }: { currencies?: CurrencyDTO[] }) => {
               const entity = row.original
 
               if (isProduct(entity)) {
-                return <DisplayField />
+                return <VoidCell />
               }
 
               return (

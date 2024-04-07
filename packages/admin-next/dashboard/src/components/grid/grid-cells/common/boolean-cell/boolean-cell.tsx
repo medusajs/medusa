@@ -1,14 +1,14 @@
 import { Select } from "@medusajs/ui"
 import { Controller, FieldValues } from "react-hook-form"
-import { FieldProps } from "../../../types"
+import { CellProps } from "../../../types"
 
-interface BooleanFieldProps<TFieldValues extends FieldValues = any>
-  extends FieldProps<TFieldValues> {}
+interface BooleanCellProps<TFieldValues extends FieldValues = any>
+  extends CellProps<TFieldValues> {}
 
-export const BooleanField = <TFieldValues extends FieldValues = any>({
+export const BooleanCell = <TFieldValues extends FieldValues = any>({
   field,
   meta,
-}: BooleanFieldProps<TFieldValues>) => {
+}: BooleanCellProps<TFieldValues>) => {
   const { control } = meta
 
   return (

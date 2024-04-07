@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
 import { usePriceList } from "../../../hooks/api/price-lists"
-import { EditPriceListForm } from "./components/edit-price-list-form"
+import { PriceListConfigurationForm } from "./components/price-list-configuration-form"
 
 export const PricingConfiguration = () => {
   const { t } = useTranslation()
@@ -22,7 +22,7 @@ export const PricingConfiguration = () => {
       <RouteDrawer.Header>
         <Heading>{t("pricing.settings.editPriceListTitle")}</Heading>
       </RouteDrawer.Header>
-      {ready && <EditPriceListForm priceList={price_list} />}
+      {ready && <PriceListConfigurationForm priceList={price_list} />}
     </RouteDrawer>
   )
 }

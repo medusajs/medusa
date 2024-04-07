@@ -1,13 +1,13 @@
 import { FieldValues } from "react-hook-form"
-import { FieldProps } from "../../../types"
+import { CellProps } from "../../../types"
 
-interface TextFieldProps<TFieldValues extends FieldValues = any>
-  extends FieldProps<TFieldValues> {}
+interface TextCellProps<TFieldValues extends FieldValues = any>
+  extends CellProps<TFieldValues> {}
 
-export const TextField = <TFieldValues extends FieldValues = any>({
+export const TextCell = <TFieldValues extends FieldValues = any>({
   field,
   meta,
-}: TextFieldProps<TFieldValues>) => {
+}: TextCellProps<TFieldValues>) => {
   const { register } = meta
 
   return (

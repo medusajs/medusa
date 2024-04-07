@@ -9,8 +9,8 @@ import { z } from "zod"
 import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { DataGrid } from "../../../../../components/grid/data-grid"
-import { TextField } from "../../../../../components/grid/grid-cells/common/text-field"
-import { DisplayField } from "../../../../../components/grid/grid-cells/non-interactive/display-field"
+import { TextCell } from "../../../../../components/grid/grid-cells/common/text-cell"
+import { DisplayCell } from "../../../../../components/grid/grid-cells/non-interactive/display-cell"
 import { DataGridMeta } from "../../../../../components/grid/types"
 import { RouteFocusModal } from "../../../../../components/route-modal"
 
@@ -114,11 +114,11 @@ const createRegionColum = (region: Region) => {
       const entity = row.original
 
       if (isProduct(entity)) {
-        return <DisplayField />
+        return <DisplayCell />
       }
 
       return (
-        <TextField
+        <TextCell
           field={`products.${entity.id}.variants.${entity.id}.prices.regions.${region.id}.amount`}
           meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
         />
@@ -135,11 +135,11 @@ const createCurrencyColumn = (currency: Currency) => {
       const entity = row.original
 
       if (isProduct(entity)) {
-        return <DisplayField />
+        return <DisplayCell />
       }
 
       return (
-        <TextField
+        <TextCell
           field={`products.${entity.id}.variants.${entity.id}.prices.currencies.${currency.code}.amount`}
           meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
         />
@@ -175,21 +175,21 @@ const useColumns = ({
 
           if (isProduct(entity)) {
             return (
-              <DisplayField>
+              <DisplayCell>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <Thumbnail src={entity.thumbnail} />
                   <span className="truncate">{entity.title}</span>
                 </div>
-              </DisplayField>
+              </DisplayCell>
             )
           }
 
           return (
-            <DisplayField>
+            <DisplayCell>
               <div className="flex h-full w-full items-center overflow-hidden">
                 <span className="truncate">{entity.title}</span>
               </div>
-            </DisplayField>
+            </DisplayCell>
           )
         },
         size: 350,

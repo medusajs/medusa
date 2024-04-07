@@ -1,17 +1,18 @@
 import { clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 
-type DisplayFieldProps = PropsWithChildren<{
+type DisplayCellProps = PropsWithChildren<{
   variant?: "base" | "subtle"
 }>
 
 /**
  * Field for displaying non-editable data in a grid.
+ * @deprecated Use `VoidCell` or `ReadonlyCell` instead.
  */
-export const DisplayField = ({
+export const DisplayCell = ({
   children,
   variant = "base",
-}: DisplayFieldProps) => {
+}: DisplayCellProps) => {
   return (
     <div
       className={clx(
