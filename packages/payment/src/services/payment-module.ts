@@ -736,4 +736,24 @@ export default class PaymentModuleService<
       }
     )
   }
+
+  @InjectManager("baseRepository_")
+  async listAndCountPaymentProviders(
+    filters: FilterablePaymentProviderProps = {},
+    config: FindConfig<PaymentProviderDTO> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<[PaymentProviderDTO[], number]> {
+    const [providers, count] = await this.paymentProviderService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PaymentProviderDTO[]>(providers, {
+        populate: true,
+      }),
+      count,
+    ]
+  }
 }

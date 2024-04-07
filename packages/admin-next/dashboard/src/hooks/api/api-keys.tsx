@@ -10,11 +10,9 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateApiKeyReq, UpdateApiKeyReq } from "../../types/api-payloads"
-import {
-  ApiKeyDeleteRes,
-  ApiKeyListRes,
-  ApiKeyRes,
-} from "../../types/api-responses"
+import { ApiKeyDeleteRes } from "../../types/api-responses"
+import { AdminApiKeyResponse, AdminApiKeyListResponse } from "@medusajs/types"
+import { salesChannelsQueryKeys } from "./sales-channels"
 
 const API_KEYS_QUERY_KEY = "api_keys" as const
 export const apiKeysQueryKeys = queryKeysFactory(API_KEYS_QUERY_KEY)
@@ -23,7 +21,7 @@ export const useApiKey = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<ApiKeyRes, Error, ApiKeyRes, QueryKey>,
+    UseQueryOptions<AdminApiKeyResponse, Error, AdminApiKeyResponse, QueryKey>,
     "queryKey" | "queryFn"
   >
 ) => {
@@ -39,7 +37,12 @@ export const useApiKey = (
 export const useApiKeys = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<ApiKeyListRes, Error, ApiKeyListRes, QueryKey>,
+    UseQueryOptions<
+      AdminApiKeyListResponse,
+      Error,
+      AdminApiKeyListResponse,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
@@ -53,7 +56,7 @@ export const useApiKeys = (
 }
 
 export const useCreateApiKey = (
-  options?: UseMutationOptions<ApiKeyRes, Error, CreateApiKeyReq>
+  options?: UseMutationOptions<AdminApiKeyResponse, Error, CreateApiKeyReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.apiKeys.create(payload),
@@ -68,7 +71,7 @@ export const useCreateApiKey = (
 
 export const useUpdateApiKey = (
   id: string,
-  options?: UseMutationOptions<ApiKeyRes, Error, UpdateApiKeyReq>
+  options?: UseMutationOptions<AdminApiKeyResponse, Error, UpdateApiKeyReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.apiKeys.update(id, payload),
@@ -84,7 +87,7 @@ export const useUpdateApiKey = (
 
 export const useRevokeApiKey = (
   id: string,
-  options?: UseMutationOptions<ApiKeyRes, Error, void>
+  options?: UseMutationOptions<AdminApiKeyResponse, Error, void>
 ) => {
   return useMutation({
     mutationFn: () => client.apiKeys.revoke(id),
@@ -109,5 +112,52 @@ export const useDeleteApiKey = (
 
       options?.onSuccess?.(data, variables, context)
     },
+  })
+}
+
+export const useBatchRemoveSalesChannelsFromApiKey = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminApiKeyResponse,
+    Error,
+    { sales_channel_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.apiKeys.batchRemoveSalesChannels(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useBatchAddSalesChannelsToApiKey = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminApiKeyResponse,
+    Error,
+    { sales_channel_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.apiKeys.batchAddSalesChannels(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
   })
 }

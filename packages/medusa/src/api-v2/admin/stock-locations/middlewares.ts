@@ -1,6 +1,9 @@
-import * as QueryConfig from "./query-config"
-
 import { transformBody, transformQuery } from "../../../api/middlewares"
+import { MiddlewareRoute } from "../../../types/middlewares"
+import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import * as QueryConfig from "./query-config"
 import {
   AdminCreateStockLocationFulfillmentSet,
   AdminGetStockLocationsLocationParams,
@@ -11,11 +14,6 @@ import {
   AdminPostStockLocationsReq,
   AdminStockLocationsLocationSalesChannelBatchReq,
 } from "./validators"
-
-import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/authenticate-middleware"
-import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
-import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {

@@ -1,17 +1,14 @@
+import { AdminApiKeyListResponse, AdminApiKeyResponse } from "@medusajs/types"
 import { CreateApiKeyReq, UpdateApiKeyReq } from "../../types/api-payloads"
-import {
-  ApiKeyDeleteRes,
-  ApiKeyListRes,
-  ApiKeyRes,
-} from "../../types/api-responses"
+import { ApiKeyDeleteRes } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
 const retrieveApiKey = async (id: string, query?: Record<string, any>) => {
-  return getRequest<ApiKeyRes>(`/admin/api-keys/${id}`, query)
+  return getRequest<AdminApiKeyResponse>(`/admin/api-keys/${id}`, query)
 }
 
 const listApiKeys = async (query?: Record<string, any>) => {
-  return getRequest<ApiKeyListRes>(`/admin/api-keys`, query)
+  return getRequest<AdminApiKeyListResponse>(`/admin/api-keys`, query)
 }
 
 const deleteApiKey = async (id: string) => {
@@ -19,15 +16,35 @@ const deleteApiKey = async (id: string) => {
 }
 
 const revokeApiKey = async (id: string) => {
-  return postRequest<ApiKeyRes>(`/admin/api-keys/${id}/revoke`)
+  return postRequest<AdminApiKeyResponse>(`/admin/api-keys/${id}/revoke`)
 }
 
 const createApiKey = async (payload: CreateApiKeyReq) => {
-  return postRequest<ApiKeyRes>(`/admin/api-keys`, payload)
+  return postRequest<AdminApiKeyResponse>(`/admin/api-keys`, payload)
 }
 
 const updateApiKey = async (id: string, payload: UpdateApiKeyReq) => {
-  return postRequest<ApiKeyRes>(`/admin/api-keys/${id}`, payload)
+  return postRequest<AdminApiKeyResponse>(`/admin/api-keys/${id}`, payload)
+}
+
+const batchRemoveSalesChannelsFromApiKey = async (
+  id: string,
+  payload: { sales_channel_ids: string[] }
+) => {
+  return postRequest<AdminApiKeyResponse>(
+    `/admin/api-keys/${id}/sales-channels/batch/remove`,
+    payload
+  )
+}
+
+const batchAddSalesChannelsFromApiKey = async (
+  id: string,
+  payload: { sales_channel_ids: string[] }
+) => {
+  return postRequest<AdminApiKeyResponse>(
+    `/admin/api-keys/${id}/sales-channels/batch/add`,
+    payload
+  )
 }
 
 export const apiKeys = {
@@ -37,4 +54,6 @@ export const apiKeys = {
   create: createApiKey,
   update: updateApiKey,
   revoke: revokeApiKey,
+  batchRemoveSalesChannels: batchRemoveSalesChannelsFromApiKey,
+  batchAddSalesChannels: batchAddSalesChannelsFromApiKey,
 }

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsBoolean, IsInt, IsOptional, ValidateNested } from "class-validator"
 import {
   DateComparisonOperator,
   FindParams,
@@ -55,4 +55,25 @@ export class AdminPostPaymentsRefundsReq {
   @IsInt()
   @IsOptional()
   amount?: number
+}
+
+export class AdminGetPaymentsPaymentProvidersParams extends extendedFindParamsMixin(
+  {
+    limit: 20,
+    offset: 0,
+  }
+) {
+  /**
+   * IDs to filter users by.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
+  /**
+   * Filter providers by `enabled` flag
+   */
+  @IsBoolean()
+  @IsOptional()
+  is_enabled?: boolean
 }
