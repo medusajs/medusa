@@ -50,7 +50,6 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
         primaryKey: "shipping_option_id",
         foreignKey: "id",
         alias: "price_set_link",
-        deleteCascade: true,
       },
     },
     {
