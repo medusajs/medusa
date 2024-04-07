@@ -4,6 +4,7 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import * as queryConfig from "./query-config"
 import {
   AdminGetPaymentsParams,
+  AdminGetPaymentsPaymentProvidersParams,
   AdminPostPaymentsCapturesReq,
   AdminPostPaymentsRefundsReq,
 } from "./validators"
@@ -21,6 +22,16 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
       transformQuery(
         AdminGetPaymentsParams,
         queryConfig.listTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/payments/payment-providers",
+    middlewares: [
+      transformQuery(
+        AdminGetPaymentsPaymentProvidersParams,
+        queryConfig.listTransformPaymentProvidersQueryConfig
       ),
     ],
   },

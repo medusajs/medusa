@@ -3,6 +3,7 @@ import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { apiKeyLoader } from "./loader"
+import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
 
 export const ApiKeyManagementDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -25,7 +26,7 @@ export const ApiKeyManagementDetail = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <ApiKeyGeneralSection apiKey={api_key} />
-      {/* <ApiKeySalesChannelSection apiKey={apiKey} /> */}
+      <ApiKeySalesChannelSection apiKey={api_key} />
       <JsonViewSection data={api_key} />
       <Outlet />
     </div>

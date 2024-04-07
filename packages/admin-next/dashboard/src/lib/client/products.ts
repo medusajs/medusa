@@ -25,10 +25,34 @@ async function deleteProduct(id: string) {
   return deleteRequest<ProductDeleteRes>(`/admin/products/${id}`)
 }
 
+async function retrieveVariant(
+  productId: string,
+  variantId: string,
+  query?: Record<string, any>
+) {
+  return getRequest<any>(
+    `/admin/products/${productId}/variants/${variantId}`,
+    query
+  )
+}
+
+async function listVariants(productId: string, query?: Record<string, any>) {
+  return getRequest<any>(`/admin/products/${productId}/variants`, query)
+}
+
+async function deleteVariant(productId: string, variantId: string) {
+  return deleteRequest<any>(
+    `/admin/products/${productId}/variants/${variantId}`
+  )
+}
+
 export const products = {
   retrieve: retrieveProduct,
   list: listProducts,
   create: createProduct,
   update: updateProduct,
   delete: deleteProduct,
+  retrieveVariant,
+  listVariants,
+  deleteVariant,
 }

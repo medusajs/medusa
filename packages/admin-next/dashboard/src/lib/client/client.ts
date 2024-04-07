@@ -9,6 +9,7 @@ import { invites } from "./invites"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
 import { products } from "./products"
+import { payments } from "./payments"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
 import { salesChannels } from "./sales-channels"
@@ -27,6 +28,7 @@ export const client = {
   currencies: currencies,
   collections: collections,
   promotions: promotions,
+  payments: payments,
   stores: stores,
   salesChannels: salesChannels,
   tags: tags,

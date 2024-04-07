@@ -701,6 +701,12 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentProviderDTO[]>
 
+  listAndCountPaymentProviders(
+    filters?: FilterablePaymentProviderProps,
+    config?: FindConfig<PaymentProviderDTO>,
+    sharedContext?: Context
+  ): Promise<[PaymentProviderDTO[], number]>
+
   /**
    * This method retrieves a paginated list of captures based on optional filters and configuration.
    *
