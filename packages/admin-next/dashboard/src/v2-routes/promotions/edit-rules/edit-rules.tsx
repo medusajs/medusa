@@ -3,12 +3,8 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import {
-  usePromotion,
-  usePromotionRuleAttributes,
-  usePromotionRuleOperators,
-} from "../../../hooks/api/promotions"
-import { EditRulesForm } from "./components/edit-rules-form"
+import { usePromotion } from "../../../hooks/api/promotions"
+import { EditRulesWrapper } from "./components/edit-rules-wrapper"
 
 export enum RuleType {
   RULES = "rules",
@@ -34,16 +30,6 @@ export const EditRules = () => {
   const id = params.id as string
   const rules: PromotionRuleDTO[] = []
   const { promotion, isLoading, isError, error } = usePromotion(id)
-  const {
-    attributes,
-    isError: isAttributesError,
-    error: attributesError,
-  } = usePromotionRuleAttributes(ruleType!)
-  const {
-    operators,
-    isError: isOperatorsError,
-    error: operatorsError,
-  } = usePromotionRuleOperators()
 
   if (promotion) {
     if (ruleType === RuleType.RULES) {
@@ -55,8 +41,8 @@ export const EditRules = () => {
     }
   }
 
-  if (isError || isAttributesError || isOperatorsError) {
-    throw error || attributesError || operatorsError
+  if (isError) {
+    throw error
   }
 
   return (
@@ -65,13 +51,11 @@ export const EditRules = () => {
         <Heading>{t(`promotions.edit.${ruleType}.title`)}</Heading>
       </RouteDrawer.Header>
 
-      {!isLoading && promotion && attributes && operators && (
-        <EditRulesForm
+      {!isLoading && promotion && (
+        <EditRulesWrapper
           promotion={promotion}
           rules={rules}
           ruleType={ruleType}
-          attributes={attributes}
-          operators={operators}
         />
       )}
     </RouteDrawer>

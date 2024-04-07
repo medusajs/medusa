@@ -632,6 +632,7 @@
         }
       }
     },
+    "create": {},
     "edit": {
       "title": "Edit Promotion Details",
       "rules": {
@@ -668,17 +669,31 @@
         },
         "automatic": {
           "title": "Automatic",
-          "description": "Customers will automatically see this during checkout"
+          "description": "Customers will see this at checkout"
+        }
+      },
+      "max_quantity": {
+        "title": "Maximum Quantity",
+        "description": "Maximum quantity of items this promotion applies to"
+      },
+      "type": {
+        "standard": {
+          "title": "Standard",
+          "description": "A standard promotion"
+        },
+        "buyget": {
+          "title": "Buy Get",
+          "description": "Buy X get Y promotion"
         }
       },
       "allocation": {
         "each": {
           "title": "Each",
-          "description": "Applies value on each product"
+          "description": "Applies value on each item"
         },
         "across": {
           "title": "Across",
-          "description": "Applies value proportionally across products"
+          "description": "Applies value across items"
         }
       },
       "code": {

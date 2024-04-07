@@ -57,7 +57,7 @@ async function updatePromotionRules(
   payload: BatchUpdatePromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/update`,
+    `/admin/promotions/${id}/rules/batch/update`,
     payload
   )
 }

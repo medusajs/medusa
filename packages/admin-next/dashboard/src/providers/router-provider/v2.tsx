@@ -151,6 +151,11 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
               {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-create"),
+              },
+              {
                 path: ":id",
                 lazy: () =>
                   import("../../v2-routes/promotions/promotion-detail"),

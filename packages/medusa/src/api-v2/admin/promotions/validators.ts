@@ -130,9 +130,8 @@ export class AdminPostApplicationMethodsReq {
   @IsString()
   description?: string
 
-  @IsOptional()
-  @IsString()
-  value?: string
+  @IsNumber()
+  value: number
 
   @IsOptional()
   @IsNumber()

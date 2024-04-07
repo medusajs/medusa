@@ -53,7 +53,6 @@ export const EditPromotionDetailsForm = ({
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("data ------ ", data)
     await mutateAsync(
       {
         is_automatic: data.is_automatic === "true",
