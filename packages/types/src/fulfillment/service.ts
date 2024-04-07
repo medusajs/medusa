@@ -375,12 +375,12 @@ export interface IFulfillmentModuleService extends IModuleService {
     id: string,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
-  ): Promise<ShippingOptionDTO[]>
+  ): Promise<ShippingOptionDTO>
   updateShippingOptions(
     selector: FilterableShippingOptionProps,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
-  ): Promise<ShippingOptionDTO>
+  ): Promise<ShippingOptionDTO[]>
 
   /**
    * Upsert a shipping option
