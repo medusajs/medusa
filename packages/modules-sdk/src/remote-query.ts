@@ -93,9 +93,11 @@ export class RemoteQuery {
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
+    let hasStar = false
+
     for (const field of expand.fields ?? []) {
       if (field === "*") {
-        expand.fields = undefined
+        hasStar = true
         break
       }
       fields.add(prefix ? `${prefix}.${field}` : field)
@@ -120,7 +122,9 @@ export class RemoteQuery {
     }
 
     const allFields = Array.from(fields)
-    return { select: allFields.length ? allFields : undefined, relations, args }
+    const select =
+      allFields.length && !hasStar ? allFields : hasStar ? undefined : []
+    return { select, relations, args }
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {
