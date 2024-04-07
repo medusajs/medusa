@@ -536,6 +536,8 @@
     "add": "Add shipping",
     "connectProvider": "Connect provider",
     "addZone": "Add shipping zone",
+    "enablePickup": "Enable pickup",
+    "enableDelivery": "Enable delivery",
     "create": {
       "title": "Add shipping for {{location}}",
       "delivery": "Delivery",

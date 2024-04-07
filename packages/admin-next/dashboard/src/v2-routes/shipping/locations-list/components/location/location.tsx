@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { Buildings } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
+import { useCreateFulfillmentSet } from "../../../../../hooks/api/stock-locations.tsx"
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -12,12 +13,28 @@ enum FulfillmentSetType {
 }
 
 type FulfillmentSetProps = {
-  fulfillmentSet: FulfillmentSetDTO
+  fulfillmentSet?: FulfillmentSetDTO
+  locationName: string
+  type: FulfillmentSetType
 }
 
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
-  const { fulfillmentSet } = props
+  const { fulfillmentSet, locationName, type } = props
+
+  const { mutateAsync, isPending: isLoading } = useCreateFulfillmentSet(
+    location.id
+  )
+
+  const isPickup = fulfillmentSet?.type === FulfillmentSetType.Pickup
+  const isDelivery = fulfillmentSet?.type === FulfillmentSetType.Delivery
+
+  const enable = async () => {
+    await mutateAsync({
+      name: `${locationName} ${type}`,
+      type: type,
+    })
+  }
 
   const hasServiceZones = !!fulfillmentSet.service_zones?.length
 
@@ -48,9 +65,6 @@ type LocationProps = {
 function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
-  const navigate = useNavigate()
-
-  const hasFulfillmentSets = !!location.fulfillment_sets.length
 
   return (
     <Container className="flex flex-col divide-y p-0">
@@ -87,39 +101,11 @@ function Location(props: LocationProps) {
           </div>
 
           {/*ACTION*/}
-          <div className="flex grow-0 gap-2">
-            <Button variant="secondary">{t("shipping.connectProvider")}</Button>
-            {!hasFulfillmentSets && (
-              <Button
-                onClick={() =>
-                  navigate(`/settings/shipping/location/${location.id}/create`)
-                }
-                variant="secondary"
-              >
-                {t("shipping.add")}
-              </Button>
-            )}
-            {hasFulfillmentSets && (
-              <Button
-                onClick={() =>
-                  navigate(
-                    // TODO: do we render all fulfillemtn sets here
-                    `/settings/shipping/location/${location.id}/fulfillment-set/${location.fulfillment_sets[0].id}/service-zone/create`
-                  )
-                }
-                variant="secondary"
-              >
-                {t("shipping.addZone")}
-              </Button>
-            )}
-          </div>
+          <div className="flex grow-0 gap-2">{/*// TODO*/}</div>
         </div>
       </div>
 
-      {hasFulfillmentSets &&
-        location.fulfillment_sets.map((f) => (
-          <FulfillmentSet key={f.id} fulfillmentSet={f} />
-        ))}
+      <FulfillmentSet type={FulfillmentSetType.Pickup} fulfillmentSet={f} />
     </Container>
   )
 }
