@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { PriceList } from "@medusajs/medusa"
+import { PriceListDTO } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
 import { useAdminDeletePriceList } from "medusa-react"
 import { useTranslation } from "react-i18next"
@@ -8,7 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { getPriceListStatus } from "../../../common/utils"
 
 type PricingGeneralSectionProps = {
-  priceList: PriceList
+  priceList: PriceListDTO
 }
 
 export const PricingGeneralSection = ({
@@ -28,7 +28,7 @@ export const PricingGeneralSection = ({
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("pricing.deletePriceListWarning", {
-        name: priceList.name,
+        name: priceList.title,
       }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
@@ -53,7 +53,7 @@ export const PricingGeneralSection = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{priceList.name}</Heading>
+        <Heading>{priceList.title}</Heading>
         <div className="flex items-center gap-x-4">
           <StatusBadge color={color}>{text}</StatusBadge>
           <ActionMenu

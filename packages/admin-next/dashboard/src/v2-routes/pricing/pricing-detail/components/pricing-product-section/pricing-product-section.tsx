@@ -1,5 +1,6 @@
 import { PencilSquare, Plus } from "@medusajs/icons"
-import { PriceList, Product } from "@medusajs/medusa"
+import { Product } from "@medusajs/medusa"
+import { PriceListDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import {
@@ -17,7 +18,7 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type PricingProductSectionProps = {
-  priceList: PriceList
+  priceList: PriceListDTO
 }
 
 const PAGE_SIZE = 10
@@ -52,7 +53,7 @@ export const PricingProductSection = ({
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (products || []) as Product[],
+    data: products || [],
     count,
     columns,
     enablePagination: true,

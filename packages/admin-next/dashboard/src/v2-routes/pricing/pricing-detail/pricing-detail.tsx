@@ -1,6 +1,6 @@
-import { useAdminPriceList } from "medusa-react"
 import { Outlet, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { usePriceList } from "../../../hooks/api/price-lists"
 import { PricingConfigurationSection } from "./components/pricing-configuration-section"
 import { PricingGeneralSection } from "./components/pricing-general-section"
 import { PricingProductSection } from "./components/pricing-product-section"
@@ -8,7 +8,7 @@ import { PricingProductSection } from "./components/pricing-product-section"
 export const PricingDetail = () => {
   const { id } = useParams()
 
-  const { price_list, isLoading, isError, error } = useAdminPriceList(id!)
+  const { price_list, isLoading, isError, error } = usePriceList(id!)
 
   if (isLoading || !price_list) {
     return <div>Loading...</div>

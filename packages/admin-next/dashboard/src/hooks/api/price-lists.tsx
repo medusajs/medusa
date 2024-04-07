@@ -12,7 +12,11 @@ import {
   CreatePriceListReq,
   UpdatePriceListReq,
 } from "../../types/api-payloads"
-import { PriceListListRes, PriceListRes } from "../../types/api-responses"
+import {
+  PriceListDeleteRes,
+  PriceListListRes,
+  PriceListRes,
+} from "../../types/api-responses"
 
 const PRICE_LISTS_QUERY_KEY = "price-lists" as const
 export const priceListsQueryKeys = queryKeysFactory(PRICE_LISTS_QUERY_KEY)
@@ -75,6 +79,21 @@ export const useUpdatePriceList = (
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.detail(id),
       })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeletePriceList = (
+  id: string,
+  options?: UseMutationOptions<PriceListDeleteRes, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.priceLists.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
 
       options?.onSuccess?.(data, variables, context)
     },

@@ -1,8 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, ProgressTabs } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
+import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { FieldPath, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { CreatePriceListDTO } from "@medusajs/types"
+import { useState } from "react"
+import { z } from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -11,15 +14,36 @@ import { useCreatePriceList } from "../../../../../hooks/api/price-lists"
 import { PricingDetailsForm } from "./pricing-details-form"
 import { PricingPricesForm } from "./pricing-prices-form"
 import { PricingProductsForm } from "./pricing-products-form"
-import { PricingCreateSchema, PricingCreateSchemaType } from "./schema"
+import {
+  PricingCreateSchema,
+  PricingCreateSchemaType,
+  PricingDetailsFields,
+  PricingDetailsSchema,
+  PricingPricesFields,
+  PricingProductsFields,
+  PricingProductsSchema,
+} from "./schema"
 
-enum Tabs {
-  DETAILS = "details",
-  PRODUCTS = "products",
-  PRICES = "prices",
+enum Tab {
+  DETAIL = "detail",
+  PRODUCT = "product",
+  PRICE = "price",
+}
+
+const tabOrder = [Tab.DETAIL, Tab.PRODUCT, Tab.PRICE] as const
+
+type TabState = Record<Tab, ProgressStatus>
+
+const initialTabState: TabState = {
+  [Tab.DETAIL]: "in-progress",
+  [Tab.PRODUCT]: "not-started",
+  [Tab.PRICE]: "not-started",
 }
 
 export const PricingCreateForm = () => {
+  const [tab, setTab] = useState<Tab>(Tab.DETAIL)
+  const [tabState, setTabState] = useState<TabState>(initialTabState)
+
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -38,37 +62,184 @@ export const PricingCreateForm = () => {
 
   const { mutateAsync, isPending } = useCreatePriceList()
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    await mutateAsync(
-      {
-        title: data.title,
-        description: data.description,
-        starts_at: data.starts_at ? data.starts_at.toISOString() : null,
-        ends_at: data.ends_at ? data.ends_at.toISOString() : null,
-      },
-      {
-        onSuccess: ({ price_list }) => {
-          handleSuccess(`../${price_list.id}`)
+  const handleSubmit = form.handleSubmit(
+    async (data) => {
+      await mutateAsync(
+        {
+          title: data.title,
+          type: data.type as CreatePriceListDTO["type"],
+          description: data.description,
+          starts_at: data.starts_at ? data.starts_at.toISOString() : null,
+          ends_at: data.ends_at ? data.ends_at.toISOString() : null,
+          prices: [],
         },
+        {
+          onSuccess: ({ price_list }) => {
+            handleSuccess(`../${price_list.id}`)
+          },
+        }
+      )
+    },
+    (err) => console.error(err)
+  )
+
+  const partialFormValidation = (
+    fields: FieldPath<PricingCreateSchemaType>[],
+    schema: z.ZodSchema<any>
+  ) => {
+    form.clearErrors(fields)
+
+    const values = fields.reduce((acc, key) => {
+      acc[key] = form.getValues(key)
+      return acc
+    }, {} as Record<string, unknown>)
+
+    const validationResult = schema.safeParse(values)
+
+    if (!validationResult.success) {
+      validationResult.error.errors.forEach(({ path, message }) => {
+        form.setError(path.join(".") as keyof PricingCreateSchemaType, {
+          type: "manual",
+          message,
+        })
+      })
+
+      return false
+    }
+
+    return true
+  }
+
+  const isTabDirty = (tab: Tab) => {
+    if (tab === Tab.DETAIL) {
+      const fields = PricingDetailsFields
+
+      return fields.some((field) => {
+        return form.getFieldState(field).isDirty
+      })
+    }
+
+    if (tab === Tab.PRODUCT) {
+      const fields = PricingProductsFields
+
+      return fields.some((field) => {
+        return form.getFieldState(field).isDirty
+      })
+    }
+
+    if (tab === Tab.PRICE) {
+      const fields = PricingPricesFields
+
+      return fields.some((field) => {
+        return form.getFieldState(field).isDirty
+      })
+    }
+  }
+
+  const handleChangeTab = (update: Tab) => {
+    if (tab === update) {
+      return
+    }
+
+    if (tabOrder.indexOf(update) < tabOrder.indexOf(tab)) {
+      const isCurrentTabDirty = isTabDirty(tab)
+
+      setTabState((prev) => ({
+        ...prev,
+        [tab]: isCurrentTabDirty ? prev[tab] : "not-started",
+        [update]: "in-progress",
+      }))
+
+      setTab(update)
+      return
+    }
+
+    // get the tabs from the current tab to the update tab including the current tab
+    const tabs = tabOrder.slice(0, tabOrder.indexOf(update))
+
+    // validate all the tabs from the current tab to the update tab if it fails on any of tabs then set that tab as current tab
+    for (const tab of tabs) {
+      if (tab === Tab.DETAIL) {
+        if (
+          !partialFormValidation(PricingDetailsFields, PricingDetailsSchema)
+        ) {
+          setTabState((prev) => ({
+            ...prev,
+            [tab]: "in-progress",
+          }))
+          setTab(tab)
+          return
+        }
+
+        setTabState((prev) => ({
+          ...prev,
+          [tab]: "completed",
+        }))
+      } else if (tab === Tab.PRODUCT) {
+        if (
+          !partialFormValidation(PricingProductsFields, PricingProductsSchema)
+        ) {
+          setTabState((prev) => ({
+            ...prev,
+            [tab]: "in-progress",
+          }))
+          setTab(tab)
+
+          return
+        }
+
+        setTabState((prev) => ({
+          ...prev,
+          [tab]: "completed",
+        }))
       }
-    )
-  })
+    }
+
+    setTabState((prev) => ({
+      ...prev,
+      [tab]: "completed",
+      [update]: "in-progress",
+    }))
+    setTab(update)
+  }
+
+  const handleNextTab = (tab: Tab) => {
+    if (tabOrder.indexOf(tab) + 1 >= tabOrder.length) {
+      return
+    }
+
+    const nextTab = tabOrder[tabOrder.indexOf(tab) + 1]
+    handleChangeTab(nextTab)
+  }
 
   return (
     <RouteFocusModal.Form form={form}>
-      <ProgressTabs className="flex h-full flex-col overflow-hidden">
+      <ProgressTabs
+        value={tab}
+        onValueChange={(tab) => handleChangeTab(tab as Tab)}
+        className="flex h-full flex-col overflow-hidden"
+      >
         <form onSubmit={handleSubmit} className="flex h-full flex-col">
           <RouteFocusModal.Header>
             <div className="flex w-full items-center justify-between gap-x-4">
               <div className="-my-2 w-full max-w-[400px] border-l">
                 <ProgressTabs.List className="grid w-full grid-cols-3">
-                  <ProgressTabs.Trigger value={Tabs.DETAILS}>
+                  <ProgressTabs.Trigger
+                    status={tabState.detail}
+                    value={Tab.DETAIL}
+                  >
                     Details
                   </ProgressTabs.Trigger>
-                  <ProgressTabs.Trigger value={Tabs.PRODUCTS}>
+                  <ProgressTabs.Trigger
+                    status={tabState.product}
+                    value={Tab.PRODUCT}
+                  >
                     Products
                   </ProgressTabs.Trigger>
-                  <ProgressTabs.Trigger value={Tabs.PRICES}>
+                  <ProgressTabs.Trigger
+                    status={tabState.price}
+                    value={Tab.PRICE}
+                  >
                     Prices
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
@@ -79,33 +250,30 @@ export const PricingCreateForm = () => {
                     {t("actions.cancel")}
                   </Button>
                 </RouteFocusModal.Close>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="small"
+                <PrimaryButton
+                  tab={tab}
+                  next={handleNextTab}
                   isLoading={isPending}
-                >
-                  {t("actions.save")}
-                </Button>
+                />
               </div>
             </div>
           </RouteFocusModal.Header>
           <RouteFocusModal.Body className="size-full overflow-hidden">
             <ProgressTabs.Content
               className="size-full overflow-y-auto"
-              value={Tabs.DETAILS}
+              value={Tab.DETAIL}
             >
               <PricingDetailsForm form={form} />
             </ProgressTabs.Content>
             <ProgressTabs.Content
               className="size-full overflow-y-auto"
-              value={Tabs.PRODUCTS}
+              value={Tab.PRODUCT}
             >
               <PricingProductsForm form={form} />
             </ProgressTabs.Content>
             <ProgressTabs.Content
               className="size-full overflow-hidden"
-              value={Tabs.PRICES}
+              value={Tab.PRICE}
             >
               <PricingPricesForm form={form} />
             </ProgressTabs.Content>
@@ -113,5 +281,39 @@ export const PricingCreateForm = () => {
         </form>
       </ProgressTabs>
     </RouteFocusModal.Form>
+  )
+}
+
+type PrimaryButtonProps = {
+  tab: Tab
+  next: (tab: Tab) => void
+  isLoading?: boolean
+}
+
+const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
+  const { t } = useTranslation()
+
+  if (tab === Tab.PRICE) {
+    return (
+      <Button
+        type="submit"
+        variant="primary"
+        size="small"
+        isLoading={isLoading}
+      >
+        {t("actions.save")}
+      </Button>
+    )
+  }
+
+  return (
+    <Button
+      type="button"
+      variant="primary"
+      size="small"
+      onClick={() => next(tab)}
+    >
+      {t("actions.continue")}
+    </Button>
   )
 }

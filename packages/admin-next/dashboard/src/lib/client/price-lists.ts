@@ -2,7 +2,11 @@ import {
   CreatePriceListReq,
   UpdatePriceListReq,
 } from "../../types/api-payloads"
-import { PriceListListRes, PriceListRes } from "../../types/api-responses"
+import {
+  PriceListDeleteRes,
+  PriceListListRes,
+  PriceListRes,
+} from "../../types/api-responses"
 import { getRequest, postRequest } from "./common"
 
 async function retrievePriceLists(id: string, query?: Record<string, any>) {
@@ -21,9 +25,14 @@ async function updatePriceList(id: string, payload: UpdatePriceListReq) {
   return postRequest<PriceListRes>(`/admin/price-lists/${id}`, payload)
 }
 
+async function deletePriceList(id: string) {
+  return postRequest<PriceListDeleteRes>(`/admin/price-lists/${id}/delete`)
+}
+
 export const priceLists = {
   retrieve: retrievePriceLists,
   list: listPriceLists,
   create: createPriceList,
   update: updatePriceList,
+  delete: deletePriceList,
 }
