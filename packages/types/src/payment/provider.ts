@@ -1,5 +1,6 @@
 import { AddressDTO } from "../address"
 import { CustomerDTO } from "../customer"
+import { BigNumberInput, BigNumberValue } from "../totals"
 import { PaymentSessionStatus } from "./common"
 import { ProviderWebhookPayload } from "./mutations"
 
@@ -85,7 +86,7 @@ export type CreatePaymentProviderSession = {
   /**
    * The amount to be authorized.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The ISO 3 character currency code.
@@ -112,7 +113,7 @@ export type UpdatePaymentProviderSession = {
   /**
    * The payment session's amount.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The ISO 3 character code of the payment session.
@@ -203,7 +204,7 @@ export type WebhookActionData = {
   /**
    * The amount to be captured or authorized (based on the action's type.)
    */
-  amount: number
+  amount: BigNumberValue
 }
 
 /**
@@ -310,12 +311,12 @@ export interface IPaymentProvider {
    * In this method, you can interact with the third-party provider and perform any actions necessary to refund the payment.
    *
    * @param {Record<string, unknown>} paymentSessionData - The `data` field of a Payment.
-   * @param {number} refundAmount - The amount to refund.
+   * @param {BigNumberInput} refundAmount - The amount to refund.
    * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>} Either an error object or an object that's stored in the `data` field of the payment.
    */
   refundPayment(
     paymentSessionData: Record<string, unknown>,
-    refundAmount: number
+    refundAmount: BigNumberInput
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**

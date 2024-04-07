@@ -87,7 +87,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
   const { product_categories, isLoading: isLoadingCategories } = useCategories()
 
   const options = form.watch("options")
-  const optionPermutations = permutations(options)
+  const optionPermutations = permutations(options ?? [])
 
   // const { append } = useFieldArray({
   //   name: "images",
@@ -396,7 +396,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     control={form.control}
                     name="options"
                     render={({ field: { onChange, value } }) => {
-                      const normalizedValue = value.map((v) => {
+                      const normalizedValue = (value ?? []).map((v) => {
                         return {
                           key: v.title,
                           value: v.values.join(","),
@@ -443,7 +443,9 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     control={form.control}
                     name="variants"
                     render={({ field: { value, onChange, ...field } }) => {
-                      const selectedOptions = value.map((v) => v.options)
+                      const selectedOptions = (value ?? []).map(
+                        (v) => v.options
+                      )
                       return (
                         <Form.Item>
                           <Form.Label optional>

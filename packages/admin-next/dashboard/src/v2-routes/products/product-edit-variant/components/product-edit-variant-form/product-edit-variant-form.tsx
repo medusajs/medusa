@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product, ProductOption, ProductVariant } from "@medusajs/medusa"
 import { Button, Heading, Input, Switch } from "@medusajs/ui"
-import { useAdminUpdateVariant } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -17,6 +16,7 @@ import {
 } from "../../../../../components/route-modal"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
+import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 
 type ProductEditVariantFormProps = {
   product: Product
@@ -83,7 +83,10 @@ export const ProductEditVariantForm = ({
     resolver: zodResolver(ProductEditVariantSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateVariant(product.id)
+  const { mutateAsync, isLoading } = useUpdateProductVariant(
+    product.id,
+    variant.id
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const parseNumber = (value?: string | number) => {

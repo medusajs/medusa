@@ -1,4 +1,7 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   FilterableFulfillmentProps,
   FilterableFulfillmentSetProps,
@@ -18,9 +21,6 @@ import {
   ShippingOptionTypeDTO,
   ShippingProfileDTO,
 } from "./common"
-import { FindConfig } from "../common"
-import { Context } from "../shared-context"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -34,9 +34,11 @@ import {
   UpdateShippingOptionDTO,
   UpdateShippingOptionRuleDTO,
   UpdateShippingProfileDTO,
+  UpsertServiceZoneDTO,
+  UpsertShippingOptionDTO,
 } from "./mutations"
-import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
+import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 
 export interface IFulfillmentModuleService extends IModuleService {
   /**
@@ -176,17 +178,29 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ServiceZoneDTO>
   /**
    * Update a service zone
-   * @param data
-   * @param sharedContext
    */
   updateServiceZones(
-    data: UpdateServiceZoneDTO[],
-    sharedContext?: Context
-  ): Promise<ServiceZoneDTO[]>
-  updateServiceZones(
+    id: string,
     data: UpdateServiceZoneDTO,
     sharedContext?: Context
   ): Promise<ServiceZoneDTO>
+  updateServiceZones(
+    selector: FilterableServiceZoneProps,
+    data: UpdateServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO[]>
+
+  /**
+   * Upsert a service zone
+   */
+  upsertServiceZones(
+    data: UpsertServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO>
+  upsertServiceZones(
+    data: UpsertServiceZoneDTO[],
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO[]>
   /**
    * Delete a service zone
    * @param ids
@@ -363,19 +377,35 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: CreateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+
   /**
    * Update a shipping option
+   * @param id
    * @param data
    * @param sharedContext
    */
   updateShippingOptions(
-    data: UpdateShippingOptionDTO[],
-    sharedContext?: Context
-  ): Promise<ShippingOptionDTO[]>
-  updateShippingOptions(
+    id: string,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+  updateShippingOptions(
+    selector: FilterableShippingOptionProps,
+    data: UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
+
+  /**
+   * Upsert a shipping option
+   */
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO>
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
   /**
    * Delete a shippingOption
    * @param ids

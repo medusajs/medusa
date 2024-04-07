@@ -1,11 +1,11 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPaymentModuleService } from "@medusajs/types"
+import { BigNumberInput, IPaymentModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type StepInput = {
   region_id: string
   currency_code: string
-  amount: number
+  amount: BigNumberInput
   metadata?: Record<string, unknown>
 }
 

@@ -110,6 +110,16 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-attributes"),
                   },
                   {
+                    path: "organization",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-organization"),
+                  },
+                  {
+                    path: "media",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-media"),
+                  },
+                  {
                     path: "options/create",
                     lazy: () =>
                       import("../../v2-routes/products/product-create-option"),
@@ -120,9 +130,9 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-edit-option"),
                   },
                   {
-                    path: "media",
+                    path: "variants/create",
                     lazy: () =>
-                      import("../../v2-routes/products/product-media"),
+                      import("../../v2-routes/products/product-create-variant"),
                   },
                   {
                     path: "variants/:variant_id/edit",

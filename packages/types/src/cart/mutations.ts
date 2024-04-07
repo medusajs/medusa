@@ -1,3 +1,4 @@
+import { BigNumberInput } from "../totals"
 import { CartDTO, CartLineItemDTO } from "./common"
 
 /** ADDRESS START */
@@ -228,7 +229,7 @@ export interface CreateAdjustmentDTO {
   /**
    * The amount to adjust the original amount with.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The description of the adjustment.
@@ -264,7 +265,7 @@ export interface UpdateAdjustmentDTO {
   /**
    * The amount to adjust the original amount with.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The description of the adjustment.
@@ -325,7 +326,7 @@ export interface UpsertLineItemAdjustmentDTO {
   /**
    * The amount to adjust the original amount with.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * The description of the line item adjustment.
@@ -463,7 +464,7 @@ export interface CreateLineItemDTO {
   /**
    * The quantity of the line item in the cart.
    */
-  quantity: number
+  quantity: BigNumberInput
 
   /**
    * The associated product's ID.
@@ -543,12 +544,12 @@ export interface CreateLineItemDTO {
   /**
    * The calculated price of the line item after applying promotions.
    */
-  compare_at_unit_price?: number
+  compare_at_unit_price?: BigNumberInput
 
   /**
    * The unit price of the line item.
    */
-  unit_price: number | string
+  unit_price: BigNumberInput
 
   /**
    * The tax lines of the line item.
@@ -626,12 +627,12 @@ export interface UpdateLineItemDTO
   /**
    * The quantity of the line item in the cart.
    */
-  quantity?: number
+  quantity?: BigNumberInput
 
   /**
    * The unit price of the line item.
    */
-  unit_price?: number
+  unit_price?: BigNumberInput
 
   /**
    * Holds custom data in key-value pairs.
@@ -670,7 +671,7 @@ export interface CreateShippingMethodDTO {
   /**
    * The amount of the shipping method.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The data of the shipping method.
@@ -700,7 +701,7 @@ export interface CreateShippingMethodForSingleCartDTO {
   /**
    * The amount of the shipping method.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The data of the shipping method.
@@ -735,7 +736,7 @@ export interface UpdateShippingMethodDTO {
   /**
    * The amount of the shipping method.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * The data of the shipping method.
@@ -771,7 +772,7 @@ export interface CreateShippingMethodAdjustmentDTO {
   /**
    * The amount to adjust the original amount with.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The description of the shipping method adjustment.
@@ -807,7 +808,7 @@ export interface UpdateShippingMethodAdjustmentDTO {
   /**
    * The amount to adjust the original amount with.
    */
-  amount?: number
+  amount?: BigNumberInput
 
   /**
    * The description of the shipping method adjustment.

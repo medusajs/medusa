@@ -40,7 +40,7 @@ export interface CreateOrderDTO {
   no_notification?: boolean
   items?: CreateOrderLineItemDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[]
-  transactions?: CreateOrderTransactionDTO[]
+  transactions?: Omit<CreateOrderTransactionDTO, "order_id">[]
   metadata?: Record<string, unknown>
 
   promo_codes?: string[]
@@ -244,7 +244,9 @@ export interface CreateOrderChangeDTO {
   internal_note?: string
   requested_by?: string
   requested_at?: Date
+  created_by?: string
   metadata?: Record<string, unknown>
+  actions?: CreateOrderChangeActionDTO[]
 }
 
 export interface UpdateOrderChangeDTO {
@@ -286,9 +288,9 @@ export interface ConfirmOrderChangeDTO {
 /** ORDER CHANGE ACTION START */
 
 export interface CreateOrderChangeActionDTO {
-  order_change_id: string
-  reference: string
-  reference_id: string
+  order_change_id?: string
+  reference?: string
+  reference_id?: string
   action: string
   internal_note?: string
   details?: Record<string, unknown>

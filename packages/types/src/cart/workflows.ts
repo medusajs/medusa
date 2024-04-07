@@ -2,11 +2,12 @@ import { CustomerDTO } from "../customer"
 import { ShippingOptionDTO } from "../fulfillment"
 import { ProductDTO } from "../product"
 import { RegionDTO } from "../region"
+import { BigNumberInput } from "../totals"
 import { CartDTO, CartLineItemDTO } from "./common"
 import { UpdateLineItemDTO } from "./mutations"
 
 export interface CreateCartCreateLineItemDTO {
-  quantity: number
+  quantity: BigNumberInput
   variant_id: string
   title?: string
 
@@ -31,8 +32,8 @@ export interface CreateCartCreateLineItemDTO {
   is_tax_inclusive?: boolean
   is_giftcard?: boolean
 
-  compare_at_unit_price?: number
-  unit_price?: number | string
+  compare_at_unit_price?: BigNumberInput
+  unit_price?: BigNumberInput
 
   metadata?: Record<string, unknown>
 }
@@ -93,7 +94,7 @@ export interface CreatePaymentCollectionForCartWorkflowInputDTO {
   cart_id: string
   region_id: string
   currency_code: string
-  amount: number
+  amount: BigNumberInput
   metadata?: Record<string, unknown>
 }
 
@@ -115,5 +116,5 @@ export interface ListShippingOptionsForCartWorkflowInputDTO {
 }
 
 export interface PricedShippingOptionDTO extends ShippingOptionDTO {
-  amount: number
+  amount: BigNumberInput
 }
