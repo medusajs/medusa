@@ -15,8 +15,6 @@ export const GET = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const filters = { id: req.params.id }
-  console.log("filters - ", filters)
-  console.log("req.remoteQueryConfig.fields - ", req.remoteQueryConfig.fields)
   const [taxRegion] = await remoteQuery(
     remoteQueryObjectFromString({
       entryPoint: "tax_region",

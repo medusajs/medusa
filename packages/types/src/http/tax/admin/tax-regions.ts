@@ -1,4 +1,5 @@
 import { PaginatedResponse } from "../../../common"
+import { TaxRateResponse } from "./tax-rates"
 
 /**
  * @experimental
@@ -16,6 +17,8 @@ interface TaxRegionResponse {
   updated_at: string | Date
   deleted_at: Date | null
   created_by: string | null
+
+  tax_rates: TaxRateResponse[]
 }
 
 /**

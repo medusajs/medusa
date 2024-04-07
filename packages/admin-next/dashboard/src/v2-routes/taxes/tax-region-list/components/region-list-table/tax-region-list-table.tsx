@@ -19,9 +19,12 @@ const PAGE_SIZE = 20
 export const TaxRegionListTable = () => {
   const { t } = useTranslation()
 
-  const { searchParams, raw } = useTaxRegionTableQuery({ pageSize: PAGE_SIZE })
+  const { searchParams, raw } = useTaxRegionTableQuery({
+    pageSize: PAGE_SIZE,
+  })
   const { tax_regions, count, isLoading, isError, error } = useTaxRegions({
     ...searchParams,
+    parent_id: "null",
   })
 
   const filters = useRegionTableFilters()

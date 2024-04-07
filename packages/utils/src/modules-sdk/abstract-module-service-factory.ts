@@ -416,8 +416,6 @@ export function abstractModuleServiceFactory<
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          console.log("filters --- ", JSON.stringify(filters, null, 2))
-          console.log("config --- ", JSON.stringify(config, null, 2))
           const service = this.__container__[serviceRegistrationName]
           const entities = await service.list(filters, config, sharedContext)
 
@@ -436,9 +434,6 @@ export function abstractModuleServiceFactory<
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          console.log("filters --- ", JSON.stringify(filters, null, 2))
-          console.log("config --- ", JSON.stringify(config, null, 2))
-
           const [entities, count] = await this.__container__[
             serviceRegistrationName
           ].listAndCount(filters, config, sharedContext)
