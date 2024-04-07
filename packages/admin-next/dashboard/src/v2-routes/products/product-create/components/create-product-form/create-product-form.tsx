@@ -56,10 +56,6 @@ export const CreateProductForm = () => {
 
   const form = useForm<Schema>({
     defaultValues: {
-      title: "",
-      subtitle: "",
-      handle: "",
-      description: "",
       discountable: true,
       tags: [],
       sales_channels: [],
@@ -83,10 +79,11 @@ export const CreateProductForm = () => {
         length: values.length ? parseFloat(values.length) : undefined,
         height: values.height ? parseFloat(values.height) : undefined,
         weight: values.weight ? parseFloat(values.weight) : undefined,
-        variants: values.variants,
+        variants: values.variants.map((variant) => ({
+          ...variant,
+          prices: [],
+        })),
       } as any
-
-      delete reqData.sales_channels
 
       await mutateAsync(reqData, {
         onSuccess: ({ product }) => {

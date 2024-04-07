@@ -555,6 +555,20 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "taxes",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Taxes",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/taxes/tax-region-list"),
+                children: [],
+              },
+            ],
+          },
         ],
       },
     ],

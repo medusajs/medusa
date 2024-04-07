@@ -17,6 +17,7 @@ import { salesChannels } from "./sales-channels"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { tags } from "./tags"
+import { taxes } from "./taxes"
 import { users } from "./users"
 import { workflowExecutions } from "./workflow-executions"
 
@@ -35,6 +36,7 @@ export const client = {
   tags: tags,
   users: users,
   regions: regions,
+  taxes: taxes,
   invites: invites,
   products: products,
   productTypes: productTypes,

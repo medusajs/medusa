@@ -202,6 +202,7 @@ export const AdminCreateProduct = z
     tags: z.array(AdminUpdateProductTag).optional(),
     options: z.array(AdminCreateProductOption).optional(),
     variants: z.array(AdminCreateProductVariant).optional(),
+    sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().optional(),
     length: z.number().optional(),
     height: z.number().optional(),
@@ -231,12 +232,3 @@ export const AdminUpdateProduct = AdminCreateProduct.omit({ is_giftcard: true })
 // @ValidateNested({ each: true })
 // @IsArray()
 // categories?: ProductProductCategoryReq[]
-
-// TODO: Deal with in next iteration
-// @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
-//   IsOptional(),
-//   Type(() => ProductSalesChannelReq),
-//   ValidateNested({ each: true }),
-//   IsArray(),
-// ])
-// sales_channels?: ProductSalesChannelReq[]

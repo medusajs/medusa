@@ -5,9 +5,6 @@ import type {
   AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
-  AdminRegionsRes,
-  AdminSalesChannelsRes,
-  AdminUserRes,
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
 
