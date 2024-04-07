@@ -9,32 +9,32 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useCreateProductOption } from "../../../../../hooks/api/products"
+import { useCreateProductVariant } from "../../../../../hooks/api/products"
 
-type EditProductOptionsFormProps = {
+type EditProductVariantsFormProps = {
   product: Product
 }
 
-const CreateProductOptionSchema = z.object({
+const CreateProductVariantSchema = z.object({
   title: z.string().min(1),
   values: z.array(z.string()).optional(),
 })
 
-export const CreateProductOptionForm = ({
+export const CreateProductVariantForm = ({
   product,
-}: EditProductOptionsFormProps) => {
+}: EditProductVariantsFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<z.infer<typeof CreateProductOptionSchema>>({
+  const form = useForm<z.infer<typeof CreateProductVariantSchema>>({
     defaultValues: {
       title: "",
       values: [],
     },
-    resolver: zodResolver(CreateProductOptionSchema),
+    resolver: zodResolver(CreateProductVariantSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateProductOption(product.id)
+  const { mutateAsync, isLoading } = useCreateProductVariant(product.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {
@@ -57,9 +57,7 @@ export const CreateProductOptionForm = ({
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>
-                    {t("products.fields.options.optionTitle")}
-                  </Form.Label>
+                  <Form.Label>title</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -74,9 +72,7 @@ export const CreateProductOptionForm = ({
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
-                  <Form.Label>
-                    {t("products.fields.options.variations")}
-                  </Form.Label>
+                  <Form.Label>value</Form.Label>
                   <Form.Control>
                     <Input
                       {...field}

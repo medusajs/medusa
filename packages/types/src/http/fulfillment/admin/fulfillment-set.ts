@@ -3,7 +3,7 @@ import { AdminServiceZoneResponse } from "./service-zone"
 /**
  * @experimental
  */
-export interface AdminFulfillmentSetResponse {
+export interface FulfillmentSetResponse {
   id: string
   name: string
   type: string
@@ -12,4 +12,11 @@ export interface AdminFulfillmentSetResponse {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+/**
+ * @experimental
+ */
+export interface AdminFulfillmentSetResponse {
+  fulfillment_set: FulfillmentSetResponse
 }

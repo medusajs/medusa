@@ -1,3 +1,4 @@
+import { FulfillmentSetResponse } from "./fulfillment-set"
 import { AdminGeoZoneResponse } from "./geo-zone"
 
 /**
@@ -11,4 +12,14 @@ export interface AdminServiceZoneResponse {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+/**
+ * @experimental
+ */
+export interface AdminServiceZoneDeleteResponse {
+  id: string
+  object: "service-zone"
+  deleted: boolean
+  parent: FulfillmentSetResponse
 }

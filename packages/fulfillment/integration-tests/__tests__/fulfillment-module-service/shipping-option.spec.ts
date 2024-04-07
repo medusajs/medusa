@@ -9,6 +9,7 @@ import { resolve } from "path"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 import { GeoZoneType } from "@medusajs/utils"
+import { UpdateShippingOptionDTO } from "@medusajs/types/src"
 
 jest.setTimeout(100000)
 
@@ -592,7 +593,7 @@ moduleIntegrationTestRunner({
               shippingOptionData
             )
 
-            const updateData = {
+            const updateData: UpdateShippingOptionDTO = {
               id: shippingOption.id,
               name: "updated-test",
               price_type: "calculated",
@@ -617,6 +618,7 @@ moduleIntegrationTestRunner({
             }
 
             const updatedShippingOption = await service.updateShippingOptions(
+              updateData.id!,
               updateData
             )
 
@@ -690,7 +692,7 @@ moduleIntegrationTestRunner({
               shippingOptionData
             )
 
-            const updateData = {
+            const updateData: Partial<UpdateShippingOptionDTO> = {
               id: shippingOption.id,
               name: "updated-test",
               price_type: "calculated",
@@ -702,7 +704,7 @@ moduleIntegrationTestRunner({
               },
             }
 
-            await service.updateShippingOptions(updateData)
+            await service.updateShippingOptions(updateData.id!, updateData)
 
             const updatedShippingOption = await service.retrieveShippingOption(
               shippingOption.id,
@@ -837,7 +839,7 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const updatedShippingOption = await service.updateShippingOptions(
+            const updatedShippingOption = await service.upsertShippingOptions(
               updateData
             )
 
@@ -943,7 +945,7 @@ moduleIntegrationTestRunner({
             }
 
             const err = await service
-              .updateShippingOptions(shippingOptionData)
+              .updateShippingOptions(shippingOptionData.id!, shippingOptionData)
               .catch((e) => e)
 
             expect(err).toBeDefined()
@@ -988,7 +990,7 @@ moduleIntegrationTestRunner({
             ]
 
             const err = await service
-              .updateShippingOptions(updateData)
+              .updateShippingOptions(updateData[0].id!, updateData[0])
               .catch((e) => e)
 
             expect(err).toBeDefined()
@@ -1035,7 +1037,7 @@ moduleIntegrationTestRunner({
             ]
 
             const err = await service
-              .updateShippingOptions(updateData)
+              .updateShippingOptions(updateData[0].id!, updateData[0])
               .catch((e) => e)
 
             expect(err).toBeDefined()
