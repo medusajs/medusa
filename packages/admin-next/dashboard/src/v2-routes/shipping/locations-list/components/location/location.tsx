@@ -1,11 +1,11 @@
 import { Button, Container, Text } from "@medusajs/ui"
 import { FulfillmentSetDTO, StockLocationDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { Buildings } from "@medusajs/icons"
+import { Buildings, Trash } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
 import { useCreateFulfillmentSet } from "../../../../../hooks/api/stock-locations.tsx"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -15,43 +15,57 @@ enum FulfillmentSetType {
 type FulfillmentSetProps = {
   fulfillmentSet?: FulfillmentSetDTO
   locationName: string
+  locationId: string
   type: FulfillmentSetType
 }
 
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
-  const { fulfillmentSet, locationName, type } = props
+  const { fulfillmentSet, locationName, locationId, type } = props
 
-  const { mutateAsync, isPending: isLoading } = useCreateFulfillmentSet(
-    location.id
-  )
+  const fulfillmentSetExists = !!fulfillmentSet
+  const hasServiceZones = !!fulfillmentSet?.service_zones?.length
 
-  const isPickup = fulfillmentSet?.type === FulfillmentSetType.Pickup
-  const isDelivery = fulfillmentSet?.type === FulfillmentSetType.Delivery
+  const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
+    useCreateFulfillmentSet(locationId)
 
-  const enable = async () => {
-    await mutateAsync({
+  // const isPickup = fulfillmentSet?.type === FulfillmentSetType.Pickup
+  // const isDelivery = fulfillmentSet?.type === FulfillmentSetType.Delivery
+
+  const handleCreate = async () => {
+    await createFulfillmentSet({
       name: `${locationName} ${type}`,
       type: type,
     })
   }
 
-  const hasServiceZones = !!fulfillmentSet.service_zones?.length
+  const handleDelete = async () => {}
 
   return (
     <div className="flex flex-col px-6 py-5">
-      <Text
-        size="small"
-        weight="plus"
-        className="text-ui-fg-subtle mb-4"
-        as="div"
-      >
-        {t("shipping.to")}
-      </Text>
+      <div className="flex items-center justify-between">
+        <Text size="small" weight="plus" className="text-ui-fg-subtle" as="div">
+          {t(`shipping.fulfillmentSet.${type}.title`)}
+        </Text>
+        {!fulfillmentSetExists ? (
+          <Button onClick={handleCreate} variant="secondary">
+            {t(`shipping.fulfillmentSet.${type}.enable`)}
+          </Button>
+        ) : (
+          <ActionMenu
+            groups={[
+              { actions: [{ label: t("actions.delete"), icon: <Trash /> }] },
+            ]}
+          />
+        )}
+      </div>
 
-      {!hasServiceZones && (
-        <div className="text-ui-fg-muted txt-medium flex h-[120px] items-center justify-center">
-          {t("shipping.fulfillmentSet.placeholder")}
+      {fulfillmentSetExists && !hasServiceZones && (
+        <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
+          <div>{t("shipping.fulfillmentSet.placeholder")}</div>
+          <Button variant="secondary">
+            {t("shipping.fulfillmentSet.addZone")}
+          </Button>
         </div>
       )}
     </div>
@@ -105,7 +119,22 @@ function Location(props: LocationProps) {
         </div>
       </div>
 
-      <FulfillmentSet type={FulfillmentSetType.Pickup} fulfillmentSet={f} />
+      <FulfillmentSet
+        locationId={location.id}
+        locationName={location.name}
+        type={FulfillmentSetType.Pickup}
+        fulfillmentSet={location.fulfillment_sets.find(
+          (f) => f.type === FulfillmentSetType.Pickup
+        )}
+      />
+      <FulfillmentSet
+        locationId={location.id}
+        locationName={location.name}
+        type={FulfillmentSetType.Delivery}
+        fulfillmentSet={location.fulfillment_sets.find(
+          (f) => f.type === FulfillmentSetType.Delivery
+        )}
+      />
     </Container>
   )
 }
