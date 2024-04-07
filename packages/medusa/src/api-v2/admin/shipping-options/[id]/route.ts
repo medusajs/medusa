@@ -2,15 +2,19 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
+import {
+  AdminShippingOptionDeleteResponse,
+  AdminShippingOptionRetrieveResponse,
+} from "@medusajs/types"
 import { AdminUpdateShippingOptionType } from "../validators"
-import { updateShippingOptionsWorkflow } from "@medusajs/core-flows"
+import {
+  deleteShippingOptionsWorkflow,
+  updateShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { deleteShippingOptionsWorkflow } from "../../../../../../core-flows/src/fulfillment/workflows/delete-shipping-options"
-import {AdminShippingOptionDeleteResponse} from "@medusajs/types";
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,
