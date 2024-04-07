@@ -1,5 +1,4 @@
-import { OperatorMap } from "@medusajs/types"
-import { Transform, Type } from "class-transformer"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
   IsBoolean,
   IsNotEmpty,
@@ -7,9 +6,36 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+import { Transform, Type } from "class-transformer"
+
 import { IsType } from "../../../utils"
+import { OperatorMap } from "@medusajs/types"
+import { OperatorMapValidator } from "../../../types/validators/operator-map"
+
+class FilterableCustomerGroupPropsValidator {
+  @IsOptional()
+  @IsString({ each: true })
+  id?: string | string[]
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => OperatorMapValidator)
+  name?: string | OperatorMap<string>
+
+  @IsOptional()
+  @IsString({ each: true })
+  created_by?: string | string[] | null
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OperatorMapValidator)
+  created_at?: OperatorMap<string>
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OperatorMapValidator)
+  updated_at?: OperatorMap<string>
+}
 
 export class AdminGetCustomersCustomerParams extends FindParams {}
 
@@ -17,6 +43,10 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,
 }) {
+  @IsOptional()
+  @IsString()
+  q?: string
+
   @IsOptional()
   @IsString({ each: true })
   id?: string | string[]
@@ -26,7 +56,7 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   email?: string | string[] | OperatorMap<string>
 
   @IsOptional()
-  @ValidateNested()
+  @IsType([String, [String], FilterableCustomerGroupPropsValidator])
   @Type(() => FilterableCustomerGroupPropsValidator)
   groups?: FilterableCustomerGroupPropsValidator | string | string[]
 
@@ -67,31 +97,6 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   @ValidateNested({ each: true })
   @Type(() => AdminGetCustomersParams)
   $or?: AdminGetCustomersParams[]
-}
-
-class FilterableCustomerGroupPropsValidator {
-  @IsOptional()
-  @IsString({ each: true })
-  id?: string | string[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => OperatorMapValidator)
-  name?: string | OperatorMap<string>
-
-  @IsOptional()
-  @IsString({ each: true })
-  created_by?: string | string[] | null
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<string>
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<string>
 }
 
 export class AdminPostCustomersReq {

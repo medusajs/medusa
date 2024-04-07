@@ -6,45 +6,36 @@ import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createCustomersWorkflow } from "@medusajs/core-flows"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const { skip, take } = req.remoteQueryConfig.pagination
 
-  const [customers, count] = await customerModuleService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+  const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const { offset, limit } = req.validatedQuery
+  const variables = {
+    filters: req.filterableFields,
+    ...req.remoteQueryConfig.pagination,
+  }
 
-  // TODO: Replace with remote query
-  //const remoteQuery = req.scope.resolve("remoteQuery")
+  console.warn(variables)
 
-  //const variables = {
-  //  filters: req.filterableFields,
-  //  order: req.listConfig.order,
-  //  skip: req.listConfig.skip,
-  //  take: req.listConfig.take,
-  //}
+  const query = remoteQueryObjectFromString({
+    entryPoint: "customers",
+    variables,
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  //const query = remoteQueryObjectFromString({
-  //  entryPoint: "customer",
-  //  variables,
-  //  fields: [...req.listConfig.select!, ...req.listConfig.relations!],
-  //})
-
-  //const results = await remoteQuery(query)
+  const { rows: customers, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
+    count: metadata.count,
     customers,
-    offset,
-    limit,
+    offset: skip,
+    limit: take,
   })
 }
 
