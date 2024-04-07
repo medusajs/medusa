@@ -3,14 +3,12 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
+import { AdminUpdateShippingOptionType } from "../validators"
+import { updateShippingOptionsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
-import {AdminUpdateShippingOptionType} from "../validators";
-import {
-  updateShippingOptionsWorkflow
-} from "@medusajs/core-flows/dist/fulfillment/workflows/update-shipping-options";
+} from "../../../../types/routing"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,

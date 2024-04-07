@@ -5,7 +5,7 @@ import {
   AdminGetShippingOptionParams,
   AdminShippingOptionRulesBatchAdd,
   AdminShippingOptionRulesBatchRemove,
-  AdminUpdateShippingOption, AdminUpdateShippingOption,
+  AdminUpdateShippingOption,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
