@@ -12,6 +12,7 @@ import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
 import { salesChannels } from "./sales-channels"
+import { shippingOptions } from "./shipping-options"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { tags } from "./tags"
@@ -31,6 +32,7 @@ export const client = {
   payments: payments,
   stores: stores,
   salesChannels: salesChannels,
+  shippingOptions: shippingOptions,
   tags: tags,
   users: users,
   regions: regions,

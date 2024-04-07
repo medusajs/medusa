@@ -23,6 +23,7 @@ import {
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
+import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options.ts"
 
 enum Tab {
   DETAILS = "details",
@@ -30,7 +31,7 @@ enum Tab {
 }
 
 enum ShippingAllocation {
-  FlatRate = "flat_rate",
+  FlatRate = "flat",
   Calculated = "calculated",
 }
 
@@ -60,7 +61,7 @@ export function CreateShippingOptionsForm({
   const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
     defaultValues: {
       name: "",
-      type: ShippingAllocation.FlatRate,
+      price_type: ShippingAllocation.FlatRate,
       enable_in_store: true,
       region_prices: {},
       currency_prices: {},
@@ -68,24 +69,19 @@ export function CreateShippingOptionsForm({
     resolver: zodResolver(CreateServiceZoneSchema),
   })
 
-  const { mutateAsync: createShippingOption, isPending: isLoading } = {}
-  // useCreateShippingOption()
+  const { mutateAsync: createShippingOption, isPending: isLoading } =
+    useCreateShippingOptions()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    // await createServiceZone({
-    //   name: data.name,
-    //   geo_zones: data.countries.map((iso2) => ({
-    //     country_code: iso2,
-    //     type: "country",
-    //   })),
-    // })
+    await createShippingOption({
+      name: data.name,
+      price_type: data.price_type,
+    })
 
     return
 
     handleSuccess("/settings/shipping")
   })
-
-  console.log(form.formState.errors)
 
   const [status, setStatus] = React.useState<StepStatus>({
     [Tab.PRICING]: "not-started",
@@ -196,7 +192,7 @@ export function CreateShippingOptionsForm({
 
                 <Form.Field
                   control={form.control}
-                  name="type"
+                  name="price_type"
                   render={({ field }) => {
                     return (
                       <Form.Item>

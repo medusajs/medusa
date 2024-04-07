@@ -14,6 +14,7 @@ import {
   CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateServiceZoneDTO,
+  CreateShippingOptionDTO,
   CreateStockLocationInput,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
@@ -63,6 +64,9 @@ export type CreateStockLocationReq = CreateStockLocationInput
 export type UpdateStockLocationReq = UpdateStockLocationInput
 export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
 export type CreateServiceZoneReq = CreateServiceZoneDTO
+
+// Shipping Options
+export type CreateShippingOptionReq = CreateShippingOptionDTO
 
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO

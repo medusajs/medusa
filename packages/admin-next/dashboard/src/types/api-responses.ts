@@ -16,6 +16,7 @@ import {
   PromotionDTO,
   RegionDTO,
   SalesChannelDTO,
+  ShippingOptionDTO,
   StockLocationAddressDTO,
   StockLocationDTO,
   StoreDTO,
@@ -129,6 +130,9 @@ export type StockLocationListRes = {
   stock_locations: ExtendedStockLocationDTO[]
 } & ListRes
 export type StockLocationDeleteRes = DeleteRes
+
+// Shipping options
+export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
 
 // Worfklow Executions
 export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }

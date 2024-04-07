@@ -16,16 +16,15 @@ import {
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
 import {
-  ProductDeleteRes,
   StockLocationDeleteRes,
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
-import { productsQueryKeys } from "./products.tsx"
-import { CreateServiceZoneDTO } from "@medusajs/types"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
-const stockLocationsQueryKeys = queryKeysFactory(STOCK_LOCATIONS_QUERY_KEY)
+export const stockLocationsQueryKeys = queryKeysFactory(
+  STOCK_LOCATIONS_QUERY_KEY
+)
 
 export const useStockLocation = (
   id: string,
