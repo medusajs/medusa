@@ -1,13 +1,14 @@
 import { AdminProductsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
+import { queryClient } from "../../../lib/medusa"
+import { productsQueryKeys } from "../../../hooks/api/products"
+import { client } from "../../../lib/client"
 
 const productDetailQuery = (id: string) => ({
-  queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.products.retrieve(id),
+  queryKey: productsQueryKeys.detail(id),
+  queryFn: async () => client.products.retrieve(id),
 })
 
 export const productLoader = async ({ params }: LoaderFunctionArgs) => {
