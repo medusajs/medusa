@@ -14,7 +14,7 @@ export interface CreateShippingOptionDTO {
 }
 
 export interface UpdateShippingOptionDTO {
-  id: string
+  id?: string
   name?: string
   price_type?: ShippingOptionPriceType
   service_zone_id?: string
@@ -26,4 +26,8 @@ export interface UpdateShippingOptionDTO {
     | Omit<CreateShippingOptionRuleDTO, "shipping_option_id">
     | { id: string }
   )[]
+}
+
+export interface UpsertShippingOptionDTO extends UpdateShippingOptionDTO {
+
 }

@@ -35,6 +35,7 @@ import {
   UpdateShippingOptionRuleDTO,
   UpdateShippingProfileDTO,
   UpsertServiceZoneDTO,
+  UpsertShippingOptionDTO,
 } from "./mutations"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
 import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
@@ -376,19 +377,35 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: CreateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+
   /**
    * Update a shipping option
+   * @param id
    * @param data
    * @param sharedContext
    */
   updateShippingOptions(
-    data: UpdateShippingOptionDTO[],
-    sharedContext?: Context
-  ): Promise<ShippingOptionDTO[]>
-  updateShippingOptions(
+    id: string,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+  updateShippingOptions(
+    selector: FilterableShippingOptionProps,
+    data: UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
+
+  /**
+   * Upsert a shipping option
+   */
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO>
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
   /**
    * Delete a shippingOption
    * @param ids
