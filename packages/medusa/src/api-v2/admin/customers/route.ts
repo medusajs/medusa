@@ -1,27 +1,25 @@
+import { createCustomersWorkflow } from "@medusajs/core-flows"
+import {
+  AdminCustomerListResponse,
+  AdminCustomerResponse,
+} from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createCustomersWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { AdminCreateCustomerType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerListResponse>
 ) => {
-  const { skip, take } = req.remoteQueryConfig.pagination
-
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const variables = {
     filters: req.filterableFields,
     ...req.remoteQueryConfig.pagination,
   }
-
-  console.warn(variables)
 
   const query = remoteQueryObjectFromString({
     entryPoint: "customers",
@@ -32,16 +30,16 @@ export const GET = async (
   const { rows: customers, metadata } = await remoteQuery(query)
 
   res.json({
-    count: metadata.count,
     customers,
-    offset: skip,
-    limit: take,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCustomerDTO>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminCreateCustomerType>,
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
   const createCustomers = createCustomersWorkflow(req.scope)
 

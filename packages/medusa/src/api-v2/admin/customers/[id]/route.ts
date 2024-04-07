@@ -1,21 +1,21 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
+  deleteCustomersWorkflow,
+  updateCustomersWorkflow,
+} from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
+  AdminCustomerResponse,
   CustomerUpdatableFields,
   ICustomerModuleService,
 } from "@medusajs/types"
 import {
-  deleteCustomersWorkflow,
-  updateCustomersWorkflow,
-} from "@medusajs/core-flows"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
@@ -31,7 +31,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<CustomerUpdatableFields>,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
   const updateCustomers = updateCustomersWorkflow(req.scope)
   const { result, errors } = await updateCustomers.run({

@@ -1,358 +1,107 @@
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { z } from "zod"
 import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { Transform, Type } from "class-transformer"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
-import { IsType } from "../../../utils"
-import { OperatorMap } from "@medusajs/types"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+export const AdminCustomerParams = createSelectParams()
+export const AdminCustomerGroupParams = createSelectParams()
 
-class FilterableCustomerGroupPropsValidator {
-  @IsOptional()
-  @IsString({ each: true })
-  id?: string | string[]
+export const AdminCustomerGroupInCustomerParams = z.object({
+  id: z.union([z.string(), z.array(z.string())]),
+  name: z.union([z.string(), z.array(z.string())]),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
 
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => OperatorMapValidator)
-  name?: string | OperatorMap<string>
-
-  @IsOptional()
-  @IsString({ each: true })
-  created_by?: string | string[] | null
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<string>
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<string>
-}
-
-export class AdminGetCustomersCustomerParams extends FindParams {}
-
-export class AdminGetCustomersParams extends extendedFindParamsMixin({
-  limit: 100,
+export const AdminCustomersParams = createFindParams({
+  limit: 50,
   offset: 0,
-}) {
-  @IsOptional()
-  @IsString()
-  q?: string
+}).merge(
+  z.object({
+    q: z.string(),
+    id: z.union([z.string(), z.array(z.string())]),
+    email: z.union([z.string(), z.array(z.string())]),
+    groups: z.union([
+      AdminCustomerGroupInCustomerParams,
+      z.string(),
+      z.array(z.string()),
+    ]),
+    company_name: z.union([z.string(), z.array(z.string())]),
+    first_name: z.union([z.string(), z.array(z.string())]),
+    last_name: z.union([z.string(), z.array(z.string())]),
+    created_by: z.union([z.string(), z.array(z.string())]),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminCustomersParams.array()).optional(),
+    $or: z.lazy(() => AdminCustomersParams.array()).optional(),
+  })
+)
 
-  @IsOptional()
-  @IsString({ each: true })
-  id?: string | string[]
+export const AdminCreateCustomer = z.object({
+  company_name: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string(),
+  phone: z.string(),
+})
 
-  @IsOptional()
-  @IsType([String, [String], OperatorMapValidator])
-  email?: string | string[] | OperatorMap<string>
+export const AdminUpdateCustomer = AdminCreateCustomer
 
-  @IsOptional()
-  @IsType([String, [String], FilterableCustomerGroupPropsValidator])
-  @Type(() => FilterableCustomerGroupPropsValidator)
-  groups?: FilterableCustomerGroupPropsValidator | string | string[]
+export const AdminCreateCustomerAddress = z.object({
+  address_name: z.string(),
+  is_default_shipping: z.boolean(),
+  is_default_billing: z.boolean(),
+  company: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  address_1: z.string(),
+  address_2: z.string(),
+  city: z.string(),
+  country_code: z.string(),
+  province: z.string(),
+  postal_code: z.string(),
+  phone: z.string(),
+  metadata: z.record(z.unknown()),
+})
 
-  @IsOptional()
-  @IsString({ each: true })
-  company_name?: string | string[] | OperatorMap<string> | null
+export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
 
-  @IsOptional()
-  @IsString({ each: true })
-  first_name?: string | string[] | OperatorMap<string> | null
+export const AdminCustomerAdressesParams = createFindParams({
+  offset: 0,
+  limit: 50,
+}).merge(
+  z.object({
+    address_name: z.union([z.string(), z.array(z.string())]),
+    is_default_shipping: z.boolean(),
+    is_default_billing: z.boolean(),
+    company: z.union([z.string(), z.array(z.string())]),
+    first_name: z.union([z.string(), z.array(z.string())]),
+    last_name: z.union([z.string(), z.array(z.string())]),
+    address_1: z.union([z.string(), z.array(z.string())]),
+    address_2: z.union([z.string(), z.array(z.string())]),
+    city: z.union([z.string(), z.array(z.string())]),
+    country_code: z.union([z.string(), z.array(z.string())]),
+    province: z.union([z.string(), z.array(z.string())]),
+    postal_code: z.union([z.string(), z.array(z.string())]),
+    phone: z.union([z.string(), z.array(z.string())]),
+    metadata: z.record(z.unknown()),
+  })
+)
 
-  @IsOptional()
-  @IsType([String, [String], OperatorMapValidator])
-  @Transform(({ value }) => (value === "null" ? null : value))
-  last_name?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  created_by?: string | string[] | null
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<string>
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<string>
-
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetCustomersParams)
-  $and?: AdminGetCustomersParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetCustomersParams)
-  $or?: AdminGetCustomersParams[]
-}
-
-export class AdminPostCustomersReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  email?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-}
-
-export class AdminPostCustomersCustomerReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  email?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-}
-
-export class AdminPostCustomersCustomerAddressesReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_name?: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_shipping?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_billing?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_1?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_2?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  city?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  country_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  province?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  postal_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostCustomersCustomerAddressesAddressReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_name?: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_shipping?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_billing?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_1?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_2?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  city?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  country_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  province?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  postal_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminGetCustomersCustomerAddressesParams extends extendedFindParamsMixin(
-  {
-    limit: 100,
-    offset: 0,
-  }
-) {
-  @IsOptional()
-  @IsString({ each: true })
-  address_name?: string | string[] | OperatorMap<string>
-
-  @IsOptional()
-  @IsBoolean()
-  is_default_shipping?: boolean
-
-  @IsOptional()
-  @IsBoolean()
-  is_default_billing?: boolean
-
-  @IsOptional()
-  @IsString({ each: true })
-  company?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  first_name?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  last_name?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  address_1?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  address_2?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  city?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  country_code?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  province?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  postal_code?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  phone?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  metadata?: OperatorMap<Record<string, unknown>>
-}
+export type AdminCustomerParamsType = z.infer<typeof AdminCustomerParams>
+export type AdminCustomerGroupParamsType = z.infer<
+  typeof AdminCustomerGroupParams
+>
+export type AdminCustomerGroupInCustomerParamsType = z.infer<
+  typeof AdminCustomerGroupInCustomerParams
+>
+export type AdminCustomersParamsType = z.infer<typeof AdminCustomersParams>
+export type AdminCreateCustomerType = z.infer<typeof AdminCreateCustomer>
+export type AdminUpdateCustomerType = z.infer<typeof AdminUpdateCustomer>
+export type AdminCreateCustomerAddressType = z.infer<
+  typeof AdminCreateCustomerAddress
+>

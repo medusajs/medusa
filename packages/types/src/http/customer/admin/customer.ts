@@ -43,9 +43,9 @@ interface CustomerResponse {
   company_name: string | null
   first_name: string | null
   last_name: string | null
+  has_account: boolean
   addresses: CustomerAddressResponse[]
   phone?: string | null
-  has_account: boolean
   groups?: CustomerGroupResponse[]
   metadata?: Record<string, unknown>
   created_by?: string | null
@@ -65,7 +65,7 @@ export interface AdminCustomerResponse {
  * @experimental
  */
 export interface AdminCustomerListResponse extends PaginatedResponse {
-  customer: CustomerResponse[]
+  customers: CustomerResponse[]
 }
 
 /**

@@ -14,7 +14,7 @@ export interface CustomerAddressDTO {
   /**
    * The address name of the customer address.
    */
-  address_name?: string
+  address_name: string | null
 
   /**
    * Whether the customer address is default shipping.
@@ -34,57 +34,57 @@ export interface CustomerAddressDTO {
   /**
    * The company of the customer address.
    */
-  company?: string
+  company: string | null
 
   /**
    * The first name of the customer address.
    */
-  first_name?: string
+  first_name: string | null
 
   /**
    * The last name of the customer address.
    */
-  last_name?: string
+  last_name: string | null
 
   /**
    * The address 1 of the customer address.
    */
-  address_1?: string
+  address_1: string | null
 
   /**
    * The address 2 of the customer address.
    */
-  address_2?: string
+  address_2: string | null
 
   /**
    * The city of the customer address.
    */
-  city?: string
+  city: string | null
 
   /**
    * The country code of the customer address.
    */
-  country_code?: string
+  country_code: string | null
 
   /**
    * The province of the customer address.
    */
-  province?: string
+  province: string | null
 
   /**
    * The postal code of the customer address.
    */
-  postal_code?: string
+  postal_code: string | null
 
   /**
    * The phone of the customer address.
    */
-  phone?: string
+  phone: string | null
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   /**
    * The created at of the customer address.
@@ -450,74 +450,83 @@ export interface CustomerDTO {
   email: string
 
   /**
+   * A flag indicating if customer has an account or not.
+   */
+  has_account: boolean
+
+  /**
    * The associated default billing address's ID.
    */
-  default_billing_address_id?: string | null
+  default_billing_address_id: string | null
 
   /**
    * The associated default shipping address's ID.
    */
-  default_shipping_address_id?: string | null
+  default_shipping_address_id: string | null
 
   /**
    * The company name of the customer.
    */
-  company_name?: string | null
+  company_name: string | null
 
   /**
    * The first name of the customer.
    */
-  first_name?: string | null
+  first_name: string | null
 
   /**
    * The last name of the customer.
    */
-  last_name?: string | null
+  last_name: string | null
 
   /**
    * The addresses of the customer.
    */
-  addresses?: CustomerAddressDTO[]
+  addresses: CustomerAddressDTO[]
 
   /**
    * The phone of the customer.
    */
-  phone?: string | null
+  phone: string | null
 
   /**
    * The groups of the customer.
    */
-  groups?: {
+  groups: {
     /**
      * The ID of the group.
      */
     id: string
+    /**
+     * The name of the group.
+     */
+    name: string
   }[]
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata: Record<string, unknown>
 
   /**
    * Who created the customer.
    */
-  created_by?: string | null
+  created_by: string | null
 
   /**
    * The deletion date of the customer.
    */
-  deleted_at?: Date | string | null
+  deleted_at: Date | string | null
 
   /**
    * The creation date of the customer.
    */
-  created_at?: Date | string
+  created_at: Date | string
 
   /**
    * The update date of the customer.
    */
-  updated_at?: Date | string
+  updated_at: Date | string
 }
 
 /**
