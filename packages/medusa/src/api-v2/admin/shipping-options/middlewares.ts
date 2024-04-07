@@ -5,6 +5,7 @@ import {
   AdminGetShippingOptionParams,
   AdminShippingOptionRulesBatchAdd,
   AdminShippingOptionRulesBatchRemove,
+  AdminUpdateShippingOption, AdminUpdateShippingOption,
 } from "./validators"
 import { retrieveTransformQueryConfig } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -25,6 +26,18 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         retrieveTransformQueryConfig
       ),
       validateAndTransformBody(AdminCreateShippingOption),
+    ],
+  },
+
+  {
+    method: ["POST"],
+    matcher: "/admin/shipping-options/:id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
+        retrieveTransformQueryConfig
+      ),
+      validateAndTransformBody(AdminUpdateShippingOption),
     ],
   },
 
