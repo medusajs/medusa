@@ -7,7 +7,7 @@ import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
-import { ApiKeyRes } from "../../types/api-responses"
+import { AdminApiKeyResponse } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -520,8 +520,7 @@ export const v2Routes: RouteObject[] = [
                     "../../v2-routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: ApiKeyRes) => {
-                    console.log("data", data)
+                  crumb: (data: AdminApiKeyResponse) => {
                     return data.api_key.title
                   },
                 },

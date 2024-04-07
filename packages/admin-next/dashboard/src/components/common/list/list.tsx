@@ -16,7 +16,7 @@ export const List = <T extends any>({
   disabled,
 }: ListProps<T>) => {
   if (options.length === 0) {
-    return <div>No options</div>
+    return null
   }
 
   return (

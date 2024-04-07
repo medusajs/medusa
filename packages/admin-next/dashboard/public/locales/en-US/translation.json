@@ -241,6 +241,7 @@
       "options": {
         "label": "Product options",
         "hint": "Options are used to define the color, size, etc. of the product",
+        "add": "Add option",
         "optionTitle": "Option title",
         "variations": "Variations (comma-separated)"
       },

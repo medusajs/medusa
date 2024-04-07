@@ -1,7 +1,6 @@
 import { Plus } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
-import { useAdminProductVariants } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -10,6 +9,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useProductVariantTableColumns } from "./use-variant-table-columns"
 import { useProductVariantTableFilters } from "./use-variant-table-filters"
 import { useProductVariantTableQuery } from "./use-variant-table-query"
+import { useProductVariants } from "../../../../../hooks/api/products"
 
 type ProductVariantSectionProps = {
   product: Product
@@ -25,16 +25,12 @@ export const ProductVariantSection = ({
   const { searchParams, raw } = useProductVariantTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { variants, count, isLoading, isError, error } =
-    useAdminProductVariants(
-      product.id,
-      {
-        ...searchParams,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { variants, count, isLoading, isError, error } = useProductVariants(
+    product.id,
+    {
+      ...searchParams,
+    }
+  )
 
   const filters = useProductVariantTableFilters()
   const columns = useProductVariantTableColumns(product)

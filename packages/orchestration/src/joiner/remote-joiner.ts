@@ -36,7 +36,7 @@ export class RemoteJoiner {
 
   private static filterFields(
     data: any,
-    fields: string[],
+    fields?: string[],
     expands?: RemoteNestedExpands
   ): Record<string, unknown> | undefined {
     if (!fields || !data) {

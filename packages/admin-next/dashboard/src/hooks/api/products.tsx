@@ -17,6 +17,63 @@ import { queryClient } from "../../lib/medusa"
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
 
+const VARIANTS_QUERY_KEY = "product_variants" as const
+export const variantsQueryKeys = queryKeysFactory(VARIANTS_QUERY_KEY)
+
+export const useProductVariant = (
+  productId: string,
+  variantId: string,
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<any, Error, any, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.products.retrieveVariant(productId, variantId, query),
+    queryKey: variantsQueryKeys.detail(variantId),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useProductVariants = (
+  productId: string,
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<any, Error, any, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.products.listVariants(productId, query),
+    queryKey: variantsQueryKeys.list(query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useDeleteVariant = (
+  productId: string,
+  variantId: string,
+  options?: UseMutationOptions<any, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.products.deleteVariant(productId, variantId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: variantsQueryKeys.detail(variantId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useProduct = (
   id: string,
   query?: Record<string, any>,
