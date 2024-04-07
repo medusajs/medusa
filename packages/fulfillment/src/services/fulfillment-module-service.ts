@@ -19,6 +19,7 @@ import {
   getSetDifference,
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -39,6 +40,7 @@ import { isContextValid, validateRules } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { Modules } from "@medusajs/modules-sdk"
+import { UpdateShippingOptionsInput } from "../types/service"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -943,25 +945,44 @@ export default class FulfillmentModuleService<
   }
 
   updateShippingOptions(
-    data: FulfillmentTypes.UpdateShippingOptionDTO[],
+    id: string,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
   updateShippingOptions(
+    selector: FulfillmentTypes.FilterableShippingOptionProps,
     data: FulfillmentTypes.UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectManager("baseRepository_")
   async updateShippingOptions(
-    data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
+    idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
   > {
+    const normalizedInput: UpdateShippingOptionsInput[] = []
+
+    if (isString(idOrSelector)) {
+      normalizedInput.push({ id: idOrSelector, ...data })
+    } else {
+      const shippingOptions = await this.shippingOptionService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      if (!shippingOptions.length) {
+        return []
+      }
+      shippingOptions.forEach((shippingOption) => {
+        normalizedInput.push({ id: shippingOption.id, ...data })
+      })
+    }
+
     const updatedShippingOptions = await this.updateShippingOptions_(
-      data,
+      normalizedInput,
       sharedContext
     )
 
@@ -975,8 +996,8 @@ export default class FulfillmentModuleService<
   @InjectTransactionManager("baseRepository_")
   async updateShippingOptions_(
     data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
+      | UpdateShippingOptionsInput[]
+      | UpdateShippingOptionsInput,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
     const dataArray = Array.isArray(data) ? data : [data]
@@ -1312,7 +1333,7 @@ export default class FulfillmentModuleService<
 
   protected static validateMissingShippingOptions_(
     shippingOptions: ShippingOption[],
-    shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
+    shippingOptionsData: UpdateShippingOptionsInput[]
   ) {
     const missingShippingOptionIds = arrayDifference(
       shippingOptionsData.map((s) => s.id),

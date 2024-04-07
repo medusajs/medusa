@@ -363,16 +363,20 @@ export interface IFulfillmentModuleService extends IModuleService {
     data: CreateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+
   /**
    * Update a shipping option
+   * @param id
    * @param data
    * @param sharedContext
    */
   updateShippingOptions(
-    data: UpdateShippingOptionDTO[],
+    id: string,
+    data: UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
   updateShippingOptions(
+    selector: FilterableShippingOptionProps,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>

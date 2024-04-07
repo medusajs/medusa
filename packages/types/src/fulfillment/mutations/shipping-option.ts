@@ -14,7 +14,7 @@ export interface CreateShippingOptionDTO {
 }
 
 export interface UpdateShippingOptionDTO {
-  id: string
+  id?: string
   name?: string
   price_type?: ShippingOptionPriceType
   service_zone_id?: string
