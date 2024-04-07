@@ -249,6 +249,74 @@ medusaIntegrationTestRunner({
           `Invalid request body: ${JSON.stringify(expectedErrors)}`
         )
       })
+
+      describe("POST /admin/fulfillment-sets/:id/service-zones", () => {
+        it("should delete a service zone for a fulfillment set", async () => {
+          const stockLocationResponse = await api.post(
+            `/admin/stock-locations`,
+            {
+              name: "test location",
+            },
+            adminHeaders
+          )
+
+          const stockLocationId = stockLocationResponse.data.stock_location.id
+
+          const locationWithFSetResponse = await api.post(
+            `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
+            {
+              name: "Fulfillment Set",
+              type: "shipping",
+            },
+            adminHeaders
+          )
+
+          const fulfillmentSetId =
+            locationWithFSetResponse.data.stock_location.fulfillment_sets[0].id
+
+          const response = await api.post(
+            `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones`,
+            {
+              name: "Test Zone",
+              geo_zones: [],
+            },
+            adminHeaders
+          )
+
+          const fset = response.data.fulfillment_set
+
+          const serviceZoneId = fset.service_zones[0].id
+
+          const deleteResponse = await api.delete(
+            `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+            adminHeaders
+          )
+
+          expect(deleteResponse.status).toEqual(200)
+          expect(deleteResponse.data).toEqual(
+            expect.objectContaining({
+              id: serviceZoneId,
+              object: "service-zone",
+              deleted: true,
+              parent: expect.objectContaining({
+                id: fulfillmentSetId,
+              }),
+            })
+          )
+        })
+
+        it("should throw when fulfillment set doesn't exist", async () => {
+          const deleteResponse = await api
+            .delete(
+              `/admin/fulfillment-sets/foo/service-zones/bar`,
+              adminHeaders
+            )
+            .catch((e) => e.response)
+
+          expect(deleteResponse.status).toEqual(404)
+          expect(deleteResponse.data.message).toEqual("FulfillmentSet with id: foo was not found")
+        })
+      })
     })
   },
 })
