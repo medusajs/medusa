@@ -335,6 +335,42 @@ medusaIntegrationTestRunner({
             "FulfillmentSet with id: foo was not found"
           )
         })
+
+        it("should throw when fulfillment set doesn't have service zone", async () => {
+          const stockLocationResponse = await api.post(
+            `/admin/stock-locations`,
+            {
+              name: "test location",
+            },
+            adminHeaders
+          )
+  
+          const stockLocationId = stockLocationResponse.data.stock_location.id
+  
+          const locationWithFSetResponse = await api.post(
+            `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
+            {
+              name: "Fulfillment Set",
+              type: "shipping",
+            },
+            adminHeaders
+          )
+  
+          const fulfillmentSetId =
+            locationWithFSetResponse.data.stock_location.fulfillment_sets[0].id
+
+          const deleteResponse = await api
+            .delete(
+              `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/foo`,
+              adminHeaders
+            )
+            .catch((e) => e.response)
+
+          expect(deleteResponse.status).toEqual(404)
+          expect(deleteResponse.data.message).toEqual(
+            "Service zone with id: foo not found on fulfillment set"
+          )
+        })
       })
     })
   },
