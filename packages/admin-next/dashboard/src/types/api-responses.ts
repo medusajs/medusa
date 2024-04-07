@@ -5,7 +5,6 @@
 import {
   CampaignDTO,
   CurrencyDTO,
-  CustomerDTO,
   InviteDTO,
   PaymentProviderDTO,
   ProductCategoryDTO,
@@ -38,10 +37,6 @@ type DeleteRes = {
 
 // Auth
 export type EmailPassRes = { token: string }
-
-// Customers
-export type CustomerRes = { customer: CustomerDTO }
-export type CustomerListRes = { customers: CustomerDTO[] } & ListRes
 
 // Promotions
 export type PromotionRes = { promotion: PromotionDTO }

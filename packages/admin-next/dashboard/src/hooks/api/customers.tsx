@@ -9,7 +9,6 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCustomerReq, UpdateCustomerReq } from "../../types/api-payloads"
-import { CustomerListRes, CustomerRes } from "../../types/api-responses"
 import {
   AdminCustomerResponse,
   AdminCustomerListResponse,
