@@ -16,7 +16,7 @@ export const deleteShippingOptionsStep = createStep(
     )
 
     const softDeletedEntities = await service.softDeleteShippingOptions(ids, {
-      returnLinkableKeys: true,
+      returnLinkableKeys: [],
     })
 
     return new StepResponse(
