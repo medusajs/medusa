@@ -58,7 +58,6 @@ export function decorateCartTotals(
   })
 
   let subtotal = MathBN.convert(0)
-  let subtotalWithoutTaxes = MathBN.convert(0)
 
   let discountTotal = MathBN.convert(0)
   let discountTaxTotal = MathBN.convert(0)
@@ -68,6 +67,7 @@ export function decorateCartTotals(
 
   let itemsTotal = MathBN.convert(0)
   let itemsOriginalTotal = MathBN.convert(0)
+  let itemsOriginalSubtotal = MathBN.convert(0)
 
   let itemsTaxTotal = MathBN.convert(0)
   let itemsOriginalTaxTotal = MathBN.convert(0)
@@ -76,15 +76,16 @@ export function decorateCartTotals(
 
   let shippingTotal = MathBN.convert(0)
   let shippingOriginalTotal = MathBN.convert(0)
+  let shippingOriginalSubtotal = MathBN.convert(0)
 
   let shippingTaxTotal = MathBN.convert(0)
   let shippingOriginalTaxTotal = MathBN.convert(0)
+  let shippingOriginalTaxSubtotal = MathBN.convert(0)
 
   const cartItems = items.map((item, index) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
 
     const itemSubtotal = itemTotals.subtotal
-    const itemSubtotalWithoutTaxes = itemTotals.subtotal_without_taxes
 
     const itemTotal = MathBN.convert(itemTotals.total)
     const itemOriginalTotal = MathBN.convert(itemTotals.original_total)
@@ -96,22 +97,15 @@ export function decorateCartTotals(
     const itemDiscountTaxTotal = MathBN.convert(itemTotals.discount_tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
-    subtotalWithoutTaxes = subtotal = MathBN.add(
-      subtotalWithoutTaxes,
-      itemSubtotalWithoutTaxes
-    )
 
     discountTotal = MathBN.add(discountTotal, itemDiscountTotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, itemDiscountTaxTotal)
 
     itemsTotal = MathBN.add(itemsTotal, itemTotal)
     itemsOriginalTotal = MathBN.add(itemsOriginalTotal, itemOriginalTotal)
+    itemsOriginalSubtotal = MathBN.add(itemsOriginalSubtotal, itemSubtotal)
 
     itemsSubtotal = MathBN.add(itemsSubtotal, itemSubtotal)
-    itemsSubtotalWithoutTaxes = MathBN.add(
-      itemsSubtotalWithoutTaxes,
-      itemSubtotalWithoutTaxes
-    )
 
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
     itemsOriginalTaxTotal = MathBN.add(
@@ -148,11 +142,19 @@ export function decorateCartTotals(
       shippingOriginalTotal,
       methodOriginalTotal
     )
+    shippingOriginalSubtotal = MathBN.add(
+      shippingOriginalSubtotal,
+      methodSubtotal
+    )
 
     shippingTaxTotal = MathBN.add(shippingTaxTotal, methodTaxTotal)
     shippingOriginalTaxTotal = MathBN.add(
       shippingOriginalTaxTotal,
       methodOriginalTaxTotal
+    )
+    shippingOriginalTaxSubtotal = MathBN.add(
+      shippingOriginalTaxSubtotal,
+      methodSubtotal
     )
 
     discountTotal = MathBN.add(discountTotal, methodDiscountTotal)
@@ -170,7 +172,7 @@ export function decorateCartTotals(
   // TODO: Gift Card calculations
 
   const originalTempTotal = MathBN.add(
-    subtotalWithoutTaxes,
+    subtotal,
     shippingOriginalTotal,
     originalTaxTotal
   )
@@ -183,7 +185,6 @@ export function decorateCartTotals(
 
   cart.total = new BigNumber(total)
   cart.subtotal = new BigNumber(subtotal)
-  cart.subtotal_without_taxes = new BigNumber(subtotalWithoutTaxes)
   cart.tax_total = new BigNumber(taxTotal)
 
   cart.discount_total = new BigNumber(discountTotal)
@@ -205,6 +206,7 @@ export function decorateCartTotals(
     cart.item_tax_total = new BigNumber(itemsTaxTotal)
 
     cart.original_item_total = new BigNumber(itemsOriginalTotal)
+    cart.original_item_subtotal = new BigNumber(itemsOriginalSubtotal)
     cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
   }
 
@@ -215,6 +217,9 @@ export function decorateCartTotals(
     cart.shipping_tax_total = new BigNumber(shippingTaxTotal)
 
     cart.original_shipping_tax_total = new BigNumber(shippingOriginalTaxTotal)
+    cart.original_shipping_tax_subtotal = new BigNumber(
+      shippingOriginalTaxSubtotal
+    )
     cart.original_shipping_total = new BigNumber(shippingOriginalTotal)
   }
 

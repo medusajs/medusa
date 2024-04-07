@@ -44,7 +44,7 @@ export function getShippingMethodsTotals(
     shippingMethodsTotals[shippingMethod.id ?? index] = getShippingMethodTotals(
       shippingMethod,
       {
-        includeTax,
+        includeTax: includeTax || shippingMethod.is_tax_inclusive,
       }
     )
     index++
@@ -66,8 +66,13 @@ export function getShippingMethodTotals(
 
   const discountTotal = calculateAdjustmentTotal({
     adjustments: shippingMethod.adjustments || [],
+    includesTax: context.includeTax,
+    taxRate: sumTaxRate,
   })
-  const discountTaxTotal = MathBN.mult(discountTotal, sumTaxRate)
+  const discountTaxTotal = MathBN.mult(
+    discountTotal,
+    MathBN.div(sumTaxRate, 100)
+  )
 
   const total = MathBN.sub(amount, discountTotal)
 

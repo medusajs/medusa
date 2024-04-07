@@ -13,7 +13,6 @@ export type CartLikeWithTotals = {
   original_tax_total: BigNumberValue
   total: BigNumberValue
   subtotal: BigNumberValue
-  subtotal_without_taxes: BigNumberValue
   tax_total: BigNumberValue
   discount_total: BigNumberValue
   discount_tax_total: BigNumberValue

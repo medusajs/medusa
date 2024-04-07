@@ -723,14 +723,9 @@ export interface CartDTO {
   total: BigNumberValue
 
   /**
-   * The subtotal of the cart.
+   * The subtotal of the cart. (Excluding taxes)
    */
   subtotal: BigNumberValue
-
-  /**
-   * The subtotal of the cart excluding taxes.
-   */
-  subtotal_without_taxes: BigNumberValue
 
   /**
    * The tax total of the cart.

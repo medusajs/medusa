@@ -22,7 +22,6 @@ export interface GetItemTotalOutput {
   unit_price: BigNumber
 
   subtotal: BigNumber
-  subtotal_without_taxes: BigNumber
 
   total: BigNumber
   original_total: BigNumber
@@ -62,8 +61,13 @@ function getLineItemTotals(
   )
   const discountTotal = calculateAdjustmentTotal({
     adjustments: item.adjustments || [],
+    includesTax: context.includeTax,
+    taxRate: sumTaxRate,
   })
-  const discountTaxTotal = MathBN.mult(discountTotal, sumTaxRate)
+  const discountTaxTotal = MathBN.mult(
+    discountTotal,
+    MathBN.div(sumTaxRate, 100)
+  )
 
   const total = MathBN.sub(subtotal, discountTotal)
 
@@ -72,7 +76,6 @@ function getLineItemTotals(
     unit_price: item.unit_price,
 
     subtotal: new BigNumber(subtotal),
-    subtotal_without_taxes: new BigNumber(subtotal),
 
     total: new BigNumber(total),
     original_total: new BigNumber(subtotal),
@@ -106,7 +109,7 @@ function getLineItemTotals(
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 
   if (isTaxInclusive) {
-    totals.subtotal_without_taxes = new BigNumber(
+    totals.subtotal = new BigNumber(
       MathBN.sub(
         MathBN.mult(item.unit_price, totals.quantity),
         originalTaxTotal
