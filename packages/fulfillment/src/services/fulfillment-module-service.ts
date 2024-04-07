@@ -835,9 +835,13 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    const toReturn = isString(idOrSelector)
+      ? updatedServiceZones[0]
+      : updatedServiceZones
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(updatedServiceZones, {
+    >(toReturn, {
       populate: true,
     })
   }
