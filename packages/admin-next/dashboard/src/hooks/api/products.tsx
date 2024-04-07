@@ -28,6 +28,9 @@ export const useCreateProductOption = (
       client.products.createOption(productId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -47,6 +50,9 @@ export const useUpdateProductOption = (
       queryClient.invalidateQueries({
         queryKey: optionsQueryKeys.detail(optionId),
       })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -62,9 +68,12 @@ export const useDeleteProductOption = (
   return useMutation({
     mutationFn: () => client.products.deleteOption(productId, optionId),
     onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: productsQueryKeys.detail(optionId),
+        queryKey: optionsQueryKeys.detail(optionId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -108,6 +117,24 @@ export const useProductVariants = (
   return { ...data, ...rest }
 }
 
+export const useCreateProductVariant = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (payload: any) =>
+      client.products.createVariant(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateProductVariant = (
   productId: string,
   variantId: string,
@@ -120,6 +147,9 @@ export const useUpdateProductVariant = (
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: variantsQueryKeys.detail(variantId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -139,6 +169,9 @@ export const useDeleteVariant = (
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: variantsQueryKeys.detail(variantId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
       })
 
       options?.onSuccess?.(data, variables, context)

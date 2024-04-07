@@ -381,6 +381,30 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("returns a list of products where id is a list", async () => {
+          const response = await api
+            .get(
+              `/admin/products?id[]=${baseProduct.id},${proposedProduct.id}`,
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toHaveLength(2)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.id,
+              }),
+              expect.objectContaining({
+                id: proposedProduct.id,
+              }),
+            ])
+          )
+        })
+
         // TODO: Decide how this should be handled in v2
         it.skip("returns a list of products filtered by discount condition id", async () => {
           const resProd = await api.get("/admin/products", adminHeaders)
