@@ -1,11 +1,11 @@
 import { PencilSquare } from "@medusajs/icons"
-import { Customer } from "@medusajs/medusa"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { AdminCustomerResponse } from "@medusajs/types"
 
 type CustomerGeneralSectionProps = {
-  customer: Customer
+  customer: AdminCustomerResponse["customer"]
 }
 
 export const CustomerGeneralSection = ({
