@@ -24,12 +24,11 @@ export const defaultAdminProductsVariantFields = [
   "barcode",
   "*prices",
   "*options",
+  "*options.option_value",
 ]
 
 export const retrieveVariantConfig = {
-  defaultFields: defaultAdminProductsVariantFields,
-  defaultRelations: [],
-  allowedRelations: [],
+  defaults: defaultAdminProductsVariantFields,
   isList: false,
 }
 
@@ -42,7 +41,7 @@ export const listVariantConfig = {
 export const defaultAdminProductsOptionFields = ["id", "title"]
 
 export const retrieveOptionConfig = {
-  defaultFields: defaultAdminProductsOptionFields,
+  defaults: defaultAdminProductsOptionFields,
   isList: false,
 }
 
@@ -83,10 +82,10 @@ export const defaultAdminProductFields = [
   "*options.values",
   "*tags",
   "*images",
-  "*sales_channels",
   "*variants",
   "*variants.prices",
   "*variants.options",
+  "*variants.options.option_value",
   "*sales_channels",
 ]
 

@@ -2,7 +2,7 @@ import { getDatabaseURL } from "./database"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { createDatabase, dropDatabase } from "pg-god"
-import { ContainerLike } from "@medusajs/types"
+import {ContainerLike, MedusaContainer} from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
 
 const axios = require("axios").default
@@ -70,7 +70,7 @@ const dbTestUtilFactory = (): any => ({
 export interface MedusaSuiteOptions<TService = unknown> {
   dbUtils: any
   dbConnection: any // Legacy typeorm connection
-  getContainer: () => ContainerLike
+  getContainer: () => MedusaContainer
   api: any
   dbConfig: {
     dbName: string
@@ -89,7 +89,7 @@ export function medusaIntegrationTestRunner({
   testSuite,
 }: {
   moduleName?: string
-  env?: Record<string, string>
+  env?: Record<string, any>
   dbName?: string
   schema?: string
   debug?: boolean

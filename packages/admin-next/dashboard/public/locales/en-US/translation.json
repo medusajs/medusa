@@ -30,6 +30,7 @@
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
+    "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
@@ -55,6 +56,7 @@
   },
   "actions": {
     "save": "Save",
+    "saveAsDraft": "Save as draft",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -151,9 +153,8 @@
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
-    "organization": "Organization",
+    "organization": "Organize",
     "editOrganization": "Edit Organization",
-    "options": "Options",
     "editOptions": "Edit Options",
     "media": {
       "label": "Media",
@@ -171,10 +172,7 @@
       "deleteImageLabel": "Delete current image",
       "noMediaLabel": "The product has no associated media."
     },
-    "titleHint": "Give your product a short and clear title.<0/>50-60 characters is the recommended length for search engines.",
-    "descriptionHint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines.",
     "discountableHint": "When unchecked discounts will not be applied to this product.",
-    "handleTooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title.",
     "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
     "noSalesChannels": "Not available in any sales channels",
     "variantCount_one": "{{count}} variant",
@@ -186,6 +184,78 @@
       "proposed": "Proposed",
       "rejected": "Rejected"
     },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "hint": "Give your product a short and clear title.<0/>50-60 characters is the recommended length for search engines."
+      },
+      "subtitle": {
+        "label": "Subtitle"
+      },
+      "handle": {
+        "label": "Handle",
+        "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
+      },
+      "description": {
+        "label": "Description",
+        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
+      },
+      "discountable": {
+        "label": "Discountable",
+        "hint": "When unchecked discounts will not be applied to this product"
+      },
+      "type": {
+        "label": "Type"
+      },
+      "collection": {
+        "label": "Collection"
+      },
+      "categories": {
+        "label": "Categories"
+      },
+      "tags": {
+        "label": "Tags"
+      },
+      "sales_channels": {
+        "label": "Sales channels",
+        "hint": "This product will only be available in the default sales channel if left untouched"
+      },
+      "countryOrigin": {
+        "label": "Country of origin"
+      },
+      "material": {
+        "label": "Material"
+      },
+      "width": {
+        "label": "Width"
+      },
+      "length": {
+        "label": "Length"
+      },
+      "height": {
+        "label": "Height"
+      },
+      "weight": {
+        "label": "Weight"
+      },
+      "options": {
+        "label": "Product options",
+        "hint": "Options are used to define the color, size, etc. of the product",
+        "add": "Add option",
+        "optionTitle": "Option title",
+        "variations": "Variations (comma-separated)"
+      },
+      "variants": {
+        "label": "Product variants",
+        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+      },
+      "mid_code": {
+        "label": "Mid code"
+      },
+      "hs_code": {
+        "label": "HS code"
+      }
+    },
     "variant": {
       "edit": {
         "header": "Edit Variant"
@@ -196,6 +266,15 @@
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
         "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+      }
+    },
+    "options": {
+      "header": "Options",
+      "edit": {
+        "header": "Edit Option"
+      },
+      "create": {
+        "header": "Create Option"
       }
     }
   },
@@ -534,11 +613,115 @@
     "domain": "Promotions",
     "fields": {
       "method": "Method",
-      "campaign": "Campaign"
+      "type": "Type",
+      "value_type": "Value Type",
+      "value": "Value",
+      "campaign": "Campaign",
+      "allocation": "Allocation",
+      "conditions": {
+        "rules": {
+          "title": "Who can use this code?",
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "target-rules": {
+          "title": "What needs to be in the cart to unlock the promotion?",
+          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "buy-rules": {
+          "title": "What will the promotion be applied to?",
+          "description": "The promotion will be applied to items that match these conditions"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edit Promotion Details",
+      "rules": {
+        "title": "Edit rules"
+      },
+      "target-rules": {
+        "title": "Edit target rules"
+      },
+      "buy-rules": {
+        "title": "Edit buy rules"
+      }
+    },
+    "addToCampaign": {
+      "title": "Add Promotion To Campaign"
+    },
+    "form": {
+      "campaign": {
+        "existing": {
+          "title": "Existing Campaign",
+          "description": "Would you like to add promotion to an existing campaign?"
+        },
+        "new": {
+          "title": "New Campaign",
+          "description": "Would you like to create a new campaign with this promotion?"
+        }
+      },
+      "status": {
+        "title": "Status"
+      },
+      "method": {
+        "code": {
+          "title": "Promotion code",
+          "description": "Customers must enter this at checkout"
+        },
+        "automatic": {
+          "title": "Automatic",
+          "description": "Customers will automatically see this during checkout"
+        }
+      },
+      "allocation": {
+        "each": {
+          "title": "Each",
+          "description": "Applies value on each product"
+        },
+        "across": {
+          "title": "Across",
+          "description": "Applies value proportionally across products"
+        }
+      },
+      "code": {
+        "title": "Code",
+        "description": "The code your customers will enter during checkout."
+      },
+      "value": {
+        "title": "Value"
+      },
+      "value_type": {
+        "fixed": {
+          "title": "Fixed amount",
+          "description": "eg. 100"
+        },
+        "percentage": {
+          "title": "Percentage",
+          "description": "eg. 8%"
+        }
+      }
     },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type"
+  },
+  "campaigns": {
+    "domain": "Campaigns",
+    "details": "Campaign details",
+    "fields": {
+      "name": "Name",
+      "identifier": "Identifier",
+      "start_date": "Start date",
+      "end_date": "End date"
+    },
+    "budget": {
+      "details": "Campaign budget",
+      "fields": {
+        "type": "Type",
+        "currency": "Currency",
+        "limit": "Limit",
+        "used": "Used"
+      }
+    }
   },
   "pricing": {
     "domain": "Pricing",
@@ -587,7 +770,7 @@
     "inviteUserHint": "Invite a new user to your store.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
-    "revokeInviteWarning": "You are about to revoke the invite for {{email}}. This action cannot be undone.",
+    "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
     "expiredOnDate": "Expired on {{date}}",
@@ -618,7 +801,10 @@
     "addCurrencies": "Add currencies",
     "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
     "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
-    "currencyAlreadyAdded": "The currency has already been added to your store."
+    "currencyAlreadyAdded": "The currency has already been added to your store.",
+    "edit": {
+      "header": "Edit Store"
+    }
   },
   "regions": {
     "domain": "Regions",
@@ -632,7 +818,7 @@
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
-    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
+    "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
@@ -668,7 +854,7 @@
     }
   },
   "taxes": {
-    "domain": "Taxes",
+    "domain": "Tax Regions",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },
@@ -739,9 +925,10 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domain": "API Key Management",
+    "domainTitle": "API Keys",
+    "domain": "{{ keyType }} API Keys",
     "createKey": "Create key",
-    "createPublishableApiKey": "Create Publishable API Key",
+    "createPublishableApiKey": "Create {{ keyType }} API Key",
     "editKey": "Edit key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
@@ -796,8 +983,8 @@
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
   },
-  "executions": {
-    "domain": "Executions",
+  "workflowExecutions": {
+    "domain": "Workflows",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
     "progressLabel": "Progress",

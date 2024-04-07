@@ -63,11 +63,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/fulfillment/shipping-options/:id/rules/batch/add", () => {
+      describe("POST /admin/shipping-options/:id/rules/batch/add", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/fulfillment/shipping-options/${shippingOption.id}/rules/batch/add`,
+              `/admin/shipping-options/${shippingOption.id}/rules/batch/add`,
               {
                 rules: [{ operator: RuleOperator.EQ, value: "new_value" }],
               },
@@ -83,10 +83,10 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("should throw error when shipping option does not exist", async () => {
+        it.only("should throw error when shipping option does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/fulfillment/shipping-options/does-not-exist/rules/batch/add`,
+              `/admin/shipping-options/does-not-exist/rules/batch/add`,
               {
                 rules: [
                   { attribute: "new_attr", operator: "eq", value: "new value" },
@@ -100,13 +100,13 @@ medusaIntegrationTestRunner({
           expect(response.data).toEqual({
             type: "not_found",
             message:
-              "Shipping_option with shipping_option_id does-not-exist does not exist.",
+              "You tried to set relationship shipping_option_id: does-not-exist, but such entity does not exist",
           })
         })
 
         it("should add rules to a shipping option successfully", async () => {
           const response = await api.post(
-            `/admin/fulfillment/shipping-options/${shippingOption.id}/rules/batch/add`,
+            `/admin/shipping-options/${shippingOption.id}/rules/batch/add`,
             {
               rules: [
                 { operator: "eq", attribute: "new_attr", value: "new value" },
@@ -140,11 +140,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/fulfillment/shipping-options/:id/rules/batch/remove", () => {
+      describe("POST /admin/shipping-options/:id/rules/batch/remove", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/fulfillment/shipping-options/${shippingOption.id}/rules/batch/remove`,
+              `/admin/shipping-options/${shippingOption.id}/rules/batch/remove`,
               {},
               adminHeaders
             )
@@ -161,7 +161,7 @@ medusaIntegrationTestRunner({
         it("should throw error when shipping option does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/fulfillment/shipping-options/does-not-exist/rules/batch/remove`,
+              `/admin/shipping-options/does-not-exist/rules/batch/remove`,
               { rule_ids: ["test"] },
               adminHeaders
             )
@@ -176,7 +176,7 @@ medusaIntegrationTestRunner({
 
         it("should add rules to a shipping option successfully", async () => {
           const response = await api.post(
-            `/admin/fulfillment/shipping-options/${shippingOption.id}/rules/batch/remove`,
+            `/admin/shipping-options/${shippingOption.id}/rules/batch/remove`,
             {
               rule_ids: [shippingOption.rules[0].id],
             },

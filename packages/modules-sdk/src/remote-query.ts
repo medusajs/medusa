@@ -10,12 +10,11 @@ import {
   LoadedModule,
   ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
-
-import { RemoteJoinerOptions } from "@medusajs/types"
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -85,7 +84,7 @@ export class RemoteQuery {
     prefix = "",
     args: JoinerArgument = {} as JoinerArgument
   ): {
-    select: string[]
+    select?: string[]
     relations: string[]
     args: JoinerArgument
   } {
@@ -94,9 +93,11 @@ export class RemoteQuery {
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
+    let shouldSelectAll = false
+
     for (const field of expand.fields ?? []) {
       if (field === "*") {
-        expand.fields = []
+        shouldSelectAll = true
         break
       }
       fields.add(prefix ? `${prefix}.${field}` : field)
@@ -116,11 +117,18 @@ export class RemoteQuery {
         args
       )
 
-      result.select.forEach(fields.add, fields)
+      result.select?.forEach(fields.add, fields)
       relations = relations.concat(result.relations)
     }
 
-    return { select: [...fields], relations, args }
+    const allFields = Array.from(fields)
+    const select =
+      allFields.length && !shouldSelectAll
+        ? allFields
+        : shouldSelectAll
+        ? undefined
+        : []
+    return { select, relations, args }
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {

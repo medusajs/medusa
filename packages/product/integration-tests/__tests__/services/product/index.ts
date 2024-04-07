@@ -234,6 +234,31 @@ moduleIntegrationTestRunner({
       })
 
       describe("list", () => {
+        it("should list all product that match the free text search", async () => {
+          const data = buildProductOnlyData({
+            title: "test product",
+          })
+          const data2 = buildProductOnlyData({
+            title: "space X",
+          })
+
+          const products = await service.create([data, data2])
+
+          const result = await service.list({
+            q: "test",
+          })
+
+          expect(result).toHaveLength(1)
+          expect(result[0].title).toEqual("test product")
+
+          const result2 = await service.list({
+            q: "space",
+          })
+
+          expect(result2).toHaveLength(1)
+          expect(result2[0].title).toEqual("space X")
+        })
+
         describe("soft deleted", function () {
           let product
 

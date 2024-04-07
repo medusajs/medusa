@@ -1,24 +1,24 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
+import { maybeApplyPriceListsFilter } from "./utils"
 import {
-  maybeApplyPriceListsFilter,
-  maybeApplySalesChannelsFilter,
-} from "./utils"
-import {
-  AdminGetProductsOptionsParams,
   AdminGetProductsParams,
-  AdminGetProductsProductOptionsOptionParams,
-  AdminGetProductsProductParams,
-  AdminGetProductsProductVariantsVariantParams,
-  AdminGetProductsVariantsParams,
-  AdminPostProductsProductOptionsOptionReq,
-  AdminPostProductsProductOptionsReq,
-  AdminPostProductsProductReq,
-  AdminPostProductsProductVariantsReq,
-  AdminPostProductsProductVariantsVariantReq,
-  AdminPostProductsReq,
+  AdminCreateProduct,
+  AdminCreateProductOption,
+  AdminCreateProductVariant,
+  AdminUpdateProduct,
+  AdminUpdateProductOption,
+  AdminGetProductParams,
+  AdminGetProductVariantsParams,
+  AdminGetProductVariantParams,
+  AdminUpdateProductVariant,
+  AdminGetProductOptionsParams,
+  AdminGetProductOptionParams,
 } from "./validators"
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
@@ -31,11 +31,15 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig
       ),
-      maybeApplySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "product_sales_channel",
+        resourceId: "product_id",
+        filterableField: "sales_channel_id",
+      }),
       maybeApplyPriceListsFilter(),
     ],
   },
@@ -43,8 +47,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products/:id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -53,9 +57,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products",
     middlewares: [
-      transformBody(AdminPostProductsReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminCreateProduct),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -64,9 +68,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id",
     middlewares: [
-      transformBody(AdminPostProductsProductReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminUpdateProduct),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -75,8 +79,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/products/:id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -86,8 +90,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products/:id/variants",
     middlewares: [
-      transformQuery(
-        AdminGetProductsVariantsParams,
+      validateAndTransformQuery(
+        AdminGetProductVariantsParams,
         QueryConfig.listVariantConfig
       ),
     ],
@@ -97,8 +101,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products/:id/variants/:variant_id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductVariantsVariantParams,
+      validateAndTransformQuery(
+        AdminGetProductVariantParams,
         QueryConfig.retrieveVariantConfig
       ),
     ],
@@ -107,9 +111,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/variants",
     middlewares: [
-      transformBody(AdminPostProductsProductVariantsReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminCreateProductVariant),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -118,9 +122,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/variants/:variant_id",
     middlewares: [
-      transformBody(AdminPostProductsProductVariantsVariantReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminUpdateProductVariant),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -129,8 +133,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/products/:id/variants/:variant_id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -141,8 +145,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products/:id/options",
     middlewares: [
-      transformQuery(
-        AdminGetProductsOptionsParams,
+      validateAndTransformQuery(
+        AdminGetProductOptionsParams,
         QueryConfig.listOptionConfig
       ),
     ],
@@ -152,8 +156,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/products/:id/options/:option_id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductOptionsOptionParams,
+      validateAndTransformQuery(
+        AdminGetProductOptionParams,
         QueryConfig.retrieveOptionConfig
       ),
     ],
@@ -162,9 +166,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/options",
     middlewares: [
-      transformBody(AdminPostProductsProductOptionsReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminCreateProductOption),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -173,9 +177,9 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/options/:option_id",
     middlewares: [
-      transformBody(AdminPostProductsProductOptionsOptionReq),
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformBody(AdminUpdateProductOption),
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
@@ -184,8 +188,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/products/:id/options/:option_id",
     middlewares: [
-      transformQuery(
-        AdminGetProductsProductParams,
+      validateAndTransformQuery(
+        AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],

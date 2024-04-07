@@ -1,9 +1,9 @@
 import { RouteFocusModal } from "../../../components/route-modal"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
-import { useV2Store } from "../../../lib/api-v2"
+import { useStore } from "../../../hooks/api/store"
 
 export const StoreAddCurrencies = () => {
-  const { store, isLoading, isError, error } = useV2Store({})
+  const { store, isLoading, isError, error } = useStore({})
 
   if (isError) {
     throw error
