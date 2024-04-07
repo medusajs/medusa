@@ -2,6 +2,7 @@ import { ShippingOptionPriceType } from "../../fulfillment"
 import { RuleOperatorType } from "../../common"
 
 export interface UpdateShippingOptionsWorkflowInput {
+  id: string
   name: string
   service_zone_id?: string
   shipping_profile_id?: string

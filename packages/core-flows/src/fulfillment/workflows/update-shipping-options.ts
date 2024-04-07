@@ -1,20 +1,13 @@
-/*
 import { FulfillmentWorkflow, UpdateRuleTypeDTO } from "@medusajs/types"
-import {
-  transform,
-  updateWorkflow,
-  WorkflowData,
-} from "@medusajs/workflows-sdk"
-import {
-  updateShippingOptionsPriceSetsStep,
-  updateShippingOptionsStep,
-} from "../steps"
+import {createWorkflow, transform, WorkflowData} from "@medusajs/workflows-sdk"
+import { upsertShippingOptionsStep } from "../steps"
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
 import { updatePricingRuleTypesStep } from "../../pricing"
+import { RuleTypeDTO } from "@medusajs/types/dist"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
-export const updateShippingOptionsWorkflow = updateWorkflow(
+export const updateShippingOptionsWorkflow = createWorkflow(
   updateShippingOptionsWorkflowId,
   (
     input: WorkflowData<
@@ -35,7 +28,7 @@ export const updateShippingOptionsWorkflow = updateWorkflow(
       }
     })
 
-    const updatedShippingOptions = updateShippingOptionsStep(
+    const updatedShippingOptions = upsertShippingOptionsStep(
       data.shippingOptions
     )
 
@@ -45,10 +38,10 @@ export const updateShippingOptionsWorkflow = updateWorkflow(
         shippingOptionsIndexToPrices: data.shippingOptionsIndexToPrices,
       },
       (data) => {
-        const ruleTypes = new Set<UpdateRuleTypeDTO>()
+        const ruleTypes = new Set<Partial<RuleTypeDTO>>()
         const shippingOptionsPrices = data.shippingOptionsIndexToPrices.map(
           ({ shipping_option_index, prices }) => {
-            prices.forEach((price) => {
+            prices?.forEach((price) => {
               if ("region_id" in price) {
                 ruleTypes.add({
                   name: "region_id",
@@ -73,7 +66,7 @@ export const updateShippingOptionsWorkflow = updateWorkflow(
 
     updatePricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
 
-    const shippingOptionsPriceSetsLinkData = updateShippingOptionsPriceSetsStep(
+    /*const shippingOptionsPriceSetsLinkData = updateShippingOptionsPriceSetsStep(
       normalizedShippingOptionsPrices.shippingOptionsPrices
     )
 
@@ -89,11 +82,10 @@ export const updateShippingOptionsWorkflow = updateWorkflow(
           }
         })
       }
-    )
+    )*/
 
-    setShippingOptionsPriceSetsStep(normalizedLinkData)
+    /*setShippingOptionsPriceSetsStep(normalizedLinkData)*/
 
     return updatedShippingOptions
   }
 )
-*/
