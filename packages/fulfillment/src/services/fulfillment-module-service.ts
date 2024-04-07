@@ -41,6 +41,12 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { Modules } from "@medusajs/modules-sdk"
 import { UpdateShippingOptionsInput } from "../types/service"
+import {
+  Product,
+  ProductEventData,
+  ProductEvents,
+  UpdateProductInput
+} from "@medusajs/product";
 
 const generateMethodForModels = [
   ServiceZone,
@@ -1098,6 +1104,59 @@ export default class FulfillmentModuleService<
     return Array.isArray(data)
       ? updatedShippingOptions
       : updatedShippingOptions[0]
+  }
+
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO>
+  
+  @InjectManager("baseRepository_")
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO[] | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO> {
+    const upsertedShippingOptions = await this.upsertShippingOptions_(data, sharedContext)
+
+    const allShippingOptions = await this.baseRepository_.serialize<
+        FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+    >(upsertedShippingOptions)
+
+    return Array.isArray(data) ? allShippingOptions : allShippingOptions[0]
+  }
+
+  @InjectManager("baseRepository_")
+  async upsertShippingOptions_(
+    data: FulfillmentTypes.UpsertShippingOptionDTO[] | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity[] | TShippingOptionEntity> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (shippingOption): shippingOption is UpdateShippingOptionsInput => !!shippingOption.id
+    )
+    const forCreate = input.filter(
+      (shippingOption): shippingOption is FulfillmentTypes.CreateShippingOptionDTO => !shippingOption.id
+    )
+
+    let created: TShippingOptionEntity[] = []
+    let updated: TShippingOptionEntity[] = []
+
+    if (forCreate.length) {
+      const createdShippingOptions = await this.createShippingOptions_(forCreate, sharedContext)
+      const toPush = Array.isArray(createdShippingOptions) ? createdShippingOptions : [createdShippingOptions]
+      created.push(...toPush)
+    }
+    if (forUpdate.length) {
+      const updatedShippingOptions = await this.updateShippingOptions_(forCreate, sharedContext)
+      const toPush = Array.isArray(updatedShippingOptions) ? updatedShippingOptions : [updatedShippingOptions]
+      updated.push(...toPush)
+    }
+
+    return [...created, ...updated]
   }
 
   updateShippingProfiles(

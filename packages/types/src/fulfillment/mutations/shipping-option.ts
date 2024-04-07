@@ -27,3 +27,7 @@ export interface UpdateShippingOptionDTO {
     | { id: string }
   )[]
 }
+
+export interface UpsertShippingOptionDTO extends UpdateShippingOptionDTO {
+
+}
