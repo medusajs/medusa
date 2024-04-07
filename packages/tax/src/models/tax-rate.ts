@@ -5,11 +5,11 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 import {
-  Filter,
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -17,8 +17,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import TaxRegion from "./tax-region"
 import TaxRateRule from "./tax-rate-rule"
+import TaxRegion from "./tax-region"
 
 type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
 
@@ -66,7 +66,7 @@ export default class TaxRate {
   is_combinable = false
 
   @ManyToOne(() => TaxRegion, {
-    type: "text",
+    columnType: "text",
     fieldName: "tax_region_id",
     mapToPk: true,
     onDelete: "cascade",

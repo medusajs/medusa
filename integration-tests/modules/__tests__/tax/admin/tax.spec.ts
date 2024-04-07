@@ -336,6 +336,13 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
+        const rate = await service.create({
+          tax_region_id: region.id,
+          code: "test",
+          rate: 2.5,
+          name: "Test Rate",
+        })
+
         const response = await api.get(
           `/admin/tax-regions/${region.id}`,
           adminHeaders
@@ -352,7 +359,7 @@ medusaIntegrationTestRunner({
             created_by: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            tax_rates: [],
+            tax_rates: expect.any(Array),
             deleted_at: null,
             metadata: null,
           },
