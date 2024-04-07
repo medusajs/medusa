@@ -1,2 +1,2 @@
-export * from "./create-service-zones"
 export * from "./create-shipping-options"
+export * from "./service-zones"
