@@ -40,7 +40,7 @@ export interface CreateOrderDTO {
   no_notification?: boolean
   items?: CreateOrderLineItemDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[]
-  transactions?: CreateOrderTransactionDTO[]
+  transactions?: Omit<CreateOrderTransactionDTO, "order_id">[]
   metadata?: Record<string, unknown>
 
   promo_codes?: string[]

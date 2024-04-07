@@ -14,6 +14,10 @@ export function calculateAdjustmentTotal({
 }) {
   let total = MathBN.convert(0)
   for (const adj of adjustments) {
+    if (!isDefined(adj.amount)) {
+      continue
+    }
+
     total = MathBN.add(total, adj.amount)
 
     if (isDefined(taxRate)) {
