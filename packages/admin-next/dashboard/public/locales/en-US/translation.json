@@ -558,6 +558,19 @@
         "title": "Delivering from",
         "enable": "Enable delivery"
       }
+    },
+    "serviceZone": {
+      "create": {
+        "title": "Add service zone for {{fulfillmentSet}}",
+        "subtitle": "Service zone",
+        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
+        "zoneName": "Zone name"
+      },
+      "areas": {
+        "title": "Areas affected by this rule",
+        "description": "Select the geographical areas where this shipping zone should apply.",
+        "manage": "Manage areas"
+      }
     }
   },
   "discounts": {

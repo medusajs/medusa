@@ -43,11 +43,18 @@ async function deleteStockLocation(id: string) {
   return deleteRequest<StockLocationDeleteRes>(`/admin/stock-locations/${id}`)
 }
 
+async function deleteFulfillmentSet(locationId: string, setId: string) {
+  return deleteRequest<StockLocationDeleteRes>(
+    `/admin/stock-locations/${locationId}/fulfillment-sets/${setId}`
+  )
+}
+
 export const stockLocations = {
   list: listStockLocations,
   retrieve: retrieveStockLocation,
   create: createStockLocation,
   update: updateStockLocation,
   delete: deleteStockLocation,
-  createFulfillmentSet: createFulfillmentSet,
+  createFulfillmentSet,
+  deleteFulfillmentSet,
 }

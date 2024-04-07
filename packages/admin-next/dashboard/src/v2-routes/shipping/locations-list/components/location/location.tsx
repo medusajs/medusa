@@ -4,8 +4,12 @@ import { useTranslation } from "react-i18next"
 import { Buildings, Trash } from "@medusajs/icons"
 
 import { countries } from "../../../../../lib/countries"
-import { useCreateFulfillmentSet } from "../../../../../hooks/api/stock-locations.tsx"
+import {
+  useCreateFulfillmentSet,
+  useDeleteFulfillmentSet,
+} from "../../../../../hooks/api/stock-locations.tsx"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useNavigate } from "react-router-dom"
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -21,6 +25,7 @@ type FulfillmentSetProps = {
 
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { fulfillmentSet, locationName, locationId, type } = props
 
   const fulfillmentSetExists = !!fulfillmentSet
@@ -28,6 +33,11 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 
   const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
     useCreateFulfillmentSet(locationId)
+
+  const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
+    locationId,
+    fulfillmentSet?.id
+  )
 
   // const isPickup = fulfillmentSet?.type === FulfillmentSetType.Pickup
   // const isDelivery = fulfillmentSet?.type === FulfillmentSetType.Delivery
@@ -39,7 +49,9 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     })
   }
 
-  const handleDelete = async () => {}
+  const handleDelete = async () => {
+    await deleteFulfillmentSet()
+  }
 
   return (
     <div className="flex flex-col px-6 py-5">
@@ -54,7 +66,15 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         ) : (
           <ActionMenu
             groups={[
-              { actions: [{ label: t("actions.delete"), icon: <Trash /> }] },
+              {
+                actions: [
+                  {
+                    label: t("actions.delete"),
+                    icon: <Trash />,
+                    onClick: handleDelete,
+                  },
+                ],
+              },
             ]}
           />
         )}
@@ -63,7 +83,14 @@ function FulfillmentSet(props: FulfillmentSetProps) {
       {fulfillmentSetExists && !hasServiceZones && (
         <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
           <div>{t("shipping.fulfillmentSet.placeholder")}</div>
-          <Button variant="secondary">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              navigate(
+                `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
+              )
+            }
+          >
             {t("shipping.fulfillmentSet.addZone")}
           </Button>
         </div>

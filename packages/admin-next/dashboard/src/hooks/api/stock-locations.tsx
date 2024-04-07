@@ -15,10 +15,12 @@ import {
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
 import {
+  ProductDeleteRes,
   StockLocationDeleteRes,
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
+import { productsQueryKeys } from "./products.tsx"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 const stockLocationsQueryKeys = queryKeysFactory(STOCK_LOCATIONS_QUERY_KEY)
@@ -131,6 +133,25 @@ export const useCreateFulfillmentSet = (
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.detail(locationId),
       })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteFulfillmentSet = (
+  locationId: string,
+  setId: string,
+  options?: UseMutationOptions<StockLocationRes, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () =>
+      client.stockLocations.deleteFulfillmentSet(locationId, setId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
