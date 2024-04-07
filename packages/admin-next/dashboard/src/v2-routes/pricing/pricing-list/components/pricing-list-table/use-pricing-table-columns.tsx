@@ -25,10 +25,10 @@ export const usePricingTableColumns = () => {
           return <StatusCell color={color}>{text}</StatusCell>
         },
       }),
-      // columnHelper.accessor("customer_groups", {
-      //   header: t("customerGroups.domain"),
-      //   cell: (info) => info.getValue()?.length || "-",
-      // }),
+      columnHelper.accessor("prices", {
+        header: t("fields.prices"),
+        cell: (info) => info.getValue()?.length || "-",
+      }),
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => <PricingTableActions priceList={row.original} />,

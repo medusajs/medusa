@@ -5,7 +5,7 @@ import { RouteDrawer } from "../../../components/route-modal"
 import { usePriceList } from "../../../hooks/api/price-lists"
 import { EditPriceListForm } from "./components/edit-price-list-form"
 
-export const PricingEdit = () => {
+export const PricingConfiguration = () => {
   const { t } = useTranslation()
   const { id } = useParams()
 

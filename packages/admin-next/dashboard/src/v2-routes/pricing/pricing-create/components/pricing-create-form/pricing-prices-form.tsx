@@ -1,5 +1,4 @@
-import { ProductVariantDTO } from "@medusajs/types"
-import { Button, DropdownMenu } from "@medusajs/ui"
+import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -9,6 +8,7 @@ import { DataGrid } from "../../../../../components/grid/data-grid"
 import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
 import { DisplayField } from "../../../../../components/grid/grid-cells/non-interactive/display-field"
 import { DataGridMeta } from "../../../../../components/grid/types"
+import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useStore } from "../../../../../hooks/api/store"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
@@ -28,10 +28,23 @@ type EnabledColumnRecord = Record<string, ColumnType>
 export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   const {
     store,
-    isLoading: isLoadingStore,
+    isLoading: isStoreLoading,
     isError: isStoreError,
     error: storeError,
   } = useStore()
+  const {
+    currencies,
+    isLoading: isCurrenciesLoading,
+    isError: isCurrencyError,
+    error: currencyError,
+  } = useCurrencies(
+    {
+      code: store?.supported_currency_codes,
+    },
+    {
+      enabled: !!store,
+    }
+  )
 
   const [enabledColumns, setEnabledColumns] = useState<EnabledColumnRecord>({})
 
@@ -51,13 +64,14 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
     control: form.control,
     name: "product_ids",
   })
+
   const existingProducts = useWatch({
     control: form.control,
     name: "products",
   })
 
   const { products, isLoading, isError, error } = useProducts({
-    id: ids,
+    id: ids.map((id) => id.id),
     limit: ids.length,
     fields: "title,thumbnail,*variants",
   })
@@ -87,59 +101,28 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
     }
   }, [products, existingProducts, isLoading, setValue])
 
-  const toggleColumn = ({ type, id }: { type: ColumnType; id: string }) => {
-    setEnabledColumns((prev) => {
-      if (prev[id]) {
-        const { [id]: _, ...rest } = prev
+  const columns = useColumns({
+    currencies,
+  })
 
-        return {
-          ...rest,
-        }
-      }
+  const initializing =
+    isLoading ||
+    isStoreLoading ||
+    isCurrenciesLoading ||
+    !products ||
+    !store ||
+    !currencies
 
-      return {
-        ...prev,
-        [id]: type,
-      }
-    })
+  if (isError) {
+    throw error
   }
 
-  const columns = useColumns(enabledColumns)
-
-  const initializing = isLoading || !products
+  if (isStoreError) {
+    throw storeError
+  }
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <div className="p-4">
-        <DropdownMenu>
-          <DropdownMenu.Trigger asChild>
-            <Button variant="secondary" size="small">
-              Currency
-            </Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            {store?.supported_currency_codes.map((currency) => {
-              const checked =
-                currency === store.default_currency_code ||
-                !!enabledColumns[currency]
-
-              return (
-                <DropdownMenu.CheckboxItem
-                  onSelect={(e) => e.preventDefault()}
-                  checked={checked}
-                  disabled={currency === store.default_currency_code}
-                  key={currency}
-                  onClick={() =>
-                    toggleColumn({ type: ColumnType.CURRENCY, id: currency })
-                  }
-                >
-                  {currency.toUpperCase()}
-                </DropdownMenu.CheckboxItem>
-              )
-            })}
-          </DropdownMenu.Content>
-        </DropdownMenu>
-      </div>
       <DataGrid
         columns={columns}
         data={products}
@@ -155,9 +138,6 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   )
 }
 
-/**
- * Helper function to determine if a row is a product or a variant.
- */
 const isProduct = (
   row: ExtendedProductDTO | ProductVariantDTO
 ): row is ExtendedProductDTO => {
@@ -168,7 +148,7 @@ const columnHelper = createColumnHelper<
   ExtendedProductDTO | ProductVariantDTO
 >()
 
-const useColumns = (enabledColumns: EnabledColumnRecord) => {
+const useColumns = ({ currencies = [] }: { currencies?: CurrencyDTO[] }) => {
   const { t } = useTranslation()
 
   const colDefs: ColumnDef<ExtendedProductDTO | ProductVariantDTO>[] =
@@ -176,7 +156,7 @@ const useColumns = (enabledColumns: EnabledColumnRecord) => {
       return [
         columnHelper.display({
           id: t("fields.title"),
-          header: "Title",
+          header: t("fields.title"),
           cell: ({ row }) => {
             const entity = row.original
 
@@ -200,9 +180,9 @@ const useColumns = (enabledColumns: EnabledColumnRecord) => {
             )
           },
         }),
-        ...Object.entries(enabledColumns).map(([id, type]) => {
+        ...currencies.map((currency) => {
           return columnHelper.display({
-            header: `Price ${id.toUpperCase()}`,
+            header: `Price ${currency.code.toUpperCase()}`,
             cell: ({ row, table }) => {
               const entity = row.original
 
@@ -212,18 +192,18 @@ const useColumns = (enabledColumns: EnabledColumnRecord) => {
 
               return (
                 <CurrencyCell
-                  code={id}
+                  currency={currency}
                   meta={
                     table.options.meta as DataGridMeta<PricingCreateSchemaType>
                   }
-                  field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${id}`}
+                  field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${currency.code}`}
                 />
               )
             },
           })
         }),
       ]
-    }, [t, enabledColumns])
+    }, [t, currencies])
 
   return colDefs
 }

@@ -6,6 +6,7 @@ import {
   CampaignDTO,
   CurrencyDTO,
   CustomerDTO,
+  CustomerGroupDTO,
   InviteDTO,
   PaymentProviderDTO,
   PriceListDTO,
@@ -148,3 +149,10 @@ export type ProductCollectionDeleteRes = DeleteRes
 export type PriceListRes = { price_list: PriceListDTO }
 export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes
 export type PriceListDeleteRes = DeleteRes
+
+// Customer Groups
+export type CustomerGroupRes = { customer_group: CustomerGroupDTO }
+export type CustomerGroupListRes = {
+  customer_groups: CustomerGroupDTO[]
+} & ListRes
+export type CustomerGroupDeleteRes = DeleteRes

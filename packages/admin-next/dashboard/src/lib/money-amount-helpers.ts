@@ -1,7 +1,7 @@
 import { currencies } from "./currencies"
 
-const getDecimalDigits = (currency: string) => {
-  return currencies[currency.toUpperCase()]?.decimal_digits
+export const getDecimalDigits = (currency: string) => {
+  return currencies[currency.toUpperCase()]?.decimal_digits ?? 0
 }
 
 /**
@@ -38,7 +38,7 @@ export const getPresentationalAmount = (amount: number, currency: string) => {
 export const getDbAmount = (amount: number, currency: string) => {
   const decimalDigits = currencies[currency.toUpperCase()].decimal_digits
 
-  if (!decimalDigits) {
+  if (decimalDigits === undefined) {
     throw new Error("Currency has no decimal digits")
   }
 

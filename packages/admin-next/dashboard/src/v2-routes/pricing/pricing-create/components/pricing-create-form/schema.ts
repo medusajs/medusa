@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const PricingVariantPricesRecordSchema = z.record(z.number().optional())
+const PricingVariantPricesRecordSchema = z.record(z.string().optional())
 
 const PricingVariantsRecordSchema = z.record(
   z.object({
@@ -23,14 +23,25 @@ export type PricingProductsRecordType = z.infer<
   typeof PricingProductsRecordSchema
 >
 
+const PricingCustomerGroupsArray = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+  })
+)
+
+export type PricingCustomerGroupsArrayType = z.infer<
+  typeof PricingCustomerGroupsArray
+>
+
 export const PricingCreateSchema = z.object({
   type: z.enum(["sale", "override"]),
   title: z.string().min(1),
   description: z.string().min(1),
   starts_at: z.date().nullable(),
   ends_at: z.date().nullable(),
-  customer_group_ids: z.array(z.string()).optional(),
-  product_ids: z.array(z.string()).min(1),
+  customer_group_ids: PricingCustomerGroupsArray.optional(),
+  product_ids: z.array(z.object({ id: z.string() })).min(1),
   products: PricingProductsRecordSchema,
 })
 

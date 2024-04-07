@@ -1,12 +1,12 @@
 import { PencilSquare } from "@medusajs/icons"
-import { PriceList } from "@medusajs/medusa"
+import { PriceListDTO } from "@medusajs/types"
 import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type PricingConfigurationSectionProps = {
-  priceList: PriceList
+  priceList: PriceListDTO
 }
 
 export const PricingConfigurationSection = ({
@@ -14,8 +14,8 @@ export const PricingConfigurationSection = ({
 }: PricingConfigurationSectionProps) => {
   const { t } = useTranslation()
 
-  const firstCustomerGroups = priceList.customer_groups?.slice(0, 3)
-  const remainingCustomerGroups = priceList.customer_groups?.slice(3)
+  const firstCustomerGroups = priceList.customer_groups?.slice(0, 3) || []
+  const remainingCustomerGroups = priceList.customer_groups?.slice(3) || []
 
   return (
     <Container className="divide-y p-0">

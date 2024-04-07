@@ -1,9 +1,9 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { PriceListDTO } from "@medusajs/types"
 import { usePrompt } from "@medusajs/ui"
-import { useAdminDeletePriceList } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeletePriceList } from "../../../../../hooks/api/price-lists"
 
 type PricingTableActionsProps = {
   priceList: PriceListDTO
@@ -15,7 +15,7 @@ export const PricingTableActions = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminDeletePriceList(priceList.id)
+  const { mutateAsync } = useDeletePriceList(priceList.id)
 
   const handleDelete = async () => {
     const res = await prompt({

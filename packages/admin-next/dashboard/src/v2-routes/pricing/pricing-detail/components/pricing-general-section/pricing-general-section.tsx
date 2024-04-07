@@ -1,10 +1,10 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { PriceListDTO } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
-import { useAdminDeletePriceList } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeletePriceList } from "../../../../../hooks/api/price-lists"
 import { getPriceListStatus } from "../../../common/utils"
 
 type PricingGeneralSectionProps = {
@@ -18,7 +18,7 @@ export const PricingGeneralSection = ({
   const navigate = useNavigate()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminDeletePriceList(priceList.id)
+  const { mutateAsync } = useDeletePriceList(priceList.id)
 
   const overrideCount = priceList.prices?.length || 0
 

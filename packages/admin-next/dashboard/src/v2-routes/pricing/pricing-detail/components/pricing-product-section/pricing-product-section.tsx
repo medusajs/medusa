@@ -1,21 +1,19 @@
 import { PencilSquare, Plus } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { PriceListDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import {
-  useAdminDeletePriceListProductsPrices,
-  useAdminPriceListProducts,
-} from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 type PricingProductSectionProps = {
   priceList: PriceListDTO
@@ -37,17 +35,15 @@ export const PricingProductSection = ({
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
   })
-  const { products, count, isLoading, isError, error } =
-    useAdminPriceListProducts(
-      priceList.id,
-      {
-        ...searchParams,
-        expand: "variants,sales_channels,collection",
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { products, count, isLoading, isError, error } = useProducts(
+    {
+      ...searchParams,
+      price_list_id: [priceList.id],
+    },
+    {
+      placeholderData: keepPreviousData,
+    }
+  )
 
   const filters = useProductTableFilters()
   const columns = useColumns()
@@ -67,7 +63,7 @@ export const PricingProductSection = ({
     prefix: PREFIX,
   })
 
-  const { mutateAsync } = useAdminDeletePriceListProductsPrices(priceList.id)
+  // const { mutateAsync } = useAdminDeletePriceListProductsPrices(priceList.id)
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
@@ -82,9 +78,9 @@ export const PricingProductSection = ({
       return
     }
 
-    await mutateAsync({
-      product_ids: Object.keys(rowSelection),
-    })
+    // await mutateAsync({
+    //   product_ids: Object.keys(rowSelection),
+    // })
   }
 
   const handleEdit = async () => {
@@ -150,7 +146,7 @@ export const PricingProductSection = ({
   )
 }
 
-const columnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
 const useColumns = () => {
   const base = useProductTableColumns()

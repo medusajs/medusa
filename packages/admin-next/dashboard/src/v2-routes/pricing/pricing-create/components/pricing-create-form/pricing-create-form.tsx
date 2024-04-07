@@ -3,7 +3,7 @@ import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { FieldPath, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { CreatePriceListDTO } from "@medusajs/types"
+import { CreatePriceListDTO, CreatePriceListPriceDTO } from "@medusajs/types"
 import { useState } from "react"
 import { z } from "zod"
 import {
@@ -11,6 +11,8 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreatePriceList } from "../../../../../hooks/api/price-lists"
+import { castNumber } from "../../../../../lib/cast-number"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 import { PricingDetailsForm } from "./pricing-details-form"
 import { PricingPricesForm } from "./pricing-prices-form"
 import { PricingProductsForm } from "./pricing-products-form"
@@ -54,6 +56,7 @@ export const PricingCreateForm = () => {
       description: "",
       starts_at: null,
       ends_at: null,
+      customer_group_ids: [],
       product_ids: [],
       products: {},
     },
@@ -64,6 +67,39 @@ export const PricingCreateForm = () => {
 
   const handleSubmit = form.handleSubmit(
     async (data) => {
+      const { customer_group_ids, products } = data
+
+      const rules = customer_group_ids?.length
+        ? { customer_group_id: customer_group_ids.map((cg) => cg.id) }
+        : undefined
+
+      const prices: CreatePriceListPriceDTO[] = []
+
+      for (const [_, product] of Object.entries(products)) {
+        const { variants } = product
+
+        for (const [variantId, variant] of Object.entries(variants)) {
+          const { currency_prices } = variant
+
+          for (const [currencyCode, currencyPrice] of Object.entries(
+            currency_prices
+          )) {
+            if (!currencyPrice) {
+              continue
+            }
+
+            console.log(currencyCode, currencyPrice)
+
+            prices.push({
+              amount: getDbAmount(castNumber(currencyPrice), currencyCode),
+              currency_code: currencyCode,
+              // @ts-expect-error type is wrong
+              variant_id: variantId,
+            })
+          }
+        }
+      }
+
       await mutateAsync(
         {
           title: data.title,
@@ -71,7 +107,8 @@ export const PricingCreateForm = () => {
           description: data.description,
           starts_at: data.starts_at ? data.starts_at.toISOString() : null,
           ends_at: data.ends_at ? data.ends_at.toISOString() : null,
-          prices: [],
+          rules,
+          prices: prices,
         },
         {
           onSuccess: ({ price_list }) => {
@@ -80,7 +117,7 @@ export const PricingCreateForm = () => {
         }
       )
     },
-    (err) => console.error(err)
+    (error) => console.error(error)
   )
 
   const partialFormValidation = (
@@ -296,6 +333,7 @@ const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
   if (tab === Tab.PRICE) {
     return (
       <Button
+        key="submit-button"
         type="submit"
         variant="primary"
         size="small"
@@ -308,6 +346,7 @@ const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
 
   return (
     <Button
+      key="next-button"
       type="button"
       variant="primary"
       size="small"

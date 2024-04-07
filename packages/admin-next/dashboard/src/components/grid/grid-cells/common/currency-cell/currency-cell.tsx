@@ -1,22 +1,22 @@
 import Primitive from "react-currency-input-field"
 
+import { CurrencyDTO } from "@medusajs/types"
 import { useRef } from "react"
 import { Controller, FieldValues } from "react-hook-form"
-import { useCurrency } from "../../../../../hooks/api/currencies"
+import { getDecimalDigits } from "../../../../../lib/money-amount-helpers"
 import { GridCellType } from "../../../constants"
 import { FieldProps } from "../../../types"
 
 interface CurrencyCellProps<TFieldValues extends FieldValues = any>
   extends FieldProps<TFieldValues> {
-  code: string
+  currency: CurrencyDTO
 }
 
-export const CurrencyCell = ({ code, field, meta }: CurrencyCellProps) => {
+export const CurrencyCell = ({ currency, field, meta }: CurrencyCellProps) => {
   const symbolRef = useRef<HTMLSpanElement>(null)
+  const decimalScale = getDecimalDigits(currency.code)
 
   const { control } = meta
-
-  const { currency } = useCurrency(code)
 
   return (
     <Controller
@@ -30,7 +30,7 @@ export const CurrencyCell = ({ code, field, meta }: CurrencyCellProps) => {
               role="presentation"
               className="text-ui-fg-muted txt-compact-small pointer-events-none absolute left-0 top-0 select-none py-2.5 pl-4"
             >
-              {currency?.symbol_native}
+              {currency.symbol_native}
             </span>
             <Primitive
               data-input-field="true"
@@ -42,8 +42,8 @@ export const CurrencyCell = ({ code, field, meta }: CurrencyCellProps) => {
                   ? `${symbolRef.current.offsetWidth + 8}px`
                   : "16px",
               }}
-              decimalScale={2}
-              allowDecimals={true}
+              decimalScale={decimalScale} // Temporary until the backend returns the correct number of decimals to use for the currency
+              allowDecimals={decimalScale > 0}
               onValueChange={(_value, _name, values) => {
                 onChange(values?.value)
               }}

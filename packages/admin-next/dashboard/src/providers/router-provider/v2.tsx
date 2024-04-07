@@ -8,6 +8,7 @@ import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
+import { PriceListRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -242,6 +243,9 @@ export const v2Routes: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                handle: {
+                  crumb: (data: PriceListRes) => data.price_list.title,
+                },
                 children: [
                   {
                     path: "edit",

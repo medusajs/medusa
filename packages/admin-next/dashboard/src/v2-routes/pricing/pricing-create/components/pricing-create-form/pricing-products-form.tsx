@@ -1,4 +1,5 @@
 import { Checkbox } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
   RowSelectionState,
@@ -9,6 +10,8 @@ import { UseFormReturn, useWatch } from "react-hook-form"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
+import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
+import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { PricingCreateSchemaType, PricingProductsRecordType } from "./schema"
@@ -18,10 +21,11 @@ type PricingProductsFormProps = {
 }
 
 const PAGE_SIZE = 50
+const PREFIX = "p"
 
-function getInitialSelection(ids: string[]) {
-  return ids.reduce((acc, key) => {
-    acc[key] = true
+function getInitialSelection(products: { id: string }[]) {
+  return products.reduce((acc, curr) => {
+    acc[curr.id] = true
     return acc
   }, {} as RowSelectionState)
 }
@@ -43,7 +47,16 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
     getInitialSelection(selectedIds)
   )
 
-  const { products, count, isLoading, isError, error } = useProducts()
+  const { searchParams, raw } = useProductTableQuery({
+    pageSize: PAGE_SIZE,
+    prefix: PREFIX,
+  })
+  const { products, count, isLoading, isError, error } = useProducts(
+    searchParams,
+    {
+      placeholderData: keepPreviousData,
+    }
+  )
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
     const state = typeof fn === "function" ? fn(rowSelection) : fn
@@ -59,7 +72,9 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
       return acc
     }, {} as PricingProductsRecordType)
 
-    setValue("product_ids", ids, { shouldDirty: true, shouldTouch: true })
+    const update = ids.map((id) => ({ id }))
+
+    setValue("product_ids", update, { shouldDirty: true, shouldTouch: true })
 
     /**
      * Update the product records to ensure that all unselected products
@@ -74,6 +89,7 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
   }
 
   const columns = useColumns()
+  const filters = useProductTableFilters()
 
   const { table } = useDataTable({
     data: products || [],
@@ -88,7 +104,7 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
       state: rowSelection,
       updater,
     },
-    pageSize: 50,
+    pageSize: PAGE_SIZE,
   })
 
   if (isError) {
@@ -100,13 +116,16 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
       <DataTable
         table={table}
         columns={columns}
+        filters={filters}
         pageSize={PAGE_SIZE}
+        prefix={PREFIX}
         count={count}
         isLoading={isLoading}
         layout="fill"
         orderBy={["title", "status", "created_at", "updated_at"]}
         pagination
         search
+        queryObject={raw}
       />
     </div>
   )
