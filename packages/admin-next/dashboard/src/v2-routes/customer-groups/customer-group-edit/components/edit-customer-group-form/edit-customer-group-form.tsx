@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CustomerGroup } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateCustomerGroup } from "medusa-react"
 import { useForm } from "react-hook-form"
@@ -10,12 +9,13 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 
 type EditCustomerGroupFormProps = {
-  group: CustomerGroup
+  group: AdminCustomerGroupResponse["customer_group"]
 }
 
-const EditCustomerGroupSchema = z.object({
+export const EditCustomerGroupSchema = z.object({
   name: z.string().min(1),
 })
 

@@ -1,4 +1,3 @@
-import { AdminGetCustomerGroupsParams } from "@medusajs/medusa"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 type UseCustomerGroupTableQueryProps = {
@@ -17,7 +16,7 @@ export const useCustomerGroupTableQuery = ({
 
   const { offset, created_at, updated_at, q, order } = queryObject
 
-  const searchParams: AdminGetCustomerGroupsParams = {
+  const searchParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,

@@ -1,5 +1,4 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-import { useAdminCustomerGroups } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -7,6 +6,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCustomerGroupTableColumns } from "./use-customer-group-table-columns"
 import { useCustomerGroupTableFilters } from "./use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "./use-customer-group-table-query"
+import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
 
 const PAGE_SIZE = 20
 
@@ -17,16 +17,10 @@ export const CustomerGroupListTable = () => {
     pageSize: PAGE_SIZE,
   })
   const { customer_groups, count, isLoading, isError, error } =
-    useAdminCustomerGroups(
-      {
-        ...searchParams,
-        expand: "customers",
-        fields: "id,name,customers,customers.id",
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+    useCustomerGroups({
+      ...searchParams,
+      fields: "id,name,customers.id",
+    })
 
   const filters = useCustomerGroupTableFilters()
   const columns = useCustomerGroupTableColumns()

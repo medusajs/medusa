@@ -1,8 +1,8 @@
-import { AdminCustomerGroupsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { medusa, queryClient } from "../../../lib/medusa"
 
 const customerGroupDetailQuery = (id: string) => ({
@@ -15,7 +15,7 @@ export const customerGroupLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = customerGroupDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminCustomerGroupsRes>>(
+    queryClient.getQueryData<Response<AdminCustomerGroupResponse>>(
       query.queryKey
     ) ?? (await queryClient.fetchQuery(query))
   )

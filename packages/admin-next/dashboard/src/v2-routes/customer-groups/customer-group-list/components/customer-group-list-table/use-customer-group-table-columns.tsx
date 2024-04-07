@@ -1,13 +1,14 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { CustomerGroup } from "@medusajs/medusa"
 import { usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminDeleteCustomerGroup } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<CustomerGroup>()
+const columnHelper =
+  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
 
 export const useCustomerGroupTableColumns = () => {
   const { t } = useTranslation()
@@ -35,7 +36,11 @@ export const useCustomerGroupTableColumns = () => {
   )
 }
 
-const CustomerGroupActions = ({ group }: { group: CustomerGroup }) => {
+const CustomerGroupActions = ({
+  group,
+}: {
+  group: AdminCustomerGroupResponse["customer_group"]
+}) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 

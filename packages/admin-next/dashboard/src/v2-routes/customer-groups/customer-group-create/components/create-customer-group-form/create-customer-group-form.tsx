@@ -10,8 +10,9 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
-const CreateCustomerGroupSchema = zod.object({
+export const CreateCustomerGroupSchema = zod.object({
   name: zod.string().min(1),
 })
 
@@ -26,7 +27,7 @@ export const CreateCustomerGroupForm = () => {
     resolver: zodResolver(CreateCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateCustomerGroup()
+  const { mutateAsync, isLoading } = useCreateCustomerGroup()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
