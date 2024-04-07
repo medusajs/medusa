@@ -6,7 +6,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import {
   createShippingOptionsPriceSetsStep,
-  createShippingOptionsStep,
+  upsertShippingOptionsStep,
 } from "../steps"
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
 import { createPricingRuleTypesStep } from "../../pricing"
@@ -34,7 +34,7 @@ export const createShippingOptionsWorkflow = createWorkflow(
       }
     })
 
-    const createdShippingOptions = createShippingOptionsStep(
+    const createdShippingOptions = upsertShippingOptionsStep(
       data.shippingOptions
     )
 

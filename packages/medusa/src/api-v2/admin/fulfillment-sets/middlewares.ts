@@ -5,7 +5,8 @@ import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreateFulfillmentSetServiceZonesSchema,
-  AdminFulfillmentSetParams
+  AdminFulfillmentSetParams,
+  AdminUpdateFulfillmentSetServiceZonesSchema,
 } from "./validators"
 
 export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -19,6 +20,22 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/fulfillment-sets/:id/service-zones",
     middlewares: [
       validateAndTransformBody(AdminCreateFulfillmentSetServiceZonesSchema),
+      validateAndTransformQuery(
+        AdminFulfillmentSetParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/fulfillment-sets/:id/service-zones/:zone_id",
+    middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/fulfillment-sets/:id/service-zones/:zone_id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateFulfillmentSetServiceZonesSchema),
       validateAndTransformQuery(
         AdminFulfillmentSetParams,
         QueryConfig.retrieveTransformQueryConfig

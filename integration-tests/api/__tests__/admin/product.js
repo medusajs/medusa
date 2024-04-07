@@ -9,7 +9,6 @@ const {
   createVariantPriceSet,
 } = require("../../../modules/helpers/create-variant-price-set")
 const { PriceListStatus, PriceListType } = require("@medusajs/types")
-const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 let {
   ProductOptionValue,
@@ -85,12 +84,9 @@ medusaIntegrationTestRunner({
     let publishedCollection
 
     let baseType
-
     let baseRegion
 
     let pricingService
-    let scService
-    let remoteLink
     let container
 
     beforeAll(() => {
@@ -219,20 +215,10 @@ medusaIntegrationTestRunner({
       await api.delete(`/admin/products/${deletedProduct.id}`, adminHeaders)
 
       pricingService = container.resolve(ModuleRegistrationName.PRICING)
-      scService = container.resolve(ModuleRegistrationName.SALES_CHANNEL)
-      remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     })
 
     describe("/admin/products", () => {
       describe("GET /admin/products", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("returns a list of products with all statuses when no status or invalid status is provided", async () => {
           const res = await api
             .get("/admin/products", adminHeaders)
@@ -390,6 +376,30 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 type_id: baseType.id,
+              }),
+            ])
+          )
+        })
+
+        it("returns a list of products where id is a list", async () => {
+          const response = await api
+            .get(
+              `/admin/products?id[]=${baseProduct.id},${proposedProduct.id}`,
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toHaveLength(2)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.id,
+              }),
+              expect.objectContaining({
+                id: proposedProduct.id,
               }),
             ])
           )
@@ -1057,7 +1067,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should return products filtered by sales_channel_id", async () => {
-          const { salesChannel } = await breaking(
+          const [productId, salesChannelId] = await breaking(
             async () => {
               const salesChannel = await simpleSalesChannelFactory(
                 dbConnection,
@@ -1068,29 +1078,34 @@ medusaIntegrationTestRunner({
                 }
               )
 
-              return { salesChannel }
+              return [baseProduct.id, salesChannel.id]
             },
             async () => {
-              const salesChannel = await scService.create({
-                name: "Test channel",
-                description: "Lorem Ipsum",
-              })
+              const salesChannel = await simpleSalesChannelFactory(
+                dbConnection,
+                {
+                  name: "test name",
+                  description: "test description",
+                }
+              )
 
-              await remoteLink.create({
-                [Modules.PRODUCT]: {
-                  product_id: baseProduct.id,
-                },
-                [Modules.SALES_CHANNEL]: {
-                  sales_channel_id: salesChannel.id,
-                },
-              })
-
-              return { salesChannel }
+              // Currently the product update doesn't support managing sales channels
+              const newProduct = (
+                await api.post(
+                  "/admin/products",
+                  getProductFixture({
+                    title: "Test saleschannel",
+                    sales_channels: [{ id: salesChannel.id }],
+                  }),
+                  adminHeaders
+                )
+              ).data.product
+              return [newProduct.id, salesChannel.id]
             }
           )
 
           const res = await api.get(
-            `/admin/products?sales_channel_id[]=${salesChannel.id}`,
+            `/admin/products?sales_channel_id[]=${salesChannelId}`,
             adminHeaders
           )
 
@@ -1098,8 +1113,7 @@ medusaIntegrationTestRunner({
           expect(res.data.products.length).toEqual(1)
           expect(res.data.products).toEqual([
             expect.objectContaining({
-              id: baseProduct.id,
-              status: "draft",
+              id: productId,
             }),
           ])
         })
@@ -1216,14 +1230,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/products", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("creates a product", async () => {
           const response = await api
             .post(
@@ -1957,15 +1963,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
-        beforeEach(async () => {
-          // await priceListSeeder(dbConnection)
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
           const data = {
             prices: [
@@ -2843,14 +2840,6 @@ medusaIntegrationTestRunner({
 
       // TODO: Discuss how this should be handled
       describe.skip("GET /admin/products/tag-usage", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("successfully gets the tags usage", async () => {
           const res = await api
             .get("/admin/products/tag-usage", adminHeaders)

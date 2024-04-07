@@ -1,7 +1,6 @@
 import { Product, SalesChannel } from "@medusajs/medusa"
 import { Button, Checkbox } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { useAdminSalesChannels, useAdminUpdateProduct } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -17,6 +16,8 @@ import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/
 import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { useUpdateProduct } from "../../../../../hooks/api/products"
 
 type EditSalesChannelsFormProps = {
   product: Product
@@ -63,15 +64,14 @@ export const EditSalesChannelsForm = ({
   const { searchParams, raw } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { sales_channels, count, isLoading, isError, error } =
-    useAdminSalesChannels(
-      {
-        ...searchParams,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { sales_channels, count, isLoading, isError, error } = useSalesChannels(
+    {
+      ...searchParams,
+    },
+    {
+      keepPreviousData: true,
+    }
+  )
 
   const filters = useSalesChannelTableFilters()
   const columns = useColumns()
@@ -90,9 +90,7 @@ export const EditSalesChannelsForm = ({
     pageSize: PAGE_SIZE,
   })
 
-  const { mutateAsync, isLoading: isMutating } = useAdminUpdateProduct(
-    product.id
-  )
+  const { mutateAsync, isLoading: isMutating } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const arr = data.sales_channels ?? []

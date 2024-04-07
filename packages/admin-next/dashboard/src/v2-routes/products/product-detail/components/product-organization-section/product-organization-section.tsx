@@ -1,9 +1,10 @@
 import { PencilSquare } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { SectionRow } from "../../../../../components/common/section"
 
 type ProductOrganizationSectionProps = {
   product: Product
@@ -32,58 +33,49 @@ export const ProductOrganizationSection = ({
           ]}
         />
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.tags")}
-        </Text>
-        <div className="flex flex-wrap items-center gap-1">
-          {product.tags.length > 0
+
+      <SectionRow
+        title={t("fields.tags")}
+        value={
+          product.tags.length > 0
             ? product.tags.map((tag) => (
                 <Badge key={tag.id} className="w-fit" size="2xsmall" asChild>
                   <Link to={`/products?tags=${tag.id}`}>{tag.value}</Link>
                 </Badge>
               ))
-            : "-"}
-        </div>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.type")}
-        </Text>
-        {product.type ? (
-          <Badge size="2xsmall" className="w-fit" asChild>
-            <Link to={`/products?type_id=${product.type_id}`}>
-              {product.type.value}
-            </Link>
-          </Badge>
-        ) : (
-          <Text size="small" leading="compact">
-            -
-          </Text>
-        )}
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.collection")}
-        </Text>
-        {product.collection ? (
-          <Badge size="2xsmall" color="blue" className="w-fit" asChild>
-            <Link to={`/collections/${product.collection.id}`}>
-              {product.collection.title}
-            </Link>
-          </Badge>
-        ) : (
-          <Text size="small" leading="compact">
-            -
-          </Text>
-        )}
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.categories")}
-        </Text>
-        <div className="flex flex-wrap items-center gap-1">
-          {product.categories?.length > 0
+            : undefined
+        }
+      />
+      <SectionRow
+        title={t("fields.type")}
+        value={
+          product.type ? (
+            <Badge size="2xsmall" className="w-fit" asChild>
+              <Link to={`/products?type_id=${product.type_id}`}>
+                {product.type.value}
+              </Link>
+            </Badge>
+          ) : undefined
+        }
+      />
+
+      <SectionRow
+        title={t("fields.collection")}
+        value={
+          product.collection ? (
+            <Badge size="2xsmall" color="blue" className="w-fit" asChild>
+              <Link to={`/collections/${product.collection.id}`}>
+                {product.collection.title}
+              </Link>
+            </Badge>
+          ) : undefined
+        }
+      />
+
+      <SectionRow
+        title={t("fields.categories")}
+        value={
+          product.categories?.length > 0
             ? product.categories.map((pcat) => (
                 <Badge
                   key={pcat.id}
@@ -95,9 +87,9 @@ export const ProductOrganizationSection = ({
                   <Link to={`/categories/${pcat.id}`}>{pcat.name}</Link>
                 </Badge>
               ))
-            : "-"}
-        </div>
-      </div>
+            : undefined
+        }
+      />
     </Container>
   )
 }

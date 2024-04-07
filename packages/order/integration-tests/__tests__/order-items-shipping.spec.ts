@@ -1,5 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IOrderModuleService } from "@medusajs/types"
+import {
+  CreateOrderLineItemTaxLineDTO,
+  IOrderModuleService,
+} from "@medusajs/types"
 import { OrderStatus } from "@medusajs/utils"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -134,7 +137,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item"],
           })
 
-          expect(order).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized).toEqual(
             expect.objectContaining({
               id: createdOrder.id,
               currency_code: "eur",
@@ -179,7 +183,8 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(orders).toEqual(
+          const serialized = JSON.parse(JSON.stringify(orders))
+          expect(serialized).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 currency_code: "eur",
@@ -398,7 +403,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item"],
           })
 
-          expect(order.items[0]).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items[0]).toEqual(
             expect.objectContaining({
               quantity: 1,
               title: "test",
@@ -436,7 +442,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 title: "test",
@@ -669,7 +676,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 title: "changed-test",
@@ -948,7 +956,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item.adjustments"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
@@ -1071,7 +1080,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item.adjustments"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
@@ -1224,9 +1234,10 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [checkOrderOne, checkOrderTwo] = await service.list(
-            {},
-            { relations: ["items.item.adjustments"] }
+          const [checkOrderOne, checkOrderTwo] = JSON.parse(
+            JSON.stringify(
+              await service.list({}, { relations: ["items.item.adjustments"] })
+            )
           )
 
           expect(checkOrderOne.items).toEqual(
@@ -1445,7 +1456,8 @@ moduleIntegrationTestRunner({
             relations: ["shipping_methods.adjustments"],
           })
 
-          expect(order.shipping_methods).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.shipping_methods).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: shippingMethodOne.id,
@@ -1572,7 +1584,8 @@ moduleIntegrationTestRunner({
             relations: ["shipping_methods.adjustments"],
           })
 
-          expect(order.shipping_methods).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.shipping_methods).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: shippingMethodOne.id,
@@ -1994,7 +2007,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item.tax_lines"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
@@ -2111,7 +2125,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item.tax_lines"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
@@ -2174,7 +2189,7 @@ moduleIntegrationTestRunner({
             ])
           )
 
-          const taxLine = taxLines.find((tx) => tx.item_id === itemOne.id)
+          const taxLine = taxLines.find((tx) => tx.item_id === itemOne.id)!
 
           await service.setLineItemTaxLines(createdOrder.id, [
             // update
@@ -2188,7 +2203,7 @@ moduleIntegrationTestRunner({
               item_id: itemOne.id,
               rate: 25,
               code: "TX-2",
-            },
+            } as CreateOrderLineItemTaxLineDTO,
             // delete: should delete the initial tax line for itemOne
           ])
 
@@ -2196,7 +2211,8 @@ moduleIntegrationTestRunner({
             relations: ["items.item.tax_lines"],
           })
 
-          expect(order.items).toEqual(
+          const serialized = JSON.parse(JSON.stringify(order))
+          expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
@@ -2356,9 +2372,10 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [checkOrderOne, checkOrderTwo] = await service.list(
-            {},
-            { relations: ["items.item.tax_lines"] }
+          const [checkOrderOne, checkOrderTwo] = JSON.parse(
+            JSON.stringify(
+              await service.list({}, { relations: ["items.item.tax_lines"] })
+            )
           )
 
           expect(checkOrderOne.items).toEqual(

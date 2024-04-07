@@ -260,6 +260,9 @@
       "edit": {
         "header": "Edit Variant"
       },
+      "create": {
+        "header": "Create Variant"
+      },
       "inventory": {
         "header": "Stock & Inventory",
         "manageInventoryLabel": "Manage inventory",
@@ -919,7 +922,7 @@
     }
   },
   "taxes": {
-    "domain": "Taxes",
+    "domain": "Tax Regions",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },

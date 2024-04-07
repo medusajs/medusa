@@ -5,6 +5,22 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
+import { SectionRow } from "../../../../../components/common/section"
+
+const productStatusColor = (status: string) => {
+  switch (status) {
+    case "draft":
+      return "purple"
+    case "proposed":
+      return "orange"
+    case "published":
+      return "green"
+    case "rejected":
+      return "red"
+    default:
+      return "purple"
+  }
+}
 
 type ProductGeneralSectionProps = {
   product: Product
@@ -45,7 +61,9 @@ export const ProductGeneralSection = ({
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{product.title}</Heading>
         <div className="flex items-center gap-x-4">
-          <StatusBadge color="green">Published</StatusBadge>
+          <StatusBadge color={productStatusColor(product.status)}>
+            {t(`products.productStatus.${product.status}`)}
+          </StatusBadge>
           <ActionMenu
             groups={[
               {
@@ -70,38 +88,14 @@ export const ProductGeneralSection = ({
           />
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.description")}
-        </Text>
-        <Text size="small" leading="compact" className="text-pretty">
-          {product.description}
-        </Text>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.subtitle")}
-        </Text>
-        <Text size="small" leading="compact" className="text-pretty">
-          {product.subtitle ?? "-"}
-        </Text>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.handle")}
-        </Text>
-        <Text size="small" leading="compact" className="text-pretty">
-          /{product.handle}
-        </Text>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("fields.discountable")}
-        </Text>
-        <Text size="small" leading="compact" className="text-pretty">
-          {product.discountable ? t("fields.true") : t("fields.false")}
-        </Text>
-      </div>
+
+      <SectionRow title={t("fields.description")} value={product.description} />
+      <SectionRow title={t("fields.subtitle")} value={product.subtitle} />
+      <SectionRow title={t("fields.handle")} value={`/${product.handle}`} />
+      <SectionRow
+        title={t("fields.discountable")}
+        value={product.discountable ? t("fields.true") : t("fields.false")}
+      />
     </Container>
   )
 }
