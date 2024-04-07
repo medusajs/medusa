@@ -1,6 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/utils"
 
 export const deleteShippingOptionsStepId = "delete-shipping-options-step"
 export const deleteShippingOptionsStep = createStep(
@@ -14,9 +15,16 @@ export const deleteShippingOptionsStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.softDeleteShippingOptions(ids)
+    const softDeletedEntities = await service.softDeleteShippingOptions(ids, {
+      returnLinkableKeys: true,
+    })
 
-    return new StepResponse(void 0, ids)
+    return new StepResponse(
+      {
+        [Modules.FULFILLMENT]: softDeletedEntities,
+      },
+      ids
+    )
   },
   async (prevIds, { container }) => {
     if (!prevIds?.length) {
