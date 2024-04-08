@@ -61,4 +61,7 @@ export interface UpdateServiceZoneDTO {
   )[]
 }
 
+/**
+ * A service zone to be created or updated.
+ */
 export interface UpsertServiceZoneDTO extends UpdateServiceZoneDTO {}

@@ -114,4 +114,7 @@ export interface UpdateShippingOptionDTO {
   )[]
 }
 
+/**
+ * A shipping option to be created or updated.
+ */
 export interface UpsertShippingOptionDTO extends UpdateShippingOptionDTO {}
