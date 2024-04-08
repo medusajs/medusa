@@ -2,7 +2,7 @@
 import MDXComponents from "@theme-original/MDXComponents"
 import CloudinaryImage from "@site/src/components/CloudinaryImage"
 import MDXA from "./A"
-import { Kbd, DetailsSummary } from "docs-ui"
+import { Kbd, DetailsSummary, Note } from "docs-ui"
 import H1 from "./H1"
 import MDXCode from "./Code"
 import MDXDetails from "./Details"
@@ -22,6 +22,7 @@ const components = {
   h1: H1,
   DocCard,
   DocCardList,
+  Note,
 }
 
 export default components

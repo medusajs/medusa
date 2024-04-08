@@ -2183,6 +2183,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/mime-error",
+          label: "Mime Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/eaddrinuse",
           label: "EADDRINUSE Error",
         },
