@@ -45,7 +45,7 @@ const shippingOption =
   await fulfillmentModuleService.createShippingOptions({
     name: "Express shipping",
     // ...
-    provider_id: "webshipper"
+    provider_id: "webshipper",
   })
 ```
 
@@ -115,7 +115,7 @@ const modules = {
     resolve: "@medusajs/fulfillment",
     providers: [
       // ...
-    ]
+    ],
   },
 }
 ```
@@ -172,7 +172,8 @@ For example:
     const fulfillmentModuleService: IFulfillmentModuleService =
       container.resolve(ModuleRegistrationName.FULFILLMENT)
 
-    const fulfillments = await fulfillmentModuleService.listFulfillments()
+    const fulfillments = 
+      await fulfillmentModuleService.listFulfillments()
   }
   ```
 
@@ -191,7 +192,8 @@ For example:
       context.container.resolve(
         ModuleRegistrationName.FULFILLMENT
       )
-    const fulfillments = await fulfillmentModuleService.listFulfillments()
+    const fulfillments = 
+      await fulfillmentModuleService.listFulfillments()
   })
   ```
 
