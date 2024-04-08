@@ -89,4 +89,6 @@ export interface FilterableGeoZoneProps
    * Filter the geo zones by their city.
    */
   city?: string | string[]
+
+  // TODO add support for postal_expression filtering
 }
