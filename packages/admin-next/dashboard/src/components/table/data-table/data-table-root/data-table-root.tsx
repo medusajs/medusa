@@ -236,7 +236,9 @@ export const DataTableRoot = <TData,>({
                               isRowDisabled,
                           })}
                           style={{
-                            paddingLeft: `${depthOffset}px`,
+                            paddingLeft: depthOffset
+                              ? `${depthOffset}px`
+                              : undefined,
                           }}
                         >
                           {flexRender(
