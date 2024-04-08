@@ -87,18 +87,18 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
               </p>
               <DimensionsForm form={nestedForm(form, "dimensions")} />
             </div>
-            <div>
-              <h2 className="inter-large-semibold mb-2xsmall">
-                {t("product-attributes-section-customs", "Customs")}
-              </h2>
-              <p className="inter-base-regular text-grey-50 mb-large">
-                {t(
-                  "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",
-                  "Configure to calculate the most accurate shipping rates"
-                )}
-              </p>
-              <CustomsForm form={nestedForm(form, "customs")} />
-            </div>
+            {/*<div>*/}
+            {/*  <h2 className="inter-large-semibold mb-2xsmall">*/}
+            {/*    {t("product-attributes-section-customs", "Customs")}*/}
+            {/*  </h2>*/}
+            {/*  <p className="inter-base-regular text-grey-50 mb-large">*/}
+            {/*    {t(*/}
+            {/*      "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",*/}
+            {/*      "Configure to calculate the most accurate shipping rates"*/}
+            {/*    )}*/}
+            {/*  </p>*/}
+            {/*  <CustomsForm form={nestedForm(form, "customs")} />*/}
+            {/*</div>*/}
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">

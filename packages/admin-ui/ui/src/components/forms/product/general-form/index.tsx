@@ -28,7 +28,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
 
   return (
     <div>
-      <div className="gap-x-large mb-small grid grid-cols-2">
+      <div className="gap-x-large mb-small grid grid-cols-1">
         <InputField
           label={t("general-form-title", "Title")}
           placeholder={
@@ -53,17 +53,17 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           })}
           errors={errors}
         />
-        <InputField
-          label={t("general-form-subtitle", "Subtitle")}
-          placeholder={t(
-            "general-form-subtitle-placeholder",
-            "Warm and cozy..."
-          )}
-          {...register(path("subtitle"), {
-            pattern: FormValidator.whiteSpaceRule("Subtitle"),
-          })}
-          errors={errors}
-        />
+        {/*<InputField*/}
+        {/*  label={t("general-form-subtitle", "Subtitle")}*/}
+        {/*  placeholder={t(*/}
+        {/*    "general-form-subtitle-placeholder",*/}
+        {/*    "Warm and cozy..."*/}
+        {/*  )}*/}
+        {/*  {...register(path("subtitle"), {*/}
+        {/*    pattern: FormValidator.whiteSpaceRule("Subtitle"),*/}
+        {/*  })}*/}
+        {/*  errors={errors}*/}
+        {/*/>*/}
       </div>
       <p className="inter-base-regular text-grey-50 mb-large">
         {isGiftCard
@@ -81,53 +81,53 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           "50-60 characters is the recommended length for search engines."
         )}
       </p>
-      <div className="gap-x-large mb-large grid grid-cols-2">
-        <InputField
-          label={t("general-form-handle", "Handle")}
-          tooltipContent={
-            !requireHandle
-              ? isGiftCard
-                ? t(
-                    "general-form-handle-tooltip-gift-card",
-                    "The handle is the part of the URL that identifies the gift card. If not specified, it will be generated from the title."
-                  )
-                : t(
-                    "general-form-handle-tooltip-product",
-                    "The handle is the part of the URL that identifies the product. If not specified, it will be generated from the title."
-                  )
-              : undefined
-          }
-          placeholder={
-            isGiftCard
-              ? t("general-form-handle-placeholder-gift-card", "gift-card")
-              : t(
-                  "general-form-handle-placeholder-winter-jacket",
-                  "winter-jacket"
-                )
-          }
-          required={requireHandle}
-          {...register(path("handle"), {
-            required: requireHandle ? "Handle is required" : undefined,
-            minLength: FormValidator.minOneCharRule("Handle"),
-            pattern: FormValidator.whiteSpaceRule("Handle"),
-          })}
-          prefix="/"
-          errors={errors}
-        />
-        <InputField
-          label={t("general-form-material", "Material")}
-          placeholder={
-            isGiftCard
-              ? t("general-form-material-placeholder-paper", "Paper")
-              : t("general-form-material-placeholder-cotton", "100% Cotton")
-          }
-          {...register(path("material"), {
-            minLength: FormValidator.minOneCharRule("Material"),
-            pattern: FormValidator.whiteSpaceRule("Material"),
-          })}
-          errors={errors}
-        />
-      </div>
+      {/*<div className="gap-x-large mb-large grid grid-cols-2">*/}
+      {/*  <InputField*/}
+      {/*    label={t("general-form-handle", "Handle")}*/}
+      {/*    tooltipContent={*/}
+      {/*      !requireHandle*/}
+      {/*        ? isGiftCard*/}
+      {/*          ? t(*/}
+      {/*              "general-form-handle-tooltip-gift-card",*/}
+      {/*              "The handle is the part of the URL that identifies the gift card. If not specified, it will be generated from the title."*/}
+      {/*            )*/}
+      {/*          : t(*/}
+      {/*              "general-form-handle-tooltip-product",*/}
+      {/*              "The handle is the part of the URL that identifies the product. If not specified, it will be generated from the title."*/}
+      {/*            )*/}
+      {/*        : undefined*/}
+      {/*    }*/}
+      {/*    placeholder={*/}
+      {/*      isGiftCard*/}
+      {/*        ? t("general-form-handle-placeholder-gift-card", "gift-card")*/}
+      {/*        : t(*/}
+      {/*            "general-form-handle-placeholder-winter-jacket",*/}
+      {/*            "winter-jacket"*/}
+      {/*          )*/}
+      {/*    }*/}
+      {/*    required={requireHandle}*/}
+      {/*    {...register(path("handle"), {*/}
+      {/*      required: requireHandle ? "Handle is required" : undefined,*/}
+      {/*      minLength: FormValidator.minOneCharRule("Handle"),*/}
+      {/*      pattern: FormValidator.whiteSpaceRule("Handle"),*/}
+      {/*    })}*/}
+      {/*    prefix="/"*/}
+      {/*    errors={errors}*/}
+      {/*  />*/}
+      {/*  <InputField*/}
+      {/*    label={t("general-form-material", "Material")}*/}
+      {/*    placeholder={*/}
+      {/*      isGiftCard*/}
+      {/*        ? t("general-form-material-placeholder-paper", "Paper")*/}
+      {/*        : t("general-form-material-placeholder-cotton", "100% Cotton")*/}
+      {/*    }*/}
+      {/*    {...register(path("material"), {*/}
+      {/*      minLength: FormValidator.minOneCharRule("Material"),*/}
+      {/*      pattern: FormValidator.whiteSpaceRule("Material"),*/}
+      {/*    })}*/}
+      {/*    errors={errors}*/}
+      {/*  />*/}
+      {/*</div>*/}
       <TextArea
         label={t("general-form-description", "Description")}
         placeholder={

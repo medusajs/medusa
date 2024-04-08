@@ -52,28 +52,28 @@ const ProductAttributesSection = ({ product }: Props) => {
             />
           </div>
         </div>
-        <div className="gap-y-xsmall flex flex-col">
-          <h2 className="inter-base-semibold">
-            {t("product-attributes-section-customs", "Customs")}
-          </h2>
-          <div className="gap-y-xsmall flex flex-col">
-            <Attribute
-              attribute={t("product-attributes-section-mid-code", "MID Code")}
-              value={product.mid_code}
-            />
-            <Attribute
-              attribute={t("product-attributes-section-hs-code", "HS Code")}
-              value={product.hs_code}
-            />
-            <Attribute
-              attribute={t(
-                "product-attributes-section-country-of-origin",
-                "Country of origin"
-              )}
-              value={product.origin_country}
-            />
-          </div>
-        </div>
+        {/*<div className="gap-y-xsmall flex flex-col">*/}
+        {/*  <h2 className="inter-base-semibold">*/}
+        {/*    {t("product-attributes-section-customs", "Customs")}*/}
+        {/*  </h2>*/}
+        {/*  <div className="gap-y-xsmall flex flex-col">*/}
+        {/*    <Attribute*/}
+        {/*      attribute={t("product-attributes-section-mid-code", "MID Code")}*/}
+        {/*      value={product.mid_code}*/}
+        {/*    />*/}
+        {/*    <Attribute*/}
+        {/*      attribute={t("product-attributes-section-hs-code", "HS Code")}*/}
+        {/*      value={product.hs_code}*/}
+        {/*    />*/}
+        {/*    <Attribute*/}
+        {/*      attribute={t(*/}
+        {/*        "product-attributes-section-country-of-origin",*/}
+        {/*        "Country of origin"*/}
+        {/*      )}*/}
+        {/*      value={product.origin_country}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </Section>
 
       <AttributeModal onClose={close} open={state} product={product} />

@@ -310,13 +310,13 @@ const NewProduct = ({ onClose }: Props) => {
                       {t("new-organize-product", "Organize Product")}
                     </h3>
                     <OrganizeForm form={nestedForm(form, "organize")} />
-                    <FeatureToggle featureFlag="sales_channels">
-                      <div className="mt-xlarge">
-                        <AddSalesChannelsForm
-                          form={nestedForm(form, "salesChannels")}
-                        />
-                      </div>
-                    </FeatureToggle>
+                    {/*<FeatureToggle featureFlag="sales_channels">*/}
+                    {/*  <div className="mt-xlarge">*/}
+                    {/*    <AddSalesChannelsForm*/}
+                    {/*      form={nestedForm(form, "salesChannels")}*/}
+                    {/*    />*/}
+                    {/*  </div>*/}
+                    {/*</FeatureToggle>*/}
                   </div>
                 </div>
               </Accordion.Item>
@@ -359,12 +359,12 @@ const NewProduct = ({ onClose }: Props) => {
                   </h3>
                   <DimensionsForm form={nestedForm(form, "dimensions")} />
                 </div>
-                <div>
-                  <h3 className="inter-base-semibold mb-base">
-                    {t("new-customs", "Customs")}
-                  </h3>
-                  <CustomsForm form={nestedForm(form, "customs")} />
-                </div>
+                {/*<div>*/}
+                {/*  <h3 className="inter-base-semibold mb-base">*/}
+                {/*    {t("new-customs", "Customs")}*/}
+                {/*  </h3>*/}
+                {/*  <CustomsForm form={nestedForm(form, "customs")} />*/}
+                {/*</div>*/}
               </Accordion.Item>
               <Accordion.Item title="Thumbnail" value="thumbnail">
                 <p className="inter-base-regular mb-large text-grey-50">

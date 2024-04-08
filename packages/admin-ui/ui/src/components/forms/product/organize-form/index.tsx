@@ -52,27 +52,27 @@ const OrganizeForm = ({ form }: Props) => {
 
   return (
     <div>
-      <div className="mb-large gap-x-large grid grid-cols-2">
-        <Controller
-          name={path("type")}
-          control={control}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <NextCreateableSelect
-                label={t("organize-form-type-label", "Type")}
-                onChange={onChange}
-                options={productTypeOptions}
-                value={value || null}
-                placeholder={t(
-                  "organize-form-type-placeholder",
-                  "Choose a type"
-                )}
-                onCreateOption={onCreateOption}
-                isClearable
-              />
-            )
-          }}
-        />
+      <div className="mb-large gap-x-large grid grid-cols-1">
+        {/*<Controller*/}
+        {/*  name={path("type")}*/}
+        {/*  control={control}*/}
+        {/*  render={({ field: { value, onChange } }) => {*/}
+        {/*    return (*/}
+        {/*      <NextCreateableSelect*/}
+        {/*        label={t("organize-form-type-label", "Type")}*/}
+        {/*        onChange={onChange}*/}
+        {/*        options={productTypeOptions}*/}
+        {/*        value={value || null}*/}
+        {/*        placeholder={t(*/}
+        {/*          "organize-form-type-placeholder",*/}
+        {/*          "Choose a type"*/}
+        {/*        )}*/}
+        {/*        onCreateOption={onCreateOption}*/}
+        {/*        isClearable*/}
+        {/*      />*/}
+        {/*    )*/}
+        {/*  }}*/}
+        {/*/>*/}
         <Controller
           name={path("collection")}
           control={control}
