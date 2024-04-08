@@ -798,7 +798,7 @@ medusaIntegrationTestRunner({
           )
 
           response = await api.get(
-            `/admin/promotions/rule-value-options/rules/currency?limit=2`,
+            `/admin/promotions/rule-value-options/rules/currency?limit=2&order=name`,
             adminHeaders
           )
 
@@ -806,14 +806,8 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              {
-                label: "United Arab Emirates Dirham",
-                value: "aed",
-              },
-              {
-                label: "Afghan Afghani",
-                value: "afn",
-              },
+              { label: "Afghan Afghani", value: "afn" },
+              { label: "Albanian Lek", value: "all" },
             ])
           )
 
@@ -862,8 +856,8 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              { label: "Andorra", value: "ad" },
-              { label: "United Arab Emirates", value: "ae" },
+              { label: "Afghanistan", value: "af" },
+              { label: "Albania", value: "al" },
             ])
           )
 

@@ -9,7 +9,10 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCustomerReq, UpdateCustomerReq } from "../../types/api-payloads"
-import { CustomerListRes, CustomerRes } from "../../types/api-responses"
+import {
+  AdminCustomerResponse,
+  AdminCustomerListResponse,
+} from "@medusajs/types"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
 const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
@@ -18,7 +21,12 @@ export const useCustomer = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<CustomerRes, Error, CustomerRes, QueryKey>,
+    UseQueryOptions<
+      AdminCustomerResponse,
+      Error,
+      AdminCustomerResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -34,7 +42,12 @@ export const useCustomer = (
 export const useCustomers = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<CustomerListRes, Error, CustomerListRes, QueryKey>,
+    UseQueryOptions<
+      AdminCustomerListResponse,
+      Error,
+      AdminCustomerListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -48,7 +61,7 @@ export const useCustomers = (
 }
 
 export const useCreateCustomer = (
-  options?: UseMutationOptions<CustomerRes, Error, CreateCustomerReq>
+  options?: UseMutationOptions<AdminCustomerResponse, Error, CreateCustomerReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.customers.create(payload),
@@ -62,7 +75,7 @@ export const useCreateCustomer = (
 
 export const useUpdateCustomer = (
   id: string,
-  options?: UseMutationOptions<CustomerRes, Error, UpdateCustomerReq>
+  options?: UseMutationOptions<AdminCustomerResponse, Error, UpdateCustomerReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.customers.update(id, payload),

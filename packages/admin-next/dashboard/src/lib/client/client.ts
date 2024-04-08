@@ -4,6 +4,7 @@ import { campaigns } from "./campaigns"
 import { categories } from "./categories"
 import { collections } from "./collections"
 import { currencies } from "./currencies"
+import { customerGroups } from "./customer-groups"
 import { customers } from "./customers"
 import { invites } from "./invites"
 import { payments } from "./payments"
@@ -26,6 +27,7 @@ export const client = {
   campaigns: campaigns,
   categories: categories,
   customers: customers,
+  customerGroups: customerGroups,
   currencies: currencies,
   collections: collections,
   promotions: promotions,

@@ -1,8 +1,12 @@
 import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
-
 import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
@@ -10,6 +14,7 @@ import { useMe } from "../../hooks/api/users"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
+import { AdminCustomersRes } from "@medusajs/client-types"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useMe()
@@ -227,6 +232,39 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/collections/collection-add-products"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customers",
+            handle: {
+              crumb: () => "Customers",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
                   },
                 ],
               },
