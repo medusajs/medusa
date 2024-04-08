@@ -1,6 +1,6 @@
-import { transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import { AdminGetOrdersOrderParams, AdminGetOrdersParams } from "./validators"
 
@@ -14,7 +14,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/orders",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetOrdersParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -24,7 +24,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/orders/:id",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
