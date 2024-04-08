@@ -669,25 +669,62 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductOption[]> {
     // Validation step
-    const normalizedInput = data.map((opt) => {
-      return {
-        ...opt,
-        ...(opt.values
-          ? {
-              values: opt.values.map((v) => {
-                return typeof v === "string" ? { value: v } : v
-              }),
-            }
-          : {}),
-      } as UpdateProductOptionInput
-    })
-
-    if (normalizedInput.some((option) => !option.id)) {
+    if (data.some((option) => !option.id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Tried to update options without specifying an ID"
       )
     }
+
+    const dbOptions = await this.productOptionService_.list(
+      { id: data.map(({ id }) => id) },
+      { take: null, relations: ["values"] },
+      sharedContext
+    )
+
+    if (dbOptions.length !== data.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot update non-existing options with ids: ${arrayDifference(
+          data.map(({ id }) => id),
+          dbOptions.map(({ id }) => id)
+        ).join(", ")}`
+      )
+    }
+
+    // Data normalization
+    const normalizedInput = data.map((opt) => {
+      const dbValues = dbOptions.find(({ id }) => id === opt.id)?.values || []
+      const normalizedValues = opt.values?.map((v) => {
+        return typeof v === "string" ? { value: v } : v
+      })
+
+      return {
+        ...opt,
+        ...(normalizedValues
+          ? {
+              // Oftentimes the options are only passed by value without an id, even if they exist in the DB
+              values: normalizedValues.map((normVal) => {
+                if ("id" in normVal) {
+                  return normVal
+                }
+
+                const dbVal = dbValues.find(
+                  (dbVal) => dbVal.value === normVal.value
+                )
+                if (!dbVal) {
+                  return normVal
+                }
+
+                return {
+                  id: dbVal.id,
+                  value: normVal.value,
+                }
+              }),
+            }
+          : {}),
+      } as UpdateProductOptionInput
+    })
 
     return await this.productOptionService_.upsertWithReplace(
       normalizedInput,
