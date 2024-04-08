@@ -298,6 +298,10 @@
   "inventory": {
     "domain": "Inventory",
     "reserved": "Reserved",
+    "available": "Available",
+    "locationLevels": "locationLevels",
+    "associatedVariants": "Associated variants",
+    "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {

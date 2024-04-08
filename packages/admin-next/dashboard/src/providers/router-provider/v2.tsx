@@ -1,20 +1,22 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
-import { Spinner } from "@medusajs/icons"
 import {
   AdminCollectionsRes,
   AdminProductsRes,
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
-import { ErrorBoundary } from "../../components/error/error-boundary"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { SettingsLayout } from "../../components/layout/settings-layout"
-import { useMe } from "../../hooks/api/users"
+import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+
 import { AdminApiKeyResponse } from "@medusajs/types"
-import { SearchProvider } from "../search-provider"
-import { SidebarProvider } from "../sidebar-provider"
 import { AdminCustomersRes } from "@medusajs/client-types"
+import { ErrorBoundary } from "../../components/error/error-boundary"
+import { InventoryItemRes } from "../../types/api-responses"
+import { MainLayout } from "../../components/layout-v2/main-layout"
+import { SearchProvider } from "../search-provider"
+import { SettingsLayout } from "../../components/layout/settings-layout"
+import { SidebarProvider } from "../sidebar-provider"
+import { Spinner } from "@medusajs/icons"
+import { useMe } from "../../hooks/api/users"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useMe()
@@ -270,6 +272,59 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/inventory/inventory-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/inventory/inventory-detail"),
+                handle: {
+                  crumb: (data: InventoryItemRes) =>
+                    data.inventory_item.title ?? data.inventory_item.sku,
+                },
+                // children: [
+                //   {
+                //     path: "edit",
+                //     lazy: () =>
+                //       import("../../v2-routes/customers/customer-edit"),
+                //   },
+                // ],
+              },
+            ],
+          },
+          // {
+          //   path: "/reservations",
+          //   handle: {
+          //     crumb: () => "Reservations",
+          //   },
+          //   children: [
+          //     {
+          //       path: "",
+          //       lazy: () =>
+          //         import("../../v2-routes/reservations/reservation-list"),
+          //     },
+          //     {
+          //       path: ":id",
+          //       lazy: () =>
+          //         import("../../v2-routes/reservations/reservation-detail"),
+          //       // children: [
+          //       //   {
+          //       //     path: "edit",
+          //       //     lazy: () =>
+          //       //       import("../../routes/reservations/reservation-edit"),
+          //       //   },
+          //       // ],
+          //     },
+          //   ],
+          // },
         ],
       },
     ],

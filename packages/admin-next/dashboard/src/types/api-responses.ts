@@ -5,6 +5,7 @@
 import {
   CampaignDTO,
   CurrencyDTO,
+  InventoryNext,
   InviteDTO,
   PaymentProviderDTO,
   ProductCategoryDTO,
@@ -20,6 +21,7 @@ import {
   StoreDTO,
   UserDTO,
 } from "@medusajs/types"
+
 import { ProductTagDTO } from "@medusajs/types/dist/product"
 import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
 
@@ -137,3 +139,19 @@ export type ProductCollectionListRes = {
   collections: ProductCollectionDTO[]
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
+
+// Inventory Items
+export type InventoryItemRes = {
+  inventory_item: InventoryNext.InventoryItemDTO
+}
+
+export type InventoryItemListRes = {
+  inventory_items: InventoryNext.InventoryItemDTO[]
+} & ListRes
+export type InventoryItemDeleteRes = DeleteRes
+
+export type InventoryItemLocationLevelsRes = {
+  inventory_levels: InventoryNext.InventoryLevelDTO[]
+} & ListRes
+
+export type InventoryItemLevelDeleteRes = DeleteRes

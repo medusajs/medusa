@@ -13,6 +13,7 @@ import {
   CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateStockLocationInput,
+  InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
@@ -74,3 +75,7 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 // Campaign
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
+
+// Inventory Items
+export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
+export type UpdateInventoryItemReq = InventoryNext.UpdateInventoryItemInput

@@ -37,7 +37,7 @@
     "commander": "^10.0.0",
     "dotenv": "^16.4.5",
     "esbuild": "0.17.18",
-    "express": "4.18.2",
+    "express": "4.19.2",
     "fs-extra": "11.1.0",
     "lodash": "^4.17.21",
     "medusa-core-utils": "1.2.1",
