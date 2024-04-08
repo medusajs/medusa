@@ -22,6 +22,7 @@ import { countries } from "../../../../../lib/countries"
 import {
   useCreateFulfillmentSet,
   useDeleteFulfillmentSet,
+  useDeleteServiceZone,
 } from "../../../../../hooks/api/stock-locations"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatProvider } from "../../../../../lib/format-provider"
@@ -144,10 +145,14 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
-  /**
-   * TODO: route not implemented
-   */
-  const handleDelete = () => {}
+  const { mutateAsync: deleteZone } = useDeleteServiceZone(
+    fulfillmentSetId,
+    zone.id
+  )
+
+  const handleDelete = async () => {
+    await deleteZone()
+  }
 
   return (
     <>

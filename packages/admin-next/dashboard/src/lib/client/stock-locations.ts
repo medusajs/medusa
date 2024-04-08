@@ -5,6 +5,8 @@ import {
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
 import {
+  FulfillmentSetDeleteRes,
+  ServiceZoneDeleteRes,
   StockLocationDeleteRes,
   StockLocationListRes,
   StockLocationRes,
@@ -55,8 +57,14 @@ async function deleteStockLocation(id: string) {
 }
 
 async function deleteFulfillmentSet(locationId: string, setId: string) {
-  return deleteRequest<StockLocationDeleteRes>(
+  return deleteRequest<FulfillmentSetDeleteRes>(
     `/admin/stock-locations/${locationId}/fulfillment-sets/${setId}`
+  )
+}
+
+async function deleteServiceZone(setId: string, zoneId: string) {
+  return deleteRequest<ServiceZoneDeleteRes>(
+    `/admin/fulfillment-sets/${setId}/service-zones/${zoneId}`
   )
 }
 
@@ -69,4 +77,5 @@ export const stockLocations = {
   createFulfillmentSet,
   deleteFulfillmentSet,
   createServiceZone,
+  deleteServiceZone,
 }

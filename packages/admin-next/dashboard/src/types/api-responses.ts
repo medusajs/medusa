@@ -125,6 +125,8 @@ export type StockLocationListRes = {
   stock_locations: ExtendedStockLocationDTO[]
 } & ListRes
 export type StockLocationDeleteRes = DeleteRes
+export type FulfillmentSetDeleteRes = DeleteRes
+export type ServiceZoneDeleteRes = DeleteRes
 
 // Shipping options
 export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
