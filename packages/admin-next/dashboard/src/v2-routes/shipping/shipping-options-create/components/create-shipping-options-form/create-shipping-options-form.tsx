@@ -94,7 +94,7 @@ export function CreateShippingOptionsForm({
       price_type: data.price_type,
       service_zone_id: zone.id,
       shipping_profile_id: "shipporf_123", // TODO: fetch profiles
-      provider_id: "Webshipper", // TODO
+      provider_id: "manual_test-provider", // TODO
       prices: [...currencyPrices],
       type: {
         // TODO: fetch profiles
@@ -184,6 +184,7 @@ export function CreateShippingOptionsForm({
                 isLoading={isLoading}
                 onClick={onNext}
                 disabled={!canMoveToPricing}
+                key={tab === Tab.PRICING ? "details" : "pricing"}
                 type={tab === Tab.PRICING ? "submit" : "button"}
               >
                 {tab === Tab.PRICING ? t("actions.save") : t("general.next")}
