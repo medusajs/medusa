@@ -192,6 +192,7 @@ export default class OrderModuleService<
 
   private addRelationsToCalculateTotals(config: FindConfig<any>) {
     config.relations ??= []
+
     config.relations = deduplicate([
       ...config.relations,
       ...this.requiredFieldsForTotals,

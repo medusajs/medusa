@@ -35,11 +35,6 @@ export function transformQuery<
         config
       )
 
-      console.log(
-        { query: req.query, validated },
-        "queryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryquery"
-      )
-
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
 
