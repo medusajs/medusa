@@ -1,11 +1,11 @@
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
+import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 
 const statusEnum = z.nativeEnum(ProductStatus)
 
@@ -28,6 +28,7 @@ export const AdminGetProductsParams = createFindParams({
       (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
       z.boolean().optional()
     ),
+    category_id: z.string().array().optional(),
     price_list_id: z.string().array().optional(),
     sales_channel_id: z.string().array().optional(),
     collection_id: z.string().array().optional(),
