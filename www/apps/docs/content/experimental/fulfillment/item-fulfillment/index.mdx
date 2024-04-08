@@ -1,0 +1,51 @@
+# Item Fulfillment
+
+In this document, you’ll learn about concepts of item fulfillment.
+
+## Fulfillment Data Model
+
+A fulfillment is the shipping and delivery of one or more items to the customer. It’s represented by the `Fulfillment` data model.
+
+---
+
+## Fulfillment Processing
+
+A fulfillment is associated with a fulfillment provider that handles all its processing, such as creating a shipment for the fulfillment’s items.
+
+The fulfillment is also associated with a shipping option of that provider, which determines the shipping details.
+
+![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331947/Medusa%20Resources/fulfillment-shipping-option_jk9ndp.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331947/Medusa%20Resources/fulfillment-shipping-option_jk9ndp.jpg)
+
+---
+
+## data Attribute
+
+The `Fulfillment` data model has a `data` attribute that holds any necessary data for the associated fulfillment provider to process the fulfillment.
+
+For example, the `data` attribute can hold the ID of the fulfillment in the third-party service. The fulfillment provider then uses it whenever it retrieves the fulfillment’s details. 
+
+---
+
+## Fulfillment Items
+
+A fulfillment is used to fulfill one or more items. Each item is represented by the `FulfillmentItem` data model.
+
+The fulfillment item holds details relevant to fulfilling the item, such as barcode, SKU, and quantity to fulfill.
+
+![https://res.cloudinary.com/dza7lstvk/image/upload/v1712332114/Medusa%20Resources/fulfillment-item_etzxb0.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712332114/Medusa%20Resources/fulfillment-item_etzxb0.jpg)
+
+---
+
+## Fulfillment Label
+
+Once a shipment is created for the fulfillment, you can store its tracking number, URL, or other related details as a label, represented by the `FulfillmentLabel` data model.
+
+---
+
+## Fulfillment Status
+
+The `Fulfillment` data model has three attributes to keep track of the current status of the fulfillment:
+
+- `packed_at`: The date the fulfillment was packed.
+- `shipped_at`: The date the fulfillment was shipped.
+- `delivered_at`: The date the fulfillment was delivered.
