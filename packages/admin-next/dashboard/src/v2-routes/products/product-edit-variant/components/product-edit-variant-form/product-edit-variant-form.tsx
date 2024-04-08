@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product, ProductOption, ProductVariant } from "@medusajs/medusa"
+import { Product, ProductVariant } from "@medusajs/medusa"
 import { Button, Heading, Input, Switch } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { Fragment, useState } from "react"
+import { Fragment } from "react"
 import { Combobox } from "../../../../../components/common/combobox"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Divider } from "../../../../../components/common/divider"
@@ -41,24 +41,24 @@ const ProductEditVariantSchema = z.object({
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
   origin_country: z.string().optional(),
-  options: z.record(
-    z.object({
-      value: z.string().min(1),
-    })
-  ),
+  options: z.record(z.string()),
 })
 
+// TODO: Either pass option ID or make the backend handle options constraints differently to handle the lack of IDs
 export const ProductEditVariantForm = ({
   product,
   variant,
   isStockAndInventoryEnabled = false,
 }: ProductEditVariantFormProps) => {
-  const [optionValues, setOptionValues] = useState<Record<string, string[]>>(
-    initOptionValues(product)
-  )
-
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const defaultOptions = product.options.reduce((acc: any, option: any) => {
+    const varOpt = variant.options.find(
+      (o: any) => o.option_value.option_id === option.id
+    )
+    acc[option.title] = varOpt?.option_value?.value
+    return acc
+  }, {})
 
   const form = useForm<z.infer<typeof ProductEditVariantSchema>>({
     defaultValues: {
@@ -78,7 +78,7 @@ export const ProductEditVariantForm = ({
       mid_code: variant.mid_code || "",
       hs_code: variant.hs_code || "",
       origin_country: variant.origin_country || "",
-      options: getDefaultOptionValues(product, variant),
+      options: defaultOptions,
     },
     resolver: zodResolver(ProductEditVariantSchema),
   })
@@ -113,7 +113,6 @@ export const ProductEditVariantForm = ({
       ean,
       upc,
       barcode,
-      options,
       ...rest
     } = data
 
@@ -134,21 +133,13 @@ export const ProductEditVariantForm = ({
         }
       : {}
 
-    const optionsPayload = Object.entries(options).map(([key, value]) => {
-      return {
-        option_id: key,
-        value: value.value,
-      }
-    })
-
     await mutateAsync(
       {
-        variant_id: variant.id,
+        id: variant.id,
         weight: parseNumber(weight),
         height: parseNumber(height),
         width: parseNumber(width),
         length: parseNumber(length),
-        options: optionsPayload,
         ...conditionalPayload,
         ...rest,
       },
@@ -159,18 +150,6 @@ export const ProductEditVariantForm = ({
       }
     )
   })
-
-  const handleCreateOption = (optionId: string) => {
-    return (value: string) => {
-      setOptionValues((prev) => {
-        const values = prev[optionId] || []
-        return {
-          ...prev,
-          [optionId]: [...values, value],
-        }
-      })
-    }
-  }
 
   return (
     <RouteDrawer.Form form={form}>
@@ -210,30 +189,27 @@ export const ProductEditVariantForm = ({
                 )
               }}
             />
-            {product.options.map((option) => {
+            {product.options.map((option: any) => {
               return (
                 <Form.Field
                   key={option.id}
                   control={form.control}
-                  name={`options.${option.id}`}
+                  name={`options.${option.title}`}
                   render={({ field: { value, onChange, ...field } }) => {
-                    const options = optionValues[option.id].map((value) => ({
-                      label: value,
-                      value,
-                    }))
-
                     return (
                       <Form.Item>
                         <Form.Label>{option.title}</Form.Label>
                         <Form.Control>
                           <Combobox
-                            value={value.value}
+                            value={value}
                             onChange={(v) => {
-                              onChange({ value: v })
+                              onChange(v)
                             }}
-                            onCreateOption={handleCreateOption(option.id)}
                             {...field}
-                            options={options}
+                            options={option.values.map((v: any) => ({
+                              label: v.value,
+                              value: v.value,
+                            }))}
                           />
                         </Form.Control>
                       </Form.Item>
@@ -530,41 +506,3 @@ export const ProductEditVariantForm = ({
     </RouteDrawer.Form>
   )
 }
-
-/* eslint-disable prettier/prettier */
-const getDefaultOptionValues = (product: Product, variant: ProductVariant) => {
-  const opts = variant.options
-
-  return product.options.reduce(
-    (acc, option) => {
-      const variantOption = opts.find((o) => o.option_id === option.id)
-
-      acc[option.id] = {
-        value: variantOption?.value || "",
-      }
-      return acc
-    },
-    {} as Record<string, { value: string }>
-  )
-}
-
-const getOptionValues = (option: ProductOption) => {
-  const values = option.values.map((value) => value.value)
-
-  const filteredValues = values.filter((v, i) => values.indexOf(v) === i)
-
-  return filteredValues.map((value) => value)
-}
-
-const initOptionValues = (product: Product) => {
-  return product.options.reduce(
-    (acc, option) => {
-      const values = getOptionValues(option)
-
-      acc[option.id] = values
-      return acc
-    },
-    {} as Record<string, string[]>
-  )
-}
-/* eslint-enable prettier/prettier */
