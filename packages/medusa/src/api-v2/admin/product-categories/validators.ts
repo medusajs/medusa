@@ -34,6 +34,7 @@ export const AdminProductCategoriesParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     description: z.union([z.string(), z.array(z.string())]).optional(),
     handle: z.union([z.string(), z.array(z.string())]).optional(),
+    parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
     include_ancestors_tree: z.preprocess(
       (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
       z.boolean().optional()
