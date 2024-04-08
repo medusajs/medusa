@@ -6,7 +6,12 @@ import {
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
-import { AdminApiKeyResponse, SalesChannelDTO, UserDTO } from "@medusajs/types"
+import {
+  AdminApiKeyResponse,
+  AdminProductCategoryResponse,
+  SalesChannelDTO,
+  UserDTO,
+} from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
@@ -140,6 +145,27 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-edit-variant"),
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "/categories",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/categories/category-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/categories/category-detail"),
+                handle: {
+                  crumb: (data: AdminProductCategoryResponse) =>
+                    data.product_category.name,
+                },
               },
             ],
           },
