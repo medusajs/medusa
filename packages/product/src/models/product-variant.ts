@@ -85,12 +85,15 @@ class ProductVariant {
   @Property({ columnType: "text", nullable: true })
   sku?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   barcode?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   ean?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   upc?: string | null
 

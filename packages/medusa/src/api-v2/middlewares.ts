@@ -12,6 +12,7 @@ import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
 import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
+import { adminProductCategoryRoutesMiddlewares } from "./admin/product-categories/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
@@ -68,6 +69,7 @@ export const config: MiddlewaresConfig = {
     ...adminProductTypeRoutesMiddlewares,
     ...adminUploadRoutesMiddlewares,
     ...adminFulfillmentSetsRoutesMiddlewares,
+    ...adminProductCategoryRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
   ],
 }
