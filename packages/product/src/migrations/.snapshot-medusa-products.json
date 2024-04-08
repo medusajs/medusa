@@ -112,17 +112,27 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "product_category",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_product_category_path",
           "columnNames": [
-            "mpath"
+            "deleted_at"
           ],
           "composite": false,
+          "keyName": "IDX_product_category_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -314,15 +324,6 @@
       "name": "image",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "url"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_image_url",
-          "primary": false,
-          "unique": false
-        },
         {
           "columnNames": [
             "deleted_at"
@@ -756,15 +757,6 @@
       "indexes": [
         {
           "columnNames": [
-            "type_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_type_id",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
             "deleted_at"
           ],
           "composite": false,
@@ -996,15 +988,6 @@
       "name": "product_option_value",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "option_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_option_value_option_id",
-          "primary": false,
-          "unique": false
-        },
         {
           "columnNames": [
             "deleted_at"
@@ -1460,15 +1443,6 @@
       "indexes": [
         {
           "columnNames": [
-            "product_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_variant_product_id",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
             "deleted_at"
           ],
           "composite": false,
@@ -1505,8 +1479,8 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
+        "variant_id": {
+          "name": "variant_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1520,88 +1494,26 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "variant_id": {
-          "name": "variant_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
           "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
+          "mappedType": "text"
         }
       },
       "name": "product_variant_option",
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_variant_option_deleted_at",
-          "primary": false,
-          "unique": false
-        },
-        {
           "keyName": "product_variant_option_pkey",
           "columnNames": [
-            "id"
+            "variant_id",
+            "option_value_id"
           ],
-          "composite": false,
+          "composite": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "product_variant_option_option_value_id_foreign": {
-          "constraintName": "product_variant_option_option_value_id_foreign",
-          "columnNames": [
-            "option_value_id"
-          ],
-          "localTableName": "public.product_variant_option",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.product_option_value",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
         "product_variant_option_variant_id_foreign": {
           "constraintName": "product_variant_option_variant_id_foreign",
           "columnNames": [
@@ -1612,6 +1524,19 @@
             "id"
           ],
           "referencedTableName": "public.product_variant",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "product_variant_option_option_value_id_foreign": {
+          "constraintName": "product_variant_option_option_value_id_foreign",
+          "columnNames": [
+            "option_value_id"
+          ],
+          "localTableName": "public.product_variant_option",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.product_option_value",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

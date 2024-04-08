@@ -12,14 +12,14 @@ import {
   Entity,
   Filter,
   Index,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { Product } from "@models"
-import ProductVariantOption from "./product-variant-option"
+import { Product, ProductOptionValue } from "@models"
 
 const variantSkuIndexName = "IDX_product_variant_sku_unique"
 const variantSkuIndexStatement = createPsqlIndexStatementHelper({
@@ -162,14 +162,13 @@ class ProductVariant {
   })
   product: Product | null
 
-  @OneToMany(
-    () => ProductVariantOption,
-    (variantOption) => variantOption.variant,
-    {
-      cascade: [Cascade.PERSIST, "soft-remove" as any],
-    }
-  )
-  options = new Collection<ProductVariantOption>(this)
+  @ManyToMany(() => ProductOptionValue, "variants", {
+    owner: true,
+    pivotTable: "product_variant_option",
+    joinColumn: "variant_id",
+    inverseJoinColumn: "option_value_id",
+  })
+  options = new Collection<ProductOptionValue>(this)
 
   @Property({
     onCreate: () => new Date(),

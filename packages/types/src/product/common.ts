@@ -237,7 +237,7 @@ export interface ProductVariantDTO {
    *
    * @expandable
    */
-  options: ProductVariantOptionDTO[]
+  options: ProductOptionValueDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
@@ -550,45 +550,6 @@ export interface ProductOptionDTO {
   updated_at: string | Date
   /**
    * When the product option was deleted.
-   */
-  deleted_at?: string | Date
-}
-
-export interface ProductVariantOptionDTO {
-  /**
-   * The ID of the product variant option.
-   */
-  id: string
-  /**
-   * The value of the product variant option.
-   *
-   * @expandable
-   */
-  option_value?: ProductOptionValueDTO | null
-  /**
-   * The value of the product variant option id.
-   */
-  option_value_id?: string | null
-  /**
-   * The associated product variant.
-   *
-   * @expandable
-   */
-  variant?: ProductVariantDTO | null
-  /**
-   * The associated product variant id.
-   */
-  variant_id?: string | null
-  /**
-   * When the product variant option was created.
-   */
-  created_at: string | Date
-  /**
-   * When the product variant option was updated.
-   */
-  updated_at: string | Date
-  /**
-   * When the product variant option was deleted.
    */
   deleted_at?: string | Date
 }

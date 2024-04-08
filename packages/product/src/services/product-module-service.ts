@@ -17,7 +17,6 @@ import {
   ProductTag,
   ProductType,
   ProductVariant,
-  ProductVariantOption,
 } from "@models"
 import {
   ProductCategoryService,
@@ -66,7 +65,6 @@ type InjectedDependencies = {
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
   productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
-  productVariantOptionService: ModulesSdkTypes.InternalModuleService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -77,11 +75,6 @@ const generateMethodForModels = [
   { model: ProductTag, singular: "Tag", plural: "Tags" },
   { model: ProductType, singular: "Type", plural: "Types" },
   { model: ProductVariant, singular: "Variant", plural: "Variants" },
-  {
-    model: ProductVariantOption,
-    singular: "VariantOption",
-    plural: "VariantOptions",
-  },
 ]
 
 export default class ProductModuleService<
@@ -93,8 +86,7 @@ export default class ProductModuleService<
     TProductImage extends Image = Image,
     TProductType extends ProductType = ProductType,
     TProductOption extends ProductOption = ProductOption,
-    TProductOptionValue extends ProductOptionValue = ProductOptionValue,
-    TProductVariantOption extends ProductVariantOption = ProductVariantOption
+    TProductOptionValue extends ProductOptionValue = ProductOptionValue
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -130,11 +122,6 @@ export default class ProductModuleService<
         singular: "Variant"
         plural: "Variants"
       }
-      VariantOption: {
-        dto: ProductTypes.ProductVariantOptionDTO
-        singular: "VariantOption"
-        plural: "VariantOptions"
-      }
     }
   >(Product, generateMethodForModels, entityNameToLinkableKeysMap)
   implements ProductTypes.IProductModuleService
@@ -154,8 +141,6 @@ export default class ProductModuleService<
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
   // eslint-disable-next-line max-len
-  protected readonly productVariantOptionService_: ModulesSdkTypes.InternalModuleService<TProductVariantOption>
-  // eslint-disable-next-line max-len
   protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
@@ -171,7 +156,6 @@ export default class ProductModuleService<
       productTypeService,
       productOptionService,
       productOptionValueService,
-      productVariantOptionService,
       eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
@@ -190,7 +174,6 @@ export default class ProductModuleService<
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
     this.productOptionValueService_ = productOptionValueService
-    this.productVariantOptionService_ = productVariantOptionService
     this.eventBusModuleService_ = eventBusModuleService
   }
 
@@ -357,7 +340,7 @@ export default class ProductModuleService<
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
-      { relations: ["options"], take: null },
+      { take: null },
       sharedContext
     )
     if (variants.length !== data.length) {
@@ -1188,7 +1171,7 @@ export default class ProductModuleService<
               sharedContext
             )
 
-          // Since we handle the options and variants outside of the product upsert, we need to clean up manuallys
+          // Since we handle the options and variants outside of the product upsert, we need to clean up manually
           await this.productOptionService_.delete(
             {
               product_id: upsertedProduct.id,
@@ -1345,8 +1328,7 @@ export default class ProductModuleService<
           }
 
           return {
-            variant_id: variant.id,
-            option_value_id: optionValue.id,
+            id: optionValue.id,
           }
         }
       )
