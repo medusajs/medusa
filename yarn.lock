@@ -21000,6 +21000,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"awilix@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "awilix@npm:10.0.2"
+  dependencies:
+    camel-case: ^4.1.2
+    fast-glob: ^3.3.2
+  checksum: e9da1951ea0fe8e0c938ca0c6424dff4a13eed347138156a121bc363ffb7eb6f8e294aa2b73657796be17655dedf79745bbf284dfb5c3ada58a36ffdcd8c0044
+  languageName: node
+  linkType: hard
+
 "awilix@npm:^8.0.0, awilix@npm:^8.0.1":
   version: 8.0.1
   resolution: "awilix@npm:8.0.1"
@@ -28431,6 +28441,19 @@ __metadata:
     merge2: ^1.3.0
     micromatch: ^4.0.4
   checksum: 4700063a2d7c9aae178f575648580bee1fc3f02ab3f358236d77811f52332bc10a398e75c6d5ecde61216996f3308247b37d70e2ee605a0748abe147f01b8f64
+  languageName: node
+  linkType: hard
+
+"fast-glob@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "fast-glob@npm:3.3.2"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: 42baad7b9cd40b63e42039132bde27ca2cb3a4950d0a0f9abe4639ea1aa9d3e3b40f98b1fe31cbc0cc17b664c9ea7447d911a152fa34ec5b72977b125a6fc845
   languageName: node
   linkType: hard
 
@@ -37876,6 +37899,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
+    awilix: ^10.0.2
     cross-env: ^5.2.1
     jest: ^25.5.4
     rimraf: ^5.0.1
