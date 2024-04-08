@@ -122,14 +122,17 @@ export default class LineItem {
   raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
-    cascade: [Cascade.PERSIST],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
-    cascade: [Cascade.PERSIST],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   adjustments = new Collection<LineItemAdjustment>(this)
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),

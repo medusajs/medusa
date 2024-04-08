@@ -1,34 +1,25 @@
-import { adminPublishableApiKeysKeys, useAdminCustomQuery } from "medusa-react"
 import { useParams } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/route-modal"
+import { useSalesChannels } from "../../../hooks/api/sales-channels"
 import { AddSalesChannelsToApiKeyForm } from "./components"
 
 export const ApiKeyManagementAddSalesChannels = () => {
   const { id } = useParams()
 
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    `/api-keys/${id}`,
-    [adminPublishableApiKeysKeys.detailSalesChannels(id!)],
-    {
-      fields: "id,*sales_channels",
-    },
-    {
-      keepPreviousData: true,
-    }
-  )
+  const { sales_channels, isLoading, isError, error } = useSalesChannels({
+    publishable_key_id: id,
+  })
 
   if (isError) {
     throw error
   }
 
-  const salesChannels = data?.api_key?.sales_channels
-
   return (
     <RouteFocusModal>
-      {!isLoading && salesChannels && (
+      {!isLoading && !!sales_channels && (
         <AddSalesChannelsToApiKeyForm
           apiKey={id!}
-          preSelected={salesChannels.map((sc) => sc.id)}
+          preSelected={sales_channels.map((sc) => sc.id)}
         />
       )}
     </RouteFocusModal>

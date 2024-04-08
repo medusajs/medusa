@@ -29,6 +29,7 @@ import { XorConstraint } from "../../../types/validators/xor"
 import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
+export class AdminGetPromotionRules extends FindParams {}
 
 export class AdminGetPromotionsRuleValueParams extends extendedFindParamsMixin({
   limit: 100,

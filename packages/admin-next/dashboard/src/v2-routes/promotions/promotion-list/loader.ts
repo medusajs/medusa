@@ -4,7 +4,7 @@ import {
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { QueryClient } from "@tanstack/react-query"
-import { adminPromotionKeys } from "../../../lib/api-v2"
+import { promotionsQueryKeys } from "../../../hooks/api/promotions"
 import { medusa, queryClient } from "../../../lib/medusa"
 
 const params = {
@@ -13,7 +13,7 @@ const params = {
 }
 
 const promotionsListQuery = () => ({
-  queryKey: adminPromotionKeys.list(params),
+  queryKey: promotionsQueryKeys.list(params),
   queryFn: async () =>
     medusa.admin.custom.get<AdminGetPromotionsParams, AdminPromotionsListRes>(
       "/promotions",

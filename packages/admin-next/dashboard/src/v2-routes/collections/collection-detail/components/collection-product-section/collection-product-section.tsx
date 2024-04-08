@@ -1,24 +1,22 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import type { Product, ProductCollection } from "@medusajs/medusa"
+import { ProductCollectionDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
-import {
-  adminProductKeys,
-  useAdminProducts,
-  useAdminRemoveProductsFromCollection,
-} from "medusa-react"
+import { useAdminRemoveProductsFromCollection } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { queryClient } from "../../../../../lib/medusa"
+import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 type CollectionProductSectionProps = {
-  collection: ProductCollection
+  collection: ProductCollectionDTO
 }
 
 const PAGE_SIZE = 10
@@ -29,14 +27,14 @@ export const CollectionProductSection = ({
   const { t } = useTranslation()
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
-  const { products, count, isLoading, isError, error } = useAdminProducts(
+  const { products, count, isLoading, isError, error } = useProducts(
     {
       limit: PAGE_SIZE,
       ...searchParams,
       collection_id: [collection.id],
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -44,7 +42,7 @@ export const CollectionProductSection = ({
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (products ?? []) as Product[],
+    data: products ?? [],
     columns,
     getRowId: (row) => row.id,
     count,
@@ -57,7 +55,8 @@ export const CollectionProductSection = ({
   })
 
   const prompt = usePrompt()
-  const { mutateAsync } = useAdminRemoveProductsFromCollection(collection.id)
+  // Not implemented in 2.0
+  // const { mutateAsync } = useAdminRemoveProductsFromCollection(collection.id)
 
   const handleRemove = async (selection: Record<string, boolean>) => {
     const ids = Object.keys(selection)
@@ -75,16 +74,16 @@ export const CollectionProductSection = ({
       return
     }
 
-    await mutateAsync(
-      {
-        product_ids: ids,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(adminProductKeys.lists())
-        },
-      }
-    )
+    // await mutateAsync(
+    //   {
+    //     product_ids: ids,
+    //   },
+    //   {
+    //     onSuccess: () => {
+    //       queryClient.invalidateQueries(adminProductKeys.lists())
+    //     },
+    //   }
+    // )
   }
 
   if (isError) {
@@ -137,7 +136,7 @@ const ProductActions = ({
   product,
   collectionId,
 }: {
-  product: Product
+  product: ExtendedProductDTO
   collectionId: string
 }) => {
   const { t } = useTranslation()
@@ -189,7 +188,7 @@ const ProductActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
 const useColumns = () => {
   const columns = useProductTableColumns()

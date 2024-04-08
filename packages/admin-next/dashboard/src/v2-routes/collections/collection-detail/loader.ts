@@ -1,13 +1,13 @@
-import { AdminCollectionsRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
-import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
+import { collectionsQueryKeys } from "../../../hooks/api/collections"
+import { client } from "../../../lib/client"
+import { queryClient } from "../../../lib/medusa"
+import { ProductCollectionRes } from "../../../types/api-responses"
 
 const collectionDetailQuery = (id: string) => ({
-  queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.collections.retrieve(id),
+  queryKey: collectionsQueryKeys.detail(id),
+  queryFn: async () => client.collections.retrieve(id),
 })
 
 export const collectionLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -15,7 +15,7 @@ export const collectionLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = collectionDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminCollectionsRes>>(query.queryKey) ??
+    queryClient.getQueryData<ProductCollectionRes>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

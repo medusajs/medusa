@@ -16,7 +16,9 @@ import {
 import { MedusaError, promiseAll, TransactionStepState } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import {
+  isErrorLike,
   PermanentStepFailureError,
+  serializeError,
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "./errors"
@@ -478,6 +480,10 @@ export class TransactionOrchestrator extends EventEmitter {
     timeoutError?: TransactionStepTimeoutError | TransactionTimeoutError
   ): Promise<void> {
     step.failures++
+
+    if (isErrorLike(error)) {
+      error = serializeError(error)
+    }
 
     if (
       !isTimeout &&

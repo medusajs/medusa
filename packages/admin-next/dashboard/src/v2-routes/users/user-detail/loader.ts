@@ -1,13 +1,13 @@
-import { AdminUserRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
 import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
+import { client } from "../../../lib/client"
+import { queryClient } from "../../../lib/medusa"
+import { UserRes } from "../../../types/api-responses"
 
 const userDetailQuery = (id: string) => ({
   queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.users.retrieve(id),
+  queryFn: async () => client.users.retrieve(id),
 })
 
 export const userLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -15,7 +15,7 @@ export const userLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = userDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminUserRes>>(query.queryKey) ??
+    queryClient.getQueryData<UserRes>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

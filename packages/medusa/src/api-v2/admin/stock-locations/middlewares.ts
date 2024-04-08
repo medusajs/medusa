@@ -1,6 +1,11 @@
+import { transformBody, transformQuery } from "../../../api/middlewares"
+import { MiddlewareRoute } from "../../../types/middlewares"
+import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { validateAndTransformBody } from "../../utils/validate-body"
 import * as QueryConfig from "./query-config"
-
 import {
+  AdminCreateStockLocationFulfillmentSet,
   AdminGetStockLocationsLocationParams,
   AdminGetStockLocationsParams,
   AdminPostStockLocationsLocationParams,
@@ -9,11 +14,6 @@ import {
   AdminPostStockLocationsReq,
   AdminStockLocationsLocationSalesChannelBatchReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
-import { MiddlewareRoute } from "../../../types/middlewares"
-import { applySalesChannelsFilter } from "./utils/apply-sales-channel-filter"
-import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -40,7 +40,11 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-      applySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "sales_channel_location",
+        resourceId: "stock_location_id",
+        filterableField: "sales_channel_id",
+      }),
     ],
   },
   {
@@ -71,6 +75,17 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformQuery(
         AdminGetStockLocationsLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/fulfillment-sets",
+    middlewares: [
+      validateAndTransformBody(AdminCreateStockLocationFulfillmentSet),
+      transformQuery(
+        AdminPostStockLocationsParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
