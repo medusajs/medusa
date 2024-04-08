@@ -10,12 +10,19 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
+import { ApiKeyType } from "../../../common/constants"
 
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const CreatePublishableApiKeyForm = () => {
+type CreatePublishableApiKeyFormProps = {
+  keyType: ApiKeyType
+}
+
+export const CreatePublishableApiKeyForm = ({
+  keyType,
+}: CreatePublishableApiKeyFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -31,10 +38,17 @@ export const CreatePublishableApiKeyForm = () => {
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       // @ts-ignore type is wrong compared to validation
-      { title: values.title, type: "publishable" },
+      { title: values.title, type: keyType },
       {
         onSuccess: ({ api_key }) => {
-          handleSuccess(`/settings/api-key-management/${api_key.id}`)
+          switch (keyType) {
+            case ApiKeyType.PUBLISHABLE:
+              handleSuccess(`/settings/api-key-management/${api_key.id}`)
+              break
+            case ApiKeyType.SECRET:
+              console.log("Secret key created show it to user")
+              break
+          }
         },
       }
     )
@@ -63,10 +77,14 @@ export const CreatePublishableApiKeyForm = () => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading>
-                  {t("apiKeyManagement.createPublishableApiKey")}
+                  {keyType === ApiKeyType.PUBLISHABLE
+                    ? t("apiKeyManagement.create.createPublishableHeader")
+                    : t("apiKeyManagement.create.createSecretHeader")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("apiKeyManagement.publishableApiKeyHint")}
+                  {keyType === ApiKeyType.PUBLISHABLE
+                    ? t("apiKeyManagement.create.createPublishableHint")
+                    : t("apiKeyManagement.create.createSecretHint")}
                 </Text>
               </div>
               <div className="grid grid-cols-2 gap-4">

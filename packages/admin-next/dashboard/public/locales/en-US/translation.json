@@ -928,10 +928,23 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domainTitle": "API Keys",
-    "domain": "{{ keyType }} API Keys",
+    "domain": {
+      "apiKeys": "API Keys",
+      "publishable": "Publishable API Keys",
+      "secret": "Secret API Keys"
+    },
+    "list": {
+      "secretTab": "Secret",
+      "publishableTab": "Publishable"
+    },
+    "create": {
+      "createPublishableHeader": "Create Publishable API Key",
+      "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
+      "createSecretHeader": "Create Secret API Key",
+      "createSecretHint": "Create a new secret API key to access the Medusa API."
+    },
     "createKey": "Create key",
-    "createPublishableApiKey": "Create {{ keyType }} API Key",
+    "createPublishableApiKey": "Create Publishable API Key",
     "editKey": "Edit key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
