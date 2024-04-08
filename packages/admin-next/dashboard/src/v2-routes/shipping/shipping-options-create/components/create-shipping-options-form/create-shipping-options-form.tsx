@@ -122,7 +122,7 @@ export function CreateShippingOptionsForm({
         setTab(Tab.PRICING)
         break
       }
-      case Tab.DETAILS:
+      case Tab.PRICING:
         // await onSubmit()
         break
     }
