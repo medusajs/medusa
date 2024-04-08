@@ -9,7 +9,6 @@ import DocItemFooter from "@theme/DocItem/Footer"
 import DocItemTOCMobile from "@theme/DocItem/TOC/Mobile"
 import DocItemTOCDesktop from "@theme/DocItem/TOC/Desktop"
 import DocItemContent from "@theme/DocItem/Content"
-// import DocBreadcrumbs from "@theme/DocBreadcrumbs"
 import Unlisted from "@theme/Unlisted"
 import type { Props } from "@theme/DocItem/Layout"
 import { useSidebar } from "../../../providers/Sidebar"
@@ -59,7 +58,6 @@ export default function DocItemLayout({ children }: Props): JSX.Element {
         <DocVersionBanner />
         <div>
           <article className={clsx("[&>*:first-child]:mt-0")}>
-            {/* <DocBreadcrumbs /> */}
             <DocVersionBadge />
             {docTOC.mobile}
             <DocItemContent>{children}</DocItemContent>

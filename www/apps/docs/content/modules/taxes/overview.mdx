@@ -3,7 +3,6 @@ description: "Taxes are additional costs or fees imposed by a government for goo
 ---
 
 import DocCardList from '@theme/DocCardList';
-import DocCard from "@theme/DocCard"
 import Icons from '@theme/Icon';
 
 # Taxes
@@ -77,7 +76,7 @@ Admins can create additional tax rates aside from the default tax rate. They can
 
 Customers can review order edit requests and authorize additional payments if necessary.
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: '/modules/taxes/admin/manage-tax-rates',
@@ -96,21 +95,41 @@ Customers can review order edit requests and authorize additional payments if ne
       description: 'Learn how to manage tax rates using Medusa Admin.'
     }
   },
+  {
+    type: 'link',
+    href: '/user-guide/taxes/tax-overrides',
+    label: 'User Guide: Tax Overrides',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage tax rates using Medusa Admin.'
+    }
+  },
 ]} />
 
 ### Tax-Inclusive Pricing
 
 Admins can enable tax-inclusive pricing for a region or currency. This would automatically calculate the taxes applied on a product for that region or currency.
 
-<DocCard item={{
-  type: 'link',
-  href: '/modules/taxes/inclusive-pricing',
-  label: 'Architecture: Tax-Inclusive Pricing',
-  customProps: {
-    icon: Icons['circle-stack-solid'],
-    description: 'Learn how tax-inclusive pricing works and its relation to other modules.'
-  }
-}} />
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/taxes/inclusive-pricing',
+    label: 'Architecture: Tax-Inclusive Pricing',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn how tax-inclusive pricing works and its relation to other modules.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/taxes/tax-inclusive',
+    label: 'User Guide: Tax-Inclusive Pricing',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage tax-inclusive pricing using Medusa Admin.'
+    }
+  },
+]} />
 
 ---
 

@@ -24,8 +24,8 @@ Using the gift cards’ admin APIs, you can manage gift cards including listing,
 
 You want to add or use the following admin functionalities:
 
-- Manage product gift cards including retrieving, adding, updating, and deleting them.
-- Managing customer gift cards including retrieving, adding, updating and deleting them.
+- Manage gift card products including retrieving, adding, updating, and deleting them.
+- Managing custom gift cards including retrieving, adding, updating and deleting them.
 
 ---
 
@@ -517,13 +517,13 @@ It returns the following fields in the response:
 
 ---
 
-## Manage Customer Gift Cards
+## Manage Custom Gift Cards
 
-This section covers how to manage customer gift cards. You can create an unlimited number of customer gift cards.
+This section covers how to manage custom gift cards. You can create an unlimited number of custom gift cards.
 
-### List Customer Gift Cards
+### List Custom Gift Cards
 
-You can retrieve all customer gift cards by sending a request to the [List Gift Cards API Route](https://docs.medusajs.com/api/admin#gift-cards_getgiftcards):
+You can retrieve all custom gift cards by sending a request to the [List Gift Cards API Route](https://docs.medusajs.com/api/admin#gift-cards_getgiftcards):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -548,7 +548,7 @@ You can retrieve all customer gift cards by sending a request to the [List Gift 
         <div>
           {isLoading && <span>Loading...</span>}
           {gift_cards && !gift_cards.length && (
-            <span>No customer gift cards...</span>
+            <span>No custom gift cards...</span>
           )}
           {gift_cards && gift_cards.length > 0 && (
             <ul>
@@ -592,11 +592,11 @@ This request doesn't require any parameters. It accepts parameters related to pa
 
 This request returns an array of `gift_cards` and [pagination fields](https://docs.medusajs.com/api/admin#pagination) in the response.
 
-### Create a Customer Gift Card
+### Create a Custom Gift Card
 
-Merchants can create customer gift cards to send a reward or gift to the customer.
+Merchants can create custom gift cards to send a reward or gift to the customer.
 
-You can create a customer gift card by sending a request to the [Create a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_postgiftcards):
+You can create a custom gift card by sending a request to the [Create a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_postgiftcards):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
@@ -684,7 +684,7 @@ It optionally accepts other body parameters, including the `value` parameter, wh
 
 This request returns the created gift card object in the response.
 
-### Update Customer Gift Card
+### Update Custom Gift Card
 
 Merchants can update any of the gift card’s properties, except for the value of the gift card.
 
@@ -771,9 +771,9 @@ In this example, you update the balance of the gift card. The balance is the rem
 
 This request returns the updated gift card object in the response.
 
-### Delete Customer Gift Card
+### Delete Custom Gift Card
 
-You can delete a customer gift card by sending a request to the [Delete a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_deletegiftcardsgiftcard):
+You can delete a custom gift card by sending a request to the [Delete a Gift Card API Route](https://docs.medusajs.com/api/admin#gift-cards_deletegiftcardsgiftcard):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
