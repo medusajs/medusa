@@ -31,6 +31,6 @@
   },
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808",
   "dependencies": {
-    "awilix": "^10.0.2"
+    "awilix": "^8.0.0"
   }
 }
