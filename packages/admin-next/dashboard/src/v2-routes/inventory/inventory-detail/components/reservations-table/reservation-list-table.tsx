@@ -1,32 +1,31 @@
 import { DataTable } from "../../../../../components/table/data-table"
 import { InventoryNext } from "@medusajs/types"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useInventoryItemLevels } from "../../../../../hooks/api/inventory"
 import { useInventoryTableColumns } from "./use-reservation-list-table-columns"
 import { useInventoryTableQuery } from "./use-reservation-list-table-query"
-import { useTranslation } from "react-i18next"
+import { useReservationItems } from "../../../../../hooks/api/inventory"
 
 const PAGE_SIZE = 20
 
-export const ItemLocationListTable = ({
-  inventory_item_id,
+export const ReservationItemTable = ({
+  inventoryItem,
 }: {
-  inventory_item_id: string
+  inventoryItem: InventoryNext.InventoryItemDTO
 }) => {
   const { searchParams, raw } = useInventoryTableQuery({
     pageSize: PAGE_SIZE,
   })
 
-  const { inventory_levels, count, isLoading, isError, error } =
-    useInventoryItemLevels(inventory_item_id, {
+  const { reservations, count, isLoading, isError, error } =
+    useReservationItems({
       ...searchParams,
-      fields: "*stock_locations",
+      inventory_item_id: [inventoryItem.id],
     })
 
-  const columns = useInventoryTableColumns()
+  const columns = useInventoryTableColumns({ sku: inventoryItem.sku! })
 
   const { table } = useDataTable({
-    data: inventory_levels ?? [],
+    data: reservations ?? [],
     columns,
     count,
     enablePagination: true,

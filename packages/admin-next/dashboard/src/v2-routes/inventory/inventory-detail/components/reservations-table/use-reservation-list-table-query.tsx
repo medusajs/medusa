@@ -11,29 +11,20 @@ export const useInventoryTableQuery = ({
     [
       "id",
       "location_id",
-      "stocked_quantity",
-      "reserved_quantity",
-      "incoming_quantity",
-      "available_quantity",
-      "*stock_locations",
+      "inventory_item_id",
+      "quantity",
+      "line_item_id",
+      "description",
+      "created_by",
     ],
     prefix
   )
 
-  const { reserved_quantity, stocked_quantity, available_quantity, ...params } =
-    raw
+  const { quantity, ...params } = raw
 
   const searchParams = {
     limit: pageSize,
-    reserved_quantity: reserved_quantity
-      ? JSON.parse(reserved_quantity)
-      : undefined,
-    stocked_quantity: stocked_quantity
-      ? JSON.parse(stocked_quantity)
-      : undefined,
-    available_quantity: available_quantity
-      ? JSON.parse(available_quantity)
-      : undefined,
+    quantity: quantity ? JSON.parse(quantity) : undefined,
     ...params,
   }
 

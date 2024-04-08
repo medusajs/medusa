@@ -1,8 +1,7 @@
 import { InventoryNext, StockLocationDTO } from "@medusajs/types"
 
-import { LocationActions } from "./reservation-actions"
-// import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { ReservationActions } from "./reservation-actions"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -10,34 +9,29 @@ import { useTranslation } from "react-i18next"
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedInventoryItem extends InventoryNext.InventoryLevelDTO {
+interface ExtendedInventoryItem extends InventoryNext.ReservationItemDTO {
+  line_item: { order_id: string }
   location: StockLocationDTO
 }
 
 const columnHelper = createColumnHelper<ExtendedInventoryItem>()
 
-export const useInventoryTableColumns = () => {
+export const useInventoryTableColumns = ({ sku }: { sku: string }) => {
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.accessor("stock_locations.0.name", {
-        header: t("fields.location"),
-        cell: ({ getValue }) => {
-          const inStock = getValue()
-
-          if (!inStock) {
-            return <PlaceholderCell />
-          }
-
+      columnHelper.display({
+        header: t("fields.sku"),
+        cell: () => {
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{inStock}</span>
+              <span className="truncate">{sku}</span>
             </div>
           )
         },
       }),
-      columnHelper.accessor("reserved_quantity", {
+      columnHelper.accessor("line_item.order_id", {
         header: t("inventory.reserved"),
         cell: ({ getValue }) => {
           const quantity = getValue()
@@ -53,41 +47,59 @@ export const useInventoryTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("stocked_quantity", {
-        header: t("fields.inStock"),
+      columnHelper.accessor("description", {
+        header: t("fields.description"),
         cell: ({ getValue }) => {
-          const stockedQuantity = getValue()
+          const description = getValue()
 
-          if (Number.isNaN(stockedQuantity)) {
+          if (!description) {
             return <PlaceholderCell />
           }
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{stockedQuantity}</span>
+              <span className="truncate">{description}</span>
             </div>
           )
         },
       }),
-      columnHelper.accessor("available_quantity", {
-        header: t("inventory.available"),
+      columnHelper.accessor("location.name", {
+        header: t("inventory.location"),
         cell: ({ getValue }) => {
-          const availableQuantity = getValue()
+          const location = getValue()
 
-          if (Number.isNaN(availableQuantity)) {
+          if (!location) {
             return <PlaceholderCell />
           }
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{availableQuantity}</span>
+              <span className="truncate">{location}</span>
+            </div>
+          )
+        },
+      }),
+      columnHelper.accessor("created_at", {
+        header: t("fields.createdAt"),
+        cell: ({ getValue }) => {
+          const createdAt = getValue()
+
+          if (!createdAt) {
+            return <PlaceholderCell />
+          }
+
+          return (
+            <div className="flex size-full items-center overflow-hidden">
+              <span className="truncate">
+                {createdAt instanceof Date ? createdAt.toString() : createdAt}
+              </span>
             </div>
           )
         },
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <LocationActions item={row.original} />,
+        cell: ({ row }) => <ReservationActions item={row.original} />,
       }),
     ],
     [t]

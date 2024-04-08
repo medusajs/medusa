@@ -155,3 +155,14 @@ export type InventoryItemLocationLevelsRes = {
 } & ListRes
 
 export type InventoryItemLevelDeleteRes = DeleteRes
+
+// Reservations
+export type ReservationItemDeleteRes = DeleteRes
+
+export type ReservationItemListRes = {
+  reservations: InventoryNext.ReservationItemDTO[]
+} & ListRes
+
+export type ReservationItemRes = {
+  reservation: InventoryNext.ReservationItemDTO
+}

@@ -2,6 +2,7 @@ import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
 
 import { InventoryItemGeneralSection } from "./components/inventory-item-general-section"
 import { InventoryItemLocationLevelsSection } from "./components/inventory-item-location-levels"
+import { InventoryItemReservationsSection } from "./components/inventory-item-reservations"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { inventoryItemLoader } from "./loader"
 import { useInventoryItem } from "../../../hooks/api/inventory"
@@ -37,6 +38,7 @@ export const InventoryDeatil = () => {
     <div className="flex flex-col gap-y-2">
       <InventoryItemGeneralSection inventoryItem={inventory_item} />
       <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
+      <InventoryItemReservationsSection inventoryItem={inventory_item} />
       <JsonViewSection data={inventory_item} />
       <Outlet />
     </div>

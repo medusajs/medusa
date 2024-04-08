@@ -1,7 +1,6 @@
 import { Button, Container, Heading } from "@medusajs/ui"
 
 import { InventoryItemRes } from "../../../../types/api-responses"
-import { ItemLocationListTable } from "./location-levels-table/location-list-table"
 import { Link } from "react-router-dom"
 import { ReservationItemTable } from "./reservations-table/reservation-list-table"
 import { useTranslation } from "react-i18next"
@@ -9,7 +8,7 @@ import { useTranslation } from "react-i18next"
 type InventoryItemLocationLevelsSectionProps = {
   inventoryItem: InventoryItemRes["inventory_item"]
 }
-export const InventoryItemLocationLevelsSection = ({
+export const InventoryItemReservationsSection = ({
   inventoryItem,
 }: InventoryItemLocationLevelsSectionProps) => {
   const { t } = useTranslation()
@@ -17,12 +16,12 @@ export const InventoryItemLocationLevelsSection = ({
   return (
     <Container className="p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("inventory.locationLevels")}</Heading>
+        <Heading>{t("reservations.domain")}</Heading>
         <Button size="small" variant="secondary" asChild>
-          <Link to="locations">{t("inventory.manageLocations")}</Link>
+          <Link to="locations">{t("actions.create")}</Link>
         </Button>
       </div>
-      <ItemLocationListTable inventory_item_id={inventoryItem.id} />
+      <ReservationItemTable inventoryItem={inventoryItem} />
     </Container>
   )
 }

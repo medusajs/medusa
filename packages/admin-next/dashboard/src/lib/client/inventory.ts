@@ -10,6 +10,9 @@ import { deleteRequest, deleteRequest, getRequest, postRequest } from "./common"
 import {
   InventoryItemLevelDeleteRes,
   InventoryItemLocationLevelsRes,
+  ReservationItemDeleteRes,
+  ReservationItemListRes,
+  ReservationItemRes,
 } from "../../types/api-responses"
 
 async function retrieveInventoryItem(id: string, query?: Record<string, any>) {
@@ -68,6 +71,26 @@ async function deleteInventoryItemLevel(
   )
 }
 
+async function listReservationItems(query?: Record<string, any>) {
+  return getRequest<ReservationItemListRes>(`/admin/reservations`, query)
+}
+
+async function deleteReservationItem(reservationId: string) {
+  return deleteRequest<ReservationItemDeleteRes>(
+    `/admin/reservations/${reservationId}`
+  )
+}
+
+async function updateReservationItem(
+  reservationId: string,
+  payload: UpdateInventoryItemReq
+) {
+  return postRequest<ReservationItemRes>(
+    `/admin/reservatinos/${reservationId}`,
+    payload
+  )
+}
+
 export const inventoryItems = {
   retrieve: retrieveInventoryItem,
   list: listInventoryItems,
@@ -76,4 +99,7 @@ export const inventoryItems = {
   delete: deleteInventoryItem,
   listLocationLevels: listInventoryItemLevels,
   deleteInventoryItemLevel,
+  listReservationItems,
+  deleteReservationItem,
+  updateReservationItem,
 }
