@@ -44,5 +44,4 @@ export const client = {
   priceLists: priceLists,
   stockLocations: stockLocations,
   workflowExecutions: workflowExecutions,
-  customerGroups: customerGroups,
 }
