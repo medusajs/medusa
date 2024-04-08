@@ -919,6 +919,10 @@ export interface FilterableProductCategoryProps
    * Whether to include parents of retrieved product categories.
    */
   include_ancestors_tree?: boolean
+  /**
+   * Filter product categories based on searchable fields
+   */
+  q?: string
 }
 
 /**
