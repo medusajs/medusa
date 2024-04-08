@@ -28,6 +28,10 @@ moduleIntegrationTestRunner({
               title: "size",
               values: ["large", "small"],
             },
+            {
+              title: "color",
+              values: ["red", "blue"],
+            },
           ],
         })
 
@@ -182,7 +186,7 @@ moduleIntegrationTestRunner({
           expect(productVariant.title).toEqual("new test")
         })
 
-        it("should update the options of a variant successfully", async () => {
+        it("should upsert the options of a variant successfully", async () => {
           await service.upsertVariants([
             {
               id: variantOne.id,
@@ -191,12 +195,33 @@ moduleIntegrationTestRunner({
           ])
 
           const productVariant = await service.retrieveVariant(variantOne.id, {
-            relations: ["options", "options.option_value", "options.variant"],
+            relations: ["options"],
           })
           expect(productVariant.options).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                option_value: expect.objectContaining({ value: "small" }),
+                value: "small",
+              }),
+            ])
+          )
+        })
+
+        it("should do a partial update on the options of a variant successfully", async () => {
+          await service.updateVariants(variantOne.id, {
+            options: { size: "small", color: "red" },
+          })
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options"],
+          })
+
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+              expect.objectContaining({
+                value: "red",
               }),
             ])
           )
@@ -222,7 +247,7 @@ moduleIntegrationTestRunner({
           const beforeDeletedVariants = await service.listVariants(
             { id: variantOne.id },
             {
-              relations: ["options", "options.option_value", "options.variant"],
+              relations: ["options"],
             }
           )
 
@@ -230,7 +255,7 @@ moduleIntegrationTestRunner({
           const deletedVariants = await service.listVariants(
             { id: variantOne.id },
             {
-              relations: ["options", "options.option_value", "options.variant"],
+              relations: ["options"],
               withDeleted: true,
             }
           )
@@ -239,9 +264,7 @@ moduleIntegrationTestRunner({
           expect(deletedVariants[0].deleted_at).not.toBeNull()
 
           for (const variantOption of deletedVariants[0].options) {
-            expect(variantOption.deleted_at).not.toBeNull()
-            // The value itself should not be affected
-            expect(variantOption?.option_value?.deleted_at).toBeNull()
+            expect(variantOption?.deleted_at).toBeNull()
           }
         })
       })

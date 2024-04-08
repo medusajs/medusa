@@ -806,10 +806,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "100",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "100",
                           }),
                         ])
                     ),
@@ -910,10 +908,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "large",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "large",
                           }),
                         ])
                     ),
@@ -963,10 +959,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "green",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "green",
                           }),
                         ])
                     ),
@@ -1394,21 +1388,17 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "green",
-                            option: expect.objectContaining({
-                              title: "color",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "green",
+                          option: expect.objectContaining({
+                            title: "color",
                           }),
                         }),
                       ])
@@ -1661,12 +1651,10 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                       ])
