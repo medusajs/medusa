@@ -100,8 +100,6 @@ export interface CreateZipGeoZoneDTO extends CreateGeoZoneBaseDTO {
 }
 
 /**
- * @interface
- *
  * The geo zone to be created. The value of the `type` attributes allows for passing more attributes.
  */
 export type CreateGeoZoneDTO =
@@ -195,8 +193,6 @@ export interface UpdateZipGeoZoneDTO extends UpdateGeoZoneBaseDTO {
 }
 
 /**
- * @interface
- *
  * The attributes to update in the geo zone. The value of the `type` attributes allows for passing more attributes.
  */
 export type UpdateGeoZoneDTO =
