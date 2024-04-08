@@ -1,6 +1,6 @@
+import { AdminProductCategoryResponse } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { AdminProductCategoryResponse } from "@medusajs/types"
 import { categoriesQueryKeys } from "../../../hooks/api/categories"
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"

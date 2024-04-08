@@ -1,6 +1,6 @@
 import { PencilSquare, TriangleRightMini } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
-import { Container, Heading, IconButton, clx } from "@medusajs/ui"
+import { Container, Heading, IconButton, Text, clx } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -15,7 +15,11 @@ import {
 import { useCategories } from "../../../../../hooks/api/categories"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCategoryTableQuery } from "../../../common/hooks/use-category-table-query"
-import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
+import {
+  getCategoryPath,
+  getIsActiveProps,
+  getIsInternalProps,
+} from "../../../common/utils"
 
 const PAGE_SIZE = 20
 
@@ -25,10 +29,15 @@ export const CategoryListTable = () => {
   const { raw, searchParams } = useCategoryTableQuery({ pageSize: PAGE_SIZE })
 
   const query = raw.q
-    ? { include_ancestors_tree: true, ...searchParams }
+    ? {
+        include_ancestors_tree: true,
+        fields: "id,name,handle,is_active,is_internal,parent_category",
+        ...searchParams,
+      }
     : {
         include_descendants_tree: true,
         parent_category_id: "null",
+        fields: "id,name,category_children,handle,is_internal,is_active",
         ...searchParams,
       }
 
@@ -36,7 +45,6 @@ export const CategoryListTable = () => {
     useCategories(
       {
         ...query,
-        fields: "id,name,category_children,handle,is_internal,is_active",
       },
       {
         placeholderData: keepPreviousData,
@@ -115,6 +123,22 @@ const useCategoryTableColumns = () => {
         header: () => <TextHeader text={t("fields.name")} />,
         cell: ({ getValue, row }) => {
           const expandHandler = row.getToggleExpandedHandler()
+
+          console.log(row.original)
+
+          if (row.original.parent_category !== undefined) {
+            const path = getCategoryPath(row.original)
+
+            return (
+              <div className="flex size-full items-center">
+                {path.map((chip) => (
+                  <div key={chip.id}>
+                    <Text>{chip.name}</Text>
+                  </div>
+                ))}
+              </div>
+            )
+          }
 
           return (
             <div className="flex size-full items-center gap-x-3 overflow-hidden">

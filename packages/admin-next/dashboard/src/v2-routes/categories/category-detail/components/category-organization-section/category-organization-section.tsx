@@ -8,6 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InlineLink } from "../../../../../components/common/inline-link"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useCategory } from "../../../../../hooks/api/categories"
+import { getCategoryChildren, getCategoryPath } from "../../../common/utils"
 
 type CategoryOrganizationSectionProps = {
   category: AdminProductCategoryResponse["product_category"]
@@ -40,24 +41,6 @@ export const CategoryOrganizationSection = ({
   )
 }
 
-type ChipProps = {
-  id: string
-  name: string
-}
-
-function getPath(
-  category?: AdminProductCategoryResponse["product_category"]
-): ChipProps[] {
-  if (!category) {
-    return []
-  }
-
-  const path = category.parent_category ? getPath(category.parent_category) : []
-  path.push({ id: category.id, name: category.name })
-
-  return path
-}
-
 const PathDisplay = ({
   category,
 }: {
@@ -77,7 +60,7 @@ const PathDisplay = ({
     fields: "id,name,parent_category",
   })
 
-  const chips = useMemo(() => getPath(withParents), [withParents])
+  const chips = useMemo(() => getCategoryPath(withParents), [withParents])
 
   if (isLoading || !withParents) {
     return <Skeleton className="h-5 w-16" />
@@ -168,19 +151,6 @@ const PathDisplay = ({
   )
 }
 
-function getChildren(
-  category?: AdminProductCategoryResponse["product_category"]
-): ChipProps[] {
-  if (!category || !category.category_children) {
-    return []
-  }
-
-  return category.category_children.map((child) => ({
-    id: child.id,
-    name: child.name,
-  }))
-}
-
 const ChildrenDisplay = ({
   category,
 }: {
@@ -196,7 +166,7 @@ const ChildrenDisplay = ({
     fields: "id,name,category_children",
   })
 
-  const chips = useMemo(() => getChildren(withChildren), [withChildren])
+  const chips = useMemo(() => getCategoryChildren(withChildren), [withChildren])
 
   if (isLoading || !withChildren) {
     return <Skeleton className="h-5 w-16" />

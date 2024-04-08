@@ -1,3 +1,4 @@
+import { AdminProductCategoryResponse } from "@medusajs/types"
 import { TFunction } from "i18next"
 
 export function getIsActiveProps(
@@ -34,4 +35,37 @@ export function getIsInternalProps(
         color: "green",
       }
   }
+}
+
+type ChipProps = {
+  id: string
+  name: string
+}
+
+export function getCategoryPath(
+  category?: AdminProductCategoryResponse["product_category"]
+): ChipProps[] {
+  if (!category) {
+    return []
+  }
+
+  const path = category.parent_category
+    ? getCategoryPath(category.parent_category)
+    : []
+  path.push({ id: category.id, name: category.name })
+
+  return path
+}
+
+export function getCategoryChildren(
+  category?: AdminProductCategoryResponse["product_category"]
+): ChipProps[] {
+  if (!category || !category.category_children) {
+    return []
+  }
+
+  return category.category_children.map((child) => ({
+    id: child.id,
+    name: child.name,
+  }))
 }
