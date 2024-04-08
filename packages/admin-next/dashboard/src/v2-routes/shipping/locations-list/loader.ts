@@ -1,11 +1,12 @@
 import { LoaderFunctionArgs } from "react-router-dom"
+import { adminStockLocationsKeys } from "medusa-react"
 
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
 import { StockLocationListRes } from "../../../types/api-responses"
 
 const shippingListQuery = () => ({
-  queryKey: ["shipping_list"],
+  queryKey: adminStockLocationsKeys.list(),
   queryFn: async () =>
     client.stockLocations.list({
       // fields: "*fulfillment_sets,*fulfillment_sets.service_zones",
