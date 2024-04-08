@@ -21,10 +21,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "file",
     parentIgnore: true,
   }),
-  fulfillment: getOptions({
+  "fulfillment-service": getOptions({
     entryPointPath: "packages/medusa/src/interfaces/fulfillment-service.ts",
     tsConfigName: "medusa.json",
-    name: "fulfillment",
+    name: "fulfillment-service",
     parentIgnore: true,
   }),
   "js-client": getOptions({

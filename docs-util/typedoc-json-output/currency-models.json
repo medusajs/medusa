@@ -1,33 +1,33 @@
 {
-	"id": 1947,
+	"id": 1962,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1948,
+			"id": 1963,
 			"name": "Currency",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 1949,
+					"id": 1964,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1950,
+							"id": 1965,
 							"name": "new Currency",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1948,
+								"target": 1963,
 								"name": "Currency",
 								"package": "@medusajs/currency"
 							}
@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"id": 1951,
+					"id": 1966,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -46,7 +46,7 @@
 					}
 				},
 				{
-					"id": 1952,
+					"id": 1967,
 					"name": "symbol",
 					"variant": "declaration",
 					"kind": 1024,
@@ -57,7 +57,7 @@
 					}
 				},
 				{
-					"id": 1953,
+					"id": 1968,
 					"name": "symbol_native",
 					"variant": "declaration",
 					"kind": 1024,
@@ -68,7 +68,7 @@
 					}
 				},
 				{
-					"id": 1954,
+					"id": 1969,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -77,22 +77,111 @@
 						"type": "intrinsic",
 						"name": "string"
 					}
+				},
+				{
+					"id": 1970,
+					"name": "decimal_digits",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 1971,
+					"name": "rounding",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 1972,
+					"name": "raw_rounding",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 1973,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 1974,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Constructors",
 					"children": [
-						1949
+						1964
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1951,
-						1952,
-						1953,
-						1954
+						1966,
+						1967,
+						1968,
+						1969,
+						1970,
+						1971,
+						1972,
+						1973,
+						1974
 					]
 				}
 			]
@@ -102,35 +191,55 @@
 		{
 			"title": "Classes",
 			"children": [
-				1948
+				1963
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"1947": {
+		"1962": {
 			"sourceFileName": "../../../packages/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1948": {
+		"1963": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency"
 		},
-		"1951": {
+		"1966": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.code"
 		},
-		"1952": {
+		"1967": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.symbol"
 		},
-		"1953": {
+		"1968": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.symbol_native"
 		},
-		"1954": {
+		"1969": {
 			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
 			"qualifiedName": "Currency.name"
+		},
+		"1970": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.decimal_digits"
+		},
+		"1971": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.rounding"
+		},
+		"1972": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.raw_rounding"
+		},
+		"1973": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.created_at"
+		},
+		"1974": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.updated_at"
 		}
 	}
 }

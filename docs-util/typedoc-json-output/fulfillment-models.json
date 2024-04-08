@@ -1,0 +1,4751 @@
+{
+	"id": 3614,
+	"name": "fulfillment-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"text": "## Relations Overview\n\n",
+				"kind": "text"
+			},
+			{
+				"text": "```mermaid\nerDiagram\n\tFulfillment }|--|{ ShippingOption : shipping_option\n\tFulfillment }|--|{ FulfillmentProvider : provider\n\tFulfillment ||--|| Address : delivery_address\n\tFulfillment ||--|| FulfillmentItem : items\n\tFulfillment ||--|| FulfillmentLabel : labels\n\tFulfillmentSet ||--|| ServiceZone : service_zones\n\tGeoZone }|--|{ ServiceZone : service_zone\n\tServiceZone ||--|| ShippingOption : shipping_options\n\tShippingOption }|--|{ ShippingProfile : shipping_profile\n\tShippingOption }|--|{ FulfillmentProvider : provider\n\tShippingOption ||--|| ShippingOptionType : type\n\tShippingOption ||--|| ShippingOptionRule : rules\n\n```",
+				"kind": "code"
+			}
+		]
+	},
+	"children": [
+		{
+			"id": 3615,
+			"name": "Address",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3616,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3617,
+							"name": "new Address",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3615,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3637,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3618,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3619,
+					"name": "company",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3620,
+					"name": "first_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3621,
+					"name": "last_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3622,
+					"name": "address_1",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3623,
+					"name": "address_2",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3624,
+					"name": "city",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3625,
+					"name": "country_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3626,
+					"name": "province",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3627,
+					"name": "postal_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3628,
+					"name": "phone",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3629,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3630,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3631,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3632,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3633,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3634,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3635,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3636,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3616
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3637,
+						3618,
+						3619,
+						3620,
+						3621,
+						3622,
+						3623,
+						3624,
+						3625,
+						3626,
+						3627,
+						3628,
+						3629,
+						3630,
+						3631,
+						3632
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3633,
+						3635
+					]
+				}
+			]
+		},
+		{
+			"id": 3664,
+			"name": "FulfillmentItem",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3665,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3666,
+							"name": "new FulfillmentItem",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3664,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3684,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3667,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3668,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3669,
+					"name": "sku",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3670,
+					"name": "barcode",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3671,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/dist/totals/big-number.d.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 3672,
+					"name": "raw_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3673,
+					"name": "line_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3674,
+					"name": "inventory_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3675,
+					"name": "fulfillment_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3676,
+					"name": "fulfillment",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3638,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3677,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3678,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3679,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3680,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3681,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3682,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3683,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3665
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3684,
+						3667,
+						3668,
+						3669,
+						3670,
+						3671,
+						3672,
+						3673,
+						3674,
+						3675,
+						3676,
+						3677,
+						3678,
+						3679
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3680,
+						3682
+					]
+				}
+			]
+		},
+		{
+			"id": 3685,
+			"name": "FulfillmentLabel",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3686,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3687,
+							"name": "new FulfillmentLabel",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3685,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3701,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3688,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3689,
+					"name": "tracking_number",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3690,
+					"name": "tracking_url",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3691,
+					"name": "label_url",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3692,
+					"name": "fulfillment_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3693,
+					"name": "fulfillment",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3638,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3694,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3695,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3696,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3697,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3698,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3699,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3700,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3686
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3701,
+						3688,
+						3689,
+						3690,
+						3691,
+						3692,
+						3693,
+						3694,
+						3695,
+						3696
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3697,
+						3699
+					]
+				}
+			]
+		},
+		{
+			"id": 3702,
+			"name": "FulfillmentProvider",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3703,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3704,
+							"name": "new FulfillmentProvider",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3702,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3705,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3706,
+					"name": "is_enabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 3707,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3708,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3709,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3710,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3703
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3705,
+						3706
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3707,
+						3709
+					]
+				}
+			]
+		},
+		{
+			"id": 3711,
+			"name": "FulfillmentSet",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3712,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3713,
+							"name": "new FulfillmentSet",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3711,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3726,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3714,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3715,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3716,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3717,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3718,
+					"name": "service_zones",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3747,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3719,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3720,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3721,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3722,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3723,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3724,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3725,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3712
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3726,
+						3714,
+						3715,
+						3716,
+						3717,
+						3718,
+						3719,
+						3720,
+						3721
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3722,
+						3724
+					]
+				}
+			]
+		},
+		{
+			"id": 3638,
+			"name": "Fulfillment",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3639,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3640,
+							"name": "new Fulfillment",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3638,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3663,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3641,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3642,
+					"name": "location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3643,
+					"name": "packed_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3644,
+					"name": "shipped_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3645,
+					"name": "delivered_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3646,
+					"name": "canceled_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3647,
+					"name": "data",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3648,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3649,
+					"name": "shipping_option_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3650,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3651,
+					"name": "shipping_option",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 3765,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						]
+					}
+				},
+				{
+					"id": 3652,
+					"name": "provider",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3702,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3653,
+					"name": "delivery_address",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3615,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3654,
+					"name": "items",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3664,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3655,
+					"name": "labels",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3685,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3656,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3657,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3658,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3659,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3660,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3661,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3662,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3639
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3663,
+						3641,
+						3642,
+						3643,
+						3644,
+						3645,
+						3646,
+						3647,
+						3648,
+						3649,
+						3650,
+						3651,
+						3652,
+						3653,
+						3654,
+						3655,
+						3656,
+						3657,
+						3658
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3659,
+						3661
+					]
+				}
+			]
+		},
+		{
+			"id": 3727,
+			"name": "GeoZone",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3728,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3729,
+							"name": "new GeoZone",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3727,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3746,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3730,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3731,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/utils/dist/fulfillment/geo-zone.d.ts",
+							"qualifiedName": "GeoZoneType"
+						},
+						"name": "GeoZoneType",
+						"package": "@medusajs/utils"
+					}
+				},
+				{
+					"id": 3732,
+					"name": "country_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3733,
+					"name": "province_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3734,
+					"name": "city",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3735,
+					"name": "service_zone_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3736,
+					"name": "postal_expression",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3737,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3738,
+					"name": "service_zone",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3747,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3739,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3740,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3741,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3742,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3743,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3744,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3745,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3728
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3746,
+						3730,
+						3731,
+						3732,
+						3733,
+						3734,
+						3735,
+						3736,
+						3737,
+						3738,
+						3739,
+						3740,
+						3741
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3742,
+						3744
+					]
+				}
+			]
+		},
+		{
+			"id": 3747,
+			"name": "ServiceZone",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3748,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3749,
+							"name": "new ServiceZone",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3747,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3764,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3750,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3751,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3752,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3753,
+					"name": "fulfillment_set_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3754,
+					"name": "fulfillment_set",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3711,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3755,
+					"name": "geo_zones",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3727,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3756,
+					"name": "shipping_options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3765,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3757,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3758,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3759,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3760,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3761,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3762,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3763,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3748
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3764,
+						3750,
+						3751,
+						3752,
+						3753,
+						3754,
+						3755,
+						3756,
+						3757,
+						3758,
+						3759
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3760,
+						3762
+					]
+				}
+			]
+		},
+		{
+			"id": 3791,
+			"name": "ShippingOptionRule",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3792,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3793,
+							"name": "new ShippingOptionRule",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3791,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3807,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3794,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3795,
+					"name": "attribute",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3796,
+					"name": "operator",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "in"
+							},
+							{
+								"type": "literal",
+								"value": "eq"
+							},
+							{
+								"type": "literal",
+								"value": "ne"
+							},
+							{
+								"type": "literal",
+								"value": "gt"
+							},
+							{
+								"type": "literal",
+								"value": "gte"
+							},
+							{
+								"type": "literal",
+								"value": "lt"
+							},
+							{
+								"type": "literal",
+								"value": "lte"
+							},
+							{
+								"type": "literal",
+								"value": "nin"
+							}
+						]
+					}
+				},
+				{
+					"id": 3797,
+					"name": "value",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3798,
+					"name": "shipping_option_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3799,
+					"name": "shipping_option",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3765,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3800,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3801,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3802,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3803,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3804,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3805,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3806,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3792
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3807,
+						3794,
+						3795,
+						3796,
+						3797,
+						3798,
+						3799,
+						3800,
+						3801,
+						3802
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3803,
+						3805
+					]
+				}
+			]
+		},
+		{
+			"id": 3808,
+			"name": "ShippingOptionType",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3809,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3810,
+							"name": "new ShippingOptionType",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3808,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3823,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3811,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3812,
+					"name": "label",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3813,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3814,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3815,
+					"name": "shipping_option",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3765,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3816,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3817,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3818,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3819,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3820,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3821,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3822,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3809
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3823,
+						3811,
+						3812,
+						3813,
+						3814,
+						3815,
+						3816,
+						3817,
+						3818
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3819,
+						3821
+					]
+				}
+			]
+		},
+		{
+			"id": 3765,
+			"name": "ShippingOption",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3766,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3767,
+							"name": "new ShippingOption",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3765,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3790,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3768,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3769,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3770,
+					"name": "price_type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/utils/dist/fulfillment/shipping-options.d.ts",
+							"qualifiedName": "ShippingOptionPriceType"
+						},
+						"name": "ShippingOptionPriceType",
+						"package": "@medusajs/utils"
+					}
+				},
+				{
+					"id": 3771,
+					"name": "service_zone_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3772,
+					"name": "shipping_profile_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 3773,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3774,
+					"name": "shipping_option_type_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3775,
+					"name": "data",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3776,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3777,
+					"name": "service_zone",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3747,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3778,
+					"name": "shipping_profile",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 3824,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						]
+					}
+				},
+				{
+					"id": 3779,
+					"name": "provider",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 3702,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						]
+					}
+				},
+				{
+					"id": 3780,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 3808,
+						"name": "default",
+						"package": "@medusajs/fulfillment"
+					}
+				},
+				{
+					"id": 3781,
+					"name": "rules",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3791,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3782,
+					"name": "fulfillments",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3638,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3783,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3784,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3785,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3786,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3787,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3788,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3789,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3766
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3790,
+						3768,
+						3769,
+						3770,
+						3771,
+						3772,
+						3773,
+						3774,
+						3775,
+						3776,
+						3777,
+						3778,
+						3779,
+						3780,
+						3781,
+						3782,
+						3783,
+						3784,
+						3785
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3786,
+						3788
+					]
+				}
+			]
+		},
+		{
+			"id": 3824,
+			"name": "ShippingProfile",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 3825,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3826,
+							"name": "new ShippingProfile",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 3824,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							}
+						}
+					]
+				},
+				{
+					"id": 3839,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3827,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3828,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3829,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3830,
+					"name": "shipping_options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 3765,
+								"name": "default",
+								"package": "@medusajs/fulfillment"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 3831,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3832,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3833,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3834,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 3835,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3836,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 3837,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3838,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3825
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						3839,
+						3827,
+						3828,
+						3829,
+						3830,
+						3831,
+						3832,
+						3833,
+						3834
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						3835,
+						3837
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				3615,
+				3664,
+				3685,
+				3702,
+				3711,
+				3638,
+				3727,
+				3747,
+				3791,
+				3808,
+				3765,
+				3824
+			]
+		}
+	],
+	"packageName": "@medusajs/fulfillment",
+	"symbolIdMap": {
+		"3614": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"3615": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default"
+		},
+		"3618": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.id"
+		},
+		"3619": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.company"
+		},
+		"3620": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.first_name"
+		},
+		"3621": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.last_name"
+		},
+		"3622": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.address_1"
+		},
+		"3623": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.address_2"
+		},
+		"3624": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.city"
+		},
+		"3625": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.country_code"
+		},
+		"3626": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.province"
+		},
+		"3627": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.postal_code"
+		},
+		"3628": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.phone"
+		},
+		"3629": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3630": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3631": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3632": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3633": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3634": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3635": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3636": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3637": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3638": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default"
+		},
+		"3641": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.id"
+		},
+		"3642": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.location_id"
+		},
+		"3643": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.packed_at"
+		},
+		"3644": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipped_at"
+		},
+		"3645": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.delivered_at"
+		},
+		"3646": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.canceled_at"
+		},
+		"3647": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.data"
+		},
+		"3648": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"3649": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipping_option_id"
+		},
+		"3650": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3651": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipping_option"
+		},
+		"3652": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.provider"
+		},
+		"3653": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.delivery_address"
+		},
+		"3654": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.items"
+		},
+		"3655": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.labels"
+		},
+		"3656": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3657": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3658": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3659": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3660": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3661": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3662": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3663": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3664": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default"
+		},
+		"3667": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.id"
+		},
+		"3668": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.title"
+		},
+		"3669": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.sku"
+		},
+		"3670": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.barcode"
+		},
+		"3671": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.quantity"
+		},
+		"3672": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.raw_quantity"
+		},
+		"3673": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.line_item_id"
+		},
+		"3674": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.inventory_item_id"
+		},
+		"3675": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.fulfillment_id"
+		},
+		"3676": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.fulfillment"
+		},
+		"3677": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3678": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3679": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3680": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3681": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3682": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3683": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3684": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3685": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default"
+		},
+		"3688": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.id"
+		},
+		"3689": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.tracking_number"
+		},
+		"3690": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.tracking_url"
+		},
+		"3691": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.label_url"
+		},
+		"3692": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.fulfillment_id"
+		},
+		"3693": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.fulfillment"
+		},
+		"3694": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3695": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3696": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3697": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3698": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3699": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3700": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3701": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3702": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default"
+		},
+		"3705": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.id"
+		},
+		"3706": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.is_enabled"
+		},
+		"3707": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3708": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3709": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3710": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3711": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default"
+		},
+		"3714": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.id"
+		},
+		"3715": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.name"
+		},
+		"3716": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.type"
+		},
+		"3717": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3718": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.service_zones"
+		},
+		"3719": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3720": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3721": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3722": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3723": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3724": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3725": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3726": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3727": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default"
+		},
+		"3730": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.id"
+		},
+		"3731": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.type"
+		},
+		"3732": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.country_code"
+		},
+		"3733": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.province_code"
+		},
+		"3734": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.city"
+		},
+		"3735": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.service_zone_id"
+		},
+		"3736": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.postal_expression"
+		},
+		"3737": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3738": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.service_zone"
+		},
+		"3739": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3740": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3741": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3742": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3743": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3744": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3745": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3746": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/geo-zone.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3747": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default"
+		},
+		"3750": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.id"
+		},
+		"3751": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.name"
+		},
+		"3752": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3753": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.fulfillment_set_id"
+		},
+		"3754": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.fulfillment_set"
+		},
+		"3755": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.geo_zones"
+		},
+		"3756": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.shipping_options"
+		},
+		"3757": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3758": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3759": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3760": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3761": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3762": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3763": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3764": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/service-zone.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3765": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default"
+		},
+		"3768": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.id"
+		},
+		"3769": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.name"
+		},
+		"3770": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.price_type"
+		},
+		"3771": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.service_zone_id"
+		},
+		"3772": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.shipping_profile_id"
+		},
+		"3773": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"3774": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.shipping_option_type_id"
+		},
+		"3775": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.data"
+		},
+		"3776": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3777": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.service_zone"
+		},
+		"3778": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.shipping_profile"
+		},
+		"3779": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.provider"
+		},
+		"3780": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.type"
+		},
+		"3781": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.rules"
+		},
+		"3782": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.fulfillments"
+		},
+		"3783": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3784": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3785": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3786": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3787": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3788": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3789": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3790": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3791": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default"
+		},
+		"3794": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.id"
+		},
+		"3795": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.attribute"
+		},
+		"3796": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.operator"
+		},
+		"3797": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.value"
+		},
+		"3798": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.shipping_option_id"
+		},
+		"3799": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.shipping_option"
+		},
+		"3800": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3801": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3802": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3803": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3804": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3805": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3806": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3807": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-rule.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3808": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default"
+		},
+		"3811": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.id"
+		},
+		"3812": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.label"
+		},
+		"3813": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.description"
+		},
+		"3814": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.code"
+		},
+		"3815": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.shipping_option"
+		},
+		"3816": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3817": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3818": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3819": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3820": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3821": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3822": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3823": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-option-type.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"3824": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default"
+		},
+		"3827": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.id"
+		},
+		"3828": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.name"
+		},
+		"3829": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.type"
+		},
+		"3830": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.shipping_options"
+		},
+		"3831": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"3832": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"3833": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"3834": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"3835": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3836": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"3837": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3838": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"3839": {
+			"sourceFileName": "../../../packages/fulfillment/src/models/shipping-profile.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}

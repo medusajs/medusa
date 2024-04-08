@@ -762,7 +762,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "references/fulfillment/classes/fulfillment.AbstractFulfillmentService",
+          id: "references/fulfillment_service/classes/fulfillment_service.AbstractFulfillmentService",
           label: "Backend: Create Fulfillment Provider",
         },
         {

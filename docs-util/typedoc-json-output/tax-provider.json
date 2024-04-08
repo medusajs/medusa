@@ -1,12 +1,12 @@
 {
-	"id": 28546,
+	"id": 30316,
 	"name": "tax-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 28547,
+			"id": 30317,
 			"name": "ShippingTaxCalculationLine",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -22,14 +22,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 28548,
+					"id": 30318,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 28549,
+							"id": 30319,
 							"name": "shipping_line",
 							"variant": "declaration",
 							"kind": 1024,
@@ -53,7 +53,7 @@
 							}
 						},
 						{
-							"id": 28550,
+							"id": 30320,
 							"name": "rates",
 							"variant": "declaration",
 							"kind": 1024,
@@ -84,8 +84,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								28549,
-								28550
+								30319,
+								30320
 							]
 						}
 					]
@@ -93,7 +93,7 @@
 			}
 		},
 		{
-			"id": 28551,
+			"id": 30321,
 			"name": "ItemTaxCalculationLine",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -109,14 +109,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 28552,
+					"id": 30322,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 28553,
+							"id": 30323,
 							"name": "line_item",
 							"variant": "declaration",
 							"kind": 1024,
@@ -140,7 +140,7 @@
 							}
 						},
 						{
-							"id": 28554,
+							"id": 30324,
 							"name": "rates",
 							"variant": "declaration",
 							"kind": 1024,
@@ -171,8 +171,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								28553,
-								28554
+								30323,
+								30324
 							]
 						}
 					]
@@ -180,7 +180,7 @@
 			}
 		},
 		{
-			"id": 28555,
+			"id": 30325,
 			"name": "ITaxProvider",
 			"variant": "declaration",
 			"kind": 256,
@@ -275,14 +275,14 @@
 			},
 			"children": [
 				{
-					"id": 28558,
+					"id": 30328,
 					"name": "getTaxLines",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 28559,
+							"id": 30329,
 							"name": "getTaxLines",
 							"variant": "signature",
 							"kind": 4096,
@@ -353,7 +353,7 @@
 							},
 							"parameters": [
 								{
-									"id": 28560,
+									"id": 30330,
 									"name": "itemLines",
 									"variant": "param",
 									"kind": 32768,
@@ -370,14 +370,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 28551,
+											"target": 30321,
 											"name": "ItemTaxCalculationLine",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 28561,
+									"id": 30331,
 									"name": "shippingLines",
 									"variant": "param",
 									"kind": 32768,
@@ -394,14 +394,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 28547,
+											"target": 30317,
 											"name": "ShippingTaxCalculationLine",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 28562,
+									"id": 30332,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -470,7 +470,7 @@
 				{
 					"title": "Methods",
 					"children": [
-						28558
+						30328
 					]
 				}
 			]
@@ -480,76 +480,76 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				28555
+				30325
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				28547,
-				28551
+				30317,
+				30321
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"28546": {
+		"30316": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": ""
 		},
-		"28547": {
+		"30317": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "ShippingTaxCalculationLine"
 		},
-		"28548": {
+		"30318": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type"
 		},
-		"28549": {
+		"30319": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type.shipping_line"
 		},
-		"28550": {
+		"30320": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type.rates"
 		},
-		"28551": {
+		"30321": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "ItemTaxCalculationLine"
 		},
-		"28552": {
+		"30322": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type"
 		},
-		"28553": {
+		"30323": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type.line_item"
 		},
-		"28554": {
+		"30324": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "__type.rates"
 		},
-		"28555": {
+		"30325": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider"
 		},
-		"28558": {
+		"30328": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider.getTaxLines"
 		},
-		"28559": {
+		"30329": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider.getTaxLines"
 		},
-		"28560": {
+		"30330": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "itemLines"
 		},
-		"28561": {
+		"30331": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "shippingLines"
 		},
-		"28562": {
+		"30332": {
 			"sourceFileName": "../../../packages/types/src/tax/provider.ts",
 			"qualifiedName": "context"
 		}

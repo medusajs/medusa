@@ -28,20 +28,20 @@ Service zones can be more restrictive, such as restricting to certain cities or 
 
 ## Shipping Option Rules
 
-Shipping options can be restricted by custom rules, such as the item’s weight or the customer’s group.
+You can restrict shipping options by custom rules, such as the item’s weight or the customer’s group.
 
-These rules are represented by the `ShippingOptionRule` data model. The following attributes define the custom rule:
+These rules are represented by the `ShippingOptionRule` data model. Its attributes define the custom rule:
 
 - `attribute`: The name of an attribute or table that the rule applies to. For example, `customer_group`.
 - `value`: One or more values.
 - `operator`: The operator used in the condition. For example:
     - To allow multiple values, use the operator `in`, which validates that the provided values are in the rule’s values.
     - To create a negation condition that considers `value` against the rule, use `nin`, which validates that the provided values aren’t in the rule’s values.
-    - Check out more operators in this reference.
+    - Check out more operators in [this reference](../../../references/fulfillment/types/fulfillment.RuleOperatorType.mdx).
 
 ![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331340/Medusa%20Resources/shipping-option-rule_oosopf.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331340/Medusa%20Resources/shipping-option-rule_oosopf.jpg)
 
-A shipping option can have multiple rules. For example, a shipping option can be applied only if the customer belongs to the VIP group and the total weight is less than 2000g
+A shipping option can have multiple rules. For example, a shipping option is available if the customer belongs to the VIP group and the total weight is less than 2000g.
 
 ![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331462/Medusa%20Resources/shipping-option-rule-2_ylaqdb.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331462/Medusa%20Resources/shipping-option-rule-2_ylaqdb.jpg)
 
@@ -49,7 +49,7 @@ A shipping option can have multiple rules. For example, a shipping option can be
 
 ## Shipping Profile and Types
 
-A shipping option belongs to a type. For example, a shipping option’s type may be `express`, while another `standard`. The type is represented by the `ShippingOptionType`.
+A shipping option belongs to a type. For example, a shipping option’s type may be `express`, while another `standard`. The type is represented by the `ShippingOptionType` data model.
 
 A shipping option also belongs to a shipping profile, as each shipping profile defines the type of items to be shipped in a similar manner.
 
@@ -57,6 +57,6 @@ A shipping option also belongs to a shipping profile, as each shipping profile d
 
 ## data Attribute
 
-When fulfilling an order, you may use a third-party fulfillment provider that requires additional custom data to be passed along from the checkout or order-creation process.
+When fulfilling an item, you might use a third-party fulfillment provider that requires additional custom data to be passed along from the checkout or order-creation process.
 
 The `ShippingOption` data model has a `data` attribute. It's an object that stores custom data relevant later when creating and processing a fulfillment.

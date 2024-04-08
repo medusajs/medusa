@@ -1,6 +1,6 @@
 import { FormattingOptionsType } from "types"
 import fileOptions from "./file.js"
-import fulfillmentOptions from "./fulfillment.js"
+import fulfillmentServiceOptions from "./fulfillment-service.js"
 import jsClientOptions from "./js-client.js"
 import medusaConfigOptions from "./medusa-config.js"
 import medusaReactOptions from "./medusa-react.js"
@@ -20,7 +20,7 @@ import entitiesOptions from "./entities.js"
 const mergerCustomOptions: FormattingOptionsType = {
   ...entitiesOptions,
   ...fileOptions,
-  ...fulfillmentOptions,
+  ...fulfillmentServiceOptions,
   ...jsClientOptions,
   ...medusaConfigOptions,
   ...medusaReactOptions,
