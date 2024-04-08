@@ -25,3 +25,12 @@ export interface AdminFulfillmentResponse {
   updated_at: Date
   deleted_at: Date | null
 }
+
+/**
+ * @experimental
+ */
+export interface AdminFulfillmentSetsDeleteResponse {
+  id: string
+  object: "fulfillment-set"
+  deleted: boolean
+}
