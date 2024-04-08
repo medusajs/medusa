@@ -17,6 +17,7 @@ type EditProductOptionsFormProps = {
 
 const CreateProductOptionSchema = z.object({
   title: z.string().min(1),
+  values: z.array(z.string()).optional(),
 })
 
 export const CreateProductOptionForm = ({
@@ -28,6 +29,7 @@ export const CreateProductOptionForm = ({
   const form = useForm<z.infer<typeof CreateProductOptionSchema>>({
     defaultValues: {
       title: "",
+      values: [],
     },
     resolver: zodResolver(CreateProductOptionSchema),
   })
@@ -55,9 +57,35 @@ export const CreateProductOptionForm = ({
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>{t("fields.title")}</Form.Label>
+                  <Form.Label>
+                    {t("products.fields.options.optionTitle")}
+                  </Form.Label>
                   <Form.Control>
                     <Input {...field} />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="values"
+            render={({ field: { value, onChange, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>
+                    {t("products.fields.options.variations")}
+                  </Form.Label>
+                  <Form.Control>
+                    <Input
+                      {...field}
+                      value={(value ?? []).join(",")}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        onChange(val.split(",").map((v) => v.trim()))
+                      }}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

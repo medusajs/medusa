@@ -385,7 +385,7 @@ export default class ProductModuleService<
           new Set(variantsWithProductId.map((v) => v.product_id!))
         ),
       },
-      { take: null },
+      { take: null, relations: ["values"] },
       sharedContext
     )
 
@@ -1204,7 +1204,7 @@ export default class ProductModuleService<
           if (product.variants?.length) {
             allOptions = await this.productOptionService_.list(
               { product_id: upsertedProduct.id },
-              { take: null },
+              { take: null, relations: ["values"] },
               sharedContext
             )
           }

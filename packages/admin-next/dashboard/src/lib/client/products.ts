@@ -36,6 +36,10 @@ async function listVariants(productId: string, query?: Record<string, any>) {
   return getRequest<any>(`/admin/products/${productId}/variants`, query)
 }
 
+async function createVariant(productId: string, payload: any) {
+  return postRequest<any>(`/admin/products/${productId}/variants`, payload)
+}
+
 async function updateVariant(
   productId: string,
   variantId: string,
@@ -76,6 +80,7 @@ export const products = {
   delete: deleteProduct,
   retrieveVariant,
   listVariants,
+  createVariant,
   updateVariant,
   deleteVariant,
   createOption,

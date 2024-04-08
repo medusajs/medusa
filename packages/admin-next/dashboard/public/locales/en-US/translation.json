@@ -260,6 +260,9 @@
       "edit": {
         "header": "Edit Variant"
       },
+      "create": {
+        "header": "Create Variant"
+      },
       "inventory": {
         "header": "Stock & Inventory",
         "manageInventoryLabel": "Manage inventory",

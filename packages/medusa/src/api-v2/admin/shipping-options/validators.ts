@@ -43,7 +43,7 @@ export type AdminShippingOptionRulesBatchRemoveType = z.infer<
  * SHIPPING OPTIONS
  */
 
-export const AdminCreateShippingOptionType = z
+export const AdminCreateShippingOptionTypeObject = z
   .object({
     label: z.string(),
     description: z.string(),
@@ -74,7 +74,7 @@ export const AdminCreateShippingOption = z
     data: z.record(z.unknown()).optional(),
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum),
     provider_id: z.string(),
-    type: AdminCreateShippingOptionType,
+    type: AdminCreateShippingOptionTypeObject,
     prices: AdminCreateShippingOptionPriceWithCurrency.or(
       AdminCreateShippingOptionPriceWithRegion
     ).array(),
@@ -84,4 +84,19 @@ export const AdminCreateShippingOption = z
 
 export type AdminCreateShippingOptionType = z.infer<
   typeof AdminCreateShippingOption
+>
+
+export const AdminUpdateShippingOption = z
+  .object({
+    id: z.string(),
+    name: z.string().optional(),
+    data: z.record(z.unknown()).optional(),
+    price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
+    provider_id: z.string().optional(),
+    type: AdminCreateShippingOptionTypeObject.optional(),
+  })
+  .strict()
+
+export type AdminUpdateShippingOptionType = z.infer<
+  typeof AdminUpdateShippingOption
 >

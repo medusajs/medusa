@@ -1,9 +1,13 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
-
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
-import { AdminApiKeyResponse } from "@medusajs/types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
+import { AdminApiKeyResponse, SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
@@ -106,6 +110,16 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-attributes"),
                   },
                   {
+                    path: "organization",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-organization"),
+                  },
+                  {
+                    path: "media",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-media"),
+                  },
+                  {
                     path: "options/create",
                     lazy: () =>
                       import("../../v2-routes/products/product-create-option"),
@@ -116,9 +130,9 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-edit-option"),
                   },
                   {
-                    path: "media",
+                    path: "variants/create",
                     lazy: () =>
-                      import("../../v2-routes/products/product-media"),
+                      import("../../v2-routes/products/product-create-variant"),
                   },
                   {
                     path: "variants/:variant_id/edit",
@@ -265,6 +279,39 @@ export const v2Routes: RouteObject[] = [
                     path: "products/edit",
                     lazy: () =>
                       import("../../v2-routes/pricing/pricing-products-prices"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customers",
+            handle: {
+              crumb: () => "Customers",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
                   },
                 ],
               },

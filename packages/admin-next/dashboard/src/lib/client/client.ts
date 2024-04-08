@@ -27,6 +27,7 @@ export const client = {
   campaigns: campaigns,
   categories: categories,
   customers: customers,
+  customerGroups: customerGroups,
   currencies: currencies,
   collections: collections,
   promotions: promotions,
