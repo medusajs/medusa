@@ -2,10 +2,18 @@ import { Button, Container, Text } from "@medusajs/ui"
 import {
   FulfillmentSetDTO,
   ServiceZoneDTO,
+  ShippingOptionDTO,
   StockLocationDTO,
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { Buildings, ChevronDown, Map, Trash } from "@medusajs/icons"
+import {
+  Buildings,
+  ChevronDown,
+  CurrencyDollar,
+  Map,
+  PencilSquare,
+  Trash,
+} from "@medusajs/icons"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
@@ -15,6 +23,46 @@ import {
   useDeleteFulfillmentSet,
 } from "../../../../../hooks/api/stock-locations"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { formatProvider } from "../../../../../lib/format-provider"
+
+type ShippingOptionProps = {
+  option: ShippingOptionDTO
+}
+
+function ShippingOption({ option }: ShippingOptionProps) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="shadow-elevation-card-rest flex items-center justify-between rounded-md px-4 py-3">
+      <div className="flex-1">
+        <span className="txt-small font-medium">
+          {option.name} ({formatProvider(option.provider_id)})
+        </span>
+      </div>
+      <ActionMenu
+        groups={[
+          {
+            actions: [
+              {
+                label: t("shipping.serviceZone.editOption"),
+                icon: <PencilSquare />,
+              },
+              {
+                label: t("shipping.serviceZone.editPrices"),
+                icon: <CurrencyDollar />,
+              },
+              {
+                label: t("actions.delete"),
+                icon: <Trash />,
+                onClick: () => {},
+              },
+            ],
+          },
+        ]}
+      />
+    </div>
+  )
+}
 
 type ServiceZoneOptionsProps = {
   zone: ServiceZoneDTO
@@ -58,17 +106,21 @@ function ServiceZoneOptions({
             </Button>
           </div>
         )}
+
+        {!!shippingOptions.length &&
+          shippingOptions.map((o) => <ShippingOption key={o.id} option={o} />)}
       </div>
-      <div className="py-4">
-        <Text
-          size="small"
-          weight="plus"
-          className="text-ui-fg-subtle mb-4"
-          as="div"
-        >
-          {t("shipping.serviceZone.returnOptions")}
-        </Text>
-      </div>
+      {/*TODO implement return options*/}
+      {/*<div className="py-4">*/}
+      {/*  <Text*/}
+      {/*    size="small"*/}
+      {/*    weight="plus"*/}
+      {/*    className="text-ui-fg-subtle mb-4"*/}
+      {/*    as="div"*/}
+      {/*  >*/}
+      {/*    {t("shipping.serviceZone.returnOptions")}*/}
+      {/*  </Text>*/}
+      {/*</div>*/}
     </>
   )
 }
@@ -101,7 +153,12 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
         {/*INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
           <Text weight="plus">{zone.name}</Text>
-          <Text className="text-ui-fg-subtle txt-small">todo options</Text>
+          <Text className="text-ui-fg-subtle txt-small">
+            {zone.shipping_options.length}{" "}
+            {t("shipping.serviceZone.optionsLength", {
+              count: zone.shipping_options.length,
+            })}
+          </Text>
         </div>
 
         {/*ACTION*/}
@@ -134,11 +191,13 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
         </div>
       </div>
       {open && (
-        <ServiceZoneOptions
-          fulfillmentSetId={fulfillmentSetId}
-          locationId={locationId}
-          zone={zone}
-        />
+        <div>
+          <ServiceZoneOptions
+            fulfillmentSetId={fulfillmentSetId}
+            locationId={locationId}
+            zone={zone}
+          />
+        </div>
       )}
     </>
   )
