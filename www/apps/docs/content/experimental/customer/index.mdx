@@ -70,12 +70,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
-    response.json({
+    res.json({
       customers: await customerModuleService.list(),
     })
   }

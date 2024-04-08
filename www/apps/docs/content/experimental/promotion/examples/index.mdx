@@ -17,7 +17,7 @@ In this document, you’ll find common examples of how you can use the Promotion
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
@@ -32,7 +32,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       },
     })
 
-    response.json({ promotion })
+    res.json({ promotion })
   }
   ```
 
@@ -82,7 +82,7 @@ In this document, you’ll find common examples of how you can use the Promotion
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
@@ -101,7 +101,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       }
     )
 
-    response.json({ campaign })
+    res.json({ campaign })
   }
   ```
 
@@ -155,7 +155,7 @@ In this document, you’ll find common examples of how you can use the Promotion
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
@@ -177,7 +177,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       ],
     })
 
-    response.json({ promotion })
+    res.json({ promotion })
   }
   ```
 
@@ -233,12 +233,12 @@ In this document, you’ll find common examples of how you can use the Promotion
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
-    response.json({
+    res.json({
       promotions: await promotionModuleService.list(),
     })
   }

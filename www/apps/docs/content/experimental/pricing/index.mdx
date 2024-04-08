@@ -135,12 +135,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    response.json({
+    res.json({
       price_sets: await pricingModuleService.list(),
     })
   }

@@ -103,12 +103,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
-    response.json({
+    res.json({
       api_keys: await apiKeyModuleService.list(),
     })
   }

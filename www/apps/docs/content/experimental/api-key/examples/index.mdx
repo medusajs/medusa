@@ -17,7 +17,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
@@ -28,7 +28,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       created_by: "user_123",
     })
 
-    response.json({
+    res.json({
       api_key: apiKey,
     })
   }
@@ -76,12 +76,12 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
-    response.json({
+    res.json({
       api_keys: await apiKeyModuleService.list(),
     })
   }
@@ -123,7 +123,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
@@ -132,7 +132,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       request.params.id
     )
 
-    response.json({
+    res.json({
       api_key: revokedKey,
     })
   }
@@ -185,7 +185,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
@@ -193,7 +193,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const authenticatedToken =
       await apiKeyModuleService.authenticate(request.params.id)
 
-    response.json({
+    res.json({
       is_authenticated: !!authenticatedToken,
     })
   }
@@ -247,7 +247,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
@@ -262,7 +262,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       created_by: revokedKey.created_by,
     })
 
-    response.json({
+    res.json({
       api_key: newKey,
     })
   }

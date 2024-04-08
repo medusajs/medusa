@@ -17,7 +17,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
@@ -26,7 +26,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       name: request.body.name,
     })
 
-    response.json({
+    res.json({
       sales_channel: salesChannel,
     })
   }
@@ -72,12 +72,12 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
-    response.json({
+    res.json({
       sales_channels: salesChannelModuleService.list(),
     })
   }
@@ -120,7 +120,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
@@ -129,7 +129,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       request.params.id
     )
 
-    response.json({
+    res.json({
       sales_channel: salesChannel,
     })
   }
@@ -184,7 +184,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
@@ -194,7 +194,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       description: request.body.description,
     })
 
-    response.json({
+    res.json({
       sales_channel: salesChannel,
     })
   }
@@ -250,14 +250,14 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   export async function DELETE(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
     await salesChannelModuleService.delete(request.params.id)
 
-    response.status(200)
+    res.status(200)
   }
   ```
 

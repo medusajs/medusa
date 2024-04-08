@@ -90,12 +90,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    response.json({ products: await productModuleService.list() })
+    res.json({ products: await productModuleService.list() })
   }
   ```
 

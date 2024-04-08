@@ -17,7 +17,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
@@ -27,7 +27,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       supported_currency_codes: ["usd"],
     })
 
-    response.json({
+    res.json({
       store,
     })
   }
@@ -51,7 +51,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       supported_currency_codes: ["usd"],
     })
 
-    response.json({
+    res.json({
       store,
     })
   }
@@ -74,12 +74,12 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    response.json({
+    res.json({
       stores: await storeModuleService.list(),
     })
   }
@@ -123,7 +123,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
@@ -132,7 +132,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       "store_123"
     )
 
-    response.json({
+    res.json({
       store,
     })
   }
@@ -179,7 +179,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
@@ -188,7 +188,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       name: "Change Store",
     })
 
-    response.json({
+    res.json({
       store,
     })
   }
@@ -235,14 +235,14 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
   export async function DELETE(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
     await storeModuleService.delete(request.params.id)
 
-    response.status(200)
+    res.status(200)
   }
   ```
 

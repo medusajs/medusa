@@ -73,12 +73,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    response.json({
+    res.json({
       stores: await storeModuleService.list(),
     })
   }

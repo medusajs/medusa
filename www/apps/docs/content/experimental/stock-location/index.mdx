@@ -80,12 +80,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    response.json({
+    res.json({
       stock_locations: await stockLocationModuleService.list({}),
     })
   }

@@ -105,12 +105,12 @@ For example:
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
-    response.json({
+    res.json({
       promotions: await promotionModuleService.list(),
     })
   }

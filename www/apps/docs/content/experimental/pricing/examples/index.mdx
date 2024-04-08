@@ -17,7 +17,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -39,7 +39,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
       },
     ])
 
-    response.json({ price_set: priceSet })
+    res.json({ price_set: priceSet })
   }
   ```
 
@@ -95,14 +95,14 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
     const priceSets = await pricingModuleService.list()
 
-    response.json({ price_sets: priceSets })
+    res.json({ price_sets: priceSets })
   }
   ```
 
@@ -142,7 +142,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -151,7 +151,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
       request.params.id
     )
 
-    response.json({ price_set: priceSet })
+    res.json({ price_set: priceSet })
   }
   ```
 
@@ -202,7 +202,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -211,7 +211,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
       request.params.id
     )
 
-    response.json({ price_set: priceSet })
+    res.json({ price_set: priceSet })
   }
   ```
 
@@ -262,7 +262,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -280,7 +280,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
       ],
     })
 
-    response.json({ price_set: priceSet })
+    res.json({ price_set: priceSet })
   }
   ```
 
@@ -335,7 +335,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -361,7 +361,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
         },
       ])
 
-    response.json({ price_lists: priceLists })
+    res.json({ price_lists: priceLists })
   }
   ```
 
@@ -421,7 +421,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
@@ -437,7 +437,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
       }
     )
 
-    response.json({ price })
+    res.json({ price })
   }
   ```
 

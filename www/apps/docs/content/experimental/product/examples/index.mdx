@@ -17,7 +17,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
@@ -43,7 +43,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
       },
     ])
 
-    response.json({ products })
+    res.json({ products })
   }
   ```
 
@@ -102,14 +102,14 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
     const data = await productModuleService.list()
 
-    response.json({ products: data })
+    res.json({ products: data })
   }
   ```
 
@@ -147,7 +147,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
@@ -156,7 +156,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
       id: request.params.id,
     })
 
-    response.json({ product: data[0] })
+    res.json({ product: data[0] })
   }
   ```
 
@@ -202,14 +202,14 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
     const data = await productModuleService.list()
 
-    response.json({ products: data })
+    res.json({ products: data })
   }
   ```
 
@@ -247,7 +247,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
@@ -256,7 +256,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
       handle: request.params.handle,
     })
 
-    response.json({ product: data[0] })
+    res.json({ product: data[0] })
   }
   ```
 
@@ -302,14 +302,14 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
     const data = await productModuleService.listCategories()
 
-    response.json({ categories: data })
+    res.json({ categories: data })
   }
   ```
 
@@ -349,7 +349,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
@@ -358,7 +358,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
       handle: request.params.handle,
     })
 
-    response.json({ category: data[0] })
+    res.json({ category: data[0] })
   }
   ```
 

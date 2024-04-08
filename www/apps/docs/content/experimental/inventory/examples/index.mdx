@@ -17,7 +17,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -29,7 +29,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         requires_shipping: request.body.requires_shipping,
       })
 
-    response.json({ inventory_item: inventoryItem })
+    res.json({ inventory_item: inventoryItem })
   }
   ```
 
@@ -76,7 +76,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -84,7 +84,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const inventoryItems =
       await inventoryModuleService.list({})
 
-    response.json({ inventory_items: inventoryItems })
+    res.json({ inventory_items: inventoryItems })
   }
   ```
 
@@ -126,7 +126,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -136,7 +136,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         request.params.id
       )
 
-    response.json({ inventory_item: inventoryItem })
+    res.json({ inventory_item: inventoryItem })
   }
   ```
 
@@ -189,7 +189,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -201,7 +201,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         stocked_quantity: request.body.quantity,
       })
 
-    response.json({ inventory_level: inventoryLevel })
+    res.json({ inventory_level: inventoryLevel })
   }
   ```
 
@@ -248,7 +248,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -260,7 +260,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         request.body.new_quantity
       )
 
-    response.json({ inventory_level: inventoryLevel })
+    res.json({ inventory_level: inventoryLevel })
   }
   ```
 
@@ -307,12 +307,12 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
-    response.json({
+    res.json({
       is_available: await inventoryModuleService.confirmInventory(
         request.body.inventory_item_id,
         request.body.location_id,
@@ -364,7 +364,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -376,7 +376,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         quantity: request.body.reserved_quantity,
       })
 
-    response.json({ reservation_item: reservationItem })
+    res.json({ reservation_item: reservationItem })
   }
   ```
 
@@ -425,7 +425,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -446,7 +446,7 @@ In this document, you’ll find common examples of how you can use the Inventory
         [request.params.location_id]
       )
 
-    response.json({
+    res.json({
       reserved_quantity: reservedQuantity,
       stocked_quantity: stockedQuantity,
       available_quantity: availableQuantity,
@@ -519,7 +519,7 @@ In this document, you’ll find common examples of how you can use the Inventory
 
   export async function DELETE(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const inventoryModuleService: IInventoryService =
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
@@ -528,7 +528,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.params.reservation_id,
     ])
 
-    response.status(200)
+    res.status(200)
   }
   ```
 

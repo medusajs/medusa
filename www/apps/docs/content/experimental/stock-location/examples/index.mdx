@@ -17,7 +17,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
@@ -28,7 +28,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
       }
     )
 
-    response.json({
+    res.json({
       stock_location: stockLocation,
     })
   }
@@ -76,12 +76,12 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   export async function GET(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    response.json({
+    res.json({
       stock_locations: await stockLocationModuleService.list({}),
     })
   }
@@ -124,7 +124,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
@@ -141,7 +141,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
       }
     )
 
-    response.json({
+    res.json({
       stock_location: stockLocation,
     })
   }
@@ -206,14 +206,14 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
   export async function DELETE(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ): Promise<void> {
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
     await stockLocationModuleService.delete(request.params.id)
 
-    response.status(200)
+    res.status(200)
   }
   ```
 

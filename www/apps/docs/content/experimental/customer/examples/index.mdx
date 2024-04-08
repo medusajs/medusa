@@ -17,7 +17,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
@@ -28,7 +28,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
       email: "peter.hayes@example.com",
     })
 
-    response.json({
+    res.json({
       customer,
     })
   }
@@ -76,7 +76,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
@@ -86,7 +86,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
         name: "VIP",
       })
 
-    response.json({
+    res.json({
       customer_group: customerGroup,
     })
   }
@@ -133,7 +133,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
@@ -143,7 +143,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
       customer_group_id: "cusgroup_123",
     })
 
-    response.status(200)
+    res.status(200)
   }
   ```
 
@@ -186,7 +186,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
 
   export async function POST(
     request: MedusaRequest,
-    response: MedusaResponse
+    res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
@@ -196,7 +196,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
       customer_group_id: "cusgroup_123",
     })
 
-    response.status(200)
+    res.status(200)
   }
   ```
 
