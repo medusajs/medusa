@@ -12,6 +12,7 @@ import {
   CurrencyDollar,
   Map,
   PencilSquare,
+  Plus,
   Trash,
 } from "@medusajs/icons"
 import { useNavigate } from "react-router-dom"
@@ -46,15 +47,18 @@ function ShippingOption({ option }: ShippingOptionProps) {
               {
                 label: t("shipping.serviceZone.editOption"),
                 icon: <PencilSquare />,
+                disabled: true,
               },
               {
                 label: t("shipping.serviceZone.editPrices"),
                 icon: <CurrencyDollar />,
+                disabled: true,
               },
               {
                 label: t("actions.delete"),
                 icon: <Trash />,
                 onClick: () => {},
+                disabled: true,
               },
             ],
           },
@@ -167,6 +171,11 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             groups={[
               {
                 actions: [
+                  {
+                    label: t("shipping.serviceZone.addShippingOptions"),
+                    icon: <Plus />,
+                    to: `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
+                  },
                   {
                     label: t("actions.delete"),
                     icon: <Trash />,

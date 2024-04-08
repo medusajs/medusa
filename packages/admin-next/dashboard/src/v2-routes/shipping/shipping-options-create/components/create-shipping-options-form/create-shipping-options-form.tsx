@@ -25,7 +25,6 @@ import { Form } from "../../../../../components/common/form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-import { currencies } from "../../../../../lib/currencies"
 
 enum Tab {
   DETAILS = "details",
