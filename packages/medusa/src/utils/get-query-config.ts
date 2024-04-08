@@ -181,6 +181,8 @@ export function prepareListQuery<
         `Order field ${orderField} is not valid`
       )
     }
+  } else {
+    orderBy["id"] = "DESC"
   }
 
   return {
