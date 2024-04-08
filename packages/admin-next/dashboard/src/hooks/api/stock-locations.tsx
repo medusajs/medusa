@@ -16,6 +16,8 @@ import {
   UpdateStockLocationReq,
 } from "../../types/api-payloads"
 import {
+  FulfillmentSetDeleteRes,
+  ServiceZoneDeleteRes,
   StockLocationDeleteRes,
   StockLocationListRes,
   StockLocationRes,
@@ -162,13 +164,11 @@ export const useCreateServiceZone = (
 }
 
 export const useDeleteFulfillmentSet = (
-  locationId: string,
   setId: string,
-  options?: UseMutationOptions<StockLocationRes, Error, void>
+  options?: UseMutationOptions<FulfillmentSetDeleteRes, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () =>
-      client.stockLocations.deleteFulfillmentSet(locationId, setId),
+    mutationFn: () => client.stockLocations.deleteFulfillmentSet(setId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -183,7 +183,7 @@ export const useDeleteFulfillmentSet = (
 export const useDeleteServiceZone = (
   setId: string,
   zoneId: string,
-  options?: UseMutationOptions<StockLocationRes, Error, void>
+  options?: UseMutationOptions<ServiceZoneDeleteRes, Error, void>
 ) => {
   return useMutation({
     mutationFn: () => client.stockLocations.deleteServiceZone(setId, zoneId),

@@ -56,9 +56,9 @@ async function deleteStockLocation(id: string) {
   return deleteRequest<StockLocationDeleteRes>(`/admin/stock-locations/${id}`)
 }
 
-async function deleteFulfillmentSet(locationId: string, setId: string) {
+async function deleteFulfillmentSet(setId: string) {
   return deleteRequest<FulfillmentSetDeleteRes>(
-    `/admin/stock-locations/${locationId}/fulfillment-sets/${setId}`
+    `/admin/fulfillment-sets/${setId}`
   )
 }
 

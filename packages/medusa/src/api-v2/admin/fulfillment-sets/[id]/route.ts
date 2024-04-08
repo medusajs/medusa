@@ -4,7 +4,7 @@ import {
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { MedusaError } from "@medusajs/utils"
-import { deleteServiceZonesWorkflow } from "@medusajs/core-flows"
+import { deleteFulfillmentSetsWorkflow } from "@medusajs/core-flows"
 
 import {
   AuthenticatedMedusaRequest,
@@ -30,7 +30,7 @@ export const DELETE = async (
     )
   }
 
-  const { errors } = await deleteServiceZonesWorkflow(req.scope).run({
+  const { errors } = await deleteFulfillmentSetsWorkflow(req.scope).run({
     input: { ids: [id] },
     throwOnError: false,
   })
