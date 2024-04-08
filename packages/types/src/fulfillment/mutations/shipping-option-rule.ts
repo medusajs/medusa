@@ -1,15 +1,4 @@
-/**
- * The accepted values for the shipping rule option's operator.
- */
-export type ShippingOptionRuleOperatorType =
-  | "in"
-  | "eq"
-  | "ne"
-  | "gt"
-  | "gte"
-  | "lt"
-  | "lte"
-  | "nin"
+import { RuleOperatorType } from "../../common"
 
 /**
  * The shipping option rule to be created.
@@ -19,12 +8,10 @@ export interface CreateShippingOptionRuleDTO {
    * The attribute of the shipping option rule.
    */
   attribute: string
-
   /**
    * The operator of the shipping option rule.
    */
-  operator: ShippingOptionRuleOperatorType
-
+  operator: RuleOperatorType
   /**
    * The value(s) of the shipping option rule.
    */

@@ -21,9 +21,9 @@ export const useSalesChannelTableQuery = ({
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,
-    created_at: created_at ? JSON.parse(created_at) : undefined,
-    updated_at: updated_at ? JSON.parse(updated_at) : undefined,
-    q,
+    // created_at: created_at ? JSON.parse(created_at) : undefined,
+    // updated_at: updated_at ? JSON.parse(updated_at) : undefined,
+    // q, // Re-enable when params are fixed
   }
 
   return {

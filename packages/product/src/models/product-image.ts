@@ -6,27 +6,33 @@ import {
   Index,
   ManyToMany,
   OnInit,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import Product from "./product"
 
-type OptionalRelations = "products"
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+const imageUrlIndexName = "IDX_product_image_url"
+const imageUrlIndexStatement = createPsqlIndexStatementHelper({
+  name: imageUrlIndexName,
+  tableName: "image",
+  columns: ["url"],
+  unique: false,
+  where: "deleted_at IS NULL",
+})
 
+imageUrlIndexStatement.MikroORMIndex()
 @Entity({ tableName: "image" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductImage {
-  [OptionalProps]?: OptionalRelations | OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Index({ name: "IDX_product_image_url" })
   @Property({ columnType: "text" })
   url: string
 

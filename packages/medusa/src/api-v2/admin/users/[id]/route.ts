@@ -1,12 +1,12 @@
+import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
-import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
 
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AdminUpdateUserRequest } from "../validators"
-import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
 
 // Get user
 export const GET = async (

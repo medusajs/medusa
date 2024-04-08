@@ -1,8 +1,8 @@
-import { pick } from "lodash"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { BaseEntity } from "../interfaces"
 import { getSetDifference, stringToSelectRelationObject } from "@medusajs/utils"
+import { pick } from "lodash"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { BaseEntity } from "../interfaces"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -24,6 +24,9 @@ export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+  const isMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
+
+  // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
     allowed = [],
@@ -126,11 +129,11 @@ export function prepareListQuery<
     )
   }
 
+  // TODO: maintain backward compatibility, remove in the future
   const { select, relations } = stringToSelectRelationObject(
     Array.from(allFields)
   )
 
-  // TODO: maintain backward compatibility, remove in the future
   let allRelations = new Set([
     ...relations,
     ...defaultRelations,
@@ -141,21 +144,22 @@ export function prepareListQuery<
     allRelations = new Set(expand.split(",").filter(Boolean))
   }
 
-  const allAllowedRelations = new Set([
-    ...Array.from(allAllowedFields),
-    ...allowedRelations,
-  ])
-  const notAllowedRelations = !allowedRelations.length
-    ? new Set()
-    : getSetDifference(allRelations, allAllowedRelations)
+  if (allowedRelations.length && expand) {
+    const allAllowedRelations = new Set([...allowedRelations])
 
-  if (allRelations.size && notAllowedRelations.size) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Requested fields [${Array.from(notAllowedRelations).join(
-        ", "
-      )}] are not valid`
+    const notAllowedRelations = getSetDifference(
+      allRelations,
+      allAllowedRelations
     )
+
+    if (allRelations.size && notAllowedRelations.size) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [${Array.from(notAllowedRelations).join(
+          ", "
+        )}] are not valid`
+      )
+    }
   }
   // End of expand compatibility
 
@@ -180,7 +184,9 @@ export function prepareListQuery<
       )
     }
   } else {
-    orderBy["created_at"] = "DESC"
+    if (!isMedusaV2) {
+      orderBy["created_at"] = "DESC"
+    }
   }
 
   return {

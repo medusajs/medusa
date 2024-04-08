@@ -37,7 +37,7 @@ export interface UpdateServiceZoneDTO {
   /**
    * The ID of the service zone.
    */
-  id: string
+  id?: string
 
   /**
    * The name of the service zone.
@@ -60,3 +60,5 @@ export interface UpdateServiceZoneDTO {
       }
   )[]
 }
+
+export interface UpsertServiceZoneDTO extends UpdateServiceZoneDTO {}

@@ -187,7 +187,7 @@ moduleIntegrationTestRunner({
             const err = await service.createServiceZones(data).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_service_zone_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should fail on creating a service zone and new geo zones that are not valid", async function () {
@@ -284,7 +284,6 @@ moduleIntegrationTestRunner({
             )
 
             const updateData = {
-              id: createdServiceZone.id,
               name: "updated-service-zone-test",
               geo_zones: [
                 {
@@ -296,12 +295,13 @@ moduleIntegrationTestRunner({
             }
 
             const updatedServiceZone = await service.updateServiceZones(
+              createdServiceZone.id,
               updateData
             )
 
             expect(updatedServiceZone).toEqual(
               expect.objectContaining({
-                id: updateData.id,
+                id: createdServiceZone.id,
                 name: updateData.name,
                 geo_zones: expect.arrayContaining([
                   expect.objectContaining({
@@ -314,7 +314,60 @@ moduleIntegrationTestRunner({
             )
           })
 
-          it("should update a collection of service zones", async function () {
+          it("should fail on duplicated service zone name", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+
+            const createData: CreateServiceZoneDTO[] = [
+              {
+                name: "service-zone-test",
+                fulfillment_set_id: fulfillmentSet.id,
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+              {
+                name: "service-zone-test2",
+                fulfillment_set_id: fulfillmentSet.id,
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "us",
+                  },
+                ],
+              },
+            ]
+
+            const createdServiceZones = await service.createServiceZones(
+              createData
+            )
+
+            const updateData: UpdateServiceZoneDTO = {
+              name: "service-zone-test",
+              geo_zones: [
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "us",
+                },
+              ],
+            }
+
+            const err = await service
+              .updateServiceZones(createdServiceZones[1].id, updateData)
+              .catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toContain("exists")
+          })
+        })
+
+        describe("on upsert", () => {
+          it("should upsert a collection of service zones", async function () {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -360,7 +413,7 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const updatedServiceZones = await service.updateServiceZones(
+            const updatedServiceZones = await service.upsertServiceZones(
               updateData
             )
 
@@ -384,58 +437,6 @@ moduleIntegrationTestRunner({
                 })
               )
             }
-          })
-
-          it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
-              name: "test",
-              type: "test-type",
-            })
-
-            const createData: CreateServiceZoneDTO[] = [
-              {
-                name: "service-zone-test",
-                fulfillment_set_id: fulfillmentSet.id,
-                geo_zones: [
-                  {
-                    type: GeoZoneType.COUNTRY,
-                    country_code: "fr",
-                  },
-                ],
-              },
-              {
-                name: "service-zone-test2",
-                fulfillment_set_id: fulfillmentSet.id,
-                geo_zones: [
-                  {
-                    type: GeoZoneType.COUNTRY,
-                    country_code: "us",
-                  },
-                ],
-              },
-            ]
-
-            const createdServiceZones = await service.createServiceZones(
-              createData
-            )
-
-            const updateData: UpdateServiceZoneDTO = {
-              id: createdServiceZones[1].id,
-              name: "service-zone-test",
-              geo_zones: [
-                {
-                  type: GeoZoneType.COUNTRY,
-                  country_code: "us",
-                },
-              ],
-            }
-
-            const err = await service
-              .updateServiceZones(updateData)
-              .catch((e) => e)
-
-            expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_service_zone_name_unique")
           })
         })
       })

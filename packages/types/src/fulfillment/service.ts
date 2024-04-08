@@ -1,5 +1,9 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
+  FilterableFulfillmentProps,
   FilterableFulfillmentSetProps,
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
@@ -17,9 +21,6 @@ import {
   ShippingOptionTypeDTO,
   ShippingProfileDTO,
 } from "./common"
-import { FindConfig } from "../common"
-import { Context } from "../shared-context"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -32,9 +33,12 @@ import {
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
   UpdateShippingOptionRuleDTO,
+  UpdateShippingProfileDTO,
+  UpsertServiceZoneDTO,
+  UpsertShippingOptionDTO,
 } from "./mutations"
-import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
+import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 
 /**
  * The main service interface for the Fulfillment Module.
@@ -531,48 +535,96 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ServiceZoneDTO>
 
   /**
-   * This method updates existing service zones.
-   *
-   * @param {UpdateServiceZoneDTO[]} data - The attributes to update in the service zones.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ServiceZoneDTO[]>} The updated service zones.
-   *
-   * @example
-   * const serviceZones =
-   *   await fulfillmentModuleService.updateServiceZones([
-   *     {
-   *       id: "serzo_123",
-   *       name: "Nordic Shipping Methods",
-   *     },
-   *     {
-   *       id: "serzo_321",
-   *       name: "Pickup Service Area",
-   *     },
-   *   ])
-   */
-  updateServiceZones(
-    data: UpdateServiceZoneDTO[],
-    sharedContext?: Context
-  ): Promise<ServiceZoneDTO[]>
-
-  /**
    * This method updates an existing service zone.
    *
+   * @param {string} id - The ID of the service zone.
    * @param {UpdateServiceZoneDTO} data - The attributes to update in the service zone.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ServiceZoneDTO>} The updated service zone.
    *
    * @example
    * const serviceZone =
-   *   await fulfillmentModuleService.updateServiceZones({
-   *     id: "serzo_123",
-   *     name: "Nordic Shipping Methods",
-   *   })
+   *   await fulfillmentModuleService.updateServiceZones(
+   *     "serzo_123",
+   *     {
+   *       name: "US",
+   *     }
+   *   )
    */
   updateServiceZones(
+    id: string,
     data: UpdateServiceZoneDTO,
     sharedContext?: Context
   ): Promise<ServiceZoneDTO>
+
+  /**
+   * This method updates existing service zones matching the specified filters.
+   *
+   * @param {FilterableServiceZoneProps} selector - The filters specifying which service zones to update.
+   * @param {UpdateServiceZoneDTO} data - The attributes to update in the service zone.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ServiceZoneDTO[]>} The updated service zones.
+   *
+   * @example
+   * const serviceZones =
+   *   await fulfillmentModuleService.updateServiceZones(
+   *     {
+   *       id: ["serzo_123", "serzo_321"],
+   *     },
+   *     {
+   *       name: "US",
+   *     }
+   *   )
+   */
+  updateServiceZones(
+    selector: FilterableServiceZoneProps,
+    data: UpdateServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO[]>
+
+  /**
+   * This method updates or creates a service zone if it doesn't exist.
+   *
+   * @param {UpsertServiceZoneDTO} data - The attributes in the service zone to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ServiceZoneDTO>} The created or updated service zone.
+   *
+   * @example
+   * const serviceZone =
+   *   await fulfillmentModuleService.upsertServiceZones({
+   *     id: "serzo_123",
+   *     name: "US",
+   *   })
+   */
+  upsertServiceZones(
+    data: UpsertServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO>
+
+  /**
+   * This method updates or creates service zones if they don't exist.
+   *
+   * @param {UpsertServiceZoneDTO[]} data - The attributes in the service zones to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ServiceZoneDTO[]>} The created or updated service zones.
+   *
+   * @example
+   * const serviceZones =
+   *   await fulfillmentModuleService.upsertServiceZones([
+   *     {
+   *       id: "serzo_123",
+   *       name: "US",
+   *     },
+   *     {
+   *       name: "US",
+   *       fulfillment_set_id: "fuset_123",
+   *     },
+   *   ])
+   */
+  upsertServiceZones(
+    data: UpsertServiceZoneDTO[],
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO[]>
 
   /**
    * This method deletes service zones by their IDs.
@@ -1232,57 +1284,104 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
-   * This method updates existing shipping options.
-   *
-   * @param {UpdateShippingOptionDTO[]} data - The attributes to update in the shipping options.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ShippingOptionDTO[]>} The updated shipping options.
-   *
-   * @example
-   * const shippingOptions =
-   *   await fulfillmentModuleService.updateShippingOptions([
-   *     {
-   *       id: "so_123",
-   *       type: {
-   *         id: "sotype_123",
-   *       },
-   *       name: "DHL Express Shipping",
-   *     },
-   *     {
-   *       id: "so_321",
-   *       type: {
-   *         id: "sotype_321",
-   *       },
-   *       provider_id: "webshipper",
-   *     },
-   *   ])
-   */
-  updateShippingOptions(
-    data: UpdateShippingOptionDTO[],
-    sharedContext?: Context
-  ): Promise<ShippingOptionDTO[]>
-
-  /**
    * This method updates an existing shipping option.
    *
+   * @param {string} id - The ID of the shipping option.
    * @param {UpdateShippingOptionDTO} data - The attributes to update in the shipping option.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ShippingOptionDTO>} The updated shipping option.
    *
    * @example
    * const shippingOption =
-   *   await fulfillmentModuleService.updateShippingOptions({
-   *     id: "so_123",
-   *     type: {
-   *       id: "sotype_123",
-   *     },
-   *     name: "DHL Express Shipping",
-   *   })
+   *   await fulfillmentModuleService.updateShippingOptions(
+   *     "so_123",
+   *     {
+   *       name: "Express shipping",
+   *     }
+   *   )
    */
   updateShippingOptions(
+    id: string,
     data: UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
+
+  /**
+   * This method updates existing shipping options matching the specified filters.
+   *
+   * @param {FilterableShippingOptionProps} selector - The filters specifying which shipping options to update.
+   * @param {UpdateShippingOptionDTO} data - The attributes to update in the shipping option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ShippingOptionDTO[]>} The updated shipping options.
+   *
+   * @example
+   * const shippingOptions =
+   *   await fulfillmentModuleService.updateShippingOptions(
+   *     {
+   *       id: ["so_123", "so_321"],
+   *     },
+   *     {
+   *       name: "Express Shipping",
+   *     }
+   *   )
+   */
+  updateShippingOptions(
+    selector: FilterableShippingOptionProps,
+    data: UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
+
+  /**
+   * This method updates or creates a shipping option if it doesn't exist.
+   *
+   * @param {UpsertShippingOptionDTO} data - The attributes in the shipping option to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ShippingOptionDTO>} The created or updated shipping option.
+   *
+   * @example
+   * const shippingOptions =
+   *   await fulfillmentModuleService.upsertShippingOptions({
+   *     id: "so_123",
+   *     name: "Express Shipping",
+   *   })
+   */
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO>
+
+  /**
+   * This method updates or creates shipping options if they don't exist.
+   *
+   * @param {UpsertShippingOptionDTO[]} data - The attributes in the shipping options to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ShippingOptionDTO[]>} The created or updated shipping options.
+   *
+   * @example
+   * const shippingOptions =
+   *   await fulfillmentModuleService.upsertShippingOptions([
+   *     {
+   *       id: "so_123",
+   *       name: "Express Shipping",
+   *     },
+   *     {
+   *       name: "Express Shipping",
+   *       price_type: "flat",
+   *       service_zone_id: "serzo_123",
+   *       shipping_profile_id: "sp_123",
+   *       provider_id: "webshipper",
+   *       type: {
+   *         label: "Express",
+   *         description: "express shipping",
+   *         code: "express",
+   *       },
+   *     },
+   *   ])
+   */
+  upsertShippingOptions(
+    data: UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionDTO[]>
 
   /**
    * This method deletes shipping options by their IDs.
@@ -1565,7 +1664,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ])
    */
   updateShippingProfiles(
-    data: CreateShippingProfileDTO[],
+    data: UpdateShippingProfileDTO[],
     sharedContext?: Context
   ): Promise<ShippingProfileDTO[]>
 
@@ -1584,7 +1683,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   })
    */
   updateShippingProfiles(
-    data: CreateShippingProfileDTO,
+    data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO>
 
@@ -2204,7 +2303,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * ```
    */
   listFulfillments(
-    filters?: FilterableFulfillmentSetProps,
+    filters?: FilterableFulfillmentProps,
     config?: FindConfig<FulfillmentDTO>,
     sharedContext?: Context
   ): Promise<FulfillmentDTO[]>
@@ -2259,7 +2358,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * ```
    */
   listAndCountFulfillments(
-    filters?: FilterableFulfillmentSetProps,
+    filters?: FilterableFulfillmentProps,
     config?: FindConfig<FulfillmentDTO>,
     sharedContext?: Context
   ): Promise<[FulfillmentDTO[], number]>

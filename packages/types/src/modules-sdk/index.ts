@@ -118,6 +118,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
   options?: TOptions
   logger?: Logger
+  dataLoaderOnly?: boolean
 }
 
 export type ModuleLoaderFunction = (
@@ -146,7 +147,8 @@ export type ModuleJoinerConfig = Omit<
       | string
       | {
           path: string
-          forwardArgumentsOnPath: string[]
+          forwardArgumentsOnPath?: string[]
+          isList?: boolean
         }
     > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
     relationship: ModuleJoinerRelationship

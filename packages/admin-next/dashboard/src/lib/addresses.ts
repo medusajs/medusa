@@ -1,4 +1,5 @@
 import { Address } from "@medusajs/medusa"
+import { countries } from "./countries"
 
 export const isSameAddress = (a: Address | null, b: Address | null) => {
   if (!a || !b) {
@@ -74,4 +75,13 @@ export const getFormattedAddress = ({
   }
 
   return formattedAddress
+}
+
+export const getFormattedCountry = (countryCode: string | null | undefined) => {
+  if (!countryCode) {
+    return ""
+  }
+
+  const country = countries.find((c) => c.iso_2 === countryCode)
+  return country ? country.display_name : countryCode
 }

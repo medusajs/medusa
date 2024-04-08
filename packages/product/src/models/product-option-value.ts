@@ -1,4 +1,3 @@
-import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   createPsqlIndexStatementHelper,
@@ -13,18 +12,10 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ProductOption, ProductVariant, ProductVariantOption } from "./index"
-
-type OptionalFields =
-  | "allow_backorder"
-  | "manage_inventory"
-  | "option_id"
-  | DAL.SoftDeletableEntityDateColumns
-type OptionalRelations = "product" | "option" | "variant"
+import { ProductOption, ProductVariantOption } from "./index"
 
 const optionValueOptionIdIndexName = "IDX_option_value_option_id_unique"
 const optionValueOptionIdIndexStatement = createPsqlIndexStatementHelper({
@@ -39,8 +30,6 @@ optionValueOptionIdIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option_value" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
-  [OptionalProps]?: OptionalFields | OptionalRelations
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -52,7 +41,6 @@ class ProductOptionValue {
     fieldName: "option_id",
     mapToPk: true,
     nullable: true,
-    index: "IDX_product_option_value_option_id",
     onDelete: "cascade",
   })
   option_id: string | null
@@ -89,13 +77,8 @@ class ProductOptionValue {
   deleted_at?: Date
 
   @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "optval")
-    this.option_id ??= this.option?.id ?? null
-  }
-
   @BeforeCreate()
-  beforeCreate() {
+  onInit() {
     this.id = generateEntityId(this.id, "optval")
     this.option_id ??= this.option?.id ?? null
   }

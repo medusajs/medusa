@@ -422,7 +422,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should update price lists and set prices successfully", async () => {
+        it("should update price lists", async () => {
           await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,
@@ -446,14 +446,6 @@ medusaIntegrationTestRunner({
             rules: {
               customer_group_id: [customerGroup.id],
             },
-            prices: [
-              {
-                amount: 400,
-                variant_id: variant.id,
-                currency_code: "usd",
-                rules: { region_id: region.id },
-              },
-            ],
           }
 
           let response = await api.post(
@@ -471,49 +463,6 @@ medusaIntegrationTestRunner({
               rules: {
                 customer_group_id: [customerGroup.id],
               },
-              prices: [
-                {
-                  id: expect.any(String),
-                  currency_code: "usd",
-                  amount: 400,
-                  min_quantity: null,
-                  max_quantity: null,
-                  variant_id: variant.id,
-                  rules: {
-                    region_id: region.id,
-                  },
-                },
-              ],
-            })
-          )
-
-          // Updating prices should remove existing prices and create new ones
-          response = await api.post(
-            `admin/price-lists/${priceList.id}`,
-            {
-              prices: [
-                {
-                  amount: 600,
-                  variant_id: variant.id,
-                  currency_code: "usd",
-                  rules: { region_id: region.id },
-                },
-              ],
-            },
-            adminHeaders
-          )
-
-          expect(response.data.price_list).toEqual(
-            expect.objectContaining({
-              prices: [
-                expect.objectContaining({
-                  id: expect.any(String),
-                  currency_code: "usd",
-                  amount: 600,
-                  variant_id: variant.id,
-                  rules: { region_id: region.id },
-                }),
-              ],
             })
           )
         })
@@ -575,6 +524,65 @@ medusaIntegrationTestRunner({
                   id: "test-price-id",
                   currency_code: "usd",
                   amount: 5000,
+                }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("POST /admin/price-lists/:id/prices/batch/update", () => {
+        it("should update price list prices successfully", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const [priceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+          ])
+
+          const data = {
+            prices: [
+              {
+                id: "test-price-id",
+                amount: 400,
+                variant_id: variant.id,
+                currency_code: "usd",
+                rules: { region_id: region.id },
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `admin/price-lists/${priceList.id}/prices/batch/update`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list.prices.length).toEqual(1)
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 400,
                 }),
               ]),
             })

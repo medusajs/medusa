@@ -27,7 +27,6 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   MedusaError,
   arrayDifference,
-  deepCopy,
   isString,
   promiseAll,
 } from "../../common"
@@ -38,6 +37,7 @@ import {
 } from "../utils"
 import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { dbErrorMapper } from "./db-error-mapper"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -67,8 +67,13 @@ export class MikroOrmBase<T = any> {
       transaction?: TManager
     } = {}
   ): Promise<any> {
-    // @ts-ignore
-    return await transactionWrapper.bind(this)(task, options)
+    const freshManager = this.getFreshManager
+      ? this.getFreshManager()
+      : this.manager_
+
+    return await transactionWrapper(freshManager, task, options).catch(
+      dbErrorMapper
+    )
   }
 
   async serialize<TOutput extends object | object[]>(
@@ -262,6 +267,23 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     constructor(...args: any[]) {
       // @ts-ignore
       super(...arguments)
+
+      return new Proxy(this, {
+        get: (target, prop) => {
+          if (typeof target[prop] === "function") {
+            return (...args) => {
+              const res = target[prop].bind(target)(...args)
+              if (res instanceof Promise) {
+                return res.catch(dbErrorMapper)
+              }
+
+              return res
+            }
+          }
+
+          return target[prop]
+        },
+      })
     }
 
     static buildUniqueCompositeKeyValue(keys: string[], data: object) {
@@ -474,7 +496,8 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       )
 
       if (nonexistentRelations.length) {
-        throw new Error(
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
           `Nonexistent relations were passed during upsert: ${nonexistentRelations}`
         )
       }
@@ -617,6 +640,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             Object.assign(normalizedDataItem, {
               ...joinColumnsConstraints,
             })
+            // Non-persist relation columns should be removed before we do the upsert.
+            Object.entries(relation.targetMeta?.properties ?? {})
+              .filter(
+                ([_, propDef]) =>
+                  propDef.persist === false &&
+                  propDef.reference === ReferenceType.MANY_TO_ONE
+              )
+              .forEach(([key]) => {
+                delete normalizedDataItem[key]
+              })
           })
 
           await this.upsertMany_(manager, relation.type, normalizedData)

@@ -55,7 +55,7 @@ export interface UpdateShippingOptionDTO {
   /**
    * The ID of the shipping option.
    */
-  id: string
+  id?: string
 
   /**
    * The name of the shipping option.
@@ -113,3 +113,5 @@ export interface UpdateShippingOptionDTO {
       }
   )[]
 }
+
+export interface UpsertShippingOptionDTO extends UpdateShippingOptionDTO {}

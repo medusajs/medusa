@@ -29,6 +29,19 @@ import { XorConstraint } from "../../../types/validators/xor"
 import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
+export class AdminGetPromotionRules extends FindParams {}
+
+export class AdminGetPromotionsRuleValueParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
+  /**
+   * Search terms to search fields.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+}
 
 export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   limit: 100,
@@ -62,41 +75,7 @@ export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   updated_at?: DateComparisonOperator
 }
 
-export class AdminPostPromotionsReq {
-  @IsNotEmpty()
-  @IsString()
-  code: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_automatic?: boolean
-
-  @IsOptional()
-  @IsEnum(PromotionType)
-  type?: PromotionTypeValues
-
-  @IsOptional()
-  @IsString()
-  campaign_id?: string
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => AdminPostCampaignsReq)
-  campaign?: AdminPostCampaignsReq
-
-  @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => ApplicationMethodsPostReq)
-  application_method: ApplicationMethodsPostReq
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules?: PromotionRule[]
-}
-
-export class PromotionRule {
+export class AdminPostCreatePromotionRule {
   @IsEnum(PromotionRuleOperator)
   operator: PromotionRuleOperator
 
@@ -113,7 +92,40 @@ export class PromotionRule {
   values: string[]
 }
 
-export class ApplicationMethodsPostReq {
+export class AdminPostPromotionsReq {
+  @IsNotEmpty()
+  @IsString()
+  code: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_automatic?: boolean
+
+  @IsEnum(PromotionType)
+  type?: PromotionTypeValues
+
+  @IsOptional()
+  @IsString()
+  campaign_id?: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AdminPostCampaignsReq)
+  campaign?: AdminPostCampaignsReq
+
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => AdminPostApplicationMethodsReq)
+  application_method: AdminPostApplicationMethodsReq
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminPostCreatePromotionRule)
+  rules?: AdminPostCreatePromotionRule[]
+}
+
+export class AdminPostApplicationMethodsReq {
   @IsOptional()
   @IsString()
   description?: string
@@ -130,7 +142,6 @@ export class ApplicationMethodsPostReq {
   @IsEnum(ApplicationMethodType)
   type?: ApplicationMethodType
 
-  @IsOptional()
   @IsEnum(ApplicationMethodTargetType)
   target_type?: ApplicationMethodTargetType
 
@@ -141,14 +152,14 @@ export class ApplicationMethodsPostReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  target_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  target_rules?: AdminPostCreatePromotionRule[]
 
   @ValidateIf((data) => data.type === PromotionType.BUYGET)
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  buy_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  buy_rules?: AdminPostCreatePromotionRule[]
 
   @ValidateIf((data) => data.type === PromotionType.BUYGET)
   @IsNotEmpty()
@@ -161,7 +172,7 @@ export class ApplicationMethodsPostReq {
   buy_rules_min_quantity?: number
 }
 
-export class ApplicationMethodsMethodPostReq {
+export class AdminPostApplicationMethodsMethodReq {
   @IsOptional()
   @IsString()
   description?: string
@@ -189,14 +200,14 @@ export class ApplicationMethodsMethodPostReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  target_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  target_rules?: AdminPostCreatePromotionRule[]
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  buy_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  buy_rules?: AdminPostCreatePromotionRule[]
 
   @IsOptional()
   @IsNumber()
@@ -233,37 +244,37 @@ export class AdminPostPromotionsPromotionReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => ApplicationMethodsMethodPostReq)
-  application_method?: ApplicationMethodsMethodPostReq
+  @Type(() => AdminPostApplicationMethodsMethodReq)
+  application_method?: AdminPostApplicationMethodsMethodReq
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  rules?: AdminPostCreatePromotionRule[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchAddReq {
+export class AdminPostBatchAddRules {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  rules: AdminPostCreatePromotionRule[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchRemoveReq {
+export class AdminPostBatchRemoveRules {
   @ArrayNotEmpty()
   @IsString({ each: true })
   rule_ids: string[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchUpdateReq {
+export class AdminPostBatchUpdateRules {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => UpdatePromotionRule)
-  rules: UpdatePromotionRule[]
+  @Type(() => AdminPostUpdatePromotionRule)
+  rules: AdminPostUpdatePromotionRule[]
 }
 
-export class UpdatePromotionRule {
+export class AdminPostUpdatePromotionRule {
   @IsNotEmpty()
   @IsString()
   id: string
@@ -279,10 +290,10 @@ export class UpdatePromotionRule {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  attribute: string
+  attribute?: string
 
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  values: string[]
+  values?: string[]
 }

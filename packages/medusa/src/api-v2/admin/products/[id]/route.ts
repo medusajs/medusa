@@ -7,9 +7,14 @@ import {
   updateProductsWorkflow,
 } from "@medusajs/core-flows"
 
-import { UpdateProductDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { refetchProduct, remapKeysForProduct, remapProduct } from "../helpers"
+import {
+  refetchProduct,
+  remapKeysForProduct,
+  remapProductResponse,
+} from "../helpers"
+import { AdminUpdateProductType } from "../validators"
+import { UpdateProductDTO } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -28,17 +33,17 @@ export const GET = async (
 
   const [product] = await remoteQuery(queryObject)
 
-  res.status(200).json({ product: remapProduct(product) })
+  res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateProductDTO>,
+  req: AuthenticatedMedusaRequest<AdminUpdateProductType>,
   res: MedusaResponse
 ) => {
   const { result, errors } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update: req.validatedBody as UpdateProductDTO,
     },
     throwOnError: false,
   })
@@ -52,7 +57,7 @@ export const POST = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
-  res.status(200).json({ product: remapProduct(product) })
+  res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const DELETE = async (

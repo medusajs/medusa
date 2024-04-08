@@ -1,3 +1,4 @@
+import { BigNumberInput } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 
 interface ConfirmInventoryPreparationInput {
@@ -6,7 +7,7 @@ interface ConfirmInventoryPreparationInput {
     inventory_item_id: string
     required_quantity: number
   }[]
-  items: { variant_id?: string; quantity: number }[]
+  items: { variant_id?: string; quantity: BigNumberInput }[]
   variants: { id: string; manage_inventory?: boolean }[]
   location_ids: string[]
 }
@@ -36,6 +37,12 @@ export const prepareConfirmInventoryInput = ({
   const itemsToConfirm: ConfirmInventoryItem[] = []
 
   items.forEach((item) => {
+    const variant = variantsMap.get(item.variant_id!)
+
+    if (!variant?.manage_inventory) {
+      return
+    }
+
     const variantInventoryItem = product_variant_inventory_items.find(
       (i) => i.variant_id === item.variant_id
     )
@@ -47,16 +54,12 @@ export const prepareConfirmInventoryInput = ({
       )
     }
 
-    const variant = variantsMap.get(item.variant_id!)
-
-    if (variant?.manage_inventory) {
-      itemsToConfirm.push({
-        inventory_item_id: variantInventoryItem.inventory_item_id,
-        required_quantity: variantInventoryItem.required_quantity,
-        quantity: item.quantity,
-        location_ids: location_ids,
-      })
-    }
+    itemsToConfirm.push({
+      inventory_item_id: variantInventoryItem.inventory_item_id,
+      required_quantity: variantInventoryItem.required_quantity,
+      quantity: item.quantity as number, // TODO: update type to BigNumberInput
+      location_ids: location_ids,
+    })
   })
 
   return itemsToConfirm

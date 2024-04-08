@@ -2,12 +2,13 @@ import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { extendedFindParamsMixin, FindParams } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
 export class AdminGetRegionsRegionParams extends FindParams {}
@@ -87,9 +88,18 @@ export class AdminPostRegionsReq {
   @IsOptional()
   countries?: string[]
 
+  @IsBoolean()
+  @IsOptional()
+  automatic_taxes?: boolean
+
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers?: string[]
 }
 
 export class AdminPostRegionsRegionReq {
@@ -105,7 +115,16 @@ export class AdminPostRegionsRegionReq {
   @IsOptional()
   countries?: string[]
 
+  @IsBoolean()
+  @IsOptional()
+  automatic_taxes?: boolean
+
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers?: string[]
 }
