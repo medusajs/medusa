@@ -318,7 +318,11 @@ export function CreateShippingOptionsForm({
               </div>
             </ProgressTabs.Content>
 
-            <ProgressTabs.Content value={Tab.PRICING} className="h-full w-full">
+            <ProgressTabs.Content
+              value={Tab.PRICING}
+              className="h-full w-full"
+              style={{ width: "100vw" }}
+            >
               <CreateShippingOptionsPricesForm form={form} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
