@@ -24,6 +24,8 @@ export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+  const isMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
+
   // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
@@ -182,7 +184,9 @@ export function prepareListQuery<
       )
     }
   } else {
-    orderBy["id"] = "DESC"
+    if (!isMedusaV2) {
+      orderBy["created_at"] = "DESC"
+    }
   }
 
   return {
