@@ -24,6 +24,21 @@ class Currency {
 
   @Property({ columnType: "jsonb" })
   raw_rounding: BigNumberRawValue
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 }
 
 export default Currency
