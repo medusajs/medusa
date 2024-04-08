@@ -1,9 +1,8 @@
-import Primitive from "react-currency-input-field"
-
 import { CurrencyDTO } from "@medusajs/types"
 import { useRef } from "react"
+import Primitive from "react-currency-input-field"
 import { Controller, FieldValues } from "react-hook-form"
-import { getDecimalDigits } from "../../../../../lib/money-amount-helpers"
+
 import { GridCellType } from "../../../constants"
 import { CellProps } from "../../../types"
 
@@ -14,7 +13,8 @@ interface CurrencyCellProps<TFieldValues extends FieldValues = any>
 
 export const CurrencyCell = ({ currency, field, meta }: CurrencyCellProps) => {
   const symbolRef = useRef<HTMLSpanElement>(null)
-  const decimalScale = getDecimalDigits(currency.code)
+  // @ts-ignore - Type is wrong
+  const decimalScale = currency.decimal_digits
 
   const { control } = meta
 
@@ -42,7 +42,7 @@ export const CurrencyCell = ({ currency, field, meta }: CurrencyCellProps) => {
                   ? `${symbolRef.current.offsetWidth + 8}px`
                   : "16px",
               }}
-              decimalScale={decimalScale} // Temporary until the backend returns the correct number of decimals to use for the currency
+              decimalScale={decimalScale}
               allowDecimals={decimalScale > 0}
               onValueChange={(_value, _name, values) => {
                 onChange(values?.value)

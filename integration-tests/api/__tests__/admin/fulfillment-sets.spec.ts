@@ -217,6 +217,18 @@ medusaIntegrationTestRunner({
             }),
           })
         )
+
+        const serviceZoneResponse = await api
+          .get(
+            `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+            adminHeaders
+          )
+          .catch((err) => err.response)
+
+        expect(serviceZoneResponse.status).toEqual(404)
+        expect(serviceZoneResponse.data.message).toEqual(
+          `Service zone with id: ${serviceZoneId} not found`
+        )
       })
 
       it("should throw if invalid type is passed", async () => {

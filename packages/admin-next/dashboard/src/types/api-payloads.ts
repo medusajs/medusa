@@ -8,6 +8,7 @@ import {
   CreateCustomerDTO,
   CreateFulfillmentSetDTO,
   CreateInviteDTO,
+  CreatePriceListDTO,
   CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
@@ -19,6 +20,7 @@ import {
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
+  UpdatePriceListDTO,
   UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
@@ -71,6 +73,18 @@ export type CreateShippingOptionReq = CreateShippingOptionDTO
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO
 export type UpdateProductCollectionReq = UpdateProductCollectionDTO
+
+// Price Lists
+export type CreatePriceListReq = CreatePriceListDTO
+export type UpdatePriceListReq = UpdatePriceListDTO
+export type AddPriceListPricesReq = {
+  prices: {
+    currency_code: string
+    amount: number
+    variant_id: string
+  }[]
+}
+export type DeletePriceListPricesReq = { ids: string[] }
 
 // Promotion
 export type CreatePromotionReq = CreatePromotionDTO

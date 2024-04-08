@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetPriceListsParams,
   AdminGetPriceListsPriceListParams,
+  AdminPostPriceListPriceBatchUpdate,
   AdminPostPriceListsPriceListPricesBatchAddReq,
   AdminPostPriceListsPriceListPricesBatchRemoveReq,
   AdminPostPriceListsPriceListReq,
@@ -58,5 +59,10 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       transformBody(AdminPostPriceListsPriceListPricesBatchRemoveReq),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/price-lists/:id/prices/batch/update",
+    middlewares: [transformBody(AdminPostPriceListPriceBatchUpdate)],
   },
 ]
