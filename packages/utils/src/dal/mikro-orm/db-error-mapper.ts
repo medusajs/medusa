@@ -24,7 +24,7 @@ export const dbErrorMapper = (err: Error) => {
 
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `${upperCaseFirst(info.table)} with ${info.keys
+      `${upperCaseFirst(info.table.split("_").join(" "))} with ${info.keys
         .map((key, i) => `${key}: ${info.values[i]}`)
         .join(", ")} already exists.`
     )
@@ -37,7 +37,7 @@ export const dbErrorMapper = (err: Error) => {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Cannot set field '${(err as any).column}' of ${upperCaseFirst(
-        (err as any).table
+        (err as any).table.split("_").join(" ")
       )} to null`
     )
   }
