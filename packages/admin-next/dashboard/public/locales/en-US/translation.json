@@ -560,7 +560,7 @@
         "enable": "Enable pickup"
       },
       "delivery": {
-        "title": "Delivering from",
+        "title": "Shipping to",
         "enable": "Enable delivery"
       }
     },

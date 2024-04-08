@@ -24,9 +24,11 @@ export function LocationList() {
   return (
     <>
       <div className="grid grid-cols-3 gap-x-6 py-4">
-        <Container className="col-span-3 mb-4 h-fit p-8 lg:col-span-1">
+        <Container className="sticky top-3 col-span-3 mb-4 h-fit p-8 lg:col-span-1">
           <Heading className="mb-2">{t("shipping.title")}</Heading>
-          <Text className="text-ui-fg-subtle">{t("shipping.description")}</Text>
+          <Text className="text-ui-fg-subtle txt-small">
+            {t("shipping.description")}
+          </Text>
         </Container>
         <div className="col-span-3 flex flex-col gap-4 lg:col-span-2">
           {stockLocations.map((location) => (

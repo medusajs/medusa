@@ -331,15 +331,6 @@ function Location(props: LocationProps) {
   return (
     <Container className="flex flex-col divide-y p-0">
       <div className="px-6 py-5">
-        <Text
-          size="small"
-          weight="plus"
-          className="text-ui-fg-subtle mb-4"
-          as="div"
-        >
-          {t("shipping.from")}
-        </Text>
-
         <div className="flex flex-row items-center justify-between gap-x-4">
           {/*ICON*/}
           <div className="grow-0 rounded-lg border">
