@@ -137,6 +137,17 @@ export default class OrderModuleService<
   protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
   protected orderSummaryService_: ModulesSdkTypes.InternalModuleService<TOrderSummary>
 
+  private requiredFieldsForTotals: string[] = [
+    "items",
+    "items.tax_lines",
+    "items.adjustments",
+    "items.tax_lines",
+    "items.adjustments",
+    "shipping_methods",
+    "shipping_methods.tax_lines",
+    "shipping_methods.adjustments",
+  ]
+
   constructor(
     {
       baseRepository,
@@ -179,14 +190,28 @@ export default class OrderModuleService<
     return joinerConfig
   }
 
+  private addRelationsToCalculateTotals(config: FindConfig<any>) {
+    config.relations ??= []
+    config.relations = deduplicate([
+      ...config.relations,
+      ...this.requiredFieldsForTotals,
+    ])
+  }
+
   async retrieve(
     id: string,
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO> {
+    const includeTotals = config?.select?.includes("total")
+    if (includeTotals) {
+      config ??= {}
+      this.addRelationsToCalculateTotals(config)
+    }
+
     const order = await super.retrieve(id, config, sharedContext)
 
-    return formatOrder(order) as OrderTypes.OrderDTO
+    return formatOrder(order, { includeTotals }) as OrderTypes.OrderDTO
   }
 
   async list(
@@ -194,9 +219,17 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO[]> {
+    const includeTotals = config?.select?.includes("total")
+    if (includeTotals) {
+      config ??= {}
+      this.addRelationsToCalculateTotals(config)
+    }
+
     const orders = await super.list(filters, config, sharedContext)
 
-    return formatOrder(orders) as OrderTypes.OrderDTO[]
+    return formatOrder(orders, {
+      includeTotals,
+    }) as OrderTypes.OrderDTO[]
   }
 
   async listAndCount(
@@ -204,13 +237,22 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<[OrderTypes.OrderDTO[], number]> {
+    const includeTotals = config?.select?.includes("total")
+    if (includeTotals) {
+      config ??= {}
+      this.addRelationsToCalculateTotals(config)
+    }
+
     const [orders, count] = await super.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return [formatOrder(orders) as OrderTypes.OrderDTO[], count]
+    return [
+      formatOrder(orders, { includeTotals }) as OrderTypes.OrderDTO[],
+      count,
+    ]
   }
 
   async create(

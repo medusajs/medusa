@@ -82,58 +82,18 @@ medusaIntegrationTestRunner({
           email: "foo@bar.com",
           items: [
             {
-              title: "Item 1",
-              subtitle: "Subtitle 1",
-              thumbnail: "thumbnail1.jpg",
+              title: "Custom Item 2",
               quantity: 1,
-              product_id: "product1",
-              product_title: "Product 1",
-              product_description: "Description 1",
-              product_subtitle: "Product Subtitle 1",
-              product_type: "Type 1",
-              product_collection: "Collection 1",
-              product_handle: "handle1",
-              variant_id: "variant1",
-              variant_sku: "SKU1",
-              variant_barcode: "Barcode1",
-              variant_title: "Variant 1",
-              variant_option_values: {
-                color: "Red",
-                size: "Large",
-              },
-              requires_shipping: true,
-              is_discountable: true,
-              is_tax_inclusive: true,
-              compare_at_unit_price: 10,
-              unit_price: 8,
-              tax_lines: [
-                {
-                  description: "Tax 1",
-                  tax_rate_id: "tax_usa",
-                  code: "code",
-                  rate: 0.1,
-                  provider_id: "taxify_master",
-                },
-              ],
+              unit_price: 50,
               adjustments: [
                 {
-                  code: "VIP_10",
-                  amount: 10,
+                  code: "VIP_25 ETH",
+                  amount: "0.000000000000000005",
                   description: "VIP discount",
                   promotion_id: "prom_123",
                   provider_id: "coupon_kings",
                 },
               ],
-            },
-            {
-              title: "Item 2",
-              quantity: 2,
-              unit_price: 5,
-            },
-            {
-              title: "Item 3",
-              quantity: 1,
-              unit_price: 30,
             },
           ],
           sales_channel_id: "test",
@@ -177,32 +137,347 @@ medusaIntegrationTestRunner({
               ],
             },
           ],
-          transactions: [
-            {
-              amount: 58,
-              currency_code: "USD",
-              reference: "payment",
-              reference_id: "pay_123",
-            },
-          ],
           currency_code: "usd",
           customer_id: "joe",
         })
 
         const response = await api.get(
-          "/admin/orders/" + created.id,
+          "/admin/orders/" +
+            created.id +
+            "?fields=%2Braw_total,%2Braw_subtotal,%2Braw_discount_total",
           adminHeaders
         )
 
-        /*
-        
-
-        console.log(response.data)
-
-        expect(response.data).toEqual({})
-
-        expect(response.status).toEqual(200)
-        */
+        const order = response.data.order
+        expect(order).toEqual({
+          id: expect.any(String),
+          status: "pending",
+          version: 1,
+          summary: {
+            total: 50,
+          },
+          total: 59.8,
+          subtotal: 50,
+          tax_total: 0.9,
+          discount_total: 1,
+          discount_tax_total: 0.1,
+          original_total: 61,
+          original_tax_total: 1,
+          item_total: 50,
+          item_subtotal: 50,
+          item_tax_total: 0,
+          original_item_total: 50,
+          original_item_subtotal: 50,
+          original_item_tax_total: 0,
+          shipping_total: 9.9,
+          shipping_subtotal: 10,
+          shipping_tax_total: 0.9,
+          original_shipping_tax_total: 1,
+          original_shipping_tax_subtotal: 10,
+          original_shipping_total: 11,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          raw_total: {
+            value: "59.799999999999999995",
+            precision: 20,
+          },
+          raw_subtotal: {
+            value: "50",
+            precision: 20,
+          },
+          raw_discount_total: {
+            value: "1.000000000000000005",
+            precision: 20,
+          },
+          items: [
+            {
+              id: expect.any(String),
+              title: "Custom Item 2",
+              subtitle: null,
+              thumbnail: null,
+              variant_id: null,
+              product_id: null,
+              product_title: null,
+              product_description: null,
+              product_subtitle: null,
+              product_type: null,
+              product_collection: null,
+              product_handle: null,
+              variant_sku: null,
+              variant_barcode: null,
+              variant_title: null,
+              variant_option_values: null,
+              requires_shipping: true,
+              is_discountable: true,
+              is_tax_inclusive: false,
+              raw_compare_at_unit_price: null,
+              raw_unit_price: {
+                value: "50",
+                precision: 20,
+              },
+              metadata: null,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              tax_lines: [],
+              adjustments: [
+                {
+                  id: expect.any(String),
+                  description: "VIP discount",
+                  promotion_id: expect.any(String),
+                  code: "VIP_25 ETH",
+                  raw_amount: {
+                    value: "5.0000000000000000000e-18",
+                    precision: 20,
+                  },
+                  provider_id: expect.any(String),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  item_id: expect.any(String),
+                  amount: 5e-18,
+                  subtotal: 5e-18,
+                  total: 5e-18,
+                  raw_subtotal: {
+                    value: "5.0000000000000000000e-18",
+                    precision: 20,
+                  },
+                  raw_total: {
+                    value: "5.0000000000000000000e-18",
+                    precision: 20,
+                  },
+                },
+              ],
+              compare_at_unit_price: null,
+              unit_price: 50,
+              quantity: 1,
+              raw_quantity: {
+                value: "1",
+                precision: 20,
+              },
+              detail: {
+                id: expect.any(String),
+                order_id: expect.any(String),
+                version: 1,
+                item_id: expect.any(String),
+                raw_quantity: {
+                  value: "1",
+                  precision: 20,
+                },
+                raw_fulfilled_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                raw_shipped_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                raw_return_requested_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                raw_return_received_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                raw_return_dismissed_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                raw_written_off_quantity: {
+                  value: "0",
+                  precision: 20,
+                },
+                metadata: null,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                quantity: 1,
+                fulfilled_quantity: 0,
+                shipped_quantity: 0,
+                return_requested_quantity: 0,
+                return_received_quantity: 0,
+                return_dismissed_quantity: 0,
+                written_off_quantity: 0,
+              },
+              subtotal: 50,
+              total: 50,
+              original_total: 50,
+              discount_total: 5e-18,
+              discount_tax_total: 0,
+              tax_total: 0,
+              original_tax_total: 0,
+              raw_subtotal: {
+                value: "50",
+                precision: 20,
+              },
+              raw_total: {
+                value: "49.999999999999999995",
+                precision: 20,
+              },
+              raw_original_total: {
+                value: "50",
+                precision: 20,
+              },
+              raw_discount_total: {
+                value: "5.0000000000000000000e-18",
+                precision: 20,
+              },
+              raw_discount_tax_total: {
+                value: "0",
+                precision: 20,
+              },
+              raw_tax_total: {
+                value: "0",
+                precision: 20,
+              },
+              raw_original_tax_total: {
+                value: "0",
+                precision: 20,
+              },
+            },
+          ],
+          shipping_address: {
+            id: expect.any(String),
+            customer_id: null,
+            company: null,
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            address_2: null,
+            city: "Test",
+            country_code: "US",
+            province: null,
+            postal_code: "12345",
+            phone: "12345",
+            metadata: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          billing_address: {
+            id: expect.any(String),
+            customer_id: null,
+            company: null,
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test",
+            address_2: null,
+            city: "Test",
+            country_code: "US",
+            province: null,
+            postal_code: "12345",
+            phone: null,
+            metadata: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          shipping_methods: [
+            {
+              id: expect.any(String),
+              order_id: expect.any(String),
+              version: 1,
+              name: "Test shipping method",
+              description: null,
+              raw_amount: {
+                value: "10",
+                precision: 20,
+              },
+              is_tax_inclusive: false,
+              shipping_option_id: null,
+              data: {},
+              metadata: null,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              tax_lines: [
+                {
+                  id: expect.any(String),
+                  description: "shipping Tax 1",
+                  tax_rate_id: expect.any(String),
+                  code: "code",
+                  raw_rate: {
+                    value: "10",
+                    precision: 20,
+                  },
+                  provider_id: null,
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  shipping_method_id: expect.any(String),
+                  rate: 10,
+                  total: 0.9,
+                  subtotal: 1,
+                  raw_total: {
+                    value: "0.9",
+                    precision: 20,
+                  },
+                  raw_subtotal: {
+                    value: "1",
+                    precision: 20,
+                  },
+                },
+              ],
+              adjustments: [
+                {
+                  id: expect.any(String),
+                  description: "VIP discount",
+                  promotion_id: expect.any(String),
+                  code: "VIP_10",
+                  raw_amount: {
+                    value: "1",
+                    precision: 20,
+                  },
+                  provider_id: null,
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  shipping_method_id: expect.any(String),
+                  amount: 1,
+                  subtotal: 1,
+                  total: 1.1,
+                  raw_subtotal: {
+                    value: "1",
+                    precision: 20,
+                  },
+                  raw_total: {
+                    value: "1.1",
+                    precision: 20,
+                  },
+                },
+              ],
+              amount: 10,
+              subtotal: 10,
+              total: 9.9,
+              original_total: 11,
+              discount_total: 1,
+              discount_tax_total: 0.1,
+              tax_total: 0.9,
+              original_tax_total: 1,
+              raw_subtotal: {
+                value: "10",
+                precision: 20,
+              },
+              raw_total: {
+                value: "9.9",
+                precision: 20,
+              },
+              raw_original_total: {
+                value: "11",
+                precision: 20,
+              },
+              raw_discount_total: {
+                value: "1",
+                precision: 20,
+              },
+              raw_discount_tax_total: {
+                value: "0.1",
+                precision: 20,
+              },
+              raw_tax_total: {
+                value: "0.9",
+                precision: 20,
+              },
+              raw_original_tax_total: {
+                value: "1",
+                precision: 20,
+              },
+            },
+          ],
+        })
       })
     })
   },

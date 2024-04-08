@@ -63,22 +63,25 @@ export function decorateCartTotals(
   let discountTaxTotal = MathBN.convert(0)
 
   let itemsSubtotal = MathBN.convert(0)
-  let itemsSubtotalWithoutTaxes = MathBN.convert(0)
-
   let itemsTotal = MathBN.convert(0)
+
   let itemsOriginalTotal = MathBN.convert(0)
   let itemsOriginalSubtotal = MathBN.convert(0)
 
   let itemsTaxTotal = MathBN.convert(0)
+  let itemsTaxSubTotal = MathBN.convert(0)
+
   let itemsOriginalTaxTotal = MathBN.convert(0)
 
   let shippingSubtotal = MathBN.convert(0)
-
   let shippingTotal = MathBN.convert(0)
+
   let shippingOriginalTotal = MathBN.convert(0)
   let shippingOriginalSubtotal = MathBN.convert(0)
 
   let shippingTaxTotal = MathBN.convert(0)
+  let shippingTaxSubTotal = MathBN.convert(0)
+
   let shippingOriginalTaxTotal = MathBN.convert(0)
   let shippingOriginalTaxSubtotal = MathBN.convert(0)
 
@@ -91,9 +94,12 @@ export function decorateCartTotals(
     const itemOriginalTotal = MathBN.convert(itemTotals.original_total)
 
     const itemTaxTotal = MathBN.convert(itemTotals.tax_total)
+    const itemTaxSubTotal = MathBN.convert(itemTotals.tax_subtotal)
+
     const itemOriginalTaxTotal = MathBN.convert(itemTotals.original_tax_total)
 
     const itemDiscountTotal = MathBN.convert(itemTotals.discount_total)
+
     const itemDiscountTaxTotal = MathBN.convert(itemTotals.discount_tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
@@ -108,6 +114,8 @@ export function decorateCartTotals(
     itemsSubtotal = MathBN.add(itemsSubtotal, itemSubtotal)
 
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
+    itemsTaxSubTotal = MathBN.add(itemsTaxSubTotal, itemTaxSubTotal)
+
     itemsOriginalTaxTotal = MathBN.add(
       itemsOriginalTaxTotal,
       itemOriginalTaxTotal
@@ -164,6 +172,7 @@ export function decorateCartTotals(
   })
 
   const taxTotal = MathBN.add(itemsTaxTotal, shippingTaxTotal)
+
   const originalTaxTotal = MathBN.add(
     itemsOriginalTaxTotal,
     shippingOriginalTaxTotal
@@ -181,7 +190,7 @@ export function decorateCartTotals(
   const tempTotal = MathBN.add(subtotal, shippingTotal, taxTotal)
   const total = MathBN.sub(tempTotal, discountTotal)
 
-  const cart = { ...cartLike } as any
+  const cart = cartLike as any
 
   cart.total = new BigNumber(total)
   cart.subtotal = new BigNumber(subtotal)
