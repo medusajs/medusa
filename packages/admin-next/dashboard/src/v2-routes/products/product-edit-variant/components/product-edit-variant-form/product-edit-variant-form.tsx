@@ -53,10 +53,8 @@ export const ProductEditVariantForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const defaultOptions = product.options.reduce((acc: any, option: any) => {
-    const varOpt = variant.options.find(
-      (o: any) => o.option_value.option_id === option.id
-    )
-    acc[option.title] = varOpt?.option_value?.value
+    const varOpt = variant.options.find((o: any) => o.option_id === option.id)
+    acc[option.title] = varOpt?.value
     return acc
   }, {})
 

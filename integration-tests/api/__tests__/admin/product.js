@@ -658,8 +658,7 @@ medusaIntegrationTestRunner({
           }
         })
 
-        // TODO: Enforce tag uniqueness in product module
-        it.skip("returns a list of products with tags", async () => {
+        it("returns a list of products with tags", async () => {
           const response = await api.get(
             `/admin/products?tags[]=${baseProduct.tags[0].id}`,
             adminHeaders
@@ -668,26 +667,25 @@ medusaIntegrationTestRunner({
           expect(response.status).toEqual(200)
           expect(response.data.products).toHaveLength(2)
           expect(response.data.products).toEqual(
-            expect.arrayContaining(
-              [
-                expect.objectContaining({
-                  id: baseProduct.id,
-                  tags: [
-                    expect.objectContaining({ id: baseProduct.tags[0].id }),
-                  ],
-                }),
-              ],
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.id,
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
+              }),
               expect.objectContaining({
                 id: publishedProduct.id,
                 // It should be the same tag instance in both products
-                tags: [expect.objectContaining({ id: baseProduct.tags[0].id })],
-              })
-            )
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
+              }),
+            ])
           )
         })
 
-        // TODO: Enforce tag uniqueness in product module
-        it.skip("returns a list of products with tags in a collection", async () => {
+        it("returns a list of products with tags in a collection", async () => {
           const response = await api.get(
             `/admin/products?collection_id[]=${baseCollection.id}&tags[]=${baseProduct.tags[0].id}`,
             adminHeaders
@@ -700,7 +698,9 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: baseProduct.id,
                 collection_id: baseCollection.id,
-                tags: [expect.objectContaining({ id: baseProduct.tags[0].id })],
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
               }),
             ])
           )
@@ -806,10 +806,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "100",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "100",
                           }),
                         ])
                     ),
@@ -910,10 +908,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "large",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "large",
                           }),
                         ])
                     ),
@@ -963,10 +959,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "green",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "green",
                           }),
                         ])
                     ),
@@ -1394,21 +1388,17 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "green",
-                            option: expect.objectContaining({
-                              title: "color",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "green",
+                          option: expect.objectContaining({
+                            title: "color",
                           }),
                         }),
                       ])
@@ -1661,12 +1651,10 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                       ])
@@ -2667,8 +2655,7 @@ medusaIntegrationTestRunner({
           expect(response2.data.id).toEqual(res.data.product.id)
         })
 
-        // TODO: We just need to return the correct error message
-        it.skip("should fail when creating a product with a handle that already exists", async () => {
+        it("should fail when creating a product with a handle that already exists", async () => {
           // Lets try to create a product with same handle as deleted one
           const payload = {
             title: baseProduct.title,
@@ -2687,7 +2674,10 @@ medusaIntegrationTestRunner({
             await api.post("/admin/products", payload, adminHeaders)
           } catch (error) {
             expect(error.response.data.message).toMatch(
-              "Product with handle test-product already exists."
+              breaking(
+                () => "Product with handle base-product already exists.",
+                () => "Product with handle: base-product already exists."
+              )
             )
           }
         })
