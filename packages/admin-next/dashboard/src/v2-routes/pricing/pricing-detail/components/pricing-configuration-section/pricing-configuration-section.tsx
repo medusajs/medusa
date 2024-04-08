@@ -1,9 +1,9 @@
 import { PencilSquare } from "@medusajs/icons"
 import { PriceListDTO } from "@medusajs/types"
-import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
-import { format } from "date-fns"
+import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDate } from "../../../../../hooks/use-date"
 
 type PricingConfigurationSectionProps = {
   priceList: PriceListDTO
@@ -13,9 +13,11 @@ export const PricingConfigurationSection = ({
   priceList,
 }: PricingConfigurationSectionProps) => {
   const { t } = useTranslation()
+  const { getFullDate } = useDate()
 
-  const firstCustomerGroups = priceList.customer_groups?.slice(0, 3) || []
-  const remainingCustomerGroups = priceList.customer_groups?.slice(3) || []
+  // TODO: Customer groups are not available in the price list schema out-of-the-box atm.
+  // const firstCustomerGroups = priceList.customer_groups?.slice(0, 3) || []
+  // const remainingCustomerGroups = priceList.customer_groups?.slice(3) || []
 
   return (
     <Container className="divide-y p-0">
@@ -27,7 +29,7 @@ export const PricingConfigurationSection = ({
               actions: [
                 {
                   label: t("actions.edit"),
-                  to: "configurations/edit",
+                  to: "configuration",
                   icon: <PencilSquare />,
                 },
               ],
@@ -41,7 +43,7 @@ export const PricingConfigurationSection = ({
         </Text>
         <Text size="small" className="text-pretty">
           {priceList.starts_at
-            ? format(new Date(priceList.starts_at), "dd MMM yyyy")
+            ? getFullDate({ date: priceList.starts_at })
             : "-"}
         </Text>
       </div>
@@ -50,12 +52,10 @@ export const PricingConfigurationSection = ({
           {t("fields.endDate")}
         </Text>
         <Text size="small" className="text-pretty">
-          {priceList.ends_at
-            ? format(new Date(priceList.ends_at), "dd MMM yyyy")
-            : "-"}
+          {priceList.ends_at ? getFullDate({ date: priceList.ends_at }) : "-"}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      {/* <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text leading="compact" size="small" weight="plus">
           {t("pricing.settings.customerGroupsLabel")}
         </Text>
@@ -84,7 +84,7 @@ export const PricingConfigurationSection = ({
             </Tooltip>
           )}
         </Text>
-      </div>
+      </div> */}
     </Container>
   )
 }

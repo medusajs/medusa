@@ -1,5 +1,6 @@
-import { PriceListDTO } from "@medusajs/types"
+import { PriceListDTO, ProductVariantDTO } from "@medusajs/types"
 import { TFunction } from "i18next"
+import { ExtendedProductDTO } from "../../../types/api-responses"
 import { PriceListStatus } from "./constants"
 
 const getValues = (priceList: PriceListDTO) => {
@@ -45,4 +46,10 @@ export const getPriceListStatus = (
     color,
     text,
   }
+}
+
+export const isProductRow = (
+  row: ExtendedProductDTO | ProductVariantDTO
+): row is ExtendedProductDTO => {
+  return "variants" in row
 }

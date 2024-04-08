@@ -1,5 +1,7 @@
 import {
+  AddPriceListPricesReq,
   CreatePriceListReq,
+  DeletePriceListPricesReq,
   UpdatePriceListReq,
 } from "../../types/api-payloads"
 import {
@@ -29,10 +31,29 @@ async function deletePriceList(id: string) {
   return postRequest<PriceListDeleteRes>(`/admin/price-lists/${id}/delete`)
 }
 
+async function addPriceListPrices(id: string, payload: AddPriceListPricesReq) {
+  return postRequest<PriceListRes>(
+    `/admin/price-lists/${id}/prices/batch/add`,
+    payload
+  )
+}
+
+async function removePriceListPrices(
+  id: string,
+  payload: DeletePriceListPricesReq
+) {
+  return postRequest<PriceListRes>(
+    `/admin/price-lists/${id}/prices/batch/remove`,
+    payload
+  )
+}
+
 export const priceLists = {
   retrieve: retrievePriceLists,
   list: listPriceLists,
   create: createPriceList,
   update: updatePriceList,
   delete: deletePriceList,
+  addPrices: addPriceListPrices,
+  removePrices: removePriceListPrices,
 }

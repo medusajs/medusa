@@ -1,4 +1,4 @@
-import { PencilSquare, Plus } from "@medusajs/icons"
+import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { PriceListDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -63,7 +63,6 @@ export const PricingProductSection = ({
     prefix: PREFIX,
   })
 
-  // const { mutateAsync } = useAdminDeletePriceListProductsPrices(priceList.id)
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
@@ -78,9 +77,9 @@ export const PricingProductSection = ({
       return
     }
 
-    // await mutateAsync({
-    //   product_ids: Object.keys(rowSelection),
-    // })
+    // The endpoint to batch remove prices by product ids is not implemented in
+    // v2. We either need to implement it or remove the feature.
+    console.log("Not implemented yet.")
   }
 
   const handleEdit = async () => {
@@ -146,6 +145,30 @@ export const PricingProductSection = ({
   )
 }
 
+const ProductRowAction = ({ product }: { product: ExtendedProductDTO }) => {
+  const { t } = useTranslation()
+
+  // TODO: The endpoint to remove prices by product id is not implemented in v2.
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("actions.remove"),
+              onClick: () => {
+                console.log("Not implemented yet.")
+              },
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
 const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
 const useColumns = () => {
@@ -182,6 +205,10 @@ const useColumns = () => {
         },
       }),
       ...base,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <ProductRowAction product={row.original} />,
+      }),
     ],
     [base]
   )

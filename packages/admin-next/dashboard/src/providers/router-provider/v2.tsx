@@ -264,7 +264,7 @@ export const v2Routes: RouteObject[] = [
                   {
                     path: "products/edit",
                     lazy: () =>
-                      import("../../v2-routes/pricing/pricing-products-edit"),
+                      import("../../v2-routes/pricing/pricing-products-prices"),
                   },
                 ],
               },

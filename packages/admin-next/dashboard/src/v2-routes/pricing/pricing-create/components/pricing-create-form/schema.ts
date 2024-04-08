@@ -1,27 +1,5 @@
 import { z } from "zod"
-
-const PricingVariantPricesRecordSchema = z.record(z.string().optional())
-
-const PricingVariantsRecordSchema = z.record(
-  z.object({
-    currency_prices: PricingVariantPricesRecordSchema,
-    region_prices: PricingVariantPricesRecordSchema,
-  })
-)
-
-export type PricingVariantsRecordType = z.infer<
-  typeof PricingVariantsRecordSchema
->
-
-const PricingProductsRecordSchema = z.record(
-  z.object({
-    variants: PricingVariantsRecordSchema,
-  })
-)
-
-export type PricingProductsRecordType = z.infer<
-  typeof PricingProductsRecordSchema
->
+import { PricingProductsRecordSchema } from "../../../common/schemas"
 
 const PricingCustomerGroupsArray = z.array(
   z.object({

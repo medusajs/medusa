@@ -88,10 +88,11 @@ export const PricingCreateForm = () => {
               continue
             }
 
-            console.log(currencyCode, currencyPrice)
-
             prices.push({
-              amount: getDbAmount(castNumber(currencyPrice), currencyCode),
+              amount: getDbAmount(
+                castNumber(currencyPrice.amount),
+                currencyCode
+              ),
               currency_code: currencyCode,
               // @ts-expect-error type is wrong
               variant_id: variantId,
