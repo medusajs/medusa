@@ -23,7 +23,9 @@ import {
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
-import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options.ts"
+import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { currencies } from "../../../../../lib/currencies"
 
 enum Tab {
   DETAILS = "details",
@@ -41,10 +43,10 @@ type StepStatus = {
 
 const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
-  type: zod.nativeEnum(ShippingAllocation),
+  price_type: zod.nativeEnum(ShippingAllocation),
   enable_in_store: zod.boolean().optional(),
-  region_prices: zod.record(zod.string(), zod.string()),
-  currency_prices: zod.record(zod.string(), zod.string()),
+  region_prices: zod.record(zod.string(), zod.string().optional()),
+  currency_prices: zod.record(zod.string(), zod.string().optional()),
 })
 
 type CreateServiceZoneFormProps = {
@@ -73,12 +75,34 @@ export function CreateShippingOptionsForm({
     useCreateShippingOptions()
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const currencyPrices = Object.entries(data.currency_prices)
+      .map(([code, value]) => {
+        const amount =
+          value === "" ? undefined : getDbAmount(Number(value), code)
+
+        return {
+          currency_code: code,
+          amount: amount,
+        }
+      })
+      .filter((o) => !!o.amount)
+
+    // Object.entries(data.region_prices).map(([region_id, value]) => {})
+
     await createShippingOption({
       name: data.name,
       price_type: data.price_type,
+      service_zone_id: zone.id,
+      shipping_profile_id: "shipporf_123", // TODO: fetch profiles
+      provider_id: "Webshipper", // TODO
+      prices: [...currencyPrices],
+      type: {
+        // TODO: fetch profiles
+        label: "Type label",
+        description: "Type description",
+        code: "type-code",
+      },
     })
-
-    return
 
     handleSuccess("/settings/shipping")
   })

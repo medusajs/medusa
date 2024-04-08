@@ -1207,6 +1207,7 @@
     "issuedDate": "Issued date",
     "expiryDate": "Expiry date",
     "price": "Price",
+    "priceTemplate": "Price {{regionOrCountry}}",
     "height": "Height",
     "width": "Width",
     "length": "Length",

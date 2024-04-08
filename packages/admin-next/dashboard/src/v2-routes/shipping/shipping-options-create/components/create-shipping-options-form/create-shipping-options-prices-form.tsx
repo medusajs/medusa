@@ -104,7 +104,7 @@ export const CreateShippingOptionsPricesForm = ({
     <div className="flex size-full flex-col divide-y overflow-hidden">
       <DataGrid
         columns={columns}
-        data={data} // TODO: optimise
+        data={data}
         isLoading={initializing}
         state={form}
       />
@@ -130,7 +130,9 @@ const useColumns = ({
       return [
         ...currencies.map((currency) => {
           return columnHelper.display({
-            header: `Price ${currency.code.toUpperCase()}`,
+            header: t("fields.priceTemplate", {
+              regionOrCountry: currency.code.toUpperCase(),
+            }),
             cell: ({ row, table }) => {
               return (
                 <CurrencyCell
@@ -144,7 +146,9 @@ const useColumns = ({
         }),
         ...regions.map((region) => {
           return columnHelper.display({
-            header: `Price ${region.name}`,
+            header: t("fields.priceTemplate", {
+              regionOrCountry: region.name,
+            }),
             cell: ({ row, table }) => {
               return (
                 <CurrencyCell
