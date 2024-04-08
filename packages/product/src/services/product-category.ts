@@ -1,5 +1,6 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  FreeTextSearchFilterKey,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -76,6 +77,17 @@ export default class ProductCategoryService<
     delete filters.include_descendants_tree
     delete filters.include_ancestors_tree
 
+    // Apply free text search filter
+    if (filters?.q) {
+      config.filters ??= {}
+      config.filters[FreeTextSearchFilterKey] = {
+        value: filters.q,
+        fromEntity: ProductCategory.name,
+      }
+
+      delete filters.q
+    }
+
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
       config
@@ -101,6 +113,17 @@ export default class ProductCategoryService<
     }
     delete filters.include_descendants_tree
     delete filters.include_ancestors_tree
+
+    // Apply free text search filter
+    if (filters?.q) {
+      config.filters ??= {}
+      config.filters[FreeTextSearchFilterKey] = {
+        value: filters.q,
+        fromEntity: ProductCategory.name,
+      }
+
+      delete filters.q
+    }
 
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
