@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
-import { RouteFocusModal } from "../../../../../components/route-modal"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 const CreateLocationSchema = zod.object({
@@ -24,6 +27,7 @@ const CreateLocationSchema = zod.object({
 
 export const CreateLocationForm = () => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof CreateLocationSchema>>({
     defaultValues: {
@@ -51,7 +55,9 @@ export const CreateLocationForm = () => {
         address: values.address,
       },
       {
-        onSuccess: () => {},
+        onSuccess: () => {
+          handleSuccess("/settings/locations")
+        },
       }
     )
   })
