@@ -137,17 +137,6 @@ export default class OrderModuleService<
   protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
   protected orderSummaryService_: ModulesSdkTypes.InternalModuleService<TOrderSummary>
 
-  private requiredFieldsForTotals: string[] = [
-    "items",
-    "items.tax_lines",
-    "items.adjustments",
-    "items.tax_lines",
-    "items.adjustments",
-    "shipping_methods",
-    "shipping_methods.tax_lines",
-    "shipping_methods.adjustments",
-  ]
-
   constructor(
     {
       baseRepository,
@@ -190,13 +179,64 @@ export default class OrderModuleService<
     return joinerConfig
   }
 
-  private addRelationsToCalculateTotals(config: FindConfig<any>) {
-    config.relations ??= []
+  private shouldIncludeTotals(config: FindConfig<any>): boolean {
+    const totalFields = [
+      "total",
+      "subtotal",
+      "tax_total",
+      "discount_total",
+      "discount_tax_total",
+      "original_total",
+      "original_tax_total",
+      "item_total",
+      "item_subtotal",
+      "item_tax_total",
+      "original_item_total",
+      "original_item_subtotal",
+      "original_item_tax_total",
+      "shipping_total",
+      "shipping_subtotal",
+      "shipping_tax_total",
+      "original_shipping_tax_total",
+      "original_shipping_tax_subtotal",
+      "original_shipping_total",
+    ]
 
+    const includeTotals = (config?.select ?? []).some((field) =>
+      totalFields.includes(field as string)
+    )
+
+    if (includeTotals) {
+      this.addRelationsToCalculateTotals(config, totalFields)
+    }
+
+    return includeTotals
+  }
+
+  private addRelationsToCalculateTotals(config: FindConfig<any>, totalFields) {
+    config.relations ??= []
+    config.select ??= []
+
+    const requiredFieldsForTotals = [
+      "items",
+      "items.tax_lines",
+      "items.adjustments",
+      "shipping_methods",
+      "shipping_methods.tax_lines",
+      "shipping_methods.adjustments",
+    ]
     config.relations = deduplicate([
       ...config.relations,
-      ...this.requiredFieldsForTotals,
+      ...requiredFieldsForTotals,
     ])
+
+    config.select = config.select.filter((field) => {
+      return (
+        !requiredFieldsForTotals.some((val) =>
+          val.startsWith(field as string)
+        ) && !totalFields.includes(field)
+      )
+    })
   }
 
   async retrieve(
@@ -204,11 +244,8 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO> {
-    const includeTotals = config?.select?.includes("total")
-    if (includeTotals) {
-      config ??= {}
-      this.addRelationsToCalculateTotals(config)
-    }
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
 
     const order = await super.retrieve(id, config, sharedContext)
 
@@ -220,11 +257,8 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO[]> {
-    const includeTotals = config?.select?.includes("total")
-    if (includeTotals) {
-      config ??= {}
-      this.addRelationsToCalculateTotals(config)
-    }
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
 
     const orders = await super.list(filters, config, sharedContext)
 
@@ -238,11 +272,8 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<[OrderTypes.OrderDTO[], number]> {
-    const includeTotals = config?.select?.includes("total")
-    if (includeTotals) {
-      config ??= {}
-      this.addRelationsToCalculateTotals(config)
-    }
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
 
     const [orders, count] = await super.listAndCount(
       filters,
