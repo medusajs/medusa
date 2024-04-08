@@ -191,6 +191,18 @@ medusaIntegrationTestRunner({
             }),
           })
         )
+
+        const serviceZoneResponse = await api
+          .get(
+            `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+            adminHeaders
+          )
+          .catch((err) => err.response)
+
+        expect(serviceZoneResponse.status).toEqual(404)
+        expect(serviceZoneResponse.data.message).toEqual(
+          `Service zone with id: ${serviceZoneId} not found`
+        )
       })
 
       it("should throw if invalid type is passed", async () => {
@@ -344,9 +356,9 @@ medusaIntegrationTestRunner({
             },
             adminHeaders
           )
-  
+
           const stockLocationId = stockLocationResponse.data.stock_location.id
-  
+
           const locationWithFSetResponse = await api.post(
             `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
             {
@@ -355,7 +367,7 @@ medusaIntegrationTestRunner({
             },
             adminHeaders
           )
-  
+
           const fulfillmentSetId =
             locationWithFSetResponse.data.stock_location.fulfillment_sets[0].id
 
