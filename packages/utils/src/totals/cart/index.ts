@@ -69,7 +69,6 @@ export function decorateCartTotals(
   let itemsOriginalSubtotal = MathBN.convert(0)
 
   let itemsTaxTotal = MathBN.convert(0)
-  let itemsTaxSubTotal = MathBN.convert(0)
 
   let itemsOriginalTaxTotal = MathBN.convert(0)
 
@@ -94,8 +93,6 @@ export function decorateCartTotals(
     const itemOriginalTotal = MathBN.convert(itemTotals.original_total)
 
     const itemTaxTotal = MathBN.convert(itemTotals.tax_total)
-    const itemTaxSubTotal = MathBN.convert(itemTotals.tax_subtotal)
-
     const itemOriginalTaxTotal = MathBN.convert(itemTotals.original_tax_total)
 
     const itemDiscountTotal = MathBN.convert(itemTotals.discount_total)
@@ -114,7 +111,6 @@ export function decorateCartTotals(
     itemsSubtotal = MathBN.add(itemsSubtotal, itemSubtotal)
 
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
-    itemsTaxSubTotal = MathBN.add(itemsTaxSubTotal, itemTaxSubTotal)
 
     itemsOriginalTaxTotal = MathBN.add(
       itemsOriginalTaxTotal,
