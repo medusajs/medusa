@@ -111,8 +111,13 @@ function ServiceZoneOptions({
           </div>
         )}
 
-        {!!shippingOptions.length &&
-          shippingOptions.map((o) => <ShippingOption key={o.id} option={o} />)}
+        {!!shippingOptions.length && (
+          <div className="flex flex-col gap-3">
+            {shippingOptions.map((o) => (
+              <ShippingOption key={o.id} option={o} />
+            ))}
+          </div>
+        )}
       </div>
       {/*TODO implement return options*/}
       {/*<div className="py-4">*/}

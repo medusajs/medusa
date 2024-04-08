@@ -70,6 +70,9 @@ export function CreateShippingOptionsForm({
     resolver: zodResolver(CreateServiceZoneSchema),
   })
 
+  const isCalculatedPriceType =
+    form.watch("price_type") === ShippingAllocation.Calculated
+
   const { mutateAsync: createShippingOption, isPending: isLoading } =
     useCreateShippingOptions()
 
@@ -160,16 +163,18 @@ export function CreateShippingOptionsForm({
                   {t("shipping.shippingOptions.create.details")}
                 </span>
               </ProgressTabs.Trigger>
-              <ProgressTabs.Trigger
-                value={Tab.PRICING}
-                className="w-full max-w-[200px]"
-                status={status[Tab.PRICING]}
-                disabled={!canMoveToPricing}
-              >
-                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                  {t("shipping.shippingOptions.create.pricing")}
-                </span>
-              </ProgressTabs.Trigger>
+              {!isCalculatedPriceType && (
+                <ProgressTabs.Trigger
+                  value={Tab.PRICING}
+                  className="w-full max-w-[200px]"
+                  status={status[Tab.PRICING]}
+                  disabled={!canMoveToPricing}
+                >
+                  <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                    {t("shipping.shippingOptions.create.pricing")}
+                  </span>
+                </ProgressTabs.Trigger>
+              )}
             </ProgressTabs.List>
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
@@ -183,10 +188,20 @@ export function CreateShippingOptionsForm({
                 isLoading={isLoading}
                 onClick={onNext}
                 disabled={!canMoveToPricing}
-                key={tab === Tab.PRICING ? "details" : "pricing"}
-                type={tab === Tab.PRICING ? "submit" : "button"}
+                key={
+                  tab === Tab.PRICING || isCalculatedPriceType
+                    ? "details"
+                    : "pricing"
+                }
+                type={
+                  tab === Tab.PRICING || isCalculatedPriceType
+                    ? "submit"
+                    : "button"
+                }
               >
-                {tab === Tab.PRICING ? t("actions.save") : t("general.next")}
+                {tab === Tab.PRICING || isCalculatedPriceType
+                  ? t("actions.save")
+                  : t("general.next")}
               </Button>
             </div>
           </RouteFocusModal.Header>
