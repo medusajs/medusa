@@ -17,6 +17,7 @@ import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
+import { PriceListRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
 
@@ -257,6 +258,53 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/collections/collection-add-products"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                handle: {
+                  crumb: (data: PriceListRes) => data.price_list.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-configuration"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-add"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-prices"),
                   },
                 ],
               },
