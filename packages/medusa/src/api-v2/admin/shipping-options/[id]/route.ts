@@ -57,7 +57,7 @@ export const DELETE = async (
 
   const workflow = deleteShippingOptionsWorkflow(req.scope)
 
-  const { result, errors } = await workflow.run({
+  const { errors } = await workflow.run({
     input: { ids: [shippingOptionId] },
     throwOnError: false,
   })
@@ -68,5 +68,5 @@ export const DELETE = async (
 
   res
     .status(200)
-    .json({ id: shippingOptionId, object: "shipping_options", deleted: true })
+    .json({ id: shippingOptionId, object: "shipping_option", deleted: true })
 }

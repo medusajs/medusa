@@ -237,8 +237,7 @@ medusaIntegrationTestRunner({
 
           const shippingOptionId = response.data.shipping_option.id
 
-          const updateShippingOptionPayload = {
-          }
+          const updateShippingOptionPayload = {}
 
           let err = await api
             .post(
@@ -338,7 +337,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/shipping-options/:id", () => {
+      describe.only("DELETE /admin/shipping-options/:id", () => {
         it("should delete a shipping option successfully", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",
