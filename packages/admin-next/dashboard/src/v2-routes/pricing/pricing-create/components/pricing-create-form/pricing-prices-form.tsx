@@ -29,6 +29,7 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   } = useCurrencies(
     {
       code: store?.supported_currency_codes,
+      limit: store?.supported_currency_codes?.length,
     },
     {
       enabled: !!store,
