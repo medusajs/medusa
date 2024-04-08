@@ -141,6 +141,7 @@ export const useCreateFulfillmentSet = (
 }
 
 export const useCreateServiceZone = (
+  locationId: string,
   fulfillmentSetId: string,
   options?: UseMutationOptions<StockLocationRes, Error, CreateServiceZoneReq>
 ) => {
@@ -148,6 +149,9 @@ export const useCreateServiceZone = (
     mutationFn: (payload) =>
       client.stockLocations.createServiceZone(fulfillmentSetId, payload),
     onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.detail(locationId),
+      })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })

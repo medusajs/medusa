@@ -5,7 +5,7 @@ import { CreateServiceZoneForm } from "./components/create-service-zone-form"
 import { stockLocationLoader } from "./loader"
 
 export function ServiceZoneCreate() {
-  const { fset_id } = useParams()
+  const { fset_id, location_id } = useParams()
   const { stock_location: stockLocation } = useLoaderData() as Awaited<
     ReturnType<typeof stockLocationLoader>
   >
@@ -20,7 +20,10 @@ export function ServiceZoneCreate() {
 
   return (
     <RouteFocusModal>
-      <CreateServiceZoneForm fulfillmentSet={fulfillmentSet} />
+      <CreateServiceZoneForm
+        locationId={location_id!}
+        fulfillmentSet={fulfillmentSet}
+      />
     </RouteFocusModal>
   )
 }

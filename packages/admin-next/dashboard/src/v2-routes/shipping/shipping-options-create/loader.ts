@@ -6,7 +6,7 @@ import { queryClient } from "../../../lib/medusa"
 import { StockLocationRes } from "../../../types/api-responses"
 
 const fulfillmentSetCreateQuery = (id: string) => ({
-  queryKey: adminStockLocationsKeys.detail(id),
+  queryKey: adminStockLocationsKeys.list(), // Use the list cache key for now
   queryFn: async () =>
     client.stockLocations.retrieve(id, {
       fields:

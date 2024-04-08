@@ -6,7 +6,7 @@ import { queryClient } from "../../../lib/medusa"
 import { StockLocationListRes } from "../../../types/api-responses"
 
 const shippingListQuery = () => ({
-  queryKey: adminStockLocationsKeys.list(),
+  queryKey: adminStockLocationsKeys.lists(),
   queryFn: async () =>
     client.stockLocations.list({
       // fields: "*fulfillment_sets,*fulfillment_sets.service_zones",

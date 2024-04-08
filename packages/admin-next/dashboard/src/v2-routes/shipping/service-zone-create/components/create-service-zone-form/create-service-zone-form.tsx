@@ -41,10 +41,12 @@ const CreateServiceZoneSchema = zod.object({
 
 type CreateServiceZoneFormProps = {
   fulfillmentSet: FulfillmentSetDTO
+  locationId: string
 }
 
 export function CreateServiceZoneForm({
   fulfillmentSet,
+  locationId,
 }: CreateServiceZoneFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -60,7 +62,7 @@ export function CreateServiceZoneForm({
   })
 
   const { mutateAsync: createServiceZone, isPending: isLoading } =
-    useCreateServiceZone(fulfillmentSet.id)
+    useCreateServiceZone(locationId, fulfillmentSet.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await createServiceZone({
