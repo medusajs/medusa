@@ -131,6 +131,40 @@ export type ModulesResponse = {
   resolution: string | false
 }[]
 
+export type LinkModulesExtraFields = Record<
+  string,
+  {
+    type:
+      | "date"
+      | "time"
+      | "datetime"
+      | "bigint"
+      | "blob"
+      | "uint8array"
+      | "array"
+      | "enumArray"
+      | "enum"
+      | "json"
+      | "integer"
+      | "smallint"
+      | "tinyint"
+      | "mediumint"
+      | "float"
+      | "double"
+      | "boolean"
+      | "decimal"
+      | "string"
+      | "uuid"
+      | "text"
+    defaultValue?: string
+    nullable?: boolean
+    /**
+     * Mikro-orm options for the column
+     */
+    options?: Record<string, unknown>
+  }
+>
+
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
@@ -176,39 +210,7 @@ export type ModuleJoinerConfig = Omit<
      * Prefix for the id column. If not provided it is "link"
      */
     idPrefix?: string
-    extraFields?: Record<
-      string,
-      {
-        type:
-          | "date"
-          | "time"
-          | "datetime"
-          | "bigint"
-          | "blob"
-          | "uint8array"
-          | "array"
-          | "enumArray"
-          | "enum"
-          | "json"
-          | "integer"
-          | "smallint"
-          | "tinyint"
-          | "mediumint"
-          | "float"
-          | "double"
-          | "boolean"
-          | "decimal"
-          | "string"
-          | "uuid"
-          | "text"
-        defaultValue?: string
-        nullable?: boolean
-        /**
-         * Mikro-orm options for the column
-         */
-        options?: Record<string, unknown>
-      }
-    >
+    extraFields?: LinkModulesExtraFields
   }
 }
 

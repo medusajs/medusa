@@ -30,7 +30,7 @@ import {
   ModuleRegistrationName,
   Modules,
 } from "./definitions"
-import { MedusaModule } from "./medusa-module"
+import { MedusaModule, RegisterModuleJoinerConfig } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
@@ -215,7 +215,7 @@ export type MedusaAppOptions = {
   modulesConfigPath?: string
   modulesConfigFileName?: string
   modulesConfig?: MedusaModuleConfig
-  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  linkModules?: RegisterModuleJoinerConfig | RegisterModuleJoinerConfig[]
   remoteFetchData?: RemoteFetchDataCallback
   injectedDependencies?: any
   onApplicationStartCb?: () => void
@@ -235,7 +235,6 @@ async function MedusaApp_({
   linkModules,
   remoteFetchData,
   injectedDependencies = {},
-  onApplicationStartCb,
   migrationOnly = false,
   loaderOnly = false,
   workerMode = "server",
@@ -329,6 +328,20 @@ async function MedusaApp_({
       allowUnregistered: true,
     })
 
+  linkModules ??= []
+  if (!Array.isArray(linkModules)) {
+    linkModules = [linkModules]
+  }
+  linkModules.push(...MedusaModule.getCustomLinks())
+
+  const allLoadedJoinerConfigs = MedusaModule.getAllJoinerConfigs()
+  for (let linkIdx = 0; linkIdx < linkModules.length; linkIdx++) {
+    const customLink: any = linkModules[linkIdx]
+    if (typeof customLink === "function") {
+      linkModules[linkIdx] = customLink(allLoadedJoinerConfigs)
+    }
+  }
+
   const { remoteLink, runMigrations: linkModuleMigration } =
     await initializeLinks({
       config: linkModuleOptions,
@@ -380,10 +393,13 @@ async function MedusaApp_({
     }
 
     linkModuleMigration &&
-      (await linkModuleMigration({
-        options: linkModuleOpt,
-        injectedDependencies,
-      }))
+      (await linkModuleMigration(
+        {
+          options: linkModuleOpt,
+          injectedDependencies,
+        },
+        linkModules
+      ))
   }
 
   return {
