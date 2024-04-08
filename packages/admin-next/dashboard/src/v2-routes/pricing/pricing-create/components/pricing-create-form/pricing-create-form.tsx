@@ -149,28 +149,28 @@ export const PricingCreateForm = () => {
   }
 
   const isTabDirty = (tab: Tab) => {
-    if (tab === Tab.DETAIL) {
-      const fields = PricingDetailsFields
+    switch (tab) {
+      case Tab.DETAIL: {
+        const fields = PricingDetailsFields
 
-      return fields.some((field) => {
-        return form.getFieldState(field).isDirty
-      })
-    }
+        return fields.some((field) => {
+          return form.getFieldState(field).isDirty
+        })
+      }
+      case Tab.PRODUCT: {
+        const fields = PricingProductsFields
 
-    if (tab === Tab.PRODUCT) {
-      const fields = PricingProductsFields
+        return fields.some((field) => {
+          return form.getFieldState(field).isDirty
+        })
+      }
+      case Tab.PRICE: {
+        const fields = PricingPricesFields
 
-      return fields.some((field) => {
-        return form.getFieldState(field).isDirty
-      })
-    }
-
-    if (tab === Tab.PRICE) {
-      const fields = PricingPricesFields
-
-      return fields.some((field) => {
-        return form.getFieldState(field).isDirty
-      })
+        return fields.some((field) => {
+          return form.getFieldState(field).isDirty
+        })
+      }
     }
   }
 
