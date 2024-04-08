@@ -84,6 +84,7 @@ export const AdminGetProductOptionsParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     title: z.string().optional(),
     $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
