@@ -1,13 +1,11 @@
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
-import { Customer, CustomerGroup } from "@medusajs/medusa"
+import { Customer } from "@medusajs/medusa"
 import { PencilSquare, Trash } from "@medusajs/icons"
 import {
   adminCustomerGroupKeys,
   useAdminCustomPost,
   useAdminCustomerGroupCustomers,
-  useAdminRemoveCustomersFromCustomerGroup,
 } from "medusa-react"
-
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { Link } from "react-router-dom"
@@ -18,9 +16,12 @@ import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-cust
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
+import { useCustomers } from "../../../../../hooks/api/customers"
+import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type CustomerGroupCustomerSectionProps = {
-  group: CustomerGroup
+  group: AdminCustomerGroupResponse["customer_group"]
 }
 
 const PAGE_SIZE = 10
@@ -31,16 +32,10 @@ export const CustomerGroupCustomerSection = ({
   const { t } = useTranslation()
 
   const { searchParams, raw } = useCustomerTableQuery({ pageSize: PAGE_SIZE })
-  const { customers, count, isLoading, isError, error } =
-    useAdminCustomerGroupCustomers(
-      group.id,
-      {
-        ...searchParams,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { customers, count, isLoading, isError, error } = useCustomers({
+    ...searchParams,
+    groups: group.id,
+  })
 
   const filters = useCustomerTableFilters(["groups"])
   const columns = useColumns()
@@ -100,14 +95,11 @@ const CustomerActions = ({
   customer,
   customerGroupId,
 }: {
-  customer: Customer
+  customer: AdminCustomerGroupResponse["customer_group"]
   customerGroupId: string
 }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/customer-groups/${customerGroupId}/customers/remove`,
-    adminCustomerGroupKeys.lists()
-  )
+  const { mutateAsync } = useUpdateCustomerGroup(customerGroupId)
 
   const prompt = usePrompt()
 

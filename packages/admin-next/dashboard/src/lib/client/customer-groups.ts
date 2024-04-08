@@ -5,7 +5,7 @@ import {
 import { z } from "zod"
 import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"
 import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
-import { getRequest, postRequest } from "./common"
+import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveCustomerGroup(id: string, query?: Record<string, any>) {
   return getRequest<AdminCustomerGroupResponse>(
@@ -21,7 +21,7 @@ async function listCustomerGroups(query?: Record<string, any>) {
   )
 }
 
-async function createCustomer(
+async function createCustomerGroup(
   payload: z.infer<typeof CreateCustomerGroupSchema>
 ) {
   return postRequest<AdminCustomerGroupResponse>(
@@ -30,7 +30,7 @@ async function createCustomer(
   )
 }
 
-async function updateCustomer(
+async function updateCustomerGroup(
   id: string,
   payload: z.infer<typeof EditCustomerGroupSchema>
 ) {
@@ -40,9 +40,18 @@ async function updateCustomer(
   )
 }
 
+async function deleteCustomerGroup(id: string) {
+  return deleteRequest<{
+    id: string
+    deleted: boolean
+    object: "customer-group"
+  }>(`/admin/customer-groups/${id}`)
+}
+
 export const customerGroups = {
   retrieve: retrieveCustomerGroup,
   list: listCustomerGroups,
-  create: createCustomer,
-  update: updateCustomer,
+  create: createCustomerGroup,
+  update: updateCustomerGroup,
+  delete: deleteCustomerGroup,
 }

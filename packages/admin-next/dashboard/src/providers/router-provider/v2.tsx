@@ -270,6 +270,47 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],

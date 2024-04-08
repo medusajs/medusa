@@ -1,13 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import type { CustomerGroup } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
-import { useAdminDeleteCustomerGroup } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
+import { useDeleteCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type CustomerGroupGeneralSectionProps = {
-  group: CustomerGroup
+  group: AdminCustomerGroupResponse["customer_group"]
 }
 
 export const CustomerGroupGeneralSection = ({
@@ -16,7 +16,7 @@ export const CustomerGroupGeneralSection = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { mutateAsync } = useAdminDeleteCustomerGroup(group.id)
+  const { mutateAsync } = useDeleteCustomerGroup(group.id)
 
   const handleDelete = async () => {
     await mutateAsync(undefined, {

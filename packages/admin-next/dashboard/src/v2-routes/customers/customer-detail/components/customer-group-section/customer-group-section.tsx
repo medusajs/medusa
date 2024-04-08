@@ -1,11 +1,9 @@
-// TODO: Should be added with Customer Groups UI
-
 // import { Customer, CustomerGroup } from "@medusajs/medusa"
 // import { Container, Heading } from "@medusajs/ui"
 // import { createColumnHelper } from "@tanstack/react-table"
-// import { useAdminCustomerGroups } from "medusa-react"
 // import { useMemo } from "react"
 // import { useTranslation } from "react-i18next"
+// import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
 
 // // TODO: Continue working on this when there is a natural way to get customer groups related to a customer.
 // type CustomerGroupSectionProps = {
@@ -15,11 +13,9 @@
 // export const CustomerGroupSection = ({
 //   customer,
 // }: CustomerGroupSectionProps) => {
-//   const { customer_groups, isLoading, isError, error } = useAdminCustomerGroups(
-//     {
-//       id: customer.groups.map((g) => g.id).join(","),
-//     }
-//   )
+//   const { customer_groups, isLoading, isError, error } = useCustomerGroups({
+//     customers: customer.id,
+//   })
 
 //   if (isError) {
 //     throw error

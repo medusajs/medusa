@@ -81,7 +81,7 @@ export const useCreateCustomerGroup = (
   })
 }
 
-export const useUpdateCustomer = (
+export const useUpdateCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
     AdminCustomerGroupResponse,
@@ -91,6 +91,30 @@ export const useUpdateCustomer = (
 ) => {
   return useMutation({
     mutationFn: (payload) => client.customerGroups.update(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteCustomerGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    { id: string; object: "customer-group"; deleted: boolean },
+    Error,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () => client.customerGroups.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
