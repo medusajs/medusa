@@ -7,9 +7,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams } from "../../../types/common"
+import z from "zod"
+import { createFindParams } from "../../utils/validators"
 
-export class AdminGetTaxRatesTaxRateParams extends FindParams {}
+export const AdminGetTaxRateParams = createFindParams({
+  limit: 20,
+  offset: 0,
+})
+
+export const AdminGetTaxRatesParams = createFindParams({
+  limit: 20,
+  offset: 0,
+}).merge(
+  z.object({
+    tax_region_id: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+)
 
 class CreateTaxRateRule {
   @IsString()

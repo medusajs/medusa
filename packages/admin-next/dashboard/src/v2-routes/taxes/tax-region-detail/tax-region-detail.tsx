@@ -1,6 +1,7 @@
 import { AdminTaxRegionResponse } from "@medusajs/types"
 import { Outlet, useParams } from "react-router-dom"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
+import { TaxRateList } from "./components/tax-rate-list"
 import { TaxRegionGeneralDetail } from "./components/tax-region-general-detail"
 
 const RegionTaxRates = ({
@@ -28,11 +29,13 @@ export const TaxRegionDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <TaxRegionGeneralDetail taxRegion={taxRegion} />
+    taxRegion && (
+      <div className="flex flex-col gap-y-2">
+        <TaxRegionGeneralDetail taxRegion={taxRegion} />
 
-      <RegionTaxRates taxRegion={taxRegion} />
-      <Outlet />
-    </div>
+        <TaxRateList taxRegion={taxRegion} />
+        <Outlet />
+      </div>
+    )
   )
 }

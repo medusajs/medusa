@@ -1,18 +1,21 @@
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminTaxRegionResponse } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { t } from "i18next"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
-import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
+import {
+  useDeleteTaxRegion,
+  useTaxRegions,
+} from "../../../../../hooks/api/tax-regions"
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { getCountryByIso2 } from "../../../../../lib/countries"
 
 const PAGE_SIZE = 20
 
@@ -47,23 +50,22 @@ export const TaxRegionListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("taxes.domain")}</Heading>
+
         <Link to="/settings/taxes/create">
           <Button size="small" variant="secondary">
             {t("actions.create")}
           </Button>
         </Link>
       </div>
+
       <DataTable
         table={table}
         columns={columns}
         count={count}
         pageSize={PAGE_SIZE}
         isLoading={isLoading}
-        filters={filters}
-        orderBy={["name", "created_at", "updated_at"]}
         navigateTo={(row) => `${row.original.id}`}
         pagination
-        search
         queryObject={raw}
       />
     </Container>
@@ -76,6 +78,16 @@ const TaxRegionActions = ({
   taxRegion: AdminTaxRegionResponse["tax_region"]
 }) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { mutateAsync } = useDeleteTaxRegion(taxRegion.id)
+
+  const handleDelete = async () => {
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        navigate("/settings/taxes", { replace: true })
+      },
+    })
+  }
 
   return (
     <ActionMenu
@@ -86,6 +98,11 @@ const TaxRegionActions = ({
               label: t("actions.edit"),
               to: `/settings/taxes/${taxRegion.id}/edit`,
               icon: <PencilSquare />,
+            },
+            {
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: handleDelete,
             },
           ],
         },
@@ -101,26 +118,16 @@ const useColumns = () => {
     () => [
       columnHelper.accessor("country_code", {
         header: t("fields.country"),
-        cell: ({ getValue }) => (
-          <div className="flex size-full items-center">
-            <span className="truncate">{getValue()}</span>
-          </div>
-        ),
-      }),
-      columnHelper.accessor("province_code", {
-        header: t("fields.province"),
-        cell: ({ getValue }) => (
-          <div className="flex size-full items-center">
-            <span className="truncate">{getValue()}</span>
-          </div>
-        ),
-      }),
-      columnHelper.accessor("created_at", {
-        header: t("fields.created"),
         cell: ({ getValue }) => {
-          const date = getValue()
+          const countryCode = getValue()
+          const displayName =
+            getCountryByIso2(countryCode)?.display_name || countryCode
 
-          return <DateCell date={date} />
+          return (
+            <div className="flex size-full items-center">
+              <span className="truncate">{displayName}</span>
+            </div>
+          )
         },
       }),
       columnHelper.display({

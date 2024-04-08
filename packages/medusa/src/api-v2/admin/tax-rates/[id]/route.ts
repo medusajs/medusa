@@ -9,7 +9,6 @@ import {
 } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { AdminPostTaxRatesTaxRateReq } from "../../../../api/routes/admin/tax-rates"
-import { defaultAdminTaxRateFields } from "../query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostTaxRatesTaxRateReq>,
@@ -32,7 +31,7 @@ export const POST = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "tax_rate",
     variables: { id: req.params.id },
-    fields: defaultAdminTaxRateFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [taxRate] = await remoteQuery(queryObject)
@@ -51,7 +50,7 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "tax_rate",
     variables,
-    fields: defaultAdminTaxRateFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [taxRate] = await remoteQuery(queryObject)

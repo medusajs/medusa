@@ -612,6 +612,23 @@
       "disabled": "Disabled"
     }
   },
+  "taxRates": {
+    "domain": "Tax Rates",
+    "edit": {
+      "title": "Edit Tax Rate"
+    },
+    "create": {
+      "title": "Create Tax Rate"
+    },
+    "fields": {}
+  },
+  "taxRegions": {
+    "domain": "Tax Regions",
+    "create": {
+      "title": "Create Tax Region"
+    },
+    "fields": {}
+  },
   "promotions": {
     "domain": "Promotions",
     "fields": {
@@ -1040,6 +1057,7 @@
     "amount": "Amount",
     "refundAmount": "Refund amount",
     "name": "Name",
+    "default": "Default",
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
@@ -1164,6 +1182,7 @@
     "quantity": "Quantity",
     "variant": "Variant",
     "id": "ID",
+    "parent": "Parent",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",

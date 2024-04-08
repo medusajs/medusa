@@ -83,10 +83,11 @@ const ConditionsFooter = ({ onSave }: { onSave: () => void }) => {
 }
 
 const ProductConditionsTable = ({ selected = [], onSave }: ConditionsProps) => {
+  console.log("selected - ", selected)
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     initRowState(selected)
   )
-
+  console.log("rowSelection - ", rowSelection)
   const [intermediate, setIntermediate] = useState<ConditionsOption[]>(selected)
 
   const { searchParams, raw } = useProductTableQuery({
@@ -101,7 +102,7 @@ const ProductConditionsTable = ({ selected = [], onSave }: ConditionsProps) => {
       keepPreviousData: true,
     }
   )
-
+  console.log("products - ", products)
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
     const newState: RowSelectionState =
       typeof fn === "function" ? fn(rowSelection) : fn

@@ -1,3 +1,6 @@
+import { PaginatedResponse } from "../../../common"
+import { TaxRegionResponse } from "./tax-regions"
+
 /**
  * @experimental
  */
@@ -14,6 +17,11 @@ export interface TaxRateResponse {
   updated_at: string | Date
   deleted_at: Date | null
   created_by: string | null
+  tax_region: TaxRegionResponse
+  rules: {
+    reference: string
+    reference_id: string
+  }[]
 }
 
 /**
@@ -21,4 +29,11 @@ export interface TaxRateResponse {
  */
 export interface AdminTaxRateResponse {
   tax_rate: TaxRateResponse
+}
+
+/**
+ * @experimental
+ */
+export interface AdminTaxRateListResponse extends PaginatedResponse {
+  tax_rates: TaxRateResponse[]
 }

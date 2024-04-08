@@ -1,8 +1,12 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { AdminTaxRateResponse, SalesChannelDTO, UserDTO } from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 
 import { Spinner } from "@medusajs/icons"
-import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+} from "@medusajs/medusa"
 import { AdminApiKeyResponse, AdminTaxRegionResponse } from "@medusajs/types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
@@ -532,20 +536,50 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
-                children: [],
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-region-create"),
+                    children: [],
+                  },
+                ],
               },
               {
                 path: ":id",
                 lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
                 handle: {
                   crumb: (data: AdminTaxRegionResponse) => {
-                    if (data.tax_region.province_code) {
-                      return `${data.tax_region.country_code} / ${data.tax_region.province_code}`
-                    } else {
-                      return data.tax_region.country_code
-                    }
+                    return data.tax_region.country_code
                   },
                 },
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    children: [],
+                  },
+                  {
+                    path: "tax-rates",
+                    children: [
+                      {
+                        path: ":taxRateId",
+                        children: [
+                          {
+                            path: "edit",
+                            lazy: () =>
+                              import("../../v2-routes/taxes/tax-rate-edit"),
+                            handle: {
+                              crumb: (data: AdminTaxRateResponse) => {
+                                return data.tax_rate.code
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

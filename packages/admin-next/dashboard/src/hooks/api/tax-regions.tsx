@@ -1,10 +1,19 @@
+import { AdminCreateTaxRegion } from "@medusajs/medusa"
 import {
   AdminTaxRegionListResponse,
   AdminTaxRegionResponse,
 } from "@medusajs/types"
-import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
+import {
+  QueryKey,
+  UseMutationOptions,
+  UseQueryOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query"
 import { client } from "../../lib/client"
+import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { TaxRegionDeleteRes } from "../../types/api-responses"
 
 const TAX_REGIONS_QUERY_KEY = "tax_regions" as const
 export const taxRegionsQueryKeys = queryKeysFactory(TAX_REGIONS_QUERY_KEY)
@@ -50,4 +59,39 @@ export const useTaxRegions = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useCreateTaxRegion = (
+  options?: UseMutationOptions<
+    AdminTaxRegionResponse,
+    Error,
+    AdminCreateTaxRegion
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.taxes.createTaxRegion(payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteTaxRegion = (
+  id: string,
+  options?: UseMutationOptions<TaxRegionDeleteRes, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.taxes.deleteTaxRegion(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: taxRegionsQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
 }

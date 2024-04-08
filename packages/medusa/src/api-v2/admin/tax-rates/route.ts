@@ -1,10 +1,12 @@
 import { createTaxRatesWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { defaultAdminTaxRateFields } from "./query-config"
 import { AdminPostTaxRatesReq } from "./validators"
 
 export const POST = async (
@@ -25,12 +27,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
     entryPoint: "tax_rate",
     variables: { id: result[0].id },
-    fields: defaultAdminTaxRateFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [taxRate] = await remoteQuery(query)
@@ -42,17 +44,23 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const variables = { filters: { id: req.params.id } }
+  const { rows: tax_rates, metadata } = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "tax_rate",
+      variables: {
+        filters: req.filterableFields,
+        ...req.remoteQueryConfig.pagination,
+      },
+      fields: req.remoteQueryConfig.fields,
+    })
+  )
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "tax_rate",
-    variables,
-    fields: defaultAdminTaxRateFields,
+  res.status(200).json({
+    tax_rates,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
-
-  const rates = await remoteQuery(queryObject)
-
-  res.status(200).json({ tax_rates: rates })
 }

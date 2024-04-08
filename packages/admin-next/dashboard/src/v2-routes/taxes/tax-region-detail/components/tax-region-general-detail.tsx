@@ -1,17 +1,20 @@
-import { TaxRegionDTO } from "@medusajs/types"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { TaxRegionResponse } from "@medusajs/types"
+import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { formatDate } from "../../../../components/common/date"
+import { getCountryByIso2 } from "../../../../lib/countries"
 
 type TaxRegionGeneralDetailProps = {
-  taxRegion: TaxRegionDTO
+  taxRegion: TaxRegionResponse
 }
 
 export const TaxRegionGeneralDetail = ({
   taxRegion,
 }: TaxRegionGeneralDetailProps) => {
   const { t } = useTranslation()
+  const countryCode = taxRegion.parent?.country_code || taxRegion.country_code
+  const displayName = getCountryByIso2(countryCode)?.display_name || countryCode
 
   return (
     <Container className="divide-y p-0">
@@ -23,12 +26,6 @@ export const TaxRegionGeneralDetail = ({
             {t("taxes.domainDescription")}
           </Text>
         </div>
-
-        <Link to="/settings/profile/edit">
-          <Button size="small" variant="secondary">
-            {t("actions.edit")}
-          </Button>
-        </Link>
       </div>
 
       <div className="grid grid-cols-2 items-center px-6 py-4">
@@ -37,7 +34,16 @@ export const TaxRegionGeneralDetail = ({
         </Text>
 
         <Text size="small" leading="compact">
-          {taxRegion.country_code}
+          {taxRegion.parent_id ? (
+            <Link
+              to={`/settings/taxes/${taxRegion.parent_id}`}
+              className="text-blue-500 underline"
+            >
+              {displayName}
+            </Link>
+          ) : (
+            displayName
+          )}
         </Text>
       </div>
 

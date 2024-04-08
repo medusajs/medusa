@@ -1,12 +1,14 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody } from "../../../api/middlewares"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
-  AdminGetTaxRatesTaxRateParams,
+  AdminGetTaxRateParams,
+  AdminGetTaxRatesParams,
   AdminPostTaxRatesReq,
   AdminPostTaxRatesTaxRateReq,
   AdminPostTaxRatesTaxRateRulesReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
@@ -20,20 +22,42 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/tax-rates",
-    middlewares: [transformBody(AdminPostTaxRatesReq)],
+    middlewares: [
+      transformBody(AdminPostTaxRatesReq),
+      validateAndTransformQuery(
+        AdminGetTaxRatesParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: "POST",
     matcher: "/admin/tax-rates/:id",
-    middlewares: [transformBody(AdminPostTaxRatesTaxRateReq)],
+    middlewares: [
+      transformBody(AdminPostTaxRatesTaxRateReq),
+      validateAndTransformQuery(
+        AdminGetTaxRatesParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: "GET",
     matcher: "/admin/tax-rates/:id",
     middlewares: [
-      transformQuery(
-        AdminGetTaxRatesTaxRateParams,
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "GET",
+    matcher: "/admin/tax-rates",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRatesParams,
+        QueryConfig.listTransformQueryConfig
       ),
     ],
   },
