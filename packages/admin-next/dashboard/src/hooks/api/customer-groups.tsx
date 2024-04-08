@@ -15,6 +15,7 @@ import { z } from "zod"
 import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"
 import { queryClient } from "../../lib/medusa"
 import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
+import { customersQueryKeys } from "./customers"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
 const customerGroupsQueryKeys = queryKeysFactory(CUSTOMER_GROUPS_QUERY_KEY)
@@ -121,6 +122,60 @@ export const useDeleteCustomerGroup = (
       })
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useAddCustomersToGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminCustomerGroupResponse,
+    Error,
+    { customer_ids: { id: string }[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.customerGroups.addCustomers(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.detail(id),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customersQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useRemoveCustomersFromGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminCustomerGroupResponse,
+    Error,
+    { customer_ids: { id: string }[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.customerGroups.removeCustomers(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.detail(id),
+      })
+      queryClient.invalidateQueries({
+        queryKey: customersQueryKeys.lists(),
       })
 
       options?.onSuccess?.(data, variables, context)

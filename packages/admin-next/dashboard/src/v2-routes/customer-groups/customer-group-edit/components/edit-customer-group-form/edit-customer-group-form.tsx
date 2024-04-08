@@ -10,6 +10,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { AdminCustomerGroupResponse } from "@medusajs/types"
+import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type EditCustomerGroupFormProps = {
   group: AdminCustomerGroupResponse["customer_group"]
@@ -32,7 +33,7 @@ export const EditCustomerGroupForm = ({
     resolver: zodResolver(EditCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateCustomerGroup(group.id)
+  const { mutateAsync, isLoading } = useUpdateCustomerGroup(group.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {

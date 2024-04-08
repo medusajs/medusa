@@ -48,10 +48,32 @@ async function deleteCustomerGroup(id: string) {
   }>(`/admin/customer-groups/${id}`)
 }
 
+async function batchAddCustomers(
+  id: string,
+  payload: { customer_ids: { id: string }[] }
+) {
+  return postRequest<AdminCustomerGroupResponse>(
+    `/admin/customer-groups/${id}/customers/batch/add`,
+    payload
+  )
+}
+
+async function batchRemoveCustomers(
+  id: string,
+  payload: { customer_ids: { id: string }[] }
+) {
+  return postRequest<AdminCustomerGroupResponse>(
+    `/admin/customer-groups/${id}/customers/batch/remove`,
+    payload
+  )
+}
+
 export const customerGroups = {
   retrieve: retrieveCustomerGroup,
   list: listCustomerGroups,
   create: createCustomerGroup,
   update: updateCustomerGroup,
   delete: deleteCustomerGroup,
+  addCustomers: batchAddCustomers,
+  removeCustomers: batchRemoveCustomers,
 }

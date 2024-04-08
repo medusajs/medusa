@@ -1,4 +1,8 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+import {
+  AdminCustomerGroupResponse,
+  SalesChannelDTO,
+  UserDTO,
+} from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { Spinner } from "@medusajs/icons"
 import {
@@ -297,7 +301,8 @@ export const v2Routes: RouteObject[] = [
                     "../../v2-routes/customer-groups/customer-group-detail"
                   ),
                 handle: {
-                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                  crumb: (data: AdminCustomerGroupResponse) =>
+                    data.customer_group.name,
                 },
                 children: [
                   {
@@ -305,6 +310,13 @@ export const v2Routes: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
                       ),
                   },
                 ],

@@ -18,7 +18,10 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { useCustomers } from "../../../../../hooks/api/customers"
-import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
+import {
+  useRemoveCustomersFromGroup,
+  useUpdateCustomerGroup,
+} from "../../../../../hooks/api/customer-groups"
 
 type CustomerGroupCustomerSectionProps = {
   group: AdminCustomerGroupResponse["customer_group"]
@@ -99,7 +102,7 @@ const CustomerActions = ({
   customerGroupId: string
 }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useUpdateCustomerGroup(customerGroupId)
+  const { mutateAsync } = useRemoveCustomersFromGroup(customerGroupId)
 
   const prompt = usePrompt()
 
