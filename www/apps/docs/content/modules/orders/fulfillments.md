@@ -10,7 +10,7 @@ In this document, you’ll learn about Fulfillments, how they’re used in your 
 
 Fulfillments are used to ship items, typically to a customer. Fulfillments can be used in orders, returns, swaps, and more.
 
-Fulfillments are processed within Medusa by a [fulfillment provider](../../references/fulfillment/classes/fulfillment.AbstractFulfillmentService.mdx). The fulfillment provider handles creating, validating, and processing the fulfillment, among other functionalities. Typically, a fulfillment provider would be integrated with a third-party service that handles the actual shipping of the items.
+Fulfillments are processed within Medusa by a [fulfillment provider](../../references/fulfillment_service/classes/fulfillment_service.AbstractFulfillmentService.mdx). The fulfillment provider handles creating, validating, and processing the fulfillment, among other functionalities. Typically, a fulfillment provider would be integrated with a third-party service that handles the actual shipping of the items.
 
 When a fulfillment is created for one or more item, shipments can then be created for that fulfillment. These shipments can then be tracked using tracking numbers, providing customers and merchants accurate details about a shipment.
 
