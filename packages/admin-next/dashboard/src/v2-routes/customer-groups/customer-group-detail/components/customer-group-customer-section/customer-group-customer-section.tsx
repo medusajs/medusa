@@ -9,14 +9,14 @@ import {
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { Link } from "react-router-dom"
-import { createColumnHelper } from "@tanstack/react-table"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { AdminCustomerGroupResponse } from "@medusajs/types"
+import { AdminCustomerGroupResponse, AdminCustomerResponse } from "@medusajs/types"
 import { useCustomers } from "../../../../../hooks/api/customers"
 import {
   useRemoveCustomersFromGroup,
@@ -32,7 +32,9 @@ const PAGE_SIZE = 10
 export const CustomerGroupCustomerSection = ({
   group,
 }: CustomerGroupCustomerSectionProps) => {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
+  const prompt = usePrompt()
 
   const { searchParams, raw } = useCustomerTableQuery({ pageSize: PAGE_SIZE })
   const { customers, count, isLoading, isError, error } = useCustomers({
@@ -40,8 +42,8 @@ export const CustomerGroupCustomerSection = ({
     groups: group.id,
   })
 
-  const filters = useCustomerTableFilters(["groups"])
   const columns = useColumns()
+  const filters = useCustomerTableFilters(["groups"])
 
   const { table } = useDataTable({
     data: customers ?? [],
@@ -51,6 +53,10 @@ export const CustomerGroupCustomerSection = ({
     enablePagination: true,
     enableRowSelection: true,
     pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
     meta: {
       customerGroupId: group.id,
     },
@@ -58,6 +64,36 @@ export const CustomerGroupCustomerSection = ({
 
   if (isError) {
     throw error
+  }
+
+  const { mutateAsync } = useRemoveCustomersFromGroup(group.id)
+
+  const handleRemove = async () => {
+    const keys = Object.keys(rowSelection)
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customerGroups.removeCustomersWarning", {
+        count: keys.length,
+      }),
+      confirmText: t("actions.continue"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(
+      {
+        customer_ids: keys.map((k) => ({ id: k })),
+      },
+      {
+        onSuccess: () => {
+          setRowSelection({})
+        },
+      }
+    )
   }
 
   return (
@@ -89,6 +125,13 @@ export const CustomerGroupCustomerSection = ({
           "updated_at",
         ]}
         queryObject={raw}
+        commands={[
+          {
+            action: handleRemove,
+            label: t("actions.remove"),
+            shortcut: "r",
+          },
+        ]}
       />
     </Container>
   )
@@ -98,7 +141,7 @@ const CustomerActions = ({
   customer,
   customerGroupId,
 }: {
-  customer: AdminCustomerGroupResponse["customer_group"]
+  customer: AdminCustomerResponse["customer"]
   customerGroupId: string
 }) => {
   const { t } = useTranslation()
@@ -151,7 +194,7 @@ const CustomerActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<Customer>()
+const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
 
 const useColumns = () => {
   const columns = useCustomerTableColumns()
