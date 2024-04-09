@@ -115,7 +115,7 @@ describe("Abstract Module Service Factory", () => {
 
     it("should have softDelete method", async () => {
       const result = await instance.softDelete("1")
-      expect(result).toEqual(undefined)
+      expect(result).toEqual({})
       expect(
         containerMock.mainModelMockService.softDelete
       ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
