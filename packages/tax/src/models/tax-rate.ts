@@ -3,6 +3,7 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -53,9 +54,11 @@ export default class TaxRate {
   @Property({ columnType: "real", nullable: true })
   rate: number | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text" })
   name: string
 

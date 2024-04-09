@@ -11,8 +11,8 @@ import { DataTable } from "../../../../components/table/data-table"
 import { useSalesChannelRemoveProducts } from "../../../../hooks/api/sales-channels"
 import { useDeleteTaxRate, useTaxRates } from "../../../../hooks/api/tax-rates"
 import { useTaxRateTableColumns } from "../../../../hooks/table/columns-v2/use-tax-rates-table-columns"
-import { useProductTableFilters } from "../../../../hooks/table/filters/use-product-table-filters"
-import { useProductTableQuery } from "../../../../hooks/table/query/use-product-table-query"
+import { useTaxRateTableFilters } from "../../../../hooks/table/filters/use-tax-rate-table-filters"
+import { useTaxRateTableQuery } from "../../../../hooks/table/query/use-tax-rate-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
 
 const PAGE_SIZE = 10
@@ -28,7 +28,7 @@ export const TaxRateList = ({
 }: TaxRateListProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
+  const { searchParams, raw } = useTaxRateTableQuery({ pageSize: PAGE_SIZE })
   const childrenIds = taxRegion.children?.map((c) => c.id) || []
   const {
     tax_rates: taxRates,
@@ -48,7 +48,7 @@ export const TaxRateList = ({
   )
 
   const columns = useColumns()
-  const filters = useProductTableFilters(["sales_channel_id"])
+  const filters = useTaxRateTableFilters()
 
   const { table } = useDataTable({
     data: taxRates ?? [],

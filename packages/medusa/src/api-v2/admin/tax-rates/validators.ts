@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import z from "zod"
-import { createFindParams } from "../../utils/validators"
+import { createFindParams, createOperatorMap } from "../../utils/validators"
 
 export const AdminGetTaxRateParams = createFindParams({
   limit: 20,
@@ -20,8 +20,16 @@ export const AdminGetTaxRatesParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
-    tax_region_id: z.union([z.string(), z.array(z.string())]).optional(),
+    q: z.string().optional(),
+    tax_region_id: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
     is_default: z.union([z.literal("true"), z.literal("false")]).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminGetTaxRatesParams.array()).optional(),
+    $or: z.lazy(() => AdminGetTaxRatesParams.array()).optional(),
   })
 )
 
