@@ -4,6 +4,7 @@ import {
 } from "@medusajs/types"
 import {
   CreateInventoryItemReq,
+  InvnetoryItemLocationBatch,
   UpdateInventoryItemReq,
 } from "../../types/api-payloads"
 import { deleteRequest, deleteRequest, getRequest, postRequest } from "./common"
@@ -91,6 +92,16 @@ async function updateReservationItem(
   )
 }
 
+async function batchPostLocationLevels(
+  inventoryItemId: string,
+  payload: InvnetoryItemLocationBatch
+) {
+  return postRequest<InventoryItemLocationLevelsRes>(
+    `/admin/inventory-items/${inventoryItemId}/location-levels/batch/combi`,
+    payload
+  )
+}
+
 export const inventoryItems = {
   retrieve: retrieveInventoryItem,
   list: listInventoryItems,
@@ -102,4 +113,5 @@ export const inventoryItems = {
   listReservationItems,
   deleteReservationItem,
   updateReservationItem,
+  batchPostLocationLevels,
 }

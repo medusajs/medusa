@@ -8,6 +8,10 @@ import {
   ReservationItemRes,
 } from "../../types/api-responses"
 import {
+  InvnetoryItemLocationBatch,
+  UpdateInventoryItemReq,
+} from "../../types/api-payloads"
+import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
@@ -16,7 +20,6 @@ import {
 } from "@tanstack/react-query"
 
 import { InventoryNext } from "@medusajs/types"
-import { UpdateInventoryItemReq } from "../../types/api-payloads"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -161,6 +164,36 @@ export const useInventoryItemLevels = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useBatchInventoryItemLevels = (
+  inventoryItemId: string,
+  options?: UseMutationOptions<
+    InventoryItemLocationLevelsRes,
+    Error,
+    InvnetoryItemLocationBatch
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: {
+      creates: { location_id: string; stocked_quantity?: number }[]
+      deletes: string[]
+    }) =>
+      client.inventoryItems.batchPostLocationLevels(inventoryItemId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.detail(inventoryItemId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemLevelsQueryKeys.detail(inventoryItemId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
 }
 
 export const useReservationItems = (

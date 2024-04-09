@@ -79,3 +79,8 @@ export type UpdateCampaignReq = UpdateCampaignDTO
 // Inventory Items
 export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
 export type UpdateInventoryItemReq = InventoryNext.UpdateInventoryItemInput
+
+export type InvnetoryItemLocationBatch = {
+  creates: { location_id: string; stocked_quantity?: number }[]
+  deletes: string[]
+}

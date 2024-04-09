@@ -1,6 +1,4 @@
 import { Heading } from "@medusajs/ui"
-import { InventoryItemDTO } from "@medusajs/types"
-import { InventoryItemRes } from "../../../../../types/api-responses"
 import { ManageLocationsForm } from "./components/manage-locations-form"
 import { RouteDrawer } from "../../../../../components/route-modal"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"

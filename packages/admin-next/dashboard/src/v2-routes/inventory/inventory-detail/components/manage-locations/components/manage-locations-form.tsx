@@ -5,13 +5,16 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../../components/route-modal"
+import {
+  useBatchInventoryItemLevels,
+  useUpdateInventoryItem,
+} from "../../../../../../hooks/api/inventory"
 import { useFieldArray, useForm } from "react-hook-form"
 
 import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { LocationItem } from "./location-item"
 import { StockLocationDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -64,11 +67,13 @@ export const ManageLocationsForm = ({
     name: "locations",
   })
 
-  // const { mutateAsync } = useUpdateInventoryItem(item.id)
+  const { mutateAsync } = useBatchInventoryItemLevels(item.id)
 
   const handleSubmit = form.handleSubmit(async ({ locations }) => {
+    // Changes in selected locations
     const [selectedLocations, unselectedLocations] = locations.reduce(
       (acc, location) => {
+        // If the location is not changed do nothing
         if (
           (!location.selected &&
             !existingLocationLevels.has(location.location_id)) ||
@@ -89,9 +94,17 @@ export const ManageLocationsForm = ({
     )
 
     if (selectedLocations.length === 0 && unselectedLocations.length === 0) {
-      // return handleSuccess()
-      // TODO: re-add this line
+      return handleSuccess()
     }
+
+    await mutateAsync({
+      creates: selectedLocations.map((location_id) => ({
+        location_id,
+      })),
+      deletes: unselectedLocations,
+    })
+
+    return handleSuccess()
   })
 
   return (

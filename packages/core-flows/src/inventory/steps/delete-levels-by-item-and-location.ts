@@ -12,6 +12,10 @@ export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
     input: { inventory_item_id: string; location_id: string }[],
     { container }
   ) => {
+    if (!input.length) {
+      return new StepResponse(void 0, [])
+    }
+
     const service = container.resolve<IInventoryServiceNext>(
       ModuleRegistrationName.INVENTORY
     )
