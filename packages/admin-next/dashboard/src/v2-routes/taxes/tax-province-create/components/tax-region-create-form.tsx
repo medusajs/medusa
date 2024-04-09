@@ -42,31 +42,26 @@ export const TaxRegionCreateForm = ({
 
   const { mutateAsync, isPending } = useCreateTaxRegion()
 
-  const handleSubmit = form.handleSubmit(
-    async (data) => {
-      await mutateAsync(
-        {
-          parent_id: taxRegion?.id,
-          province_code: data.province_code,
-          country_code: data.country_code,
-          default_tax_rate: {
-            name: data.name,
-            code: data.code,
-            rate: data.rate,
-          },
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await mutateAsync(
+      {
+        parent_id: taxRegion?.id,
+        province_code: data.province_code,
+        country_code: data.country_code,
+        default_tax_rate: {
+          name: data.name,
+          code: data.code,
+          rate: data.rate,
         },
-        {
-          onSuccess: () =>
-            taxRegion?.id
-              ? handleSuccess(`/settings/taxes/${taxRegion.id}`)
-              : handleSuccess(`/settings/taxes`),
-        }
-      )
-    },
-    (errors) => {
-      console.log("errors - ", errors)
-    }
-  )
+      },
+      {
+        onSuccess: () =>
+          taxRegion?.id
+            ? handleSuccess(`/settings/taxes/${taxRegion.id}`)
+            : handleSuccess(`/settings/taxes`),
+      }
+    )
+  })
 
   return (
     <RouteFocusModal.Form
