@@ -1,16 +1,26 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { composeLinkName, toPascalCase } from "@medusajs/utils"
+import {
+  composeLinkName,
+  isObject,
+  isString,
+  toPascalCase,
+} from "@medusajs/utils"
 import { MedusaModule } from "../medusa-module"
 
+type ModuleLinkableKeyConfig = {
+  module: string
+  key: string
+  isList?: boolean
+  alias?: string
+  shortcuts?: {
+    [key: string]: string | { path: string; isList?: boolean }
+  }
+}
+
 export function defineLink(
-  serviceA,
-  serviceAKey,
-  serviceB,
-  serviceBKey,
+  serviceAAndKey: string | ModuleLinkableKeyConfig,
+  serviceBAndKey: string | ModuleLinkableKeyConfig,
   options?: {
-    alias?: {
-      [key: string]: string
-    }
     pk?: {
       [key: string]: string
     }
@@ -24,6 +34,54 @@ export function defineLink(
   const register = function (
     modules: ModuleJoinerConfig[]
   ): ModuleJoinerConfig {
+    let serviceA: string
+    let serviceAKey: string
+    let serviceAIsList = false
+    let serviceAObj: Partial<ModuleLinkableKeyConfig> = {}
+
+    let serviceB: string
+    let serviceBKey: string
+    let serviceBIsList = false
+    let serviceBObj: Partial<ModuleLinkableKeyConfig> = {}
+
+    if (isString(serviceAAndKey)) {
+      let [mod, key] = (serviceAAndKey as string).split(".")
+      serviceA = mod
+      if (key.endsWith("[]")) {
+        serviceAIsList = true
+        key = key.slice(0, -2)
+      }
+      serviceAKey = key
+    } else if (isObject(serviceAAndKey)) {
+      const objA = serviceAAndKey as ModuleLinkableKeyConfig
+      serviceAObj = objA
+
+      serviceA = objA.module
+      serviceAKey = objA.key
+      serviceAIsList = !!objA.isList
+    } else {
+      throw new Error("Invalid value for serviceA config")
+    }
+
+    if (isString(serviceBAndKey)) {
+      let [mod, key] = (serviceBAndKey as string).split(".")
+      serviceB = mod
+      if (key.endsWith("[]")) {
+        serviceBIsList = true
+        key = key.slice(0, -2)
+      }
+      serviceBKey = key
+    } else if (isObject(serviceBAndKey)) {
+      const objB = serviceBAndKey as ModuleLinkableKeyConfig
+      serviceBObj = objB
+
+      serviceB = objB.module
+      serviceBKey = objB.key
+      serviceBIsList = !!objB.isList
+    } else {
+      throw new Error("Invalid value for serviceB config")
+    }
+
     const serviceAInfo = modules.find((mod) => mod.serviceName === serviceA)
     const serviceBInfo = modules.find((mod) => mod.serviceName === serviceB)
     if (!serviceAInfo) {
@@ -51,11 +109,11 @@ export function defineLink(
       serviceAAliases = [serviceAAliases]
     }
 
-    let aliasAOptions = options?.alias?.[serviceA]
-      ? options?.alias?.[serviceA]
-      : serviceAAliases.find((a) => {
-          return a.args?.entity == serviceAKeyInfo
-        })?.name
+    let aliasAOptions =
+      serviceAObj.alias ??
+      serviceAAliases.find((a) => {
+        return a.args?.entity == serviceAKeyInfo
+      })?.name
 
     let aliasA = ""
     if (Array.isArray(aliasAOptions)) {
@@ -72,11 +130,11 @@ export function defineLink(
       serviceBAliases = [serviceBAliases]
     }
 
-    let aliasBOptions = options?.alias?.[serviceB]
-      ? options?.alias?.[serviceB]
-      : serviceBAliases.find((a) => {
-          return a.args?.entity == serviceBKeyInfo
-        })?.name
+    let aliasBOptions =
+      serviceBObj.alias ??
+      serviceBAliases.find((a) => {
+        return a.args?.entity == serviceBKeyInfo
+      })?.name
 
     let aliasB = ""
     if (Array.isArray(aliasBOptions)) {
@@ -139,7 +197,7 @@ export function defineLink(
             primaryKey: serviceAKey,
             foreignKey: serviceBPrimaryKey!,
             alias: aliasB + "_link", // plural alias
-            isList: true,
+            isList: serviceAIsList,
           },
         },
         {
@@ -152,7 +210,7 @@ export function defineLink(
             primaryKey: serviceBKey,
             foreignKey: serviceAPrimaryKey!,
             alias: aliasA + "_link", // plural alias
-            isList: true,
+            isList: serviceBIsList,
           },
         },
       ],

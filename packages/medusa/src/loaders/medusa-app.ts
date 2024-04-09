@@ -21,17 +21,9 @@ import {
   isObject,
 } from "@medusajs/utils"
 
-import { defineLink } from "@medusajs/modules-sdk"
 import { asValue } from "awilix"
 import { joinerConfig } from "../joiner-config"
 import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
-
-defineLink(Modules.CART, "cart_id", Modules.PAYMENT, "payment_collection_id", {
-  database: {
-    table: "cart_payment_collection",
-    idPrefix: "capaycol",
-  },
-})
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
