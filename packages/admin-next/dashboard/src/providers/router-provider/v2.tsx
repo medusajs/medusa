@@ -11,6 +11,7 @@ import {
   AdminProductCategoryResponse,
   SalesChannelDTO,
   UserDTO,
+  AdminCustomerGroupResponse,
 } from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
@@ -338,6 +339,55 @@ export const v2Routes: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomerGroupResponse) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                      ),
                   },
                 ],
               },
