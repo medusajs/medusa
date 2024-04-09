@@ -6,12 +6,11 @@ import {
   IRegionModuleService,
   ServiceZoneDTO,
   ShippingProfileDTO,
-  UpdateShippingOptionsWorkflowInput,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 import {
   createShippingOptionsWorkflow,
-  updateShippingOptionsWorkflow,
+  deleteShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
@@ -112,7 +111,7 @@ medusaIntegrationTestRunner({
         })
 
         await deleteShippingOptionsWorkflow(container).run({
-          input: { ids: [reslt[0].id]},
+          input: { ids: [result[0].id] },
         })
 
         const remoteQuery = container.resolve(
@@ -208,9 +207,8 @@ medusaIntegrationTestRunner({
           input: [shippingOptionData],
         })
 
-
         const { errors } = await deleteWorkflow.run({
-          input: {ids: [result[0].id]},
+          input: { ids: [result[0].id] },
           throwOnError: false,
         })
 
