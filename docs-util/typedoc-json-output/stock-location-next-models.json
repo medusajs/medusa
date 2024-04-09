@@ -1,5 +1,5 @@
 {
-	"id": 10906,
+	"id": 10939,
 	"name": "stock-location-next-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 10922,
+			"id": 10955,
 			"name": "StockLocationAddress",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 10923,
+					"id": 10956,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10924,
+							"id": 10957,
 							"name": "new StockLocationAddress",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 10922,
+								"target": 10955,
 								"name": "StockLocationAddress",
 								"package": "@medusajs/stock-location-next"
 							}
@@ -47,7 +47,7 @@
 					]
 				},
 				{
-					"id": 10925,
+					"id": 10958,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 					}
 				},
 				{
-					"id": 10926,
+					"id": 10959,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -74,7 +74,7 @@
 					}
 				},
 				{
-					"id": 10927,
+					"id": 10960,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -90,7 +90,7 @@
 					}
 				},
 				{
-					"id": 10928,
+					"id": 10961,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -116,7 +116,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10929,
+					"id": 10962,
 					"name": "address_1",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127,7 +127,7 @@
 					}
 				},
 				{
-					"id": 10930,
+					"id": 10963,
 					"name": "address_2",
 					"variant": "declaration",
 					"kind": 1024,
@@ -147,7 +147,7 @@
 					}
 				},
 				{
-					"id": 10931,
+					"id": 10964,
 					"name": "company",
 					"variant": "declaration",
 					"kind": 1024,
@@ -167,7 +167,7 @@
 					}
 				},
 				{
-					"id": 10932,
+					"id": 10965,
 					"name": "city",
 					"variant": "declaration",
 					"kind": 1024,
@@ -187,7 +187,7 @@
 					}
 				},
 				{
-					"id": 10933,
+					"id": 10966,
 					"name": "country_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -198,7 +198,7 @@
 					}
 				},
 				{
-					"id": 10934,
+					"id": 10967,
 					"name": "phone",
 					"variant": "declaration",
 					"kind": 1024,
@@ -218,7 +218,7 @@
 					}
 				},
 				{
-					"id": 10935,
+					"id": 10968,
 					"name": "province",
 					"variant": "declaration",
 					"kind": 1024,
@@ -238,7 +238,7 @@
 					}
 				},
 				{
-					"id": 10936,
+					"id": 10969,
 					"name": "postal_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -258,7 +258,7 @@
 					}
 				},
 				{
-					"id": 10937,
+					"id": 10970,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -293,7 +293,7 @@
 					}
 				},
 				{
-					"id": 10938,
+					"id": 10971,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -302,7 +302,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10939,
+							"id": 10972,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -315,7 +315,7 @@
 					]
 				},
 				{
-					"id": 10940,
+					"id": 10973,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
@@ -324,7 +324,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10941,
+							"id": 10974,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -341,59 +341,59 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10923
+						10956
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						10925,
-						10926,
-						10927,
-						10928,
-						10929,
-						10930,
-						10931,
-						10932,
-						10933,
-						10934,
-						10935,
-						10936,
-						10937
+						10958,
+						10959,
+						10960,
+						10961,
+						10962,
+						10963,
+						10964,
+						10965,
+						10966,
+						10967,
+						10968,
+						10969,
+						10970
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						10938,
-						10940
+						10971,
+						10973
 					]
 				}
 			]
 		},
 		{
-			"id": 10907,
+			"id": 10940,
 			"name": "StockLocation",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 10908,
+					"id": 10941,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10909,
+							"id": 10942,
 							"name": "new StockLocation",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 10907,
+								"target": 10940,
 								"name": "StockLocation",
 								"package": "@medusajs/stock-location-next"
 							}
@@ -401,7 +401,7 @@
 					]
 				},
 				{
-					"id": 10910,
+					"id": 10943,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -412,7 +412,7 @@
 					}
 				},
 				{
-					"id": 10911,
+					"id": 10944,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -428,7 +428,7 @@
 					}
 				},
 				{
-					"id": 10912,
+					"id": 10945,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -444,7 +444,7 @@
 					}
 				},
 				{
-					"id": 10913,
+					"id": 10946,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -470,7 +470,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10914,
+					"id": 10947,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -481,7 +481,7 @@
 					}
 				},
 				{
-					"id": 10915,
+					"id": 10948,
 					"name": "address_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -501,7 +501,7 @@
 					}
 				},
 				{
-					"id": 10916,
+					"id": 10949,
 					"name": "address",
 					"variant": "declaration",
 					"kind": 1024,
@@ -515,7 +515,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 10922,
+								"target": 10955,
 								"name": "StockLocationAddress",
 								"package": "@medusajs/stock-location-next"
 							}
@@ -523,7 +523,7 @@
 					}
 				},
 				{
-					"id": 10917,
+					"id": 10950,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -558,7 +558,7 @@
 					}
 				},
 				{
-					"id": 10918,
+					"id": 10951,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -567,7 +567,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10919,
+							"id": 10952,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -580,7 +580,7 @@
 					]
 				},
 				{
-					"id": 10920,
+					"id": 10953,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
@@ -589,7 +589,7 @@
 					},
 					"signatures": [
 						{
-							"id": 10921,
+							"id": 10954,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -606,27 +606,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10908
+						10941
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						10910,
-						10911,
-						10912,
-						10913,
-						10914,
-						10915,
-						10916,
-						10917
+						10943,
+						10944,
+						10945,
+						10946,
+						10947,
+						10948,
+						10949,
+						10950
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						10918,
-						10920
+						10951,
+						10953
 					]
 				}
 			]
@@ -636,138 +636,138 @@
 		{
 			"title": "Classes",
 			"children": [
-				10922,
-				10907
+				10955,
+				10940
 			]
 		}
 	],
 	"packageName": "@medusajs/stock-location-next",
 	"symbolIdMap": {
-		"10906": {
+		"10939": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"10907": {
+		"10940": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation"
 		},
-		"10910": {
+		"10943": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.id"
 		},
-		"10911": {
+		"10944": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.created_at"
 		},
-		"10912": {
+		"10945": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.updated_at"
 		},
-		"10913": {
+		"10946": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.deleted_at"
 		},
-		"10914": {
+		"10947": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.name"
 		},
-		"10915": {
+		"10948": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.address_id"
 		},
-		"10916": {
+		"10949": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.address"
 		},
-		"10917": {
+		"10950": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.metadata"
 		},
-		"10918": {
+		"10951": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.beforeCreate"
 		},
-		"10919": {
+		"10952": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.beforeCreate"
 		},
-		"10920": {
+		"10953": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.onInit"
 		},
-		"10921": {
+		"10954": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation.onInit"
 		},
-		"10922": {
+		"10955": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress"
 		},
-		"10925": {
+		"10958": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.id"
 		},
-		"10926": {
+		"10959": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.created_at"
 		},
-		"10927": {
+		"10960": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.updated_at"
 		},
-		"10928": {
+		"10961": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.deleted_at"
 		},
-		"10929": {
+		"10962": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.address_1"
 		},
-		"10930": {
+		"10963": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.address_2"
 		},
-		"10931": {
+		"10964": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.company"
 		},
-		"10932": {
+		"10965": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.city"
 		},
-		"10933": {
+		"10966": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.country_code"
 		},
-		"10934": {
+		"10967": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.phone"
 		},
-		"10935": {
+		"10968": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.province"
 		},
-		"10936": {
+		"10969": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.postal_code"
 		},
-		"10937": {
+		"10970": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.metadata"
 		},
-		"10938": {
+		"10971": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.beforeCreate"
 		},
-		"10939": {
+		"10972": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.beforeCreate"
 		},
-		"10940": {
+		"10973": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.onInit"
 		},
-		"10941": {
+		"10974": {
 			"sourceFileName": "../../../packages/stock-location-next/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress.onInit"
 		}

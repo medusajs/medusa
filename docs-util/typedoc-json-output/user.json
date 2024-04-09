@@ -1,12 +1,12 @@
 {
-	"id": 11803,
+	"id": 11836,
 	"name": "user",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 11946,
+			"id": 11979,
 			"name": "FindConfig",
 			"variant": "declaration",
 			"kind": 256,
@@ -29,7 +29,7 @@
 			},
 			"children": [
 				{
-					"id": 11947,
+					"id": 11980,
 					"name": "select",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 11957,
+										"target": 11990,
 										"name": "Entity",
 										"package": "@medusajs/types",
 										"qualifiedName": "FindConfig.Entity",
@@ -70,7 +70,7 @@
 					}
 				},
 				{
-					"id": 11948,
+					"id": 11981,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 1024,
@@ -100,7 +100,7 @@
 					}
 				},
 				{
-					"id": 11949,
+					"id": 11982,
 					"name": "take",
 					"variant": "declaration",
 					"kind": 1024,
@@ -130,7 +130,7 @@
 					}
 				},
 				{
-					"id": 11950,
+					"id": 11983,
 					"name": "relations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -154,7 +154,7 @@
 					}
 				},
 				{
-					"id": 11951,
+					"id": 11984,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -188,20 +188,20 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 11952,
+							"id": 11985,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"indexSignature": {
-								"id": 11953,
+								"id": 11986,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
 								"parameters": [
 									{
-										"id": 11954,
+										"id": 11987,
 										"name": "K",
 										"variant": "param",
 										"kind": 32768,
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"id": 11955,
+					"id": 11988,
 					"name": "withDeleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -259,7 +259,7 @@
 					}
 				},
 				{
-					"id": 11956,
+					"id": 11989,
 					"name": "filters",
 					"variant": "declaration",
 					"kind": 1024,
@@ -299,19 +299,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						11947,
-						11948,
-						11949,
-						11950,
-						11951,
-						11955,
-						11956
+						11980,
+						11981,
+						11982,
+						11983,
+						11984,
+						11988,
+						11989
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 11957,
+					"id": 11990,
 					"name": "Entity",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -320,7 +320,7 @@
 			]
 		},
 		{
-			"id": 12043,
+			"id": 12076,
 			"name": "BaseFilterable",
 			"variant": "declaration",
 			"kind": 256,
@@ -335,7 +335,7 @@
 			},
 			"children": [
 				{
-					"id": 12044,
+					"id": 12077,
 					"name": "$and",
 					"variant": "declaration",
 					"kind": 1024,
@@ -357,11 +357,11 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 12043,
+									"target": 12076,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 12046,
+											"target": 12079,
 											"name": "T",
 											"package": "@medusajs/types",
 											"qualifiedName": "BaseFilterable.T",
@@ -373,7 +373,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 12046,
+									"target": 12079,
 									"name": "T",
 									"package": "@medusajs/types",
 									"qualifiedName": "BaseFilterable.T",
@@ -384,7 +384,7 @@
 					}
 				},
 				{
-					"id": 12045,
+					"id": 12078,
 					"name": "$or",
 					"variant": "declaration",
 					"kind": 1024,
@@ -406,11 +406,11 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 12043,
+									"target": 12076,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 12046,
+											"target": 12079,
 											"name": "T",
 											"package": "@medusajs/types",
 											"qualifiedName": "BaseFilterable.T",
@@ -422,7 +422,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 12046,
+									"target": 12079,
 									"name": "T",
 									"package": "@medusajs/types",
 									"qualifiedName": "BaseFilterable.T",
@@ -437,14 +437,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						12044,
-						12045
+						12077,
+						12078
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 12046,
+					"id": 12079,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -454,13 +454,13 @@
 			"extendedBy": [
 				{
 					"type": "reference",
-					"target": 11968,
+					"target": 12001,
 					"name": "FilterableUserProps"
 				}
 			]
 		},
 		{
-			"id": 11987,
+			"id": 12020,
 			"name": "SoftDeleteReturn",
 			"variant": "declaration",
 			"kind": 256,
@@ -475,7 +475,7 @@
 			},
 			"children": [
 				{
-					"id": 11988,
+					"id": 12021,
 					"name": "returnLinkableKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -494,7 +494,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 11989,
+							"target": 12022,
 							"name": "TReturnableLinkableKeys",
 							"package": "@medusajs/types",
 							"refersToTypeParameter": true
@@ -506,13 +506,13 @@
 				{
 					"title": "Properties",
 					"children": [
-						11988
+						12021
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 11989,
+					"id": 12022,
 					"name": "TReturnableLinkableKeys",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -525,7 +525,7 @@
 			]
 		},
 		{
-			"id": 11990,
+			"id": 12023,
 			"name": "RestoreReturn",
 			"variant": "declaration",
 			"kind": 256,
@@ -540,7 +540,7 @@
 			},
 			"children": [
 				{
-					"id": 11991,
+					"id": 12024,
 					"name": "returnLinkableKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -559,7 +559,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 11992,
+							"target": 12025,
 							"name": "TReturnableLinkableKeys",
 							"package": "@medusajs/types",
 							"refersToTypeParameter": true
@@ -571,13 +571,13 @@
 				{
 					"title": "Properties",
 					"children": [
-						11991
+						12024
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 11992,
+					"id": 12025,
 					"name": "TReturnableLinkableKeys",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -590,14 +590,14 @@
 			]
 		},
 		{
-			"id": 12101,
+			"id": 12134,
 			"name": "MessageBody",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 12110,
+					"id": 12143,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -611,14 +611,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 12102,
+					"id": 12135,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 12103,
+							"id": 12136,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -626,14 +626,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 12104,
+									"id": 12137,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 12105,
+											"id": 12138,
 											"name": "service",
 											"variant": "declaration",
 											"kind": 1024,
@@ -644,7 +644,7 @@
 											}
 										},
 										{
-											"id": 12106,
+											"id": 12139,
 											"name": "action",
 											"variant": "declaration",
 											"kind": 1024,
@@ -655,7 +655,7 @@
 											}
 										},
 										{
-											"id": 12107,
+											"id": 12140,
 											"name": "object",
 											"variant": "declaration",
 											"kind": 1024,
@@ -666,7 +666,7 @@
 											}
 										},
 										{
-											"id": 12108,
+											"id": 12141,
 											"name": "eventGroupId",
 											"variant": "declaration",
 											"kind": 1024,
@@ -683,10 +683,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												12105,
-												12106,
-												12107,
-												12108
+												12138,
+												12139,
+												12140,
+												12141
 											]
 										}
 									]
@@ -694,14 +694,14 @@
 							}
 						},
 						{
-							"id": 12109,
+							"id": 12142,
 							"name": "data",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12110,
+								"target": 12143,
 								"name": "T",
 								"package": "@medusajs/types",
 								"refersToTypeParameter": true
@@ -712,8 +712,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								12103,
-								12109
+								12136,
+								12142
 							]
 						}
 					]
@@ -721,14 +721,14 @@
 			}
 		},
 		{
-			"id": 12065,
+			"id": 12098,
 			"name": "Message",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 12070,
+					"id": 12103,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -742,14 +742,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 12066,
+					"id": 12099,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 12067,
+							"id": 12100,
 							"name": "eventName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -760,18 +760,18 @@
 							}
 						},
 						{
-							"id": 12068,
+							"id": 12101,
 							"name": "body",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12101,
+								"target": 12134,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 12070,
+										"target": 12103,
 										"name": "T",
 										"package": "@medusajs/types",
 										"refersToTypeParameter": true
@@ -782,7 +782,7 @@
 							}
 						},
 						{
-							"id": 12069,
+							"id": 12102,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -814,9 +814,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								12067,
-								12068,
-								12069
+								12100,
+								12101,
+								12102
 							]
 						}
 					]
@@ -824,14 +824,14 @@
 			}
 		},
 		{
-			"id": 12077,
+			"id": 12110,
 			"name": "MessageFormat",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 12087,
+					"id": 12120,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -845,14 +845,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 12078,
+					"id": 12111,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 12079,
+							"id": 12112,
 							"name": "eventName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -863,7 +863,7 @@
 							}
 						},
 						{
-							"id": 12080,
+							"id": 12113,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -871,14 +871,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 12081,
+									"id": 12114,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 12082,
+											"id": 12115,
 											"name": "service",
 											"variant": "declaration",
 											"kind": 1024,
@@ -889,7 +889,7 @@
 											}
 										},
 										{
-											"id": 12083,
+											"id": 12116,
 											"name": "action",
 											"variant": "declaration",
 											"kind": 1024,
@@ -900,7 +900,7 @@
 											}
 										},
 										{
-											"id": 12084,
+											"id": 12117,
 											"name": "object",
 											"variant": "declaration",
 											"kind": 1024,
@@ -911,7 +911,7 @@
 											}
 										},
 										{
-											"id": 12085,
+											"id": 12118,
 											"name": "eventGroupId",
 											"variant": "declaration",
 											"kind": 1024,
@@ -928,10 +928,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												12082,
-												12083,
-												12084,
-												12085
+												12115,
+												12116,
+												12117,
+												12118
 											]
 										}
 									]
@@ -939,7 +939,7 @@
 							}
 						},
 						{
-							"id": 12086,
+							"id": 12119,
 							"name": "data",
 							"variant": "declaration",
 							"kind": 1024,
@@ -949,7 +949,7 @@
 								"types": [
 									{
 										"type": "reference",
-										"target": 12087,
+										"target": 12120,
 										"name": "T",
 										"package": "@medusajs/types",
 										"refersToTypeParameter": true
@@ -958,7 +958,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 12087,
+											"target": 12120,
 											"name": "T",
 											"package": "@medusajs/types",
 											"refersToTypeParameter": true
@@ -972,9 +972,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								12079,
-								12080,
-								12086
+								12112,
+								12113,
+								12119
 							]
 						}
 					]
@@ -982,7 +982,7 @@
 			}
 		},
 		{
-			"id": 12091,
+			"id": 12124,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -990,14 +990,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 12092,
+					"id": 12125,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 12093,
+							"id": 12126,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1008,7 +1008,7 @@
 							}
 						},
 						{
-							"id": 12094,
+							"id": 12127,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1019,7 +1019,7 @@
 							}
 						},
 						{
-							"id": 12095,
+							"id": 12128,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1030,7 +1030,7 @@
 							}
 						},
 						{
-							"id": 12096,
+							"id": 12129,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1041,7 +1041,7 @@
 							}
 						},
 						{
-							"id": 12097,
+							"id": 12130,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1062,7 +1062,7 @@
 							}
 						},
 						{
-							"id": 12098,
+							"id": 12131,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1083,7 +1083,7 @@
 							}
 						},
 						{
-							"id": 12099,
+							"id": 12132,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1104,7 +1104,7 @@
 							}
 						},
 						{
-							"id": 12100,
+							"id": 12133,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1144,14 +1144,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								12093,
-								12094,
-								12095,
-								12096,
-								12097,
-								12098,
-								12099,
-								12100
+								12126,
+								12127,
+								12128,
+								12129,
+								12130,
+								12131,
+								12132,
+								12133
 							]
 						}
 					]
@@ -1159,14 +1159,14 @@
 			}
 		},
 		{
-			"id": 12088,
+			"id": 12121,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 12089,
+					"id": 12122,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1189,7 +1189,7 @@
 					}
 				},
 				{
-					"id": 12090,
+					"id": 12123,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1229,21 +1229,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						12089,
-						12090
+						12122,
+						12123
 					]
 				}
 			]
 		},
 		{
-			"id": 12047,
+			"id": 12080,
 			"name": "JoinerServiceConfig",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 12048,
+					"id": 12081,
 					"name": "serviceName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1254,7 +1254,7 @@
 					}
 				},
 				{
-					"id": 12049,
+					"id": 12082,
 					"name": "alias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1274,7 +1274,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 12088,
+								"target": 12121,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -1282,7 +1282,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 12088,
+									"target": 12121,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -1291,7 +1291,7 @@
 					}
 				},
 				{
-					"id": 12050,
+					"id": 12083,
 					"name": "fieldAlias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1327,14 +1327,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 12051,
+											"id": 12084,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 12052,
+													"id": 12085,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1345,7 +1345,7 @@
 													}
 												},
 												{
-													"id": 12053,
+													"id": 12086,
 													"name": "forwardArgumentsOnPath",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1363,8 +1363,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														12052,
-														12053
+														12085,
+														12086
 													]
 												}
 											]
@@ -1378,7 +1378,7 @@
 					}
 				},
 				{
-					"id": 12054,
+					"id": 12087,
 					"name": "primaryKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1392,7 +1392,7 @@
 					}
 				},
 				{
-					"id": 12055,
+					"id": 12088,
 					"name": "relationships",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1403,14 +1403,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 12091,
+							"target": 12124,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 12056,
+					"id": 12089,
 					"name": "extends",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1422,14 +1422,14 @@
 						"elementType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 12057,
+								"id": 12090,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"children": [
 									{
-										"id": 12058,
+										"id": 12091,
 										"name": "serviceName",
 										"variant": "declaration",
 										"kind": 1024,
@@ -1440,14 +1440,14 @@
 										}
 									},
 									{
-										"id": 12059,
+										"id": 12092,
 										"name": "relationship",
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 12091,
+											"target": 12124,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -1457,8 +1457,8 @@
 									{
 										"title": "Properties",
 										"children": [
-											12058,
-											12059
+											12091,
+											12092
 										]
 									}
 								]
@@ -1467,7 +1467,7 @@
 					}
 				},
 				{
-					"id": 12060,
+					"id": 12093,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1507,19 +1507,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						12048,
-						12049,
-						12050,
-						12054,
-						12055,
-						12056,
-						12060
+						12081,
+						12082,
+						12083,
+						12087,
+						12088,
+						12089,
+						12093
 					]
 				}
 			]
 		},
 		{
-			"id": 12001,
+			"id": 12034,
 			"name": "ModuleJoinerConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1536,7 +1536,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 12047,
+								"target": 12080,
 								"name": "JoinerServiceConfig",
 								"package": "@medusajs/types"
 							},
@@ -1568,14 +1568,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 12002,
+							"id": 12035,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 12003,
+									"id": 12036,
 									"name": "schema",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1596,7 +1596,7 @@
 									}
 								},
 								{
-									"id": 12004,
+									"id": 12037,
 									"name": "relationships",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1607,14 +1607,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 12061,
+											"target": 12094,
 											"name": "ModuleJoinerRelationship",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 12005,
+									"id": 12038,
 									"name": "extends",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1626,14 +1626,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 12006,
+												"id": 12039,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 12007,
+														"id": 12040,
 														"name": "serviceName",
 														"variant": "declaration",
 														"kind": 1024,
@@ -1644,7 +1644,7 @@
 														}
 													},
 													{
-														"id": 12008,
+														"id": 12041,
 														"name": "fieldAlias",
 														"variant": "declaration",
 														"kind": 1024,
@@ -1672,14 +1672,14 @@
 																		{
 																			"type": "reflection",
 																			"declaration": {
-																				"id": 12009,
+																				"id": 12042,
 																				"name": "__type",
 																				"variant": "declaration",
 																				"kind": 65536,
 																				"flags": {},
 																				"children": [
 																					{
-																						"id": 12010,
+																						"id": 12043,
 																						"name": "path",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -1690,7 +1690,7 @@
 																						}
 																					},
 																					{
-																						"id": 12011,
+																						"id": 12044,
 																						"name": "forwardArgumentsOnPath",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -1706,7 +1706,7 @@
 																						}
 																					},
 																					{
-																						"id": 12012,
+																						"id": 12045,
 																						"name": "isList",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -1723,9 +1723,9 @@
 																					{
 																						"title": "Properties",
 																						"children": [
-																							12010,
-																							12011,
-																							12012
+																							12043,
+																							12044,
+																							12045
 																						]
 																					}
 																				]
@@ -1739,14 +1739,14 @@
 														}
 													},
 													{
-														"id": 12013,
+														"id": 12046,
 														"name": "relationship",
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
 														"type": {
 															"type": "reference",
-															"target": 12061,
+															"target": 12094,
 															"name": "ModuleJoinerRelationship",
 															"package": "@medusajs/types"
 														}
@@ -1756,9 +1756,9 @@
 													{
 														"title": "Properties",
 														"children": [
-															12007,
-															12008,
-															12013
+															12040,
+															12041,
+															12046
 														]
 													}
 												]
@@ -1767,7 +1767,7 @@
 									}
 								},
 								{
-									"id": 12014,
+									"id": 12047,
 									"name": "serviceName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1780,7 +1780,7 @@
 									}
 								},
 								{
-									"id": 12015,
+									"id": 12048,
 									"name": "primaryKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1796,7 +1796,7 @@
 									}
 								},
 								{
-									"id": 12016,
+									"id": 12049,
 									"name": "isLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1817,7 +1817,7 @@
 									}
 								},
 								{
-									"id": 12017,
+									"id": 12050,
 									"name": "linkableKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1853,7 +1853,7 @@
 									}
 								},
 								{
-									"id": 12018,
+									"id": 12051,
 									"name": "isReadOnlyLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1874,7 +1874,7 @@
 									}
 								},
 								{
-									"id": 12019,
+									"id": 12052,
 									"name": "databaseConfig",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1884,14 +1884,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 12020,
+											"id": 12053,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 12021,
+													"id": 12054,
 													"name": "tableName",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1912,7 +1912,7 @@
 													}
 												},
 												{
-													"id": 12022,
+													"id": 12055,
 													"name": "idPrefix",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1933,7 +1933,7 @@
 													}
 												},
 												{
-													"id": 12023,
+													"id": 12056,
 													"name": "extraFields",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1954,14 +1954,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 12024,
+																	"id": 12057,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 12025,
+																			"id": 12058,
 																			"name": "type",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -2057,7 +2057,7 @@
 																			}
 																		},
 																		{
-																			"id": 12026,
+																			"id": 12059,
 																			"name": "defaultValue",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -2070,7 +2070,7 @@
 																			}
 																		},
 																		{
-																			"id": 12027,
+																			"id": 12060,
 																			"name": "nullable",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -2083,7 +2083,7 @@
 																			}
 																		},
 																		{
-																			"id": 12028,
+																			"id": 12061,
 																			"name": "options",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -2123,10 +2123,10 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				12025,
-																				12026,
-																				12027,
-																				12028
+																				12058,
+																				12059,
+																				12060,
+																				12061
 																			]
 																		}
 																	]
@@ -2142,9 +2142,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														12021,
-														12022,
-														12023
+														12054,
+														12055,
+														12056
 													]
 												}
 											]
@@ -2156,15 +2156,15 @@
 								{
 									"title": "Properties",
 									"children": [
-										12003,
-										12004,
-										12005,
-										12014,
-										12015,
-										12016,
-										12017,
-										12018,
-										12019
+										12036,
+										12037,
+										12038,
+										12047,
+										12048,
+										12049,
+										12050,
+										12051,
+										12052
 									]
 								}
 							]
@@ -2174,7 +2174,7 @@
 			}
 		},
 		{
-			"id": 12061,
+			"id": 12094,
 			"name": "ModuleJoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2184,21 +2184,21 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 12091,
+						"target": 12124,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 12062,
+							"id": 12095,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 12063,
+									"id": 12096,
 									"name": "isInternalService",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2219,7 +2219,7 @@
 									}
 								},
 								{
-									"id": 12064,
+									"id": 12097,
 									"name": "deleteCascade",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2244,8 +2244,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										12063,
-										12064
+										12096,
+										12097
 									]
 								}
 							]
@@ -2255,7 +2255,7 @@
 			}
 		},
 		{
-			"id": 11913,
+			"id": 11946,
 			"name": "IModuleService",
 			"variant": "declaration",
 			"kind": 256,
@@ -2263,20 +2263,20 @@
 			"extendedBy": [
 				{
 					"type": "reference",
-					"target": 11804,
+					"target": 11837,
 					"name": "IUserModuleService"
 				}
 			]
 		},
 		{
-			"id": 12071,
+			"id": 12104,
 			"name": "MessageAggregatorFormat",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 12072,
+					"id": 12105,
 					"name": "groupBy",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2292,7 +2292,7 @@
 					}
 				},
 				{
-					"id": 12073,
+					"id": 12106,
 					"name": "sortBy",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2302,20 +2302,20 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 12074,
+							"id": 12107,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"indexSignature": {
-								"id": 12075,
+								"id": 12108,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
 								"parameters": [
 									{
-										"id": 12076,
+										"id": 12109,
 										"name": "key",
 										"variant": "param",
 										"kind": 32768,
@@ -2355,35 +2355,35 @@
 				{
 					"title": "Properties",
 					"children": [
-						12072,
-						12073
+						12105,
+						12106
 					]
 				}
 			]
 		},
 		{
-			"id": 12029,
+			"id": 12062,
 			"name": "IMessageAggregator",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 12030,
+					"id": 12063,
 					"name": "save",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12031,
+							"id": 12064,
 							"name": "save",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 12032,
+									"id": 12065,
 									"name": "msg",
 									"variant": "param",
 									"kind": 32768,
@@ -2393,7 +2393,7 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 12065,
+												"target": 12098,
 												"name": "Message",
 												"package": "@medusajs/types"
 											},
@@ -2401,7 +2401,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 12065,
+													"target": 12098,
 													"name": "Message",
 													"package": "@medusajs/types"
 												}
@@ -2418,21 +2418,21 @@
 					]
 				},
 				{
-					"id": 12033,
+					"id": 12066,
 					"name": "getMessages",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12034,
+							"id": 12067,
 							"name": "getMessages",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 12035,
+									"id": 12068,
 									"name": "format",
 									"variant": "param",
 									"kind": 32768,
@@ -2441,7 +2441,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 12071,
+										"target": 12104,
 										"name": "MessageAggregatorFormat",
 										"package": "@medusajs/types"
 									}
@@ -2462,7 +2462,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 12065,
+											"target": 12098,
 											"name": "Message",
 											"package": "@medusajs/types"
 										}
@@ -2475,14 +2475,14 @@
 					]
 				},
 				{
-					"id": 12036,
+					"id": 12069,
 					"name": "clearMessages",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12037,
+							"id": 12070,
 							"name": "clearMessages",
 							"variant": "signature",
 							"kind": 4096,
@@ -2495,21 +2495,21 @@
 					]
 				},
 				{
-					"id": 12038,
+					"id": 12071,
 					"name": "saveRawMessageData",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12039,
+							"id": 12072,
 							"name": "saveRawMessageData",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"typeParameter": [
 								{
-									"id": 12040,
+									"id": 12073,
 									"name": "T",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -2518,7 +2518,7 @@
 							],
 							"parameters": [
 								{
-									"id": 12041,
+									"id": 12074,
 									"name": "messageData",
 									"variant": "param",
 									"kind": 32768,
@@ -2528,11 +2528,11 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 12077,
+												"target": 12110,
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12040,
+														"target": 12073,
 														"name": "T",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -2545,11 +2545,11 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 12077,
+													"target": 12110,
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 12040,
+															"target": 12073,
 															"name": "T",
 															"package": "@medusajs/types",
 															"refersToTypeParameter": true
@@ -2563,7 +2563,7 @@
 									}
 								},
 								{
-									"id": 12042,
+									"id": 12075,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -2603,16 +2603,16 @@
 				{
 					"title": "Methods",
 					"children": [
-						12030,
-						12033,
-						12036,
-						12038
+						12063,
+						12066,
+						12069,
+						12071
 					]
 				}
 			]
 		},
 		{
-			"id": 11924,
+			"id": 11957,
 			"name": "Context",
 			"variant": "declaration",
 			"kind": 256,
@@ -2627,7 +2627,7 @@
 			},
 			"children": [
 				{
-					"id": 11925,
+					"id": 11958,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2640,7 +2640,7 @@
 					}
 				},
 				{
-					"id": 11926,
+					"id": 11959,
 					"name": "transactionManager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2673,14 +2673,14 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 11935,
+						"target": 11968,
 						"name": "TManager",
 						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					}
 				},
 				{
-					"id": 11927,
+					"id": 11960,
 					"name": "manager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2713,14 +2713,14 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 11935,
+						"target": 11968,
 						"name": "TManager",
 						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					}
 				},
 				{
-					"id": 11928,
+					"id": 11961,
 					"name": "isolationLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2773,7 +2773,7 @@
 					}
 				},
 				{
-					"id": 11929,
+					"id": 11962,
 					"name": "enableNestedTransactions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2794,7 +2794,7 @@
 					}
 				},
 				{
-					"id": 11930,
+					"id": 11963,
 					"name": "eventGroupId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2815,7 +2815,7 @@
 					}
 				},
 				{
-					"id": 11931,
+					"id": 11964,
 					"name": "transactionId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2836,7 +2836,7 @@
 					}
 				},
 				{
-					"id": 11932,
+					"id": 11965,
 					"name": "messageAggregator",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2853,13 +2853,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 12029,
+						"target": 12062,
 						"name": "IMessageAggregator",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 11933,
+					"id": 11966,
 					"name": "requestId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2880,7 +2880,7 @@
 					}
 				},
 				{
-					"id": 11934,
+					"id": 11967,
 					"name": "idempotencyKey",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2905,22 +2905,22 @@
 				{
 					"title": "Properties",
 					"children": [
-						11925,
-						11926,
-						11927,
-						11928,
-						11929,
-						11930,
-						11931,
-						11932,
-						11933,
-						11934
+						11958,
+						11959,
+						11960,
+						11961,
+						11962,
+						11963,
+						11964,
+						11965,
+						11966,
+						11967
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 11935,
+					"id": 11968,
 					"name": "TManager",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2933,7 +2933,7 @@
 			]
 		},
 		{
-			"id": 11958,
+			"id": 11991,
 			"name": "UserDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -2948,7 +2948,7 @@
 			},
 			"children": [
 				{
-					"id": 11959,
+					"id": 11992,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2967,7 +2967,7 @@
 					}
 				},
 				{
-					"id": 11960,
+					"id": 11993,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2986,7 +2986,7 @@
 					}
 				},
 				{
-					"id": 11961,
+					"id": 11994,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3014,7 +3014,7 @@
 					}
 				},
 				{
-					"id": 11962,
+					"id": 11995,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3042,7 +3042,7 @@
 					}
 				},
 				{
-					"id": 11963,
+					"id": 11996,
 					"name": "avatar_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3070,7 +3070,7 @@
 					}
 				},
 				{
-					"id": 11964,
+					"id": 11997,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3113,7 +3113,7 @@
 					}
 				},
 				{
-					"id": 11965,
+					"id": 11998,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3137,7 +3137,7 @@
 					}
 				},
 				{
-					"id": 11966,
+					"id": 11999,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3161,7 +3161,7 @@
 					}
 				},
 				{
-					"id": 11967,
+					"id": 12000,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3198,21 +3198,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						11959,
-						11960,
-						11961,
-						11962,
-						11963,
-						11964,
-						11965,
-						11966,
-						11967
+						11992,
+						11993,
+						11994,
+						11995,
+						11996,
+						11997,
+						11998,
+						11999,
+						12000
 					]
 				}
 			]
 		},
 		{
-			"id": 11968,
+			"id": 12001,
 			"name": "FilterableUserProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -3227,7 +3227,7 @@
 			},
 			"children": [
 				{
-					"id": 11973,
+					"id": 12006,
 					"name": "$and",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3249,17 +3249,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 11968,
+									"target": 12001,
 									"name": "FilterableUserProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 12043,
+									"target": 12076,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 11968,
+											"target": 12001,
 											"name": "FilterableUserProps",
 											"package": "@medusajs/types"
 										}
@@ -3272,12 +3272,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 12044,
+						"target": 12077,
 						"name": "BaseFilterable.$and"
 					}
 				},
 				{
-					"id": 11974,
+					"id": 12007,
 					"name": "$or",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3299,17 +3299,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 11968,
+									"target": 12001,
 									"name": "FilterableUserProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 12043,
+									"target": 12076,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 11968,
+											"target": 12001,
 											"name": "FilterableUserProps",
 											"package": "@medusajs/types"
 										}
@@ -3322,12 +3322,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 12045,
+						"target": 12078,
 						"name": "BaseFilterable.$or"
 					}
 				},
 				{
-					"id": 11969,
+					"id": 12002,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3360,7 +3360,7 @@
 					}
 				},
 				{
-					"id": 11970,
+					"id": 12003,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3393,7 +3393,7 @@
 					}
 				},
 				{
-					"id": 11971,
+					"id": 12004,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3426,7 +3426,7 @@
 					}
 				},
 				{
-					"id": 11972,
+					"id": 12005,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3463,23 +3463,23 @@
 				{
 					"title": "Properties",
 					"children": [
-						11973,
-						11974,
-						11969,
-						11970,
-						11971,
-						11972
+						12006,
+						12007,
+						12002,
+						12003,
+						12004,
+						12005
 					]
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 12043,
+					"target": 12076,
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": 11968,
+							"target": 12001,
 							"name": "FilterableUserProps",
 							"package": "@medusajs/types"
 						}
@@ -3490,14 +3490,14 @@
 			]
 		},
 		{
-			"id": 11936,
+			"id": 11969,
 			"name": "InviteDTO",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 11937,
+					"id": 11970,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3508,7 +3508,7 @@
 					}
 				},
 				{
-					"id": 11938,
+					"id": 11971,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3519,7 +3519,7 @@
 					}
 				},
 				{
-					"id": 11939,
+					"id": 11972,
 					"name": "accepted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3530,7 +3530,7 @@
 					}
 				},
 				{
-					"id": 11940,
+					"id": 11973,
 					"name": "token",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3541,7 +3541,7 @@
 					}
 				},
 				{
-					"id": 11941,
+					"id": 11974,
 					"name": "expires_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3557,7 +3557,7 @@
 					}
 				},
 				{
-					"id": 11942,
+					"id": 11975,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3592,7 +3592,7 @@
 					}
 				},
 				{
-					"id": 11943,
+					"id": 11976,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3608,7 +3608,7 @@
 					}
 				},
 				{
-					"id": 11944,
+					"id": 11977,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3624,7 +3624,7 @@
 					}
 				},
 				{
-					"id": 11945,
+					"id": 11978,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3653,21 +3653,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						11937,
-						11938,
-						11939,
-						11940,
-						11941,
-						11942,
-						11943,
-						11944,
-						11945
+						11970,
+						11971,
+						11972,
+						11973,
+						11974,
+						11975,
+						11976,
+						11977,
+						11978
 					]
 				}
 			]
 		},
 		{
-			"id": 11975,
+			"id": 12008,
 			"name": "CreateUserDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -3682,7 +3682,7 @@
 			},
 			"children": [
 				{
-					"id": 11976,
+					"id": 12009,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3701,7 +3701,7 @@
 					}
 				},
 				{
-					"id": 11977,
+					"id": 12010,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3731,7 +3731,7 @@
 					}
 				},
 				{
-					"id": 11978,
+					"id": 12011,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3761,7 +3761,7 @@
 					}
 				},
 				{
-					"id": 11979,
+					"id": 12012,
 					"name": "avatar_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3791,7 +3791,7 @@
 					}
 				},
 				{
-					"id": 11980,
+					"id": 12013,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3840,17 +3840,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						11976,
-						11977,
-						11978,
-						11979,
-						11980
+						12009,
+						12010,
+						12011,
+						12012,
+						12013
 					]
 				}
 			]
 		},
 		{
-			"id": 11981,
+			"id": 12014,
 			"name": "UpdateUserDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -3865,7 +3865,7 @@
 			},
 			"children": [
 				{
-					"id": 11984,
+					"id": 12017,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3900,7 +3900,7 @@
 					}
 				},
 				{
-					"id": 11985,
+					"id": 12018,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3935,7 +3935,7 @@
 					}
 				},
 				{
-					"id": 11986,
+					"id": 12019,
 					"name": "avatar_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3970,7 +3970,7 @@
 					}
 				},
 				{
-					"id": 11983,
+					"id": 12016,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4020,7 +4020,7 @@
 					}
 				},
 				{
-					"id": 11982,
+					"id": 12015,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4043,11 +4043,11 @@
 				{
 					"title": "Properties",
 					"children": [
-						11984,
-						11985,
-						11986,
-						11983,
-						11982
+						12017,
+						12018,
+						12019,
+						12016,
+						12015
 					]
 				}
 			],
@@ -4068,7 +4068,7 @@
 							"typeArguments": [
 								{
 									"type": "reference",
-									"target": 11975,
+									"target": 12008,
 									"name": "CreateUserDTO",
 									"package": "@medusajs/types"
 								},
@@ -4087,14 +4087,14 @@
 			]
 		},
 		{
-			"id": 11993,
+			"id": 12026,
 			"name": "CreateInviteDTO",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 11994,
+					"id": 12027,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4105,7 +4105,7 @@
 					}
 				},
 				{
-					"id": 11995,
+					"id": 12028,
 					"name": "accepted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4118,7 +4118,7 @@
 					}
 				},
 				{
-					"id": 11996,
+					"id": 12029,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4159,22 +4159,22 @@
 				{
 					"title": "Properties",
 					"children": [
-						11994,
-						11995,
-						11996
+						12027,
+						12028,
+						12029
 					]
 				}
 			]
 		},
 		{
-			"id": 11997,
+			"id": 12030,
 			"name": "UpdateInviteDTO",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 12000,
+					"id": 12033,
 					"name": "accepted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4192,7 +4192,7 @@
 					}
 				},
 				{
-					"id": 11999,
+					"id": 12032,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4234,7 +4234,7 @@
 					}
 				},
 				{
-					"id": 11998,
+					"id": 12031,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4249,9 +4249,9 @@
 				{
 					"title": "Properties",
 					"children": [
-						12000,
-						11999,
-						11998
+						12033,
+						12032,
+						12031
 					]
 				}
 			],
@@ -4272,7 +4272,7 @@
 							"typeArguments": [
 								{
 									"type": "reference",
-									"target": 11993,
+									"target": 12026,
 									"name": "CreateInviteDTO",
 									"package": "@medusajs/types"
 								},
@@ -4291,7 +4291,7 @@
 			]
 		},
 		{
-			"id": 11804,
+			"id": 11837,
 			"name": "IUserModuleService",
 			"variant": "declaration",
 			"kind": 256,
@@ -4306,14 +4306,14 @@
 			},
 			"children": [
 				{
-					"id": 11805,
+					"id": 11838,
 					"name": "validateInviteToken",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11806,
+							"id": 11839,
 							"name": "validateInviteToken",
 							"variant": "signature",
 							"kind": 4096,
@@ -4339,7 +4339,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11807,
+									"id": 11840,
 									"name": "token",
 									"variant": "param",
 									"kind": 32768,
@@ -4358,7 +4358,7 @@
 									}
 								},
 								{
-									"id": 11808,
+									"id": 11841,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -4375,7 +4375,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -4390,7 +4390,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11936,
+										"target": 11969,
 										"name": "InviteDTO",
 										"package": "@medusajs/types"
 									}
@@ -4402,21 +4402,21 @@
 					]
 				},
 				{
-					"id": 11809,
+					"id": 11842,
 					"name": "refreshInviteTokens",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11810,
+							"id": 11843,
 							"name": "refreshInviteTokens",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11811,
+									"id": 11844,
 									"name": "inviteIds",
 									"variant": "param",
 									"kind": 32768,
@@ -4430,7 +4430,7 @@
 									}
 								},
 								{
-									"id": 11812,
+									"id": 11845,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -4439,7 +4439,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -4456,7 +4456,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11936,
+											"target": 11969,
 											"name": "InviteDTO",
 											"package": "@medusajs/types"
 										}
@@ -4469,14 +4469,14 @@
 					]
 				},
 				{
-					"id": 11813,
+					"id": 11846,
 					"name": "retrieve",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11814,
+							"id": 11847,
 							"name": "retrieve",
 							"variant": "signature",
 							"kind": 4096,
@@ -4523,7 +4523,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11815,
+									"id": 11848,
 									"name": "id",
 									"variant": "param",
 									"kind": 32768,
@@ -4542,7 +4542,7 @@
 									}
 								},
 								{
-									"id": 11816,
+									"id": 11849,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4575,11 +4575,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11958,
+												"target": 11991,
 												"name": "UserDTO",
 												"package": "@medusajs/types"
 											}
@@ -4589,7 +4589,7 @@
 									}
 								},
 								{
-									"id": 11817,
+									"id": 11850,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -4606,7 +4606,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -4621,7 +4621,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11958,
+										"target": 11991,
 										"name": "UserDTO",
 										"package": "@medusajs/types"
 									}
@@ -4633,14 +4633,14 @@
 					]
 				},
 				{
-					"id": 11818,
+					"id": 11851,
 					"name": "list",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11819,
+							"id": 11852,
 							"name": "list",
 							"variant": "signature",
 							"kind": 4096,
@@ -4727,7 +4727,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11820,
+									"id": 11853,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -4744,13 +4744,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11968,
+										"target": 12001,
 										"name": "FilterableUserProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11821,
+									"id": 11854,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4783,11 +4783,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11958,
+												"target": 11991,
 												"name": "UserDTO",
 												"package": "@medusajs/types"
 											}
@@ -4797,7 +4797,7 @@
 									}
 								},
 								{
-									"id": 11822,
+									"id": 11855,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -4814,7 +4814,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -4831,7 +4831,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11958,
+											"target": 11991,
 											"name": "UserDTO",
 											"package": "@medusajs/types"
 										}
@@ -4844,14 +4844,14 @@
 					]
 				},
 				{
-					"id": 11823,
+					"id": 11856,
 					"name": "listAndCount",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11824,
+							"id": 11857,
 							"name": "listAndCount",
 							"variant": "signature",
 							"kind": 4096,
@@ -4938,7 +4938,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11825,
+									"id": 11858,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -4955,13 +4955,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11968,
+										"target": 12001,
 										"name": "FilterableUserProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11826,
+									"id": 11859,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4994,11 +4994,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11958,
+												"target": 11991,
 												"name": "UserDTO",
 												"package": "@medusajs/types"
 											}
@@ -5008,7 +5008,7 @@
 									}
 								},
 								{
-									"id": 11827,
+									"id": 11860,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5025,7 +5025,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5045,7 +5045,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 11958,
+													"target": 11991,
 													"name": "UserDTO",
 													"package": "@medusajs/types"
 												}
@@ -5064,14 +5064,14 @@
 					]
 				},
 				{
-					"id": 11828,
+					"id": 11861,
 					"name": "create",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11829,
+							"id": 11862,
 							"name": "create",
 							"variant": "signature",
 							"kind": 4096,
@@ -5106,7 +5106,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11830,
+									"id": 11863,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5123,14 +5123,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11975,
+											"target": 12008,
 											"name": "CreateUserDTO",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 11831,
+									"id": 11864,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5147,7 +5147,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5164,7 +5164,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11958,
+											"target": 11991,
 											"name": "UserDTO",
 											"package": "@medusajs/types"
 										}
@@ -5175,7 +5175,7 @@
 							}
 						},
 						{
-							"id": 11832,
+							"id": 11865,
 							"name": "create",
 							"variant": "signature",
 							"kind": 4096,
@@ -5210,7 +5210,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11833,
+									"id": 11866,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5225,13 +5225,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11975,
+										"target": 12008,
 										"name": "CreateUserDTO",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11834,
+									"id": 11867,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5248,7 +5248,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5263,7 +5263,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11958,
+										"target": 11991,
 										"name": "UserDTO",
 										"package": "@medusajs/types"
 									}
@@ -5275,14 +5275,14 @@
 					]
 				},
 				{
-					"id": 11835,
+					"id": 11868,
 					"name": "update",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11836,
+							"id": 11869,
 							"name": "update",
 							"variant": "signature",
 							"kind": 4096,
@@ -5317,7 +5317,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11837,
+									"id": 11870,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5334,14 +5334,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11981,
+											"target": 12014,
 											"name": "UpdateUserDTO",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 11838,
+									"id": 11871,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5358,7 +5358,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5375,7 +5375,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11958,
+											"target": 11991,
 											"name": "UserDTO",
 											"package": "@medusajs/types"
 										}
@@ -5386,7 +5386,7 @@
 							}
 						},
 						{
-							"id": 11839,
+							"id": 11872,
 							"name": "update",
 							"variant": "signature",
 							"kind": 4096,
@@ -5421,7 +5421,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11840,
+									"id": 11873,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5436,13 +5436,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11981,
+										"target": 12014,
 										"name": "UpdateUserDTO",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11841,
+									"id": 11874,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5459,7 +5459,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5474,7 +5474,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11958,
+										"target": 11991,
 										"name": "UserDTO",
 										"package": "@medusajs/types"
 									}
@@ -5486,14 +5486,14 @@
 					]
 				},
 				{
-					"id": 11842,
+					"id": 11875,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11843,
+							"id": 11876,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -5528,7 +5528,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11844,
+									"id": 11877,
 									"name": "ids",
 									"variant": "param",
 									"kind": 32768,
@@ -5550,7 +5550,7 @@
 									}
 								},
 								{
-									"id": 11845,
+									"id": 11878,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5567,7 +5567,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5592,21 +5592,21 @@
 					]
 				},
 				{
-					"id": 11846,
+					"id": 11879,
 					"name": "softDelete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11847,
+							"id": 11880,
 							"name": "softDelete",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"typeParameter": [
 								{
-									"id": 11848,
+									"id": 11881,
 									"name": "TReturnableLinkableKeys",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -5623,7 +5623,7 @@
 							],
 							"parameters": [
 								{
-									"id": 11849,
+									"id": 11882,
 									"name": "userIds",
 									"variant": "param",
 									"kind": 32768,
@@ -5637,7 +5637,7 @@
 									}
 								},
 								{
-									"id": 11850,
+									"id": 11883,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -5646,11 +5646,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11987,
+										"target": 12020,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11848,
+												"target": 11881,
 												"name": "TReturnableLinkableKeys",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -5661,7 +5661,7 @@
 									}
 								},
 								{
-									"id": 11851,
+									"id": 11884,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5670,7 +5670,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5699,7 +5699,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11848,
+														"target": 11881,
 														"name": "TReturnableLinkableKeys",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -5725,21 +5725,21 @@
 					]
 				},
 				{
-					"id": 11852,
+					"id": 11885,
 					"name": "restore",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11853,
+							"id": 11886,
 							"name": "restore",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"typeParameter": [
 								{
-									"id": 11854,
+									"id": 11887,
 									"name": "TReturnableLinkableKeys",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -5756,7 +5756,7 @@
 							],
 							"parameters": [
 								{
-									"id": 11855,
+									"id": 11888,
 									"name": "userIds",
 									"variant": "param",
 									"kind": 32768,
@@ -5770,7 +5770,7 @@
 									}
 								},
 								{
-									"id": 11856,
+									"id": 11889,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -5779,11 +5779,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11990,
+										"target": 12023,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11854,
+												"target": 11887,
 												"name": "TReturnableLinkableKeys",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -5794,7 +5794,7 @@
 									}
 								},
 								{
-									"id": 11857,
+									"id": 11890,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5803,7 +5803,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5832,7 +5832,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11854,
+														"target": 11887,
 														"name": "TReturnableLinkableKeys",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -5858,21 +5858,21 @@
 					]
 				},
 				{
-					"id": 11858,
+					"id": 11891,
 					"name": "retrieveInvite",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11859,
+							"id": 11892,
 							"name": "retrieveInvite",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11860,
+									"id": 11893,
 									"name": "id",
 									"variant": "param",
 									"kind": 32768,
@@ -5883,7 +5883,7 @@
 									}
 								},
 								{
-									"id": 11861,
+									"id": 11894,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -5892,11 +5892,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11936,
+												"target": 11969,
 												"name": "InviteDTO",
 												"package": "@medusajs/types"
 											}
@@ -5906,7 +5906,7 @@
 									}
 								},
 								{
-									"id": 11862,
+									"id": 11895,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -5915,7 +5915,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -5930,7 +5930,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11936,
+										"target": 11969,
 										"name": "InviteDTO",
 										"package": "@medusajs/types"
 									}
@@ -5942,21 +5942,21 @@
 					]
 				},
 				{
-					"id": 11863,
+					"id": 11896,
 					"name": "listInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11864,
+							"id": 11897,
 							"name": "listInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11865,
+									"id": 11898,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -5965,13 +5965,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11968,
+										"target": 12001,
 										"name": "FilterableUserProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11866,
+									"id": 11899,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -5980,11 +5980,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11936,
+												"target": 11969,
 												"name": "InviteDTO",
 												"package": "@medusajs/types"
 											}
@@ -5994,7 +5994,7 @@
 									}
 								},
 								{
-									"id": 11867,
+									"id": 11900,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6003,7 +6003,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6020,7 +6020,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11936,
+											"target": 11969,
 											"name": "InviteDTO",
 											"package": "@medusajs/types"
 										}
@@ -6033,21 +6033,21 @@
 					]
 				},
 				{
-					"id": 11868,
+					"id": 11901,
 					"name": "listAndCountInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11869,
+							"id": 11902,
 							"name": "listAndCountInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11870,
+									"id": 11903,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -6056,13 +6056,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11968,
+										"target": 12001,
 										"name": "FilterableUserProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11871,
+									"id": 11904,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -6071,11 +6071,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11946,
+										"target": 11979,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11936,
+												"target": 11969,
 												"name": "InviteDTO",
 												"package": "@medusajs/types"
 											}
@@ -6085,7 +6085,7 @@
 									}
 								},
 								{
-									"id": 11872,
+									"id": 11905,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6094,7 +6094,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6114,7 +6114,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 11936,
+													"target": 11969,
 													"name": "InviteDTO",
 													"package": "@medusajs/types"
 												}
@@ -6133,21 +6133,21 @@
 					]
 				},
 				{
-					"id": 11873,
+					"id": 11906,
 					"name": "createInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11874,
+							"id": 11907,
 							"name": "createInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11875,
+									"id": 11908,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -6156,14 +6156,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11993,
+											"target": 12026,
 											"name": "CreateInviteDTO",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 11876,
+									"id": 11909,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6172,7 +6172,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6189,7 +6189,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11936,
+											"target": 11969,
 											"name": "InviteDTO",
 											"package": "@medusajs/types"
 										}
@@ -6200,27 +6200,27 @@
 							}
 						},
 						{
-							"id": 11877,
+							"id": 11910,
 							"name": "createInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11878,
+									"id": 11911,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 11993,
+										"target": 12026,
 										"name": "CreateInviteDTO",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11879,
+									"id": 11912,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6229,7 +6229,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6244,7 +6244,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11936,
+										"target": 11969,
 										"name": "InviteDTO",
 										"package": "@medusajs/types"
 									}
@@ -6256,21 +6256,21 @@
 					]
 				},
 				{
-					"id": 11880,
+					"id": 11913,
 					"name": "updateInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11881,
+							"id": 11914,
 							"name": "updateInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11882,
+									"id": 11915,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -6279,14 +6279,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11997,
+											"target": 12030,
 											"name": "UpdateInviteDTO",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 11883,
+									"id": 11916,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6295,7 +6295,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6312,7 +6312,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 11936,
+											"target": 11969,
 											"name": "InviteDTO",
 											"package": "@medusajs/types"
 										}
@@ -6323,27 +6323,27 @@
 							}
 						},
 						{
-							"id": 11884,
+							"id": 11917,
 							"name": "updateInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11885,
+									"id": 11918,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 11997,
+										"target": 12030,
 										"name": "UpdateInviteDTO",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 11886,
+									"id": 11919,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6352,7 +6352,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6367,7 +6367,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 11936,
+										"target": 11969,
 										"name": "InviteDTO",
 										"package": "@medusajs/types"
 									}
@@ -6379,21 +6379,21 @@
 					]
 				},
 				{
-					"id": 11887,
+					"id": 11920,
 					"name": "deleteInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11888,
+							"id": 11921,
 							"name": "deleteInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 11889,
+									"id": 11922,
 									"name": "ids",
 									"variant": "param",
 									"kind": 32768,
@@ -6407,7 +6407,7 @@
 									}
 								},
 								{
-									"id": 11890,
+									"id": 11923,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6416,7 +6416,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6441,21 +6441,21 @@
 					]
 				},
 				{
-					"id": 11891,
+					"id": 11924,
 					"name": "softDeleteInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11892,
+							"id": 11925,
 							"name": "softDeleteInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"typeParameter": [
 								{
-									"id": 11893,
+									"id": 11926,
 									"name": "TReturnableLinkableKeys",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -6472,7 +6472,7 @@
 							],
 							"parameters": [
 								{
-									"id": 11894,
+									"id": 11927,
 									"name": "inviteIds",
 									"variant": "param",
 									"kind": 32768,
@@ -6486,7 +6486,7 @@
 									}
 								},
 								{
-									"id": 11895,
+									"id": 11928,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -6495,11 +6495,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11987,
+										"target": 12020,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11893,
+												"target": 11926,
 												"name": "TReturnableLinkableKeys",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -6510,7 +6510,7 @@
 									}
 								},
 								{
-									"id": 11896,
+									"id": 11929,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6519,7 +6519,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6548,7 +6548,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11893,
+														"target": 11926,
 														"name": "TReturnableLinkableKeys",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -6574,21 +6574,21 @@
 					]
 				},
 				{
-					"id": 11897,
+					"id": 11930,
 					"name": "restoreInvites",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11898,
+							"id": 11931,
 							"name": "restoreInvites",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"typeParameter": [
 								{
-									"id": 11899,
+									"id": 11932,
 									"name": "TReturnableLinkableKeys",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -6605,7 +6605,7 @@
 							],
 							"parameters": [
 								{
-									"id": 11900,
+									"id": 11933,
 									"name": "inviteIds",
 									"variant": "param",
 									"kind": 32768,
@@ -6619,7 +6619,7 @@
 									}
 								},
 								{
-									"id": 11901,
+									"id": 11934,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -6628,11 +6628,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11990,
+										"target": 12023,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 11899,
+												"target": 11932,
 												"name": "TReturnableLinkableKeys",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -6643,7 +6643,7 @@
 									}
 								},
 								{
-									"id": 11902,
+									"id": 11935,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -6652,7 +6652,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 11924,
+										"target": 11957,
 										"name": "Context",
 										"package": "@medusajs/types"
 									}
@@ -6681,7 +6681,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11899,
+														"target": 11932,
 														"name": "TReturnableLinkableKeys",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -6711,31 +6711,31 @@
 				{
 					"title": "Methods",
 					"children": [
-						11805,
-						11809,
-						11813,
-						11818,
-						11823,
-						11828,
-						11835,
+						11838,
 						11842,
 						11846,
-						11852,
-						11858,
-						11863,
+						11851,
+						11856,
+						11861,
 						11868,
-						11873,
-						11880,
-						11887,
+						11875,
+						11879,
+						11885,
 						11891,
-						11897
+						11896,
+						11901,
+						11906,
+						11913,
+						11920,
+						11924,
+						11930
 					]
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 11913,
+					"target": 11946,
 					"name": "IModuleService",
 					"package": "@medusajs/types"
 				}
@@ -6746,191 +6746,59 @@
 		{
 			"title": "Interfaces",
 			"children": [
+				11979,
+				12076,
+				12020,
+				12023,
+				12121,
+				12080,
 				11946,
-				12043,
-				11987,
-				11990,
-				12088,
-				12047,
-				11913,
-				12071,
-				12029,
-				11924,
-				11958,
-				11968,
-				11936,
-				11975,
-				11981,
-				11993,
-				11997,
-				11804
+				12104,
+				12062,
+				11957,
+				11991,
+				12001,
+				11969,
+				12008,
+				12014,
+				12026,
+				12030,
+				11837
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				12101,
-				12065,
-				12077,
-				12091,
-				12001,
-				12061
+				12134,
+				12098,
+				12110,
+				12124,
+				12034,
+				12094
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"11803": {
+		"11836": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
 			"qualifiedName": ""
 		},
-		"11804": {
+		"11837": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
 			"qualifiedName": "IUserModuleService"
 		},
-		"11805": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.validateInviteToken"
-		},
-		"11806": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.validateInviteToken"
-		},
-		"11807": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "token"
-		},
-		"11808": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11809": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.refreshInviteTokens"
-		},
-		"11810": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.refreshInviteTokens"
-		},
-		"11811": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "inviteIds"
-		},
-		"11812": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11813": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.retrieve"
-		},
-		"11814": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.retrieve"
-		},
-		"11815": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "id"
-		},
-		"11816": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
-		},
-		"11817": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11818": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.list"
-		},
-		"11819": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.list"
-		},
-		"11820": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "filters"
-		},
-		"11821": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
-		},
-		"11822": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11823": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listAndCount"
-		},
-		"11824": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listAndCount"
-		},
-		"11825": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "filters"
-		},
-		"11826": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
-		},
-		"11827": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11828": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.create"
-		},
-		"11829": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.create"
-		},
-		"11830": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
-		},
-		"11831": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11832": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.create"
-		},
-		"11833": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
-		},
-		"11834": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"11835": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.update"
-		},
-		"11836": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.update"
-		},
-		"11837": {
-			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
-		},
 		"11838": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.validateInviteToken"
 		},
 		"11839": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.update"
+			"qualifiedName": "IUserModuleService.validateInviteToken"
 		},
 		"11840": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "token"
 		},
 		"11841": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
@@ -6938,15 +6806,15 @@
 		},
 		"11842": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.delete"
+			"qualifiedName": "IUserModuleService.refreshInviteTokens"
 		},
 		"11843": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.delete"
+			"qualifiedName": "IUserModuleService.refreshInviteTokens"
 		},
 		"11844": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "ids"
+			"qualifiedName": "inviteIds"
 		},
 		"11845": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
@@ -6954,87 +6822,87 @@
 		},
 		"11846": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.softDelete"
+			"qualifiedName": "IUserModuleService.retrieve"
 		},
 		"11847": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.softDelete"
+			"qualifiedName": "IUserModuleService.retrieve"
 		},
 		"11848": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "TReturnableLinkableKeys"
+			"qualifiedName": "id"
 		},
 		"11849": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "userIds"
+			"qualifiedName": "config"
 		},
 		"11850": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "sharedContext"
 		},
 		"11851": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.list"
 		},
 		"11852": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.restore"
+			"qualifiedName": "IUserModuleService.list"
 		},
 		"11853": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.restore"
+			"qualifiedName": "filters"
 		},
 		"11854": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "TReturnableLinkableKeys"
+			"qualifiedName": "config"
 		},
 		"11855": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "userIds"
+			"qualifiedName": "sharedContext"
 		},
 		"11856": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IUserModuleService.listAndCount"
 		},
 		"11857": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.listAndCount"
 		},
 		"11858": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.retrieveInvite"
+			"qualifiedName": "filters"
 		},
 		"11859": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.retrieveInvite"
+			"qualifiedName": "config"
 		},
 		"11860": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "id"
+			"qualifiedName": "sharedContext"
 		},
 		"11861": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IUserModuleService.create"
 		},
 		"11862": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.create"
 		},
 		"11863": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listInvites"
+			"qualifiedName": "data"
 		},
 		"11864": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listInvites"
+			"qualifiedName": "sharedContext"
 		},
 		"11865": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "filters"
+			"qualifiedName": "IUserModuleService.create"
 		},
 		"11866": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "data"
 		},
 		"11867": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
@@ -7042,91 +6910,91 @@
 		},
 		"11868": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listAndCountInvites"
+			"qualifiedName": "IUserModuleService.update"
 		},
 		"11869": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.listAndCountInvites"
+			"qualifiedName": "IUserModuleService.update"
 		},
 		"11870": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "filters"
+			"qualifiedName": "data"
 		},
 		"11871": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "sharedContext"
 		},
 		"11872": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.update"
 		},
 		"11873": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.createInvites"
+			"qualifiedName": "data"
 		},
 		"11874": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.createInvites"
+			"qualifiedName": "sharedContext"
 		},
 		"11875": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "IUserModuleService.delete"
 		},
 		"11876": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.delete"
 		},
 		"11877": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.createInvites"
+			"qualifiedName": "ids"
 		},
 		"11878": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "sharedContext"
 		},
 		"11879": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.softDelete"
 		},
 		"11880": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.updateInvites"
+			"qualifiedName": "IUserModuleService.softDelete"
 		},
 		"11881": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.updateInvites"
+			"qualifiedName": "TReturnableLinkableKeys"
 		},
 		"11882": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "userIds"
 		},
 		"11883": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "config"
 		},
 		"11884": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.updateInvites"
+			"qualifiedName": "sharedContext"
 		},
 		"11885": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "IUserModuleService.restore"
 		},
 		"11886": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.restore"
 		},
 		"11887": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.deleteInvites"
+			"qualifiedName": "TReturnableLinkableKeys"
 		},
 		"11888": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.deleteInvites"
+			"qualifiedName": "userIds"
 		},
 		"11889": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "ids"
+			"qualifiedName": "config"
 		},
 		"11890": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
@@ -7134,793 +7002,925 @@
 		},
 		"11891": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.softDeleteInvites"
+			"qualifiedName": "IUserModuleService.retrieveInvite"
 		},
 		"11892": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.softDeleteInvites"
+			"qualifiedName": "IUserModuleService.retrieveInvite"
 		},
 		"11893": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "TReturnableLinkableKeys"
+			"qualifiedName": "id"
 		},
 		"11894": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "inviteIds"
+			"qualifiedName": "config"
 		},
 		"11895": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "sharedContext"
 		},
 		"11896": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "IUserModuleService.listInvites"
 		},
 		"11897": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.restoreInvites"
+			"qualifiedName": "IUserModuleService.listInvites"
 		},
 		"11898": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "IUserModuleService.restoreInvites"
+			"qualifiedName": "filters"
 		},
 		"11899": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "TReturnableLinkableKeys"
+			"qualifiedName": "config"
 		},
 		"11900": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "inviteIds"
+			"qualifiedName": "sharedContext"
 		},
 		"11901": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IUserModuleService.listAndCountInvites"
 		},
 		"11902": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.listAndCountInvites"
+		},
+		"11903": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "filters"
+		},
+		"11904": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "config"
+		},
+		"11905": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11906": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.createInvites"
+		},
+		"11907": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.createInvites"
+		},
+		"11908": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "data"
+		},
+		"11909": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11910": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.createInvites"
+		},
+		"11911": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "data"
+		},
+		"11912": {
 			"sourceFileName": "../../../packages/types/src/user/service.ts",
 			"qualifiedName": "sharedContext"
 		},
 		"11913": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.updateInvites"
+		},
+		"11914": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.updateInvites"
+		},
+		"11915": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "data"
+		},
+		"11916": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11917": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.updateInvites"
+		},
+		"11918": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "data"
+		},
+		"11919": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11920": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.deleteInvites"
+		},
+		"11921": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.deleteInvites"
+		},
+		"11922": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "ids"
+		},
+		"11923": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11924": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.softDeleteInvites"
+		},
+		"11925": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.softDeleteInvites"
+		},
+		"11926": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11927": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "inviteIds"
+		},
+		"11928": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "config"
+		},
+		"11929": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11930": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.restoreInvites"
+		},
+		"11931": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "IUserModuleService.restoreInvites"
+		},
+		"11932": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11933": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "inviteIds"
+		},
+		"11934": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "config"
+		},
+		"11935": {
+			"sourceFileName": "../../../packages/types/src/user/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11946": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "IModuleService"
 		},
-		"11924": {
+		"11957": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "Context"
 		},
-		"11925": {
+		"11958": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.__type"
 		},
-		"11926": {
+		"11959": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.transactionManager"
 		},
-		"11927": {
+		"11960": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.manager"
 		},
-		"11928": {
+		"11961": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.isolationLevel"
 		},
-		"11929": {
+		"11962": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.enableNestedTransactions"
 		},
-		"11930": {
+		"11963": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.eventGroupId"
 		},
-		"11931": {
+		"11964": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.transactionId"
 		},
-		"11932": {
+		"11965": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.messageAggregator"
 		},
-		"11933": {
+		"11966": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.requestId"
 		},
-		"11934": {
+		"11967": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.idempotencyKey"
 		},
-		"11935": {
+		"11968": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "TManager"
 		},
-		"11936": {
+		"11969": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO"
 		},
-		"11937": {
+		"11970": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.id"
 		},
-		"11938": {
+		"11971": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.email"
 		},
-		"11939": {
+		"11972": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.accepted"
 		},
-		"11940": {
+		"11973": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.token"
 		},
-		"11941": {
+		"11974": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.expires_at"
 		},
-		"11942": {
+		"11975": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.metadata"
 		},
-		"11943": {
+		"11976": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.created_at"
 		},
-		"11944": {
+		"11977": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.updated_at"
 		},
-		"11945": {
+		"11978": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "InviteDTO.deleted_at"
 		},
-		"11946": {
+		"11979": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig"
 		},
-		"11947": {
+		"11980": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.select"
 		},
-		"11948": {
+		"11981": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.skip"
 		},
-		"11949": {
+		"11982": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.take"
 		},
-		"11950": {
+		"11983": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.relations"
 		},
-		"11951": {
+		"11984": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.order"
 		},
-		"11952": {
+		"11985": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type"
 		},
-		"11953": {
+		"11986": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"11955": {
+		"11988": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.withDeleted"
 		},
-		"11956": {
+		"11989": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.filters"
 		},
-		"11957": {
+		"11990": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.Entity"
 		},
-		"11958": {
+		"11991": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO"
 		},
-		"11959": {
+		"11992": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.id"
 		},
-		"11960": {
+		"11993": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.email"
 		},
-		"11961": {
+		"11994": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.first_name"
 		},
-		"11962": {
+		"11995": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.last_name"
 		},
-		"11963": {
+		"11996": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.avatar_url"
 		},
-		"11964": {
+		"11997": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.metadata"
 		},
-		"11965": {
+		"11998": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.created_at"
 		},
-		"11966": {
+		"11999": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.updated_at"
 		},
-		"11967": {
+		"12000": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "UserDTO.deleted_at"
 		},
-		"11968": {
+		"12001": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "FilterableUserProps"
 		},
-		"11969": {
+		"12002": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "FilterableUserProps.id"
 		},
-		"11970": {
+		"12003": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "FilterableUserProps.email"
 		},
-		"11971": {
+		"12004": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "FilterableUserProps.first_name"
 		},
-		"11972": {
+		"12005": {
 			"sourceFileName": "../../../packages/types/src/user/common.ts",
 			"qualifiedName": "FilterableUserProps.last_name"
 		},
-		"11973": {
+		"12006": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$and"
 		},
-		"11974": {
+		"12007": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$or"
 		},
-		"11975": {
+		"12008": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO"
 		},
-		"11976": {
+		"12009": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO.email"
 		},
-		"11977": {
+		"12010": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO.first_name"
 		},
-		"11978": {
+		"12011": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO.last_name"
 		},
-		"11979": {
+		"12012": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO.avatar_url"
 		},
-		"11980": {
+		"12013": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateUserDTO.metadata"
 		},
-		"11981": {
+		"12014": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "UpdateUserDTO"
 		},
-		"11982": {
+		"12015": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "UpdateUserDTO.id"
 		},
-		"11983": {
+		"12016": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "metadata"
 		},
-		"11984": {
+		"12017": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "first_name"
 		},
-		"11985": {
+		"12018": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "last_name"
 		},
-		"11986": {
+		"12019": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "avatar_url"
 		},
-		"11987": {
+		"12020": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "SoftDeleteReturn"
 		},
-		"11988": {
+		"12021": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "__type.returnLinkableKeys"
 		},
-		"11989": {
+		"12022": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "TReturnableLinkableKeys"
 		},
-		"11990": {
+		"12023": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "RestoreReturn"
 		},
-		"11991": {
+		"12024": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "__type.returnLinkableKeys"
 		},
-		"11992": {
+		"12025": {
 			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
 			"qualifiedName": "TReturnableLinkableKeys"
 		},
-		"11993": {
+		"12026": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateInviteDTO"
 		},
-		"11994": {
+		"12027": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateInviteDTO.email"
 		},
-		"11995": {
+		"12028": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateInviteDTO.accepted"
 		},
-		"11996": {
+		"12029": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "CreateInviteDTO.metadata"
 		},
-		"11997": {
+		"12030": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "UpdateInviteDTO"
 		},
-		"11998": {
+		"12031": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "UpdateInviteDTO.id"
 		},
-		"11999": {
+		"12032": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "metadata"
 		},
-		"12000": {
+		"12033": {
 			"sourceFileName": "../../../packages/types/src/user/mutations.ts",
 			"qualifiedName": "accepted"
 		},
-		"12001": {
+		"12034": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "ModuleJoinerConfig"
 		},
-		"12002": {
+		"12035": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"12003": {
+		"12036": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.schema"
 		},
-		"12004": {
+		"12037": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.relationships"
 		},
-		"12005": {
+		"12038": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.extends"
 		},
-		"12006": {
+		"12039": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"12007": {
+		"12040": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"12008": {
+		"12041": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.fieldAlias"
 		},
-		"12009": {
+		"12042": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"12010": {
+		"12043": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.path"
 		},
-		"12011": {
+		"12044": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
-		"12012": {
+		"12045": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isList"
 		},
-		"12013": {
+		"12046": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.relationship"
 		},
-		"12014": {
+		"12047": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"12015": {
+		"12048": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.primaryKeys"
 		},
-		"12016": {
+		"12049": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isLink"
 		},
-		"12017": {
+		"12050": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.linkableKeys"
 		},
-		"12018": {
+		"12051": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isReadOnlyLink"
 		},
-		"12019": {
+		"12052": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.databaseConfig"
 		},
-		"12020": {
+		"12053": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
-		"12021": {
+		"12054": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.tableName"
 		},
-		"12022": {
+		"12055": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.idPrefix"
 		},
-		"12023": {
+		"12056": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.extraFields"
 		},
-		"12024": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"12025": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.type"
-		},
-		"12026": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.defaultValue"
-		},
-		"12027": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.nullable"
-		},
-		"12028": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.options"
-		},
-		"12029": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator"
-		},
-		"12030": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.save"
-		},
-		"12031": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.save"
-		},
-		"12032": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "msg"
-		},
-		"12033": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.getMessages"
-		},
-		"12034": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.getMessages"
-		},
-		"12035": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "format"
-		},
-		"12036": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.clearMessages"
-		},
-		"12037": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.clearMessages"
-		},
-		"12038": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.saveRawMessageData"
-		},
-		"12039": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "IMessageAggregator.saveRawMessageData"
-		},
-		"12040": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "T"
-		},
-		"12041": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "messageData"
-		},
-		"12042": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "options"
-		},
-		"12043": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable"
-		},
-		"12044": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.$and"
-		},
-		"12045": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.$or"
-		},
-		"12046": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.T"
-		},
-		"12047": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig"
-		},
-		"12048": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.serviceName"
-		},
-		"12049": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.alias"
-		},
-		"12050": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.fieldAlias"
-		},
-		"12051": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
-		},
-		"12052": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.path"
-		},
-		"12053": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
-		},
-		"12054": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.primaryKeys"
-		},
-		"12055": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.relationships"
-		},
-		"12056": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.extends"
-		},
 		"12057": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
 		"12058": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
 		},
 		"12059": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.relationship"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
 		},
 		"12060": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.args"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
 		},
 		"12061": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerRelationship"
-		},
-		"12062": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"12063": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isInternalService"
-		},
-		"12064": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.deleteCascade"
-		},
-		"12065": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "Message"
-		},
-		"12066": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
-		},
-		"12067": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.eventName"
-		},
-		"12068": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.body"
-		},
-		"12069": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.options"
 		},
+		"12062": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator"
+		},
+		"12063": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"12064": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"12065": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "msg"
+		},
+		"12066": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"12067": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"12068": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "format"
+		},
+		"12069": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
 		"12070": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "T"
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
 		},
 		"12071": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "MessageAggregatorFormat"
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
 		},
 		"12072": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "MessageAggregatorFormat.groupBy"
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
 		},
 		"12073": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "MessageAggregatorFormat.sortBy"
+			"qualifiedName": "T"
 		},
 		"12074": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "messageData"
 		},
 		"12075": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "__type.__index"
+			"qualifiedName": "options"
+		},
+		"12076": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable"
 		},
 		"12077": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "MessageFormat"
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
 		},
 		"12078": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
 		},
 		"12079": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.eventName"
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.T"
 		},
 		"12080": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.metadata"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig"
 		},
 		"12081": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.serviceName"
 		},
 		"12082": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.service"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.alias"
 		},
 		"12083": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.action"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
 		},
 		"12084": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.object"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
 		},
 		"12085": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.eventGroupId"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
 		},
 		"12086": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.data"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
 		"12087": {
-			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "T"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
 		},
 		"12088": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias"
+			"qualifiedName": "JoinerServiceConfig.relationships"
 		},
 		"12089": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.name"
+			"qualifiedName": "JoinerServiceConfig.extends"
 		},
 		"12090": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.args"
+			"qualifiedName": "__type"
 		},
 		"12091": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerRelationship"
+			"qualifiedName": "__type.serviceName"
 		},
 		"12092": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.relationship"
 		},
 		"12093": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.alias"
+			"qualifiedName": "JoinerServiceConfig.args"
 		},
 		"12094": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.foreignKey"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
 		},
 		"12095": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.primaryKey"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
 		},
 		"12096": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
-		},
-		"12097": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type.isInternalService"
 		},
+		"12097": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
 		"12098": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.inverse"
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "Message"
 		},
 		"12099": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.isList"
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
 		},
 		"12100": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.args"
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
 		},
 		"12101": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "MessageBody"
+			"qualifiedName": "__type.body"
 		},
 		"12102": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.options"
 		},
 		"12103": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "T"
 		},
 		"12104": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat"
+		},
+		"12105": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.groupBy"
+		},
+		"12106": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.sortBy"
+		},
+		"12107": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type"
+		},
+		"12108": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"12110": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageFormat"
+		},
+		"12111": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type"
 		},
-		"12105": {
+		"12112": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"12113": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"12114": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"12115": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.service"
 		},
-		"12106": {
+		"12116": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.action"
 		},
-		"12107": {
+		"12117": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.object"
 		},
-		"12108": {
+		"12118": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.eventGroupId"
 		},
-		"12109": {
+		"12119": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.data"
 		},
-		"12110": {
+		"12120": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"12121": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"12122": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"12123": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"12124": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"12125": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"12126": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"12127": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"12128": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"12129": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"12130": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"12131": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"12132": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"12133": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
+		},
+		"12134": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageBody"
+		},
+		"12135": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"12136": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"12137": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"12138": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"12139": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"12140": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"12141": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"12142": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"12143": {
 			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
 			"qualifiedName": "T"
 		}

@@ -1,19 +1,19 @@
 {
-	"id": 31759,
+	"id": 31834,
 	"name": "utils",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 31761,
+			"id": 31836,
 			"name": "FulfillmentUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31770,
+					"id": 31845,
 					"name": "FulfillmentEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -26,14 +26,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31771,
+									"id": 31846,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31772,
+											"id": 31847,
 											"name": "created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -44,7 +44,7 @@
 											}
 										},
 										{
-											"id": 31773,
+											"id": 31848,
 											"name": "updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -55,7 +55,7 @@
 											}
 										},
 										{
-											"id": 31774,
+											"id": 31849,
 											"name": "deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -66,7 +66,7 @@
 											}
 										},
 										{
-											"id": 31775,
+											"id": 31850,
 											"name": "restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -77,7 +77,7 @@
 											}
 										},
 										{
-											"id": 31776,
+											"id": 31851,
 											"name": "attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -88,7 +88,7 @@
 											}
 										},
 										{
-											"id": 31777,
+											"id": 31852,
 											"name": "detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -103,12 +103,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31772,
-												31773,
-												31774,
-												31775,
-												31776,
-												31777
+												31847,
+												31848,
+												31849,
+												31850,
+												31851,
+												31852
 											]
 										}
 									]
@@ -117,14 +117,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31778,
+									"id": 31853,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31779,
+											"id": 31854,
 											"name": "fulfillment_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -135,7 +135,7 @@
 											}
 										},
 										{
-											"id": 31780,
+											"id": 31855,
 											"name": "service_zone_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -146,7 +146,7 @@
 											}
 										},
 										{
-											"id": 31781,
+											"id": 31856,
 											"name": "geo_zone_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -157,7 +157,7 @@
 											}
 										},
 										{
-											"id": 31782,
+											"id": 31857,
 											"name": "shipping_option_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -168,7 +168,7 @@
 											}
 										},
 										{
-											"id": 31783,
+											"id": 31858,
 											"name": "shipping_profile_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -179,7 +179,7 @@
 											}
 										},
 										{
-											"id": 31784,
+											"id": 31859,
 											"name": "shipping_option_rule_created",
 											"variant": "declaration",
 											"kind": 1024,
@@ -194,12 +194,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31779,
-												31780,
-												31781,
-												31782,
-												31783,
-												31784
+												31854,
+												31855,
+												31856,
+												31857,
+												31858,
+												31859
 											]
 										}
 									]
@@ -208,14 +208,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31785,
+									"id": 31860,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31786,
+											"id": 31861,
 											"name": "fulfillment_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -226,7 +226,7 @@
 											}
 										},
 										{
-											"id": 31787,
+											"id": 31862,
 											"name": "service_zone_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -237,7 +237,7 @@
 											}
 										},
 										{
-											"id": 31788,
+											"id": 31863,
 											"name": "geo_zone_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -248,7 +248,7 @@
 											}
 										},
 										{
-											"id": 31789,
+											"id": 31864,
 											"name": "shipping_option_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -259,7 +259,7 @@
 											}
 										},
 										{
-											"id": 31790,
+											"id": 31865,
 											"name": "shipping_profile_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -270,7 +270,7 @@
 											}
 										},
 										{
-											"id": 31791,
+											"id": 31866,
 											"name": "shipping_option_rule_updated",
 											"variant": "declaration",
 											"kind": 1024,
@@ -285,12 +285,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31786,
-												31787,
-												31788,
-												31789,
-												31790,
-												31791
+												31861,
+												31862,
+												31863,
+												31864,
+												31865,
+												31866
 											]
 										}
 									]
@@ -299,14 +299,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31792,
+									"id": 31867,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31793,
+											"id": 31868,
 											"name": "fulfillment_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -317,7 +317,7 @@
 											}
 										},
 										{
-											"id": 31794,
+											"id": 31869,
 											"name": "service_zone_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -328,7 +328,7 @@
 											}
 										},
 										{
-											"id": 31795,
+											"id": 31870,
 											"name": "geo_zone_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -339,7 +339,7 @@
 											}
 										},
 										{
-											"id": 31796,
+											"id": 31871,
 											"name": "shipping_option_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -350,7 +350,7 @@
 											}
 										},
 										{
-											"id": 31797,
+											"id": 31872,
 											"name": "shipping_profile_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -361,7 +361,7 @@
 											}
 										},
 										{
-											"id": 31798,
+											"id": 31873,
 											"name": "shipping_option_rule_deleted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -376,12 +376,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31793,
-												31794,
-												31795,
-												31796,
-												31797,
-												31798
+												31868,
+												31869,
+												31870,
+												31871,
+												31872,
+												31873
 											]
 										}
 									]
@@ -390,14 +390,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31799,
+									"id": 31874,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31800,
+											"id": 31875,
 											"name": "fulfillment_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -408,7 +408,7 @@
 											}
 										},
 										{
-											"id": 31801,
+											"id": 31876,
 											"name": "service_zone_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -419,7 +419,7 @@
 											}
 										},
 										{
-											"id": 31802,
+											"id": 31877,
 											"name": "geo_zone_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -430,7 +430,7 @@
 											}
 										},
 										{
-											"id": 31803,
+											"id": 31878,
 											"name": "shipping_option_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -441,7 +441,7 @@
 											}
 										},
 										{
-											"id": 31804,
+											"id": 31879,
 											"name": "shipping_profile_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -452,7 +452,7 @@
 											}
 										},
 										{
-											"id": 31805,
+											"id": 31880,
 											"name": "shipping_option_rule_restored",
 											"variant": "declaration",
 											"kind": 1024,
@@ -467,12 +467,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31800,
-												31801,
-												31802,
-												31803,
-												31804,
-												31805
+												31875,
+												31876,
+												31877,
+												31878,
+												31879,
+												31880
 											]
 										}
 									]
@@ -481,14 +481,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31806,
+									"id": 31881,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31807,
+											"id": 31882,
 											"name": "fulfillment_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -499,7 +499,7 @@
 											}
 										},
 										{
-											"id": 31808,
+											"id": 31883,
 											"name": "service_zone_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -510,7 +510,7 @@
 											}
 										},
 										{
-											"id": 31809,
+											"id": 31884,
 											"name": "geo_zone_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -521,7 +521,7 @@
 											}
 										},
 										{
-											"id": 31810,
+											"id": 31885,
 											"name": "shipping_option_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -532,7 +532,7 @@
 											}
 										},
 										{
-											"id": 31811,
+											"id": 31886,
 											"name": "shipping_profile_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -543,7 +543,7 @@
 											}
 										},
 										{
-											"id": 31812,
+											"id": 31887,
 											"name": "shipping_option_rule_attached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -558,12 +558,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31807,
-												31808,
-												31809,
-												31810,
-												31811,
-												31812
+												31882,
+												31883,
+												31884,
+												31885,
+												31886,
+												31887
 											]
 										}
 									]
@@ -572,14 +572,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 31813,
+									"id": 31888,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 31814,
+											"id": 31889,
 											"name": "fulfillment_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -590,7 +590,7 @@
 											}
 										},
 										{
-											"id": 31815,
+											"id": 31890,
 											"name": "service_zone_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -601,7 +601,7 @@
 											}
 										},
 										{
-											"id": 31816,
+											"id": 31891,
 											"name": "geo_zone_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -612,7 +612,7 @@
 											}
 										},
 										{
-											"id": 31817,
+											"id": 31892,
 											"name": "shipping_option_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -623,7 +623,7 @@
 											}
 										},
 										{
-											"id": 31818,
+											"id": 31893,
 											"name": "shipping_profile_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -634,7 +634,7 @@
 											}
 										},
 										{
-											"id": 31819,
+											"id": 31894,
 											"name": "shipping_option_rule_detached",
 											"variant": "declaration",
 											"kind": 1024,
@@ -649,12 +649,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												31814,
-												31815,
-												31816,
-												31817,
-												31818,
-												31819
+												31889,
+												31890,
+												31891,
+												31892,
+												31893,
+												31894
 											]
 										}
 									]
@@ -665,14 +665,14 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 31762,
+					"id": 31837,
 					"name": "GeoZoneType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31763,
+							"id": 31838,
 							"name": "COUNTRY",
 							"variant": "declaration",
 							"kind": 16,
@@ -683,7 +683,7 @@
 							}
 						},
 						{
-							"id": 31764,
+							"id": 31839,
 							"name": "PROVINCE",
 							"variant": "declaration",
 							"kind": 16,
@@ -694,7 +694,7 @@
 							}
 						},
 						{
-							"id": 31765,
+							"id": 31840,
 							"name": "CITY",
 							"variant": "declaration",
 							"kind": 16,
@@ -705,7 +705,7 @@
 							}
 						},
 						{
-							"id": 31766,
+							"id": 31841,
 							"name": "ZIP",
 							"variant": "declaration",
 							"kind": 16,
@@ -720,23 +720,23 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31763,
-								31764,
-								31765,
-								31766
+								31838,
+								31839,
+								31840,
+								31841
 							]
 						}
 					]
 				},
 				{
-					"id": 31767,
+					"id": 31842,
 					"name": "ShippingOptionPriceType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31768,
+							"id": 31843,
 							"name": "CALCULATED",
 							"variant": "declaration",
 							"kind": 16,
@@ -747,7 +747,7 @@
 							}
 						},
 						{
-							"id": 31769,
+							"id": 31844,
 							"name": "FLAT",
 							"variant": "declaration",
 							"kind": 16,
@@ -762,8 +762,8 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31768,
-								31769
+								31843,
+								31844
 							]
 						}
 					]
@@ -773,20 +773,20 @@
 				{
 					"title": "Enumerations",
 					"children": [
-						31762,
-						31767
+						31837,
+						31842
 					]
 				},
 				{
 					"title": "Variables",
 					"children": [
-						31770
+						31845
 					]
 				}
 			]
 		},
 		{
-			"id": 31760,
+			"id": 31835,
 			"name": "MedusaModuleType",
 			"variant": "declaration",
 			"kind": 32,
@@ -797,7 +797,7 @@
 				"type": "query",
 				"queryType": {
 					"type": "reference",
-					"target": 31760,
+					"target": 31835,
 					"name": "MedusaModuleType",
 					"package": "@medusajs/utils"
 				}
@@ -805,14 +805,14 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 31892,
+			"id": 31967,
 			"name": "InventoryUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31893,
+					"id": 31968,
 					"name": "InventoryEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -822,14 +822,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 31894,
+							"id": 31969,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 31895,
+									"id": 31970,
 									"name": "created",
 									"variant": "declaration",
 									"kind": 1024,
@@ -841,7 +841,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31896,
+									"id": 31971,
 									"name": "updated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -853,7 +853,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31897,
+									"id": 31972,
 									"name": "deleted",
 									"variant": "declaration",
 									"kind": 1024,
@@ -865,7 +865,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31898,
+									"id": 31973,
 									"name": "restored",
 									"variant": "declaration",
 									"kind": 1024,
@@ -877,7 +877,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31899,
+									"id": 31974,
 									"name": "reservation_item_created",
 									"variant": "declaration",
 									"kind": 1024,
@@ -889,7 +889,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31900,
+									"id": 31975,
 									"name": "reservation_item_updated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -901,7 +901,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31901,
+									"id": 31976,
 									"name": "reservation_item_deleted",
 									"variant": "declaration",
 									"kind": 1024,
@@ -913,7 +913,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31902,
+									"id": 31977,
 									"name": "inventory_level_deleted",
 									"variant": "declaration",
 									"kind": 1024,
@@ -925,7 +925,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31903,
+									"id": 31978,
 									"name": "inventory_level_created",
 									"variant": "declaration",
 									"kind": 1024,
@@ -937,7 +937,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31904,
+									"id": 31979,
 									"name": "inventory_level_updated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -953,16 +953,16 @@
 								{
 									"title": "Properties",
 									"children": [
-										31895,
-										31896,
-										31897,
-										31898,
-										31899,
-										31900,
-										31901,
-										31902,
-										31903,
-										31904
+										31970,
+										31971,
+										31972,
+										31973,
+										31974,
+										31975,
+										31976,
+										31977,
+										31978,
+										31979
 									]
 								}
 							]
@@ -975,34 +975,34 @@
 				{
 					"title": "Variables",
 					"children": [
-						31893
+						31968
 					]
 				}
 			]
 		},
 		{
-			"id": 31905,
+			"id": 31980,
 			"name": "LinkUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31921,
+					"id": 31996,
 					"name": "composeLinkName",
 					"variant": "declaration",
 					"kind": 64,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 31922,
+							"id": 31997,
 							"name": "composeLinkName",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 31923,
+									"id": 31998,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -1026,21 +1026,21 @@
 					]
 				},
 				{
-					"id": 31924,
+					"id": 31999,
 					"name": "composeTableName",
 					"variant": "declaration",
 					"kind": 64,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 31925,
+							"id": 32000,
 							"name": "composeTableName",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 31926,
+									"id": 32001,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -1064,7 +1064,7 @@
 					]
 				},
 				{
-					"id": 31906,
+					"id": 31981,
 					"name": "LINKS",
 					"variant": "declaration",
 					"kind": 32,
@@ -1074,14 +1074,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 31907,
+							"id": 31982,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 31908,
+									"id": 31983,
 									"name": "ProductVariantInventoryItem",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1093,7 +1093,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31909,
+									"id": 31984,
 									"name": "ProductVariantPriceSet",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1105,7 +1105,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31910,
+									"id": 31985,
 									"name": "ShippingOptionPriceSet",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1117,7 +1117,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31911,
+									"id": 31986,
 									"name": "CartPaymentCollection",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1129,7 +1129,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31912,
+									"id": 31987,
 									"name": "RegionPaymentProvider",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1141,7 +1141,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31913,
+									"id": 31988,
 									"name": "CartPromotion",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1153,7 +1153,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31914,
+									"id": 31989,
 									"name": "SalesChannelLocation",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1165,7 +1165,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31915,
+									"id": 31990,
 									"name": "FulfillmentSetLocation",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1177,7 +1177,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31916,
+									"id": 31991,
 									"name": "OrderPromotion",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1189,7 +1189,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31917,
+									"id": 31992,
 									"name": "OrderSalesChannel",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1201,7 +1201,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31918,
+									"id": 31993,
 									"name": "PublishableApiKeySalesChannel",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1213,7 +1213,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31919,
+									"id": 31994,
 									"name": "ProductShippingProfile",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1225,7 +1225,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31920,
+									"id": 31995,
 									"name": "ProductSalesChannel",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1241,19 +1241,19 @@
 								{
 									"title": "Properties",
 									"children": [
-										31908,
-										31909,
-										31910,
-										31911,
-										31912,
-										31913,
-										31914,
-										31915,
-										31916,
-										31917,
-										31918,
-										31919,
-										31920
+										31983,
+										31984,
+										31985,
+										31986,
+										31987,
+										31988,
+										31989,
+										31990,
+										31991,
+										31992,
+										31993,
+										31994,
+										31995
 									]
 								}
 							]
@@ -1266,27 +1266,27 @@
 				{
 					"title": "Variables",
 					"children": [
-						31906
+						31981
 					]
 				},
 				{
 					"title": "Functions",
 					"children": [
-						31921,
-						31924
+						31996,
+						31999
 					]
 				}
 			]
 		},
 		{
-			"id": 31820,
+			"id": 31895,
 			"name": "OrderUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31821,
+					"id": 31896,
 					"name": "OrderStatus",
 					"variant": "declaration",
 					"kind": 8,
@@ -1301,7 +1301,7 @@
 					},
 					"children": [
 						{
-							"id": 31822,
+							"id": 31897,
 							"name": "PENDING",
 							"variant": "declaration",
 							"kind": 16,
@@ -1320,7 +1320,7 @@
 							}
 						},
 						{
-							"id": 31823,
+							"id": 31898,
 							"name": "COMPLETED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1339,7 +1339,7 @@
 							}
 						},
 						{
-							"id": 31824,
+							"id": 31899,
 							"name": "DRAFT",
 							"variant": "declaration",
 							"kind": 16,
@@ -1358,7 +1358,7 @@
 							}
 						},
 						{
-							"id": 31825,
+							"id": 31900,
 							"name": "ARCHIVED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1377,7 +1377,7 @@
 							}
 						},
 						{
-							"id": 31826,
+							"id": 31901,
 							"name": "CANCELED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1396,7 +1396,7 @@
 							}
 						},
 						{
-							"id": 31827,
+							"id": 31902,
 							"name": "REQUIRES_ACTION",
 							"variant": "declaration",
 							"kind": 16,
@@ -1419,18 +1419,18 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31822,
-								31823,
-								31824,
-								31825,
-								31826,
-								31827
+								31897,
+								31898,
+								31899,
+								31900,
+								31901,
+								31902
 							]
 						}
 					]
 				},
 				{
-					"id": 31828,
+					"id": 31903,
 					"name": "OrderChangeStatus",
 					"variant": "declaration",
 					"kind": 8,
@@ -1445,7 +1445,7 @@
 					},
 					"children": [
 						{
-							"id": 31829,
+							"id": 31904,
 							"name": "CONFIRMED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1464,7 +1464,7 @@
 							}
 						},
 						{
-							"id": 31830,
+							"id": 31905,
 							"name": "DECLINED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1483,7 +1483,7 @@
 							}
 						},
 						{
-							"id": 31831,
+							"id": 31906,
 							"name": "REQUESTED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1502,7 +1502,7 @@
 							}
 						},
 						{
-							"id": 31832,
+							"id": 31907,
 							"name": "PENDING",
 							"variant": "declaration",
 							"kind": 16,
@@ -1521,7 +1521,7 @@
 							}
 						},
 						{
-							"id": 31833,
+							"id": 31908,
 							"name": "CANCELED",
 							"variant": "declaration",
 							"kind": 16,
@@ -1544,11 +1544,11 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31829,
-								31830,
-								31831,
-								31832,
-								31833
+								31904,
+								31905,
+								31906,
+								31907,
+								31908
 							]
 						}
 					]
@@ -1558,14 +1558,14 @@
 				{
 					"title": "Enumerations",
 					"children": [
-						31821,
-						31828
+						31896,
+						31903
 					]
 				}
 			]
 		},
 		{
-			"id": 31927,
+			"id": 32002,
 			"name": "PaymentCollectionStatus",
 			"variant": "declaration",
 			"kind": 8,
@@ -1580,7 +1580,7 @@
 			},
 			"children": [
 				{
-					"id": 31928,
+					"id": 32003,
 					"name": "NOT_PAID",
 					"variant": "declaration",
 					"kind": 16,
@@ -1599,7 +1599,7 @@
 					}
 				},
 				{
-					"id": 31929,
+					"id": 32004,
 					"name": "AWAITING",
 					"variant": "declaration",
 					"kind": 16,
@@ -1618,7 +1618,7 @@
 					}
 				},
 				{
-					"id": 31930,
+					"id": 32005,
 					"name": "AUTHORIZED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1637,7 +1637,7 @@
 					}
 				},
 				{
-					"id": 31931,
+					"id": 32006,
 					"name": "PARTIALLY_AUTHORIZED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1656,7 +1656,7 @@
 					}
 				},
 				{
-					"id": 31932,
+					"id": 32007,
 					"name": "CANCELED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1679,17 +1679,17 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31928,
-						31929,
-						31930,
-						31931,
-						31932
+						32003,
+						32004,
+						32005,
+						32006,
+						32007
 					]
 				}
 			]
 		},
 		{
-			"id": 31933,
+			"id": 32008,
 			"name": "PaymentSessionStatus",
 			"variant": "declaration",
 			"kind": 8,
@@ -1704,7 +1704,7 @@
 			},
 			"children": [
 				{
-					"id": 31934,
+					"id": 32009,
 					"name": "AUTHORIZED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1723,7 +1723,7 @@
 					}
 				},
 				{
-					"id": 31935,
+					"id": 32010,
 					"name": "PENDING",
 					"variant": "declaration",
 					"kind": 16,
@@ -1742,7 +1742,7 @@
 					}
 				},
 				{
-					"id": 31936,
+					"id": 32011,
 					"name": "REQUIRES_MORE",
 					"variant": "declaration",
 					"kind": 16,
@@ -1761,7 +1761,7 @@
 					}
 				},
 				{
-					"id": 31937,
+					"id": 32012,
 					"name": "ERROR",
 					"variant": "declaration",
 					"kind": 16,
@@ -1780,7 +1780,7 @@
 					}
 				},
 				{
-					"id": 31938,
+					"id": 32013,
 					"name": "CANCELED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1803,24 +1803,24 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31934,
-						31935,
-						31936,
-						31937,
-						31938
+						32009,
+						32010,
+						32011,
+						32012,
+						32013
 					]
 				}
 			]
 		},
 		{
-			"id": 31939,
+			"id": 32014,
 			"name": "PaymentWebhookEvents",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 31940,
+					"id": 32015,
 					"name": "WebhookReceived",
 					"variant": "declaration",
 					"kind": 16,
@@ -1835,13 +1835,13 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31940
+						32015
 					]
 				}
 			]
 		},
 		{
-			"id": 31941,
+			"id": 32016,
 			"name": "PaymentActions",
 			"variant": "declaration",
 			"kind": 8,
@@ -1856,7 +1856,7 @@
 			},
 			"children": [
 				{
-					"id": 31942,
+					"id": 32017,
 					"name": "AUTHORIZED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1875,7 +1875,7 @@
 					}
 				},
 				{
-					"id": 31943,
+					"id": 32018,
 					"name": "SUCCESSFUL",
 					"variant": "declaration",
 					"kind": 16,
@@ -1894,7 +1894,7 @@
 					}
 				},
 				{
-					"id": 31944,
+					"id": 32019,
 					"name": "FAILED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1913,7 +1913,7 @@
 					}
 				},
 				{
-					"id": 31945,
+					"id": 32020,
 					"name": "NOT_SUPPORTED",
 					"variant": "declaration",
 					"kind": 16,
@@ -1936,23 +1936,23 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31942,
-						31943,
-						31944,
-						31945
+						32017,
+						32018,
+						32019,
+						32020
 					]
 				}
 			]
 		},
 		{
-			"id": 31946,
+			"id": 32021,
 			"name": "PriceListStatus",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 31947,
+					"id": 32022,
 					"name": "ACTIVE",
 					"variant": "declaration",
 					"kind": 16,
@@ -1963,7 +1963,7 @@
 					}
 				},
 				{
-					"id": 31948,
+					"id": 32023,
 					"name": "DRAFT",
 					"variant": "declaration",
 					"kind": 16,
@@ -1978,21 +1978,21 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31947,
-						31948
+						32022,
+						32023
 					]
 				}
 			]
 		},
 		{
-			"id": 31949,
+			"id": 32024,
 			"name": "PriceListType",
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
 			"children": [
 				{
-					"id": 31950,
+					"id": 32025,
 					"name": "SALE",
 					"variant": "declaration",
 					"kind": 16,
@@ -2003,7 +2003,7 @@
 					}
 				},
 				{
-					"id": 31951,
+					"id": 32026,
 					"name": "OVERRIDE",
 					"variant": "declaration",
 					"kind": 16,
@@ -2018,14 +2018,14 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						31950,
-						31951
+						32025,
+						32026
 					]
 				}
 			]
 		},
 		{
-			"id": 31959,
+			"id": 32034,
 			"name": "RuleAttributeInput",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2045,7 +2045,7 @@
 			}
 		},
 		{
-			"id": 31952,
+			"id": 32027,
 			"name": "ReservedPricingRuleAttributes",
 			"variant": "declaration",
 			"kind": 32,
@@ -2062,21 +2062,21 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 31953,
+			"id": 32028,
 			"name": "getInvalidRuleAttributes",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 31954,
+					"id": 32029,
 					"name": "getInvalidRuleAttributes",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 31955,
+							"id": 32030,
 							"name": "ruleAttributes",
 							"variant": "param",
 							"kind": 32768,
@@ -2085,7 +2085,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 31959,
+									"target": 32034,
 									"name": "RuleAttributeInput",
 									"package": "@medusajs/utils"
 								}
@@ -2103,21 +2103,21 @@
 			]
 		},
 		{
-			"id": 31956,
+			"id": 32031,
 			"name": "validateRuleAttributes",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 31957,
+					"id": 32032,
 					"name": "validateRuleAttributes",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 31958,
+							"id": 32033,
 							"name": "ruleAttributes",
 							"variant": "param",
 							"kind": 32768,
@@ -2126,7 +2126,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 31959,
+									"target": 32034,
 									"name": "RuleAttributeInput",
 									"package": "@medusajs/utils"
 								}
@@ -2141,21 +2141,21 @@
 			]
 		},
 		{
-			"id": 31834,
+			"id": 31909,
 			"name": "ProductUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31835,
+					"id": 31910,
 					"name": "ProductStatus",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31836,
+							"id": 31911,
 							"name": "DRAFT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2166,7 +2166,7 @@
 							}
 						},
 						{
-							"id": 31837,
+							"id": 31912,
 							"name": "PROPOSED",
 							"variant": "declaration",
 							"kind": 16,
@@ -2177,7 +2177,7 @@
 							}
 						},
 						{
-							"id": 31838,
+							"id": 31913,
 							"name": "PUBLISHED",
 							"variant": "declaration",
 							"kind": 16,
@@ -2188,7 +2188,7 @@
 							}
 						},
 						{
-							"id": 31839,
+							"id": 31914,
 							"name": "REJECTED",
 							"variant": "declaration",
 							"kind": 16,
@@ -2203,10 +2203,10 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31836,
-								31837,
-								31838,
-								31839
+								31911,
+								31912,
+								31913,
+								31914
 							]
 						}
 					]
@@ -2216,27 +2216,27 @@
 				{
 					"title": "Enumerations",
 					"children": [
-						31835
+						31910
 					]
 				}
 			]
 		},
 		{
-			"id": 31840,
+			"id": 31915,
 			"name": "PromotionUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31841,
+					"id": 31916,
 					"name": "PromotionType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31842,
+							"id": 31917,
 							"name": "STANDARD",
 							"variant": "declaration",
 							"kind": 16,
@@ -2247,7 +2247,7 @@
 							}
 						},
 						{
-							"id": 31843,
+							"id": 31918,
 							"name": "BUYGET",
 							"variant": "declaration",
 							"kind": 16,
@@ -2262,21 +2262,21 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31842,
-								31843
+								31917,
+								31918
 							]
 						}
 					]
 				},
 				{
-					"id": 31844,
+					"id": 31919,
 					"name": "ApplicationMethodType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31845,
+							"id": 31920,
 							"name": "FIXED",
 							"variant": "declaration",
 							"kind": 16,
@@ -2287,7 +2287,7 @@
 							}
 						},
 						{
-							"id": 31846,
+							"id": 31921,
 							"name": "PERCENTAGE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2302,21 +2302,21 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31845,
-								31846
+								31920,
+								31921
 							]
 						}
 					]
 				},
 				{
-					"id": 31847,
+					"id": 31922,
 					"name": "ApplicationMethodTargetType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31848,
+							"id": 31923,
 							"name": "ORDER",
 							"variant": "declaration",
 							"kind": 16,
@@ -2327,7 +2327,7 @@
 							}
 						},
 						{
-							"id": 31849,
+							"id": 31924,
 							"name": "SHIPPING_METHODS",
 							"variant": "declaration",
 							"kind": 16,
@@ -2338,7 +2338,7 @@
 							}
 						},
 						{
-							"id": 31850,
+							"id": 31925,
 							"name": "ITEMS",
 							"variant": "declaration",
 							"kind": 16,
@@ -2353,22 +2353,22 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31848,
-								31849,
-								31850
+								31923,
+								31924,
+								31925
 							]
 						}
 					]
 				},
 				{
-					"id": 31851,
+					"id": 31926,
 					"name": "ApplicationMethodAllocation",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31852,
+							"id": 31927,
 							"name": "EACH",
 							"variant": "declaration",
 							"kind": 16,
@@ -2379,7 +2379,7 @@
 							}
 						},
 						{
-							"id": 31853,
+							"id": 31928,
 							"name": "ACROSS",
 							"variant": "declaration",
 							"kind": 16,
@@ -2394,21 +2394,21 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31852,
-								31853
+								31927,
+								31928
 							]
 						}
 					]
 				},
 				{
-					"id": 31854,
+					"id": 31929,
 					"name": "PromotionRuleOperator",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31855,
+							"id": 31930,
 							"name": "GTE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2419,7 +2419,7 @@
 							}
 						},
 						{
-							"id": 31856,
+							"id": 31931,
 							"name": "LTE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2430,7 +2430,7 @@
 							}
 						},
 						{
-							"id": 31857,
+							"id": 31932,
 							"name": "GT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2441,7 +2441,7 @@
 							}
 						},
 						{
-							"id": 31858,
+							"id": 31933,
 							"name": "LT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2452,7 +2452,7 @@
 							}
 						},
 						{
-							"id": 31859,
+							"id": 31934,
 							"name": "EQ",
 							"variant": "declaration",
 							"kind": 16,
@@ -2463,7 +2463,7 @@
 							}
 						},
 						{
-							"id": 31860,
+							"id": 31935,
 							"name": "NE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2474,7 +2474,7 @@
 							}
 						},
 						{
-							"id": 31861,
+							"id": 31936,
 							"name": "IN",
 							"variant": "declaration",
 							"kind": 16,
@@ -2489,26 +2489,26 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31855,
-								31856,
-								31857,
-								31858,
-								31859,
-								31860,
-								31861
+								31930,
+								31931,
+								31932,
+								31933,
+								31934,
+								31935,
+								31936
 							]
 						}
 					]
 				},
 				{
-					"id": 31862,
+					"id": 31937,
 					"name": "CampaignBudgetType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31863,
+							"id": 31938,
 							"name": "SPEND",
 							"variant": "declaration",
 							"kind": 16,
@@ -2519,7 +2519,7 @@
 							}
 						},
 						{
-							"id": 31864,
+							"id": 31939,
 							"name": "USAGE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2534,21 +2534,21 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31863,
-								31864
+								31938,
+								31939
 							]
 						}
 					]
 				},
 				{
-					"id": 31865,
+					"id": 31940,
 					"name": "ComputedActions",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31866,
+							"id": 31941,
 							"name": "ADD_ITEM_ADJUSTMENT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2559,7 +2559,7 @@
 							}
 						},
 						{
-							"id": 31867,
+							"id": 31942,
 							"name": "ADD_SHIPPING_METHOD_ADJUSTMENT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2570,7 +2570,7 @@
 							}
 						},
 						{
-							"id": 31868,
+							"id": 31943,
 							"name": "REMOVE_ITEM_ADJUSTMENT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2581,7 +2581,7 @@
 							}
 						},
 						{
-							"id": 31869,
+							"id": 31944,
 							"name": "REMOVE_SHIPPING_METHOD_ADJUSTMENT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2592,7 +2592,7 @@
 							}
 						},
 						{
-							"id": 31870,
+							"id": 31945,
 							"name": "CAMPAIGN_BUDGET_EXCEEDED",
 							"variant": "declaration",
 							"kind": 16,
@@ -2607,24 +2607,24 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31866,
-								31867,
-								31868,
-								31869,
-								31870
+								31941,
+								31942,
+								31943,
+								31944,
+								31945
 							]
 						}
 					]
 				},
 				{
-					"id": 31871,
+					"id": 31946,
 					"name": "PromotionActions",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31872,
+							"id": 31947,
 							"name": "ADD",
 							"variant": "declaration",
 							"kind": 16,
@@ -2635,7 +2635,7 @@
 							}
 						},
 						{
-							"id": 31873,
+							"id": 31948,
 							"name": "REMOVE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2646,7 +2646,7 @@
 							}
 						},
 						{
-							"id": 31874,
+							"id": 31949,
 							"name": "REPLACE",
 							"variant": "declaration",
 							"kind": 16,
@@ -2661,22 +2661,22 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31872,
-								31873,
-								31874
+								31947,
+								31948,
+								31949
 							]
 						}
 					]
 				},
 				{
-					"id": 31875,
+					"id": 31950,
 					"name": "RuleType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31876,
+							"id": 31951,
 							"name": "RULES",
 							"variant": "declaration",
 							"kind": 16,
@@ -2687,7 +2687,7 @@
 							}
 						},
 						{
-							"id": 31877,
+							"id": 31952,
 							"name": "TARGET_RULES",
 							"variant": "declaration",
 							"kind": 16,
@@ -2698,7 +2698,7 @@
 							}
 						},
 						{
-							"id": 31878,
+							"id": 31953,
 							"name": "BUY_RULES",
 							"variant": "declaration",
 							"kind": 16,
@@ -2713,9 +2713,9 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31876,
-								31877,
-								31878
+								31951,
+								31952,
+								31953
 							]
 						}
 					]
@@ -2725,35 +2725,35 @@
 				{
 					"title": "Enumerations",
 					"children": [
-						31841,
-						31844,
-						31847,
-						31851,
-						31854,
-						31862,
-						31865,
-						31871,
-						31875
+						31916,
+						31919,
+						31922,
+						31926,
+						31929,
+						31937,
+						31940,
+						31946,
+						31950
 					]
 				}
 			]
 		},
 		{
-			"id": 31879,
+			"id": 31954,
 			"name": "ShippingProfileUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31880,
+					"id": 31955,
 					"name": "ShippingProfileType",
 					"variant": "declaration",
 					"kind": 8,
 					"flags": {},
 					"children": [
 						{
-							"id": 31881,
+							"id": 31956,
 							"name": "DEFAULT",
 							"variant": "declaration",
 							"kind": 16,
@@ -2764,7 +2764,7 @@
 							}
 						},
 						{
-							"id": 31882,
+							"id": 31957,
 							"name": "GIFT_CARD",
 							"variant": "declaration",
 							"kind": 16,
@@ -2775,7 +2775,7 @@
 							}
 						},
 						{
-							"id": 31883,
+							"id": 31958,
 							"name": "CUSTOM",
 							"variant": "declaration",
 							"kind": 16,
@@ -2790,9 +2790,9 @@
 						{
 							"title": "Enumeration Members",
 							"children": [
-								31881,
-								31882,
-								31883
+								31956,
+								31957,
+								31958
 							]
 						}
 					]
@@ -2802,20 +2802,20 @@
 				{
 					"title": "Enumerations",
 					"children": [
-						31880
+						31955
 					]
 				}
 			]
 		},
 		{
-			"id": 31884,
+			"id": 31959,
 			"name": "UserUtils",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 31885,
+					"id": 31960,
 					"name": "UserEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -2825,14 +2825,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 31886,
+							"id": 31961,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 31887,
+									"id": 31962,
 									"name": "created",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2844,7 +2844,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31888,
+									"id": 31963,
 									"name": "updated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2856,7 +2856,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31889,
+									"id": 31964,
 									"name": "invite_created",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2868,7 +2868,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31890,
+									"id": 31965,
 									"name": "invite_updated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2880,7 +2880,7 @@
 									"defaultValue": "..."
 								},
 								{
-									"id": 31891,
+									"id": 31966,
 									"name": "invite_token_generated",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2896,11 +2896,11 @@
 								{
 									"title": "Properties",
 									"children": [
-										31887,
-										31888,
-										31889,
-										31890,
-										31891
+										31962,
+										31963,
+										31964,
+										31965,
+										31966
 									]
 								}
 							]
@@ -2913,7 +2913,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						31885
+						31960
 					]
 				}
 			]
@@ -2923,851 +2923,851 @@
 		{
 			"title": "Namespaces",
 			"children": [
-				31761,
-				31892,
-				31905,
-				31820,
-				31834,
-				31840,
-				31879,
-				31884
+				31836,
+				31967,
+				31980,
+				31895,
+				31909,
+				31915,
+				31954,
+				31959
 			]
 		},
 		{
 			"title": "Enumerations",
 			"children": [
-				31927,
-				31933,
-				31939,
-				31941,
-				31946,
-				31949
+				32002,
+				32008,
+				32014,
+				32016,
+				32021,
+				32024
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				31959
+				32034
 			]
 		},
 		{
 			"title": "Variables",
 			"children": [
-				31760,
-				31952
+				31835,
+				32027
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
-				31953,
-				31956
+				32028,
+				32031
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"31759": {
-			"sourceFileName": "../../../packages/utils/src/index.ts",
-			"qualifiedName": ""
-		},
-		"31760": {
-			"sourceFileName": "../../../packages/utils/src/index.ts",
-			"qualifiedName": "MedusaModuleType"
-		},
-		"31761": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/index.ts",
-			"qualifiedName": ""
-		},
-		"31762": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
-			"qualifiedName": "GeoZoneType"
-		},
-		"31763": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
-			"qualifiedName": "GeoZoneType.COUNTRY"
-		},
-		"31764": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
-			"qualifiedName": "GeoZoneType.PROVINCE"
-		},
-		"31765": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
-			"qualifiedName": "GeoZoneType.CITY"
-		},
-		"31766": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
-			"qualifiedName": "GeoZoneType.ZIP"
-		},
-		"31767": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
-			"qualifiedName": "ShippingOptionPriceType"
-		},
-		"31768": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
-			"qualifiedName": "ShippingOptionPriceType.CALCULATED"
-		},
-		"31769": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
-			"qualifiedName": "ShippingOptionPriceType.FLAT"
-		},
-		"31770": {
-			"sourceFileName": "../../../packages/utils/src/fulfillment/events.ts",
-			"qualifiedName": "FulfillmentEvents"
-		},
-		"31771": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31772": {
-			"sourceFileName": "",
-			"qualifiedName": "created"
-		},
-		"31773": {
-			"sourceFileName": "",
-			"qualifiedName": "updated"
-		},
-		"31774": {
-			"sourceFileName": "",
-			"qualifiedName": "deleted"
-		},
-		"31775": {
-			"sourceFileName": "",
-			"qualifiedName": "restored"
-		},
-		"31776": {
-			"sourceFileName": "",
-			"qualifiedName": "attached"
-		},
-		"31777": {
-			"sourceFileName": "",
-			"qualifiedName": "detached"
-		},
-		"31778": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31779": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_created"
-		},
-		"31780": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_created"
-		},
-		"31781": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_created"
-		},
-		"31782": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_created"
-		},
-		"31783": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_created"
-		},
-		"31784": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_created"
-		},
-		"31785": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31786": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_updated"
-		},
-		"31787": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_updated"
-		},
-		"31788": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_updated"
-		},
-		"31789": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_updated"
-		},
-		"31790": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_updated"
-		},
-		"31791": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_updated"
-		},
-		"31792": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31793": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_deleted"
-		},
-		"31794": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_deleted"
-		},
-		"31795": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_deleted"
-		},
-		"31796": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_deleted"
-		},
-		"31797": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_deleted"
-		},
-		"31798": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_deleted"
-		},
-		"31799": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31800": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_restored"
-		},
-		"31801": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_restored"
-		},
-		"31802": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_restored"
-		},
-		"31803": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_restored"
-		},
-		"31804": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_restored"
-		},
-		"31805": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_restored"
-		},
-		"31806": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31807": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_attached"
-		},
-		"31808": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_attached"
-		},
-		"31809": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_attached"
-		},
-		"31810": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_attached"
-		},
-		"31811": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_attached"
-		},
-		"31812": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_attached"
-		},
-		"31813": {
-			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
-			"qualifiedName": "__type"
-		},
-		"31814": {
-			"sourceFileName": "",
-			"qualifiedName": "fulfillment_detached"
-		},
-		"31815": {
-			"sourceFileName": "",
-			"qualifiedName": "service_zone_detached"
-		},
-		"31816": {
-			"sourceFileName": "",
-			"qualifiedName": "geo_zone_detached"
-		},
-		"31817": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_detached"
-		},
-		"31818": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_profile_detached"
-		},
-		"31819": {
-			"sourceFileName": "",
-			"qualifiedName": "shipping_option_rule_detached"
-		},
-		"31820": {
-			"sourceFileName": "../../../packages/utils/src/order/index.ts",
-			"qualifiedName": ""
-		},
-		"31821": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus"
-		},
-		"31822": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.PENDING"
-		},
-		"31823": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.COMPLETED"
-		},
-		"31824": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.DRAFT"
-		},
-		"31825": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.ARCHIVED"
-		},
-		"31826": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.CANCELED"
-		},
-		"31827": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderStatus.REQUIRES_ACTION"
-		},
-		"31828": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus"
-		},
-		"31829": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus.CONFIRMED"
-		},
-		"31830": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus.DECLINED"
-		},
-		"31831": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus.REQUESTED"
-		},
-		"31832": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus.PENDING"
-		},
-		"31833": {
-			"sourceFileName": "../../../packages/utils/src/order/status.ts",
-			"qualifiedName": "OrderChangeStatus.CANCELED"
-		},
 		"31834": {
-			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"sourceFileName": "../../../packages/utils/src/index.ts",
 			"qualifiedName": ""
 		},
 		"31835": {
+			"sourceFileName": "../../../packages/utils/src/index.ts",
+			"qualifiedName": "MedusaModuleType"
+		},
+		"31836": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/index.ts",
+			"qualifiedName": ""
+		},
+		"31837": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType"
+		},
+		"31838": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.COUNTRY"
+		},
+		"31839": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.PROVINCE"
+		},
+		"31840": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.CITY"
+		},
+		"31841": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.ZIP"
+		},
+		"31842": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType"
+		},
+		"31843": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType.CALCULATED"
+		},
+		"31844": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType.FLAT"
+		},
+		"31845": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/events.ts",
+			"qualifiedName": "FulfillmentEvents"
+		},
+		"31846": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31847": {
+			"sourceFileName": "",
+			"qualifiedName": "created"
+		},
+		"31848": {
+			"sourceFileName": "",
+			"qualifiedName": "updated"
+		},
+		"31849": {
+			"sourceFileName": "",
+			"qualifiedName": "deleted"
+		},
+		"31850": {
+			"sourceFileName": "",
+			"qualifiedName": "restored"
+		},
+		"31851": {
+			"sourceFileName": "",
+			"qualifiedName": "attached"
+		},
+		"31852": {
+			"sourceFileName": "",
+			"qualifiedName": "detached"
+		},
+		"31853": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31854": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_created"
+		},
+		"31855": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_created"
+		},
+		"31856": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_created"
+		},
+		"31857": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_created"
+		},
+		"31858": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_created"
+		},
+		"31859": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_created"
+		},
+		"31860": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31861": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_updated"
+		},
+		"31862": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_updated"
+		},
+		"31863": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_updated"
+		},
+		"31864": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_updated"
+		},
+		"31865": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_updated"
+		},
+		"31866": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_updated"
+		},
+		"31867": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31868": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_deleted"
+		},
+		"31869": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_deleted"
+		},
+		"31870": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_deleted"
+		},
+		"31871": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_deleted"
+		},
+		"31872": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_deleted"
+		},
+		"31873": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_deleted"
+		},
+		"31874": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31875": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_restored"
+		},
+		"31876": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_restored"
+		},
+		"31877": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_restored"
+		},
+		"31878": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_restored"
+		},
+		"31879": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_restored"
+		},
+		"31880": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_restored"
+		},
+		"31881": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31882": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_attached"
+		},
+		"31883": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_attached"
+		},
+		"31884": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_attached"
+		},
+		"31885": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_attached"
+		},
+		"31886": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_attached"
+		},
+		"31887": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_attached"
+		},
+		"31888": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"31889": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_detached"
+		},
+		"31890": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_detached"
+		},
+		"31891": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_detached"
+		},
+		"31892": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_detached"
+		},
+		"31893": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_detached"
+		},
+		"31894": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_detached"
+		},
+		"31895": {
+			"sourceFileName": "../../../packages/utils/src/order/index.ts",
+			"qualifiedName": ""
+		},
+		"31896": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus"
+		},
+		"31897": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.PENDING"
+		},
+		"31898": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.COMPLETED"
+		},
+		"31899": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.DRAFT"
+		},
+		"31900": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.ARCHIVED"
+		},
+		"31901": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.CANCELED"
+		},
+		"31902": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.REQUIRES_ACTION"
+		},
+		"31903": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus"
+		},
+		"31904": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.CONFIRMED"
+		},
+		"31905": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.DECLINED"
+		},
+		"31906": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.REQUESTED"
+		},
+		"31907": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.PENDING"
+		},
+		"31908": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.CANCELED"
+		},
+		"31909": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": ""
+		},
+		"31910": {
 			"sourceFileName": "../../../packages/utils/src/product/index.ts",
 			"qualifiedName": "ProductStatus"
 		},
-		"31836": {
+		"31911": {
 			"sourceFileName": "../../../packages/utils/src/product/index.ts",
 			"qualifiedName": "ProductStatus.DRAFT"
 		},
-		"31837": {
+		"31912": {
 			"sourceFileName": "../../../packages/utils/src/product/index.ts",
 			"qualifiedName": "ProductStatus.PROPOSED"
 		},
-		"31838": {
+		"31913": {
 			"sourceFileName": "../../../packages/utils/src/product/index.ts",
 			"qualifiedName": "ProductStatus.PUBLISHED"
 		},
-		"31839": {
+		"31914": {
 			"sourceFileName": "../../../packages/utils/src/product/index.ts",
 			"qualifiedName": "ProductStatus.REJECTED"
 		},
-		"31840": {
+		"31915": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": ""
 		},
-		"31841": {
+		"31916": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionType"
 		},
-		"31842": {
+		"31917": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionType.STANDARD"
 		},
-		"31843": {
+		"31918": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionType.BUYGET"
 		},
-		"31844": {
+		"31919": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodType"
 		},
-		"31845": {
+		"31920": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodType.FIXED"
 		},
-		"31846": {
+		"31921": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodType.PERCENTAGE"
 		},
-		"31847": {
+		"31922": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodTargetType"
 		},
-		"31848": {
+		"31923": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodTargetType.ORDER"
 		},
-		"31849": {
+		"31924": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodTargetType.SHIPPING_METHODS"
 		},
-		"31850": {
+		"31925": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodTargetType.ITEMS"
 		},
-		"31851": {
+		"31926": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodAllocation"
 		},
-		"31852": {
+		"31927": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodAllocation.EACH"
 		},
-		"31853": {
+		"31928": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ApplicationMethodAllocation.ACROSS"
 		},
-		"31854": {
+		"31929": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator"
 		},
-		"31855": {
+		"31930": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.GTE"
 		},
-		"31856": {
+		"31931": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.LTE"
 		},
-		"31857": {
+		"31932": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.GT"
 		},
-		"31858": {
+		"31933": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.LT"
 		},
-		"31859": {
+		"31934": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.EQ"
 		},
-		"31860": {
+		"31935": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.NE"
 		},
-		"31861": {
+		"31936": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionRuleOperator.IN"
 		},
-		"31862": {
+		"31937": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "CampaignBudgetType"
 		},
-		"31863": {
+		"31938": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "CampaignBudgetType.SPEND"
 		},
-		"31864": {
+		"31939": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "CampaignBudgetType.USAGE"
 		},
-		"31865": {
+		"31940": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions"
 		},
-		"31866": {
+		"31941": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions.ADD_ITEM_ADJUSTMENT"
 		},
-		"31867": {
+		"31942": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT"
 		},
-		"31868": {
+		"31943": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions.REMOVE_ITEM_ADJUSTMENT"
 		},
-		"31869": {
+		"31944": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT"
 		},
-		"31870": {
+		"31945": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "ComputedActions.CAMPAIGN_BUDGET_EXCEEDED"
 		},
-		"31871": {
+		"31946": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionActions"
 		},
-		"31872": {
+		"31947": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionActions.ADD"
 		},
-		"31873": {
+		"31948": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionActions.REMOVE"
 		},
-		"31874": {
+		"31949": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "PromotionActions.REPLACE"
 		},
-		"31875": {
+		"31950": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "RuleType"
 		},
-		"31876": {
+		"31951": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "RuleType.RULES"
 		},
-		"31877": {
+		"31952": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "RuleType.TARGET_RULES"
 		},
-		"31878": {
+		"31953": {
 			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
 			"qualifiedName": "RuleType.BUY_RULES"
 		},
-		"31879": {
+		"31954": {
 			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
 			"qualifiedName": ""
 		},
-		"31880": {
+		"31955": {
 			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
 			"qualifiedName": "ShippingProfileType"
 		},
-		"31881": {
+		"31956": {
 			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
 			"qualifiedName": "ShippingProfileType.DEFAULT"
 		},
-		"31882": {
+		"31957": {
 			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
 			"qualifiedName": "ShippingProfileType.GIFT_CARD"
 		},
-		"31883": {
+		"31958": {
 			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
 			"qualifiedName": "ShippingProfileType.CUSTOM"
 		},
-		"31884": {
+		"31959": {
 			"sourceFileName": "../../../packages/utils/src/user/index.ts",
 			"qualifiedName": ""
 		},
-		"31885": {
+		"31960": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "UserEvents"
 		},
-		"31886": {
+		"31961": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object"
 		},
-		"31887": {
+		"31962": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object.created"
 		},
-		"31888": {
+		"31963": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object.updated"
 		},
-		"31889": {
+		"31964": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object.invite_created"
 		},
-		"31890": {
+		"31965": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object.invite_updated"
 		},
-		"31891": {
+		"31966": {
 			"sourceFileName": "../../../packages/utils/src/user/events.ts",
 			"qualifiedName": "__object.invite_token_generated"
 		},
-		"31892": {
+		"31967": {
 			"sourceFileName": "../../../packages/utils/src/inventory/index.ts",
 			"qualifiedName": ""
 		},
-		"31893": {
+		"31968": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "InventoryEvents"
 		},
-		"31894": {
+		"31969": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object"
 		},
-		"31895": {
+		"31970": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.created"
 		},
-		"31896": {
+		"31971": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.updated"
 		},
-		"31897": {
+		"31972": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.deleted"
 		},
-		"31898": {
+		"31973": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.restored"
 		},
-		"31899": {
+		"31974": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.reservation_item_created"
 		},
-		"31900": {
+		"31975": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.reservation_item_updated"
 		},
-		"31901": {
+		"31976": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.reservation_item_deleted"
 		},
-		"31902": {
+		"31977": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.inventory_level_deleted"
 		},
-		"31903": {
+		"31978": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.inventory_level_created"
 		},
-		"31904": {
+		"31979": {
 			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
 			"qualifiedName": "__object.inventory_level_updated"
 		},
-		"31905": {
+		"31980": {
 			"sourceFileName": "../../../packages/utils/src/link/index.ts",
 			"qualifiedName": ""
 		},
-		"31906": {
+		"31981": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "LINKS"
 		},
-		"31907": {
+		"31982": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object"
 		},
-		"31908": {
+		"31983": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.ProductVariantInventoryItem"
 		},
-		"31909": {
+		"31984": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.ProductVariantPriceSet"
 		},
-		"31910": {
+		"31985": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.ShippingOptionPriceSet"
 		},
-		"31911": {
+		"31986": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.CartPaymentCollection"
 		},
-		"31912": {
+		"31987": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.RegionPaymentProvider"
 		},
-		"31913": {
+		"31988": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.CartPromotion"
 		},
-		"31914": {
+		"31989": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.SalesChannelLocation"
 		},
-		"31915": {
+		"31990": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.FulfillmentSetLocation"
 		},
-		"31916": {
+		"31991": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.OrderPromotion"
 		},
-		"31917": {
+		"31992": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.OrderSalesChannel"
 		},
-		"31918": {
+		"31993": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.PublishableApiKeySalesChannel"
 		},
-		"31919": {
+		"31994": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.ProductShippingProfile"
 		},
-		"31920": {
+		"31995": {
 			"sourceFileName": "../../../packages/utils/src/link/links.ts",
 			"qualifiedName": "__object.ProductSalesChannel"
 		},
-		"31921": {
+		"31996": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "composeLinkName"
 		},
-		"31922": {
+		"31997": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "composeLinkName"
 		},
-		"31923": {
+		"31998": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "args"
 		},
-		"31924": {
+		"31999": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "composeTableName"
 		},
-		"31925": {
+		"32000": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "composeTableName"
 		},
-		"31926": {
+		"32001": {
 			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
 			"qualifiedName": "args"
 		},
-		"31927": {
+		"32002": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus"
 		},
-		"31928": {
+		"32003": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus.NOT_PAID"
 		},
-		"31929": {
+		"32004": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus.AWAITING"
 		},
-		"31930": {
+		"32005": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus.AUTHORIZED"
 		},
-		"31931": {
+		"32006": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus.PARTIALLY_AUTHORIZED"
 		},
-		"31932": {
+		"32007": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
 			"qualifiedName": "PaymentCollectionStatus.CANCELED"
 		},
-		"31933": {
+		"32008": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus"
 		},
-		"31934": {
+		"32009": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus.AUTHORIZED"
 		},
-		"31935": {
+		"32010": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus.PENDING"
 		},
-		"31936": {
+		"32011": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus.REQUIRES_MORE"
 		},
-		"31937": {
+		"32012": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus.ERROR"
 		},
-		"31938": {
+		"32013": {
 			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
 			"qualifiedName": "PaymentSessionStatus.CANCELED"
 		},
-		"31939": {
+		"32014": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentWebhookEvents"
 		},
-		"31940": {
+		"32015": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentWebhookEvents.WebhookReceived"
 		},
-		"31941": {
+		"32016": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentActions"
 		},
-		"31942": {
+		"32017": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentActions.AUTHORIZED"
 		},
-		"31943": {
+		"32018": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentActions.SUCCESSFUL"
 		},
-		"31944": {
+		"32019": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentActions.FAILED"
 		},
-		"31945": {
+		"32020": {
 			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
 			"qualifiedName": "PaymentActions.NOT_SUPPORTED"
 		},
-		"31946": {
+		"32021": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListStatus"
 		},
-		"31947": {
+		"32022": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListStatus.ACTIVE"
 		},
-		"31948": {
+		"32023": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListStatus.DRAFT"
 		},
-		"31949": {
+		"32024": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListType"
 		},
-		"31950": {
+		"32025": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListType.SALE"
 		},
-		"31951": {
+		"32026": {
 			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
 			"qualifiedName": "PriceListType.OVERRIDE"
 		},
-		"31952": {
+		"32027": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "ReservedPricingRuleAttributes"
 		},
-		"31953": {
+		"32028": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "getInvalidRuleAttributes"
 		},
-		"31954": {
+		"32029": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "getInvalidRuleAttributes"
 		},
-		"31955": {
+		"32030": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "ruleAttributes"
 		},
-		"31956": {
+		"32031": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "validateRuleAttributes"
 		},
-		"31957": {
+		"32032": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "validateRuleAttributes"
 		},
-		"31958": {
+		"32033": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "ruleAttributes"
 		},
-		"31959": {
+		"32034": {
 			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
 			"qualifiedName": "RuleAttributeInput"
 		}

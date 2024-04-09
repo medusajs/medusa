@@ -1,5 +1,5 @@
 {
-	"id": 10013,
+	"id": 10046,
 	"name": "region-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 10014,
+			"id": 10047,
 			"name": "Country",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 10015,
+					"id": 10048,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10016,
+							"id": 10049,
 							"name": "new Country",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 10014,
+								"target": 10047,
 								"name": "default",
 								"package": "@medusajs/region"
 							}
@@ -47,7 +47,7 @@
 					]
 				},
 				{
-					"id": 10017,
+					"id": 10050,
 					"name": "iso_2",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 					}
 				},
 				{
-					"id": 10018,
+					"id": 10051,
 					"name": "iso_3",
 					"variant": "declaration",
 					"kind": 1024,
@@ -69,7 +69,7 @@
 					}
 				},
 				{
-					"id": 10019,
+					"id": 10052,
 					"name": "num_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -80,7 +80,7 @@
 					}
 				},
 				{
-					"id": 10020,
+					"id": 10053,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -91,7 +91,7 @@
 					}
 				},
 				{
-					"id": 10021,
+					"id": 10054,
 					"name": "display_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -102,7 +102,7 @@
 					}
 				},
 				{
-					"id": 10022,
+					"id": 10055,
 					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125,7 +125,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10023,
+					"id": 10056,
 					"name": "region",
 					"variant": "declaration",
 					"kind": 1024,
@@ -141,7 +141,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 10024,
+								"target": 10057,
 								"name": "default",
 								"package": "@medusajs/region"
 							}
@@ -153,46 +153,46 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10015
+						10048
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						10017,
-						10018,
-						10019,
-						10020,
-						10021,
-						10022,
-						10023
+						10050,
+						10051,
+						10052,
+						10053,
+						10054,
+						10055,
+						10056
 					]
 				}
 			]
 		},
 		{
-			"id": 10024,
+			"id": 10057,
 			"name": "Region",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 10025,
+					"id": 10058,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10026,
+							"id": 10059,
 							"name": "new Region",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 10024,
+								"target": 10057,
 								"name": "default",
 								"package": "@medusajs/region"
 							}
@@ -200,7 +200,7 @@
 					]
 				},
 				{
-					"id": 10040,
+					"id": 10073,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -218,7 +218,7 @@
 					}
 				},
 				{
-					"id": 10027,
+					"id": 10060,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -229,7 +229,7 @@
 					}
 				},
 				{
-					"id": 10028,
+					"id": 10061,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -240,7 +240,7 @@
 					}
 				},
 				{
-					"id": 10029,
+					"id": 10062,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -251,7 +251,7 @@
 					}
 				},
 				{
-					"id": 10030,
+					"id": 10063,
 					"name": "automatic_taxes",
 					"variant": "declaration",
 					"kind": 1024,
@@ -263,7 +263,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 10031,
+					"id": 10064,
 					"name": "countries",
 					"variant": "declaration",
 					"kind": 1024,
@@ -277,7 +277,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 10014,
+								"target": 10047,
 								"name": "default",
 								"package": "@medusajs/region"
 							},
@@ -292,7 +292,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 10032,
+					"id": 10065,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -328,7 +328,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10033,
+					"id": 10066,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -344,7 +344,7 @@
 					}
 				},
 				{
-					"id": 10034,
+					"id": 10067,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -360,7 +360,7 @@
 					}
 				},
 				{
-					"id": 10035,
+					"id": 10068,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -386,14 +386,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 10036,
+					"id": 10069,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10037,
+							"id": 10070,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -406,14 +406,14 @@
 					]
 				},
 				{
-					"id": 10038,
+					"id": 10071,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10039,
+							"id": 10072,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -430,29 +430,29 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10025
+						10058
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						10040,
-						10027,
-						10028,
-						10029,
-						10030,
-						10031,
-						10032,
-						10033,
-						10034,
-						10035
+						10073,
+						10060,
+						10061,
+						10062,
+						10063,
+						10064,
+						10065,
+						10066,
+						10067,
+						10068
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						10036,
-						10038
+						10069,
+						10071
 					]
 				}
 			]
@@ -462,106 +462,106 @@
 		{
 			"title": "Classes",
 			"children": [
-				10014,
-				10024
+				10047,
+				10057
 			]
 		}
 	],
 	"packageName": "@medusajs/region",
 	"symbolIdMap": {
-		"10013": {
+		"10046": {
 			"sourceFileName": "../../../packages/region/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"10014": {
+		"10047": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default"
 		},
-		"10017": {
+		"10050": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.iso_2"
 		},
-		"10018": {
+		"10051": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.iso_3"
 		},
-		"10019": {
+		"10052": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.num_code"
 		},
-		"10020": {
+		"10053": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.name"
 		},
-		"10021": {
+		"10054": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.display_name"
 		},
-		"10022": {
+		"10055": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.region_id"
 		},
-		"10023": {
+		"10056": {
 			"sourceFileName": "../../../packages/region/src/models/country.ts",
 			"qualifiedName": "default.region"
 		},
-		"10024": {
+		"10057": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default"
 		},
-		"10027": {
+		"10060": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.id"
 		},
-		"10028": {
+		"10061": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.name"
 		},
-		"10029": {
+		"10062": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"10030": {
+		"10063": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.automatic_taxes"
 		},
-		"10031": {
+		"10064": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.countries"
 		},
-		"10032": {
+		"10065": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"10033": {
+		"10066": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"10034": {
+		"10067": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"10035": {
+		"10068": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"10036": {
+		"10069": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"10037": {
+		"10070": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"10038": {
+		"10071": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"10039": {
+		"10072": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"10040": {
+		"10073": {
 			"sourceFileName": "../../../packages/region/src/models/region.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}

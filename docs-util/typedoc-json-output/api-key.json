@@ -9,13 +9,26 @@
 			"id": 165,
 			"name": "ApiKeyType",
 			"variant": "declaration",
-			"kind": 256,
+			"kind": 2097152,
 			"flags": {},
 			"comment": {
 				"summary": [
 					{
 						"kind": "text",
 						"text": "An API key's type."
+					}
+				]
+			},
+			"type": {
+				"type": "union",
+				"types": [
+					{
+						"type": "literal",
+						"value": "secret"
+					},
+					{
+						"type": "literal",
+						"value": "publishable"
 					}
 				]
 			}
@@ -5526,7 +5539,6 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				165,
 				97,
 				115,
 				81,
@@ -5547,6 +5559,7 @@
 		{
 			"title": "Type Aliases",
 			"children": [
+				165,
 				238,
 				202,
 				214,

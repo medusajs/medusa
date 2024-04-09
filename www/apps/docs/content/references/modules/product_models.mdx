@@ -21,9 +21,8 @@ erDiagram
 	Product }|--|{ Image : images
 	Product }|--|{ ProductCategory : categories
 	ProductCategory }|--|{ ProductCategory : parent_category
-	ProductVariant ||--|| ProductVariantOption : options
+	ProductVariant }|--|{ ProductOptionValue : options
 	ProductOption ||--|| ProductOptionValue : values
-	ProductOptionValue ||--|| ProductVariantOption : variant_options
 
 ```
 
@@ -36,6 +35,5 @@ erDiagram
 - [ProductOption](../product_models/classes/product_models.ProductOption.mdx)
 - [ProductTag](../product_models/classes/product_models.ProductTag.mdx)
 - [ProductType](../product_models/classes/product_models.ProductType.mdx)
-- [ProductVariantOption](../product_models/classes/product_models.ProductVariantOption.mdx)
 - [ProductVariant](../product_models/classes/product_models.ProductVariant.mdx)
 - [Product](../product_models/classes/product_models.Product.mdx)
