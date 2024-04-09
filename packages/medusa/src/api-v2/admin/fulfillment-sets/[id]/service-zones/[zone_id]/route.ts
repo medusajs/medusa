@@ -64,7 +64,7 @@ export const POST = async (
   if (!fulfillmentSet.service_zones.find((s) => s.id === req.params.zone_id)) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Service zone with id ${req.params.zone_id} not found on fulfillment set`
+      `Service zone with id: ${req.params.zone_id} not found on fulfillment set`
     )
   }
 
@@ -115,7 +115,7 @@ export const DELETE = async (
   if (!fulfillmentSet.service_zones.find((s) => s.id === zone_id)) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Service zone with id ${zone_id} not found on fulfillment set`
+      `Service zone with id: ${zone_id} not found on fulfillment set`
     )
   }
 
