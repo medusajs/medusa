@@ -16,10 +16,12 @@ export interface UpdateShippingOptionsWorkflowInput {
   }
   prices?: (
     | {
+        id?: string
         currency_code: string
         amount: number
       }
     | {
+        id?: string
         region_id: string
         amount: number
       }
