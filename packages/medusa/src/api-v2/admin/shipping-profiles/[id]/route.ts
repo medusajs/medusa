@@ -1,8 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  AdminShippingProfileResponse,
-  IFulfillmentModuleService,
-} from "@medusajs/types"
+import { AdminShippingProfileResponse } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -16,10 +12,6 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminShippingProfileResponse>
 ) => {
-  const fulfillmentService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
-  )
-
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({

@@ -15,7 +15,7 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {
-    MEDUSA_FF_MEDUSA_V2: true,
+    // MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -36,7 +36,7 @@ medusaIntegrationTestRunner({
 
     describe("Admin - Shipping Profiles", () => {
       // TODO: Missing update and delete tests
-      it.only("should test the entire lifecycle of a shipping profile", async () => {
+      it("should test the entire lifecycle of a shipping profile", async () => {
         const payload = {
           name: "test-profile-2023",
           type: "custom",
@@ -53,7 +53,6 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            deleted_at: null,
             ...payload,
           })
         )

@@ -1,10 +1,12 @@
 import { createShippingProfilesWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AdminShippingProfileResponse,
   AdminShippingProfilesResponse,
-  IFulfillmentModuleService,
 } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -30,13 +32,15 @@ export const POST = async (
 
   const shippingProfileId = result?.[0].id
 
-  const fulfillmentService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const shippingProfile = await fulfillmentService.retrieveShippingProfile(
-    shippingProfileId
-  )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "shipping_profiles",
+    variables: { id: shippingProfileId },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const [shippingProfile] = await remoteQuery(query)
 
   res.status(200).json({ shipping_profile: shippingProfile })
 }
@@ -45,22 +49,23 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminShippingProfilesResponse>
 ) => {
-  const fulfillmentService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const [shippingProfiles, count] =
-    await fulfillmentService.listAndCountShippingProfiles(
-      req.filterableFields,
-      req.listConfig
-    )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "shipping_profiles",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const { offset, limit } = req.validatedQuery
+  const { rows: shippingProfiles, metadata } = await remoteQuery(query)
 
   res.status(200).json({
     shipping_profiles: shippingProfiles,
-    count,
-    offset: offset!,
-    limit: limit!,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
