@@ -3,6 +3,7 @@ import { PriceListDTO } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeletePriceList } from "../../../../../hooks/api/price-lists"
 import { getPriceListStatus } from "../../../common/utils"
@@ -27,7 +28,7 @@ export const PricingGeneralSection = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("pricing.deletePriceListWarning", {
+      description: t("pricing.warnings.delete", {
         name: priceList.title,
       }),
       confirmText: t("actions.delete"),
@@ -98,7 +99,7 @@ export const PricingGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text leading="compact" size="small" weight="plus">
-          {t("pricing.settings.priceOverridesLabel")}
+          {t("pricing.fields.priceOverridesLabel")}
         </Text>
         <Text size="small" className="text-pretty">
           {overrideCount || "-"}

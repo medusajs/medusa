@@ -91,10 +91,10 @@ export const PriceListConfigurationForm = ({
                     <div className="grid grid-cols-[1fr_32px] gap-4">
                       <div>
                         <Text size="small" leading="compact" weight="plus">
-                          Price list has a start date?
+                          {t("pricing.fields.startDateLabel")}
                         </Text>
                         <Text size="small" className="text-ui-fg-subtle">
-                          Schedule the price list to activate in the future.
+                          {t("pricing.fields.startDateHint")}
                         </Text>
                       </div>
                       <Collapsible.Trigger asChild>
@@ -148,10 +148,10 @@ export const PriceListConfigurationForm = ({
                     <div className="grid grid-cols-[1fr_32px] gap-4">
                       <div>
                         <Text size="small" leading="compact" weight="plus">
-                          Price list has an end date?
+                          {t("pricing.fields.endDateLabel")}
                         </Text>
                         <Text size="small" className="text-ui-fg-subtle">
-                          Schedule the price list to deactivate in the future.
+                          {t("pricing.fields.endDateHint")}
                         </Text>
                       </div>
                       <Collapsible.Trigger asChild>
