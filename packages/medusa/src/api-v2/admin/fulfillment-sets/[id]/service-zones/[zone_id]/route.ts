@@ -40,7 +40,7 @@ export const GET = async (
   if (!service_zone) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Service zone with id ${req.params.zone_id} not found`
+      `Service zone with id: ${req.params.zone_id} not found`
     )
   }
 
