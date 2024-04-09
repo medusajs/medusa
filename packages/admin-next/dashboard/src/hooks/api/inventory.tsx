@@ -76,11 +76,11 @@ export const useInventoryItem = (
 
 export const useUpdateInventoryItem = (
   id: string,
-  payload: InventoryNext.UpdateInventoryItemInput,
   options?: UseMutationOptions<InventoryItemRes, Error, UpdateInventoryItemReq>
 ) => {
   return useMutation({
-    mutationFn: () => client.inventoryItems.update(id, payload),
+    mutationFn: (payload: InventoryNext.UpdateInventoryItemInput) =>
+      client.inventoryItems.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),

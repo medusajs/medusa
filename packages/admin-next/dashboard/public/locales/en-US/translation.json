@@ -265,6 +265,7 @@
       },
       "inventory": {
         "header": "Stock & Inventory",
+        "editItemDetails": "Edit item details",
         "manageInventoryLabel": "Manage inventory",
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
@@ -299,7 +300,7 @@
     "domain": "Inventory",
     "reserved": "Reserved",
     "available": "Available",
-    "locationLevels": "locationLevels",
+    "locationLevels": "Location levels",
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."

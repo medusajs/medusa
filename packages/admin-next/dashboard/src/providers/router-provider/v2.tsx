@@ -290,13 +290,46 @@ export const v2Routes: RouteObject[] = [
                   crumb: (data: InventoryItemRes) =>
                     data.inventory_item.title ?? data.inventory_item.sku,
                 },
-                // children: [
-                //   {
-                //     path: "edit",
-                //     lazy: () =>
-                //       import("../../v2-routes/customers/customer-edit"),
-                //   },
-                // ],
+                children: [
+                  {
+                    // TODO: edit item
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                      ),
+                  },
+                  {
+                    // TODO: edit item attributes
+                    path: "edit/attributes",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: manage locations
+                    path: "locations",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: adjust item level
+                    path: "locations/:location_id",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: create reservation
+                    path: "reservations",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: edit reservation
+                    path: "reservations/:reservation_id",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
               },
             ],
           },

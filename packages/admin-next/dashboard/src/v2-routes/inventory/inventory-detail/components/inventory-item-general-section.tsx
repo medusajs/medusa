@@ -1,11 +1,19 @@
 import { Container, Heading, Text } from "@medusajs/ui"
+import { InventoryNext, ProductVariantDTO } from "@medusajs/types"
 
+import { ActionMenu } from "../../../../components/common/action-menu"
 import { InventoryItemRes } from "../../../../types/api-responses"
+import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../components/common/section"
 import { useTranslation } from "react-i18next"
 
 type InventoryItemGeneralSectionProps = {
-  inventoryItem: InventoryItemRes["inventory_item"]
+  inventoryItem: InventoryItemRes["inventory_item"] & {
+    stocked_quantity: number
+    reserved_quantity: number
+    variant: ProductVariantDTO | ProductVariantDTO[]
+    location_levels: InventoryNext.InventoryLevelDTO[]
+  }
 }
 export const InventoryItemGeneralSection = ({
   inventoryItem,
@@ -24,6 +32,19 @@ export const InventoryItemGeneralSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{inventoryItem.title ?? inventoryItem.sku}</Heading>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  icon: <PencilSquare />,
+                  label: t("actions.edit"),
+                  to: "edit",
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <SectionRow title={t("fields.sku")} value={inventoryItem.sku ?? "-"} />
       <SectionRow
