@@ -8,6 +8,8 @@ import {
 import { CreateShippingProfileReq } from "../../types/api-payloads"
 import {
   RegionListRes,
+  ServiceZoneDeleteRes,
+  ShippingProfileDeleteRes,
   ShippingProfileListRes,
   ShippingProfileRes,
 } from "../../types/api-responses"
@@ -15,6 +17,7 @@ import {
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { stockLocationsQueryKeys } from "./stock-locations.tsx"
 
 const SHIPPING_PROFILE_QUERY_KEY = "shipping_profile" as const
 export const shippingProfileQueryKeys = queryKeysFactory(
@@ -60,4 +63,21 @@ export const useShippingProfiles = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useDeleteShippingProfile = (
+  profileId: string,
+  options?: UseMutationOptions<ShippingProfileDeleteRes, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.shippingProfiles.delete(profileId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
 }

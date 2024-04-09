@@ -139,8 +139,9 @@ export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }
 export type ShippingProfileListRes = {
   shipping_profiles: ShippingProfileDTO[]
 } & ListRes
+export type ShippingProfileDeleteRes = DeleteRes
 
-// Worfklow Executions
+// Workflow Executions
 export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }
 export type WorkflowExecutionListRes = {
   workflow_executions: WorkflowExecutionDTO[]

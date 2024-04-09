@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { ShippingProfileDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteShippingProfile } from "../../../../../hooks/api/shipping-profiles"
 
 export const ShippingOptionsRowActions = ({
   profile,
@@ -12,7 +13,8 @@ export const ShippingOptionsRowActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = {} // useDeleteShippingProfile(profile.id)
+  // TODO: MISSING ENDPOINT
+  const { mutateAsync } = useDeleteShippingProfile(profile.id)
 
   const handleDelete = async () => {
     const res = await prompt({
