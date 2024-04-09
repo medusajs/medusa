@@ -4,9 +4,11 @@ import { campaigns } from "./campaigns"
 import { categories } from "./categories"
 import { collections } from "./collections"
 import { currencies } from "./currencies"
+import { customerGroups } from "./customer-groups"
 import { customers } from "./customers"
 import { invites } from "./invites"
 import { payments } from "./payments"
+import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
 import { products } from "./products"
 import { promotions } from "./promotions"
@@ -25,6 +27,7 @@ export const client = {
   campaigns: campaigns,
   categories: categories,
   customers: customers,
+  customerGroups: customerGroups,
   currencies: currencies,
   collections: collections,
   promotions: promotions,
@@ -38,6 +41,7 @@ export const client = {
   invites: invites,
   products: products,
   productTypes: productTypes,
+  priceLists: priceLists,
   stockLocations: stockLocations,
   workflowExecutions: workflowExecutions,
 }

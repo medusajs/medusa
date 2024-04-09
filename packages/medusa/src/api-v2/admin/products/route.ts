@@ -1,8 +1,8 @@
 import { createProductsWorkflow } from "@medusajs/core-flows"
+import { CreateProductDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ProductStatus,
-  remoteQueryObjectFromString,
+  remoteQueryObjectFromString
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -17,7 +17,6 @@ import {
   AdminCreateProductType,
   AdminGetProductsParamsType,
 } from "./validators"
-import { CreateProductDTO } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductsParamsType>,

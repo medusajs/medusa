@@ -1,14 +1,15 @@
-import { OperatorMap } from "@medusajs/types"
-import { Transform, Type } from "class-transformer"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
   IsNotEmpty,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+import { Transform, Type } from "class-transformer"
+
 import { IsType } from "../../../utils"
+import { OperatorMap } from "@medusajs/types"
+import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
 export class AdminGetCustomerGroupsGroupParams extends FindParams {}
 
@@ -61,6 +62,10 @@ export class AdminGetCustomerGroupsParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,
 }) {
+  @IsOptional()
+  @IsString()
+  q?: string
+
   @IsOptional()
   @IsString({ each: true })
   id?: string | string[]
@@ -120,6 +125,10 @@ export class AdminGetCustomerGroupsGroupCustomersParams extends extendedFindPara
     offset: 0,
   }
 ) {
+  @IsOptional()
+  @IsString()
+  q?: string
+
   @IsOptional()
   @IsString({ each: true })
   id?: string | string[]

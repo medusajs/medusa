@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   Context,
   DAL,
@@ -26,6 +25,7 @@ import {
   getSetDifference,
   isString,
   promiseAll,
+  Modules
 } from "@medusajs/utils"
 import {
   Fulfillment,
@@ -40,6 +40,7 @@ import {
 import { isContextValid, validateRules } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
+import { UpdateShippingOptionsInput } from "../types/service"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -1046,40 +1047,56 @@ export default class FulfillmentModuleService<
   }
 
   updateShippingOptions(
-    data: FulfillmentTypes.UpdateShippingOptionDTO[],
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
-  updateShippingOptions(
+    id: string,
     data: FulfillmentTypes.UpdateShippingOptionDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
+  updateShippingOptions(
+    selector: FulfillmentTypes.FilterableShippingOptionProps,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
 
   @InjectManager("baseRepository_")
   async updateShippingOptions(
-    data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
+    idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
   > {
+    const normalizedInput: UpdateShippingOptionsInput[] = []
+
+    if (isString(idOrSelector)) {
+      normalizedInput.push({ id: idOrSelector, ...data })
+    } else {
+      const shippingOptions = await this.shippingOptionService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      shippingOptions.forEach((shippingOption) => {
+        normalizedInput.push({ id: shippingOption.id, ...data })
+      })
+    }
+
     const updatedShippingOptions = await this.updateShippingOptions_(
-      data,
+      normalizedInput,
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<
+    const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
     >(updatedShippingOptions, {
       populate: true,
     })
+
+    return isString(idOrSelector) ? serialized[0] : serialized
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateShippingOptions_(
-    data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
+    data: UpdateShippingOptionsInput[] | UpdateShippingOptionsInput,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
     const dataArray = Array.isArray(data) ? data : [data]
@@ -1180,6 +1197,82 @@ export default class FulfillmentModuleService<
     return Array.isArray(data)
       ? updatedShippingOptions
       : updatedShippingOptions[0]
+  }
+
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO>
+
+  @InjectManager("baseRepository_")
+  async upsertShippingOptions(
+    data:
+      | FulfillmentTypes.UpsertShippingOptionDTO[]
+      | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    const upsertedShippingOptions = await this.upsertShippingOptions_(
+      data,
+      sharedContext
+    )
+
+    const allShippingOptions = await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+    >(upsertedShippingOptions)
+
+    return Array.isArray(data) ? allShippingOptions : allShippingOptions[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertShippingOptions_(
+    data:
+      | FulfillmentTypes.UpsertShippingOptionDTO[]
+      | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity[] | TShippingOptionEntity> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (shippingOption): shippingOption is UpdateShippingOptionsInput =>
+        !!shippingOption.id
+    )
+    const forCreate = input.filter(
+      (
+        shippingOption
+      ): shippingOption is FulfillmentTypes.CreateShippingOptionDTO =>
+        !shippingOption.id
+    )
+
+    let created: TShippingOptionEntity[] = []
+    let updated: TShippingOptionEntity[] = []
+
+    if (forCreate.length) {
+      const createdShippingOptions = await this.createShippingOptions_(
+        forCreate,
+        sharedContext
+      )
+      const toPush = Array.isArray(createdShippingOptions)
+        ? createdShippingOptions
+        : [createdShippingOptions]
+      created.push(...toPush)
+    }
+    if (forUpdate.length) {
+      const updatedShippingOptions = await this.updateShippingOptions_(
+        forUpdate,
+        sharedContext
+      )
+      const toPush = Array.isArray(updatedShippingOptions)
+        ? updatedShippingOptions
+        : [updatedShippingOptions]
+      updated.push(...toPush)
+    }
+
+    return [...created, ...updated]
   }
 
   updateShippingProfiles(
@@ -1415,7 +1508,7 @@ export default class FulfillmentModuleService<
 
   protected static validateMissingShippingOptions_(
     shippingOptions: ShippingOption[],
-    shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
+    shippingOptionsData: UpdateShippingOptionsInput[]
   ) {
     const missingShippingOptionIds = arrayDifference(
       shippingOptionsData.map((s) => s.id),

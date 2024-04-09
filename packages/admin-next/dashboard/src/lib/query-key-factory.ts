@@ -11,8 +11,13 @@ type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   ]
   details: () => readonly [...TQueryKey<TKey>["all"], "detail"]
   detail: (
-    id: TDetailQuery
-  ) => readonly [...ReturnType<TQueryKey<TKey>["details"]>, TDetailQuery]
+    id: TDetailQuery,
+    query?: TListQuery
+  ) => readonly [
+    ...ReturnType<TQueryKey<TKey>["details"]>,
+    TDetailQuery,
+    { query: TListQuery | undefined },
+  ]
 }
 
 export type UseQueryOptionsWrapper<
@@ -39,7 +44,11 @@ export const queryKeysFactory = <
     lists: () => [...queryKeyFactory.all, "list"],
     list: (query?: TListQueryType) => [...queryKeyFactory.lists(), { query }],
     details: () => [...queryKeyFactory.all, "detail"],
-    detail: (id: TDetailQueryType) => [...queryKeyFactory.details(), id],
+    detail: (id: TDetailQueryType, query?: TListQueryType) => [
+      ...queryKeyFactory.details(),
+      id,
+      { query },
+    ],
   }
   return queryKeyFactory
 }
