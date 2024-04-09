@@ -14,7 +14,8 @@ import { useProductTableFilters } from "../../../../../hooks/table/filters/use-p
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
-import { PricingCreateSchemaType, PricingProductsRecordType } from "./schema"
+import { PricingProductsRecordType } from "../../../common/schemas"
+import { PricingCreateSchemaType } from "./schema"
 
 type PricingProductsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>

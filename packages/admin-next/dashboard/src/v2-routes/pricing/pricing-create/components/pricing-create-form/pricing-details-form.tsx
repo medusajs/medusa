@@ -14,7 +14,7 @@ import { useFieldArray, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { XMarkMini } from "@medusajs/icons"
-import { CustomerGroupDTO } from "@medusajs/types"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -89,9 +89,9 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
         <div className="flex flex-1 flex-col items-center overflow-y-auto">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
             <div>
-              <Heading>Create Price List</Heading>
+              <Heading>{t("pricing.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
-                Create a new price list to manage the prices of your products.
+                {t("pricing.create.hint")}
               </Text>
             </div>
             <Form.Field
@@ -103,9 +103,7 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                     <div className="flex flex-col gap-y-4">
                       <div>
                         <Form.Label>{t("fields.type")}</Form.Label>
-                        <Form.Hint>
-                          Choose the type of price list you want to create.
-                        </Form.Hint>
+                        <Form.Hint>{t("pricing.fields.typeHint")}</Form.Hint>
                       </div>
                       <Form.Control>
                         <RadioGroup
@@ -189,11 +187,20 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                     >
                       <div className="grid grid-cols-[1fr_32px] gap-4">
                         <div>
-                          <Text size="small" leading="compact" weight="plus">
-                            Price list has a start date?
-                          </Text>
+                          <div className="flex items-center gap-x-1">
+                            <Text size="small" leading="compact" weight="plus">
+                              {t("pricing.fields.startDateLabel")}
+                            </Text>
+                            <Text
+                              size="small"
+                              leading="compact"
+                              className="text-ui-fg-muted"
+                            >
+                              ({t("fields.optional")})
+                            </Text>
+                          </div>
                           <Text size="small" className="text-ui-fg-subtle">
-                            Schedule the price list to activate in the future.
+                            {t("pricing.fields.startDateHint")}
                           </Text>
                         </div>
                         <Collapsible.Trigger asChild>
@@ -246,11 +253,20 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                     >
                       <div className="grid grid-cols-[1fr_32px] gap-4">
                         <div>
-                          <Text size="small" leading="compact" weight="plus">
-                            Price list has an end date?
-                          </Text>
+                          <div className="flex items-center gap-x-1">
+                            <Text size="small" leading="compact" weight="plus">
+                              {t("pricing.fields.endDateLabel")}
+                            </Text>
+                            <Text
+                              size="small"
+                              leading="compact"
+                              className="text-ui-fg-muted"
+                            >
+                              ({t("fields.optional")})
+                            </Text>
+                          </div>
                           <Text size="small" className="text-ui-fg-subtle">
-                            Schedule the price list to deactivate in the future.
+                            {t("pricing.fields.endDateHint")}
                           </Text>
                         </div>
                         <Collapsible.Trigger asChild>
@@ -292,11 +308,10 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                         <div className="grid grid-cols-[1fr_32px] items-start gap-4">
                           <div>
                             <Form.Label optional>
-                              Customer availability
+                              {t("pricing.fields.customerAvailabilityLabel")}
                             </Form.Label>
                             <Form.Hint>
-                              Specify which customer groups the price overrides
-                              should apply for.
+                              {t("pricing.fields.customerAvailabilityHint")}
                             </Form.Hint>
                           </div>
                           <Form.Control>
@@ -342,7 +357,9 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                           leading="compact"
                           className="text-ui-fg-muted"
                         >
-                          No customer groups selected.
+                          {t(
+                            "pricing.fields.customerAvailabilityNoSelectionLabel"
+                          )}
                         </Text>
                       </div>
                     )}
@@ -353,7 +370,7 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                         type="button"
                         onClick={handleOpenDrawer}
                       >
-                        Add customer groups
+                        {t("pricing.actions.addCustomerGroups")}
                       </Button>
                     </div>
                   </div>
@@ -424,7 +441,7 @@ const CustomerGroupDrawer = ({
     const newCustomerGroups =
       customer_groups
         ?.filter((cg) => newIds.includes(cg.id))
-        .map((cg) => ({ id: cg.id, name: cg.name })) || []
+        .map((cg) => ({ id: cg.id, name: cg.name! })) || []
 
     const filteredIntermediate = intermediate.filter(
       (cg) => !removedIds.includes(cg.id)
@@ -494,7 +511,8 @@ const CustomerGroupDrawer = ({
   )
 }
 
-const columnHelper = createColumnHelper<CustomerGroupDTO>()
+const columnHelper =
+  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
 
 const useColumns = () => {
   const base = useCustomerGroupTableColumns()
