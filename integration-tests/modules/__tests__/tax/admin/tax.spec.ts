@@ -147,6 +147,8 @@ medusaIntegrationTestRunner({
             created_by: "admin_user",
             metadata: null,
             provider_id: null,
+            children: [],
+            parent: null,
           },
         })
 
@@ -219,6 +221,8 @@ medusaIntegrationTestRunner({
             created_by: "admin_user",
             provider_id: null,
             metadata: null,
+            children: [],
+            parent: null,
           },
         })
 
@@ -362,6 +366,8 @@ medusaIntegrationTestRunner({
             tax_rates: expect.any(Array),
             deleted_at: null,
             metadata: null,
+            children: [],
+            parent: null,
           },
         })
       })

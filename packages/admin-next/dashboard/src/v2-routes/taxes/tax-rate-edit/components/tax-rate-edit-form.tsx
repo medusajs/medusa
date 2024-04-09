@@ -81,30 +81,24 @@ export const TaxRateEditForm = ({
 
   const { mutateAsync } = useUpdateTaxRate(taxRate.id)
 
-  const handleSubmit = form.handleSubmit(
-    async (data) => {
-      console.log("data - ", data)
-      await mutateAsync(
-        {
-          name: data.name,
-          code: data.code || undefined,
-          rate: data.rate,
-          is_combinable: data.is_combinable,
-          rules:
-            data.products?.map((product) => ({
-              reference: "product",
-              reference_id: product.value,
-            })) || [],
-        },
-        {
-          onSuccess: () => handleSuccess(`/settings/taxes/${taxRegion.id}`),
-        }
-      )
-    },
-    (error) => {
-      console.log("error - ", error)
-    }
-  )
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await mutateAsync(
+      {
+        name: data.name,
+        code: data.code || undefined,
+        rate: data.rate,
+        is_combinable: data.is_combinable,
+        rules:
+          data.products?.map((product) => ({
+            reference: "product",
+            reference_id: product.value,
+          })) || [],
+      },
+      {
+        onSuccess: () => handleSuccess(`/settings/taxes/${taxRegion.id}`),
+      }
+    )
+  })
 
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
