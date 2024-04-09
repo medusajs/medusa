@@ -20,3 +20,12 @@ export interface AdminShippingProfileResponse {
 export interface AdminShippingProfilesResponse extends PaginatedResponse {
   shipping_profiles: ShippingProfileResponse[]
 }
+
+/**
+ * @experimental
+ */
+export interface AdminShippingProfileDeleteResponse {
+  id: string
+  object: "shipping-profile"
+  deleted: boolean
+}

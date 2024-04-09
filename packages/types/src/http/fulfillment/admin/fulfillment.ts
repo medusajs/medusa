@@ -31,6 +31,6 @@ export interface AdminFulfillmentResponse {
  */
 export interface AdminFulfillmentSetsDeleteResponse {
   id: string
-  object: "fulfillment-set"
+  object: "fulfillment_set"
   deleted: boolean
 }

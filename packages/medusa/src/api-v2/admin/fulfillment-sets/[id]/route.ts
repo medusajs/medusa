@@ -3,7 +3,6 @@ import {
   IFulfillmentModuleService,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaError } from "@medusajs/utils"
 import { deleteFulfillmentSetsWorkflow } from "@medusajs/core-flows"
 
 import {
@@ -35,7 +34,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id,
-    object: "fulfillment-set",
+    object: "fulfillment_set",
     deleted: true,
   })
 }

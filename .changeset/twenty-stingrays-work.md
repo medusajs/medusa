@@ -4,4 +4,4 @@
 "@medusajs/types": patch
 ---
 
-feat(medusa, core-flows,types): delete fulfillment set
+feat(medusa, core-flows,types): delete fulfillment set, delete shipping profile

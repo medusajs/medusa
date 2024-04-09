@@ -45,7 +45,7 @@ medusaIntegrationTestRunner({
 
         expect(deleteResponse.data).toEqual({
           id: set.id,
-          object: "fulfillment-set",
+          object: "fulfillment_set",
           deleted: true,
         })
       })

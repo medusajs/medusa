@@ -35,7 +35,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("Admin - Shipping Profiles", () => {
-      // TODO: Missing update and delete tests
+      // TODO: Missing update tests
       it("should test the entire lifecycle of a shipping profile", async () => {
         const payload = {
           name: "test-profile-2023",
@@ -84,6 +84,17 @@ medusaIntegrationTestRunner({
             created_at: expect.any(String),
           })
         )
+
+        const { data } = await api.delete(
+          `/admin/shipping-profiles/${shipping_profile.id}`,
+          adminHeaders
+        )
+
+        expect(data).toEqual({
+          id: retrievedProfile.id,
+          object: "shipping_profile",
+          deleted: true,
+        })
       })
     })
 
