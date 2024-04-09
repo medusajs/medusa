@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Checkbox, Hint, StatusBadge, Tooltip } from "@medusajs/ui"
+import { AdminSalesChannelResponse } from "@medusajs/types"
+import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
   RowSelectionState,
@@ -12,30 +14,29 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
-import { useBatchAddSalesChannelsToApiKey } from "../../../../hooks/api/api-keys"
-import { useSalesChannelTableQuery } from "../../../../hooks/table/query/use-sales-channel-table-query"
-import { useDataTable } from "../../../../hooks/use-data-table"
-import { useSalesChannels } from "../../../../hooks/api/sales-channels"
-import { keepPreviousData } from "@tanstack/react-query"
-import { DataTable } from "../../../../components/table/data-table"
-import { AdminSalesChannelResponse } from "@medusajs/types"
+} from "../../../../../components/route-modal"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useBatchAddSalesChannelsToApiKey } from "../../../../../hooks/api/api-keys"
+import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
+import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
-type AddSalesChannelsToApiKeyFormProps = {
+type ApiKeySalesChannelFormProps = {
   apiKey: string
-  preSelected: string[]
+  preSelected?: string[]
 }
 
 const AddSalesChannelsToApiKeySchema = zod.object({
-  sales_channel_ids: zod.array(zod.string()).min(1),
+  sales_channel_ids: zod.array(zod.string()),
 })
 
 const PAGE_SIZE = 50
 
-export const AddSalesChannelsToApiKeyForm = ({
+export const ApiKeySalesChannelsForm = ({
   apiKey,
-  preSelected,
-}: AddSalesChannelsToApiKeyFormProps) => {
+  preSelected = [],
+}: ApiKeySalesChannelFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -50,9 +51,7 @@ export const AddSalesChannelsToApiKeyForm = ({
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  // @ts-ignore
-  const { mutateAsync, isLoading: isMutating } =
-    useBatchAddSalesChannelsToApiKey(apiKey)
+  const { mutateAsync, isPending } = useBatchAddSalesChannelsToApiKey(apiKey)
 
   const { raw, searchParams } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
@@ -127,7 +126,7 @@ export const AddSalesChannelsToApiKeyForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isMutating}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
@@ -155,6 +154,7 @@ const columnHelper =
 
 const useColumns = () => {
   const { t } = useTranslation()
+  const base = useSalesChannelTableColumns()
 
   return useMemo(
     () => [
@@ -200,32 +200,8 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("description", {
-        header: t("fields.description"),
-        cell: ({ getValue }) => (
-          <div className="w-[200px] truncate">
-            <span>{getValue()}</span>
-          </div>
-        ),
-      }),
-      columnHelper.accessor("is_disabled", {
-        header: t("fields.status"),
-        cell: ({ getValue }) => {
-          const value = getValue()
-          return (
-            <div>
-              <StatusBadge color={value ? "grey" : "green"}>
-                {value ? t("general.disabled") : t("general.enabled")}
-              </StatusBadge>
-            </div>
-          )
-        },
-      }),
+      ...base,
     ],
-    [t]
+    [t, base]
   )
 }

@@ -6,6 +6,7 @@ import {
   Heading,
   StatusBadge,
   Text,
+  clx,
   usePrompt,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -19,7 +20,7 @@ import {
 } from "../../../../../hooks/api/api-keys"
 import { useUser } from "../../../../../hooks/api/users"
 import { useDate } from "../../../../../hooks/use-date"
-import { ApiKeyType } from "../../../common/constants"
+import { getApiKeyStatusProps, getApiKeyTypeProps } from "../../../common/utils"
 
 type ApiKeyGeneralSectionProps = {
   apiKey: ApiKeyDTO
@@ -37,7 +38,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.deleteKeyWarning", {
+      description: t("apiKeyManagement.warnings.delete", {
         title: apiKey.title,
       }),
       confirmText: t("actions.delete"),
@@ -58,10 +59,10 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.revokeKeyWarning", {
+      description: t("apiKeyManagement.warnings.revoke", {
         title: apiKey.title,
       }),
-      confirmText: t("apiKeyManagement.revoke"),
+      confirmText: t("apiKeyManagement.actions.revoke"),
       cancelText: t("actions.cancel"),
     })
 
@@ -83,10 +84,13 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   if (!apiKey.revoked_at) {
     dangerousActions.unshift({
       icon: <XCircle />,
-      label: t("apiKeyManagement.revoke"),
+      label: t("apiKeyManagement.actions.revoke"),
       onClick: handleRevoke,
     })
   }
+
+  const apiKeyStatus = getApiKeyStatusProps(apiKey.revoked_at, t)
+  const apiKeyType = getApiKeyTypeProps(apiKey.type, t)
 
   return (
     <Container className="divide-y p-0">
@@ -94,13 +98,8 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         <Heading>{apiKey.title}</Heading>
         <div className="flex items-center gap-x-4">
           <div className="flex items-center gap-x-2">
-            <StatusBadge
-              color={apiKey.type === ApiKeyType.PUBLISHABLE ? "green" : "blue"}
-            >
-              {apiKey.revoked_at ? t("general.revoked") : t("general.active")}
-            </StatusBadge>
-            <StatusBadge color={apiKey.revoked_at ? "red" : "green"}>
-              {apiKey.revoked_at ? t("general.revoked") : t("general.active")}
+            <StatusBadge color={apiKeyStatus.color}>
+              {apiKeyStatus.label}
             </StatusBadge>
           </div>
           <ActionMenu
@@ -121,24 +120,42 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
-        <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
+        <div
+          className={clx(
+            "bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1",
+            {
+              "pr-2": apiKey.type === "secret",
+              "cursor-pointer": apiKey.type !== "secret",
+            }
+          )}
+        >
           <Text size="xsmall" leading="compact" className="truncate">
             {apiKey.redacted}
           </Text>
-          <Copy
-            content={apiKey.token}
-            variant="mini"
-            className="text-ui-fg-subtle"
-          />
+          {apiKey.type !== "secret" && (
+            <Copy
+              content={apiKey.token}
+              variant="mini"
+              className="text-ui-fg-subtle"
+            />
+          )}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("fields.key")}
+          {t("fields.type")}
+        </Text>
+        <Text size="small" leading="compact">
+          {apiKeyType.label}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("apiKeyManagement.fields.lastUsedAtLabel")}
         </Text>
         <Text size="small" leading="compact">
           {apiKey.last_used_at
@@ -146,16 +163,16 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
             : "-"}
         </Text>
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("apiKeyManagement.createdBy")}
+          {t("apiKeyManagement.fields.createdByLabel")}
         </Text>
         <ActionBy userId={apiKey.created_by} />
       </div>
       {apiKey.revoked_at && (
         <div className="grid grid-cols-2 items-center px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
-            {t("apiKeyManagement.revokedBy")}
+            {t("apiKeyManagement.fields.revokedByLabel")}
           </Text>
           <ActionBy userId={apiKey.revoked_by} />
         </div>

@@ -1,5 +1,4 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { Spinner } from "@medusajs/icons"
 import {
   AdminCollectionsRes,
@@ -7,14 +6,14 @@ import {
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
+import { AdminApiKeyResponse, SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
-import { AdminApiKeyResponse } from "@medusajs/types"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
-import { AdminCustomersRes } from "@medusajs/client-types"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useMe()
@@ -516,17 +515,39 @@ export const v2Routes: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () =>
-                  import(
-                    "../../v2-routes/api-key-management/api-key-management-list"
-                  ),
+                element: <Outlet />,
                 children: [
                   {
-                    path: "create",
+                    path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-create"
+                        "../../v2-routes/api-key-management/api-key-management-list"
                       ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "secret",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },
@@ -550,10 +571,10 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    path: "add-sales-channels",
+                    path: "sales-channels",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
                       ),
                   },
                 ],

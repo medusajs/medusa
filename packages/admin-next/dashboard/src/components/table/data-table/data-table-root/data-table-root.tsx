@@ -192,7 +192,8 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "bg-ui-bg-subtle hover:bg-ui-bg-subtle": isRowDisabled,
+                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
+                          isRowDisabled,
                       }
                     )}
                     onClick={to ? () => navigate(to) : undefined}
@@ -221,7 +222,7 @@ export const DataTableRoot = <TData,>({
                               isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "bg-ui-bg-subtle hover:bg-ui-bg-subtle":
+                            "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                               isRowDisabled,
                           })}
                         >
