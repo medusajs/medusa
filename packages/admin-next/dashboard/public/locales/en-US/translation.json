@@ -617,7 +617,8 @@
   "shippingProfile": {
     "domain": "Shipping Profile",
     "title": "Create a shipping profile",
-    "detailsHint": "Specify the details of the shipping profile"
+    "detailsHint": "Specify the details of the shipping profile",
+    "deleteWaring": "You are about to delete the profile: {{name}}. This action cannot be undone."
   },
   "discounts": {
     "domain": "Discounts",

@@ -1,10 +1,11 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { ExtendedStockLocationDTO } from "../../../../../types/api-responses"
-import { LocationRowActions } from "./location-row-actions"
+import { ShippingProfileDTO } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<ExtendedStockLocationDTO>()
+import { ShippingOptionsRowActions } from "./shipping-options-row-actions"
+
+const columnHelper = createColumnHelper<ShippingProfileDTO>()
 
 export const useShippingProfilesTableColumns = () => {
   const { t } = useTranslation()
@@ -21,7 +22,7 @@ export const useShippingProfilesTableColumns = () => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <LocationRowActions location={row.original} />,
+        cell: ({ row }) => <ShippingOptionsRowActions profile={row.original} />,
       }),
     ],
     [t]

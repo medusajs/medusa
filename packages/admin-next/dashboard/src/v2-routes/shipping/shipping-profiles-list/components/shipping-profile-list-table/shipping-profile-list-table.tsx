@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useShippingProfilesTableColumns } from "./use-shipping-profiles-table-columns.tsx"
-import { useShippingProfilesTableQuery } from "./use-shipping-profiles-table-query.tsx"
+import { useShippingProfilesTableColumns } from "./use-shipping-profiles-table-columns"
+import { useShippingProfilesTableQuery } from "./use-shipping-profiles-table-query"
 
 const PAGE_SIZE = 20
 
