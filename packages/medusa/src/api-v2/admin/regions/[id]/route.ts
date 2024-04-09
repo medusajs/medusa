@@ -1,16 +1,16 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
   deleteRegionsWorkflow,
   updateRegionsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 import { UpdateRegionDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 export const GET = async (
