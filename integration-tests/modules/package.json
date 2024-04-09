@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": "jest --silent --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
+    "test:integration": "jest --silent --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "jest --silent --no-cache --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -15,6 +15,8 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/fulfillment": "workspace:^",
+    "@medusajs/fulfillment-manual": "workspace:^",
     "@medusajs/inventory-next": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",

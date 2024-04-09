@@ -1,40 +1,41 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
-  CustomerUpdatableFields,
-  ICustomerModuleService,
-} from "@medusajs/types"
-import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AdminCustomerResponse, CustomerUpdatableFields } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const customer = await customerModuleService.retrieve(req.params.id, {
-    select: req.retrieveConfig.select,
-    relations: req.retrieveConfig.relations,
+  const variables = { id: req.params.id }
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer",
+    variables,
+    fields: req.remoteQueryConfig.fields,
   })
+
+  const [customer] = await remoteQuery(queryObject)
 
   res.status(200).json({ customer })
 }
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<CustomerUpdatableFields>,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
-  const updateCustomers = updateCustomersWorkflow(req.scope)
-  const { result, errors } = await updateCustomers.run({
+  const { errors } = await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,
@@ -46,7 +47,19 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer: result[0] })
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer",
+    variables: {
+      filters: { id: req.params.id },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const [customer] = await remoteQuery(queryObject)
+
+  res.status(200).json({ customer })
 }
 
 export const DELETE = async (

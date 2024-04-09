@@ -3,7 +3,6 @@ import { CheckMini, Spinner, ThumbnailBadge } from "@medusajs/icons"
 import { Image, Product } from "@medusajs/medusa"
 import { Button, CommandBar, Tooltip, clx } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
-import { useAdminUpdateProduct, useMedusa } from "medusa-react"
 import { Fragment, useCallback, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -19,6 +18,7 @@ import {
   FileType,
   FileUpload,
 } from "../../../../../components/common/file-upload"
+import { useUpdateProduct } from "../../../../../hooks/api/products"
 
 type ProductMediaViewProps = {
   product: Product
@@ -73,8 +73,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     keyName: "field_id",
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateProduct(product.id)
-  const { client } = useMedusa()
+  const { mutateAsync, isLoading } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async ({ media }) => {
     const urls = media.map((m) => m.url)
@@ -86,15 +85,20 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     if (filesToUpload.length) {
       const files = filesToUpload.map((m) => m.file) as File[]
 
-      const uploads = await client.admin.uploads
-        .create(files)
-        .then((res) => {
-          return res.uploads
-        })
-        .catch((_err) => {
-          // Show error message
-          return null
-        })
+      // TODO: Implement upload to Medusa
+      // const uploads = await client.admin.uploads
+      //   .create(files)
+      //   .then((res) => {
+      //     return res.uploads
+      //   })
+      //   .catch((_err) => {
+      //     // Show error message
+      //     return null
+      //   })
+
+      const uploads = files.map((file) => ({
+        url: URL.createObjectURL(file),
+      }))
 
       if (!uploads) {
         return

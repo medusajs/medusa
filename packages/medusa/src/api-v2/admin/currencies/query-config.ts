@@ -1,20 +1,19 @@
-export const defaultAdminCurrencyRelations = []
-export const allowedAdminCurrencyRelations = []
 export const defaultAdminCurrencyFields = [
   "code",
   "name",
   "symbol",
   "symbol_native",
+  "decimal_digits",
+  "rounding",
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminCurrencyFields,
-  defaultRelations: defaultAdminCurrencyRelations,
-  allowedRelations: allowedAdminCurrencyRelations,
+  defaults: defaultAdminCurrencyFields,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
+  ...retrieveTransformQueryConfig,
   defaultLimit: 50,
   isList: true,
 }

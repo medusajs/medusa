@@ -5,9 +5,6 @@ import type {
   AdminDraftOrdersRes,
   AdminGiftCardsRes,
   AdminOrdersRes,
-  AdminRegionsRes,
-  AdminSalesChannelsRes,
-  AdminUserRes,
 } from "@medusajs/medusa"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -239,85 +236,6 @@ export const v1Routes: RouteObject[] = [
             ],
           },
           {
-            path: "/customers",
-            handle: {
-              crumb: () => "Customers",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/customers/customer-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import("../../routes/customers/customer-create"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/customers/customer-detail"),
-                handle: {
-                  crumb: (data: AdminCustomersRes) => data.customer.email,
-                },
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/customers/customer-edit"),
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "/customer-groups",
-            handle: {
-              crumb: () => "Customer Groups",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () =>
-                  import("../../routes/customer-groups/customer-group-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import(
-                        "../../routes/customer-groups/customer-group-create"
-                      ),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () =>
-                  import("../../routes/customer-groups/customer-group-detail"),
-                handle: {
-                  crumb: (data: AdminCustomerGroupsRes) =>
-                    data.customer_group.name,
-                },
-                children: [
-                  {
-                    path: "add-customers",
-                    lazy: () =>
-                      import(
-                        "../../routes/customer-groups/customer-group-add-customers"
-                      ),
-                  },
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import(
-                        "../../routes/customer-groups/customer-group-edit"
-                      ),
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "/gift-cards",
             handle: {
               crumb: () => "Gift Cards",
@@ -387,44 +305,6 @@ export const v1Routes: RouteObject[] = [
                     path: "conditions",
                     lazy: () =>
                       import("../../routes/discounts/discount-edit-conditions"),
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "/pricing",
-            handle: {
-              crumb: () => "Pricing",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/pricing/pricing-list"),
-                children: [
-                  // {
-                  //   path: "create",
-                  //   lazy: () => import("../../routes/pricing/pricing-create"),
-                  // },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/pricing/pricing-detail"),
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/pricing/pricing-edit"),
-                  },
-                  {
-                    path: "products/add",
-                    lazy: () =>
-                      import("../../routes/pricing/pricing-products-add"),
-                  },
-                  {
-                    path: "products/edit",
-                    lazy: () =>
-                      import("../../routes/pricing/pricing-products-edit"),
                   },
                 ],
               },

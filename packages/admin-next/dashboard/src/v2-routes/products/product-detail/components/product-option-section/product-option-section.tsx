@@ -1,8 +1,64 @@
-import { PencilSquare, Plus } from "@medusajs/icons"
-import { Product, ProductOption } from "@medusajs/medusa"
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { PencilSquare, Plus, Trash } from "@medusajs/icons"
+import { Product } from "@medusajs/medusa"
+import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { SectionRow } from "../../../../../components/common/section"
+import { useDeleteProductOption } from "../../../../../hooks/api/products"
+
+const OptionActions = ({
+  product,
+  option,
+}: {
+  product: Product
+  option: any
+}) => {
+  const { t } = useTranslation()
+  const { mutateAsync } = useDeleteProductOption(product.id, option.id)
+  const prompt = usePrompt()
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("products.deleteWarning", {
+        title: product.title,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync()
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("actions.edit"),
+              to: `options/${option.id}/edit`,
+              icon: <PencilSquare />,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              label: t("actions.delete"),
+              onClick: handleDelete,
+              icon: <Trash />,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
 
 type ProductOptionSectionProps = {
   product: Product
@@ -31,50 +87,27 @@ export const ProductOptionSection = ({
           ]}
         />
       </div>
+
       {product.options.map((option) => {
         return (
-          <div
+          <SectionRow
+            title={option.title}
             key={option.id}
-            className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_28px] items-start gap-4 px-6 py-4"
-          >
-            <Text size="small" leading="compact" weight="plus">
-              {option.title}
-            </Text>
-            <div className="flex flex-wrap gap-1">
-              {getUnqiueValues(option).map((value) => {
-                return (
-                  <Badge
-                    key={value}
-                    size="2xsmall"
-                    className="flex min-w-[20px] items-center justify-center"
-                  >
-                    {value}
-                  </Badge>
-                )
-              })}
-            </div>
-            <ActionMenu
-              groups={[
-                {
-                  actions: [
-                    {
-                      label: t("actions.edit"),
-                      to: `options/${option.id}/edit`,
-                      icon: <PencilSquare />,
-                    },
-                  ],
-                },
-              ]}
-            />
-          </div>
+            value={option.values.map((val) => {
+              return (
+                <Badge
+                  key={val.value}
+                  size="2xsmall"
+                  className="flex min-w-[20px] items-center justify-center"
+                >
+                  {val.value}
+                </Badge>
+              )
+            })}
+            actions={<OptionActions product={product} option={option} />}
+          />
         )
       })}
     </Container>
   )
-}
-
-const getUnqiueValues = (option: ProductOption) => {
-  const values = option.values.map((v) => v.value)
-
-  return Array.from(new Set(values))
 }

@@ -1,11 +1,11 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPaymentModuleService } from "@medusajs/types"
+import { BigNumberInput, IPaymentModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type StepInput = {
   payment_id: string
   created_by?: string
-  amount?: number
+  amount?: BigNumberInput
 }
 
 export const refundPaymentStepId = "refund-payment-step"

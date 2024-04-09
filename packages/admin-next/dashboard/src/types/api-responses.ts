@@ -3,11 +3,12 @@
  */
 
 import {
-  ApiKeyDTO,
   CampaignDTO,
   CurrencyDTO,
-  CustomerDTO,
+  CustomerGroupDTO,
   InviteDTO,
+  PaymentProviderDTO,
+  PriceListDTO,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -21,8 +22,8 @@ import {
   StoreDTO,
   UserDTO,
 } from "@medusajs/types"
-import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
 import { ProductTagDTO } from "@medusajs/types/dist/product"
+import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
 
 type ListRes = {
   count: number
@@ -38,10 +39,6 @@ type DeleteRes = {
 
 // Auth
 export type EmailPassRes = { token: string }
-
-// Customers
-export type CustomerRes = { customer: CustomerDTO }
-export type CustomerListRes = { customers: CustomerDTO[] } & ListRes
 
 // Promotions
 export type PromotionRes = { promotion: PromotionDTO }
@@ -76,18 +73,9 @@ export type CampaignListRes = { campaigns: CampaignDTO[] } & ListRes
 export type CampaignDeleteRes = DeleteRes
 
 // API Keys
-export type ExtendedApiKeyDTO = ApiKeyDTO & {
-  sales_channels: SalesChannelDTO[] | null
-}
-export type ApiKeyRes = { api_key: ExtendedApiKeyDTO }
-export type ApiKeyListRes = { api_keys: ExtendedApiKeyDTO[] } & ListRes
 export type ApiKeyDeleteRes = DeleteRes
 
 // Sales Channels
-export type SalesChannelRes = { sales_channel: SalesChannelDTO }
-export type SalesChannelListRes = {
-  sales_channels: SalesChannelDTO[]
-} & ListRes
 export type SalesChannelDeleteRes = DeleteRes
 
 // Currencies
@@ -122,6 +110,12 @@ export type TagsListRes = { tags: ProductTagDTO[] } & ListRes
 export type ProductTypeRes = { product_type: ProductTypeDTO }
 export type ProductTypeListRes = { product_types: ProductTypeDTO[] } & ListRes
 
+// Payments
+
+export type PaymentProvidersListRes = {
+  payment_providers: PaymentProviderDTO[]
+}
+
 // Stock Locations
 export type ExtendedStockLocationDTO = StockLocationDTO & {
   address: StockLocationAddressDTO | null
@@ -145,3 +139,15 @@ export type ProductCollectionListRes = {
   collections: ProductCollectionDTO[]
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
+
+// Price Lists
+export type PriceListRes = { price_list: PriceListDTO }
+export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes
+export type PriceListDeleteRes = DeleteRes
+
+// Customer Groups
+export type CustomerGroupRes = { customer_group: CustomerGroupDTO }
+export type CustomerGroupListRes = {
+  customer_groups: CustomerGroupDTO[]
+} & ListRes
+export type CustomerGroupDeleteRes = DeleteRes

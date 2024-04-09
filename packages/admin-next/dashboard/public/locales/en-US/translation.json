@@ -241,6 +241,7 @@
       "options": {
         "label": "Product options",
         "hint": "Options are used to define the color, size, etc. of the product",
+        "add": "Add option",
         "optionTitle": "Option title",
         "variations": "Variations (comma-separated)"
       },
@@ -258,6 +259,9 @@
     "variant": {
       "edit": {
         "header": "Edit Variant"
+      },
+      "create": {
+        "header": "Create Variant"
       },
       "inventory": {
         "header": "Stock & Inventory",
@@ -289,7 +293,20 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "organization": {
+      "header": "Organization",
+      "pathLabel": "Path",
+      "pathExpandTooltip": "Show full path",
+      "childrenLabel": "Children"
+    },
+    "fields": {
+      "visibility": "Visibility",
+      "active": "Active",
+      "inactive": "Inactive",
+      "internal": "Internal",
+      "public": "Public"
+    }
   },
   "inventory": {
     "domain": "Inventory",
@@ -832,7 +849,7 @@
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
-    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
+    "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
@@ -868,7 +885,7 @@
     }
   },
   "taxes": {
-    "domain": "Taxes",
+    "domain": "Tax Regions",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },
@@ -939,20 +956,54 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domainTitle": "API Keys",
-    "domain": "{{ keyType }} API Keys",
-    "createKey": "Create key",
-    "createPublishableApiKey": "Create {{ keyType }} API Key",
-    "editKey": "Edit key",
-    "revoke": "Revoke",
-    "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
-    "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
-    "revokeKeyWarning": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
-    "removeSalesChannelWarning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-    "createdBy": "Created by",
-    "revokedBy": "Revoked by"
+    "domain": {
+      "apiKeys": "API Keys",
+      "publishable": "Publishable API Keys",
+      "secret": "Secret API Keys"
+    },
+    "status": {
+      "active": "Active",
+      "revoked": "Revoked"
+    },
+    "type": {
+      "publishable": "Publishable",
+      "secret": "Secret"
+    },
+    "create": {
+      "createPublishableHeader": "Create Publishable API Key",
+      "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
+      "createSecretHeader": "Create Secret API Key",
+      "createSecretHint": "Create a new secret API key to access the Medusa API.",
+      "secretKeyCreatedHeader": "Secret Key Created",
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+    },
+    "edit": {
+      "header": "Edit API Key"
+    },
+    "tabs": {
+      "secret": "Secret",
+      "publishable": "Publishable"
+    },
+    "warnings": {
+      "delete": "You are about to delete the API key {{title}}. This action cannot be undone.",
+      "revoke": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
+      "removeSalesChannel": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+      "removeSalesChannels_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+      "removeSalesChannels_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+      "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
+    },
+    "actions": {
+      "revoke": "Revoke"
+    },
+    "table": {
+      "lastUsedAtHeader": "Last Used At",
+      "createdAtHeader": "Revoked At"
+    },
+    "fields": {
+      "lastUsedAtLabel": "Last used at",
+      "revokedByLabel": "Revoked by",
+      "createdByLabel": "Created by"
+    }
   },
   "returnReasons": {
     "domain": "Return Reasons",

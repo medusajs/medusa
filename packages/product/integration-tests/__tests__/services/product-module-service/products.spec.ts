@@ -54,7 +54,6 @@ moduleIntegrationTestRunner({
         let productTwo: Product
         let productCategoryOne: ProductCategory
         let productCategoryTwo: ProductCategory
-        let variantTwo: ProductVariant
         let productTypeOne: ProductType
         let productTypeTwo: ProductType
         let images = [{ url: "image-1" }]
@@ -112,43 +111,57 @@ moduleIntegrationTestRunner({
           productCategoryOne = categories[0]
           productCategoryTwo = categories[1]
 
-          productOne = testManager.create(Product, {
+          productOne = service.create({
             id: "product-1",
             title: "product 1",
             status: ProductTypes.ProductStatus.PUBLISHED,
+            variants: [
+              {
+                id: "variant-1",
+                title: "variant 1",
+                inventory_quantity: 10,
+              },
+            ],
           })
 
-          productTwo = testManager.create(Product, {
+          productTwo = service.create({
             id: "product-2",
             title: "product 2",
             status: ProductTypes.ProductStatus.PUBLISHED,
-            categories: [productCategoryOne],
+            categories: [{ id: productCategoryOne.id }],
             collection_id: productCollectionOne.id,
             tags: tagsData,
+            options: [
+              {
+                title: "size",
+                values: ["large", "small"],
+              },
+              {
+                title: "color",
+                values: ["red", "blue"],
+              },
+            ],
+            variants: [
+              {
+                id: "variant-2",
+                title: "variant 2",
+                inventory_quantity: 10,
+              },
+              {
+                id: "variant-3",
+                title: "variant 3",
+                inventory_quantity: 10,
+                options: {
+                  size: "small",
+                  color: "red",
+                },
+              },
+            ],
           })
 
-          testManager.create(ProductVariant, {
-            id: "variant-1",
-            title: "variant 1",
-            inventory_quantity: 10,
-            product: productOne,
-          })
-
-          variantTwo = testManager.create(ProductVariant, {
-            id: "variant-2",
-            title: "variant 2",
-            inventory_quantity: 10,
-            product: productTwo,
-          })
-
-          testManager.create(ProductVariant, {
-            id: "variant-3",
-            title: "variant 3",
-            inventory_quantity: 10,
-            product: productTwo,
-          })
-
-          await testManager.persistAndFlush([productOne, productTwo])
+          const res = await Promise.all([productOne, productTwo])
+          productOne = res[0]
+          productTwo = res[1]
         })
 
         it("should update a product and upsert relations that are not created yet", async () => {
@@ -250,9 +263,7 @@ moduleIntegrationTestRunner({
                   options: expect.arrayContaining([
                     expect.objectContaining({
                       id: expect.any(String),
-                      option_value: expect.objectContaining({
-                        value: data.options[0].values[0],
-                      }),
+                      value: data.options[0].values[0],
                     }),
                   ]),
                 }),
@@ -435,7 +446,7 @@ moduleIntegrationTestRunner({
             // Note: VariantThree is already assigned to productTwo, that should be deleted
             variants: [
               {
-                id: variantTwo.id,
+                id: productTwo.variants[0].id,
                 title: "updated-variant",
               },
               {
@@ -456,7 +467,7 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               variants: expect.arrayContaining([
                 expect.objectContaining({
-                  id: variantTwo.id,
+                  id: productTwo.variants[0].id,
                   title: "updated-variant",
                 }),
                 expect.objectContaining({
@@ -465,6 +476,32 @@ moduleIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should do a partial update on the options of a variant successfully", async () => {
+          await service.update(productTwo.id, {
+            variants: [
+              {
+                id: "variant-3",
+                options: { size: "small", color: "blue" },
+              },
+            ],
+          })
+
+          const fetchedProduct = await service.retrieve(productTwo.id, {
+            relations: ["variants", "variants.options"],
+          })
+
+          expect(fetchedProduct.variants[0].options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+              expect.objectContaining({
+                value: "blue",
+              }),
+            ])
           )
         })
 
@@ -583,9 +620,7 @@ moduleIntegrationTestRunner({
                   options: expect.arrayContaining([
                     expect.objectContaining({
                       id: expect.any(String),
-                      option_value: expect.objectContaining({
-                        value: data.options[0].values[0],
-                      }),
+                      value: data.options[0].values[0],
                     }),
                   ]),
                 }),
@@ -790,6 +825,7 @@ moduleIntegrationTestRunner({
 
           const productTwoData = buildProductAndRelationsData({
             collection_id: productCollectionTwo.id,
+            tags: [],
           })
 
           await service.create([productOneData, productTwoData])

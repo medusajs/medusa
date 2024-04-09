@@ -1,6 +1,4 @@
-export const defaultAdminTaxRegionRelations = []
-export const allowedAdminTaxRegionRelations = []
-export const defaultAdminTaxRegionFields = [
+export const defaults = [
   "id",
   "country_code",
   "province_code",
@@ -14,13 +12,11 @@ export const defaultAdminTaxRegionFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminTaxRegionFields,
-  defaultRelations: defaultAdminTaxRegionRelations,
-  allowedRelations: allowedAdminTaxRegionRelations,
+  defaults,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
-  defaultLimit: 20,
+  ...retrieveTransformQueryConfig,
   isList: true,
 }

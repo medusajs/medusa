@@ -1,21 +1,16 @@
-import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
-import { PublishableApiKey } from "@medusajs/medusa"
-import { Copy, Text, usePrompt } from "@medusajs/ui"
+import { AdminApiKeyResponse } from "@medusajs/types"
+import { Copy, Text, clx } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import {
-  adminPublishableApiKeysKeys,
-  useAdminCustomDelete,
-  useAdminCustomPost,
-} from "medusa-react"
-import { useMemo } from "react"
+import { MouseEvent, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { ApiKeyDTO } from "@medusajs/types"
-import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
+import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
+import { getApiKeyStatusProps, getApiKeyTypeProps } from "../../../common/utils"
+import { ApiKeyRowActions } from "./api-key-row-actions"
 
-const columnHelper = createColumnHelper<ApiKeyDTO>()
+const columnHelper = createColumnHelper<AdminApiKeyResponse["api_key"]>()
 
 export const useApiKeyManagementTableColumns = () => {
   const { t } = useTranslation()
@@ -34,34 +29,61 @@ export const useApiKeyManagementTableColumns = () => {
         header: "Token",
         cell: ({ getValue, row }) => {
           const token = getValue()
+          const isSecret = row.original.type === "secret"
+
+          const clickHandler = !isSecret
+            ? (e: MouseEvent) => e.stopPropagation()
+            : undefined
 
           return (
             <div
-              className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit max-w-[220px] cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1"
-              onClick={(e) => e.stopPropagation()}
+              className={clx(
+                "bg-ui-bg-subtle border-ui-border-base box-border flex w-fit max-w-[220px] items-center gap-x-0.5 overflow-hidden rounded-full border pl-2",
+                {
+                  "cursor-default pr-1": !isSecret,
+                },
+                {
+                  "pr-2": isSecret,
+                }
+              )}
+              onClick={clickHandler}
             >
               <Text size="xsmall" leading="compact" className="truncate">
                 {token}
               </Text>
-              <Copy
-                content={row.original.token}
-                variant="mini"
-                className="text-ui-fg-subtle"
-              />
+              {!isSecret && (
+                <Copy
+                  content={row.original.token}
+                  variant="mini"
+                  className="text-ui-fg-subtle"
+                />
+              )}
             </div>
           )
+        },
+      }),
+      columnHelper.accessor("type", {
+        header: t("fields.type"),
+        cell: ({ getValue }) => {
+          const { label } = getApiKeyTypeProps(getValue(), t)
+
+          return <TextCell text={label} />
         },
       }),
       columnHelper.accessor("revoked_at", {
         header: t("fields.status"),
         cell: ({ getValue }) => {
-          const revokedAt = getValue()
+          const { color, label } = getApiKeyStatusProps(getValue(), t)
 
-          return (
-            <StatusCell color={revokedAt ? "red" : "green"}>
-              {revokedAt ? t("general.revoked") : t("general.active")}
-            </StatusCell>
-          )
+          return <StatusCell color={color}>{label}</StatusCell>
+        },
+      }),
+      columnHelper.accessor("last_used_at", {
+        header: t("apiKeyManagement.table.lastUsedAtHeader"),
+        cell: ({ getValue }) => {
+          const date = getValue()
+
+          return <DateCell date={date} />
         },
       }),
       columnHelper.accessor("created_at", {
@@ -75,94 +97,10 @@ export const useApiKeyManagementTableColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          return <ApiKeyActions apiKey={row.original as any} />
+          return <ApiKeyRowActions apiKey={row.original as any} />
         },
       }),
     ],
     [t]
-  )
-}
-
-const ApiKeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
-  const { mutateAsync: revokeAsync } = useAdminCustomPost(
-    `/api-keys/${apiKey.id}/revoke`,
-    [
-      adminPublishableApiKeysKeys.lists(),
-      adminPublishableApiKeysKeys.detail(apiKey.id),
-    ]
-  )
-  const { mutateAsync: deleteAsync } = useAdminCustomDelete(
-    `/api-keys/${apiKey.id}`,
-    [
-      adminPublishableApiKeysKeys.lists(),
-      adminPublishableApiKeysKeys.detail(apiKey.id),
-    ]
-  )
-
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("apiKeyManagement.deleteKeyWarning", {
-        title: apiKey.title,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await deleteAsync()
-  }
-
-  const handleRevoke = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("apiKeyManagement.revokeKeyWarning", {
-        title: apiKey.title,
-      }),
-      confirmText: t("apiKeyManagement.revoke"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await revokeAsync({})
-  }
-
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/settings/api-key-management/${apiKey.id}`,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <XCircle />,
-              label: t("apiKeyManagement.revoke"),
-              onClick: handleRevoke,
-            },
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]}
-    />
   )
 }

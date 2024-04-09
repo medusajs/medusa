@@ -1,14 +1,13 @@
-import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../types/routing"
+import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateCustomerAddressDTO,
   ICustomerModuleService,
 } from "@medusajs/types"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../types/routing"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

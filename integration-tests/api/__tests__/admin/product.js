@@ -9,7 +9,6 @@ const {
   createVariantPriceSet,
 } = require("../../../modules/helpers/create-variant-price-set")
 const { PriceListStatus, PriceListType } = require("@medusajs/types")
-const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 let {
   ProductOptionValue,
@@ -85,12 +84,9 @@ medusaIntegrationTestRunner({
     let publishedCollection
 
     let baseType
-
     let baseRegion
 
     let pricingService
-    let scService
-    let remoteLink
     let container
 
     beforeAll(() => {
@@ -219,20 +215,10 @@ medusaIntegrationTestRunner({
       await api.delete(`/admin/products/${deletedProduct.id}`, adminHeaders)
 
       pricingService = container.resolve(ModuleRegistrationName.PRICING)
-      scService = container.resolve(ModuleRegistrationName.SALES_CHANNEL)
-      remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     })
 
     describe("/admin/products", () => {
       describe("GET /admin/products", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("returns a list of products with all statuses when no status or invalid status is provided", async () => {
           const res = await api
             .get("/admin/products", adminHeaders)
@@ -390,6 +376,30 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 type_id: baseType.id,
+              }),
+            ])
+          )
+        })
+
+        it("returns a list of products where id is a list", async () => {
+          const response = await api
+            .get(
+              `/admin/products?id[]=${baseProduct.id},${proposedProduct.id}`,
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toHaveLength(2)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.id,
+              }),
+              expect.objectContaining({
+                id: proposedProduct.id,
               }),
             ])
           )
@@ -648,8 +658,7 @@ medusaIntegrationTestRunner({
           }
         })
 
-        // TODO: Enforce tag uniqueness in product module
-        it.skip("returns a list of products with tags", async () => {
+        it("returns a list of products with tags", async () => {
           const response = await api.get(
             `/admin/products?tags[]=${baseProduct.tags[0].id}`,
             adminHeaders
@@ -658,26 +667,25 @@ medusaIntegrationTestRunner({
           expect(response.status).toEqual(200)
           expect(response.data.products).toHaveLength(2)
           expect(response.data.products).toEqual(
-            expect.arrayContaining(
-              [
-                expect.objectContaining({
-                  id: baseProduct.id,
-                  tags: [
-                    expect.objectContaining({ id: baseProduct.tags[0].id }),
-                  ],
-                }),
-              ],
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.id,
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
+              }),
               expect.objectContaining({
                 id: publishedProduct.id,
                 // It should be the same tag instance in both products
-                tags: [expect.objectContaining({ id: baseProduct.tags[0].id })],
-              })
-            )
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
+              }),
+            ])
           )
         })
 
-        // TODO: Enforce tag uniqueness in product module
-        it.skip("returns a list of products with tags in a collection", async () => {
+        it("returns a list of products with tags in a collection", async () => {
           const response = await api.get(
             `/admin/products?collection_id[]=${baseCollection.id}&tags[]=${baseProduct.tags[0].id}`,
             adminHeaders
@@ -690,7 +698,9 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: baseProduct.id,
                 collection_id: baseCollection.id,
-                tags: [expect.objectContaining({ id: baseProduct.tags[0].id })],
+                tags: expect.arrayContaining([
+                  expect.objectContaining({ id: baseProduct.tags[0].id }),
+                ]),
               }),
             ])
           )
@@ -796,10 +806,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "100",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "100",
                           }),
                         ])
                     ),
@@ -900,10 +908,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "large",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "large",
                           }),
                         ])
                     ),
@@ -953,10 +959,8 @@ medusaIntegrationTestRunner({
                       () =>
                         expect.arrayContaining([
                           expect.objectContaining({
-                            id: expect.stringMatching(/^varopt_*/),
-                            option_value: expect.objectContaining({
-                              value: "green",
-                            }),
+                            id: expect.stringMatching(/^optval_*/),
+                            value: "green",
                           }),
                         ])
                     ),
@@ -1057,7 +1061,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should return products filtered by sales_channel_id", async () => {
-          const { salesChannel } = await breaking(
+          const [productId, salesChannelId] = await breaking(
             async () => {
               const salesChannel = await simpleSalesChannelFactory(
                 dbConnection,
@@ -1068,29 +1072,34 @@ medusaIntegrationTestRunner({
                 }
               )
 
-              return { salesChannel }
+              return [baseProduct.id, salesChannel.id]
             },
             async () => {
-              const salesChannel = await scService.create({
-                name: "Test channel",
-                description: "Lorem Ipsum",
-              })
+              const salesChannel = await simpleSalesChannelFactory(
+                dbConnection,
+                {
+                  name: "test name",
+                  description: "test description",
+                }
+              )
 
-              await remoteLink.create({
-                [Modules.PRODUCT]: {
-                  product_id: baseProduct.id,
-                },
-                [Modules.SALES_CHANNEL]: {
-                  sales_channel_id: salesChannel.id,
-                },
-              })
-
-              return { salesChannel }
+              // Currently the product update doesn't support managing sales channels
+              const newProduct = (
+                await api.post(
+                  "/admin/products",
+                  getProductFixture({
+                    title: "Test saleschannel",
+                    sales_channels: [{ id: salesChannel.id }],
+                  }),
+                  adminHeaders
+                )
+              ).data.product
+              return [newProduct.id, salesChannel.id]
             }
           )
 
           const res = await api.get(
-            `/admin/products?sales_channel_id[]=${salesChannel.id}`,
+            `/admin/products?sales_channel_id[]=${salesChannelId}`,
             adminHeaders
           )
 
@@ -1098,8 +1107,7 @@ medusaIntegrationTestRunner({
           expect(res.data.products.length).toEqual(1)
           expect(res.data.products).toEqual([
             expect.objectContaining({
-              id: baseProduct.id,
-              status: "draft",
+              id: productId,
             }),
           ])
         })
@@ -1216,14 +1224,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/products", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("creates a product", async () => {
           const response = await api
             .post(
@@ -1388,21 +1388,17 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "green",
-                            option: expect.objectContaining({
-                              title: "color",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "green",
+                          option: expect.objectContaining({
+                            title: "color",
                           }),
                         }),
                       ])
@@ -1655,12 +1651,10 @@ medusaIntegrationTestRunner({
                     () =>
                       expect.arrayContaining([
                         expect.objectContaining({
-                          id: expect.stringMatching(/^varopt_*/),
-                          option_value: expect.objectContaining({
-                            value: "large",
-                            option: expect.objectContaining({
-                              title: "size",
-                            }),
+                          id: expect.stringMatching(/^optval_*/),
+                          value: "large",
+                          option: expect.objectContaining({
+                            title: "size",
                           }),
                         }),
                       ])
@@ -1957,15 +1951,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
-        beforeEach(async () => {
-          // await priceListSeeder(dbConnection)
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
           const data = {
             prices: [
@@ -2670,8 +2655,7 @@ medusaIntegrationTestRunner({
           expect(response2.data.id).toEqual(res.data.product.id)
         })
 
-        // TODO: We just need to return the correct error message
-        it.skip("should fail when creating a product with a handle that already exists", async () => {
+        it("should fail when creating a product with a handle that already exists", async () => {
           // Lets try to create a product with same handle as deleted one
           const payload = {
             title: baseProduct.title,
@@ -2690,7 +2674,10 @@ medusaIntegrationTestRunner({
             await api.post("/admin/products", payload, adminHeaders)
           } catch (error) {
             expect(error.response.data.message).toMatch(
-              "Product with handle test-product already exists."
+              breaking(
+                () => "Product with handle base-product already exists.",
+                () => "Product with handle: base-product already exists."
+              )
             )
           }
         })
@@ -2742,7 +2729,12 @@ medusaIntegrationTestRunner({
             await api.post("/admin/collections", payload, adminHeaders)
           } catch (error) {
             expect(error.response.data.message).toMatch(
-              `Product_collection with handle ${baseCollection.handle} already exists.`
+              breaking(
+                () =>
+                  `Product_collection with handle ${baseCollection.handle} already exists.`,
+                () =>
+                  `Product collection with handle: ${baseCollection.handle} already exists.`
+              )
             )
           }
         })
@@ -2764,10 +2756,10 @@ medusaIntegrationTestRunner({
 
           const payload = {
             title: "Second variant",
-            sku: variant.sku,
-            ean: variant.ean,
-            upc: variant.upc,
-            barcode: variant.barcode,
+            sku: "new-sku",
+            ean: "new-ean",
+            upc: "new-upc",
+            barcode: "new-barcode",
             ...breaking(
               () => ({
                 options: [
@@ -2803,10 +2795,10 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 title: "Second variant",
-                sku: variant.sku,
-                ean: variant.ean,
-                upc: variant.upc,
-                barcode: variant.barcode,
+                sku: "new-sku",
+                ean: "new-ean",
+                upc: "new-upc",
+                barcode: "new-barcode",
               }),
             ])
           )
@@ -2838,14 +2830,6 @@ medusaIntegrationTestRunner({
 
       // TODO: Discuss how this should be handled
       describe.skip("GET /admin/products/tag-usage", () => {
-        beforeEach(async () => {
-          await simpleSalesChannelFactory(dbConnection, {
-            name: "Default channel",
-            id: "default-channel",
-            is_default: true,
-          })
-        })
-
         it("successfully gets the tags usage", async () => {
           const res = await api
             .get("/admin/products/tag-usage", adminHeaders)

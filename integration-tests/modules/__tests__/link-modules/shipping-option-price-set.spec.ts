@@ -88,7 +88,7 @@ medusaIntegrationTestRunner({
         const link = await remoteQuery({
           shipping_option: {
             fields: ["id"],
-            price: {
+            price_set_link: {
               fields: ["id", "price_set_id", "shipping_option_id"],
             },
           },
@@ -99,7 +99,7 @@ medusaIntegrationTestRunner({
           expect.arrayContaining([
             expect.objectContaining({
               id: shippingOption.id,
-              price: expect.objectContaining({
+              price_set_link: expect.objectContaining({
                 price_set_id: priceSet.id,
                 shipping_option_id: shippingOption.id,
               }),

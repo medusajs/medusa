@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ProductOption } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateProductOption } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -10,6 +9,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateProductOption } from "../../../../../hooks/api/products"
 
 type EditProductOptionFormProps = {
   option: ProductOption
@@ -17,6 +17,7 @@ type EditProductOptionFormProps = {
 
 const CreateProductOptionSchema = z.object({
   title: z.string().min(1),
+  values: z.array(z.string()).optional(),
 })
 
 export const CreateProductOptionForm = ({
@@ -28,18 +29,20 @@ export const CreateProductOptionForm = ({
   const form = useForm<z.infer<typeof CreateProductOptionSchema>>({
     defaultValues: {
       title: option.title,
+      values: option.values.map((v: any) => v.value),
     },
     resolver: zodResolver(CreateProductOptionSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateProductOption(
-    option.product_id
+  const { mutateAsync, isLoading } = useUpdateProductOption(
+    option.product_id,
+    option.id
   )
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(
       {
-        option_id: option.id,
+        id: option.id,
         ...values,
       },
       {
@@ -63,9 +66,35 @@ export const CreateProductOptionForm = ({
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>{t("fields.title")}</Form.Label>
+                  <Form.Label>
+                    {t("products.fields.options.optionTitle")}
+                  </Form.Label>
                   <Form.Control>
                     <Input {...field} />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="values"
+            render={({ field: { value, onChange, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>
+                    {t("products.fields.options.variations")}
+                  </Form.Label>
+                  <Form.Control>
+                    <Input
+                      {...field}
+                      value={(value ?? []).join(",")}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        onChange(val.split(",").map((v) => v.trim()))
+                      }}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
