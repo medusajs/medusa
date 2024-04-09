@@ -6,6 +6,7 @@ import { PaginatedResponse } from "../../../common"
 export interface CustomerGroupResponse {
   id: string
   name: string | null
+  customers: CustomerResponse[]
 }
 
 /**

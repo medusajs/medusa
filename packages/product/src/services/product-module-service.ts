@@ -17,16 +17,8 @@ import {
   ProductTag,
   ProductType,
   ProductVariant,
-  ProductVariantOption,
 } from "@models"
-import {
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductOptionService,
-  ProductService,
-  ProductTagService,
-  ProductTypeService,
-} from "@services"
+import { ProductCategoryService, ProductService } from "@services"
 
 import {
   arrayDifference,
@@ -59,14 +51,13 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   productService: ProductService<any>
   productVariantService: ModulesSdkTypes.InternalModuleService<any, any>
-  productTagService: ProductTagService<any>
+  productTagService: ModulesSdkTypes.InternalModuleService<any>
   productCategoryService: ProductCategoryService<any>
-  productCollectionService: ProductCollectionService<any>
+  productCollectionService: ModulesSdkTypes.InternalModuleService<any>
   productImageService: ModulesSdkTypes.InternalModuleService<any>
-  productTypeService: ProductTypeService<any>
-  productOptionService: ProductOptionService<any>
+  productTypeService: ModulesSdkTypes.InternalModuleService<any>
+  productOptionService: ModulesSdkTypes.InternalModuleService<any>
   productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
-  productVariantOptionService: ModulesSdkTypes.InternalModuleService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -77,11 +68,6 @@ const generateMethodForModels = [
   { model: ProductTag, singular: "Tag", plural: "Tags" },
   { model: ProductType, singular: "Type", plural: "Types" },
   { model: ProductVariant, singular: "Variant", plural: "Variants" },
-  {
-    model: ProductVariantOption,
-    singular: "VariantOption",
-    plural: "VariantOptions",
-  },
 ]
 
 export default class ProductModuleService<
@@ -93,8 +79,7 @@ export default class ProductModuleService<
     TProductImage extends Image = Image,
     TProductType extends ProductType = ProductType,
     TProductOption extends ProductOption = ProductOption,
-    TProductOptionValue extends ProductOptionValue = ProductOptionValue,
-    TProductVariantOption extends ProductVariantOption = ProductVariantOption
+    TProductOptionValue extends ProductOptionValue = ProductOptionValue
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -130,11 +115,6 @@ export default class ProductModuleService<
         singular: "Variant"
         plural: "Variants"
       }
-      VariantOption: {
-        dto: ProductTypes.ProductVariantOptionDTO
-        singular: "VariantOption"
-        plural: "VariantOptions"
-      }
     }
   >(Product, generateMethodForModels, entityNameToLinkableKeysMap)
   implements ProductTypes.IProductModuleService
@@ -146,15 +126,13 @@ export default class ProductModuleService<
 
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
-  protected readonly productTagService_: ProductTagService<TProductTag>
+  protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
   // eslint-disable-next-line max-len
-  protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
+  protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
   // eslint-disable-next-line max-len
   protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
-  protected readonly productTypeService_: ProductTypeService<TProductType>
-  protected readonly productOptionService_: ProductOptionService<TProductOption>
-  // eslint-disable-next-line max-len
-  protected readonly productVariantOptionService_: ModulesSdkTypes.InternalModuleService<TProductVariantOption>
+  protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
   // eslint-disable-next-line max-len
   protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
@@ -171,7 +149,6 @@ export default class ProductModuleService<
       productTypeService,
       productOptionService,
       productOptionValueService,
-      productVariantOptionService,
       eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
@@ -190,7 +167,6 @@ export default class ProductModuleService<
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
     this.productOptionValueService_ = productOptionValueService
-    this.productVariantOptionService_ = productVariantOptionService
     this.eventBusModuleService_ = eventBusModuleService
   }
 
@@ -357,7 +333,7 @@ export default class ProductModuleService<
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
-      { relations: ["options"], take: null },
+      { take: null },
       sharedContext
     )
     if (variants.length !== data.length) {
@@ -686,25 +662,62 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductOption[]> {
     // Validation step
-    const normalizedInput = data.map((opt) => {
-      return {
-        ...opt,
-        ...(opt.values
-          ? {
-              values: opt.values.map((v) => {
-                return typeof v === "string" ? { value: v } : v
-              }),
-            }
-          : {}),
-      } as UpdateProductOptionInput
-    })
-
-    if (normalizedInput.some((option) => !option.id)) {
+    if (data.some((option) => !option.id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Tried to update options without specifying an ID"
       )
     }
+
+    const dbOptions = await this.productOptionService_.list(
+      { id: data.map(({ id }) => id) },
+      { take: null, relations: ["values"] },
+      sharedContext
+    )
+
+    if (dbOptions.length !== data.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot update non-existing options with ids: ${arrayDifference(
+          data.map(({ id }) => id),
+          dbOptions.map(({ id }) => id)
+        ).join(", ")}`
+      )
+    }
+
+    // Data normalization
+    const normalizedInput = data.map((opt) => {
+      const dbValues = dbOptions.find(({ id }) => id === opt.id)?.values || []
+      const normalizedValues = opt.values?.map((v) => {
+        return typeof v === "string" ? { value: v } : v
+      })
+
+      return {
+        ...opt,
+        ...(normalizedValues
+          ? {
+              // Oftentimes the options are only passed by value without an id, even if they exist in the DB
+              values: normalizedValues.map((normVal) => {
+                if ("id" in normVal) {
+                  return normVal
+                }
+
+                const dbVal = dbValues.find(
+                  (dbVal) => dbVal.value === normVal.value
+                )
+                if (!dbVal) {
+                  return normVal
+                }
+
+                return {
+                  id: dbVal.id,
+                  value: normVal.value,
+                }
+              }),
+            }
+          : {}),
+      } as UpdateProductOptionInput
+    })
 
     return await this.productOptionService_.upsertWithReplace(
       normalizedInput,
@@ -1102,8 +1115,8 @@ export default class ProductModuleService<
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = data.map(
-      ProductModuleService.normalizeCreateProductInput
+    const normalizedInput = await Promise.all(
+      data.map((d) => this.normalizeCreateProductInput(d, sharedContext))
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1158,8 +1171,8 @@ export default class ProductModuleService<
     data: UpdateProductInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = data.map(
-      ProductModuleService.normalizeUpdateProductInput
+    const normalizedInput = await Promise.all(
+      data.map((d) => this.normalizeUpdateProductInput(d, sharedContext))
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1188,7 +1201,7 @@ export default class ProductModuleService<
               sharedContext
             )
 
-          // Since we handle the options and variants outside of the product upsert, we need to clean up manuallys
+          // Since we handle the options and variants outside of the product upsert, we need to clean up manually
           await this.productOptionService_.delete(
             {
               product_id: upsertedProduct.id,
@@ -1240,12 +1253,13 @@ export default class ProductModuleService<
     return productData
   }
 
-  protected static normalizeCreateProductInput(
-    product: ProductTypes.CreateProductDTO
-  ): ProductTypes.CreateProductDTO {
-    const productData = ProductModuleService.normalizeUpdateProductInput(
+  protected async normalizeCreateProductInput(
+    product: ProductTypes.CreateProductDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.CreateProductDTO> {
+    const productData = (await this.normalizeUpdateProductInput(
       product as UpdateProductInput
-    ) as ProductTypes.CreateProductDTO
+    )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {
       productData.handle = kebabCase(productData.title)
@@ -1262,12 +1276,33 @@ export default class ProductModuleService<
     return productData
   }
 
-  protected static normalizeUpdateProductInput(
-    product: UpdateProductInput
-  ): UpdateProductInput {
+  protected async normalizeUpdateProductInput(
+    product: UpdateProductInput,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UpdateProductInput> {
     const productData = { ...product }
     if (productData.is_giftcard) {
       productData.discountable = false
+    }
+
+    if (productData.tags?.length && productData.tags.some((t) => !t.id)) {
+      const dbTags = await this.productTagService_.list(
+        {
+          value: productData.tags
+            .map((t) => t.value)
+            .filter((v) => !!v) as string[],
+        },
+        { take: null },
+        sharedContext
+      )
+
+      productData.tags = productData.tags.map((tag) => {
+        const dbTag = dbTags.find((t) => t.value === tag.value)
+        return {
+          ...tag,
+          ...(dbTag ? { id: dbTag.id } : {}),
+        }
+      })
     }
 
     if (productData.options?.length) {
@@ -1345,8 +1380,7 @@ export default class ProductModuleService<
           }
 
           return {
-            variant_id: variant.id,
-            option_value_id: optionValue.id,
+            id: optionValue.id,
           }
         }
       )

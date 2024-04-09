@@ -1,16 +1,16 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
-import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
+import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { SectionRow } from "../../../../../components/common/section"
+import { useDeleteProduct } from "../../../../../hooks/api/products"
 
 const productStatusColor = (status: string) => {
   switch (status) {
     case "draft":
-      return "purple"
+      return "grey"
     case "proposed":
       return "orange"
     case "published":
@@ -18,7 +18,7 @@ const productStatusColor = (status: string) => {
     case "rejected":
       return "red"
     default:
-      return "purple"
+      return "grey"
   }
 }
 

@@ -3,7 +3,11 @@ import { Filter } from "../../../components/table/data-table"
 import { useProductTypes } from "../../api/product-types"
 import { useSalesChannels } from "../../api/sales-channels"
 
-const excludeableFields = ["sales_channel_id", "collections"] as const
+const excludeableFields = [
+  "sales_channel_id",
+  "collections",
+  "categories",
+] as const
 
 export const useProductTableFilters = (
   exclude?: (typeof excludeableFields)[number][]
@@ -33,11 +37,15 @@ export const useProductTableFilters = (
     }
   )
 
+  const isCategoryExcluded = exclude?.includes("categories")
+
   // const { product_categories } = useAdminProductCategories({
   //   limit: 1000,
   //   offset: 0,
   //   fields: "id,name",
   //   expand: "",
+  // }, {
+  //  enabled: !isCategoryExcluded,
   // })
 
   const isCollectionExcluded = exclude?.includes("collections")

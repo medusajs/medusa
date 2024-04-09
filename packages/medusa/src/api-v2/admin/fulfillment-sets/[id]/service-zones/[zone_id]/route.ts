@@ -6,6 +6,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AdminFulfillmentSetResponse,
   AdminServiceZoneDeleteResponse,
+  AdminServiceZoneResponse,
   IFulfillmentModuleService,
 } from "@medusajs/types"
 import {
@@ -19,6 +20,32 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminUpdateFulfillmentSetServiceZonesType } from "../../../validators"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<AdminServiceZoneResponse>
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const [service_zone] = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "service_zones",
+      variables: {
+        id: req.params.zone_id,
+      },
+      fields: req.remoteQueryConfig.fields,
+    })
+  )
+
+  if (!service_zone) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Service zone with id: ${req.params.zone_id} not found`
+    )
+  }
+
+  res.status(200).json({ service_zone })
+}
 
 export const POST = async (
   req: MedusaRequest<AdminUpdateFulfillmentSetServiceZonesType>,

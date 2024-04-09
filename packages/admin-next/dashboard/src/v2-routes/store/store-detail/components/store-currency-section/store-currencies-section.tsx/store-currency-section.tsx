@@ -9,7 +9,6 @@ import {
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../../components/common/action-menu"
@@ -157,10 +156,7 @@ const CurrencyActions = ({
   currency: CurrencyDTO
   currencyCodes: string[]
 }) => {
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/stores/${storeId}`,
-    adminStoreKeys.details()
-  )
+  const { mutateAsync } = useUpdateStore(storeId)
 
   const { t } = useTranslation()
   const prompt = usePrompt()

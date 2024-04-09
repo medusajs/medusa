@@ -182,6 +182,7 @@ export const DataTableRoot = <TData,>({
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined
                 const isRowDisabled = hasSelect && !row.getCanSelect()
+
                 return (
                   <Table.Row
                     key={row.id}
@@ -212,6 +213,15 @@ export const DataTableRoot = <TData,>({
 
                       const isStickyCell = isSelectCell || isFirstCell
 
+                      /**
+                       * If the table has nested rows, we need to offset the cell padding
+                       * to indicate the depth of the row.
+                       */
+                      const depthOffset =
+                        row.depth > 0 && isFirstCell
+                          ? row.depth * 14 + 24
+                          : undefined
+
                       return (
                         <Table.Cell
                           key={cell.id}
@@ -225,6 +235,11 @@ export const DataTableRoot = <TData,>({
                             "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                               isRowDisabled,
                           })}
+                          style={{
+                            paddingLeft: depthOffset
+                              ? `${depthOffset}px`
+                              : undefined,
+                          }}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
