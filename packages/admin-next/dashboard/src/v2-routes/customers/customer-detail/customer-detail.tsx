@@ -3,6 +3,7 @@ import { CustomerGeneralSection } from "./components/customer-general-section"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { customerLoader } from "./loader"
 import { useCustomer } from "../../../hooks/api/customers"
+import { CustomerGroupSection } from "./components/customer-group-section"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
@@ -32,7 +33,7 @@ export const CustomerDetail = () => {
       {/* <CustomerOrderSection customer={customer} />
       // TODO: re-add when order endpoints are added to api-v2
       */}
-      {/* <CustomerGroupSection customer={customer} /> */}
+      <CustomerGroupSection customer={customer} />
       <JsonViewSection data={customer} />
       <Outlet />
     </div>

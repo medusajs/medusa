@@ -9,7 +9,6 @@ const {
 } = require("@medusajs/utils")
 const { DataSource } = require("typeorm")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
-const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 const { logger } = require("@medusajs/medusa-cli/dist/reporter")
 
 module.exports = {
@@ -114,6 +113,9 @@ module.exports = {
         featureFlagRouter: asValue(featureFlagRouter),
       })
 
+      const {
+        migrateMedusaApp,
+      } = require("@medusajs/medusa/dist/loaders/medusa-app")
       await migrateMedusaApp(
         { configModule, container },
         { registerInContainer: false }

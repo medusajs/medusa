@@ -138,16 +138,6 @@ export const CreateCustomerForm = () => {
                 }}
               />
             </div>
-            <div className="flex flex-col gap-y-4">
-              <div>
-                <Text size="small" leading="compact" weight="plus">
-                  {t("fields.password")}
-                </Text>
-                <Text size="small" className="text-ui-fg-subtle">
-                  {t("customers.passwordHint")}
-                </Text>
-              </div>
-            </div>
           </div>
         </RouteFocusModal.Body>
       </form>

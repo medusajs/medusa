@@ -20,6 +20,7 @@ import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
 import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
+import { adminShippingProfilesMiddlewares } from "./admin/shipping-profiles/middlewares"
 import { adminStockLocationRoutesMiddlewares } from "./admin/stock-locations/middlewares"
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
 import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
@@ -71,5 +72,6 @@ export const config: MiddlewaresConfig = {
     ...adminFulfillmentSetsRoutesMiddlewares,
     ...adminProductCategoryRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
+    ...adminShippingProfilesMiddlewares,
   ],
 }
