@@ -89,7 +89,7 @@ export const TaxRegionCreateForm = ({
         </RouteFocusModal.Header>
 
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden p-16">
-          <div className="flex flex-col gap-y-8 min-w-[400px]">
+          <div className="flex flex-col gap-y-8 w-full max-w-[720px]">
             <div>
               <Heading className="text-left">
                 {taxRegion

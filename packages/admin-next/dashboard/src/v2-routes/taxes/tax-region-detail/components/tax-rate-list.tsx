@@ -89,7 +89,7 @@ export const TaxRateList = ({
       return
     }
 
-    await mutateAsync({
+    await mutateAsync(undefined, {
       onSuccess: () => {
         setRowSelection({})
       },
