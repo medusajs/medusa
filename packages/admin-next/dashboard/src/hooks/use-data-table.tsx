@@ -5,6 +5,7 @@ import {
   Row,
   RowSelectionState,
   getCoreRowModel,
+  getExpandedRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table"
@@ -22,7 +23,9 @@ type UseDataTableProps<TData> = {
     updater: OnChangeFn<RowSelectionState>
   }
   enablePagination?: boolean
+  enableExpandableRows?: boolean
   getRowId?: (original: TData, index: number) => string
+  getSubRows?: (original: TData) => TData[]
   meta?: Record<string, unknown>
   prefix?: string
 }
@@ -34,7 +37,9 @@ export const useDataTable = <TData,>({
   pageSize: _pageSize = 20,
   enablePagination = true,
   enableRowSelection = false,
+  enableExpandableRows = false,
   rowSelection: _rowSelection,
+  getSubRows,
   getRowId,
   meta,
   prefix,
@@ -107,6 +112,7 @@ export const useDataTable = <TData,>({
     pageCount: Math.ceil((count ?? 0) / pageSize),
     enableRowSelection,
     getRowId,
+    getSubRows,
     onRowSelectionChange: enableRowSelection ? setRowSelection : undefined,
     onPaginationChange: enablePagination
       ? (onPaginationChange as OnChangeFn<PaginationState>)
@@ -114,6 +120,9 @@ export const useDataTable = <TData,>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: enablePagination
       ? getPaginationRowModel()
+      : undefined,
+    getExpandedRowModel: enableExpandableRows
+      ? getExpandedRowModel()
       : undefined,
     manualPagination: enablePagination ? true : undefined,
     meta,

@@ -6,6 +6,10 @@ import { PaginatedResponse } from "../../../common"
 export interface CustomerGroupResponse {
   id: string
   name: string | null
+  customers: CustomerResponse[]
+  metadata: Record<string, unknown> | null
+  created_at: string
+  updated_at: string
 }
 
 /**

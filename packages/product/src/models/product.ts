@@ -72,6 +72,7 @@ class Product {
   @Property({ columnType: "text" })
   handle?: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   subtitle?: string | null
 

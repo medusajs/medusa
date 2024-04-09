@@ -24,6 +24,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { ProductTag } from "../../../../src/models"
 
 jest.setTimeout(30000)
 

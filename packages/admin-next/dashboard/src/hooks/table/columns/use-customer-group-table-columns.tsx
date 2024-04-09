@@ -1,15 +1,16 @@
-import { CustomerGroup } from "@medusajs/medusa"
+import { Text } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
-import { Text } from "@medusajs/ui"
 
-import { NameHeader } from "../../../components/table/table-cells/common/name-cell"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 import {
-  CreatedAtHeader,
   CreatedAtCell,
+  CreatedAtHeader,
 } from "../../../components/table/table-cells/common/created-at-cell"
+import { NameHeader } from "../../../components/table/table-cells/common/name-cell"
 
-const columnHelper = createColumnHelper<CustomerGroup>()
+const columnHelper =
+  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
 
 export const useCustomerGroupTableColumns = () => {
   return useMemo(
