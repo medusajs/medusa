@@ -63,7 +63,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it("should update shipping options", async () => {
+      it.only("should update shipping options", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
@@ -97,6 +97,10 @@ medusaIntegrationTestRunner({
                 region_id: region.id,
                 amount: 100,
               },
+              {
+                currency_code: "dkk",
+                amount: 1000,
+              },
             ],
             rules: [
               {
@@ -111,26 +115,11 @@ medusaIntegrationTestRunner({
           input: [shippingOptionData],
         })
 
-        const updateData: UpdateShippingOptionsWorkflowInput = {
-          id: result[0].id,
-          name: "Test shipping option",
-          price_type: "flat",
-          type: {
-            code: "manual-type",
-            label: "Manual Type",
-            description: "Manual Type Description",
-          },
-        }
-
-        await updateShippingOptionsWorkflow(container).run({
-          input: [updateData],
-        })
-
         const remoteQuery = container.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
 
-        const remoteQueryObject = remoteQueryObjectFromString({
+        let remoteQueryObject = remoteQueryObjectFromString({
           entryPoint: "shipping_option",
           variables: {
             id: result[0].id,
@@ -155,10 +144,42 @@ medusaIntegrationTestRunner({
 
         const [createdShippingOption] = await remoteQuery(remoteQueryObject)
 
-        const prices = createdShippingOption.prices
-        delete createdShippingOption.prices
+        const updateData: UpdateShippingOptionsWorkflowInput = {
+          id: createdShippingOption.id,
+          name: "Test shipping option",
+          price_type: "flat",
+          type: {
+            code: "manual-type",
+            label: "Manual Type",
+            description: "Manual Type Description",
+          },
+          prices: [
+            // We keep the first price as is
+            // update the second price to 1000
+            // delete the third price
+            // creatie a new one instead
+            createdShippingOption.prices[0],
+            {
+              ...createdShippingOption.prices[1],
+              amount: 1000,
+            },
+            {
+              region_id: region.id,
+              amount: 1000,
+            },
+          ],
+        }
 
-        expect(createdShippingOption).toEqual(
+        await updateShippingOptionsWorkflow(container).run({
+          input: [updateData],
+        })
+
+        const [updatedShippingOption] = await remoteQuery(remoteQueryObject)
+
+        const prices = updatedShippingOption.prices
+        delete updatedShippingOption.prices
+
+        expect(updatedShippingOption).toEqual(
           expect.objectContaining({
             id: result[0].id,
             name: updateData.name,

@@ -9,10 +9,11 @@ import {
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   ContainerRegistrationKeys,
+  isDefined,
   LINKS,
-  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type SetShippingOptionsPricesStepInput = {
   id: string
@@ -31,20 +32,21 @@ async function getCurrentShippingOptionPrices(
       filters: { shipping_option_id: shippingOptionIds },
       take: null,
     },
-    fields: ["shipping_option_id", "price_set_id", "*price_set.prices"],
+    fields: ["shipping_option_id", "price_set_id", "price_set.prices.*"],
   })
 
-  const shippingOptionPriceSetLinks = (await remoteQuery(query)) as {
+  const shippingOptionPrices = (await remoteQuery(query)) as {
     shipping_option_id: string
     price_set_id: string
-    price_set: PriceSetDTO[]
+    price_set: PriceSetDTO
   }[]
 
-  return shippingOptionPriceSetLinks.map((shippingOption) => {
-    const prices = shippingOption.price_set?.[0].prices ?? []
+  return shippingOptionPrices.map((shippingOption) => {
+    const prices = shippingOption.price_set?.prices ?? []
+    const price_set_id = shippingOption.price_set_id
     return {
       shipping_option_id: shippingOption.shipping_option_id,
-      price_set_id: shippingOption.price_set_id,
+      price_set_id,
       prices,
     }
   })
@@ -75,15 +77,19 @@ export const setShippingOptionsPricesStep = createStep(
     )
 
     const pricingService = container.resolve<IPricingModuleService>(
-      Modules.PRICING
+      ModuleRegistrationName.PRICING
     )
 
     for (const data_ of data) {
-      const prices = (data_.prices?.filter((price) => {
-        return price && "id" in price
-      }) ?? []) as unknown as CreatePricesDTO[]
+      const prices = data_.prices
+      if (!isDefined(prices)) {
+        continue
+      }
+
       const price_set_id = shippingOptionPricesMap.get(data_.id)?.price_set_id!
-      await pricingService.update(price_set_id, { prices })
+      await pricingService.update(price_set_id, {
+        prices: prices as CreatePricesDTO[],
+      })
     }
 
     return new StepResponse(void 0, currentPrices)
@@ -94,13 +100,14 @@ export const setShippingOptionsPricesStep = createStep(
     }
 
     const pricingService = container.resolve<IPricingModuleService>(
-      Modules.PRICING
+      ModuleRegistrationName.PRICING
     )
 
     for (const data_ of rollbackData) {
-      const prices = (data_.prices?.filter((price) => {
-        return price && "id" in price
-      }) ?? []) as unknown as CreatePricesDTO[]
+      const prices = data_.prices as CreatePricesDTO[]
+      if (!isDefined(prices)) {
+        continue
+      }
       await pricingService.update(data_.price_set_id, { prices })
     }
   }
