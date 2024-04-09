@@ -43,7 +43,7 @@ export const CreatePublishableApiKeyForm = ({
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
-      // @ts-ignore type is wrong compared to validation
+      // @ts-ignore
       { title: values.title, type: keyType },
       {
         onSuccess: ({ api_key }) => {
