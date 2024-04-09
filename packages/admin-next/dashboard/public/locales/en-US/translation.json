@@ -546,7 +546,8 @@
     }
   },
   "shipping": {
-    "title": "Shipping and Delivery",
+    "title": "Shipping & Delivery",
+    "domain": "Shipping & Delivery",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "from": "Shipping from",
     "add": "Add shipping",
@@ -616,7 +617,7 @@
     }
   },
   "shippingProfile": {
-    "domain": "Shipping Profile",
+    "domain": "Shipping Profiles",
     "title": "Create a shipping profile",
     "detailsHint": "Specify the details of the shipping profile",
     "deleteWaring": "You are about to delete the profile: {{name}}. This action cannot be undone."

@@ -103,7 +103,7 @@ function ServiceZoneOptions({
               variant="secondary"
               onClick={() =>
                 navigate(
-                  `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
+                  `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
                 )
               }
             >
@@ -184,7 +184,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                   {
                     label: t("shipping.serviceZone.addShippingOptions"),
                     icon: <Plus />,
-                    to: `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
+                    to: `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
                   },
                   {
                     label: t("actions.delete"),
@@ -278,7 +278,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
                   {
                     label: t("shipping.fulfillmentSet.addZone"),
                     icon: <Map />,
-                    to: `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+                    to: `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
                   },
                   {
                     label: t("shipping.fulfillmentSet.delete"),
@@ -299,7 +299,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
             variant="secondary"
             onClick={() =>
               navigate(
-                `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
+                `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
               )
             }
           >

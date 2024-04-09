@@ -35,7 +35,7 @@ export function CreateShippingProfileForm() {
       name: values.name,
       type: values.type,
     })
-    handleSuccess("/settings/shipping-profiles")
+    handleSuccess("/shipping-profiles")
   })
 
   return (

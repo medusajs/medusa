@@ -73,7 +73,7 @@ export function CreateServiceZoneForm({
       })),
     })
 
-    handleSuccess("/settings/shipping")
+    handleSuccess("/shipping")
   })
 
   const handleOpenChange = (open: boolean) => {
