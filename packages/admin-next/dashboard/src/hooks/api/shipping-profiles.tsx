@@ -7,8 +7,6 @@ import {
 } from "@tanstack/react-query"
 import { CreateShippingProfileReq } from "../../types/api-payloads"
 import {
-  RegionListRes,
-  ServiceZoneDeleteRes,
   ShippingProfileDeleteRes,
   ShippingProfileListRes,
   ShippingProfileRes,
@@ -17,7 +15,6 @@ import {
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { stockLocationsQueryKeys } from "./stock-locations.tsx"
 
 const SHIPPING_PROFILE_QUERY_KEY = "shipping_profile" as const
 export const shippingProfileQueryKeys = queryKeysFactory(
@@ -73,7 +70,7 @@ export const useDeleteShippingProfile = (
     mutationFn: () => client.shippingProfiles.delete(profileId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
+        queryKey: shippingProfileQueryKeys.lists(),
       })
 
       options?.onSuccess?.(data, variables, context)

@@ -133,6 +133,7 @@ export type ServiceZoneDeleteRes = DeleteRes
 
 // Shipping options
 export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
+export type ShippingOptionDeleteRes = DeleteRes
 
 // Shipping profile
 export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }

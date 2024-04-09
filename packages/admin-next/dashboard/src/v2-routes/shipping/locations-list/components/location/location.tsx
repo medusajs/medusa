@@ -26,6 +26,7 @@ import {
 } from "../../../../../hooks/api/stock-locations"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatProvider } from "../../../../../lib/format-provider"
+import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options.ts"
 
 type ShippingOptionProps = {
   option: ShippingOptionDTO
@@ -33,6 +34,12 @@ type ShippingOptionProps = {
 
 function ShippingOption({ option }: ShippingOptionProps) {
   const { t } = useTranslation()
+
+  const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
+
+  const handleDelete = async () => {
+    await deleteOption()
+  }
 
   return (
     <div className="shadow-elevation-card-rest flex items-center justify-between rounded-md px-4 py-3">
@@ -59,8 +66,7 @@ function ShippingOption({ option }: ShippingOptionProps) {
               {
                 label: t("actions.delete"),
                 icon: <Trash />,
-                onClick: () => {},
-                disabled: true,
+                onClick: handleDelete,
               },
             ],
           },
