@@ -434,7 +434,7 @@ export const v2Routes: RouteObject[] = [
             path: "shipping",
             lazy: () => import("../../v2-routes/shipping/locations-list"),
             handle: {
-              crumb: () => "shipping",
+              crumb: () => "Shipping",
             },
             children: [
               {
@@ -465,6 +465,21 @@ export const v2Routes: RouteObject[] = [
                     ],
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "shipping-profiles",
+            lazy: () =>
+              import("../../v2-routes/shipping/shipping-profiles-list"),
+            handle: {
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/shipping/shipping-profile-create"),
               },
             ],
           },

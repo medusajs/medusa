@@ -554,7 +554,6 @@
     "addZone": "Add shipping zone",
     "enablePickup": "Enable pickup",
     "enableDelivery": "Enable delivery",
-
     "create": {
       "title": "Add shipping for {{location}}",
       "delivery": "Delivery",
@@ -614,6 +613,11 @@
         "calculatedDescription": "Calculated"
       }
     }
+  },
+  "shippingProfile": {
+    "domain": "Shipping Profile",
+    "title": "Create a shipping profile",
+    "detailsHint": "Specify the details of the shipping profile"
   },
   "discounts": {
     "domain": "Discounts",
