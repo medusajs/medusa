@@ -13,6 +13,7 @@ import {
   Switch,
   Text,
   clx,
+  Select,
 } from "@medusajs/ui"
 import { ServiceZoneDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -24,6 +25,7 @@ import {
 import { Form } from "../../../../../components/common/form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 
 enum Tab {
@@ -44,6 +46,7 @@ const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
   price_type: zod.nativeEnum(ShippingAllocation),
   enable_in_store: zod.boolean().optional(),
+  shipping_profile_id: zod.string(),
   region_prices: zod.record(zod.string(), zod.string().optional()),
   currency_prices: zod.record(zod.string(), zod.string().optional()),
 })
@@ -64,6 +67,7 @@ export function CreateShippingOptionsForm({
       name: "",
       price_type: ShippingAllocation.FlatRate,
       enable_in_store: true,
+      shipping_profile_id: "",
       region_prices: {},
       currency_prices: {},
     },
@@ -75,6 +79,10 @@ export function CreateShippingOptionsForm({
 
   const { mutateAsync: createShippingOption, isPending: isLoading } =
     useCreateShippingOptions()
+
+  const { shipping_profiles: shippingProfiles } = useShippingProfiles({
+    limit: 999,
+  })
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
@@ -89,17 +97,20 @@ export function CreateShippingOptionsForm({
       })
       .filter((o) => !!o.amount)
 
+    /**
+     * TODO: region prices
+     */
     // Object.entries(data.region_prices).map(([region_id, value]) => {})
 
     await createShippingOption({
       name: data.name,
       price_type: data.price_type,
       service_zone_id: zone.id,
-      shipping_profile_id: "shipporf_123", // TODO: fetch profiles
-      provider_id: "manual_test-provider", // TODO
+      shipping_profile_id: data.shipping_profile_id,
+      provider_id: "manual_test-provider", // TODO: FETCH PROVIDERS
       prices: [...currencyPrices],
       type: {
-        // TODO: fetch profiles
+        // TODO: FETCH TYPES
         label: "Type label",
         description: "Type description",
         code: "type-code",
@@ -130,7 +141,8 @@ export function CreateShippingOptionsForm({
     }
   }, [tab])
 
-  const canMoveToPricing = form.watch("name").length
+  const canMoveToPricing =
+    form.watch("name").length && form.watch("shipping_profile_id")
 
   useEffect(() => {
     if (form.formState.isDirty) {
@@ -271,21 +283,54 @@ export function CreateShippingOptionsForm({
                 />
 
                 <div className="mt-4 flex flex-col divide-y">
-                  <Form.Field
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>{t("fields.name")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    <Form.Field
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>{t("fields.name")}</Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="shipping_profile_id"
+                      render={({ field: { onChange, ...field } }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>
+                              {t("shipping.shippingOptions.create.profile")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Select {...field} onValueChange={onChange}>
+                                <Select.Trigger ref={field.ref}>
+                                  <Select.Value />
+                                </Select.Trigger>
+                                <Select.Content>
+                                  {(shippingProfiles ?? []).map((profile) => (
+                                    <Select.Item
+                                      key={profile.id}
+                                      value={profile.id}
+                                    >
+                                      {profile.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select>
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
                   <div className="mt-8 pt-8">
                     <Form.Field
                       control={form.control}

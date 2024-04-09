@@ -610,7 +610,8 @@
         "enable": "Eanble in store",
         "enableDescription": "Enable or disable the shipping option visiblity in store",
         "calculated": "Calculated",
-        "calculatedDescription": "Calculated"
+        "calculatedDescription": "Calculated",
+        "profile": "Shipping profile"
       }
     }
   },
