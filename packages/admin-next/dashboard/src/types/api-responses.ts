@@ -142,7 +142,11 @@ export type ProductCollectionDeleteRes = DeleteRes
 
 // Inventory Items
 export type InventoryItemRes = {
-  inventory_item: InventoryNext.InventoryItemDTO
+  inventory_item: InventoryNext.InventoryItemDTO & {
+    stocked_quantity: number
+    reserved_quantity: number
+    location_levels?: InventoryNext.InventoryLevelDTO[]
+  }
 }
 
 export type InventoryItemListRes = {

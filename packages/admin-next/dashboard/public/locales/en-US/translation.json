@@ -30,6 +30,7 @@
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
+    "countOfTotalSelected": "{{count}} of {{total}} selected",
     "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
@@ -912,6 +913,7 @@
     "addSalesChannels": "Add sales channels",
     "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
+    "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."

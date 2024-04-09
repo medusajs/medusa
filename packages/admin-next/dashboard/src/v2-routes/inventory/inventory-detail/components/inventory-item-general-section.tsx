@@ -9,10 +9,7 @@ import { useTranslation } from "react-i18next"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: InventoryItemRes["inventory_item"] & {
-    stocked_quantity: number
-    reserved_quantity: number
     variant: ProductVariantDTO | ProductVariantDTO[]
-    location_levels: InventoryNext.InventoryLevelDTO[]
   }
 }
 export const InventoryItemGeneralSection = ({

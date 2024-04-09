@@ -311,7 +311,9 @@ export const v2Routes: RouteObject[] = [
                     // TODO: manage locations
                     path: "locations",
                     lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/manage-locations"
+                      ),
                   },
                   {
                     // TODO: adjust item level
