@@ -343,6 +343,7 @@ export default class PricingModuleService<
         delete price.rules
         return {
           ...price,
+          price_set_id: priceSet.id,
           price_rules: rules,
         }
       })
