@@ -625,7 +625,12 @@
   "taxRegions": {
     "domain": "Tax Regions",
     "create": {
-      "title": "Create Default Tax Rate"
+      "title": "Create Tax Region",
+      "description": "Creates a tax region with default tax rate"
+    },
+    "create-child": {
+      "title": "Create Default Rate for Province",
+      "description": "Creates a tax region for a province with default tax rate"
     },
     "fields": {}
   },

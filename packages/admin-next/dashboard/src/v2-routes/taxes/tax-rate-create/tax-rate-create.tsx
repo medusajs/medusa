@@ -5,7 +5,11 @@ import { TaxRateCreateForm } from "./components"
 
 export const TaxRateCreate = () => {
   const params = useParams()
-  const { tax_region: taxRegion } = useTaxRegion(params.id!)
+  const { tax_region: taxRegion, isError, error } = useTaxRegion(params.id!)
+
+  if (isError) {
+    throw error
+  }
 
   return (
     taxRegion && (

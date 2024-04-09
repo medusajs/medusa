@@ -1,4 +1,4 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { Trash } from "@medusajs/icons"
 import { AdminTaxRegionResponse } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -94,11 +94,6 @@ const TaxRegionActions = ({
       groups={[
         {
           actions: [
-            {
-              label: t("actions.edit"),
-              to: `/settings/taxes/${taxRegion.id}/edit`,
-              icon: <PencilSquare />,
-            },
             {
               icon: <Trash />,
               label: t("actions.delete"),

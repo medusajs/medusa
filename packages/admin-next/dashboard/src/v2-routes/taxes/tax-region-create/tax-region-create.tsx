@@ -1,18 +1,22 @@
-import { Heading } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { RouteDrawer } from "../../../components/route-modal"
-import { TaxRegionCreateForm } from "./components"
+import * as zod from "zod"
+import { RouteFocusModal } from "../../../components/route-modal"
+import { TaxRegionCreateForm } from "../tax-province-create/components"
+
+const CreateTaxRegionForm = zod.object({
+  province_code: zod.string().optional(),
+  country_code: zod.string(),
+  parent_id: zod.string().optional(),
+
+  name: zod.string(),
+  code: zod.string().optional(),
+  rate: zod.number(),
+  is_combinable: zod.boolean().default(false),
+})
 
 export const TaxRegionCreate = () => {
-  const { t } = useTranslation()
-
   return (
-    <RouteDrawer>
-      <RouteDrawer.Header>
-        <Heading>{t("taxRegions.create.title")}</Heading>
-      </RouteDrawer.Header>
-
-      <TaxRegionCreateForm />
-    </RouteDrawer>
+    <RouteFocusModal>
+      <TaxRegionCreateForm formSchema={CreateTaxRegionForm} />
+    </RouteFocusModal>
   )
 }

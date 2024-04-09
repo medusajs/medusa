@@ -557,9 +557,7 @@ export const v2Routes: RouteObject[] = [
                   {
                     path: "create-default",
                     lazy: () =>
-                      import(
-                        "../../v2-routes/taxes/tax-region-create-default-rate"
-                      ),
+                      import("../../v2-routes/taxes/tax-province-create"),
                     children: [],
                   },
                   {

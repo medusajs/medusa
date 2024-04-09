@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input, Select, Switch } from "@medusajs/ui"
+import { Button, Heading, Input, Select, Switch, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -7,42 +7,43 @@ import * as zod from "zod"
 import { TaxRegionResponse } from "@medusajs/types"
 import { Form } from "../../../../components/common/form"
 import { PercentageInput } from "../../../../components/common/percentage-input"
-import { RouteDrawer, useRouteModal } from "../../../../components/route-modal"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../components/route-modal"
 import { useCreateTaxRegion } from "../../../../hooks/api/tax-regions"
 import { countries } from "../../../../lib/countries"
 
-const CreateTaxRegionForm = zod.object({
-  province_code: zod.string(),
-  country_code: zod.string(),
-  parent_id: zod.string(),
-
-  name: zod.string(),
-  code: zod.string(),
-  rate: zod.number(),
-  is_combinable: zod.boolean().default(false),
-})
-
-export const TaxRegionCreateWithDefaultRateForm = ({
+export const TaxRegionCreateForm = ({
   taxRegion,
+  formSchema,
 }: {
   taxRegion?: TaxRegionResponse
+  formSchema: zod.ZodObject<{
+    province_code: any
+    country_code: any
+    parent_id: any
+    name: any
+    code: any
+    rate: any
+    is_combinable: any
+  }>
 }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  console.log("taxRegion - ", taxRegion)
-  const form = useForm<zod.infer<typeof CreateTaxRegionForm>>({
+
+  const form = useForm<zod.infer<typeof formSchema>>({
     defaultValues: {
       country_code: taxRegion?.country_code || undefined,
       parent_id: taxRegion?.id || undefined,
     },
-    resolver: zodResolver(CreateTaxRegionForm),
+    resolver: zodResolver(formSchema),
   })
 
   const { mutateAsync, isPending } = useCreateTaxRegion()
 
   const handleSubmit = form.handleSubmit(
     async (data) => {
-      console.log("data - ", data)
       await mutateAsync(
         {
           parent_id: taxRegion?.id,
@@ -68,10 +69,46 @@ export const TaxRegionCreateWithDefaultRateForm = ({
   )
 
   return (
-    <RouteDrawer.Form form={form}>
+    <RouteFocusModal.Form
+      form={form}
+      className="flex h-full flex-col overflow-hidden"
+    >
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteDrawer.Body>
-          <div className="flex flex-col gap-y-8">
+        <RouteFocusModal.Header>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              isLoading={isPending}
+            >
+              {t("actions.create")}
+            </Button>
+          </div>
+        </RouteFocusModal.Header>
+
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden p-16">
+          <div className="flex flex-col gap-y-8 min-w-[400px]">
+            <div>
+              <Heading className="text-left">
+                {taxRegion
+                  ? t("taxRegions.create-child.title")
+                  : t("taxRegions.create.title")}
+              </Heading>
+
+              <Text className="text-ui-fg-subtle txt-small">
+                {taxRegion
+                  ? t("taxRegions.create-child.description")
+                  : t("taxRegions.create.description")}
+              </Text>
+            </div>
+
             {!taxRegion && (
               <Form.Field
                 control={form.control}
@@ -99,27 +136,30 @@ export const TaxRegionCreateWithDefaultRateForm = ({
                           </Select.Content>
                         </Select>
                       </Form.Control>
+                      <Form.ErrorMessage />
                     </Form.Item>
                   )
                 }}
               />
             )}
 
-            <Form.Field
-              control={form.control}
-              name="province_code"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.province")}</Form.Label>
+            {taxRegion && (
+              <Form.Field
+                control={form.control}
+                name="province_code"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.province")}</Form.Label>
 
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
 
             <Form.Field
               control={form.control}
@@ -199,22 +239,8 @@ export const TaxRegionCreateWithDefaultRateForm = ({
               />
             )}
           </div>
-        </RouteDrawer.Body>
-
-        <RouteDrawer.Footer>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteDrawer.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteDrawer.Close>
-
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteDrawer.Footer>
+        </RouteFocusModal.Body>
       </form>
-    </RouteDrawer.Form>
+    </RouteFocusModal.Form>
   )
 }

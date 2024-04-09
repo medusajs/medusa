@@ -74,7 +74,7 @@ export const TaxRateCreateForm = ({
   })
 
   const { tax_regions: taxRegions } = useTaxRegions({
-    parent_id: { $ne: "null" },
+    parent_id: taxRegion.id,
     province_code: { $ne: "null" },
   })
 
@@ -245,6 +245,7 @@ export const TaxRateCreateForm = ({
                               </Select.Content>
                             </Select>
                           </Form.Control>
+                          <Form.ErrorMessage />
                         </Form.Item>
                       )
                     }}
