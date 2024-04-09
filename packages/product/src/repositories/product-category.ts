@@ -4,7 +4,11 @@ import {
   ProductCategoryTransformOptions,
   ProductTypes,
 } from "@medusajs/types"
-import { DALUtils, MedusaError, isDefined } from "@medusajs/utils"
+import {
+  DALUtils,
+  MedusaError,
+  isDefined
+} from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
