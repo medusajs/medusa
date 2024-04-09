@@ -5,9 +5,11 @@
 import {
   CampaignDTO,
   CurrencyDTO,
+  CustomerGroupDTO,
   InventoryNext,
   InviteDTO,
   PaymentProviderDTO,
+  PriceListDTO,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -170,3 +172,14 @@ export type ReservationItemListRes = {
 export type ReservationItemRes = {
   reservation: InventoryNext.ReservationItemDTO
 }
+// Price Lists
+export type PriceListRes = { price_list: PriceListDTO }
+export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes
+export type PriceListDeleteRes = DeleteRes
+
+// Customer Groups
+export type CustomerGroupRes = { customer_group: CustomerGroupDTO }
+export type CustomerGroupListRes = {
+  customer_groups: CustomerGroupDTO[]
+} & ListRes
+export type CustomerGroupDeleteRes = DeleteRes

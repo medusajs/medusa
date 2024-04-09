@@ -15,7 +15,7 @@ import {
 } from "@medusajs/types"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
-const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
+export const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
 
 export const useCustomer = (
   id: string,

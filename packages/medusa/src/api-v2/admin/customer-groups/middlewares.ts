@@ -1,5 +1,6 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminDeleteCustomerGroupsGroupCustomersBatchReq,
   AdminGetCustomerGroupsGroupCustomersParams,
@@ -9,7 +10,6 @@ import {
   AdminPostCustomerGroupsGroupReq,
   AdminPostCustomerGroupsReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
@@ -63,14 +63,24 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/customer-groups/:id/customers/batch",
-    middlewares: [transformBody(AdminPostCustomerGroupsGroupCustomersBatchReq)],
+    matcher: "/admin/customer-groups/:id/customers/batch/add",
+    middlewares: [
+      transformBody(AdminPostCustomerGroupsGroupCustomersBatchReq),
+      transformQuery(
+        AdminGetCustomerGroupsGroupParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/customer-groups/:id/customers/remove",
+    matcher: "/admin/customer-groups/:id/customers/batch/remove",
     middlewares: [
       transformBody(AdminDeleteCustomerGroupsGroupCustomersBatchReq),
+      transformQuery(
+        AdminGetCustomerGroupsGroupParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
     ],
   },
 ]

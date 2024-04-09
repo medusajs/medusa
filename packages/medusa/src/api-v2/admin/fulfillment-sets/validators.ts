@@ -7,6 +7,11 @@ import {
   geoZoneZipSchema,
 } from "./validators/geo-zone"
 
+export const AdminServiceZonesParams = createFindParams()
+export type AdminServiceZonesParamsType = z.infer<
+  typeof AdminServiceZonesParams
+>
+
 export const AdminCreateFulfillmentSetServiceZonesSchema = z
   .object({
     name: z.string(),

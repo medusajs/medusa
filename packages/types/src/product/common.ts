@@ -725,13 +725,17 @@ export interface FilterableProductProps
 export interface FilterableProductTagProps
   extends BaseFilterable<FilterableProductTagProps> {
   /**
+   * Search through the tags' values.
+   */
+  q?: string
+  /**
    * The IDs to filter product tags by.
    */
   id?: string | string[]
   /**
    * The value to filter product tags by.
    */
-  value?: string
+  value?: string | string[]
 }
 
 /**
@@ -744,6 +748,10 @@ export interface FilterableProductTagProps
  */
 export interface FilterableProductTypeProps
   extends BaseFilterable<FilterableProductTypeProps> {
+  /**
+   * Search through the types' values.
+   */
+  q?: string
   /**
    * The IDs to filter product types by.
    */
@@ -765,6 +773,10 @@ export interface FilterableProductTypeProps
  */
 export interface FilterableProductOptionProps
   extends BaseFilterable<FilterableProductOptionProps> {
+  /**
+   * Search through the options' titles.
+   */
+  q?: string
   /**
    * The IDs to filter product options by.
    */
@@ -789,6 +801,10 @@ export interface FilterableProductOptionProps
  */
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
+  /**
+   * Search through the collections' titles.
+   */
+  q?: string
   /**
    * The IDs to filter product collections by.
    */
@@ -815,6 +831,10 @@ export interface FilterableProductCollectionProps
  */
 export interface FilterableProductVariantProps
   extends BaseFilterable<FilterableProductVariantProps> {
+  /**
+   * Search through the title and different code attributes on the variant
+   */
+  q?: string
   /**
    * The IDs to filter product variants by.
    */
@@ -880,6 +900,10 @@ export interface FilterableProductCategoryProps
    * Whether to include parents of retrieved product categories.
    */
   include_ancestors_tree?: boolean
+  /**
+   * Filter product categories based on searchable fields
+   */
+  q?: string
 }
 
 /**

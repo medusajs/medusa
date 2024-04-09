@@ -825,6 +825,7 @@ moduleIntegrationTestRunner({
 
           const productTwoData = buildProductAndRelationsData({
             collection_id: productCollectionTwo.id,
+            tags: [],
           })
 
           await service.create([productOneData, productTwoData])

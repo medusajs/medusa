@@ -1,17 +1,23 @@
 import {
+  AdminApiKeyResponse,
+  AdminCustomerGroupResponse,
+  AdminProductCategoryResponse,
+  SalesChannelDTO,
+  UserDTO,
+} from "@medusajs/types"
+import {
   AdminCollectionsRes,
   AdminProductsRes,
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
 
-import { AdminApiKeyResponse } from "@medusajs/types"
 import { AdminCustomersRes } from "@medusajs/client-types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { InventoryItemRes } from "../../types/api-responses"
 import { MainLayout } from "../../components/layout-v2/main-layout"
+import { PriceListRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
@@ -146,6 +152,27 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/categories",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/categories/category-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/categories/category-detail"),
+                handle: {
+                  crumb: (data: AdminProductCategoryResponse) =>
+                    data.product_category.name,
+                },
+              },
+            ],
+          },
+          {
             path: "/orders",
             handle: {
               crumb: () => "Orders",
@@ -240,6 +267,53 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                handle: {
+                  crumb: (data: PriceListRes) => data.price_list.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-configuration"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-prices"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -267,6 +341,55 @@ export const v2Routes: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomerGroupResponse) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                      ),
                   },
                 ],
               },
@@ -339,31 +462,6 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
-          // {
-          //   path: "/reservations",
-          //   handle: {
-          //     crumb: () => "Reservations",
-          //   },
-          //   children: [
-          //     {
-          //       path: "",
-          //       lazy: () =>
-          //         import("../../v2-routes/reservations/reservation-list"),
-          //     },
-          //     {
-          //       path: ":id",
-          //       lazy: () =>
-          //         import("../../v2-routes/reservations/reservation-detail"),
-          //       // children: [
-          //       //   {
-          //       //     path: "edit",
-          //       //     lazy: () =>
-          //       //       import("../../routes/reservations/reservation-edit"),
-          //       //   },
-          //       // ],
-          //     },
-          //   ],
-          // },
         ],
       },
     ],
@@ -610,17 +708,39 @@ export const v2Routes: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () =>
-                  import(
-                    "../../v2-routes/api-key-management/api-key-management-list"
-                  ),
+                element: <Outlet />,
                 children: [
                   {
-                    path: "create",
+                    path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-create"
+                        "../../v2-routes/api-key-management/api-key-management-list"
                       ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "secret",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },
@@ -644,10 +764,10 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    path: "add-sales-channels",
+                    path: "sales-channels",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
                       ),
                   },
                 ],

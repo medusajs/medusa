@@ -295,7 +295,20 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "organization": {
+      "header": "Organization",
+      "pathLabel": "Path",
+      "pathExpandTooltip": "Show full path",
+      "childrenLabel": "Children"
+    },
+    "fields": {
+      "visibility": "Visibility",
+      "active": "Active",
+      "inactive": "Inactive",
+      "internal": "Internal",
+      "public": "Public"
+    }
   },
   "inventory": {
     "domain": "Inventory",
@@ -734,7 +747,20 @@
   },
   "pricing": {
     "domain": "Pricing",
-    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "create": {
+      "header": "Create Price List",
+      "hint": "Create a new price list to manage the prices of your products."
+    },
+    "edit": {
+      "header": "Edit Price List"
+    },
+    "configuration": {
+      "header": "Configuration",
+      "editHeader": "Edit Price List Configuration"
+    },
+    "warnings": {
+      "delete": "You are about to delete the price list {{name}}. This action cannot be undone."
+    },
     "status": {
       "draft": "Draft",
       "expired": "Expired",
@@ -745,15 +771,6 @@
       "sale": "Sale",
       "override": "Override"
     },
-    "settings": {
-      "typeHint": "Choose the type of price list you want to create.",
-      "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
-      "editPriceListTitle": "Edit Price List",
-      "customerGroupsLabel": "Customer groups",
-      "priceOverridesLabel": "Price overrides",
-      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
-    },
     "products": {
       "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
       "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
@@ -761,6 +778,25 @@
     "prices": {
       "addPrices": "Add prices",
       "editPrices": "Edit prices"
+    },
+    "table": {
+      "pricesHeader": "Prices"
+    },
+    "fields": {
+      "typeHint": "Choose the type of price you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "startDateLabel": "Price list has a start date?",
+      "startDateHint": "Schedule the price list to activate in the future.",
+      "endDateLabel": "Price list has an expiry date?",
+      "endDateHint": "Schedule the price list to deactivate in the future.",
+      "customerAvailabilityLabel": "Customer availability",
+      "customerAvailabilityHint": "Choose which customer groups the price list should be applied to.",
+      "customerAvailabilityNoSelectionLabel": "No customer groups selected",
+      "priceOverridesLabel": "Price overrides"
+    },
+    "actions": {
+      "addCustomerGroups": "Add customer groups"
     }
   },
   "profile": {
@@ -935,20 +971,54 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domainTitle": "API Keys",
-    "domain": "{{ keyType }} API Keys",
-    "createKey": "Create key",
-    "createPublishableApiKey": "Create {{ keyType }} API Key",
-    "editKey": "Edit key",
-    "revoke": "Revoke",
-    "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
-    "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
-    "revokeKeyWarning": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
-    "removeSalesChannelWarning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-    "createdBy": "Created by",
-    "revokedBy": "Revoked by"
+    "domain": {
+      "apiKeys": "API Keys",
+      "publishable": "Publishable API Keys",
+      "secret": "Secret API Keys"
+    },
+    "status": {
+      "active": "Active",
+      "revoked": "Revoked"
+    },
+    "type": {
+      "publishable": "Publishable",
+      "secret": "Secret"
+    },
+    "create": {
+      "createPublishableHeader": "Create Publishable API Key",
+      "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
+      "createSecretHeader": "Create Secret API Key",
+      "createSecretHint": "Create a new secret API key to access the Medusa API.",
+      "secretKeyCreatedHeader": "Secret Key Created",
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+    },
+    "edit": {
+      "header": "Edit API Key"
+    },
+    "tabs": {
+      "secret": "Secret",
+      "publishable": "Publishable"
+    },
+    "warnings": {
+      "delete": "You are about to delete the API key {{title}}. This action cannot be undone.",
+      "revoke": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
+      "removeSalesChannel": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+      "removeSalesChannels_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+      "removeSalesChannels_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+      "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
+    },
+    "actions": {
+      "revoke": "Revoke"
+    },
+    "table": {
+      "lastUsedAtHeader": "Last Used At",
+      "createdAtHeader": "Revoked At"
+    },
+    "fields": {
+      "lastUsedAtLabel": "Last used at",
+      "revokedByLabel": "Revoked by",
+      "createdByLabel": "Created by"
+    }
   },
   "returnReasons": {
     "domain": "Return Reasons",

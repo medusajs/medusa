@@ -9,6 +9,7 @@ import { customers } from "./customers"
 import { inventoryItems } from "./inventory"
 import { invites } from "./invites"
 import { payments } from "./payments"
+import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
 import { products } from "./products"
 import { promotions } from "./promotions"
@@ -42,6 +43,7 @@ export const client = {
   inventoryItems: inventoryItems,
   products: products,
   productTypes: productTypes,
+  priceLists: priceLists,
   stockLocations: stockLocations,
   workflowExecutions: workflowExecutions,
 }
