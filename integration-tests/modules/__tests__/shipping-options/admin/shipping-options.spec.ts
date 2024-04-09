@@ -321,6 +321,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(updateResponse.status).toEqual(200)
+          expect(updateResponse.data.shipping_option.prices).toHaveLength(2)
           expect(updateResponse.data.shipping_option).toEqual(
             expect.objectContaining({
               id: expect.any(String),
