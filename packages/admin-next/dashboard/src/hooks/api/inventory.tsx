@@ -1,3 +1,4 @@
+import { AdminInventoryItemResponse, InventoryNext } from "@medusajs/types"
 import {
   InventoryItemDeleteRes,
   InventoryItemListRes,
@@ -8,8 +9,9 @@ import {
   ReservationItemRes,
 } from "../../types/api-responses"
 import {
-  InvnetoryItemLocationBatch,
+  InventoryItemLocationBatch,
   UpdateInventoryItemReq,
+  UpdateInventoryLevelReq,
 } from "../../types/api-payloads"
 import {
   QueryKey,
@@ -19,7 +21,6 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 
-import { InventoryNext } from "@medusajs/types"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -166,19 +167,48 @@ export const useInventoryItemLevels = (
   return { ...data, ...rest }
 }
 
+export const useUpdateInventoryItemLevel = (
+  inventoryItemId: string,
+  locationId: string,
+  options?: UseMutationOptions<
+    AdminInventoryItemResponse,
+    Error,
+    UpdateInventoryLevelReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: UpdateInventoryLevelReq) =>
+      client.inventoryItems.updateInventoryLevel(
+        inventoryItemId,
+        locationId,
+        payload
+      ),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.detail(inventoryItemId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemLevelsQueryKeys.detail(inventoryItemId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useBatchInventoryItemLevels = (
   inventoryItemId: string,
   options?: UseMutationOptions<
     InventoryItemLocationLevelsRes,
     Error,
-    InvnetoryItemLocationBatch
+    InventoryItemLocationBatch
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: {
-      creates: { location_id: string; stocked_quantity?: number }[]
-      deletes: string[]
-    }) =>
+    mutationFn: (payload: InventoryItemLocationBatch) =>
       client.inventoryItems.batchPostLocationLevels(inventoryItemId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({

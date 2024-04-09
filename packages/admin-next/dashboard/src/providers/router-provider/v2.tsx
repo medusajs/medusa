@@ -319,7 +319,9 @@ export const v2Routes: RouteObject[] = [
                     // TODO: adjust item level
                     path: "locations/:location_id",
                     lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/adjust-inventory"
+                      ),
                   },
                   {
                     // TODO: create reservation

@@ -11,6 +11,7 @@ export const LocationActions = ({
 }: {
   level: InventoryNext.InventoryLevelDTO
 }) => {
+  console.warn(level)
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteInventoryItemLevel(
@@ -41,7 +42,7 @@ export const LocationActions = ({
             {
               icon: <PencilSquare />,
               label: t("actions.edit"),
-              to: `/reservations/${level.id}/edit`,
+              to: `locations/${level.location_id}`,
             },
           ],
         },

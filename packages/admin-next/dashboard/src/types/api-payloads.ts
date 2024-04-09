@@ -80,7 +80,13 @@ export type UpdateCampaignReq = UpdateCampaignDTO
 export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
 export type UpdateInventoryItemReq = InventoryNext.UpdateInventoryItemInput
 
-export type InvnetoryItemLocationBatch = {
+// Inventory Item Levels
+export type InventoryItemLocationBatch = {
   creates: { location_id: string; stocked_quantity?: number }[]
   deletes: string[]
+}
+
+export type UpdateInventoryLevelReq = {
+  reserved_quantity?: number
+  stocked_quantity?: number
 }
