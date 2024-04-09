@@ -364,27 +364,8 @@ export default class PricingModuleService<
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
     const normalizedData = this.normalizeUpdateData(data)
 
-    const priceSetWithPricesWithoutPriceRules = [...normalizedData].map(
-      (normalizedDataItem) => {
-        const { prices, ...rest } = normalizedDataItem
-        return {
-          ...rest,
-          prices: prices?.map((price) => {
-            delete price.price_rules
-            return price
-          }),
-        }
-      }
-    )
-
-    const priceSets = await this.priceSetService_.upsertWithReplace(
-      priceSetWithPricesWithoutPriceRules,
-      { relations: ["prices"] },
-      sharedContext
-    )
-
-    const prices = priceSets.flatMap((ps) => ps.prices)
-    await this.priceService_.upsertWithReplace(
+    const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
+    const upsertedPrices = await this.priceService_.upsertWithReplace(
       prices,
       {
         relations: ["price_rules"],
@@ -392,7 +373,25 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return priceSets
+    const priceSetsToUpsert = normalizedData.map((priceSet) => {
+      const { prices, ...rest } = priceSet
+      return {
+        ...rest,
+        prices: upsertedPrices
+          .filter((p) => p.price_set_id === priceSet.id)
+          .map((price) => {
+            // @ts-ignore
+            delete price.price_rules
+            return price
+          }),
+      }
+    })
+
+    return await this.priceSetService_.upsertWithReplace(
+      priceSetsToUpsert,
+      { relations: ["prices"] },
+      sharedContext
+    )
   }
 
   async addRules(
