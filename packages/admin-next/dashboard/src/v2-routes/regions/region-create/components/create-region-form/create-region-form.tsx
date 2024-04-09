@@ -16,24 +16,24 @@ import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { RegionCountryDTO, PaymentProviderDTO } from "@medusajs/types"
+import { PaymentProviderDTO, RegionCountryDTO } from "@medusajs/types"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
-  useRouteModal,
   RouteFocusModal,
+  useRouteModal,
 } from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useCreateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { countries as staticCountries } from "../../../../../lib/countries"
+import { CurrencyInfo } from "../../../../../lib/currencies"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { CurrencyInfo } from "../../../../../lib/currencies"
-import { useCreateRegion } from "../../../../../hooks/api/regions"
 
 type CreateRegionFormProps = {
   currencies: CurrencyInfo[]
@@ -78,7 +78,7 @@ export const CreateRegionForm = ({
 
   const { t } = useTranslation()
 
-  const { mutateAsync, isLoading } = useCreateRegion()
+  const { mutateAsync, isPending } = useCreateRegion()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -195,7 +195,7 @@ export const CreateRegionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
@@ -322,7 +322,12 @@ export const CreateRegionForm = ({
                       </div>
                     )}
                     <div className="flex items-center justify-end">
-                      <Button onClick={() => setOpen(true)} type="button">
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => setOpen(true)}
+                        type="button"
+                      >
                         {t("regions.addCountries")}
                       </Button>
                     </div>
