@@ -92,7 +92,10 @@ export type UpdateCampaignReq = UpdateCampaignDTO
 
 // Inventory Items
 export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
-export type UpdateInventoryItemReq = InventoryNext.UpdateInventoryItemInput
+export type UpdateInventoryItemReq = Omit<
+  InventoryNext.UpdateInventoryItemInput,
+  "id"
+>
 
 // Inventory Item Levels
 export type InventoryItemLocationBatch = {

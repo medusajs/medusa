@@ -1,22 +1,24 @@
 import { InventoryNext, StockLocationDTO } from "@medusajs/types"
 
 import { LocationActions } from "./location-actions"
-// import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 /**
- * Adds missing properties to the InventoryItemDTO type.
+ * Adds missing properties to the InventoryLevelDTO type.
  */
-interface ExtendedInventoryItem extends InventoryNext.InventoryLevelDTO {
-  location: StockLocationDTO
+interface ExtendedLocationLevel extends InventoryNext.InventoryLevelDTO {
+  stock_locations: StockLocationDTO[]
+  reserved_quantity: number
+  stocked_quantity: number
+  available_quantity: number
 }
 
-const columnHelper = createColumnHelper<ExtendedInventoryItem>()
+const columnHelper = createColumnHelper<ExtendedLocationLevel>()
 
-export const useInventoryTableColumns = () => {
+export const useLocationListTableColumns = () => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -24,15 +26,15 @@ export const useInventoryTableColumns = () => {
       columnHelper.accessor("stock_locations.0.name", {
         header: t("fields.location"),
         cell: ({ getValue }) => {
-          const inStock = getValue()
+          const locationName = getValue()
 
-          if (!inStock) {
+          if (!locationName) {
             return <PlaceholderCell />
           }
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{inStock}</span>
+              <span className="truncate">{locationName.toString()}</span>
             </div>
           )
         },

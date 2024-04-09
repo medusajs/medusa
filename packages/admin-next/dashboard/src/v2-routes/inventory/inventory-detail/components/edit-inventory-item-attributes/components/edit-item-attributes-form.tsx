@@ -55,8 +55,7 @@ export const EditInventoryItemAttributesForm = ({
   const { mutateAsync } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.warn("values", values)
-    mutateAsync(values as any, {
+    mutateAsync(values, {
       onSuccess: () => {
         handleSuccess()
       },

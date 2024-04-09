@@ -1,6 +1,6 @@
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
-export const useInventoryTableQuery = ({
+export const useLocationLevelTableQuery = ({
   pageSize = 20,
   prefix,
 }: {

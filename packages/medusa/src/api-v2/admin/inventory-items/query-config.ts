@@ -38,20 +38,18 @@ export const defaultAdminInventoryItemFields = [
   ...defaultAdminLocationLevelFields.map(
     (field) => `location_levels.${field.toString()}`
   ),
-  ...defaultAdminProductsVariantFields // TODO: remove this when astrisk works again
+  ...defaultAdminProductsVariantFields
     .filter((field) => !field.startsWith("*"))
     .map((field) => `variant.${field}`),
 ]
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminInventoryItemFields,
-  // allowed: defaultAdminInventoryItemFields,
   isList: false,
 }
 
 export const retrieveLocationLevelsTransformQueryConfig = {
   defaults: defaultAdminLocationLevelFields,
-  // allowed: defaultAdminLocationLevelFields,
   isList: false,
 }
 

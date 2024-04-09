@@ -1,10 +1,8 @@
 import { DataTable } from "../../../../../components/table/data-table"
-import { InventoryNext } from "@medusajs/types"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useInventoryItemLevels } from "../../../../../hooks/api/inventory"
-import { useInventoryTableColumns } from "./use-location-list-table-columns"
-import { useInventoryTableQuery } from "./use-location-list-table-query"
-import { useTranslation } from "react-i18next"
+import { useLocationLevelTableQuery } from "./use-location-list-table-query"
+import { useLocationListTableColumns } from "./use-location-list-table-columns"
 
 const PAGE_SIZE = 20
 
@@ -13,7 +11,7 @@ export const ItemLocationListTable = ({
 }: {
   inventory_item_id: string
 }) => {
-  const { searchParams, raw } = useInventoryTableQuery({
+  const { searchParams, raw } = useLocationLevelTableQuery({
     pageSize: PAGE_SIZE,
   })
 
@@ -23,7 +21,7 @@ export const ItemLocationListTable = ({
       fields: "*stock_locations",
     })
 
-  const columns = useInventoryTableColumns()
+  const columns = useLocationListTableColumns()
 
   const { table } = useDataTable({
     data: inventory_levels ?? [],
