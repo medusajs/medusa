@@ -293,7 +293,20 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "organization": {
+      "header": "Organization",
+      "pathLabel": "Path",
+      "pathExpandTooltip": "Show full path",
+      "childrenLabel": "Children"
+    },
+    "fields": {
+      "visibility": "Visibility",
+      "active": "Active",
+      "inactive": "Inactive",
+      "internal": "Internal",
+      "public": "Public"
+    }
   },
   "inventory": {
     "domain": "Inventory",

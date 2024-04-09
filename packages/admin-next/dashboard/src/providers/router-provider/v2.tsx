@@ -1,5 +1,4 @@
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { Spinner } from "@medusajs/icons"
 import {
   AdminCollectionsRes,
@@ -7,14 +6,20 @@ import {
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
+import {
+  AdminApiKeyResponse,
+  AdminProductCategoryResponse,
+  SalesChannelDTO,
+  UserDTO,
+} from "@medusajs/types"
+import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout-v2/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { useMe } from "../../hooks/api/users"
-import { AdminApiKeyResponse } from "@medusajs/types"
+import { PriceListRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
 import { SidebarProvider } from "../sidebar-provider"
-import { AdminCustomersRes } from "@medusajs/client-types"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useMe()
@@ -144,6 +149,27 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/categories",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/categories/category-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/categories/category-detail"),
+                handle: {
+                  crumb: (data: AdminProductCategoryResponse) =>
+                    data.product_category.name,
+                },
+              },
+            ],
+          },
+          {
             path: "/orders",
             handle: {
               crumb: () => "Orders",
@@ -232,6 +258,53 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/collections/collection-add-products"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                handle: {
+                  crumb: (data: PriceListRes) => data.price_list.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-configuration"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-add"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-prices"),
                   },
                 ],
               },

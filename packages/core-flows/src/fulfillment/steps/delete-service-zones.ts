@@ -10,7 +10,7 @@ export const deleteServiceZonesStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.softDelete(ids)
+    await service.softDeleteServiceZones(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -23,6 +23,6 @@ export const deleteServiceZonesStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.restore(prevIds)
+    await service.restoreServiceZones(prevIds)
   }
 )

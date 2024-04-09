@@ -1,10 +1,10 @@
+import {
+  AdminCustomerGroupListResponse,
+  AdminCustomerGroupResponse,
+} from "@medusajs/types"
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
 import { client } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AdminCustomerGroupResponse,
-  AdminCustomerGroupListResponse,
-} from "@medusajs/types"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
 const customerGroupsQueryKeys = queryKeysFactory(CUSTOMER_GROUPS_QUERY_KEY)

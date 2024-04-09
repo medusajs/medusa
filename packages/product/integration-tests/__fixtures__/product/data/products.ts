@@ -30,7 +30,7 @@ export const productsData = [
     tags: [
       {
         id: "tag-3",
-        value: "Germany",
+        value: "Netherlands",
       },
     ],
   },
