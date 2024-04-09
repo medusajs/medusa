@@ -18,7 +18,7 @@ export const ApiKeyManagementEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("apiKeyManagement.editKey")}</Heading>
+        <Heading>{t("apiKeyManagement.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isLoading && !!api_key && <EditApiKeyForm apiKey={api_key} />}
     </RouteDrawer>

@@ -8,10 +8,10 @@ import {
 } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
+  AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
   SalesChannelDTO,
   UserDTO,
-  AdminCustomerGroupResponse,
 } from "@medusajs/types"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
 import { ErrorBoundary } from "../../components/error/error-boundary"
@@ -639,17 +639,39 @@ export const v2Routes: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () =>
-                  import(
-                    "../../v2-routes/api-key-management/api-key-management-list"
-                  ),
+                element: <Outlet />,
                 children: [
                   {
-                    path: "create",
+                    path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-create"
+                        "../../v2-routes/api-key-management/api-key-management-list"
                       ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "secret",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },
@@ -673,10 +695,10 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    path: "add-sales-channels",
+                    path: "sales-channels",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
                       ),
                   },
                 ],

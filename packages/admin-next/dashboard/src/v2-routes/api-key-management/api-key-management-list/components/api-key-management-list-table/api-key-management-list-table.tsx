@@ -5,7 +5,6 @@ import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useApiKeys } from "../../../../../hooks/api/api-keys"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { upperCaseFirst } from "../../../../../lib/uppercase-first"
 import { useApiKeyManagementTableColumns } from "./use-api-key-management-table-columns"
 import { useApiKeyManagementTableFilters } from "./use-api-key-management-table-filters"
 import { useApiKeyManagementTableQuery } from "./use-api-key-management-table-query"
@@ -54,7 +53,9 @@ export const ApiKeyManagementListTable = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">
-          {t(`apiKeyManagement.domain`, { keyType: upperCaseFirst(keyType) })}
+          {keyType === "publishable"
+            ? t(`apiKeyManagement.domain.publishable`)
+            : t("apiKeyManagement.domain.secret")}
         </Heading>
         <Link to="create">
           <Button variant="secondary" size="small">

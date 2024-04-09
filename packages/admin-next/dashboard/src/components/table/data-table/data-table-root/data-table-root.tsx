@@ -193,7 +193,7 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
+                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                           isRowDisabled,
                       }
                     )}
