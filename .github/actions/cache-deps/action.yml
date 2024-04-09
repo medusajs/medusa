@@ -18,5 +18,5 @@ runs:
     - run: yarn install --immutable
       shell: bash
 
-    - run: yarn build
+    - run: yarn build --force
       shell: bash
