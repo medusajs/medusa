@@ -21,14 +21,8 @@ export const DELETE = async (
     ModuleRegistrationName.FULFILLMENT
   )
 
-  const fulfillmentSet = await fulfillmentModuleService.retrieve(id)
-
-  if (!fulfillmentSet) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Fulfillment set with id: ${id} not found`
-    )
-  }
+  // Test if exists
+  await fulfillmentModuleService.retrieve(id)
 
   const { errors } = await deleteFulfillmentSetsWorkflow(req.scope).run({
     input: { ids: [id] },
