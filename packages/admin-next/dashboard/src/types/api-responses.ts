@@ -18,6 +18,7 @@ import {
   RegionDTO,
   SalesChannelDTO,
   ShippingOptionDTO,
+  ShippingProfileDTO,
   StockLocationAddressDTO,
   StockLocationDTO,
   StoreDTO,
@@ -132,6 +133,9 @@ export type ServiceZoneDeleteRes = DeleteRes
 
 // Shipping options
 export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
+
+// Shipping profile
+export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }
 
 // Worfklow Executions
 export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }

@@ -9,6 +9,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
+import { useCreateShippingProfile } from "../../../../../hooks/api/shipping-profiles"
 
 const CreateShippingOptionsSchema = zod.object({
   name: zod.string().min(1),
@@ -22,24 +23,19 @@ export function CreateShippingProfileForm() {
   const form = useForm<zod.infer<typeof CreateShippingOptionsSchema>>({
     defaultValues: {
       name: "",
+      type: "",
     },
     resolver: zodResolver(CreateShippingOptionsSchema),
   })
 
-  const isPending = false
-  // const { mutateAsync, isPending } = useCreateStockLocation()
+  const { mutateAsync, isPending } = useCreateShippingProfile()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    // mutateAsync(
-    //   {
-    //     name: values.name,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       handleSuccess("/settings/shipping-profiles")
-    //     },
-    //   }
-    // )
+    await mutateAsync({
+      name: values.name,
+      type: values.type,
+    })
+    handleSuccess("/settings/shipping-profiles")
   })
 
   return (
