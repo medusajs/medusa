@@ -58,6 +58,8 @@ medusaIntegrationTestRunner({
             updated_at: expect.any(String),
             deleted_at: null,
             created_by: null,
+            rules: [],
+            tax_region: expect.any(Object),
           },
         })
       })
@@ -91,6 +93,9 @@ medusaIntegrationTestRunner({
             created_by: "admin_user",
             provider_id: null,
             metadata: null,
+            children: [],
+            parent: null,
+            tax_rates: expect.any(Array),
           },
         })
 
@@ -121,6 +126,13 @@ medusaIntegrationTestRunner({
             deleted_at: null,
             created_by: "admin_user",
             is_combinable: false,
+            tax_region: expect.any(Object),
+            rules: [
+              expect.objectContaining({
+                reference: "product",
+                reference_id: "prod_1234",
+              }),
+            ],
           },
         })
 
@@ -148,7 +160,10 @@ medusaIntegrationTestRunner({
             metadata: null,
             provider_id: null,
             children: [],
-            parent: null,
+            tax_rates: [],
+            parent: expect.objectContaining({
+              id: usRegionId,
+            }),
           },
         })
 
@@ -223,6 +238,7 @@ medusaIntegrationTestRunner({
             metadata: null,
             children: [],
             parent: null,
+            tax_rates: expect.any(Array),
           },
         })
 
@@ -253,6 +269,13 @@ medusaIntegrationTestRunner({
             deleted_at: null,
             created_by: "admin_user",
             is_combinable: false,
+            tax_region: expect.any(Object),
+            rules: [
+              expect.objectContaining({
+                reference: "product",
+                reference_id: "prod_1234",
+              }),
+            ],
           },
         })
 
@@ -283,6 +306,13 @@ medusaIntegrationTestRunner({
             updated_at: expect.any(String),
             created_by: "admin_user",
             is_combinable: true,
+            tax_region: expect.any(Object),
+            rules: [
+              expect.objectContaining({
+                reference: "product",
+                reference_id: "prod_1234",
+              }),
+            ],
           },
         })
       })
@@ -335,7 +365,7 @@ medusaIntegrationTestRunner({
         expect(rates[0].deleted_at).not.toBeNull()
       })
 
-      it.only("can retrieve a tax region", async () => {
+      it("can retrieve a tax region", async () => {
         const region = await service.createTaxRegions({
           country_code: "us",
         })
