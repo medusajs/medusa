@@ -76,7 +76,9 @@ function buildPrices(
       }
     }
 
-    const currency_code = regionToCurrencyMap.get(price.region_id)!
+    const currency_code = regionToCurrencyMap.get(
+      (price as PriceRegionId).region_id
+    )!
     // @ts-ignore
     delete price.region_id
     return {
@@ -84,7 +86,7 @@ function buildPrices(
       currency_code: currency_code,
       amount: price.amount,
       rules: {
-        region_id: price.region_id,
+        region_id: (price as PriceRegionId).region_id,
       },
     }
   })
