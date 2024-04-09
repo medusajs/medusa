@@ -67,12 +67,6 @@ export const ManageLocationsForm = ({
   // const { mutateAsync } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async ({ locations }) => {
-    console.warn(locations)
-    // mutateAsync(values as any, {
-    //   onSuccess: () => {
-    //     handleSuccess()
-    //   },
-    // })
     const [selectedLocations, unselectedLocations] = locations.reduce(
       (acc, location) => {
         if (
