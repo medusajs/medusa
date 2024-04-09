@@ -1,7 +1,6 @@
 import { TaxRegionResponse } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 import { formatDate } from "../../../../components/common/date"
 import { getCountryByIso2 } from "../../../../lib/countries"
 
@@ -20,41 +19,12 @@ export const TaxRegionGeneralDetail = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <div>
-          <Heading>{t("taxes.domain")}</Heading>
+          <Heading>{displayName}</Heading>
 
           <Text className="text-ui-fg-subtle" size="small">
-            {t("taxes.domainDescription")}
+            Manage your region's tax structure
           </Text>
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.country")}
-        </Text>
-
-        <Text size="small" leading="compact">
-          {taxRegion.parent_id ? (
-            <Link
-              to={`/settings/taxes/${taxRegion.parent_id}`}
-              className="text-blue-500 underline"
-            >
-              {displayName}
-            </Link>
-          ) : (
-            displayName
-          )}
-        </Text>
-      </div>
-
-      <div className="grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.province")}
-        </Text>
-
-        <Text size="small" leading="compact">
-          {taxRegion.province_code || "-"}
-        </Text>
       </div>
 
       <div className="grid grid-cols-2 items-center px-6 py-4">
@@ -62,7 +32,7 @@ export const TaxRegionGeneralDetail = ({
           {t("fields.created")}
         </Text>
 
-        <Text size="small" leading="compact">
+        <Text size="small" leading="compact" className="text-right">
           {formatDate(taxRegion.created_at)}
         </Text>
       </div>

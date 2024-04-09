@@ -1,25 +1,23 @@
 import { Badge } from "@medusajs/ui"
 
 type CellProps = {
-  is_default: boolean
+  is_combinable: boolean
 }
 
 type HeaderProps = {
   text: string
 }
 
-export const TypeCell = ({ is_default }: CellProps) => {
+export const TypeCell = ({ is_combinable }: CellProps) => {
   return (
     <div className="flex h-full w-full items-center gap-x-3 overflow-hidden">
       <span className="truncate">
-        {is_default ? (
+        {is_combinable ? (
           <Badge size="2xsmall" color="green">
-            Default
+            Combinable
           </Badge>
         ) : (
-          <Badge size="2xsmall" color="purple">
-            Override
-          </Badge>
+          ""
         )}
       </span>
     </div>

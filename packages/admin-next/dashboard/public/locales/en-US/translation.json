@@ -618,14 +618,14 @@
       "title": "Edit Tax Rate"
     },
     "create": {
-      "title": "Create Tax Rate"
+      "title": "Create Tax Rate Override"
     },
     "fields": {}
   },
   "taxRegions": {
     "domain": "Tax Regions",
     "create": {
-      "title": "Create Tax Region"
+      "title": "Create Default Tax Rate"
     },
     "fields": {}
   },

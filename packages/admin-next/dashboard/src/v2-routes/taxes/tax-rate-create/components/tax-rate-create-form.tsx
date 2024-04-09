@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   Heading,
   Input,
+  Select,
   Switch,
   Text,
 } from "@medusajs/ui"
@@ -23,6 +24,7 @@ import {
   useRouteModal,
 } from "../../../../components/route-modal"
 import { useCreateTaxRate } from "../../../../hooks/api/tax-rates"
+import { useTaxRegions } from "../../../../hooks/api/tax-regions"
 import { ConditionsDrawer } from "../../common/components/conditions-drawer"
 import { ConditionsOption } from "../../common/types"
 import {
@@ -38,6 +40,7 @@ const SelectedConditionTypesSchema = zod
   .optional()
 
 const CreateTaxRateSchema = zod.object({
+  tax_region_id: zod.string(),
   name: zod.string(),
   code: zod.string(),
   rate: zod.number(),
@@ -70,17 +73,21 @@ export const TaxRateCreateForm = ({
     resolver: zodResolver(CreateTaxRateSchema),
   })
 
+  const { tax_regions: taxRegions } = useTaxRegions({
+    parent_id: { $ne: "null" },
+    province_code: { $ne: "null" },
+  })
+
   const { mutateAsync } = useCreateTaxRate()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("data - ", data)
     await mutateAsync(
       {
         name: data.name,
         code: data.code,
         rate: data.rate,
         is_combinable: data.is_combinable,
-        tax_region_id: taxRegion.id,
+        tax_region_id: data.tax_region_id,
         rules:
           data.products?.map((product) => ({
             reference: "product",
@@ -208,9 +215,40 @@ export const TaxRateCreateForm = ({
                     </Heading>
 
                     <Text className="text-ui-fg-subtle txt-small">
-                      Creates a tax rates for a tax region
+                      Creates a tax rate overrides for a tax region
                     </Text>
                   </div>
+
+                  <Form.Field
+                    control={form.control}
+                    name="tax_region_id"
+                    render={({ field: { ref, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>{t("fields.province")}</Form.Label>
+
+                          <Form.Control>
+                            <Select {...field} onValueChange={onChange}>
+                              <Select.Trigger ref={ref}>
+                                <Select.Value />
+                              </Select.Trigger>
+
+                              <Select.Content>
+                                {taxRegions?.map((taxRegion) => (
+                                  <Select.Item
+                                    key={taxRegion.id}
+                                    value={taxRegion.id}
+                                  >
+                                    {taxRegion.province_code}
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
 
                   <Form.Field
                     control={form.control}

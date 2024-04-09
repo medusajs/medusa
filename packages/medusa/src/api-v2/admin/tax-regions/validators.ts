@@ -16,9 +16,15 @@ export const AdminGetTaxRegionsParams = createFindParams({
 }).merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    country_code: z.union([z.string(), z.array(z.string())]).optional(),
-    province_code: z.union([z.string(), z.array(z.string())]).optional(),
-    parent_id: z.union([z.string(), z.array(z.string())]).optional(),
+    country_code: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
+    province_code: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
+    parent_id: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
     created_by: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
@@ -38,6 +44,9 @@ export const AdminCreateTaxRegion = z.object({
       rate: z.number().optional(),
       code: z.string().optional(),
       name: z.string(),
+      is_combinable: z
+        .union([z.literal("true"), z.literal("false")])
+        .optional(),
       metadata: z.record(z.unknown()).optional(),
     })
     .optional(),

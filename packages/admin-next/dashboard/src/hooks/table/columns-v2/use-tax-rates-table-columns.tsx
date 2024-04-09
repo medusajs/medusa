@@ -26,14 +26,23 @@ export const useTaxRateTableColumns = () => {
         cell: ({ row }) => <TextCell text={row.original.name} />,
       }),
       columnHelper.display({
+        id: "province",
+        header: () => <TextHeader text={t("fields.province")} />,
+        cell: ({ row }) => (
+          <TextCell text={row.original.tax_region.province_code} />
+        ),
+      }),
+      columnHelper.display({
         id: "rate",
         header: () => <TextHeader text={t("fields.rate")} />,
         cell: ({ row }) => <TextCell text={`${row.original.rate} %`} />,
       }),
       columnHelper.display({
-        id: "is_default",
+        id: "is_combinable",
         header: () => <TypeHeader text={t("fields.type")} />,
-        cell: ({ row }) => <TypeCell is_default={row.original.is_default} />,
+        cell: ({ row }) => (
+          <TypeCell is_combinable={row.original.is_combinable} />
+        ),
       }),
       columnHelper.display({
         id: "code",

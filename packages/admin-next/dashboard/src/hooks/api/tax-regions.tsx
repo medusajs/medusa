@@ -71,7 +71,7 @@ export const useCreateTaxRegion = (
   return useMutation({
     mutationFn: (payload) => client.taxes.createTaxRegion(payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.all })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

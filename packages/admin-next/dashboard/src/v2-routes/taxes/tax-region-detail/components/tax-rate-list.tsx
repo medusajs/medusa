@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { TaxRateResponse, TaxRegionResponse } from "@medusajs/types"
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -19,12 +19,17 @@ const PAGE_SIZE = 10
 
 type TaxRateListProps = {
   taxRegion: TaxRegionResponse
+  isDefault: boolean
 }
 
-export const TaxRateList = ({ taxRegion }: TaxRateListProps) => {
+export const TaxRateList = ({
+  taxRegion,
+  isDefault = false,
+}: TaxRateListProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
+  const childrenIds = taxRegion.children?.map((c) => c.id) || []
   const {
     tax_rates: taxRates,
     count,
@@ -34,7 +39,8 @@ export const TaxRateList = ({ taxRegion }: TaxRateListProps) => {
   } = useTaxRates(
     {
       ...searchParams,
-      tax_region_id: [taxRegion.id],
+      tax_region_id: [taxRegion.id, ...childrenIds],
+      is_default: isDefault,
     },
     {
       placeholderData: keepPreviousData,
@@ -97,11 +103,19 @@ export const TaxRateList = ({ taxRegion }: TaxRateListProps) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("taxRates.domain")}</Heading>
+        <Heading level="h2">
+          {isDefault ? `Default ${t("taxRates.domain")}` : `Tax Rate Overrides`}
+        </Heading>
 
-        <Link to={`/settings/taxes/${taxRegion.id}/create`}>
+        <Link
+          to={
+            isDefault
+              ? `/settings/taxes/${taxRegion.id}/create-default`
+              : `/settings/taxes/${taxRegion.id}/create-override`
+          }
+        >
           <Button size="small" variant="secondary">
-            {t("general.add")}
+            Create
           </Button>
         </Link>
       </div>
@@ -139,35 +153,6 @@ const useColumns = () => {
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              disabled={row.original.is_default}
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
       ...base,
       columnHelper.display({
         id: "actions",

@@ -87,10 +87,9 @@ export const TaxRateEditForm = ({
       await mutateAsync(
         {
           name: data.name,
-          code: data.code,
+          code: data.code || undefined,
           rate: data.rate,
           is_combinable: data.is_combinable,
-          tax_region_id: taxRegion.id,
           rules:
             data.products?.map((product) => ({
               reference: "product",
@@ -218,11 +217,11 @@ export const TaxRateEditForm = ({
                 <div className="flex flex-col gap-y-8 md:min-w-[400px]">
                   <div>
                     <Heading className="text-left">
-                      {t("taxRates.create.title")}
+                      {t("taxRates.edit.title")}
                     </Heading>
 
                     <Text className="text-ui-fg-subtle txt-small">
-                      Creates a tax rates for a tax region
+                      Edits tax rate for a tax region
                     </Text>
                   </div>
 
@@ -282,7 +281,7 @@ export const TaxRateEditForm = ({
                     }}
                   />
 
-                  {taxRegion.parent_id && (
+                  {taxRate.tax_region?.parent_id && (
                     <Form.Field
                       control={form.control}
                       name="is_combinable"
@@ -304,88 +303,90 @@ export const TaxRateEditForm = ({
                     />
                   )}
 
-                  <div className="flex flex-col gap-y-8">
-                    {selectedTypes.length > 0 && (
-                      <div className="flex flex-col items-start gap-y-4">
-                        {selectedTypes.map((t) => {
-                          if (t in (selectedConditionTypes || {})) {
-                            const field = form.getValues(t)
-                            const operator = form.getValues(`${t}_operator`)
+                  {!taxRate.is_default && (
+                    <div className="flex flex-col gap-y-8">
+                      {selectedTypes.length > 0 && (
+                        <div className="flex flex-col items-start gap-y-4">
+                          {selectedTypes.map((t) => {
+                            if (t in (selectedConditionTypes || {})) {
+                              const field = form.getValues(t)
+                              const operator = form.getValues(`${t}_operator`)
 
-                            return field ? (
-                              <Condition
-                                key={t}
-                                type={t}
-                                labels={field.map((f) => f.label)}
-                                isInOperator={operator === "in"}
-                                onClick={(op) => handleOpenDrawer(t, op)}
-                              />
-                            ) : (
-                              <Condition
-                                key={t}
-                                type={t}
-                                isInOperator
-                                labels={[]}
-                                onClick={(op) => handleOpenDrawer(t, op)}
-                              />
-                            )
-                          }
-                        })}
-                      </div>
-                    )}
+                              return field ? (
+                                <Condition
+                                  key={t}
+                                  type={t}
+                                  labels={field.map((f) => f.label)}
+                                  isInOperator={operator === "in"}
+                                  onClick={(op) => handleOpenDrawer(t, op)}
+                                />
+                              ) : (
+                                <Condition
+                                  key={t}
+                                  type={t}
+                                  isInOperator
+                                  labels={[]}
+                                  onClick={(op) => handleOpenDrawer(t, op)}
+                                />
+                              )
+                            }
+                          })}
+                        </div>
+                      )}
 
-                    <div className="flex items-center gap-x-2">
-                      <DropdownMenu
-                        open={isDropdownOpen}
-                        onOpenChange={(v) => {
-                          v && setIsDropdownOpen(v)
-                        }}
-                      >
-                        <DropdownMenu.Trigger asChild>
-                          <Button variant="secondary" size="small">
-                            {t("discounts.conditions.manageTypesAction")}
-                          </Button>
-                        </DropdownMenu.Trigger>
-
-                        <DropdownMenu.Content
-                          onInteractOutside={() => setIsDropdownOpen(false)}
+                      <div className="flex items-center gap-x-2">
+                        <DropdownMenu
+                          open={isDropdownOpen}
+                          onOpenChange={(v) => {
+                            v && setIsDropdownOpen(v)
+                          }}
                         >
-                          {Object.values(ConditionEntities).map((type) => (
-                            <DropdownMenu.CheckboxItem
-                              key={type}
-                              checked={selectedConditionTypes[type]}
-                              onCheckedChange={() =>
-                                toggleSelectedConditionTypes(type)
-                              }
-                            >
-                              <Text
-                                size="small"
-                                weight={
-                                  selectedConditionTypes[type]
-                                    ? "plus"
-                                    : "regular"
+                          <DropdownMenu.Trigger asChild>
+                            <Button variant="secondary" size="small">
+                              {t("discounts.conditions.manageTypesAction")}
+                            </Button>
+                          </DropdownMenu.Trigger>
+
+                          <DropdownMenu.Content
+                            onInteractOutside={() => setIsDropdownOpen(false)}
+                          >
+                            {Object.values(ConditionEntities).map((type) => (
+                              <DropdownMenu.CheckboxItem
+                                key={type}
+                                checked={selectedConditionTypes[type]}
+                                onCheckedChange={() =>
+                                  toggleSelectedConditionTypes(type)
                                 }
                               >
-                                {t(`fields.${type}`)}
-                              </Text>
-                            </DropdownMenu.CheckboxItem>
-                          ))}
-                        </DropdownMenu.Content>
-                      </DropdownMenu>
+                                <Text
+                                  size="small"
+                                  weight={
+                                    selectedConditionTypes[type]
+                                      ? "plus"
+                                      : "regular"
+                                  }
+                                >
+                                  {t(`fields.${type}`)}
+                                </Text>
+                              </DropdownMenu.CheckboxItem>
+                            ))}
+                          </DropdownMenu.Content>
+                        </DropdownMenu>
 
-                      {selectedTypes.length > 0 && (
-                        <Button
-                          variant="transparent"
-                          size="small"
-                          type="button"
-                          onClick={clearAllSelectedConditions}
-                          className="text-ui-fg-muted hover:text-ui-fg-subtle"
-                        >
-                          {t("actions.clearAll")}
-                        </Button>
-                      )}
+                        {selectedTypes.length > 0 && (
+                          <Button
+                            variant="transparent"
+                            size="small"
+                            type="button"
+                            onClick={clearAllSelectedConditions}
+                            className="text-ui-fg-muted hover:text-ui-fg-subtle"
+                          >
+                            {t("actions.clearAll")}
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </SplitView.Content>

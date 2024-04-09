@@ -28,7 +28,6 @@ export const POST = async (
   }
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
   const query = remoteQueryObjectFromString({
     entryPoint: "tax_rate",
     variables: { id: result[0].id },

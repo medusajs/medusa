@@ -1,0 +1,220 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Input, Select, Switch } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
+
+import { TaxRegionResponse } from "@medusajs/types"
+import { Form } from "../../../../components/common/form"
+import { PercentageInput } from "../../../../components/common/percentage-input"
+import { RouteDrawer, useRouteModal } from "../../../../components/route-modal"
+import { useCreateTaxRegion } from "../../../../hooks/api/tax-regions"
+import { countries } from "../../../../lib/countries"
+
+const CreateTaxRegionForm = zod.object({
+  province_code: zod.string(),
+  country_code: zod.string(),
+  parent_id: zod.string(),
+
+  name: zod.string(),
+  code: zod.string(),
+  rate: zod.number(),
+  is_combinable: zod.boolean().default(false),
+})
+
+export const TaxRegionCreateWithDefaultRateForm = ({
+  taxRegion,
+}: {
+  taxRegion?: TaxRegionResponse
+}) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+  console.log("taxRegion - ", taxRegion)
+  const form = useForm<zod.infer<typeof CreateTaxRegionForm>>({
+    defaultValues: {
+      country_code: taxRegion?.country_code || undefined,
+      parent_id: taxRegion?.id || undefined,
+    },
+    resolver: zodResolver(CreateTaxRegionForm),
+  })
+
+  const { mutateAsync, isPending } = useCreateTaxRegion()
+
+  const handleSubmit = form.handleSubmit(
+    async (data) => {
+      console.log("data - ", data)
+      await mutateAsync(
+        {
+          parent_id: taxRegion?.id,
+          province_code: data.province_code,
+          country_code: data.country_code,
+          default_tax_rate: {
+            name: data.name,
+            code: data.code,
+            rate: data.rate,
+          },
+        },
+        {
+          onSuccess: () =>
+            taxRegion?.id
+              ? handleSuccess(`/settings/taxes/${taxRegion.id}`)
+              : handleSuccess(`/settings/taxes`),
+        }
+      )
+    },
+    (errors) => {
+      console.log("errors - ", errors)
+    }
+  )
+
+  return (
+    <RouteDrawer.Form form={form}>
+      <form onSubmit={handleSubmit} className="flex h-full flex-col">
+        <RouteDrawer.Body>
+          <div className="flex flex-col gap-y-8">
+            {!taxRegion && (
+              <Form.Field
+                control={form.control}
+                name="country_code"
+                render={({ field: { ref, onChange, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.country")}</Form.Label>
+
+                      <Form.Control>
+                        <Select {...field} onValueChange={onChange}>
+                          <Select.Trigger ref={ref}>
+                            <Select.Value />
+                          </Select.Trigger>
+
+                          <Select.Content>
+                            {countries?.map((country) => (
+                              <Select.Item
+                                key={country.iso_2}
+                                value={country.iso_2}
+                              >
+                                {country.display_name}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select>
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
+
+            <Form.Field
+              control={form.control}
+              name="province_code"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.province")}</Form.Label>
+
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <Form.Field
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Tax Rate Name</Form.Label>
+
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <Form.Field
+              control={form.control}
+              name="rate"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.rate")}</Form.Label>
+
+                    <Form.Control>
+                      <PercentageInput
+                        {...field}
+                        value={field.value}
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            field.onChange(parseInt(e.target.value))
+                          }
+                        }}
+                      />
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <Form.Field
+              control={form.control}
+              name="code"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.code")}</Form.Label>
+
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+
+            {!taxRegion?.parent_id && (
+              <Form.Field
+                control={form.control}
+                name="is_combinable"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>Is combinable?</Form.Label>
+
+                      <Form.Control>
+                        <Switch
+                          {...field}
+                          checked={!!field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
+          </div>
+        </RouteDrawer.Body>
+
+        <RouteDrawer.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteDrawer.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteDrawer.Close>
+
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteDrawer.Footer>
+      </form>
+    </RouteDrawer.Form>
+  )
+}

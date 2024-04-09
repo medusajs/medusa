@@ -55,51 +55,55 @@ export const TaxRegionCreateForm = () => {
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
           <div className="flex h-full flex-col gap-y-8">
-            <Form.Field
-              control={form.control}
-              name="parent_id"
-              render={({ field: { ref, onChange, ...field } }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.parent")}</Form.Label>
+            {false && (
+              <Form.Field
+                control={form.control}
+                name="parent_id"
+                render={({ field: { ref, onChange, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.parent")}</Form.Label>
 
-                    <Form.Control>
-                      <Select
-                        {...field}
-                        onValueChange={(e) => {
-                          const selected = taxRegions?.find((tr) => tr.id === e)
+                      <Form.Control>
+                        <Select
+                          {...field}
+                          onValueChange={(e) => {
+                            const selected = taxRegions?.find(
+                              (tr) => tr.id === e
+                            )
 
-                          setSelectedParent(selected)
-                          onChange(e)
+                            setSelectedParent(selected)
+                            onChange(e)
 
-                          form.setValue(
-                            "country_code",
-                            selected?.country_code!,
-                            { shouldDirty: true }
-                          )
-                        }}
-                      >
-                        <Select.Trigger ref={ref}>
-                          <Select.Value />
-                        </Select.Trigger>
+                            form.setValue(
+                              "country_code",
+                              selected?.country_code!,
+                              { shouldDirty: true }
+                            )
+                          }}
+                        >
+                          <Select.Trigger ref={ref}>
+                            <Select.Value />
+                          </Select.Trigger>
 
-                        <Select.Content>
-                          {taxRegions?.map((taxRegion) => (
-                            <Select.Item
-                              key={taxRegion.id}
-                              value={taxRegion.id}
-                            >
-                              {getCountryByIso2(taxRegion.country_code)
-                                ?.display_name || taxRegion.country_code}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
+                          <Select.Content>
+                            {taxRegions?.map((taxRegion) => (
+                              <Select.Item
+                                key={taxRegion.id}
+                                value={taxRegion.id}
+                              >
+                                {getCountryByIso2(taxRegion.country_code)
+                                  ?.display_name || taxRegion.country_code}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select>
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
 
             {!selectedParent && (
               <Form.Field
@@ -131,23 +135,25 @@ export const TaxRegionCreateForm = () => {
               />
             )}
 
-            <Form.Field
-              control={form.control}
-              name="province_code"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.province")}</Form.Label>
+            {false && (
+              <Form.Field
+                control={form.control}
+                name="province_code"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.province")}</Form.Label>
 
-                    <Form.Control>
                       <Form.Control>
-                        <Input {...field} />
+                        <Form.Control>
+                          <Input {...field} />
+                        </Form.Control>
                       </Form.Control>
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
           </div>
         </RouteDrawer.Body>
 

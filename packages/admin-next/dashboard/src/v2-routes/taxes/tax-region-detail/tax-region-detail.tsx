@@ -30,10 +30,10 @@ export const TaxRegionDetail = () => {
 
   return (
     taxRegion && (
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-6">
         <TaxRegionGeneralDetail taxRegion={taxRegion} />
-
-        <TaxRateList taxRegion={taxRegion} />
+        <TaxRateList taxRegion={taxRegion} isDefault={true} />
+        <TaxRateList taxRegion={taxRegion} isDefault={false} />
         <Outlet />
       </div>
     )

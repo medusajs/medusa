@@ -21,6 +21,7 @@ export const AdminGetTaxRatesParams = createFindParams({
 }).merge(
   z.object({
     tax_region_id: z.union([z.string(), z.array(z.string())]).optional(),
+    is_default: z.union([z.literal("true"), z.literal("false")]).optional(),
   })
 )
 
