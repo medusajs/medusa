@@ -111,7 +111,7 @@ export class AddAuthorsAndPosts1690876698954 implements MigrationInterface {
 
 ### Migration Name
 
-If the `name` attribute isn't available in the generated migration, make sure to add it manually and set its value to the class's name:
+If the `name` attribute isn't available in the generated migration, an error may occur while running the migration. To avoid this, make sure to add it manually and set its value to the class's name:
 
 <!-- eslint-disable max-len -->
 
