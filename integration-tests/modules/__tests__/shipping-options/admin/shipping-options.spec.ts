@@ -337,7 +337,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("DELETE /admin/shipping-options/:id", () => {
+      describe("DELETE /admin/shipping-options/:id", () => {
         it("should delete a shipping option successfully", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",

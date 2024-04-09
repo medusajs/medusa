@@ -1,4 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  DeleteEntityInput,
+  ModuleRegistrationName,
+} from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { Modules } from "@medusajs/utils"
@@ -20,7 +23,7 @@ export const deleteShippingOptionsStep = createStep(
     return new StepResponse(
       {
         [Modules.FULFILLMENT]: softDeletedEntities,
-      },
+      } as DeleteEntityInput,
       ids
     )
   },

@@ -9,7 +9,7 @@ export const deleteShippingOptionsWorkflow = createWorkflow(
   deleteShippingOptionsWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.DeleteShippingOptionsWorkflowInput>
-  ): WorkflowData => {
+  ) => {
     const softDeletedEntities = deleteShippingOptionsStep(input.ids)
 
     removeRemoteLinkStep(softDeletedEntities)
