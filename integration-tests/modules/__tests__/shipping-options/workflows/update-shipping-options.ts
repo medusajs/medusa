@@ -26,7 +26,6 @@ const provider_id = "manual_test-provider"
 
 medusaIntegrationTestRunner({
   env,
-  debug: true,
   testSuite: ({ getContainer }) => {
     let service: IFulfillmentModuleService
     let container
@@ -64,7 +63,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it.only("should update shipping options", async () => {
+      it("should update shipping options", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
