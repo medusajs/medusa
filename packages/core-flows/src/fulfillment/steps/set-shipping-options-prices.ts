@@ -68,14 +68,6 @@ function buildPrices(
   }
 
   const shippingOptionPrices = prices.map((price) => {
-    if ("currency_code" in price) {
-      return {
-        ...price,
-        currency_code: price.currency_code,
-        amount: price.amount,
-      }
-    }
-
     if ("region_id" in price) {
       const currency_code = regionToCurrencyMap.get(
         (price as PriceRegionId).region_id
@@ -91,10 +83,7 @@ function buildPrices(
       }
     }
 
-    return {
-      ...price,
-      amount: price.amount,
-    }
+    return price
   })
 
   return shippingOptionPrices as CreatePriceDTO[]
