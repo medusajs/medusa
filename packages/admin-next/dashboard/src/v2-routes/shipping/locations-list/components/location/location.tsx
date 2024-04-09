@@ -38,7 +38,8 @@ function ShippingOption({ option }: ShippingOptionProps) {
     <div className="shadow-elevation-card-rest flex items-center justify-between rounded-md px-4 py-3">
       <div className="flex-1">
         <span className="txt-small font-medium">
-          {option.name} ({formatProvider(option.provider_id)})
+          {option.name} - {option.shipping_profile.name} (
+          {formatProvider(option.provider_id)})
         </span>
       </div>
       <ActionMenu
