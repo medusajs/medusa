@@ -58,7 +58,6 @@ export const ShippingProfileListTable = () => {
           pageSize={PAGE_SIZE}
           count={count || 1}
           columns={columns}
-          navigateTo={(row) => row.id}
           isLoading={isLoading}
           queryObject={raw}
           pagination
