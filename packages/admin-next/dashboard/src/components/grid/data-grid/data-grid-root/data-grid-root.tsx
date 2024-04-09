@@ -29,19 +29,19 @@ type FieldCoordinates = {
 
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
   state: UseFormReturn<TFieldValues>
-  getSubRows: (row: TData) => TData[] | undefined
+  getSubRows?: (row: TData) => TData[]
 }
 
 const ROW_HEIGHT = 40
 
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 >({
   data = [],
   columns,
