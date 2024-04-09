@@ -6,6 +6,8 @@ import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useShippingProfilesTableColumns } from "./use-shipping-profiles-table-columns"
 import { useShippingProfilesTableQuery } from "./use-shipping-profiles-table-query"
+import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 
 const PAGE_SIZE = 20
 
@@ -16,15 +18,15 @@ export const ShippingProfileListTable = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const { shipping_profiles, count, isLoading, isError, error } = {}
-  // useShippingProfiles({
-  //   ...searchParams,
-  // })
+  const { shipping_profiles, count, isLoading, isError, error } =
+    useShippingProfiles({
+      ...searchParams,
+    })
 
   const columns = useShippingProfilesTableColumns()
 
   const { table } = useDataTable({
-    data: shipping_profiles ?? [],
+    data: shipping_profiles,
     columns,
     count,
     enablePagination: true,
@@ -36,6 +38,8 @@ export const ShippingProfileListTable = () => {
     throw error
   }
 
+  const noData = !isLoading && !shipping_profiles.length
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -46,17 +50,20 @@ export const ShippingProfileListTable = () => {
           </Button>
         </div>
       </div>
-      <DataTable
-        table={table}
-        pageSize={PAGE_SIZE}
-        count={count || 1}
-        columns={columns}
-        navigateTo={(row) => row.id}
-        isLoading={isLoading}
-        queryObject={raw}
-        pagination
-        search
-      />
+      {noData ? (
+        <NoRecords className="h-[180px]" title={t("general.noRecordsFound")} />
+      ) : (
+        <DataTable
+          table={table}
+          pageSize={PAGE_SIZE}
+          count={count || 1}
+          columns={columns}
+          navigateTo={(row) => row.id}
+          isLoading={isLoading}
+          queryObject={raw}
+          pagination
+        />
+      )}
     </Container>
   )
 }

@@ -1,6 +1,16 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query"
 import { CreateShippingProfileReq } from "../../types/api-payloads"
-import { ShippingProfileRes } from "../../types/api-responses"
+import {
+  RegionListRes,
+  ShippingProfileListRes,
+  ShippingProfileRes,
+} from "../../types/api-responses"
 
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
@@ -29,4 +39,25 @@ export const useCreateShippingProfile = (
     },
     ...options,
   })
+}
+
+export const useShippingProfiles = (
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<
+      ShippingProfileListRes,
+      Error,
+      ShippingProfileListRes,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.shippingProfiles.list(query),
+    queryKey: shippingProfileQueryKeys.list(query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
 }
