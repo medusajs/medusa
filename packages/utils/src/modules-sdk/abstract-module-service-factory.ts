@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -505,18 +505,15 @@ export function abstractModuleServiceFactory<
             }))
           )
 
-          let mappedCascadedEntitiesMap
-          if (config.returnLinkableKeys) {
-            // Map internal table/column names to their respective external linkable keys
-            // eg: product.id = product_id, variant.id = variant_id
-            mappedCascadedEntitiesMap = mapObjectTo(
-              cascadedEntitiesMap,
-              entityNameToLinkableKeysMap,
-              {
-                pick: config.returnLinkableKeys,
-              }
-            )
-          }
+          // Map internal table/column names to their respective external linkable keys
+          // eg: product.id = product_id, variant.id = variant_id
+          const mappedCascadedEntitiesMap = mapObjectTo(
+            cascadedEntitiesMap,
+            entityNameToLinkableKeysMap,
+            {
+              pick: config.returnLinkableKeys,
+            }
+          )
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
@@ -540,17 +537,15 @@ export function abstractModuleServiceFactory<
           ].restore(primaryKeyValues_, sharedContext)
 
           let mappedCascadedEntitiesMap
-          if (config.returnLinkableKeys) {
-            // Map internal table/column names to their respective external linkable keys
-            // eg: product.id = product_id, variant.id = variant_id
-            mappedCascadedEntitiesMap = mapObjectTo(
-              cascadedEntitiesMap,
-              entityNameToLinkableKeysMap,
-              {
-                pick: config.returnLinkableKeys,
-              }
-            )
-          }
+          // Map internal table/column names to their respective external linkable keys
+          // eg: product.id = product_id, variant.id = variant_id
+          mappedCascadedEntitiesMap = mapObjectTo(
+            cascadedEntitiesMap,
+            entityNameToLinkableKeysMap,
+            {
+              pick: config.returnLinkableKeys,
+            }
+          )
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }

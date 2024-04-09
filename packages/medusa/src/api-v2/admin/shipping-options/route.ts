@@ -3,12 +3,42 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
+import {
+  AdminShippingOptionListResponse,
+  AdminShippingOptionRetrieveResponse
+} from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { AdminCreateShippingOptionType } from "./validators"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<AdminShippingOptionListResponse>
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const variables = {
+    filters: req.filterableFields,
+    ...req.remoteQueryConfig.pagination,
+  }
+
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "shipping_options",
+    variables,
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const { rows: shipping_options, metadata } = await remoteQuery(queryObject)
+
+  res.json({
+    shipping_options,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
+  })
+}
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateShippingOptionType>,

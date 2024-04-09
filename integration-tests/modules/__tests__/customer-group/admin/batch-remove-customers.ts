@@ -1,7 +1,7 @@
-import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { ICustomerModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -13,7 +13,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("DELETE /admin/customer-groups/:id/customers/remove", () => {
+    describe("POST /admin/customer-groups/:id/customers/batch/remove", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
 
@@ -55,7 +55,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.post(
-          `/admin/customer-groups/${group.id}/customers/remove`,
+          `/admin/customer-groups/${group.id}/customers/batch/remove`,
           {
             customer_ids: customers.map((c) => ({ id: c.id })),
           },
