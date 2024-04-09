@@ -6,6 +6,7 @@ import {
   AdminGetInventoryItemsParams,
   AdminPostInventoryItemsInventoryItemParams,
   AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsBatchReq,
   AdminPostInventoryItemsItemLocationLevelsLevelParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
@@ -14,6 +15,7 @@ import {
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
+import { NextFunction } from "express"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
@@ -51,6 +53,13 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetInventoryItemsItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels/batch/combi",
+    middlewares: [
+      transformBody(AdminPostInventoryItemsItemLocationLevelsBatchReq),
     ],
   },
   {

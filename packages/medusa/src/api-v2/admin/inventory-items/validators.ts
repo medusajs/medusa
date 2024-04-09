@@ -127,11 +127,21 @@ export class AdminPostInventoryItemsItemLocationLevelsReq {
   location_id: string
 
   @IsNumber()
-  stocked_quantity: number
+  @IsOptional()
+  stocked_quantity?: number
 
   @IsOptional()
   @IsNumber()
   incoming_quantity?: number
+}
+
+export class AdminPostInventoryItemsItemLocationLevelsBatchReq {
+  @ValidateNested({ each: true })
+  @Type(() => AdminPostInventoryItemsItemLocationLevelsReq)
+  creates: AdminPostInventoryItemsItemLocationLevelsReq[]
+
+  @IsString({ each: true })
+  deletes: string[]
 }
 
 // eslint-disable-next-line
