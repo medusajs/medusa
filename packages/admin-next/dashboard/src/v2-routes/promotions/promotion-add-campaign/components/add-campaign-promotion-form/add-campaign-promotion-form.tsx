@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignDTO, PromotionDTO } from "@medusajs/types"
-import { Button, RadioGroup, Select } from "@medusajs/ui"
+import { Button, clx, RadioGroup, Select } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -54,11 +54,19 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     description={t(
                       "promotions.form.campaign.existing.description"
                     )}
+                    className={clx("", {
+                      "border-2 border-ui-border-interactive":
+                        "true" === field.value,
+                    })}
                   />
                   <RadioGroup.ChoiceBox
                     value={"false"}
                     label={t("promotions.form.campaign.new.title")}
                     description={t("promotions.form.campaign.new.description")}
+                    className={clx("", {
+                      "border-2 border-ui-border-interactive":
+                        "false" === field.value,
+                    })}
                     disabled
                   />
                 </RadioGroup>
