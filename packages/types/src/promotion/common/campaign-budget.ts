@@ -1,8 +1,6 @@
 import { BaseFilterable } from "../../dal"
 
 /**
- * @interface
- *
  * The campaign budget's possible types.
  */
 export type CampaignBudgetTypeValues = "spend" | "usage"
