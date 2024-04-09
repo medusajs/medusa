@@ -1,3 +1,5 @@
+import * as zod from "zod"
+
 import { Button, Input } from "@medusajs/ui"
 import {
   RouteDrawer,
@@ -21,31 +23,30 @@ const EditInventoryItemSchema = z.object({
   sku: z.string().min(1),
 })
 
+const getDefaultValues = (item: InventoryNext.InventoryItemDTO) => {
+  return {
+    title: item.title ?? undefined,
+    sku: item.sku ?? undefined,
+  }
+}
+
 export const EditInventoryItemForm = ({ item }: EditInventoryItemFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm({
-    defaultValues: {
-      title: item.title,
-      sku: item.sku,
-    },
+  const form = useForm<zod.infer<typeof EditInventoryItemSchema>>({
+    defaultValues: getDefaultValues(item),
     resolver: zodResolver(EditInventoryItemSchema),
   })
 
-  const { mutateAsync } = useUpdateInventoryItem(item.id, {})
+  const { mutateAsync } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(
-      {
-        ...values,
-      } as any,
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+    mutateAsync(values as any, {
+      onSuccess: () => {
+        handleSuccess()
+      },
+    })
   })
 
   return (
@@ -58,12 +59,12 @@ export const EditInventoryItemForm = ({ item }: EditInventoryItemFormProps) => {
           <Form.Field
             control={form.control}
             name="title"
-            render={({ field: { value, ...field } }) => {
+            render={({ field }) => {
               return (
                 <Form.Item>
                   <Form.Label>{t("fields.title")}</Form.Label>
                   <Form.Control>
-                    <Input {...field} value={value ?? ""} />
+                    <Input {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
@@ -73,19 +74,12 @@ export const EditInventoryItemForm = ({ item }: EditInventoryItemFormProps) => {
           <Form.Field
             control={form.control}
             name="sku"
-            render={({ field: { value, onChange, ...field } }) => {
+            render={({ field }) => {
               return (
                 <Form.Item>
                   <Form.Label>{t("fields.sku")}</Form.Label>
                   <Form.Control>
-                    <Input
-                      {...field}
-                      value={value ?? ""}
-                      onChange={(e) => {
-                        // TODO: can this be omitted?
-                        onChange(e.target.value)
-                      }}
-                    />
+                    <Input {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

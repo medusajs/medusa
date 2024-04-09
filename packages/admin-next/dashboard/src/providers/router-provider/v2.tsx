@@ -301,9 +301,11 @@ export const v2Routes: RouteObject[] = [
                   },
                   {
                     // TODO: edit item attributes
-                    path: "edit/attributes",
+                    path: "attributes",
                     lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
+                      ),
                   },
                   {
                     // TODO: manage locations
