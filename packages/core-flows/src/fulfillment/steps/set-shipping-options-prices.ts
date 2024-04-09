@@ -1,7 +1,9 @@
 import {
+  CreatePriceDTO,
   CreatePricesDTO,
   FulfillmentWorkflow,
   IPricingModuleService,
+  IRegionModuleService,
   PriceDTO,
   PriceSetDTO,
   RemoteQueryFunction,
@@ -14,6 +16,11 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+interface PriceRegionId {
+  region_id: string
+  amount: number
+}
 
 type SetShippingOptionsPricesStepInput = {
   id: string
@@ -52,6 +59,39 @@ async function getCurrentShippingOptionPrices(
   })
 }
 
+function buildPrices(
+  prices: SetShippingOptionsPricesStepInput[0]["prices"],
+  regionToCurrencyMap: Map<string, string>
+): CreatePriceDTO[] {
+  if (!prices) {
+    return []
+  }
+
+  const shippingOptionPrices = prices.map((price) => {
+    if ("currency_code" in price) {
+      return {
+        ...price,
+        currency_code: price.currency_code,
+        amount: price.amount,
+      }
+    }
+
+    const currency_code = regionToCurrencyMap.get(price.region_id)!
+    // @ts-ignore
+    delete price.region_id
+    return {
+      ...price,
+      currency_code: currency_code,
+      amount: price.amount,
+      rules: {
+        region_id: price.region_id,
+      },
+    }
+  })
+
+  return shippingOptionPrices as CreatePriceDTO[]
+}
+
 export const setShippingOptionsPricesStepId = "set-shipping-options-prices-step"
 export const setShippingOptionsPricesStep = createStep(
   setShippingOptionsPricesStepId,
@@ -60,20 +100,63 @@ export const setShippingOptionsPricesStep = createStep(
       return
     }
 
+    const regionIds = data
+      .map((input) => input.prices)
+      .flat()
+      .filter((price): price is PriceRegionId => "region_id" in (price ?? {}))
+      .map((price) => price.region_id)
+
+    let regionToCurrencyMap: Map<string, string> = new Map()
+
+    if (regionIds.length) {
+      const regionService = container.resolve<IRegionModuleService>(
+        ModuleRegistrationName.REGION
+      )
+      const regions = await regionService.list(
+        {
+          id: [...new Set(regionIds)],
+        },
+        {
+          select: ["id", "currency_code"],
+        }
+      )
+
+      regionToCurrencyMap = new Map(
+        regions.map((region) => [region.id, region.currency_code])
+      )
+    }
+
     const remoteQuery = container.resolve<RemoteQueryFunction>(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const currentPrices = await getCurrentShippingOptionPrices(
-      data.map((d) => d.id),
-      { remoteQuery }
-    )
+    const currentShippingOptionPricesData =
+      await getCurrentShippingOptionPrices(
+        data.map((d) => d.id),
+        { remoteQuery }
+      )
 
     const shippingOptionPricesMap = new Map(
-      currentPrices.map((price) => [
-        price.shipping_option_id,
-        { price_set_id: price.price_set_id, prices: price.prices },
-      ])
+      currentShippingOptionPricesData.map((currentShippingOptionDataItem) => {
+        const shippingOptionData = data.find(
+          (d) => d.id === currentShippingOptionDataItem.shipping_option_id
+        )!
+        const pricesData = shippingOptionData?.prices?.map((priceData) => {
+          return {
+            ...priceData,
+            price_set_id: currentShippingOptionDataItem.price_set_id,
+          }
+        })
+        const buildPricesData =
+          pricesData && buildPrices(pricesData, regionToCurrencyMap)
+        return [
+          currentShippingOptionDataItem.shipping_option_id,
+          {
+            price_set_id: currentShippingOptionDataItem.price_set_id,
+            prices: buildPricesData,
+          },
+        ]
+      })
     )
 
     const pricingService = container.resolve<IPricingModuleService>(
@@ -81,18 +164,18 @@ export const setShippingOptionsPricesStep = createStep(
     )
 
     for (const data_ of data) {
-      const prices = data_.prices
-      if (!isDefined(prices)) {
+      const shippingOptionData = shippingOptionPricesMap.get(data_.id)!
+
+      if (!isDefined(shippingOptionData.prices)) {
         continue
       }
 
-      const price_set_id = shippingOptionPricesMap.get(data_.id)?.price_set_id!
-      await pricingService.update(price_set_id, {
-        prices: prices as CreatePricesDTO[],
+      await pricingService.update(shippingOptionData.price_set_id, {
+        prices: shippingOptionData.prices,
       })
     }
 
-    return new StepResponse(void 0, currentPrices)
+    return new StepResponse(void 0, currentShippingOptionPricesData)
   },
   async (rollbackData, { container }) => {
     if (!rollbackData?.length) {

@@ -2,8 +2,8 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
-  CreatePriceSetDTO,
   CreatePricesDTO,
+  CreatePriceSetDTO,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -336,6 +336,24 @@ export default class PricingModuleService<
     return isString(idOrSelector) ? priceSets[0] : priceSets
   }
 
+  private normalizeUpdateData(data: UpdatePriceSetInput[]) {
+    return data.map((priceSet) => {
+      const prices = priceSet.prices?.map((price) => {
+        const rules = price.rules
+        delete price.rules
+        return {
+          ...price,
+          price_rules: rules,
+        }
+      })
+
+      return {
+        ...priceSet,
+        prices,
+      }
+    })
+  }
+
   @InjectTransactionManager("baseRepository_")
   protected async update_(
     data: UpdatePriceSetInput[],
@@ -344,11 +362,37 @@ export default class PricingModuleService<
     // TODO: We are not handling rule types, rules, etc. here, add support after data models are finalized
     // TODO: Since money IDs are rarely passed, this will delete all previous data and insert new entries.
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
-    return this.priceSetService_.upsertWithReplace(
-      data,
+    const normalizedData = this.normalizeUpdateData(data)
+
+    const priceSetWithPricesWithoutPriceRules = [...normalizedData].map(
+      (normalizedDataItem) => {
+        const { prices, ...rest } = normalizedDataItem
+        return {
+          ...rest,
+          prices: prices?.map((price) => {
+            delete price.price_rules
+            return price
+          }),
+        }
+      }
+    )
+
+    const priceSets = await this.priceSetService_.upsertWithReplace(
+      priceSetWithPricesWithoutPriceRules,
       { relations: ["prices"] },
       sharedContext
     )
+
+    const prices = priceSets.flatMap((ps) => ps.prices)
+    await this.priceService_.upsertWithReplace(
+      prices,
+      {
+        relations: ["price_rules"],
+      },
+      sharedContext
+    )
+
+    return priceSets
   }
 
   async addRules(

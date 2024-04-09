@@ -26,6 +26,7 @@ const provider_id = "manual_test-provider"
 
 medusaIntegrationTestRunner({
   env,
+  debug: true,
   testSuite: ({ getContainer }) => {
     let service: IFulfillmentModuleService
     let container
@@ -157,10 +158,10 @@ medusaIntegrationTestRunner({
             // We keep the first price as is
             // update the second price to 1000
             // delete the third price
-            // creatie a new one instead
+            // create a new one instead
             createdShippingOption.prices[0],
             {
-              ...createdShippingOption.prices[1],
+              ...createdShippingOption.prices[2],
               amount: 1000,
             },
             {
@@ -199,18 +200,26 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(prices).toHaveLength(2)
+        expect(prices).toHaveLength(3)
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "usd",
             amount: 10,
+            rules_count: 0,
           })
         )
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "eur",
-            amount: 100,
+            amount: 1000,
             rules_count: 1,
+          })
+        )
+        expect(prices).toContainEqual(
+          expect.objectContaining({
+            currency_code: "dkk",
+            amount: 1000,
+            rules_count: 0,
           })
         )
       })
