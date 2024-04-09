@@ -18,3 +18,16 @@ export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
 }
+
+export const retrieveServiceZoneTransformQueryConfig = {
+  defaults: [
+    "id",
+    "name",
+    "type",
+    "created_at",
+    "updated_at",
+    "deleted_at",
+    "*geo_zones",
+  ],
+  isList: false,
+}

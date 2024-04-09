@@ -8,8 +8,8 @@ import {
 import { client } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
-  AdminCustomerGroupResponse,
   AdminCustomerGroupListResponse,
+  AdminCustomerGroupResponse,
 } from "@medusajs/types"
 import { z } from "zod"
 import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"

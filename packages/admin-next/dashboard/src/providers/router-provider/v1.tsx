@@ -310,44 +310,6 @@ export const v1Routes: RouteObject[] = [
               },
             ],
           },
-          {
-            path: "/pricing",
-            handle: {
-              crumb: () => "Pricing",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../routes/pricing/pricing-list"),
-                children: [
-                  // {
-                  //   path: "create",
-                  //   lazy: () => import("../../routes/pricing/pricing-create"),
-                  // },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../routes/pricing/pricing-detail"),
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () => import("../../routes/pricing/pricing-edit"),
-                  },
-                  {
-                    path: "products/add",
-                    lazy: () =>
-                      import("../../routes/pricing/pricing-products-add"),
-                  },
-                  {
-                    path: "products/edit",
-                    lazy: () =>
-                      import("../../routes/pricing/pricing-products-edit"),
-                  },
-                ],
-              },
-            ],
-          },
         ],
       },
       ...routeExtensions,

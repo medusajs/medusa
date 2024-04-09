@@ -82,7 +82,7 @@ export const useProductVariantTableColumns = (product?: Product) => {
         ),
         cell: ({ row }) => {
           const variantOpt: any = row.original.options.find(
-            (opt: any) => opt.option_value.option_id === option.id
+            (opt: any) => opt.option_id === option.id
           )
           if (!variantOpt) {
             return <PlaceholderCell />
@@ -94,7 +94,7 @@ export const useProductVariantTableColumns = (product?: Product) => {
                 size="2xsmall"
                 className="flex min-w-[20px] items-center justify-center"
               >
-                {variantOpt.option_value.value}
+                {variantOpt.value}
               </Badge>
             </div>
           )
