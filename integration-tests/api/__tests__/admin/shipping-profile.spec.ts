@@ -36,7 +36,7 @@ medusaIntegrationTestRunner({
 
     describe("Admin - Shipping Profiles", () => {
       // TODO: Missing update and delete tests
-      it("should test the entire lifecycle of a shipping profile", async () => {
+      it.only("should test the entire lifecycle of a shipping profile", async () => {
         const payload = {
           name: "test-profile-2023",
           type: "custom",
