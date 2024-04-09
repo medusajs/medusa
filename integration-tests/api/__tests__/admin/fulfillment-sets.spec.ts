@@ -201,7 +201,7 @@ medusaIntegrationTestRunner({
 
         expect(serviceZoneResponse.status).toEqual(404)
         expect(serviceZoneResponse.data.message).toEqual(
-          `Service zone with id: ${serviceZoneId} not found`
+          `Service zone with id ${serviceZoneId} not found`
         )
       })
 
@@ -380,7 +380,7 @@ medusaIntegrationTestRunner({
 
           expect(deleteResponse.status).toEqual(404)
           expect(deleteResponse.data.message).toEqual(
-            "Service zone with id: foo not found on fulfillment set"
+            "Service zone with id foo not found on fulfillment set"
           )
         })
       })
