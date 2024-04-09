@@ -5,23 +5,24 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
-import { adminCurrenciesKeys, useAdminCustomQuery } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CurrencyDTO, StoreDTO } from "@medusajs/types"
+import { StoreDTO } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
-import { useUpdateStore } from "../../../../../hooks/api/store"
 
 type AddCurrenciesFormProps = {
   store: StoreDTO
@@ -67,12 +68,10 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     prefix: PREFIX,
   })
 
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    "/admin/currencies",
-    adminCurrenciesKeys.list(raw),
+  const { currencies, count, isLoading, isError, error } = useCurrencies(
     searchParams,
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -81,9 +80,9 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (data?.currencies ?? []) as CurrencyDTO[],
+    data: currencies ?? [],
     columns,
-    count: data?.count,
+    count: count,
     getRowId: (row) => row.code,
     enableRowSelection: (row) => !preSelectedRows.includes(row.original.code),
     enablePagination: true,
@@ -95,7 +94,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     },
   })
 
-  const { mutateAsync, isLoading: isMutating } = useUpdateStore(store.id)
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencies = Array.from(
@@ -139,7 +138,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button size="small" type="submit" isLoading={isMutating}>
+              <Button size="small" type="submit" isLoading={isPending}>
                 {t("actions.save")}
               </Button>
             </div>
@@ -149,7 +148,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
           <DataTable
             table={table}
             pageSize={PAGE_SIZE}
-            count={data?.count}
+            count={count}
             columns={columns}
             layout="fill"
             pagination

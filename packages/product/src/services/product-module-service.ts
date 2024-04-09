@@ -18,14 +18,7 @@ import {
   ProductType,
   ProductVariant,
 } from "@models"
-import {
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductOptionService,
-  ProductService,
-  ProductTagService,
-  ProductTypeService,
-} from "@services"
+import { ProductCategoryService, ProductService } from "@services"
 
 import {
   arrayDifference,
@@ -58,12 +51,12 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   productService: ProductService<any>
   productVariantService: ModulesSdkTypes.InternalModuleService<any, any>
-  productTagService: ProductTagService<any>
+  productTagService: ModulesSdkTypes.InternalModuleService<any>
   productCategoryService: ProductCategoryService<any>
-  productCollectionService: ProductCollectionService<any>
+  productCollectionService: ModulesSdkTypes.InternalModuleService<any>
   productImageService: ModulesSdkTypes.InternalModuleService<any>
-  productTypeService: ProductTypeService<any>
-  productOptionService: ProductOptionService<any>
+  productTypeService: ModulesSdkTypes.InternalModuleService<any>
+  productOptionService: ModulesSdkTypes.InternalModuleService<any>
   productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
   eventBusModuleService?: IEventBusModuleService
 }
@@ -133,13 +126,13 @@ export default class ProductModuleService<
 
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
-  protected readonly productTagService_: ProductTagService<TProductTag>
+  protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
   // eslint-disable-next-line max-len
-  protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
+  protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
   // eslint-disable-next-line max-len
   protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
-  protected readonly productTypeService_: ProductTypeService<TProductType>
-  protected readonly productOptionService_: ProductOptionService<TProductOption>
+  protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
   // eslint-disable-next-line max-len
   protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
@@ -1122,8 +1115,8 @@ export default class ProductModuleService<
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = data.map(
-      ProductModuleService.normalizeCreateProductInput
+    const normalizedInput = await Promise.all(
+      data.map((d) => this.normalizeCreateProductInput(d, sharedContext))
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1178,8 +1171,8 @@ export default class ProductModuleService<
     data: UpdateProductInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = data.map(
-      ProductModuleService.normalizeUpdateProductInput
+    const normalizedInput = await Promise.all(
+      data.map((d) => this.normalizeUpdateProductInput(d, sharedContext))
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1260,12 +1253,13 @@ export default class ProductModuleService<
     return productData
   }
 
-  protected static normalizeCreateProductInput(
-    product: ProductTypes.CreateProductDTO
-  ): ProductTypes.CreateProductDTO {
-    const productData = ProductModuleService.normalizeUpdateProductInput(
+  protected async normalizeCreateProductInput(
+    product: ProductTypes.CreateProductDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.CreateProductDTO> {
+    const productData = (await this.normalizeUpdateProductInput(
       product as UpdateProductInput
-    ) as ProductTypes.CreateProductDTO
+    )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {
       productData.handle = kebabCase(productData.title)
@@ -1282,12 +1276,33 @@ export default class ProductModuleService<
     return productData
   }
 
-  protected static normalizeUpdateProductInput(
-    product: UpdateProductInput
-  ): UpdateProductInput {
+  protected async normalizeUpdateProductInput(
+    product: UpdateProductInput,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UpdateProductInput> {
     const productData = { ...product }
     if (productData.is_giftcard) {
       productData.discountable = false
+    }
+
+    if (productData.tags?.length && productData.tags.some((t) => !t.id)) {
+      const dbTags = await this.productTagService_.list(
+        {
+          value: productData.tags
+            .map((t) => t.value)
+            .filter((v) => !!v) as string[],
+        },
+        { take: null },
+        sharedContext
+      )
+
+      productData.tags = productData.tags.map((tag) => {
+        const dbTag = dbTags.find((t) => t.value === tag.value)
+        return {
+          ...tag,
+          ...(dbTag ? { id: dbTag.id } : {}),
+        }
+      })
     }
 
     if (productData.options?.length) {

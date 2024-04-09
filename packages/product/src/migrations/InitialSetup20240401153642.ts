@@ -48,8 +48,7 @@ export class InitialSetup20240315083440 extends Migration {
 
     this.addSql('create table if not exists "product_tag" ("id" text not null, "value" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "product_tag_pkey" primary key ("id"));');
 
-    // TODO: We need to modify upsertWithReplace to handle unique constraints
-    // this.addSql('create unique index if not exists "IDX_tag_value_unique" on "product_tag" (value) where deleted_at is null;')
+    this.addSql('create unique index if not exists "IDX_tag_value_unique" on "product_tag" (value) where deleted_at is null;')
     this.addSql('create index if not exists "IDX_product_tag_deleted_at" on "product_tag" ("deleted_at");');
 
     this.addSql('create table if not exists "product_type" ("id" text not null, "value" text not null, "metadata" json null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "product_type_pkey" primary key ("id"));');
