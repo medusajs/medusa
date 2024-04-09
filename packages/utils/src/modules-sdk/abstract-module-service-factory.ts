@@ -537,17 +537,15 @@ export function abstractModuleServiceFactory<
           ].restore(primaryKeyValues_, sharedContext)
 
           let mappedCascadedEntitiesMap
-          if (config.returnLinkableKeys) {
-            // Map internal table/column names to their respective external linkable keys
-            // eg: product.id = product_id, variant.id = variant_id
-            mappedCascadedEntitiesMap = mapObjectTo(
-              cascadedEntitiesMap,
-              entityNameToLinkableKeysMap,
-              {
-                pick: config.returnLinkableKeys,
-              }
-            )
-          }
+          // Map internal table/column names to their respective external linkable keys
+          // eg: product.id = product_id, variant.id = variant_id
+          mappedCascadedEntitiesMap = mapObjectTo(
+            cascadedEntitiesMap,
+            entityNameToLinkableKeysMap,
+            {
+              pick: config.returnLinkableKeys,
+            }
+          )
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
