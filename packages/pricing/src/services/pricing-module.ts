@@ -336,10 +336,37 @@ export default class PricingModuleService<
     return isString(idOrSelector) ? priceSets[0] : priceSets
   }
 
-  private normalizeUpdateData(data: UpdatePriceSetInput[]) {
+  private async normalizeUpdateData(
+    data: UpdatePriceSetInput[],
+    sharedContext
+  ) {
+    const ruleAttributes = data
+      .map((d) => d.prices?.map((p) => Object.keys(p.rules ?? [])) ?? [])
+      .flat(Infinity)
+      .filter(Boolean)
+
+    const ruleTypes = await this.ruleTypeService_.list(
+      { rule_attribute: ruleAttributes },
+      { take: null },
+      sharedContext
+    )
+
+    const ruleTypeMap = ruleTypes.reduce((acc, curr) => {
+      acc.set(curr.rule_attribute, curr)
+      return acc
+    }, new Map())
+
     return data.map((priceSet) => {
       const prices = priceSet.prices?.map((price) => {
-        const rules = price.rules
+        const rules = Object.values(price.rules ?? {}).map(
+          ([attribute, value]) => {
+            return {
+              price_set_id: priceSet.id,
+              rule_type_id: ruleTypeMap.get(attribute)!.id,
+              value,
+            }
+          }
+        )
         delete price.rules
         return {
           ...price,
@@ -363,7 +390,7 @@ export default class PricingModuleService<
     // TODO: We are not handling rule types, rules, etc. here, add support after data models are finalized
     // TODO: Since money IDs are rarely passed, this will delete all previous data and insert new entries.
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
-    const normalizedData = this.normalizeUpdateData(data)
+    const normalizedData = await this.normalizeUpdateData(data, sharedContext)
 
     const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
     const upsertedPrices = await this.priceService_.upsertWithReplace(
