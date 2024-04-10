@@ -85,7 +85,7 @@ export function internalModuleServiceFactory<
      * @param config
      */
     static applyDefaultOrdering(config: FindConfig<any>) {
-      if (config.order) {
+      if (Object.keys(config.order ?? {}).length) {
         return
       }
 
