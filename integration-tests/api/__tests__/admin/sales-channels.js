@@ -413,7 +413,6 @@ medusaIntegrationTestRunner({
             ContainerRegistrationKeys.REMOTE_LINK
           )
 
-          console.warn("testing")
           await remoteLink.create([
             {
               [Modules.SALES_CHANNEL]: {

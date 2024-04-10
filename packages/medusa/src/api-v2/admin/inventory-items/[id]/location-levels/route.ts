@@ -54,9 +54,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     entryPoint: "inventory_levels",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,
   })

@@ -18,6 +18,7 @@ import {
   CreateShippingOptionDTO,
   CreateShippingProfileDTO,
   CreateStockLocationInput,
+  InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
@@ -100,3 +101,21 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 // Campaign
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
+
+// Inventory Items
+export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
+export type UpdateInventoryItemReq = Omit<
+  InventoryNext.UpdateInventoryItemInput,
+  "id"
+>
+
+// Inventory Item Levels
+export type InventoryItemLocationBatch = {
+  creates: { location_id: string; stocked_quantity?: number }[]
+  deletes: string[]
+}
+
+export type UpdateInventoryLevelReq = {
+  reserved_quantity?: number
+  stocked_quantity?: number
+}
