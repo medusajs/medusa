@@ -5,6 +5,7 @@ import { Outlet, useLoaderData } from "react-router-dom"
 import { shippingListLoader } from "./loader"
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import Location from "./components/location/location"
+import { NoRecords } from "../../../components/common/empty-table-content"
 
 export function LocationList() {
   const { t } = useTranslation()
@@ -13,7 +14,7 @@ export function LocationList() {
     ReturnType<typeof shippingListLoader>
   >
 
-  const { stock_locations: stockLocations = [] } = useStockLocations(
+  let { stock_locations: stockLocations = [], isLoading } = useStockLocations(
     {
       fields:
         "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
@@ -31,6 +32,19 @@ export function LocationList() {
           </Text>
         </Container>
         <div className="col-span-3 flex flex-col gap-4 lg:col-span-2">
+          {!isLoading && !stockLocations.length && (
+            <Container>
+              <NoRecords
+                className="h-[180px]"
+                title={t("shipping.noRecords.title")}
+                message={t("shipping.noRecords.message")}
+                action={{
+                  to: "/inventory/locations",
+                  label: t("shipping.noRecords.action"),
+                }}
+              />
+            </Container>
+          )}
           {stockLocations.map((location) => (
             <Location key={location.id} location={location} />
           ))}

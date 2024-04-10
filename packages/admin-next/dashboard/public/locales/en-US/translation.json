@@ -555,6 +555,11 @@
     "addZone": "Add shipping zone",
     "enablePickup": "Enable pickup",
     "enableDelivery": "Enable delivery",
+    "noRecords" : {
+      "action": "Add Location",
+      "title": "No inventory locations",
+      "message": "Please create an invnetory location first."
+    },
     "create": {
       "title": "Add shipping for {{location}}",
       "delivery": "Delivery",
