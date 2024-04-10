@@ -69,16 +69,15 @@ function buildPrices(
 
   const shippingOptionPrices = prices.map((price) => {
     if ("region_id" in price) {
-      const currency_code = regionToCurrencyMap.get(
-        (price as PriceRegionId).region_id
-      )!
+      const currency_code = regionToCurrencyMap.get(price.region_id!)!
+      const regionId = price.region_id
       delete price.region_id
       return {
         ...price,
         currency_code: currency_code,
         amount: price.amount,
         rules: {
-          region_id: (price as PriceRegionId).region_id,
+          region_id: regionId,
         },
       }
     }
