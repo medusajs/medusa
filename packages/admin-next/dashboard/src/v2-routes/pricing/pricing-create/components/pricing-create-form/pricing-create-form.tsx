@@ -84,7 +84,7 @@ export const PricingCreateForm = () => {
           for (const [currencyCode, currencyPrice] of Object.entries(
             currency_prices
           )) {
-            if (!currencyPrice) {
+            if (!currencyPrice?.amount) {
               continue
             }
 

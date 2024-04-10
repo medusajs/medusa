@@ -159,7 +159,9 @@ const ProductRowAction = ({ product }: { product: ExtendedProductDTO }) => {
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: () => {
-                console.log("Not implemented yet.")
+                console.log(
+                  `Removing prices for ${product.id}. Not implemented yet.`
+                )
               },
             },
           ],
