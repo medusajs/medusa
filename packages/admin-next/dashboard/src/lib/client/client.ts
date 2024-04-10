@@ -14,6 +14,7 @@ import { productTypes } from "./product-types"
 import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
+import { reservations } from "./reservations"
 import { salesChannels } from "./sales-channels"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
@@ -41,6 +42,7 @@ export const client = {
   taxes: taxes,
   invites: invites,
   inventoryItems: inventoryItems,
+  reservations: reservations,
   products: products,
   productTypes: productTypes,
   priceLists: priceLists,

@@ -396,6 +396,31 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/reservations",
+            handle: {
+              crumb: () => "Reservations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-detail"),
+                // children: [
+                //   {
+                //     path: "edit",
+                //     lazy: () =>
+                //       import("../../routes/reservations/reservation-edit"),
+                //   },
+                // ],
+              },
+            ],
+          },
+          {
             path: "/inventory",
             handle: {
               crumb: () => "Inventory",
