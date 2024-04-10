@@ -70,6 +70,7 @@ export const config: MiddlewaresConfig = {
     ...adminProductTypeRoutesMiddlewares,
     ...adminUploadRoutesMiddlewares,
     ...adminFulfillmentSetsRoutesMiddlewares,
+    ...adminReservationRoutesMiddlewares,
     ...adminProductCategoryRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
     ...adminShippingProfilesMiddlewares,
