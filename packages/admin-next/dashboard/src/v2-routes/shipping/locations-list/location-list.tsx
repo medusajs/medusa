@@ -14,7 +14,7 @@ export function LocationList() {
     ReturnType<typeof shippingListLoader>
   >
 
-  let { stock_locations: stockLocations = [], isLoading } = useStockLocations(
+  let { stock_locations: stockLocations = [], isPending } = useStockLocations(
     {
       fields:
         "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
@@ -32,7 +32,7 @@ export function LocationList() {
           </Text>
         </Container>
         <div className="col-span-3 flex flex-col gap-4 lg:col-span-2">
-          {!isLoading && !stockLocations.length && (
+          {!isPending && !stockLocations.length && (
             <Container>
               <NoRecords
                 className="h-[180px]"
