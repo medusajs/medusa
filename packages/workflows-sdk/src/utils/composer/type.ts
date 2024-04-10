@@ -25,7 +25,10 @@ type StepFunctionReturnConfig<TOutput> = {
  * @typeParam TInput - The type of the input of the step.
  * @typeParam TOutput - The type of the output of the step.
  */
-export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
+export type StepFunction<
+  TInput,
+  TOutput = unknown
+> = (keyof TInput extends never
   ? // Function that doesn't expect any input
     {
       (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
