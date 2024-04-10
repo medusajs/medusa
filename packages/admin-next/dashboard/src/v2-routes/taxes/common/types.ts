@@ -8,3 +8,5 @@ export type ConditionsOption = {
 export type ConditionsState = {
   [K in ConditionEntities]: boolean
 }
+
+export type ConditionEntitiesValues = `${ConditionEntities}`

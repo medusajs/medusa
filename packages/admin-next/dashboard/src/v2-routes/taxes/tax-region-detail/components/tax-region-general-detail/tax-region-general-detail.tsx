@@ -1,8 +1,8 @@
 import { TaxRegionResponse } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { formatDate } from "../../../../components/common/date"
-import { getCountryByIso2 } from "../../../../lib/countries"
+import { formatDate } from "../../../../../components/common/date"
+import { getCountryByIso2 } from "../../../../../lib/countries"
 
 type TaxRegionGeneralDetailProps = {
   taxRegion: TaxRegionResponse
@@ -22,7 +22,7 @@ export const TaxRegionGeneralDetail = ({
           <Heading>{displayName}</Heading>
 
           <Text className="text-ui-fg-subtle" size="small">
-            Manage your region's tax structure
+            {t("taxRegions.description")}
           </Text>
         </div>
       </div>
@@ -32,7 +32,7 @@ export const TaxRegionGeneralDetail = ({
           {t("fields.created")}
         </Text>
 
-        <Text size="small" leading="compact" className="text-right">
+        <Text size="small" leading="compact">
           {formatDate(taxRegion.created_at)}
         </Text>
       </div>

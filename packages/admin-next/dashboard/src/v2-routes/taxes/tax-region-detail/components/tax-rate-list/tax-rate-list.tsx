@@ -6,14 +6,17 @@ import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { ActionMenu } from "../../../../components/common/action-menu"
-import { DataTable } from "../../../../components/table/data-table"
-import { useSalesChannelRemoveProducts } from "../../../../hooks/api/sales-channels"
-import { useDeleteTaxRate, useTaxRates } from "../../../../hooks/api/tax-rates"
-import { useTaxRateTableColumns } from "../../../../hooks/table/columns-v2/use-tax-rates-table-columns"
-import { useTaxRateTableFilters } from "../../../../hooks/table/filters/use-tax-rate-table-filters"
-import { useTaxRateTableQuery } from "../../../../hooks/table/query/use-tax-rate-table-query"
-import { useDataTable } from "../../../../hooks/use-data-table"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DataTable } from "../../../../../components/table/data-table"
+import {
+  useDeleteTaxRate,
+  useTaxRates,
+} from "../../../../../hooks/api/tax-rates"
+import { useDeleteTaxRegion } from "../../../../../hooks/api/tax-regions"
+import { useTaxRateTableColumns } from "../../../../../hooks/table/columns/use-tax-rates-table-columns"
+import { useTaxRateTableFilters } from "../../../../../hooks/table/filters/use-tax-rate-table-filters"
+import { useTaxRateTableQuery } from "../../../../../hooks/table/query/use-tax-rate-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
 const PAGE_SIZE = 10
 
@@ -67,19 +70,16 @@ export const TaxRateList = ({
     },
   })
 
-  const { mutateAsync } = useSalesChannelRemoveProducts(taxRegion.id)
+  const { mutateAsync } = useDeleteTaxRegion(taxRegion.id)
 
   const prompt = usePrompt()
   const { t } = useTranslation()
 
   const handleRemove = async () => {
-    const ids = Object.keys(rowSelection)
-
     const result = await prompt({
       title: t("general.areYouSure"),
-      description: t("taxRegions.removeProductsWarning", {
-        count: ids.length,
-        sales_channel: taxRegion.name,
+      description: t("taxRegions.removeWarning", {
+        tax_region_name: taxRegion.name,
       }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),

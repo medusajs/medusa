@@ -1,18 +1,12 @@
 import {
   CustomerGroup,
   Product,
-  ProductCollection,
   ProductTag,
   ProductType,
 } from "@medusajs/medusa"
 import { Button } from "@medusajs/ui"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
-import {
-  useAdminCollections,
-  useAdminCustomerGroups,
-  useAdminProductTags,
-  useAdminProductTypes,
-} from "medusa-react"
+import { useAdminProductTags } from "medusa-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -41,6 +35,10 @@ import { useProductTagConditionsTableColumns } from "../../hooks/columns/use-pro
 import { useProductTagConditionsTableFilters } from "../../hooks/filters/use-product-tag-conditions-table-filters"
 import { useProductTagConditionsTableQuery } from "../../hooks/query/use-product-tag-conditions-table-query"
 
+import { ProductCollectionDTO } from "@medusajs/types"
+import { useCollections } from "../../../../../hooks/api/collections"
+import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
+import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { ConditionEntities } from "../../constants"
 import { ConditionsOption } from "../../types"
@@ -151,7 +149,7 @@ const ProductConditionsTable = ({ selected = [], onSave }: ConditionsProps) => {
   const filters = useProductTableFilters()
 
   const { table } = useDataTable({
-    data: (products ?? []) as Product[],
+    data: products ?? [],
     columns: columns,
     count,
     enablePagination: true,
@@ -205,7 +203,7 @@ const CustomerGroupConditionsTable = ({
     prefix: PRODUCT_PREFIX,
   })
   const { customer_groups, count, isLoading, isError, error } =
-    useAdminCustomerGroups(
+    useCustomerGroups(
       {
         ...searchParams,
       },
@@ -223,9 +221,8 @@ const CustomerGroupConditionsTable = ({
     )
 
     if (added.length) {
-      const addedGroups = (customer_groups?.filter((p) =>
-        added.includes(p.id!)
-      ) ?? []) as CustomerGroup[]
+      const addedGroups =
+        customer_groups?.filter((p) => added.includes(p.id!)) ?? []
 
       if (addedGroups.length > 0) {
         const newConditions = addedGroups.map((p) => ({
@@ -315,15 +312,14 @@ const ProductTypeConditionsTable = ({
     pageSize: PAGE_SIZE,
     prefix: PRODUCT_TYPE_PREFIX,
   })
-  const { product_types, count, isLoading, isError, error } =
-    useAdminProductTypes(
-      {
-        ...searchParams,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { product_types, count, isLoading, isError, error } = useProductTypes(
+    {
+      ...searchParams,
+    },
+    {
+      keepPreviousData: true,
+    }
+  )
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
     const newState: RowSelectionState =
@@ -424,7 +420,7 @@ const ProductCollectionConditionsTable = ({
     pageSize: PAGE_SIZE,
     prefix: PRODUCT_COLLECTION_PREFIX,
   })
-  const { collections, count, isLoading, isError, error } = useAdminCollections(
+  const { collections, count, isPending, isError, error } = useCollections(
     {
       ...searchParams,
     },
@@ -444,7 +440,7 @@ const ProductCollectionConditionsTable = ({
     if (added.length) {
       const addedCollections = (collections?.filter((p) =>
         added.includes(p.id!)
-      ) ?? []) as ProductCollection[]
+      ) ?? []) as ProductCollectionDTO[]
 
       if (addedCollections.length > 0) {
         const newConditions = addedCollections.map((p) => ({
@@ -511,7 +507,7 @@ const ProductCollectionConditionsTable = ({
         pagination
         search
         filters={filters}
-        isLoading={isLoading}
+        isLoading={isPending}
         layout="fill"
         orderBy={["title", "handle", "created_at", "updated_at"]}
         prefix={PRODUCT_COLLECTION_PREFIX}
@@ -534,6 +530,8 @@ const ProductTagConditionsTable = ({
     pageSize: PAGE_SIZE,
     prefix: PRODUCT_TAG_PREFIX,
   })
+
+  // TODO: replace this with useProductTags when its available
   const { product_tags, count, isLoading, isError, error } =
     useAdminProductTags(
       {

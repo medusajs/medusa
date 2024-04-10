@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { TaxRegionResponse } from "@medusajs/types"
-import { Form } from "../../../../components/common/form"
-import { PercentageInput } from "../../../../components/common/percentage-input"
+import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
-import { useCreateTaxRegion } from "../../../../hooks/api/tax-regions"
-import { countries } from "../../../../lib/countries"
+} from "../../../../../components/route-modal"
+import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
+import { countries } from "../../../../../lib/countries"
 
 export const TaxRegionCreateForm = ({
   taxRegion,
@@ -55,19 +55,17 @@ export const TaxRegionCreateForm = ({
         },
       },
       {
-        onSuccess: () =>
+        onSuccess: () => {
           taxRegion?.id
             ? handleSuccess(`/settings/taxes/${taxRegion.id}`)
-            : handleSuccess(`/settings/taxes`),
+            : handleSuccess(`/settings/taxes`)
+        },
       }
     )
   })
 
   return (
-    <RouteFocusModal.Form
-      form={form}
-      className="flex h-full flex-col overflow-hidden"
-    >
+    <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
@@ -131,6 +129,7 @@ export const TaxRegionCreateForm = ({
                           </Select.Content>
                         </Select>
                       </Form.Control>
+
                       <Form.ErrorMessage />
                     </Form.Item>
                   )
@@ -191,6 +190,10 @@ export const TaxRegionCreateForm = ({
                         }}
                       />
                     </Form.Control>
+
+                    <Form.Hint className="!mt-1">
+                      {t("taxRegions.fields.rate.hint")}
+                    </Form.Hint>
                   </Form.Item>
                 )
               }}
@@ -216,18 +219,24 @@ export const TaxRegionCreateForm = ({
               <Form.Field
                 control={form.control}
                 name="is_combinable"
-                render={({ field }) => {
+                render={({ field: { ref, onChange, value, ...field } }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>Is combinable?</Form.Label>
+                      <Form.Label>
+                        {t("taxRates.fields.isCombinable")}
+                      </Form.Label>
 
                       <Form.Control>
                         <Switch
                           {...field}
-                          checked={!!field.value}
-                          onCheckedChange={field.onChange}
+                          checked={value}
+                          onCheckedChange={onChange}
                         />
                       </Form.Control>
+
+                      <Form.Hint className="!mt-1">
+                        {t("taxRegions.fields.is_combinable.hint")}
+                      </Form.Hint>
                     </Form.Item>
                   )
                 }}

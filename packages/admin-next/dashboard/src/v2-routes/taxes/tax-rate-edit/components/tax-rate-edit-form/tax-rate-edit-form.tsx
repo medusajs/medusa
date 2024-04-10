@@ -15,25 +15,33 @@ import * as zod from "zod"
 import { TaxRateResponse, TaxRegionResponse } from "@medusajs/types"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import { Form } from "../../../../components/common/form"
-import { PercentageInput } from "../../../../components/common/percentage-input"
-import { SplitView } from "../../../../components/layout/split-view"
+import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
-import { useUpdateTaxRate } from "../../../../hooks/api/tax-rates"
-import { ConditionsDrawer } from "../../common/components/conditions-drawer"
-import { ConditionsOption } from "../../common/types"
-import {
-  Condition,
-  ConditionEntities,
-  DiscountConditionOperator,
-} from "../../tax-rate-create/components/condition"
+} from "../../../../../components/route-modal"
+import { useUpdateTaxRate } from "../../../../../hooks/api/tax-rates"
+import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
+import { ConditionEntities, Operators } from "../../../common/constants"
+import { ConditionsOption } from "../../../common/types"
+import { Condition } from "../../../tax-rate-create/components"
 
 const SelectedConditionTypesSchema = zod.object({
-  [ConditionEntities.PRODUCT]: zod.boolean().optional(),
+  [ConditionEntities.PRODUCT]: zod.boolean(),
+  [ConditionEntities.PRODUCT_TYPE]: zod.boolean(),
+  [ConditionEntities.PRODUCT_COLLECTION]: zod.boolean(),
+  [ConditionEntities.PRODUCT_TAG]: zod.boolean(),
+  [ConditionEntities.CUSTOMER_GROUP]: zod.boolean(),
 })
+
+const ResourceSchema = zod.array(
+  zod.object({
+    label: zod.string(),
+    value: zod.string(),
+  })
+)
 
 const UpdateTaxRateSchema = zod.object({
   name: zod.string().optional(),
@@ -41,13 +49,11 @@ const UpdateTaxRateSchema = zod.object({
   rate: zod.number().optional(),
   is_combinable: zod.boolean().optional(),
   selected_condition_types: SelectedConditionTypesSchema,
-  products: zod.array(
-    zod.object({
-      label: zod.string(),
-      value: zod.string(),
-    })
-  ),
-  products_operator: zod.enum(["in"]).default("in").optional(),
+  products: ResourceSchema,
+  product_types: ResourceSchema,
+  product_collections: ResourceSchema,
+  product_tags: ResourceSchema,
+  customer_groups: ResourceSchema,
 })
 
 export const TaxRateEditForm = ({
@@ -60,6 +66,18 @@ export const TaxRateEditForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const productRules = taxRate.rules?.filter((r) => r.reference == "product")
+  const productTypeRules = taxRate.rules?.filter(
+    (r) => r.reference == "product_type"
+  )
+  const productCollectionRules = taxRate.rules?.filter(
+    (r) => r.reference == "product_collection"
+  )
+  const productTagRules = taxRate.rules?.filter(
+    (r) => r.reference == "product_tag"
+  )
+  const customerGroupRules = taxRate.rules?.filter(
+    (r) => r.reference == "customer_group"
+  )
 
   const form = useForm<zod.infer<typeof UpdateTaxRateSchema>>({
     defaultValues: {
@@ -69,30 +87,60 @@ export const TaxRateEditForm = ({
       is_combinable: taxRate.is_combinable,
       selected_condition_types: {
         [ConditionEntities.PRODUCT]: !!productRules?.length,
+        [ConditionEntities.PRODUCT_TYPE]: !!productTypeRules?.length,
+        [ConditionEntities.PRODUCT_COLLECTION]:
+          !!productCollectionRules?.length,
+        [ConditionEntities.PRODUCT_TAG]: !!productTagRules?.length,
+        [ConditionEntities.CUSTOMER_GROUP]: !!customerGroupRules?.length,
       },
       products: productRules.map((r) => ({
         label: r.reference,
         value: r.reference_id,
       })),
-      products_operator: "in",
+      product_types: productTypeRules.map((r) => ({
+        label: r.reference,
+        value: r.reference_id,
+      })),
+      product_collections: productCollectionRules.map((r) => ({
+        label: r.reference,
+        value: r.reference_id,
+      })),
+      product_tags: productTagRules.map((r) => ({
+        label: r.reference,
+        value: r.reference_id,
+      })),
+      customer_groups: customerGroupRules.map((r) => ({
+        label: r.reference,
+        value: r.reference_id,
+      })),
     },
     resolver: zodResolver(UpdateTaxRateSchema),
   })
 
-  const { mutateAsync } = useUpdateTaxRate(taxRate.id)
+  const { mutateAsync, isPending } = useUpdateTaxRate(taxRate.id)
+
+  const buildRules = (key: string, data: { value: string }[]) =>
+    data?.map((product) => ({
+      reference: key,
+      reference_id: product.value,
+    })) || []
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const rules = [
+      ...buildRules("product", data.products),
+      ...buildRules("product_type", data.product_types),
+      ...buildRules("product_collection", data.product_collections),
+      ...buildRules("product_tag", data.product_tags),
+      ...buildRules("customer_group", data.customer_groups),
+    ]
+
     await mutateAsync(
       {
         name: data.name,
         code: data.code || undefined,
         rate: data.rate,
         is_combinable: data.is_combinable,
-        rules:
-          data.products?.map((product) => ({
-            reference: "product",
-            reference_id: product.value,
-          })) || [],
+        rules,
       },
       {
         onSuccess: () => handleSuccess(`/settings/taxes/${taxRegion.id}`),
@@ -100,7 +148,6 @@ export const TaxRateEditForm = ({
     )
   })
 
-  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [conditionType, setConditionType] = useState<ConditionEntities | null>(
@@ -116,6 +163,26 @@ export const TaxRateEditForm = ({
     name: "products",
   })
 
+  const selectedProductCollections = useWatch({
+    control: form.control,
+    name: "product_collections",
+  })
+
+  const selectedProductTypes = useWatch({
+    control: form.control,
+    name: "product_types",
+  })
+
+  const selectedProductTags = useWatch({
+    control: form.control,
+    name: "product_tags",
+  })
+
+  const selectedCustomerGroups = useWatch({
+    control: form.control,
+    name: "customer_groups",
+  })
+
   const handleSaveConditions = (type: ConditionEntities) => {
     return (options: ConditionsOption[]) => {
       form.setValue(type, options, {
@@ -127,17 +194,13 @@ export const TaxRateEditForm = ({
     }
   }
 
-  const selectedTypes = Object.keys(selectedConditionTypes)
+  const selectedTypes = Object.keys(selectedConditionTypes || {})
     .filter(
       (k) => selectedConditionTypes[k as keyof typeof selectedConditionTypes]
     )
     .sort() as ConditionEntities[]
 
-  const handleOpenDrawer = (
-    type: ConditionEntities,
-    operator: DiscountConditionOperator
-  ) => {
-    form.setValue(`${type}_operator`, operator)
+  const handleOpenDrawer = (type: ConditionEntities, operator: Operators) => {
     setConditionType(type)
     setOpen(true)
   }
@@ -161,6 +224,10 @@ export const TaxRateEditForm = ({
       "selected_condition_types",
       {
         [ConditionEntities.PRODUCT]: false,
+        [ConditionEntities.PRODUCT_TYPE]: false,
+        [ConditionEntities.PRODUCT_COLLECTION]: false,
+        [ConditionEntities.PRODUCT_TAG]: false,
+        [ConditionEntities.CUSTOMER_GROUP]: false,
       },
       {
         shouldDirty: true,
@@ -194,7 +261,7 @@ export const TaxRateEditForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
@@ -204,18 +271,18 @@ export const TaxRateEditForm = ({
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
               <div
-                className={clx("flex flex-col overflow-auto p-16", {
+                className={clx("flex flex-col overflow-auto", {
                   "items-center": !open,
                 })}
               >
-                <div className="flex flex-col gap-y-8 md:min-w-[400px]">
+                <div className="flex w-full max-w-[720px] flex-col gap-y-8 py-16">
                   <div>
                     <Heading className="text-left">
                       {t("taxRates.edit.title")}
                     </Heading>
 
                     <Text className="text-ui-fg-subtle txt-small">
-                      Edits tax rate for a tax region
+                      {t("taxRates.edit.description")}
                     </Text>
                   </div>
 
@@ -279,16 +346,20 @@ export const TaxRateEditForm = ({
                     <Form.Field
                       control={form.control}
                       name="is_combinable"
-                      render={({ field }) => {
+                      render={({
+                        field: { ref, onChange, value, ...field },
+                      }) => {
                         return (
                           <Form.Item>
-                            <Form.Label>Is combinable?</Form.Label>
+                            <Form.Label>
+                              {t("taxRates.fields.isCombinable")}
+                            </Form.Label>
 
                             <Form.Control>
                               <Switch
                                 {...field}
-                                checked={!!field.value}
-                                onCheckedChange={field.onChange}
+                                checked={value}
+                                onCheckedChange={onChange}
                               />
                             </Form.Control>
                           </Form.Item>
@@ -301,26 +372,21 @@ export const TaxRateEditForm = ({
                     <div className="flex flex-col gap-y-8">
                       {selectedTypes.length > 0 && (
                         <div className="flex flex-col items-start gap-y-4">
-                          {selectedTypes.map((t) => {
-                            if (t in (selectedConditionTypes || {})) {
-                              const field = form.getValues(t)
-                              const operator = form.getValues(`${t}_operator`)
+                          {selectedTypes.map((selectedType) => {
+                            if (
+                              selectedType in (selectedConditionTypes || {})
+                            ) {
+                              const field = form.getValues(selectedType) || []
 
-                              return field ? (
+                              return (
                                 <Condition
-                                  key={t}
-                                  type={t}
-                                  labels={field.map((f) => f.label)}
-                                  isInOperator={operator === "in"}
-                                  onClick={(op) => handleOpenDrawer(t, op)}
-                                />
-                              ) : (
-                                <Condition
-                                  key={t}
-                                  type={t}
-                                  isInOperator
-                                  labels={[]}
-                                  onClick={(op) => handleOpenDrawer(t, op)}
+                                  key={selectedType}
+                                  type={selectedType}
+                                  labels={field.map((f) => f.value)}
+                                  onClick={() => {
+                                    setConditionType(selectedType)
+                                    setOpen(true)
+                                  }}
                                 />
                               )
                             }
@@ -390,6 +456,26 @@ export const TaxRateEditForm = ({
                 product={{
                   selected: selectedProducts,
                   onSave: handleSaveConditions(ConditionEntities.PRODUCT),
+                }}
+                productCollection={{
+                  selected: selectedProductCollections,
+                  onSave: handleSaveConditions(
+                    ConditionEntities.PRODUCT_COLLECTION
+                  ),
+                }}
+                productType={{
+                  selected: selectedProductTypes,
+                  onSave: handleSaveConditions(ConditionEntities.PRODUCT_TYPE),
+                }}
+                productTag={{
+                  selected: selectedProductTags,
+                  onSave: handleSaveConditions(ConditionEntities.PRODUCT_TAG),
+                }}
+                customerGroup={{
+                  selected: selectedCustomerGroups,
+                  onSave: handleSaveConditions(
+                    ConditionEntities.CUSTOMER_GROUP
+                  ),
                 }}
                 selected={conditionType}
               />

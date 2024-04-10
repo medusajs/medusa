@@ -1,10 +1,10 @@
-import { useTranslation } from "react-i18next"
-import { useMemo } from "react"
-import { createColumnHelper } from "@tanstack/react-table"
-import { ProductCollection } from "@medusajs/medusa"
+import { ProductCollectionDTO } from "@medusajs/types"
 import { Checkbox } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
-const columnHelper = createColumnHelper<ProductCollection>()
+const columnHelper = createColumnHelper<ProductCollectionDTO>()
 
 export const useProductCollectionConditionsTableColumns = () => {
   const { t } = useTranslation()

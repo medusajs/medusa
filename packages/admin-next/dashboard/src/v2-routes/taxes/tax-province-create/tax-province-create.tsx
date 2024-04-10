@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import * as zod from "zod"
 import { RouteFocusModal } from "../../../components/route-modal"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
-import { TaxRegionCreateForm } from "./components"
+import { TaxRegionCreateForm } from "../common/components/tax-region-create-form"
 
 const CreateTaxProvinceForm = zod.object({
   province_code: zod.string(),

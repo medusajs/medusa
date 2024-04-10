@@ -16,28 +16,37 @@ import * as zod from "zod"
 import { TaxRegionResponse } from "@medusajs/types"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import { Form } from "../../../../components/common/form"
-import { PercentageInput } from "../../../../components/common/percentage-input"
-import { SplitView } from "../../../../components/layout/split-view"
+import { Form } from "../../../../../components/common/form"
+import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
-import { useCreateTaxRate } from "../../../../hooks/api/tax-rates"
-import { useTaxRegions } from "../../../../hooks/api/tax-regions"
-import { ConditionsDrawer } from "../../common/components/conditions-drawer"
-import { ConditionsOption } from "../../common/types"
+} from "../../../../../components/route-modal"
+import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
+import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
+import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
+import { ConditionEntities } from "../../../common/constants"
 import {
-  Condition,
-  ConditionEntities,
-  DiscountConditionOperator,
-} from "./condition"
+  ConditionEntitiesValues,
+  ConditionsOption,
+} from "../../../common/types"
+import { Condition } from "../condition"
 
-const SelectedConditionTypesSchema = zod
-  .object({
-    [ConditionEntities.PRODUCT]: zod.boolean().optional(),
+const SelectedConditionTypesSchema = zod.object({
+  [ConditionEntities.PRODUCT]: zod.boolean(),
+  [ConditionEntities.PRODUCT_COLLECTION]: zod.boolean(),
+  [ConditionEntities.PRODUCT_TAG]: zod.boolean(),
+  [ConditionEntities.PRODUCT_TYPE]: zod.boolean(),
+  [ConditionEntities.CUSTOMER_GROUP]: zod.boolean(),
+})
+
+const ConditionSchema = zod.array(
+  zod.object({
+    label: zod.string(),
+    value: zod.string(),
   })
-  .optional()
+)
 
 const CreateTaxRateSchema = zod.object({
   tax_region_id: zod.string(),
@@ -46,13 +55,11 @@ const CreateTaxRateSchema = zod.object({
   rate: zod.number(),
   is_combinable: zod.boolean().default(false),
   selected_condition_types: SelectedConditionTypesSchema,
-  products: zod.array(
-    zod.object({
-      label: zod.string(),
-      value: zod.string(),
-    })
-  ),
-  products_operator: zod.enum(["in", "not_in"]).optional(),
+  products: ConditionSchema,
+  product_types: ConditionSchema,
+  product_collections: ConditionSchema,
+  product_tags: ConditionSchema,
+  customer_groups: ConditionSchema,
 })
 
 export const TaxRateCreateForm = ({
@@ -67,8 +74,16 @@ export const TaxRateCreateForm = ({
     defaultValues: {
       selected_condition_types: {
         [ConditionEntities.PRODUCT]: true,
+        [ConditionEntities.PRODUCT_TYPE]: false,
+        [ConditionEntities.PRODUCT_COLLECTION]: false,
+        [ConditionEntities.PRODUCT_TAG]: false,
+        [ConditionEntities.CUSTOMER_GROUP]: false,
       },
       products: [],
+      product_types: [],
+      product_collections: [],
+      product_tags: [],
+      customer_groups: [],
     },
     resolver: zodResolver(CreateTaxRateSchema),
   })
@@ -78,7 +93,7 @@ export const TaxRateCreateForm = ({
     province_code: { $ne: "null" },
   })
 
-  const { mutateAsync } = useCreateTaxRate()
+  const { mutateAsync, isPending } = useCreateTaxRate()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -100,7 +115,6 @@ export const TaxRateCreateForm = ({
     )
   })
 
-  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [conditionType, setConditionType] = useState<ConditionEntities | null>(
@@ -116,7 +130,27 @@ export const TaxRateCreateForm = ({
     name: "products",
   })
 
-  const handleSaveConditions = (type: ConditionEntities) => {
+  const selectedProductCollections = useWatch({
+    control: form.control,
+    name: "product_collections",
+  })
+
+  const selectedProductTypes = useWatch({
+    control: form.control,
+    name: "product_types",
+  })
+
+  const selectedProductTags = useWatch({
+    control: form.control,
+    name: "product_tags",
+  })
+
+  const selectedCustomerGroups = useWatch({
+    control: form.control,
+    name: "customer_groups",
+  })
+
+  const handleSaveConditions = (type: ConditionEntitiesValues) => {
     return (options: ConditionsOption[]) => {
       form.setValue(type, options, {
         shouldDirty: true,
@@ -127,23 +161,15 @@ export const TaxRateCreateForm = ({
     }
   }
 
-  const selectedTypes = Object.keys(selectedConditionTypes)
+  const selectedTypes = Object.keys(selectedConditionTypes || {})
     .filter(
       (k) => selectedConditionTypes[k as keyof typeof selectedConditionTypes]
     )
     .sort() as ConditionEntities[]
 
-  const handleOpenDrawer = (
-    type: ConditionEntities,
-    operator: DiscountConditionOperator
-  ) => {
-    form.setValue(`${type}_operator`, operator)
-    setConditionType(type)
-    setOpen(true)
-  }
-
   const toggleSelectedConditionTypes = (type: ConditionEntities) => {
     const state = { ...form.getValues().selected_condition_types }
+
     if (state[type]) {
       delete state[type]
     } else {
@@ -161,6 +187,10 @@ export const TaxRateCreateForm = ({
       "selected_condition_types",
       {
         [ConditionEntities.PRODUCT]: false,
+        [ConditionEntities.PRODUCT_TYPE]: false,
+        [ConditionEntities.PRODUCT_COLLECTION]: false,
+        [ConditionEntities.PRODUCT_TAG]: false,
+        [ConditionEntities.CUSTOMER_GROUP]: false,
       },
       {
         shouldDirty: true,
@@ -194,7 +224,8 @@ export const TaxRateCreateForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
@@ -204,18 +235,18 @@ export const TaxRateCreateForm = ({
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content>
               <div
-                className={clx("flex flex-col overflow-auto p-16", {
+                className={clx("flex flex-col overflow-auto py-16", {
                   "items-center": !open,
                 })}
               >
-                <div className="flex flex-col gap-y-8 md:min-w-[400px]">
+                <div className="flex w-full max-w-[720px] flex-col gap-y-8">
                   <div>
                     <Heading className="text-left">
                       {t("taxRates.create.title")}
                     </Heading>
 
                     <Text className="text-ui-fg-subtle txt-small">
-                      Creates a tax rate overrides for a tax region
+                      {t("taxRates.create.description")}
                     </Text>
                   </div>
 
@@ -311,16 +342,18 @@ export const TaxRateCreateForm = ({
                     <Form.Field
                       control={form.control}
                       name="is_combinable"
-                      render={({ field }) => {
+                      render={({ field: { value, onChange, ...field } }) => {
                         return (
                           <Form.Item>
-                            <Form.Label>Is combinable?</Form.Label>
+                            <Form.Label>
+                              {t("taxRates.fields.isCombinable")}
+                            </Form.Label>
 
                             <Form.Control>
                               <Switch
                                 {...field}
-                                checked={!!field.value}
-                                onCheckedChange={field.onChange}
+                                checked={value}
+                                onCheckedChange={onChange}
                               />
                             </Form.Control>
                           </Form.Item>
@@ -332,26 +365,19 @@ export const TaxRateCreateForm = ({
                   <div className="flex flex-col gap-y-8">
                     {selectedTypes.length > 0 && (
                       <div className="flex flex-col items-start gap-y-4">
-                        {selectedTypes.map((t) => {
-                          if (t in (selectedConditionTypes || {})) {
-                            const field = form.getValues(t)
-                            const operator = form.getValues(`${t}_operator`)
+                        {selectedTypes.map((selectedType) => {
+                          if (selectedType in (selectedConditionTypes || {})) {
+                            const field = form.getValues(selectedType) || []
 
-                            return field ? (
+                            return (
                               <Condition
-                                key={t}
-                                type={t}
+                                key={selectedType}
+                                type={selectedType}
                                 labels={field.map((f) => f.label)}
-                                isInOperator={operator === "in"}
-                                onClick={(op) => handleOpenDrawer(t, op)}
-                              />
-                            ) : (
-                              <Condition
-                                key={t}
-                                type={t}
-                                isInOperator
-                                labels={[]}
-                                onClick={(op) => handleOpenDrawer(t, op)}
+                                onClick={() => {
+                                  setConditionType(selectedType)
+                                  setOpen(true)
+                                }}
                               />
                             )
                           }
@@ -373,7 +399,9 @@ export const TaxRateCreateForm = ({
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Content
-                          onInteractOutside={() => setIsDropdownOpen(false)}
+                          onInteractOutside={(e) => {
+                            setIsDropdownOpen(true)
+                          }}
                         >
                           {Object.values(ConditionEntities).map((type) => (
                             <DropdownMenu.CheckboxItem
@@ -420,6 +448,26 @@ export const TaxRateCreateForm = ({
                 product={{
                   selected: selectedProducts,
                   onSave: handleSaveConditions(ConditionEntities.PRODUCT),
+                }}
+                productCollection={{
+                  selected: selectedProductCollections,
+                  onSave: handleSaveConditions(
+                    ConditionEntities.PRODUCT_COLLECTION
+                  ),
+                }}
+                productType={{
+                  selected: selectedProductTypes,
+                  onSave: handleSaveConditions(ConditionEntities.PRODUCT_TYPE),
+                }}
+                productTag={{
+                  selected: selectedProductTags,
+                  onSave: handleSaveConditions(ConditionEntities.PRODUCT_TAG),
+                }}
+                customerGroup={{
+                  selected: selectedCustomerGroups,
+                  onSave: handleSaveConditions(
+                    ConditionEntities.CUSTOMER_GROUP
+                  ),
                 }}
                 selected={conditionType}
               />

@@ -5,3 +5,7 @@ export enum ConditionEntities {
   PRODUCT_TAG = "product_tags",
   CUSTOMER_GROUP = "customer_groups",
 }
+
+export enum Operators {
+  IN = "in",
+}

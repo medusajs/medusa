@@ -12,7 +12,6 @@ import {
   useDeleteTaxRegion,
   useTaxRegions,
 } from "../../../../../hooks/api/tax-regions"
-import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { getCountryByIso2 } from "../../../../../lib/countries"
@@ -30,7 +29,6 @@ export const TaxRegionListTable = () => {
     parent_id: "null",
   })
 
-  const filters = useRegionTableFilters()
   const columns = useColumns()
 
   const { table } = useDataTable({
@@ -50,11 +48,9 @@ export const TaxRegionListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("taxes.domain")}</Heading>
-          <Button size="small" variant="secondary" asChild>
-              <Link to="/settings/taxes/create">
-                  {t("actions.create")}
-              </Link>
-          </Button>
+        <Button size="small" variant="secondary" asChild>
+          <Link to="/settings/taxes/create">{t("actions.create")}</Link>
+        </Button>
       </div>
       <DataTable
         table={table}
