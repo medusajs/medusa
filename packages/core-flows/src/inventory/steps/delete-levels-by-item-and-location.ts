@@ -35,9 +35,11 @@ export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
     }
 
     const deletedIds = items.map((i) => i.id)
-    await service.softDeleteInventoryLevels(deletedIds)
+    const deleted = await service.softDeleteInventoryLevels(deletedIds)
 
-    return new StepResponse(void 0, deletedIds)
+    return new StepResponse({
+      ModuleRegistrationName.INVENTORY: deleted
+    }, deletedIds)
   },
   async (prevLevelIds, { container }) => {
     if (!prevLevelIds?.length) {
