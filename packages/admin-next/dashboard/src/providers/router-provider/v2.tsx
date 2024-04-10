@@ -1,11 +1,3 @@
-import { AdminCustomersRes } from "@medusajs/client-types"
-import { Spinner } from "@medusajs/icons"
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminPromotionRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
@@ -13,14 +5,24 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
 import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
+import { InventoryItemRes } from "../../types/api-responses"
 import { MainLayout } from "../../components/layout-v2/main-layout"
-import { SettingsLayout } from "../../components/layout/settings-layout"
-import { useMe } from "../../hooks/api/users"
 import { PriceListRes } from "../../types/api-responses"
 import { SearchProvider } from "../search-provider"
+import { SettingsLayout } from "../../components/layout/settings-layout"
 import { SidebarProvider } from "../sidebar-provider"
+import { Spinner } from "@medusajs/icons"
+import { useMe } from "../../hooks/api/users"
 
 export const ProtectedRoute = () => {
   const { user, isLoading } = useMe()
@@ -388,6 +390,73 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/customer-groups/customer-group-add-customers"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/inventory/inventory-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/inventory/inventory-detail"),
+                handle: {
+                  crumb: (data: InventoryItemRes) =>
+                    data.inventory_item.title ?? data.inventory_item.sku,
+                },
+                children: [
+                  {
+                    // TODO: edit item
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                      ),
+                  },
+                  {
+                    // TODO: edit item attributes
+                    path: "attributes",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
+                      ),
+                  },
+                  {
+                    // TODO: manage locations
+                    path: "locations",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/manage-locations"
+                      ),
+                  },
+                  {
+                    // TODO: adjust item level
+                    path: "locations/:location_id",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/adjust-inventory"
+                      ),
+                  },
+                  {
+                    // TODO: create reservation
+                    path: "reservations",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: edit reservation
+                    path: "reservations/:reservation_id",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
                   },
                 ],
               },
