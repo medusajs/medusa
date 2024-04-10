@@ -15,7 +15,8 @@ export const bulkCreateDeleteLevelsWorkflowId =
 export const bulkCreateDeleteLevelsWorkflow = createWorkflow(
   bulkCreateDeleteLevelsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<InventoryLevelDTO[]> => {
-    deleteInventoryLevelsFromItemAndLocationsStep(input.deletes)
+    const deleted = deleteInventoryLevelsFromItemAndLocationsStep(input.deletes)
+    removeRemoteLinkStep(deleted)
 
     return createInventoryLevelsStep(input.creates)
   }
