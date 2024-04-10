@@ -1,5 +1,4 @@
 import { AdminCustomersRes } from "@medusajs/client-types"
-import { Spinner } from "@medusajs/icons"
 import {
   AdminCollectionsRes,
   AdminProductsRes,
@@ -13,39 +12,13 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { Outlet, RouteObject } from "react-router-dom"
+
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { MainLayout } from "../../components/layout-v2/main-layout"
+import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { useMe } from "../../hooks/api/users"
 import { PriceListRes } from "../../types/api-responses"
-import { SearchProvider } from "../search-provider"
-import { SidebarProvider } from "../sidebar-provider"
-
-export const ProtectedRoute = () => {
-  const { user, isLoading } = useMe()
-  const location = useLocation()
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner className="text-ui-fg-interactive animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
-  return (
-    <SidebarProvider>
-      <SearchProvider>
-        <Outlet />
-      </SearchProvider>
-    </SidebarProvider>
-  )
-}
 
 /**
  * Experimental V2 routes.
@@ -404,9 +377,6 @@ export const v2Routes: RouteObject[] = [
       {
         path: "/settings",
         element: <SettingsLayout />,
-        handle: {
-          crumb: () => "Settings",
-        },
         children: [
           {
             index: true,
