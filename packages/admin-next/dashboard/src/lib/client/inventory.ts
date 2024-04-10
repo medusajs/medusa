@@ -1,6 +1,8 @@
 import {
   AdminInventoryItemListResponse,
   AdminInventoryItemResponse,
+  AdminInventoryLevelResponse,
+  AdminInventoryLevelListResponse,
 } from "@medusajs/types"
 import {
   CreateInventoryItemReq,
@@ -58,7 +60,7 @@ async function listInventoryItemLevels(
   id: string,
   query?: Record<string, any>
 ) {
-  return getRequest<InventoryItemLocationLevelsRes>(
+  return getRequest<AdminInventoryLevelListResponse>(
     `/admin/inventory-items/${id}/location-levels`,
     query
   )
@@ -78,7 +80,7 @@ async function updateInventoryLevel(
   locationId: string,
   payload: UpdateInventoryLevelReq
 ) {
-  return postRequest<AdminInventoryItemResponse>(
+  return postRequest<AdminInventoryLevelResponse>(
     `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`,
     payload
   )
@@ -108,7 +110,7 @@ async function batchPostLocationLevels(
   inventoryItemId: string,
   payload: InventoryItemLocationBatch
 ) {
-  return postRequest<InventoryItemLocationLevelsRes>(
+  return postRequest<AdminInventoryLevelResponse>(
     `/admin/inventory-items/${inventoryItemId}/location-levels/batch/combi`,
     payload
   )

@@ -1,4 +1,3 @@
-import { AdminInventoryItemResponse, InventoryNext } from "@medusajs/types"
 import {
   InventoryItemDeleteRes,
   InventoryItemListRes,
@@ -21,6 +20,7 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 
+import { InventoryNext } from "@medusajs/types"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
