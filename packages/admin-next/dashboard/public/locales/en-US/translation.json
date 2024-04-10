@@ -796,11 +796,16 @@
   "profile": {
     "domain": "Profile",
     "manageYourProfileDetails": "Manage your profile details",
-    "editProfile": "Edit profile",
-    "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
-    "language": "Language",
-    "usageInsights": "Usage insights"
+    "fields": {
+      "languageLabel": "Language",
+      "usageInsightsLabel": "Usage insights"
+    },
+    "edit": {
+      "header": "Edit Profile",
+      "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
+      "languagePlaceholder": "Select language",
+      "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    }
   },
   "users": {
     "domain": "Users",
