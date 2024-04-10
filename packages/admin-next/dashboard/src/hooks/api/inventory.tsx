@@ -171,7 +171,7 @@ export const useUpdateInventoryItemLevel = (
   inventoryItemId: string,
   locationId: string,
   options?: UseMutationOptions<
-    AdminInventoryItemResponse,
+    AdminInventoryLevelResponse,
     Error,
     UpdateInventoryLevelReq
   >
