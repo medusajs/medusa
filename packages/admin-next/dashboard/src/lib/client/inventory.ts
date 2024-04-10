@@ -1,8 +1,8 @@
 import {
   AdminInventoryItemListResponse,
   AdminInventoryItemResponse,
-  AdminInventoryLevelResponse,
   AdminInventoryLevelListResponse,
+  AdminInventoryLevelResponse,
 } from "@medusajs/types"
 import {
   CreateInventoryItemReq,
@@ -10,14 +10,13 @@ import {
   UpdateInventoryItemReq,
   UpdateInventoryLevelReq,
 } from "../../types/api-payloads"
-import { deleteRequest, deleteRequest, getRequest, postRequest } from "./common"
 import {
   InventoryItemLevelDeleteRes,
-  InventoryItemLocationLevelsRes,
   ReservationItemDeleteRes,
   ReservationItemListRes,
   ReservationItemRes,
 } from "../../types/api-responses"
+import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveInventoryItem(id: string, query?: Record<string, any>) {
   return getRequest<AdminInventoryItemResponse>(
