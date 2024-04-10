@@ -297,6 +297,9 @@ medusaIntegrationTestRunner({
 
           const shippingOptionId = response.data.shipping_option.id
 
+          const eurPrice = response.data.shipping_option.prices.find(
+            (p) => p.currency_code === "eur"
+          )
           const updateShippingOptionPayload = {
             id: shippingOptionId,
             name: "Updated shipping option",
@@ -308,7 +311,7 @@ medusaIntegrationTestRunner({
                 amount: 10,
               },
               {
-                id: response.data.shipping_option.prices[1].id,
+                id: eurPrice.id,
                 amount: 10000,
               },
             ],
