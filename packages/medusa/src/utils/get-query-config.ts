@@ -1,4 +1,8 @@
-import { getSetDifference, stringToSelectRelationObject } from "@medusajs/utils"
+import {
+  getSetDifference,
+  isPresent,
+  stringToSelectRelationObject,
+} from "@medusajs/utils"
 import { pick } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BaseEntity } from "../interfaces"
@@ -191,7 +195,7 @@ export function prepareListQuery<
     }
   }
 
-  const finalOrder = Object.keys(orderBy).length ? orderBy : undefined
+  const finalOrder = isPresent(orderBy) ? orderBy : undefined
   return {
     listConfig: {
       select: select.length ? select : undefined,
