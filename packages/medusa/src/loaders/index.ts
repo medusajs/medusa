@@ -7,7 +7,8 @@ import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   isString,
-  MedusaV2Flag, promiseAll,
+  MedusaV2Flag,
+  promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -102,10 +103,11 @@ async function loadMedusaV2({
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
-    configModule,
-    container,
-  })
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } =
+    await loadMedusaApp({
+      configModule,
+      container,
+    })
 
   let expressShutdown = async () => {}
 
@@ -149,12 +151,12 @@ async function loadMedusaV2({
   await createDefaultsWorkflow(container).run()
 
   const shutdown = async () => {
-    await promiseAll([
-      container.dispose(),
-      pgConnection?.context?.destroy(),
-      expressShutdown(),
-      medusaAppOnApplicationShutdown()
-    ])
+    await medusaAppOnApplicationShutdown(),
+      await promiseAll([
+        container.dispose(),
+        pgConnection?.context?.destroy(),
+        expressShutdown(),
+      ])
   }
 
   return {
@@ -211,7 +213,11 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  const { shutdown: redisShutdown } = await redisLoader({ container, configModule, logger: Logger })
+  const { shutdown: redisShutdown } = await redisLoader({
+    container,
+    configModule,
+    logger: Logger,
+  })
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
@@ -271,17 +277,21 @@ export default async ({
   track("MODULES_INIT_STARTED")
 
   // Move before services init once all modules are migrated and do not rely on core resources anymore
-  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
-    configModule,
-    container,
-  })
+  const { onApplicationShutdown: medusaAppOnApplicationShutdown } =
+    await loadMedusaApp({
+      configModule,
+      container,
+    })
 
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
-  const { shutdown: expressShutdown } = await expressLoader({ app: expressApp, configModule })
+  const { shutdown: expressShutdown } = await expressLoader({
+    app: expressApp,
+    configModule,
+  })
   await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
@@ -339,13 +349,14 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   async function shutdown() {
+    await medusaAppOnApplicationShutdown()
+
     await promiseAll([
       container.dispose(),
       dbConnection?.destroy(),
       pgConnection?.context?.destroy(),
       redisShutdown(),
       expressShutdown(),
-      medusaAppOnApplicationShutdown(),
     ])
   }
 
