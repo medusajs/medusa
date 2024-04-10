@@ -6,12 +6,12 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth_getauth). All its method
  * are available in the JS Client under the `medusa.admin.auth` property.
- * 
+ *
  * The methods in this class allow admin users to manage their session, such as login or log out.
  * You can send authenticated requests for an admin user either using the Cookie header, their API token, or the JWT Token.
  * When you log the admin user in using the {@link createSession} method, the JS client will automatically attach the
  * cookie header in all subsequent requests.
- * 
+ *
  * Related Guide: [How to implement user profiles](https://docs.medusajs.com/modules/users/admin/manage-profile).
  */
 class AdminAuthResource extends BaseResource {
@@ -19,7 +19,7 @@ class AdminAuthResource extends BaseResource {
    * Get the currently logged in user's details. Can also be used to check if there is an authenticated user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminAuthRes>} Resolves to the logged-in user's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -41,7 +41,7 @@ class AdminAuthResource extends BaseResource {
    * the user is still authorized to perform admin functionalities in other API Routes.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<void>} Resolves when user is logged out successfully.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -60,7 +60,7 @@ class AdminAuthResource extends BaseResource {
    * @param {AdminPostAuthReq} payload - The credentials of the user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminAuthRes>} Resolves to the user's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -85,7 +85,7 @@ class AdminAuthResource extends BaseResource {
    * @param {AdminPostAuthReq} payload - The credentials of the user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminBearerAuthRes>} Resolves to the access token of the user, if they're authenticated successfully.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -105,9 +105,22 @@ class AdminAuthResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
       .then((res) => {
         JwtTokenManager.registerJwt(res.access_token, "admin");
-        
         return res
       });
+  }
+
+  /**
+   * Set a store JWT token to be sent with each request.
+   * @param access_token - The JWT token to set.
+   * @returns void
+   *
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * medusa.admin.auth.setToken("my-super-access-token")
+   */
+  setToken(access_token: string): void {
+    JwtTokenManager.registerJwt(access_token, "admin");
   }
 }
 

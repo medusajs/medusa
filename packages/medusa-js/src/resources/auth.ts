@@ -11,12 +11,12 @@ import BaseResource from "./base"
 /**
  * This class is used to send requests to [Store Auth API Routes](https://docs.medusajs.com/api/store#auth). All its method
  * are available in the JS Client under the `medusa.auth` property.
- * 
+ *
  * The methods in this class allows you to manage a customer's session, such as login or log out.
  * You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.
  * When you log the customer in using the {@link authenticate} method, the JS client will automatically attach the
  * cookie header in all subsequent requests.
- * 
+ *
  * Related Guide: [How to implement customer profiles in your storefront](https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles).
  */
 class AuthResource extends BaseResource {
@@ -25,7 +25,7 @@ class AuthResource extends BaseResource {
    * @param {StorePostAuthReq} payload - The credentials of the customer to authenticate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreAuthRes>} Resolves to the customer's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -46,7 +46,7 @@ class AuthResource extends BaseResource {
    * Log out the customer and remove their authentication session. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<void>} Resolves when customer is logged out successfully.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -55,7 +55,7 @@ class AuthResource extends BaseResource {
    *   // customer logged out successfully
    * })
    */
-   deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
+  deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
     const path = `/store/auth`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -65,7 +65,7 @@ class AuthResource extends BaseResource {
    * This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreAuthRes>} Resolves to the customer's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -85,7 +85,7 @@ class AuthResource extends BaseResource {
    * @param {string} email - The email to check.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreGetAuthEmailRes>} Resolves to the result of the check.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -101,7 +101,7 @@ class AuthResource extends BaseResource {
    * @param {AdminPostAuthReq} payload - The credentials of the customer to authenticate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreBearerAuthRes>} Resolves to the access token of the customer, if they're authenticated successfully.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -115,15 +115,28 @@ class AuthResource extends BaseResource {
    */
   getToken(
     payload: StorePostAuthReq,
-    customHeaders: Record<string, any> = {}
+    customHeaders: Record<string, any> = {},
   ): ResponsePromise<StoreBearerAuthRes> {
     const path = `/store/auth/token`
     return this.client.request("POST", path, payload, {}, customHeaders)
       .then((res) => {
-        JwtTokenManager.registerJwt(res.access_token, "store");
-        
+        JwtTokenManager.registerJwt(res.access_token, "store")
         return res
-      });
+      })
+  }
+
+  /**
+   * Set a store JWT token to be sent with each request.
+   * @param access_token - The JWT token to set.
+   * @returns void
+   *
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * medusa.auth.setToken("my-super-access-token")
+   */
+  setToken(access_token: string): void {
+    JwtTokenManager.registerJwt(access_token, "store")
   }
 }
 
