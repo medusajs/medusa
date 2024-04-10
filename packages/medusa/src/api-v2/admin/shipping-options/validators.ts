@@ -3,9 +3,13 @@ import {
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
 import { z } from "zod"
-import { createSelectParams } from "../../utils/validators"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export const AdminGetShippingOptionParams = createSelectParams()
+export const AdminListShippingOptionParams = createFindParams({
+  offset: 0,
+  limit: 20,
+})
 
 /**
  * SHIPPING OPTIONS RULES

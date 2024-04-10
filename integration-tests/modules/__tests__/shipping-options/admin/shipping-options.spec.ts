@@ -364,6 +364,54 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("DELETE /admin/shipping-options/:id", () => {
+        it("should delete a shipping option successfully", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1000,
+              },
+              {
+                region_id: region.id,
+                amount: 1000,
+              },
+            ],
+            rules: [shippingOptionRule],
+          }
+
+          const response = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          const shippingOptionId = response.data.shipping_option.id
+
+          await api.delete(
+            `/admin/shipping-options/${shippingOptionId}`,
+            adminHeaders
+          )
+
+          const shippingOptions = await api.get(
+            `/admin/shipping-options`,
+            adminHeaders
+          )
+
+          expect(shippingOptions.data.shipping_options).toHaveLength(0)
+        })
+      })
     })
   },
 })

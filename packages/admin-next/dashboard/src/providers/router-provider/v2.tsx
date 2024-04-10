@@ -8,6 +8,7 @@ import {
 } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
+  AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
   SalesChannelDTO,
   UserDTO,
@@ -299,7 +300,7 @@ export const v2Routes: RouteObject[] = [
                   {
                     path: "products/add",
                     lazy: () =>
-                      import("../../v2-routes/pricing/pricing-products-add"),
+                      import("../../v2-routes/pricing/pricing-products"),
                   },
                   {
                     path: "products/edit",
@@ -338,6 +339,55 @@ export const v2Routes: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomerGroupResponse) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                      ),
                   },
                 ],
               },
@@ -589,17 +639,39 @@ export const v2Routes: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () =>
-                  import(
-                    "../../v2-routes/api-key-management/api-key-management-list"
-                  ),
+                element: <Outlet />,
                 children: [
                   {
-                    path: "create",
+                    path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-create"
+                        "../../v2-routes/api-key-management/api-key-management-list"
                       ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "secret",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },
@@ -623,10 +695,10 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    path: "add-sales-channels",
+                    path: "sales-channels",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-add-sales-channels"
+                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
                       ),
                   },
                 ],
