@@ -99,6 +99,11 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/products/product-media"),
                   },
                   {
+                    path: "prices",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-prices"),
+                  },
+                  {
                     path: "options/create",
                     lazy: () =>
                       import("../../v2-routes/products/product-create-option"),

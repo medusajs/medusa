@@ -58,6 +58,7 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -157,6 +158,7 @@
     "organization": "Organize",
     "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
+    "editPrices": "Edit prices",
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
