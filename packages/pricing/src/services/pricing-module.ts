@@ -23,7 +23,7 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
+  isDefined, isPresent,
   isString,
   MedusaContext,
   MedusaError,
@@ -44,12 +44,12 @@ import {
   RuleType,
 } from "@models"
 
-import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { PriceSetIdPrefix } from "../models/price-set"
-import { PriceListIdPrefix } from "../models/price-list"
-import { UpdatePriceSetInput } from "src/types/services"
+import {PriceListService, RuleTypeService} from "@services"
+import {validatePriceListDates} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {PriceSetIdPrefix} from "../models/price-set"
+import {PriceListIdPrefix} from "../models/price-list"
+import {UpdatePriceSetInput} from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -367,11 +367,13 @@ export default class PricingModuleService<
             }
           }
         )
+        const hasRulesInput = isPresent(price.rules)
         delete price.rules
         return {
           ...price,
           price_set_id: priceSet.id,
-          price_rules: rules,
+          price_rules: hasRulesInput ? rules : undefined,
+          rules_count: hasRulesInput ? rules.length : undefined
         }
       })
 
