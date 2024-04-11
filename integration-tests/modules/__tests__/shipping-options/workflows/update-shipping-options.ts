@@ -144,6 +144,14 @@ medusaIntegrationTestRunner({
 
         const [createdShippingOption] = await remoteQuery(remoteQueryObject)
 
+        const usdPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "usd"
+        })
+
+        const dkkPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "dkk"
+        })
+
         const updateData: UpdateShippingOptionsWorkflowInput = {
           id: createdShippingOption.id,
           name: "Test shipping option",
@@ -154,14 +162,14 @@ medusaIntegrationTestRunner({
             description: "Manual Type Description",
           },
           prices: [
-            // We keep the first price as is
-            // update the second price to 1000
-            // delete the third price
-            // create a new one instead
-            createdShippingOption.prices[0],
+            // We keep the usd price as is
+            // update the dkk price to 100
+            // delete the third price eur
+            // create a new eur one instead
+            usdPrice,
             {
-              ...createdShippingOption.prices[2],
-              amount: 1000,
+              ...dkkPrice,
+              amount: 100,
             },
             {
               region_id: region.id,
@@ -215,7 +223,7 @@ medusaIntegrationTestRunner({
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "dkk",
-            amount: 1000,
+            amount: 100,
           })
         )
       })
