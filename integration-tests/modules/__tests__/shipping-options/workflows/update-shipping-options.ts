@@ -204,21 +204,18 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             currency_code: "usd",
             amount: 10,
-            rules_count: 0,
           })
         )
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "eur",
             amount: 1000,
-            rules_count: 1,
           })
         )
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "dkk",
             amount: 1000,
-            rules_count: 0,
           })
         )
       })

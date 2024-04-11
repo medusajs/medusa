@@ -358,7 +358,7 @@ export default class PricingModuleService<
 
     return data.map((priceSet) => {
       const prices = priceSet.prices?.map((price) => {
-        const rules = Object.values(price.rules ?? {}).map(
+        const rules = Object.entries(price.rules ?? {}).map(
           ([attribute, value]) => {
             return {
               price_set_id: priceSet.id,
