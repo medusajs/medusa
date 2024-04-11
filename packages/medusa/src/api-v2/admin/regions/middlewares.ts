@@ -1,12 +1,12 @@
 import * as QueryConfig from "./query-config"
 
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
   AdminGetRegionsParams,
   AdminGetRegionsRegionParams,
   AdminPostRegionsRegionReq,
   AdminPostRegionsReq,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"

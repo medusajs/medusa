@@ -24,11 +24,13 @@ export const AdminCustomersParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     email: z.union([z.string(), z.array(z.string())]).optional(),
-    groups: z.union([
-      AdminCustomerGroupInCustomerParams,
-      z.string(),
-      z.array(z.string()),
-    ]).optional(),
+    groups: z
+      .union([
+        AdminCustomerGroupInCustomerParams,
+        z.string(),
+        z.array(z.string()),
+      ])
+      .optional(),
     company_name: z.union([z.string(), z.array(z.string())]).optional(),
     first_name: z.union([z.string(), z.array(z.string())]).optional(),
     last_name: z.union([z.string(), z.array(z.string())]).optional(),

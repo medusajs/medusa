@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { extendedFindParamsMixin, FindParams } from "../../../types/common"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
 export class AdminGetRegionsRegionParams extends FindParams {}

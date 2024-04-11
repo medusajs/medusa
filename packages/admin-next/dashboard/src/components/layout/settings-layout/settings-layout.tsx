@@ -64,7 +64,7 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   return useMemo(
     () => [
       {
-        label: t("apiKeyManagement.domainTitle"),
+        label: t("apiKeyManagement.domain.apiKeys"),
         to: "/settings/api-key-management",
       },
       {

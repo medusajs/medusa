@@ -2,8 +2,6 @@ import { BaseFilterable } from "../../dal"
 import { PromotionRuleValueDTO } from "./promotion-rule-value"
 
 /**
- * @interface
- *
  * The possible operators to use in a promotion rule.
  */
 export type PromotionRuleOperatorValues =
