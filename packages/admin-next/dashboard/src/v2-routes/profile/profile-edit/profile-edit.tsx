@@ -16,7 +16,7 @@ export const ProfileEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header className="capitalize">
-        <Heading>{t("profile.editProfile")}</Heading>
+        <Heading>{t("profile.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isLoading && user && (
         <EditProfileForm user={user} usageInsights={false} />

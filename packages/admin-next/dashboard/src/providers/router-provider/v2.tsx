@@ -18,7 +18,7 @@ import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { PriceListRes } from "../../types/api-responses"
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 /**
  * Experimental V2 routes.
@@ -361,6 +361,73 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/customer-groups/customer-group-add-customers"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/inventory/inventory-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/inventory/inventory-detail"),
+                handle: {
+                  crumb: (data: InventoryItemRes) =>
+                    data.inventory_item.title ?? data.inventory_item.sku,
+                },
+                children: [
+                  {
+                    // TODO: edit item
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                      ),
+                  },
+                  {
+                    // TODO: edit item attributes
+                    path: "attributes",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
+                      ),
+                  },
+                  {
+                    // TODO: manage locations
+                    path: "locations",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/manage-locations"
+                      ),
+                  },
+                  {
+                    // TODO: adjust item level
+                    path: "locations/:location_id",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/adjust-inventory"
+                      ),
+                  },
+                  {
+                    // TODO: create reservation
+                    path: "reservations",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: edit reservation
+                    path: "reservations/:reservation_id",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
                   },
                 ],
               },

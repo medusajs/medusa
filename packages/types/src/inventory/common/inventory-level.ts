@@ -1,7 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 
-import { NumericalComparisonOperator } from "../../common"
-
 /**
  * The inventory level details.
  */

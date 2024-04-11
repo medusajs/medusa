@@ -80,7 +80,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Item>
                     <Form.Label>{t("fields.firstName")}</Form.Label>
                     <Form.Control>
-                      <Input {...field} size="small" />
+                      <Input {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -93,7 +93,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Item>
                     <Form.Label>{t("fields.lastName")}</Form.Label>
                     <Form.Control>
-                      <Input {...field} size="small" />
+                      <Input {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -106,18 +106,16 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
               render={({ field: { ref, ...field } }) => (
                 <Form.Item className="gap-y-4">
                   <div>
-                    <Form.Label>{t("profile.language")}</Form.Label>
-                    <Form.Hint>{t("profile.languageHint")}</Form.Hint>
+                    <Form.Label>{t("profile.fields.languageLabel")}</Form.Label>
+                    <Form.Hint>{t("profile.edit.languageHint")}</Form.Hint>
                   </div>
                   <div>
                     <Form.Control>
-                      <Select
-                        {...field}
-                        onValueChange={field.onChange}
-                        size="small"
-                      >
+                      <Select {...field} onValueChange={field.onChange}>
                         <Select.Trigger ref={ref} className="py-1 text-[13px]">
-                          <Select.Value placeholder="Choose language">
+                          <Select.Value
+                            placeholder={t("profile.edit.languagePlaceholder")}
+                          >
                             {
                               sortedLanguages.find(
                                 (language) => language.code === field.value
@@ -148,7 +146,9 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
               render={({ field: { value, onChange, ...rest } }) => (
                 <Form.Item>
                   <div className="flex items-center justify-between">
-                    <Form.Label>{t("profile.usageInsights")}</Form.Label>
+                    <Form.Label>
+                      {t("profile.fields.usageInsightsLabel")}
+                    </Form.Label>
                     <Form.Control>
                       <Switch
                         {...rest}
@@ -160,7 +160,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Hint>
                     <span>
                       <Trans
-                        i18nKey="profile.userInsightsHint"
+                        i18nKey="profile.edit.usageInsightsHint"
                         components={[
                           <a
                             key="hint-link"
