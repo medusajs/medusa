@@ -1,5 +1,5 @@
 import { Plus, Trash } from "@medusajs/icons"
-import { CurrencyDTO, StoreDTO } from "@medusajs/types"
+import { CurrencyDTO } from "@medusajs/types"
 import {
   Checkbox,
   CommandBar,
@@ -7,20 +7,21 @@ import {
   Heading,
   usePrompt,
 } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
-import { useV2UpdateStore } from "../../../../../../lib/api-v2"
-import { useV2Currencies } from "../../../../../../lib/api-v2/currencies"
+import { ExtendedStoreDTO } from "../../../../../../types/api-responses"
 import { useCurrenciesTableColumns } from "../../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../../common/hooks/use-currencies-table-query"
 
 type StoreCurrencySectionProps = {
-  store: StoreDTO
+  store: ExtendedStoreDTO
 }
 
 const PAGE_SIZE = 10
@@ -30,13 +31,13 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const { currencies, count, isLoading, isError, error } = useV2Currencies(
+  const { currencies, count, isLoading, isError, error } = useCurrencies(
     {
       code: store.supported_currency_codes,
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -60,7 +61,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     },
   })
 
-  const { mutateAsync } = useV2UpdateStore(store.id)
+  const { mutateAsync } = useUpdateStore(store.id)
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -155,10 +156,7 @@ const CurrencyActions = ({
   currency: CurrencyDTO
   currencyCodes: string[]
 }) => {
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/stores/${storeId}`,
-    adminStoreKeys.details()
-  )
+  const { mutateAsync } = useUpdateStore(storeId)
 
   const { t } = useTranslation()
   const prompt = usePrompt()

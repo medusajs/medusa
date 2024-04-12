@@ -1,17 +1,19 @@
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
+
 import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
+
+const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
-const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
-
 medusaIntegrationTestRunner({
-  env,
+  env: {
+    MEDUSA_FF_MEDUSA_V2: true,
+  },
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("GET /admin/customers", () => {
       let appContainer
@@ -48,6 +50,45 @@ medusaIntegrationTestRunner({
             first_name: "Test",
             last_name: "Test",
             email: "test@me.com",
+          }),
+        ])
+      })
+
+      it("should get all customers in specific customer group and its count", async () => {
+        const vipGroup = await customerModuleService.createCustomerGroup({
+          name: "VIP",
+        })
+
+        const [john] = await customerModuleService.create([
+          {
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@example.com",
+          },
+          {
+            first_name: "Jane",
+            last_name: "Smith",
+            email: "jane.smith@example.com",
+          },
+        ])
+
+        await customerModuleService.addCustomerToGroup({
+          customer_id: john.id,
+          customer_group_id: vipGroup.id,
+        })
+
+        const response = await api.get(
+          `/admin/customers?limit=20&offset=0&groups%5B0%5D=${vipGroup.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.customers).toEqual([
+          expect.objectContaining({
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@example.com",
           }),
         ])
       })

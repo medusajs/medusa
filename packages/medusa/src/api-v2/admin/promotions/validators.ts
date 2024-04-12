@@ -29,6 +29,7 @@ import { XorConstraint } from "../../../types/validators/xor"
 import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
+export class AdminGetPromotionRules extends FindParams {}
 
 export class AdminGetPromotionsRuleValueParams extends extendedFindParamsMixin({
   limit: 100,
@@ -74,6 +75,23 @@ export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   updated_at?: DateComparisonOperator
 }
 
+export class AdminPostCreatePromotionRule {
+  @IsEnum(PromotionRuleOperator)
+  operator: PromotionRuleOperator
+
+  @IsOptional()
+  @IsString()
+  description?: string | null
+
+  @IsNotEmpty()
+  @IsString()
+  attribute: string
+
+  @IsArray()
+  @Type(() => String)
+  values: string[]
+}
+
 export class AdminPostPromotionsReq {
   @IsNotEmpty()
   @IsString()
@@ -103,25 +121,8 @@ export class AdminPostPromotionsReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules?: PromotionRule[]
-}
-
-export class PromotionRule {
-  @IsEnum(PromotionRuleOperator)
-  operator: PromotionRuleOperator
-
-  @IsOptional()
-  @IsString()
-  description?: string | null
-
-  @IsNotEmpty()
-  @IsString()
-  attribute: string
-
-  @IsArray()
-  @Type(() => String)
-  values: string[]
+  @Type(() => AdminPostCreatePromotionRule)
+  rules?: AdminPostCreatePromotionRule[]
 }
 
 export class AdminPostApplicationMethodsReq {
@@ -151,14 +152,14 @@ export class AdminPostApplicationMethodsReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  target_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  target_rules?: AdminPostCreatePromotionRule[]
 
   @ValidateIf((data) => data.type === PromotionType.BUYGET)
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  buy_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  buy_rules?: AdminPostCreatePromotionRule[]
 
   @ValidateIf((data) => data.type === PromotionType.BUYGET)
   @IsNotEmpty()
@@ -199,14 +200,14 @@ export class AdminPostApplicationMethodsMethodReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  target_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  target_rules?: AdminPostCreatePromotionRule[]
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  buy_rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  buy_rules?: AdminPostCreatePromotionRule[]
 
   @IsOptional()
   @IsNumber()
@@ -249,31 +250,31 @@ export class AdminPostPromotionsPromotionReq {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules?: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  rules?: AdminPostCreatePromotionRule[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchAddReq {
+export class AdminPostBatchAddRules {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PromotionRule)
-  rules: PromotionRule[]
+  @Type(() => AdminPostCreatePromotionRule)
+  rules: AdminPostCreatePromotionRule[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchRemoveReq {
+export class AdminPostBatchRemoveRules {
   @ArrayNotEmpty()
   @IsString({ each: true })
   rule_ids: string[]
 }
 
-export class AdminPostPromotionsPromotionRulesBatchUpdateReq {
+export class AdminPostBatchUpdateRules {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => UpdatePromotionRule)
-  rules: UpdatePromotionRule[]
+  @Type(() => AdminPostUpdatePromotionRule)
+  rules: AdminPostUpdatePromotionRule[]
 }
 
-export class UpdatePromotionRule {
+export class AdminPostUpdatePromotionRule {
   @IsNotEmpty()
   @IsString()
   id: string
@@ -289,10 +290,10 @@ export class UpdatePromotionRule {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  attribute: string
+  attribute?: string
 
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  values: string[]
+  values?: string[]
 }

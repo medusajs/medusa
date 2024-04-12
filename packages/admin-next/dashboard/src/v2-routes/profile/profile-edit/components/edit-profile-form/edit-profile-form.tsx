@@ -1,18 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Select, Switch } from "@medusajs/ui"
-import { adminUserKeys, useAdminCustomPost } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { UserDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateUser } from "../../../../../hooks/api/users"
 import { languages } from "../../../../../i18n/config"
-import { queryClient } from "../../../../../lib/medusa"
-import { UserDTO } from "@medusajs/types"
 
 type EditProfileProps = {
   user: Partial<Omit<UserDTO, "password_hash">>
@@ -48,10 +47,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
     a.display_name.localeCompare(b.display_name)
   )
 
-  const { mutateAsync, isLoading } = useAdminCustomPost(
-    `/admin/users/${user.id}`,
-    [...adminUserKeys.lists(), ...adminUserKeys.detail(user.id!)]
-  )
+  const { mutateAsync, isPending } = useUpdateUser(user.id!)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -60,12 +56,6 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
         last_name: values.last_name,
       },
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries([
-            ...adminUserKeys.lists(),
-            ...adminUserKeys.detail(user.id!),
-          ])
-        },
         onError: () => {
           return
         },
@@ -90,7 +80,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Item>
                     <Form.Label>{t("fields.firstName")}</Form.Label>
                     <Form.Control>
-                      <Input {...field} size="small" />
+                      <Input {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -103,7 +93,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Item>
                     <Form.Label>{t("fields.lastName")}</Form.Label>
                     <Form.Control>
-                      <Input {...field} size="small" />
+                      <Input {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -116,18 +106,16 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
               render={({ field: { ref, ...field } }) => (
                 <Form.Item className="gap-y-4">
                   <div>
-                    <Form.Label>{t("profile.language")}</Form.Label>
-                    <Form.Hint>{t("profile.languageHint")}</Form.Hint>
+                    <Form.Label>{t("profile.fields.languageLabel")}</Form.Label>
+                    <Form.Hint>{t("profile.edit.languageHint")}</Form.Hint>
                   </div>
                   <div>
                     <Form.Control>
-                      <Select
-                        {...field}
-                        onValueChange={field.onChange}
-                        size="small"
-                      >
+                      <Select {...field} onValueChange={field.onChange}>
                         <Select.Trigger ref={ref} className="py-1 text-[13px]">
-                          <Select.Value placeholder="Choose language">
+                          <Select.Value
+                            placeholder={t("profile.edit.languagePlaceholder")}
+                          >
                             {
                               sortedLanguages.find(
                                 (language) => language.code === field.value
@@ -158,7 +146,9 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
               render={({ field: { value, onChange, ...rest } }) => (
                 <Form.Item>
                   <div className="flex items-center justify-between">
-                    <Form.Label>{t("profile.usageInsights")}</Form.Label>
+                    <Form.Label>
+                      {t("profile.fields.usageInsightsLabel")}
+                    </Form.Label>
                     <Form.Control>
                       <Switch
                         {...rest}
@@ -170,7 +160,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                   <Form.Hint>
                     <span>
                       <Trans
-                        i18nKey="profile.userInsightsHint"
+                        i18nKey="profile.edit.usageInsightsHint"
                         components={[
                           <a
                             key="hint-link"
@@ -196,7 +186,7 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

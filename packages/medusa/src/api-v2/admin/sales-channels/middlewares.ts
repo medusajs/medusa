@@ -1,6 +1,7 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetSalesChannelsParams,
@@ -24,6 +25,16 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetSalesChannelsParams,
         QueryConfig.listTransformQueryConfig
       ),
+      maybeApplyLinkFilter({
+        entryPoint: "sales_channel_location",
+        resourceId: "sales_channel_id",
+        filterableField: "location_id",
+      }),
+      maybeApplyLinkFilter({
+        entryPoint: "publishable_api_key_sales_channel",
+        resourceId: "sales_channel_id",
+        filterableField: "publishable_key_id",
+      }),
     ],
   },
   {

@@ -7,7 +7,6 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  ValidateIf,
   ValidateNested,
 } from "class-validator"
 import { FindParams } from "../../../types/common"
@@ -111,31 +110,32 @@ export class AdminPostPriceListsPriceListPricesBatchAddReq {
   prices: AdminPriceListPricesCreateReq[]
 }
 
+export class AdminPostPriceListPriceBatchUpdate {
+  @IsOptional()
+  @IsArray()
+  prices: AdminPostPriceListPriceUpdate[]
+}
+
 export class AdminPostPriceListsPriceListPricesBatchRemoveReq {
   @IsArray()
   @IsString({ each: true })
   ids: string[]
 }
 
-export class AdminPriceListPricesUpdateReq {
-  @IsOptional()
+export class AdminPostPriceListPriceUpdate {
   @IsString()
   id: string
 
+  @IsString()
+  variant_id: string
+
   @IsOptional()
-  @ValidateIf((object) => !object.id)
   @IsString()
   currency_code?: string
 
   @IsOptional()
-  @ValidateIf((object) => !object.id)
   @IsInt()
   amount?: number
-
-  @IsOptional()
-  @ValidateIf((object) => !object.id)
-  @IsString()
-  variant_id: string
 
   @IsOptional()
   @IsInt()

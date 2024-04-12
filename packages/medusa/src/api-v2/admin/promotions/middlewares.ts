@@ -5,10 +5,10 @@ import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminGetPromotionsRuleValueParams,
+  AdminPostBatchAddRules,
+  AdminPostBatchRemoveRules,
+  AdminPostBatchUpdateRules,
   AdminPostPromotionsPromotionReq,
-  AdminPostPromotionsPromotionRulesBatchAddReq,
-  AdminPostPromotionsPromotionRulesBatchRemoveReq,
-  AdminPostPromotionsPromotionRulesBatchUpdateReq,
   AdminPostPromotionsReq,
 } from "./validators"
 
@@ -46,6 +46,16 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["GET"],
+    matcher: "/admin/promotions/:id/:rule_type",
+    middlewares: [
+      transformQuery(
+        AdminGetPromotionsPromotionParams,
+        QueryConfig.retrieveNewTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/promotions/:id",
     middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
@@ -53,45 +63,37 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+    middlewares: [transformBody(AdminPostBatchAddRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/target-rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+    middlewares: [transformBody(AdminPostBatchAddRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/buy-rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
+    middlewares: [transformBody(AdminPostBatchAddRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/rules/batch/update",
-    middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchUpdateReq),
-    ],
+    middlewares: [transformBody(AdminPostBatchUpdateRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/rules/batch/remove",
-    middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
-    ],
+    middlewares: [transformBody(AdminPostBatchRemoveRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/target-rules/batch/remove",
-    middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
-    ],
+    middlewares: [transformBody(AdminPostBatchRemoveRules)],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id/buy-rules/batch/remove",
-    middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
-    ],
+    middlewares: [transformBody(AdminPostBatchRemoveRules)],
   },
   {
     method: ["GET"],

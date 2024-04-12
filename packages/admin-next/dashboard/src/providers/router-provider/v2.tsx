@@ -1,40 +1,24 @@
-import { Navigate, RouteObject, useLocation } from "react-router-dom"
-import { SalesChannelDTO, UserDTO } from "@medusajs/types"
+import { AdminCustomersRes } from "@medusajs/client-types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
+import {
+  AdminApiKeyResponse,
+  AdminCustomerGroupResponse,
+  AdminProductCategoryResponse,
+  SalesChannelDTO,
+  UserDTO,
+} from "@medusajs/types"
+import { Outlet, RouteObject } from "react-router-dom"
 
-import { AdminCollectionsRes } from "@medusajs/medusa"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { Outlet } from "react-router-dom"
-import { SearchProvider } from "../search-provider"
+import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { SidebarProvider } from "../sidebar-provider"
-import { Spinner } from "@medusajs/icons"
-import { useV2Session } from "../../lib/api-v2"
-
-export const ProtectedRoute = () => {
-  const { user, isLoading } = useV2Session()
-  const location = useLocation()
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner className="text-ui-fg-interactive animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
-  return (
-    <SidebarProvider>
-      <SearchProvider>
-        <Outlet />
-      </SearchProvider>
-    </SidebarProvider>
-  )
-}
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 /**
  * Experimental V2 routes.
@@ -67,6 +51,104 @@ export const v2Routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           {
+            path: "/products",
+            handle: {
+              crumb: () => "Products",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/products/product-detail"),
+                handle: {
+                  crumb: (data: AdminProductsRes) => data.product.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/products/product-edit"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-attributes"),
+                  },
+                  {
+                    path: "organization",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-organization"),
+                  },
+                  {
+                    path: "media",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-media"),
+                  },
+                  {
+                    path: "prices",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-prices"),
+                  },
+                  {
+                    path: "options/create",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-create-option"),
+                  },
+                  {
+                    path: "options/:option_id/edit",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-edit-option"),
+                  },
+                  {
+                    path: "variants/create",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-create-variant"),
+                  },
+                  {
+                    path: "variants/:variant_id/edit",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-edit-variant"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/categories",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/categories/category-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/categories/category-detail"),
+                handle: {
+                  crumb: (data: AdminProductCategoryResponse) =>
+                    data.product_category.name,
+                },
+              },
+            ],
+          },
+          {
             path: "/orders",
             handle: {
               crumb: () => "Orders",
@@ -87,6 +169,34 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-detail"),
+                handle: {
+                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-edit-details"
+                      ),
+                  },
+                  {
+                    path: "add-to-campaign",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/promotions/promotion-add-campaign"
+                      ),
+                  },
+                  {
+                    path: ":ruleType/edit",
+                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                  },
+                ],
               },
             ],
           },
@@ -132,6 +242,202 @@ export const v2Routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                handle: {
+                  crumb: (data: PriceListRes) => data.price_list.title,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                  },
+                  {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-configuration"),
+                  },
+                  {
+                    path: "products/add",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products"),
+                  },
+                  {
+                    path: "products/edit",
+                    lazy: () =>
+                      import("../../v2-routes/pricing/pricing-products-prices"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customers",
+            handle: {
+              crumb: () => "Customers",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/customer-groups/customer-group-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminCustomerGroupResponse) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/inventory/inventory-list"),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/inventory/inventory-detail"),
+                handle: {
+                  crumb: (data: InventoryItemRes) =>
+                    data.inventory_item.title ?? data.inventory_item.sku,
+                },
+                children: [
+                  {
+                    // TODO: edit item
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                      ),
+                  },
+                  {
+                    // TODO: edit item attributes
+                    path: "attributes",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
+                      ),
+                  },
+                  {
+                    // TODO: manage locations
+                    path: "locations",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/manage-locations"
+                      ),
+                  },
+                  {
+                    // TODO: adjust item level
+                    path: "locations/:location_id",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/inventory/inventory-detail/components/adjust-inventory"
+                      ),
+                  },
+                  {
+                    // TODO: create reservation
+                    path: "reservations",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                  {
+                    // TODO: edit reservation
+                    path: "reservations/:reservation_id",
+                    lazy: () =>
+                      import("../../v2-routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],
@@ -143,9 +449,6 @@ export const v2Routes: RouteObject[] = [
       {
         path: "/settings",
         element: <SettingsLayout />,
-        handle: {
-          crumb: () => "Settings",
-        },
         children: [
           {
             index: true,
@@ -161,6 +464,43 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "edit",
                 lazy: () => import("../../v2-routes/profile/profile-edit"),
+              },
+            ],
+          },
+          {
+            path: "regions",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Regions",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/regions/region-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../v2-routes/regions/region-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/regions/region-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../v2-routes/regions/region-edit"),
+                  },
+                  {
+                    path: "countries/add",
+                    lazy: () =>
+                      import("../../v2-routes/regions/region-add-countries"),
+                  },
+                ],
               },
             ],
           },
@@ -329,6 +669,95 @@ export const v2Routes: RouteObject[] = [
                     return data.workflow.name
                   },
                 },
+              },
+            ],
+          },
+          {
+            path: "api-key-management",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "API Key Management",
+            },
+            children: [
+              {
+                path: "",
+                element: <Outlet />,
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "secret",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminApiKeyResponse) => {
+                    return data.api_key.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "taxes",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Taxes",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/taxes/tax-region-list"),
+                children: [],
               },
             ],
           },

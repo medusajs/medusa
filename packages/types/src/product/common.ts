@@ -237,7 +237,7 @@ export interface ProductVariantDTO {
    *
    * @expandable
    */
-  options: ProductVariantOptionDTO[]
+  options: ProductOptionValueDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
@@ -554,45 +554,6 @@ export interface ProductOptionDTO {
   deleted_at?: string | Date
 }
 
-export interface ProductVariantOptionDTO {
-  /**
-   * The ID of the product variant option.
-   */
-  id: string
-  /**
-   * The value of the product variant option.
-   *
-   * @expandable
-   */
-  option_value?: ProductOptionValueDTO | null
-  /**
-   * The value of the product variant option id.
-   */
-  option_value_id?: string | null
-  /**
-   * The associated product variant.
-   *
-   * @expandable
-   */
-  variant?: ProductVariantDTO | null
-  /**
-   * The associated product variant id.
-   */
-  variant_id?: string | null
-  /**
-   * When the product variant option was created.
-   */
-  created_at: string | Date
-  /**
-   * When the product variant option was updated.
-   */
-  updated_at: string | Date
-  /**
-   * When the product variant option was deleted.
-   */
-  deleted_at?: string | Date
-}
-
 /**
  * @interface
  *
@@ -764,13 +725,17 @@ export interface FilterableProductProps
 export interface FilterableProductTagProps
   extends BaseFilterable<FilterableProductTagProps> {
   /**
+   * Search through the tags' values.
+   */
+  q?: string
+  /**
    * The IDs to filter product tags by.
    */
   id?: string | string[]
   /**
    * The value to filter product tags by.
    */
-  value?: string
+  value?: string | string[]
 }
 
 /**
@@ -783,6 +748,10 @@ export interface FilterableProductTagProps
  */
 export interface FilterableProductTypeProps
   extends BaseFilterable<FilterableProductTypeProps> {
+  /**
+   * Search through the types' values.
+   */
+  q?: string
   /**
    * The IDs to filter product types by.
    */
@@ -804,6 +773,10 @@ export interface FilterableProductTypeProps
  */
 export interface FilterableProductOptionProps
   extends BaseFilterable<FilterableProductOptionProps> {
+  /**
+   * Search through the options' titles.
+   */
+  q?: string
   /**
    * The IDs to filter product options by.
    */
@@ -828,6 +801,10 @@ export interface FilterableProductOptionProps
  */
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
+  /**
+   * Search through the collections' titles.
+   */
+  q?: string
   /**
    * The IDs to filter product collections by.
    */
@@ -854,6 +831,10 @@ export interface FilterableProductCollectionProps
  */
 export interface FilterableProductVariantProps
   extends BaseFilterable<FilterableProductVariantProps> {
+  /**
+   * Search through the title and different code attributes on the variant
+   */
+  q?: string
   /**
    * The IDs to filter product variants by.
    */
@@ -915,6 +896,14 @@ export interface FilterableProductCategoryProps
    * Whether to include children of retrieved product categories.
    */
   include_descendants_tree?: boolean
+  /**
+   * Whether to include parents of retrieved product categories.
+   */
+  include_ancestors_tree?: boolean
+  /**
+   * Filter product categories based on searchable fields
+   */
+  q?: string
 }
 
 /**

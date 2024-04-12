@@ -385,6 +385,38 @@ describe("mikroOrmRepository", () => {
       )
     })
 
+    it("should clear the parent entity from the one-to-many relation", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ title: "en2-1", entity1: null }],
+      }
+
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+      const listedEntities = await manager1().find({
+        where: { id: "1" },
+        options: { populate: ["entity2"] },
+      })
+
+      expect(listedEntities).toHaveLength(1)
+      expect(listedEntities[0]).toEqual(
+        expect.objectContaining({
+          id: "1",
+          title: "en1",
+        })
+      )
+      expect(listedEntities[0].entity2.getItems()).toHaveLength(1)
+      expect(listedEntities[0].entity2.getItems()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "en2-1",
+          }),
+        ])
+      )
+    })
+
     it("should only update the parent entity of a one-to-many if relation is not included", async () => {
       const entity1 = {
         id: "1",
@@ -624,8 +656,7 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            // title: "en3-1",
-            title: "newen3-1",
+            title: "en3-1",
           }),
           expect.objectContaining({
             title: "en3-4",
@@ -712,8 +743,7 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            // title: "en3-1",
-            title: "newen3-1",
+            title: "en3-1",
           }),
           expect.objectContaining({
             title: "en3-4",
@@ -785,31 +815,34 @@ describe("mikroOrmRepository", () => {
       )
     })
 
-    // it("should correctly handle many-to-many upserts with a uniqueness constriant on a non-primary key", async () => {
-    //   const entity1 = {
-    //     id: "1",
-    //     title: "en1",
-    //     entity3: [{ title: "en3-1" }, { title: "en3-2" }] as any,
-    //   }
+    it("should correctly handle many-to-many upserts with a uniqueness constriant on a non-primary key", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity3: [
+          { id: "4", title: "en3-1" },
+          { id: "5", title: "en3-2" },
+        ] as any,
+      }
 
-    //   await manager1().upsertWithReplace([entity1], {
-    //     relations: ["entity3"],
-    //   })
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity3"],
+      })
 
-    //   await manager1().upsertWithReplace([{ ...entity1, id: "2" }], {
-    //     relations: ["entity3"],
-    //   })
+      await manager1().upsertWithReplace([{ ...entity1, id: "2" }], {
+        relations: ["entity3"],
+      })
 
-    //   const listedEntities = await manager1().find({
-    //     where: {},
-    //     options: { populate: ["entity3"] },
-    //   })
+      const listedEntities = await manager1().find({
+        where: {},
+        options: { populate: ["entity3"] },
+      })
 
-    //   expect(listedEntities).toHaveLength(2)
-    //   expect(listedEntities[0].entity3.getItems()).toEqual(
-    //     listedEntities[1].entity3.getItems()
-    //   )
-    // })
+      expect(listedEntities).toHaveLength(2)
+      expect(listedEntities[0].entity3.getItems()).toEqual(
+        listedEntities[1].entity3.getItems()
+      )
+    })
   })
 
   describe("error mapping", () => {

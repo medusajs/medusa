@@ -71,6 +71,10 @@ module.exports = {
             resolve: "@medusajs/stock-location-next",
             options: {},
           },
+          [Modules.INVENTORY]: {
+            resolve: "@medusajs/inventory-next",
+            options: {},
+          },
           [Modules.PRODUCT]: true,
           [Modules.PRICING]: true,
           [Modules.PROMOTION]: true,
@@ -84,6 +88,7 @@ module.exports = {
           [Modules.TAX]: true,
           [Modules.CURRENCY]: true,
           [Modules.PAYMENT]: true,
+          [Modules.FULFILLMENT]: true,
         }
       : {}),
   },

@@ -30,6 +30,8 @@
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
+    "countOfTotalSelected": "{{count}} of {{total}} selected",
+    "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
@@ -56,6 +58,7 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -155,6 +158,7 @@
     "organization": "Organize",
     "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
+    "editPrices": "Edit prices",
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
@@ -236,14 +240,35 @@
       },
       "weight": {
         "label": "Weight"
+      },
+      "options": {
+        "label": "Product options",
+        "hint": "Options are used to define the color, size, etc. of the product",
+        "add": "Add option",
+        "optionTitle": "Option title",
+        "variations": "Variations (comma-separated)"
+      },
+      "variants": {
+        "label": "Product variants",
+        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+      },
+      "mid_code": {
+        "label": "Mid code"
+      },
+      "hs_code": {
+        "label": "HS code"
       }
     },
     "variant": {
       "edit": {
         "header": "Edit Variant"
       },
+      "create": {
+        "header": "Create Variant"
+      },
       "inventory": {
         "header": "Stock & Inventory",
+        "editItemDetails": "Edit item details",
         "manageInventoryLabel": "Manage inventory",
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
@@ -272,11 +297,28 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "organization": {
+      "header": "Organization",
+      "pathLabel": "Path",
+      "pathExpandTooltip": "Show full path",
+      "childrenLabel": "Children"
+    },
+    "fields": {
+      "visibility": "Visibility",
+      "active": "Active",
+      "inactive": "Inactive",
+      "internal": "Internal",
+      "public": "Public"
+    }
   },
   "inventory": {
     "domain": "Inventory",
     "reserved": "Reserved",
+    "available": "Available",
+    "locationLevels": "Location levels",
+    "associatedVariants": "Associated variants",
+    "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
@@ -595,15 +637,132 @@
     "domain": "Promotions",
     "fields": {
       "method": "Method",
-      "campaign": "Campaign"
+      "type": "Type",
+      "value_type": "Value Type",
+      "value": "Value",
+      "campaign": "Campaign",
+      "allocation": "Allocation",
+      "conditions": {
+        "rules": {
+          "title": "Who can use this code?",
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "target-rules": {
+          "title": "What needs to be in the cart to unlock the promotion?",
+          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+        },
+        "buy-rules": {
+          "title": "What will the promotion be applied to?",
+          "description": "The promotion will be applied to items that match these conditions"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edit Promotion Details",
+      "rules": {
+        "title": "Edit rules"
+      },
+      "target-rules": {
+        "title": "Edit target rules"
+      },
+      "buy-rules": {
+        "title": "Edit buy rules"
+      }
+    },
+    "addToCampaign": {
+      "title": "Add Promotion To Campaign"
+    },
+    "form": {
+      "campaign": {
+        "existing": {
+          "title": "Existing Campaign",
+          "description": "Would you like to add promotion to an existing campaign?"
+        },
+        "new": {
+          "title": "New Campaign",
+          "description": "Would you like to create a new campaign with this promotion?"
+        }
+      },
+      "status": {
+        "title": "Status"
+      },
+      "method": {
+        "code": {
+          "title": "Promotion code",
+          "description": "Customers must enter this at checkout"
+        },
+        "automatic": {
+          "title": "Automatic",
+          "description": "Customers will automatically see this during checkout"
+        }
+      },
+      "allocation": {
+        "each": {
+          "title": "Each",
+          "description": "Applies value on each product"
+        },
+        "across": {
+          "title": "Across",
+          "description": "Applies value proportionally across products"
+        }
+      },
+      "code": {
+        "title": "Code",
+        "description": "The code your customers will enter during checkout."
+      },
+      "value": {
+        "title": "Value"
+      },
+      "value_type": {
+        "fixed": {
+          "title": "Fixed amount",
+          "description": "eg. 100"
+        },
+        "percentage": {
+          "title": "Percentage",
+          "description": "eg. 8%"
+        }
+      }
     },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type"
   },
+  "campaigns": {
+    "domain": "Campaigns",
+    "details": "Campaign details",
+    "fields": {
+      "name": "Name",
+      "identifier": "Identifier",
+      "start_date": "Start date",
+      "end_date": "End date"
+    },
+    "budget": {
+      "details": "Campaign budget",
+      "fields": {
+        "type": "Type",
+        "currency": "Currency",
+        "limit": "Limit",
+        "used": "Used"
+      }
+    }
+  },
   "pricing": {
     "domain": "Pricing",
-    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "create": {
+      "header": "Create Price List",
+      "hint": "Create a new price list to manage the prices of your products."
+    },
+    "edit": {
+      "header": "Edit Price List"
+    },
+    "configuration": {
+      "header": "Configuration",
+      "editHeader": "Edit Price List Configuration"
+    },
+    "warnings": {
+      "delete": "You are about to delete the price list {{name}}. This action cannot be undone."
+    },
     "status": {
       "draft": "Draft",
       "expired": "Expired",
@@ -614,15 +773,6 @@
       "sale": "Sale",
       "override": "Override"
     },
-    "settings": {
-      "typeHint": "Choose the type of price list you want to create.",
-      "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
-      "editPriceListTitle": "Edit Price List",
-      "customerGroupsLabel": "Customer groups",
-      "priceOverridesLabel": "Price overrides",
-      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
-    },
     "products": {
       "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
       "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
@@ -630,16 +780,40 @@
     "prices": {
       "addPrices": "Add prices",
       "editPrices": "Edit prices"
+    },
+    "table": {
+      "pricesHeader": "Prices"
+    },
+    "fields": {
+      "typeHint": "Choose the type of price you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "startDateLabel": "Price list has a start date?",
+      "startDateHint": "Schedule the price list to activate in the future.",
+      "endDateLabel": "Price list has an expiry date?",
+      "endDateHint": "Schedule the price list to deactivate in the future.",
+      "customerAvailabilityLabel": "Customer availability",
+      "customerAvailabilityHint": "Choose which customer groups the price list should be applied to.",
+      "customerAvailabilityNoSelectionLabel": "No customer groups selected",
+      "priceOverridesLabel": "Price overrides"
+    },
+    "actions": {
+      "addCustomerGroups": "Add customer groups"
     }
   },
   "profile": {
     "domain": "Profile",
     "manageYourProfileDetails": "Manage your profile details",
-    "editProfile": "Edit profile",
-    "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
-    "language": "Language",
-    "usageInsights": "Usage insights"
+    "fields": {
+      "languageLabel": "Language",
+      "usageInsightsLabel": "Usage insights"
+    },
+    "edit": {
+      "header": "Edit Profile",
+      "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
+      "languagePlaceholder": "Select language",
+      "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    }
   },
   "users": {
     "domain": "Users",
@@ -648,7 +822,7 @@
     "inviteUserHint": "Invite a new user to your store.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
-    "revokeInviteWarning": "You are about to revoke the invite for {{email}}. This action cannot be undone.",
+    "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
     "expiredOnDate": "Expired on {{date}}",
@@ -696,7 +870,7 @@
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
-    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
+    "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
@@ -732,7 +906,7 @@
     }
   },
   "taxes": {
-    "domain": "Taxes",
+    "domain": "Tax Regions",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },
@@ -782,6 +956,7 @@
     "addSalesChannels": "Add sales channels",
     "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
+    "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
@@ -803,19 +978,54 @@
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
-    "domain": "API Key Management",
-    "createKey": "Create key",
-    "createPublishableApiKey": "Create Publishable API Key",
-    "editKey": "Edit key",
-    "revoke": "Revoke",
-    "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
-    "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
-    "revokeKeyWarning": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
-    "removeSalesChannelWarning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-    "createdBy": "Created by",
-    "revokedBy": "Revoked by"
+    "domain": {
+      "apiKeys": "API Keys",
+      "publishable": "Publishable API Keys",
+      "secret": "Secret API Keys"
+    },
+    "status": {
+      "active": "Active",
+      "revoked": "Revoked"
+    },
+    "type": {
+      "publishable": "Publishable",
+      "secret": "Secret"
+    },
+    "create": {
+      "createPublishableHeader": "Create Publishable API Key",
+      "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
+      "createSecretHeader": "Create Secret API Key",
+      "createSecretHint": "Create a new secret API key to access the Medusa API.",
+      "secretKeyCreatedHeader": "Secret Key Created",
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+    },
+    "edit": {
+      "header": "Edit API Key"
+    },
+    "tabs": {
+      "secret": "Secret",
+      "publishable": "Publishable"
+    },
+    "warnings": {
+      "delete": "You are about to delete the API key {{title}}. This action cannot be undone.",
+      "revoke": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
+      "removeSalesChannel": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+      "removeSalesChannels_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+      "removeSalesChannels_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+      "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
+    },
+    "actions": {
+      "revoke": "Revoke"
+    },
+    "table": {
+      "lastUsedAtHeader": "Last Used At",
+      "createdAtHeader": "Revoked At"
+    },
+    "fields": {
+      "lastUsedAtLabel": "Last used at",
+      "revokedByLabel": "Revoked by",
+      "createdByLabel": "Created by"
+    }
   },
   "returnReasons": {
     "domain": "Return Reasons",

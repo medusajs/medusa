@@ -602,8 +602,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           return normalizedData
         }
 
-        // TODO: Currently we will also do an update of the data on the other side of the many-to-many relationship. Reevaluate if we should avoid that.
-        await this.upsertMany_(manager, relation.type, normalizedData)
+        await this.upsertMany_(manager, relation.type, normalizedData, true)
 
         const pivotData = normalizedData.map((currModel) => {
           return {
@@ -640,6 +639,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             Object.assign(normalizedDataItem, {
               ...joinColumnsConstraints,
             })
+            // Non-persist relation columns should be removed before we do the upsert.
+            Object.entries(relation.targetMeta?.properties ?? {})
+              .filter(
+                ([_, propDef]) =>
+                  propDef.persist === false &&
+                  propDef.reference === ReferenceType.MANY_TO_ONE
+              )
+              .forEach(([key]) => {
+                delete normalizedDataItem[key]
+              })
           })
 
           await this.upsertMany_(manager, relation.type, normalizedData)
@@ -711,39 +720,17 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       return { id: (created as any).id, ...data }
     }
 
-    protected async upsertManyToOneRelations_(
-      manager: SqlEntityManager,
-      upsertsPerType: Record<string, any[]>
-    ) {
-      const typesToUpsert = Object.entries(upsertsPerType)
-      if (!typesToUpsert.length) {
-        return []
-      }
-
-      return (
-        await promiseAll(
-          typesToUpsert.map(([type, data]) => {
-            return this.upsertMany_(manager, type, data)
-          })
-        )
-      ).flat()
-    }
-
     protected async upsertMany_(
       manager: SqlEntityManager,
       entityName: string,
-      entries: any[]
+      entries: any[],
+      skipUpdate: boolean = false
     ) {
-      const existingEntities: any[] = await manager.find(
-        entityName,
-        {
-          id: { $in: entries.map((d) => d.id) },
-        },
-        {
-          populate: [],
-          disableIdentityMap: true,
-        }
-      )
+      const selectQb = manager.qb(entityName)
+      const existingEntities: any[] = await selectQb.select("*").where({
+        id: { $in: entries.map((d) => d.id) },
+      })
+
       const existingEntitiesMap = new Map(
         existingEntities.map((e) => [e.id, e])
       )
@@ -752,12 +739,21 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       await promiseAll(
         entries.map(async (data) => {
-          orderedEntities.push(data)
           const existingEntity = existingEntitiesMap.get(data.id)
+          orderedEntities.push(data)
           if (existingEntity) {
+            if (skipUpdate) {
+              return
+            }
             await manager.nativeUpdate(entityName, { id: data.id }, data)
           } else {
-            await manager.insert(entityName, data)
+            const qb = manager.qb(entityName)
+            if (skipUpdate) {
+              await qb.insert(data).onConflict().ignore().execute()
+            } else {
+              await manager.insert(entityName, data)
+              // await manager.insert(entityName, data)
+            }
           }
         })
       )

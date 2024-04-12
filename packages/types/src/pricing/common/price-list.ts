@@ -452,11 +452,11 @@ export interface UpdatePriceListPricesDTO {
 /**
  * @interface
  *
- * The rules to add to a price list.
+ * The rules to set in a price list.
  */
 export interface SetPriceListRulesDTO {
   /**
-   * The ID of the price list to add rules to.
+   * The ID of the price list to set its rules.
    */
   price_list_id: string
   /**

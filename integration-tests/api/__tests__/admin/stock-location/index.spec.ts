@@ -4,8 +4,8 @@ import {
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { IStockLocationServiceNext } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -372,6 +372,60 @@ medusaIntegrationTestRunner({
         expect(
           salesChannelResponse.data.stock_location.sales_channels
         ).toHaveLength(1)
+      })
+    })
+
+    describe("Location fulfillment sets", () => {
+      let stockLocationId
+
+      beforeEach(async () => {
+        const createResponse = await api.post(
+          `/admin/stock-locations`,
+          {
+            name: "test location",
+          },
+          adminHeaders
+        )
+
+        stockLocationId = createResponse.data.stock_location.id
+      })
+
+      it("should create a fulfillment set for the location", async () => {
+        const response = await api.post(
+          `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
+          {
+            name: "Fulfillment Set",
+            type: "shipping",
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+
+        expect(response.data.stock_location.fulfillment_sets).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+        ])
+      })
+
+      // This is really just to test the new Zod middleware. We don't need more of these.
+      it("should throw a validation error on wrong input", async () => {
+        const errorResponse = await api
+          .post(
+            `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
+            {
+              name: "Fulfillment Set",
+              type: "shipping",
+              foo: "bar",
+            },
+            adminHeaders
+          )
+          .catch((e) => e.response)
+
+        expect(errorResponse.status).toEqual(400)
+
+        expect(errorResponse.data.message).toContain("Invalid request body: ")
       })
     })
   },
