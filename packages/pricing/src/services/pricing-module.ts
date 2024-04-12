@@ -2,8 +2,8 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
-  CreatePriceSetDTO,
   CreatePricesDTO,
+  CreatePriceSetDTO,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -23,7 +23,7 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
+  isDefined, isPresent,
   isString,
   MedusaContext,
   MedusaError,
@@ -44,12 +44,12 @@ import {
   RuleType,
 } from "@models"
 
-import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { PriceSetIdPrefix } from "../models/price-set"
-import { PriceListIdPrefix } from "../models/price-list"
-import { UpdatePriceSetInput } from "src/types/services"
+import {PriceListService, RuleTypeService} from "@services"
+import {validatePriceListDates} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {PriceSetIdPrefix} from "../models/price-set"
+import {PriceListIdPrefix} from "../models/price-list"
+import {UpdatePriceSetInput} from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -336,6 +336,54 @@ export default class PricingModuleService<
     return isString(idOrSelector) ? priceSets[0] : priceSets
   }
 
+  private async normalizeUpdateData(
+    data: UpdatePriceSetInput[],
+    sharedContext
+  ) {
+    const ruleAttributes = data
+      .map((d) => d.prices?.map((p) => Object.keys(p.rules ?? [])) ?? [])
+      .flat(Infinity)
+      .filter(Boolean)
+
+    const ruleTypes = await this.ruleTypeService_.list(
+      { rule_attribute: ruleAttributes },
+      { take: null },
+      sharedContext
+    )
+
+    const ruleTypeMap = ruleTypes.reduce((acc, curr) => {
+      acc.set(curr.rule_attribute, curr)
+      return acc
+    }, new Map())
+
+    return data.map((priceSet) => {
+      const prices = priceSet.prices?.map((price) => {
+        const rules = Object.entries(price.rules ?? {}).map(
+          ([attribute, value]) => {
+            return {
+              price_set_id: priceSet.id,
+              rule_type_id: ruleTypeMap.get(attribute)!.id,
+              value,
+            }
+          }
+        )
+        const hasRulesInput = isPresent(price.rules)
+        delete price.rules
+        return {
+          ...price,
+          price_set_id: priceSet.id,
+          price_rules: hasRulesInput ? rules : undefined,
+          rules_count: hasRulesInput ? rules.length : undefined
+        }
+      })
+
+      return {
+        ...priceSet,
+        prices,
+      }
+    })
+  }
+
   @InjectTransactionManager("baseRepository_")
   protected async update_(
     data: UpdatePriceSetInput[],
@@ -344,8 +392,33 @@ export default class PricingModuleService<
     // TODO: We are not handling rule types, rules, etc. here, add support after data models are finalized
     // TODO: Since money IDs are rarely passed, this will delete all previous data and insert new entries.
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
-    return this.priceSetService_.upsertWithReplace(
-      data,
+    const normalizedData = await this.normalizeUpdateData(data, sharedContext)
+
+    const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
+    const upsertedPrices = await this.priceService_.upsertWithReplace(
+      prices,
+      {
+        relations: ["price_rules"],
+      },
+      sharedContext
+    )
+
+    const priceSetsToUpsert = normalizedData.map((priceSet) => {
+      const { prices, ...rest } = priceSet
+      return {
+        ...rest,
+        prices: upsertedPrices
+          .filter((p) => p.price_set_id === priceSet.id)
+          .map((price) => {
+            // @ts-ignore
+            delete price.price_rules
+            return price
+          }),
+      }
+    })
+
+    return await this.priceSetService_.upsertWithReplace(
+      priceSetsToUpsert,
       { relations: ["prices"] },
       sharedContext
     )

@@ -1,10 +1,18 @@
-import { FulfillmentWorkflow } from "@medusajs/types"
+import {
+  CreateRuleTypeDTO,
+  FulfillmentWorkflow,
+  RuleTypeDTO,
+} from "@medusajs/types"
 import {
   createWorkflow,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
-import { upsertShippingOptionsStep } from "../steps"
+import {
+  setShippingOptionsPricesStep,
+  upsertShippingOptionsStep,
+} from "../steps"
+import { createPricingRuleTypesStep } from "../../pricing"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
@@ -17,9 +25,11 @@ export const updateShippingOptionsWorkflow = createWorkflow(
   ): WorkflowData<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
+        const prices = option.prices
+        delete option.prices
         return {
           shipping_option_index: index,
-          prices: option.prices,
+          prices,
         }
       })
 
@@ -33,7 +43,7 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       data.shippingOptions
     )
 
-    /*const normalizedShippingOptionsPrices = transform(
+    const normalizedShippingOptionsPrices = transform(
       {
         shippingOptions: updatedShippingOptions,
         shippingOptionsIndexToPrices: data.shippingOptionsIndexToPrices,
@@ -60,32 +70,16 @@ export const updateShippingOptionsWorkflow = createWorkflow(
 
         return {
           shippingOptionsPrices,
-          ruleTypes: Array.from(ruleTypes) as UpdateRuleTypeDTO[],
+          ruleTypes: Array.from(ruleTypes) as CreateRuleTypeDTO[],
         }
       }
-    )*/
-
-    /*updatePricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)*/
-
-    /*const shippingOptionsPriceSetsLinkData = updateShippingOptionsPriceSetsStep(
-      normalizedShippingOptionsPrices.shippingOptionsPrices
     )
 
-    const normalizedLinkData = transform(
-      {
-        shippingOptionsPriceSetsLinkData,
-      },
-      (data) => {
-        return data.shippingOptionsPriceSetsLinkData.map((item) => {
-          return {
-            id: item.id,
-            price_sets: [item.priceSetId],
-          }
-        })
-      }
-    )*/
+    createPricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
 
-    /*setShippingOptionsPriceSetsStep(normalizedLinkData)*/
+    setShippingOptionsPricesStep(
+      normalizedShippingOptionsPrices.shippingOptionsPrices
+    )
 
     return updatedShippingOptions
   }

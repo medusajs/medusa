@@ -14,27 +14,28 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 import { SalesChannel } from "@medusajs/medusa"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { Fragment, useMemo, useState } from "react"
-import { CountrySelect } from "../../../../../components/common/country-select"
-import { Form } from "../../../../../components/common/form"
-import { HandleInput } from "../../../../../components/common/handle-input"
-import { DataTable } from "../../../../../components/table/data-table"
-import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
-import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
-import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { CreateProductFormReturn } from "./create-product-form"
-import { Combobox } from "../../../../../components/common/combobox"
-import { FileUpload } from "../../../../../components/common/file-upload"
-import { List } from "../../../../../components/common/list"
-import { useProductTypes } from "../../../../../hooks/api/product-types"
-import { useCollections } from "../../../../../hooks/api/collections"
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
-import { useCategories } from "../../../../../hooks/api/categories"
-import { useTags } from "../../../../../hooks/api/tags"
-import { Keypair } from "../../../../../components/common/keypair"
+import { CountrySelect } from "../../../../components/common/country-select"
+import { Form } from "../../../../components/common/form"
+import { HandleInput } from "../../../../components/common/handle-input"
+import { DataTable } from "../../../../components/table/data-table"
+import { useSalesChannelTableColumns } from "../../../../hooks/table/columns/use-sales-channel-table-columns"
+import { useSalesChannelTableFilters } from "../../../../hooks/table/filters/use-sales-channel-table-filters"
+import { useSalesChannelTableQuery } from "../../../../hooks/table/query/use-sales-channel-table-query"
+import { useDataTable } from "../../../../hooks/use-data-table"
+import { Combobox } from "../../../../components/common/combobox"
+import { FileUpload } from "../../../../components/common/file-upload"
+import { List } from "../../../../components/common/list"
+import { useProductTypes } from "../../../../hooks/api/product-types"
+import { useCollections } from "../../../../hooks/api/collections"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
+import { useCategories } from "../../../../hooks/api/categories"
+import { useTags } from "../../../../hooks/api/tags"
+import { Keypair } from "../../../../components/common/keypair"
+import { UseFormReturn } from "react-hook-form"
+import { CreateProductSchemaType } from "../schema"
 
-type CreateProductPropsProps = {
-  form: CreateProductFormReturn
+type ProductAttributesProps = {
+  form: UseFormReturn<CreateProductSchemaType>
 }
 
 const SUPPORTED_FORMATS = [
@@ -76,7 +77,7 @@ const generateNameFromPermutation = (permutation: {
   return Object.values(permutation).join(" / ")
 }
 
-export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
+export const ProductAttributesForm = ({ form }: ProductAttributesProps) => {
   const { t } = useTranslation()
   const [open, onOpenChange] = useState(false)
   const { product_types, isLoading: isLoadingTypes } = useProductTypes()
@@ -466,7 +467,6 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                                         generateNameFromPermutation(options),
                                       variant_rank: i,
                                       options,
-                                      prices: [],
                                     }
                                   })
                                 )
