@@ -6,7 +6,7 @@ import { PaginatedResponse } from "../../../common"
 interface ReservationResponse {
   id: string
   line_item_id: string | null
-  location_id: string | null
+  location_id: string
   quantity: string
   external_id: string | null
   description: string | null

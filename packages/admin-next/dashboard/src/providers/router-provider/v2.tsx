@@ -410,13 +410,26 @@ export const v2Routes: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import("../../v2-routes/reservations/reservation-detail"),
-                // children: [
-                //   {
-                //     path: "edit",
-                //     lazy: () =>
-                //       import("../../routes/reservations/reservation-edit"),
-                //   },
-                // ],
+                handle: {
+                  crumb: (data: any) => {
+                    // console.warn(data)
+                    return "data.inventory_item.title ?? data.inventory_item.sku"
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => {
+                      return import(
+                        "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
+                      )
+                    },
+                    // lazy: () =>
+                    //   import(
+                    //     "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
+                    //   ),
+                  },
+                ],
               },
             ],
           },
@@ -440,7 +453,6 @@ export const v2Routes: RouteObject[] = [
                 },
                 children: [
                   {
-                    // TODO: edit item
                     path: "edit",
                     lazy: () =>
                       import(
@@ -448,7 +460,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: edit item attributes
                     path: "attributes",
                     lazy: () =>
                       import(
@@ -456,7 +467,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: manage locations
                     path: "locations",
                     lazy: () =>
                       import(
@@ -464,7 +474,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: adjust item level
                     path: "locations/:location_id",
                     lazy: () =>
                       import(

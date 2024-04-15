@@ -1,8 +1,9 @@
-import { Drawer } from "@medusajs/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+
+import { Drawer } from "@medusajs/ui"
 import { RouteForm } from "../route-form"
 import { RouteModalProvider } from "../route-modal-provider/route-provider"
+import { useNavigate } from "react-router-dom"
 
 type RouteDrawerProps = PropsWithChildren<{
   prev?: string
@@ -11,6 +12,8 @@ type RouteDrawerProps = PropsWithChildren<{
 const Root = ({ prev = "..", children }: RouteDrawerProps) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+
+  console.log("test")
 
   /**
    * Open the modal when the component mounts. This

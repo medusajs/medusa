@@ -317,7 +317,17 @@
     "locationLevels": "Location levels",
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
-    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
+    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "reservation": { 
+      "header": "Reservation of {{itemName}}",
+      "editItemDetails": "Edit item details",
+      "orderID": "Order ID",
+      "description": "Description", 
+      "location": "Location",
+      "inStockAtLocation": "In stock at this location",
+      "availableAtLocation": "Available at this location",
+      "reservedAtLocation": "Reserved at this location"
+    }
   },
   "giftCards": {
     "domain": "Gift Cards",

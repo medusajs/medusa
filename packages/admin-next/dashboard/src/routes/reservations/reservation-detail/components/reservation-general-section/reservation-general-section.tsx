@@ -1,5 +1,6 @@
+import { Container, Heading } from "@medusajs/ui"
+
 import { ExtendedReservationItem } from "@medusajs/medusa"
-import { Container } from "@medusajs/ui"
 import { useAdminInventoryItem } from "medusa-react"
 
 type ReservationGeneralSectionProps = {

@@ -23,9 +23,6 @@ export const ReservationListTable = () => {
       ...searchParams,
     })
 
-  console.warn(reservations)
-  console.warn(rest)
-
   const filters = useReservationTableFilters()
   const columns = useReservationTableColumns()
 

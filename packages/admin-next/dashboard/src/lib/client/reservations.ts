@@ -7,6 +7,7 @@ import {
 import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveReservation(id: string, query?: Record<string, any>) {
+  console.warn("getting reservation")
   return getRequest<ReservationRes>(`/admin/reservations/${id}`, query)
 }
 
