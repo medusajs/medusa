@@ -608,7 +608,8 @@
       "areas": {
         "title": "Areas affected by this rule",
         "description": "Select the geographical areas where this shipping zone should apply.",
-        "manage": "Manage areas"
+        "manage": "Manage areas",
+        "error": "Please select at least one country for this service zone."
       }
     },
     "shippingOptions": {

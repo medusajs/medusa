@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-table"
 import * as zod from "zod"
 
-import { Button, Checkbox, Heading, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Checkbox, Heading, Input, Text } from "@medusajs/ui"
 import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Map } from "@medusajs/icons"
@@ -18,21 +18,35 @@ import {
 } from "../../../../../components/route-modal"
 import { Form } from "../../../../../components/common/form"
 import { SplitView } from "../../../../../components/layout/split-view"
-import {
-  useCreateFulfillmentSet,
-  useCreateServiceZone,
-} from "../../../../../hooks/api/stock-locations"
+import { useCreateServiceZone } from "../../../../../hooks/api/stock-locations"
 import { useEffect, useMemo, useState } from "react"
-import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query.tsx"
-import { useCountries } from "../../../../regions/common/hooks/use-countries.tsx"
-import { countries as staticCountries } from "../../../../../lib/countries.ts"
-import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
-import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns.tsx"
+import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
+import { useCountries } from "../../../../regions/common/hooks/use-countries"
+import { countries as staticCountries } from "../../../../../lib/countries"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
 import { DataTable } from "../../../../../components/table/data-table"
 import { ListSummary } from "../../../../../components/common/list-summary"
 
 const PREFIX = "ac"
 const PAGE_SIZE = 50
+
+const ConditionsFooter = ({ onSave }: { onSave: () => void }) => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex items-center justify-end gap-x-2 border-t p-4">
+      <SplitView.Close type="button" asChild>
+        <Button variant="secondary" size="small">
+          {t("actions.cancel")}
+        </Button>
+      </SplitView.Close>
+      <Button size="small" type="button" onClick={onSave}>
+        {t("actions.save")}
+      </Button>
+    </div>
+  )
+}
 
 const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
@@ -115,13 +129,28 @@ export function CreateServiceZoneForm({
     prefix: PREFIX,
   })
 
-  useEffect(() => {
+  const onCountriesSave = () => {
     form.setValue("countries", Object.keys(rowSelection))
-  }, [rowSelection])
+    setOpen(false)
+  }
+
+  const countriesWatch = form.watch("countries")
 
   const selectedCountries = useMemo(() => {
     return staticCountries.filter((c) => c.iso_2 in rowSelection)
-  }, [rowSelection])
+  }, [countriesWatch])
+
+  useEffect(() => {
+    // set selected rows from form state on open
+    if (open) {
+      setRowSelection(
+        countriesWatch.reduce((acc, c) => {
+          acc[c] = true
+          return acc
+        }, {})
+      )
+    }
+  }, [open])
 
   const showAreasError =
     form.formState.errors["countries"]?.type === "too_small"
@@ -216,6 +245,11 @@ export function CreateServiceZoneForm({
                   />
                 </div>
               )}
+              {showAreasError && (
+                <Alert dismissible variant="error">
+                  {t("shipping.serviceZone.areas.error")}
+                </Alert>
+              )}
             </SplitView.Content>
             <SplitView.Drawer>
               <div className="flex size-full flex-col overflow-hidden">
@@ -231,6 +265,7 @@ export function CreateServiceZoneForm({
                   queryObject={raw}
                   prefix={PREFIX}
                 />
+                <ConditionsFooter onSave={onCountriesSave} />
               </div>
             </SplitView.Drawer>
           </SplitView>
