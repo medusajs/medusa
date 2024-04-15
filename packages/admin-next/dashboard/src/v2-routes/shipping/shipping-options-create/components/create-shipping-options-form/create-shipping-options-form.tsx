@@ -136,7 +136,6 @@ export function CreateShippingOptionsForm({
         break
       }
       case Tab.PRICING:
-        // await onSubmit()
         break
     }
   }, [tab])
@@ -151,6 +150,25 @@ export function CreateShippingOptionsForm({
       setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "not-started" }))
     }
   }, [form.formState.isDirty])
+
+  useEffect(() => {
+    if (tab === Tab.DETAILS && form.formState.isDirty) {
+      setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "in-progress" }))
+    }
+
+    if (tab === Tab.PRICING) {
+      const hasPricingSet = form
+        .getValues(["region_prices", "currency_prices"])
+        .map(Object.keys)
+        .some((i) => i.length)
+
+      setStatus((prev) => ({
+        ...prev,
+        [Tab.DETAILS]: "completed",
+        [Tab.PRICING]: hasPricingSet ? "in-progress" : "not-started",
+      }))
+    }
+  }, [tab])
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -168,7 +186,6 @@ export function CreateShippingOptionsForm({
               <ProgressTabs.Trigger
                 value={Tab.DETAILS}
                 status={status[Tab.DETAILS]}
-                disabled={tab === Tab.PRICING}
                 className="w-full max-w-[200px]"
               >
                 <span className="w-full cursor-auto overflow-hidden text-ellipsis whitespace-nowrap">
