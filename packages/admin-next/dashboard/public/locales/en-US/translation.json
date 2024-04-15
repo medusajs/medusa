@@ -30,6 +30,7 @@
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
+    "countOfTotalSelected": "{{count}} of {{total}} selected",
     "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
@@ -57,6 +58,7 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -156,6 +158,7 @@
     "organization": "Organize",
     "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
+    "editPrices": "Edit prices",
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
@@ -265,6 +268,7 @@
       },
       "inventory": {
         "header": "Stock & Inventory",
+        "editItemDetails": "Edit item details",
         "manageInventoryLabel": "Manage inventory",
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
@@ -311,6 +315,10 @@
   "inventory": {
     "domain": "Inventory",
     "reserved": "Reserved",
+    "available": "Available",
+    "locationLevels": "Location levels",
+    "associatedVariants": "Associated variants",
+    "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
   },
   "giftCards": {
@@ -756,7 +764,20 @@
   },
   "pricing": {
     "domain": "Pricing",
-    "deletePriceListWarning": "You are about to delete the price list {{name}}. This action cannot be undone.",
+    "create": {
+      "header": "Create Price List",
+      "hint": "Create a new price list to manage the prices of your products."
+    },
+    "edit": {
+      "header": "Edit Price List"
+    },
+    "configuration": {
+      "header": "Configuration",
+      "editHeader": "Edit Price List Configuration"
+    },
+    "warnings": {
+      "delete": "You are about to delete the price list {{name}}. This action cannot be undone."
+    },
     "status": {
       "draft": "Draft",
       "expired": "Expired",
@@ -767,15 +788,6 @@
       "sale": "Sale",
       "override": "Override"
     },
-    "settings": {
-      "typeHint": "Choose the type of price list you want to create.",
-      "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
-      "editPriceListTitle": "Edit Price List",
-      "customerGroupsLabel": "Customer groups",
-      "priceOverridesLabel": "Price overrides",
-      "taxInclusivePricingHint": "When enabled all prices in the price list will be tax inclusive."
-    },
     "products": {
       "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
       "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
@@ -783,16 +795,40 @@
     "prices": {
       "addPrices": "Add prices",
       "editPrices": "Edit prices"
+    },
+    "table": {
+      "pricesHeader": "Prices"
+    },
+    "fields": {
+      "typeHint": "Choose the type of price you want to create.",
+      "saleTypeHint": "Sale prices are temporary price changes for products.",
+      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
+      "startDateLabel": "Price list has a start date?",
+      "startDateHint": "Schedule the price list to activate in the future.",
+      "endDateLabel": "Price list has an expiry date?",
+      "endDateHint": "Schedule the price list to deactivate in the future.",
+      "customerAvailabilityLabel": "Customer availability",
+      "customerAvailabilityHint": "Choose which customer groups the price list should be applied to.",
+      "customerAvailabilityNoSelectionLabel": "No customer groups selected",
+      "priceOverridesLabel": "Price overrides"
+    },
+    "actions": {
+      "addCustomerGroups": "Add customer groups"
     }
   },
   "profile": {
     "domain": "Profile",
     "manageYourProfileDetails": "Manage your profile details",
-    "editProfile": "Edit profile",
-    "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
-    "language": "Language",
-    "usageInsights": "Usage insights"
+    "fields": {
+      "languageLabel": "Language",
+      "usageInsightsLabel": "Usage insights"
+    },
+    "edit": {
+      "header": "Edit Profile",
+      "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
+      "languagePlaceholder": "Select language",
+      "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    }
   },
   "users": {
     "domain": "Users",
@@ -935,6 +971,7 @@
     "addSalesChannels": "Add sales channels",
     "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
+    "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."

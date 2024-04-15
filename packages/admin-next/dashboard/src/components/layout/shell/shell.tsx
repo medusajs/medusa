@@ -105,7 +105,6 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
             {!isLast && <span className="mx-2 -mt-0.5">›</span>}
           </li>
         )
@@ -140,7 +139,7 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
+          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 outline-none"
         )}
       >
         {fallback ? (
@@ -384,7 +383,7 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
     <Dialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-[220px] border-r">
+        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-full max-w-[240px] border-r">
           {children}
         </Dialog.Content>
       </Dialog.Portal>

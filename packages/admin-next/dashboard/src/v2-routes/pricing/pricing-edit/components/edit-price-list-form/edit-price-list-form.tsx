@@ -60,19 +60,19 @@ export const EditPriceListForm = ({ priceList }: EditPriceListFormProps) => {
                 <Form.Item>
                   <div>
                     <Form.Label>{t("fields.type")}</Form.Label>
-                    <Form.Hint>{t("pricing.settings.typeHint")}</Form.Hint>
+                    <Form.Hint>{t("pricing.fields.typeHint")}</Form.Hint>
                   </div>
                   <Form.Control>
                     <RadioGroup {...field} onValueChange={onChange}>
                       <RadioGroup.ChoiceBox
                         value={PriceListType.SALE}
                         label={t("pricing.type.sale")}
-                        description={t("pricing.settings.saleTypeHint")}
+                        description={t("pricing.fields.saleTypeHint")}
                       />
                       <RadioGroup.ChoiceBox
                         value={PriceListType.OVERRIDE}
                         label={t("pricing.type.override")}
-                        description={t("pricing.settings.overrideTypeHint")}
+                        description={t("pricing.fields.overrideTypeHint")}
                       />
                     </RadioGroup>
                   </Form.Control>

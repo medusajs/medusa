@@ -6,6 +6,7 @@ import { DataTable } from "../../../../../components/table/data-table"
 import { usePriceLists } from "../../../../../hooks/api/price-lists"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { usePricingTableColumns } from "./use-pricing-table-columns"
+import { usePricingTableFilters } from "./use-pricing-table-filters"
 import { usePricingTableQuery } from "./use-pricing-table-query"
 
 const PAGE_SIZE = 20
@@ -18,7 +19,7 @@ export const PricingListTable = () => {
   })
   const { price_lists, count, isLoading, isError, error } = usePriceLists(
     // {
-    //   ...searchParams, // The query params are not implemented, and any search params other than expand and fields will throw an error
+    //   ...searchParams, // TODO: Query params are not currently supported by the API.
     // },
     undefined,
     {
@@ -26,6 +27,7 @@ export const PricingListTable = () => {
     }
   )
 
+  const filters = usePricingTableFilters()
   const columns = usePricingTableColumns()
 
   const { table } = useDataTable({
@@ -53,6 +55,8 @@ export const PricingListTable = () => {
         table={table}
         columns={columns}
         count={count}
+        filters={filters}
+        orderBy={["name", "status", "created_at", "updated_at"]}
         queryObject={raw}
         pageSize={PAGE_SIZE}
         navigateTo={(row) => row.original.id}

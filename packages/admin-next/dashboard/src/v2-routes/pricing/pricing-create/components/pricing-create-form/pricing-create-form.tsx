@@ -84,7 +84,7 @@ export const PricingCreateForm = () => {
           for (const [currencyCode, currencyPrice] of Object.entries(
             currency_prices
           )) {
-            if (!currencyPrice) {
+            if (!currencyPrice?.amount) {
               continue
             }
 
@@ -127,10 +127,13 @@ export const PricingCreateForm = () => {
   ) => {
     form.clearErrors(fields)
 
-    const values = fields.reduce((acc, key) => {
-      acc[key] = form.getValues(key)
-      return acc
-    }, {} as Record<string, unknown>)
+    const values = fields.reduce(
+      (acc, key) => {
+        acc[key] = form.getValues(key)
+        return acc
+      },
+      {} as Record<string, unknown>
+    )
 
     const validationResult = schema.safeParse(values)
 

@@ -2,9 +2,15 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminShippingOptionRetrieveResponse } from "@medusajs/types"
+import {
+  AdminShippingOptionDeleteResponse,
+  AdminShippingOptionRetrieveResponse,
+} from "@medusajs/types"
 import { AdminUpdateShippingOptionType } from "../validators"
-import { updateShippingOptionsWorkflow } from "@medusajs/core-flows"
+import {
+  deleteShippingOptionsWorkflow,
+  updateShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -41,4 +47,26 @@ export const POST = async (
   const [shippingOption] = await remoteQuery(query)
 
   res.status(200).json({ shipping_option: shippingOption })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<AdminShippingOptionDeleteResponse>
+) => {
+  const shippingOptionId = req.params.id
+
+  const workflow = deleteShippingOptionsWorkflow(req.scope)
+
+  const { errors } = await workflow.run({
+    input: { ids: [shippingOptionId] },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res
+    .status(200)
+    .json({ id: shippingOptionId, object: "shipping_option", deleted: true })
 }

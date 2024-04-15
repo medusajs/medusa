@@ -2,14 +2,15 @@ import { Text } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
-import { CustomerGroupDTO } from "@medusajs/types"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 import {
   CreatedAtCell,
   CreatedAtHeader,
 } from "../../../components/table/table-cells/common/created-at-cell"
 import { NameHeader } from "../../../components/table/table-cells/common/name-cell"
 
-const columnHelper = createColumnHelper<CustomerGroupDTO>()
+const columnHelper =
+  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
 
 export const useCustomerGroupTableColumns = () => {
   return useMemo(
