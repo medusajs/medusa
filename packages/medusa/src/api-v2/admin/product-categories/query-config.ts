@@ -27,23 +27,8 @@ export const allowed = [
   "updated_at",
   "metadata",
 
-  "parent_category.id",
-  "parent_category.name",
-  "parent_category.handle",
-  "parent_category.mpath",
-  "parent_category.description",
-  "parent_category.is_active",
-  "parent_category.is_internal",
-  "parent_category.rank",
-
-  "category_children.id",
-  "category_children.name",
-  "category_children.handle",
-  "category_children.mpath",
-  "category_children.description",
-  "category_children.is_active",
-  "category_children.is_internal",
-  "category_children.rank",
+  "*parent_category",
+  "*category_children",
 ]
 
 export const retrieveProductCategoryConfig = {

@@ -47,7 +47,7 @@ export const POST = async (
 ) => {
   const { result, errors } = await createProductCategoryWorkflow(req.scope).run(
     {
-      input: { product_category: { ...req.validatedBody } },
+      input: { product_category: req.validatedBody },
       throwOnError: false,
     }
   )
