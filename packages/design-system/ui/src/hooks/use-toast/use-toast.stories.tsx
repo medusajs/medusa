@@ -29,7 +29,7 @@ const Demo = () => {
         action: undefined,
       })
 
-      const confirmed = await handleUndo().then((confirmed) => {
+      await handleUndo().then((confirmed) => {
         if (confirmed) {
           fn({
             title: "Success",

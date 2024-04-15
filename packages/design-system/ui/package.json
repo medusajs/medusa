@@ -108,6 +108,7 @@
     "prismjs": "^1.29.0",
     "react-currency-input-field": "^3.6.11",
     "react-day-picker": "^8.8.0",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.1"
   },
   "peerDependencies": {

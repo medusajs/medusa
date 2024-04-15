@@ -10,19 +10,30 @@ import {
 import * as Primitives from "@radix-ui/react-toast"
 import * as React from "react"
 
+import { ToasterPosition } from "@/types"
 import { clx } from "@/utils/clx"
 
 const ToastProvider = Primitives.Provider
 ToastProvider.displayName = "ToastProvider"
 
+interface ToastViewportProps extends React.ComponentPropsWithoutRef<typeof Primitives.Viewport> {
+  position?: ToasterPosition
+}
+
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof Primitives.Viewport>,
-  React.ComponentPropsWithoutRef<typeof Primitives.Viewport>
->(({ className, ...props }, ref) => (
+  ToastViewportProps
+>(({ className, position = "bottom-right", ...props }, ref) => (
   <Primitives.Viewport
     ref={ref}
     className={clx(
-      "fixed right-0 top-0 z-[9999] w-full p-6 md:max-w-[484px]",
+      "fixed z-[9999] w-full px-6 py-[26px] md:max-w-[440px] flex flex-col",
+      {
+        "top-0 left-0 items-start": position === "top-left",
+        "top-0 right-0 items-end": position === "top-right",
+        "bottom-0 left-0 items-start": position === "bottom-left",
+        "bottom-0 right-0 items-end": position === "bottom-right",
+      },
       className
     )}
     {...props}
@@ -43,6 +54,8 @@ interface ToastProps
   description?: string
   action?: ActionProps
   disableDismiss?: boolean
+  dismissLabel?: string
+  position?: ToasterPosition
 }
 
 /**
@@ -77,6 +90,8 @@ const Toast = React.forwardRef<
        * Whether to hide the Close button.
        */
       disableDismiss = false,
+      position = "bottom-right",
+      dismissLabel = "Close",
       ...props
     }: ToastProps,
     ref
@@ -114,13 +129,21 @@ const Toast = React.forwardRef<
       <Primitives.Root
         ref={ref}
         className={clx(
-          "bg-ui-bg-base border-ui-border-base flex h-fit min-h-[74px] w-full overflow-hidden rounded-md border shadow-[0_4px_12px_rgba(0,0,0,0.05)] md:max-w-[440px]",
-          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
+          "bg-ui-bg-base flex h-fit min-h-[66px] w-fit overflow-hidden rounded-md shadow-elevation-flyout md:min-w-[360px] md:max-w-[440px]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
+          {
+            "data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full": position === "top-right",
+            "data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-top-full": position === "top-left",
+            "data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-bottom-full": position === "bottom-right",
+            "data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-bottom-full": position === "bottom-left",
+          },
           className
         )}
         {...props}
       >
-        <div className="border-ui-border-base flex flex-1 items-start space-x-3 border-r p-4">
+        <div className={clx("flex flex-1 items-start space-x-3 p-3", {
+          "border-ui-border-base border-r": !disableDismiss || action,
+        })}>
           <span aria-hidden>{Icon}</span>
           <div>
             {title && (
@@ -129,7 +152,7 @@ const Toast = React.forwardRef<
               </Primitives.Title>
             )}
             {description && (
-              <Primitives.Description className="text-ui-fg-subtle txt-compact-medium">
+              <Primitives.Description className="text-ui-fg-subtle txt-small text-pretty">
                 {description}
               </Primitives.Description>
             )}
@@ -166,9 +189,9 @@ const Toast = React.forwardRef<
                   "h-full": !action,
                 }
               )}
-              aria-label="Close"
+              aria-label={dismissLabel}
             >
-              Close
+              {dismissLabel}
             </Primitives.Close>
           )}
         </div>
@@ -185,5 +208,6 @@ export {
   ToastProvider,
   ToastViewport,
   type ToastActionElement,
-  type ToastProps,
+  type ToastProps
 }
+
