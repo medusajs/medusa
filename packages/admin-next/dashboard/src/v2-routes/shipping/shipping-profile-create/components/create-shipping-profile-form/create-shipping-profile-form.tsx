@@ -76,7 +76,7 @@ export function CreateShippingProfileForm() {
                       <Form.Item>
                         <Form.Label>{t("fields.name")}</Form.Label>
                         <Form.Control>
-                          <Input size="small" {...field} />
+                          <Input {...field} />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -89,9 +89,11 @@ export function CreateShippingProfileForm() {
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{t("fields.type")}</Form.Label>
+                        <Form.Label tooltip={t("shippingProfile.typeHint")}>
+                          {t("fields.type")}
+                        </Form.Label>
                         <Form.Control>
-                          <Input size="small" {...field} />
+                          <Input {...field} />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>

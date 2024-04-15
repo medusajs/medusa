@@ -147,7 +147,7 @@ export function CreateServiceZoneForm({
 
         <RouteFocusModal.Body className="m-auto flex h-full w-full  flex-col items-center divide-y overflow-hidden">
           <SplitView open={open} onOpenChange={handleOpenChange}>
-            <SplitView.Content className="mx-auto max-w-[700px]">
+            <SplitView.Content className="mx-auto max-w-[720px]">
               <div className="container  w-fit px-1 py-8">
                 <Heading className="mb-12 mt-8 text-2xl">
                   {t("shipping.fulfillmentSet.create.title", {

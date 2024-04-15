@@ -620,11 +620,11 @@
         "pricing": "Pricing",
         "allocation": "Shipping amount",
         "fixed": "Fixed",
-        "fixedDescription": "Fixed",
-        "enable": "Eanble in store",
+        "fixedDescription": "Shipping option's price is always the same amount.",
+        "enable": "Enable in store",
         "enableDescription": "Enable or disable the shipping option visiblity in store",
         "calculated": "Calculated",
-        "calculatedDescription": "Calculated",
+        "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
       }
     }
@@ -633,7 +633,8 @@
     "domain": "Shipping Profiles",
     "title": "Create a shipping profile",
     "detailsHint": "Specify the details of the shipping profile",
-    "deleteWaring": "You are about to delete the profile: {{name}}. This action cannot be undone."
+    "deleteWaring": "You are about to delete the profile: {{name}}. This action cannot be undone.",
+    "typeHint": "Enter shipping profile type, for example: Express, Freight, etc."
   },
   "discounts": {
     "domain": "Discounts",

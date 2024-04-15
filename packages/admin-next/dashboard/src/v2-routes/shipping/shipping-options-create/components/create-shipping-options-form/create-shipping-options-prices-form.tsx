@@ -14,18 +14,6 @@ import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
 
-export const ReadonlyCell = ({ children }: PropsWithChildren) => {
-  return (
-    <div
-      role="cell"
-      data-cell-type="readonly"
-      className="bg-ui-bg-base size-full cursor-not-allowed px-4 py-2.5"
-    >
-      {children}
-    </div>
-  )
-}
-
 const PricingCreateSchemaType = zod.record(
   zod.object({
     currency_prices: zod.record(zod.string().optional()),
@@ -53,12 +41,7 @@ export const CreateShippingOptionsPricesForm = ({
     isError: isStoreError,
     error: storeError,
   } = useStore()
-  const {
-    currencies,
-    isLoading: isCurrenciesLoading,
-    isError: isCurrencyError,
-    error: currencyError,
-  } = useCurrencies(
+  const { currencies, isLoading: isCurrenciesLoading } = useCurrencies(
     {
       code: store?.supported_currency_codes,
     },

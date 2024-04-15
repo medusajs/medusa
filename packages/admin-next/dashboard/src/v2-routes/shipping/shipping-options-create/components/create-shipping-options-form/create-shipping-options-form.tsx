@@ -225,7 +225,7 @@ export function CreateShippingOptionsForm({
             )}
           >
             <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-              <div className="container w-fit px-1 py-8">
+              <div className="container mx-auto w-[720px] px-1 py-8">
                 <Heading className="mb-12 mt-8 text-2xl">
                   {t("shipping.shippingOptions.create.title", {
                     zone: zone.name,
