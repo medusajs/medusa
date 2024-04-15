@@ -51,7 +51,13 @@ export const InviteUserForm = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const { invites, count, isLoading, isError, error } = useInvites(searchParams)
+  const {
+    invites,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInvites(searchParams)
 
   const noRecords = !isLoading && count === 0
 
@@ -141,7 +147,6 @@ export const InviteUserForm = () => {
                       pageSize={PAGE_SIZE}
                       pagination
                       search
-                      navigateTo={(row) => row.id}
                       isLoading={isLoading}
                       queryObject={raw}
                       orderBy={["name", "created_at", "updated_at"]}
