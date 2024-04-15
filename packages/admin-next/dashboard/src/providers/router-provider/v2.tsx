@@ -411,23 +411,28 @@ export const v2Routes: RouteObject[] = [
                 lazy: () =>
                   import("../../v2-routes/reservations/reservation-detail"),
                 handle: {
-                  crumb: (data: any) => {
-                    // console.warn(data)
-                    return "data.inventory_item.title ?? data.inventory_item.sku"
+                  crumb: ({ reservation }: any) => {
+                    return (
+                      reservation?.inventory_item?.title ??
+                      reservation?.inventory_item?.sku ??
+                      reservation?.id
+                    )
                   },
                 },
                 children: [
+                  // {
+                  //   path: "edit",
+                  //   lazy: () =>
+                  //     import(
+                  //       "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                  //     ),
+                  // },
                   {
                     path: "edit",
-                    lazy: () => {
-                      return import(
+                    lazy: () =>
+                      import(
                         "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
-                      )
-                    },
-                    // lazy: () =>
-                    //   import(
-                    //     "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
-                    //   ),
+                      ),
                   },
                 ],
               },

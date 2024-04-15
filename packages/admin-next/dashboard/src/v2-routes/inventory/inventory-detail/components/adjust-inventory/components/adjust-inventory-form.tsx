@@ -97,11 +97,11 @@ export const AdjustInventoryForm = ({
             />
             <AttributeGridRow
               title={t("inventory.reserved")}
-              value={item.reserved_quantity}
+              value={level.reserved_quantity}
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={stockedQuantityUpdate - item.reserved_quantity}
+              value={stockedQuantityUpdate - level.reserved_quantity}
             />
           </div>
           <Form.Field

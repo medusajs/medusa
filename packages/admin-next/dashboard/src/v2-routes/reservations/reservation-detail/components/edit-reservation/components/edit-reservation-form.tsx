@@ -1,24 +1,35 @@
 import * as zod from "zod"
 
-import { Button, Text } from "@medusajs/ui"
+import { Button, Input, Text, Textarea } from "@medusajs/ui"
+import { InventoryNext, StockLocationDTO } from "@medusajs/types"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../../components/route-modal"
+import {
+  useUpdateInventoryItem,
+  useUpdateReservationItem,
+} from "../../../../../../hooks/api/inventory"
 
-import { InventoryNext } from "@medusajs/types"
+import { CountrySelect } from "../../../../../../components/common/country-select"
+import { Form } from "../../../../../../components/common/form"
+import { InventoryItemRes } from "../../../../../../types/api-responses"
+import { LocationSelect } from "./location-select"
 import { useForm } from "react-hook-form"
+import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
-import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 type EditReservationFormProps = {
   reservation: InventoryNext.ReservationItemDTO
+  locations: StockLocationDTO[]
+  item: InventoryItemRes["inventory_item"]
 }
 
 const EditReservationSchema = z.object({
   location_id: z.string(),
+  description: z.string().optional(),
   quantity: z.number().min(1),
 })
 
@@ -45,11 +56,14 @@ const getDefaultValues = (reservation: InventoryNext.ReservationItemDTO) => {
   return {
     quantity: reservation.quantity,
     location_id: reservation.location_id,
+    description: reservation.description ?? undefined,
   }
 }
 
 export const EditReservationForm = ({
   reservation,
+  item,
+  locations,
 }: EditReservationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -59,7 +73,7 @@ export const EditReservationForm = ({
     resolver: zodResolver(EditReservationSchema),
   })
 
-  const { mutateAsync } = useUpdateInventoryItem(reservation.id)
+  const { mutateAsync } = useUpdateReservationItem(reservation.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values as any, {
@@ -69,7 +83,13 @@ export const EditReservationForm = ({
     })
   })
 
-  console.warn(reservation)
+  const reservedQuantity = form.watch("quantity")
+  const locationId = form.watch("location_id")
+
+  const level = item.location_levels!.find(
+    (level) => level.location_id === locationId
+  )
+
   return (
     <RouteDrawer.Form form={form}>
       <form
@@ -77,28 +97,83 @@ export const EditReservationForm = ({
         className="flex flex-1 flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+          <Form.Field
+            control={form.control}
+            name="location_id"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("inventory.reservation.location")}</Form.Label>
+                  <Form.Control>
+                    <LocationSelect {...field} locations={locations} />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
           <div className="text-ui-fg-subtle shadow-elevation-card-rest grid grid-rows-4 divide-y rounded-lg border">
-            {/* <AttributeGridRow
+            <AttributeGridRow
               title={t("fields.title")}
-              value={
-                reservation.inventory_item.title ??
-                reservation.inventory_item.sku
-              }
-            /> */}
-            {/* <AttributeGridRow title={t("fields.sku")} value={item.sku!} />
-            <AttributeGridRow
-              title={t("fields.sku")}
-              value={reservation.inventory_item.sku}
+              value={item.title ?? item.sku!}
             />
+            <AttributeGridRow title={t("fields.sku")} value={item.sku!} />
             <AttributeGridRow
-              title={t("inventory.reserved")}
-              value={item.reserved_quantity}
+              title={t("fields.inStock")}
+              value={level!.stocked_quantity}
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={stockedQuantityUpdate - item.reserved_quantity}
-            /> */}
+              value={level!.stocked_quantity - reservedQuantity}
+            />
           </div>
+          <Form.Field
+            control={form.control}
+            name="quantity"
+            render={({ field: { onChange, value, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>
+                    {t("inventory.reservation.reservedAmount")}
+                  </Form.Label>
+                  <Form.Control>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={level!.available_quantity + reservation.quantity}
+                      value={value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value
+
+                        if (value === "") {
+                          onChange(null)
+                        } else {
+                          onChange(parseFloat(value))
+                        }
+                      }}
+                      {...field}
+                    />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="description"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label optional>{t("fields.description")}</Form.Label>
+                  <Form.Control>
+                    <Textarea {...field} />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">

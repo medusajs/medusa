@@ -326,7 +326,8 @@
       "location": "Location",
       "inStockAtLocation": "In stock at this location",
       "availableAtLocation": "Available at this location",
-      "reservedAtLocation": "Reserved at this location"
+      "reservedAtLocation": "Reserved at this location",
+      "reservedAmount": "Reserve amount"
     }
   },
   "giftCards": {

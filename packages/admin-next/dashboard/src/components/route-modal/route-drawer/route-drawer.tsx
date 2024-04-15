@@ -13,8 +13,6 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
 
-  console.log("test")
-
   /**
    * Open the modal when the component mounts. This
    * ensures that the entry animation is played.

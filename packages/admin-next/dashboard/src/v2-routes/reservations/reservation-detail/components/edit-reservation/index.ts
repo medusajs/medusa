@@ -1,2 +1,1 @@
-import { ReservationEdit as Component } from "./edit-reservation-modal"
-export { Component }
+export { ReservationEdit as Component } from "./edit-reservation-modal"

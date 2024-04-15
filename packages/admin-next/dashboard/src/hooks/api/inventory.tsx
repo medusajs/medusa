@@ -226,6 +226,23 @@ export const useBatchInventoryItemLevels = (
   })
 }
 
+export const useReservationItem = (
+  id: string,
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<ReservationItemRes, Error, ReservationItemRes, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryKey: reservationItemsQueryKeys.detail(id),
+    queryFn: async () => client.reservations.retrieve(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useReservationItems = (
   query?: Record<string, any>,
   options?: Omit<
@@ -249,7 +266,6 @@ export const useReservationItems = (
 
 export const useUpdateReservationItem = (
   id: string,
-  payload: InventoryNext.UpdateInventoryItemInput,
   options?: UseMutationOptions<
     ReservationItemRes,
     Error,
@@ -257,13 +273,14 @@ export const useUpdateReservationItem = (
   >
 ) => {
   return useMutation({
-    mutationFn: () => client.inventoryItems.updateReservationItem(id, payload),
+    mutationFn: (payload: InventoryNext.UpdateInventoryItemInput) =>
+      client.inventoryItems.updateReservationItem(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: inventoryItemsQueryKeys.lists(),
+        queryKey: reservationItemsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({
-        queryKey: inventoryItemsQueryKeys.detail(id),
+        queryKey: reservationItemsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

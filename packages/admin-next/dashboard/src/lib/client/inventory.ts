@@ -99,7 +99,7 @@ async function updateReservationItem(
   payload: UpdateInventoryItemReq
 ) {
   return postRequest<ReservationItemRes>(
-    `/admin/reservatinos/${reservationId}`,
+    `/admin/reservations/${reservationId}`,
     payload
   )
 }

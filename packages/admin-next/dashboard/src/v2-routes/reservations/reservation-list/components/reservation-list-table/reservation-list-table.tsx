@@ -2,12 +2,11 @@ import { Button, Container, Heading } from "@medusajs/ui"
 
 import { DataTable } from "../../../../../components/table/data-table"
 import { Link } from "react-router-dom"
-import { reservationListExpand } from "../../constants"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useReservationItems } from "../../../../../hooks/api/inventory"
 import { useReservationTableColumns } from "./use-reservation-table-columns"
 import { useReservationTableFilters } from "./use-reservation-table-filters"
 import { useReservationTableQuery } from "./use-reservation-table-query"
-import { useReservations } from "../../../../../hooks/api/reservations"
 import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 20
@@ -15,11 +14,11 @@ const PAGE_SIZE = 20
 export const ReservationListTable = () => {
   const { t } = useTranslation()
 
-  const { searchParams, raw } = useReservationTableQuery({
+  const { searchParams } = useReservationTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { reservations, count, isLoading, isError, error, ...rest } =
-    useReservations({
+  const { reservations, count, isLoading, isError, error } =
+    useReservationItems({
       ...searchParams,
     })
 

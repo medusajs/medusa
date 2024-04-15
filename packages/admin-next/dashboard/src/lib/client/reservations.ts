@@ -1,4 +1,9 @@
-import { CreateRegionDTO, UpdateRegionDTO } from "@medusajs/types"
+import {
+  CreateRegionDTO,
+  InventoryNext,
+  UpdateRegionDTO,
+  UpdateReservationItemInput,
+} from "@medusajs/types"
 import {
   ReservationDeleteRes,
   ReservationListRes,
@@ -15,11 +20,16 @@ async function listReservations(query?: Record<string, any>) {
   return getRequest<ReservationListRes>(`/admin/reservations`, query)
 }
 
-async function createReservation(payload: CreateRegionDTO) {
+async function createReservation(
+  payload: InventoryNext.CreateReservationItemInput
+) {
   return postRequest<ReservationRes>(`/admin/reservations`, payload)
 }
 
-async function updateReservation(id: string, payload: UpdateRegionDTO) {
+async function updateReservation(
+  id: string,
+  payload: InventoryNext.UpdateReservationItemInput
+) {
   return postRequest<ReservationRes>(`/admin/reservations/${id}`, payload)
 }
 

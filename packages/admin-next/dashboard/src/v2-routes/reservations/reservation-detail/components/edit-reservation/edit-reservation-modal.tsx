@@ -1,21 +1,37 @@
+import {
+  useInventoryItem,
+  useReservationItem,
+} from "../../../../../hooks/api/inventory"
+
 import { EditReservationForm } from "./components/edit-reservation-form"
 import { Heading } from "@medusajs/ui"
 import { RouteDrawer } from "../../../../../components/route-modal"
 import { useParams } from "react-router-dom"
-import { useReservation } from "../../../../../hooks/api/reservations"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 
 export const ReservationEdit = () => {
   const { id } = useParams()
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
 
-  console.log(id)
-  const { reservation, isLoading, isError, error } = useReservation(id!)
-  console.log(reservation)
+  const { reservation, isLoading, isError, error } = useReservationItem(id!)
+  const { inventory_item: inventoryItem } = useInventoryItem(
+    reservation?.inventory_item_id!,
+    {
+      enabled: !!reservation,
+    }
+  )
 
-  const ready = !isLoading && reservation
-  console.log(ready)
+  const { stock_locations } = useStockLocations(
+    {
+      id: inventoryItem?.location_levels?.map((l) => l.location_id),
+    },
+    {
+      enabled: !!inventoryItem?.location_levels,
+    }
+  )
 
+  const ready = !isLoading && reservation && inventoryItem && stock_locations
   if (isError) {
     throw error
   }
@@ -23,9 +39,15 @@ export const ReservationEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{"t()"}</Heading>
+        <Heading>{t("inventory.reservation.editItemDetails")}</Heading>
       </RouteDrawer.Header>
-      {/* {ready && <EditReservationForm reservation={reservation} />} */}
+      {ready && (
+        <EditReservationForm
+          locations={stock_locations}
+          reservation={reservation}
+          item={inventoryItem}
+        />
+      )}
     </RouteDrawer>
   )
 }

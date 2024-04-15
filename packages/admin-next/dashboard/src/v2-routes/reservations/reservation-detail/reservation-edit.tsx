@@ -1,10 +1,10 @@
-import { useLoaderData, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
-import { useReservation } from "../../../hooks/api/reservations"
+import { useReservationItem } from "../../../hooks/api/inventory"
 
 export const ReservationDetail = () => {
   const { id } = useParams()
@@ -13,7 +13,7 @@ export const ReservationDetail = () => {
     ReturnType<typeof reservationItemLoader>
   >
 
-  const { reservation, isLoading, isError, error } = useReservation(
+  const { reservation, isLoading, isError, error } = useReservationItem(
     id!,
     {},
     {
@@ -45,6 +45,7 @@ export const ReservationDetail = () => {
           <div className="lg:hidden">
             <JsonViewSection data={reservation} />
           </div>
+          <Outlet />
         </div>
       </div>
     </div>
