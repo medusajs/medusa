@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, usePrompt, useToast } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -8,15 +8,15 @@ import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import {
+  useDeleteProduct,
+  useProducts,
+} from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
-import {
-  useDeleteProduct,
-  useProducts,
-} from "../../../../../hooks/api/products"
 
 const PAGE_SIZE = 20
 
@@ -83,6 +83,7 @@ export const ProductListTable = () => {
 const ProductActions = ({ product }: { product: Product }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { toast } = useToast()
   const { mutateAsync } = useDeleteProduct(product.id)
 
   const handleDelete = async () => {
@@ -99,7 +100,22 @@ const ProductActions = ({ product }: { product: Product }) => {
       return
     }
 
-    await mutateAsync()
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast({
+          title: "Product deleted",
+          description: `Product ${product.title} was successfully deleted`,
+          variant: "success",
+        })
+      },
+      onError: (e) => {
+        toast({
+          title: "Error",
+          description: e.message,
+          variant: "error",
+        })
+      },
+    })
   }
 
   return (

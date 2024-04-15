@@ -1,26 +1,20 @@
 "use client"
 
 import * as React from "react"
+import { Toaster as Primitive } from "sonner"
 
-import { Toast, ToastProvider, ToastViewport } from "@/components/toast"
-import { useToast } from "@/hooks/use-toast"
-import { ToasterPosition } from "@/types"
+interface ToasterProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof Primitive>,
+    "richColors" | "closeButton" | "icons" | "theme"
+  > {}
 
-type ToasterProps = {
-  position?: ToasterPosition
-}
-
-const Toaster = ({ position = "bottom-right" }: ToasterProps) => {
-  const { toasts } = useToast()
-
-  return (
-    <ToastProvider swipeDirection="right">
-      {toasts.map(({ id, ...props }) => {
-        return <Toast key={id} position={position} {...props} />
-      })}
-      <ToastViewport position={position} />
-    </ToastProvider>
-  )
+const Toaster = ({
+  position = "bottom-right",
+  gap = 12,
+  ...props
+}: ToasterProps) => {
+  return <Primitive position={position} gap={gap} {...props} />
 }
 
 export { Toaster }
