@@ -358,11 +358,8 @@ export interface CreateProductCategoryDTO {
   rank?: number
   /**
    * The ID of the parent product category, if it has any.
-   *
-   * @privateRemarks
-   * Shouldn't this be optional?
    */
-  parent_category_id: string | null
+  parent_category_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
