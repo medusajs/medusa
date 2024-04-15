@@ -95,6 +95,12 @@ medusaIntegrationTestRunner({
           object: "shipping_profile",
           deleted: true,
         })
+
+        await api
+          .get(`/admin/shipping-profiles/${shipping_profile.id}`, adminHeaders)
+          .catch((err) => {
+            expect(err.response.status).toEqual(404)
+          })
       })
     })
 
@@ -216,7 +222,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/shipping-profiles", () => {
-      // TODO: Delete is not added yet
       it("deletes a shipping profile", async () => {
         expect.assertions(2)
 
