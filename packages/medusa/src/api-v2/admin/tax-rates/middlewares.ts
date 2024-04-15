@@ -1,15 +1,17 @@
 import * as QueryConfig from "./query-config"
 
 import {
-  AdminGetTaxRatesTaxRateParams,
-  AdminPostTaxRatesReq,
-  AdminPostTaxRatesTaxRateReq,
-  AdminPostTaxRatesTaxRateRulesReq,
+  AdminCreateTaxRate,
+  AdminCreateTaxRateRule,
+  AdminGetTaxRateParams,
+  AdminGetTaxRatesParams,
+  AdminUpdateTaxRate,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -20,19 +22,41 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/tax-rates",
-    middlewares: [transformBody(AdminPostTaxRatesReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateTaxRate),
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: "POST",
     matcher: "/admin/tax-rates/:id",
-    middlewares: [transformBody(AdminPostTaxRatesTaxRateReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateTaxRate),
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "GET",
+    matcher: "/admin/tax-rates",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRatesParams,
+        QueryConfig.listTransformQueryConfig
+      ),
+    ],
   },
   {
     method: "GET",
     matcher: "/admin/tax-rates/:id",
     middlewares: [
-      transformQuery(
-        AdminGetTaxRatesTaxRateParams,
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -40,6 +64,22 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/tax-rates/:id/rules",
-    middlewares: [transformBody(AdminPostTaxRatesTaxRateRulesReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateTaxRateRule),
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "DELETE",
+    matcher: "/admin/tax-rates/:id/rules/:rule_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

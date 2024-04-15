@@ -16,13 +16,11 @@ export const defaultAdminTaxRateFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminTaxRateFields,
-  defaultRelations: defaultAdminTaxRateRelations,
-  allowedRelations: allowedAdminTaxRateRelations,
+  defaults: defaultAdminTaxRateFields,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
-  defaultLimit: 20,
+  defaults: defaultAdminTaxRateFields,
   isList: true,
 }

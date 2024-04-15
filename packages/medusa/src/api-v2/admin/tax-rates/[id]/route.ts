@@ -3,16 +3,22 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import { defaultAdminTaxRateFields } from "../query-config"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { AdminPostTaxRatesTaxRateReq } from "../../../../api/routes/admin/tax-rates"
+import {
+  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
+} from "@medusajs/utils"
 import {
   deleteTaxRatesWorkflow,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AdminGetTaxRateParamsType,
+  AdminUpdateTaxRateType,
+} from "../validators"
+import { refetchTaxRate } from "../helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostTaxRatesTaxRateReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdateTaxRateType>,
   res: MedusaResponse
 ) => {
   const { errors } = await updateTaxRatesWorkflow(req.scope).run({
@@ -27,35 +33,28 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "tax_rate",
-    variables: { id: req.params.id },
-    fields: defaultAdminTaxRateFields,
-  })
-
-  const [taxRate] = await remoteQuery(queryObject)
-
+  const taxRate = await refetchTaxRate(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ tax_rate: taxRate })
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetTaxRateParamsType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const variables = { id: req.params.id }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "tax_rate",
     variables,
-    fields: defaultAdminTaxRateFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [taxRate] = await remoteQuery(queryObject)
-
   res.status(200).json({ tax_rate: taxRate })
 }
 
@@ -64,7 +63,6 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-
   const { errors } = await deleteTaxRatesWorkflow(req.scope).run({
     input: { ids: [id] },
     throwOnError: false,
