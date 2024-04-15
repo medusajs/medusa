@@ -11,10 +11,24 @@ export const defaults = [
   "updated_at",
   "metadata",
 
-  "parent_category.id",
-  "parent_category.name",
-  "category_children.id",
-  "category_children.name",
+  "*category_children",
+]
+
+export const allowed = [
+  "id",
+  "name",
+  "description",
+  "handle",
+  "is_active",
+  "is_internal",
+  "rank",
+  "parent_category_id",
+  "created_at",
+  "updated_at",
+  "metadata",
+
+  "*parent_category",
+  "*category_children",
 ]
 
 export const retrieveProductCategoryConfig = {

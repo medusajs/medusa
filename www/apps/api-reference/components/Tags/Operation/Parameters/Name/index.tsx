@@ -23,7 +23,7 @@ const TagOperationParametersName = ({
       {schema["x-expandable"] && (
         <>
           <br />
-          <ExpandableNotice type="request" link="#expanding-fields" />
+          <ExpandableNotice type="request" link="#expanding-relations" />
         </>
       )}
       {schema["x-featureFlag"] && (

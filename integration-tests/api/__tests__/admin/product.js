@@ -2828,6 +2828,163 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("batch methods", () => {
+        it("successfully creates, updates, and deletes products", async () => {
+          await breaking(
+            () => {},
+            async () => {
+              const createPayload = getProductFixture({
+                title: "Test batch create",
+                handle: "test-batch-create",
+              })
+
+              const updatePayload = {
+                id: publishedProduct.id,
+                title: "Test batch update",
+              }
+
+              const response = await api.post(
+                "/admin/products/op/batch",
+                {
+                  create: [createPayload],
+                  update: [updatePayload],
+                  delete: [baseProduct.id],
+                },
+                adminHeaders
+              )
+
+              expect(response.status).toEqual(200)
+              expect(response.data.created).toHaveLength(1)
+              expect(response.data.updated).toHaveLength(1)
+              expect(response.data.deleted.ids).toHaveLength(1)
+
+              expect(response.data.created).toEqual([
+                expect.objectContaining({
+                  title: "Test batch create",
+                }),
+              ])
+
+              expect(response.data.updated).toEqual([
+                expect.objectContaining({
+                  title: "Test batch update",
+                }),
+              ])
+
+              expect(response.data.deleted).toEqual(
+                expect.objectContaining({ ids: [baseProduct.id] })
+              )
+
+              const dbData = (await api.get("/admin/products", adminHeaders))
+                .data.products
+
+              expect(dbData).toHaveLength(3)
+              expect(dbData).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    title: "Test batch create",
+                  }),
+                  expect.objectContaining({
+                    title: "Test batch update",
+                  }),
+                ])
+              )
+            }
+          )
+        })
+
+        it("successfully creates, updates, and deletes product variants", async () => {
+          await breaking(
+            () => {},
+            async () => {
+              const productWithMultipleVariants = getProductFixture({
+                title: "Test batch variants",
+                handle: "test-batch-variants",
+                variants: [
+                  {
+                    title: "Variant 1",
+                    inventory_quantity: 5,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 100,
+                      },
+                    ],
+                  },
+                  {
+                    title: "Variant 2",
+                    inventory_quantity: 20,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 200,
+                      },
+                    ],
+                  },
+                ],
+              })
+
+              const createdProduct = (
+                await api.post(
+                  "/admin/products",
+                  productWithMultipleVariants,
+                  adminHeaders
+                )
+              ).data.product
+
+              const createPayload = {
+                title: "Test batch create variant",
+                inventory_quantity: 10,
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 20,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 10,
+                  },
+                ],
+              }
+
+              const updatePayload = {
+                id: createdProduct.variants[0].id,
+                title: "Test batch update variant",
+              }
+
+              const response = await api.post(
+                `/admin/products/${createdProduct.id}/variants/op/batch`,
+                {
+                  create: [createPayload],
+                  update: [updatePayload],
+                  delete: [createdProduct.variants[1].id],
+                },
+                adminHeaders
+              )
+
+              const dbData = (
+                await api.get(
+                  `/admin/products/${createdProduct.id}`,
+                  adminHeaders
+                )
+              ).data.product.variants
+
+              expect(response.status).toEqual(200)
+              expect(dbData).toHaveLength(2)
+              expect(dbData).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    title: "Test batch create variant",
+                  }),
+                  expect.objectContaining({
+                    title: "Test batch update variant",
+                  }),
+                ])
+              )
+            }
+          )
+        })
+      })
+
       // TODO: Discuss how this should be handled
       describe.skip("GET /admin/products/tag-usage", () => {
         it("successfully gets the tags usage", async () => {
