@@ -3,15 +3,11 @@ import { PromotionDTO } from "./promotion"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 /**
- * @interface
- *
  * The application method's possible types.
  */
 export type ApplicationMethodTypeValues = "fixed" | "percentage"
 
 /**
- * @interface
- *
  * The application method's possible target types.
  */
 export type ApplicationMethodTargetTypeValues =
@@ -20,8 +16,6 @@ export type ApplicationMethodTargetTypeValues =
   | "items"
 
 /**
- * @interface
- *
  * The application method's possible allocation values.
  */
 export type ApplicationMethodAllocationValues = "each" | "across"

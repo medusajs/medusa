@@ -1,4 +1,5 @@
 import { InventoryNext } from "@medusajs/types"
+import { defaultAdminProductsVariantFields } from "../products/query-config"
 
 // eslint-disable-next-line max-len
 export const defaultAdminLocationLevelFields = [
@@ -37,17 +38,18 @@ export const defaultAdminInventoryItemFields = [
   ...defaultAdminLocationLevelFields.map(
     (field) => `location_levels.${field.toString()}`
   ),
+  ...defaultAdminProductsVariantFields
+    .filter((field) => !field.startsWith("*"))
+    .map((field) => `variant.${field}`),
 ]
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminInventoryItemFields,
-  allowed: defaultAdminInventoryItemFields,
   isList: false,
 }
 
 export const retrieveLocationLevelsTransformQueryConfig = {
   defaults: defaultAdminLocationLevelFields,
-  allowed: defaultAdminLocationLevelFields,
   isList: false,
 }
 

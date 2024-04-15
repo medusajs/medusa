@@ -3,11 +3,15 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
   AdminGetShippingOptionParams,
+  AdminListShippingOptionParams,
   AdminShippingOptionRulesBatchAdd,
   AdminShippingOptionRulesBatchRemove,
   AdminUpdateShippingOption,
 } from "./validators"
-import { retrieveTransformQueryConfig } from "./query-config"
+import {
+  listTransformQueryConfig,
+  retrieveTransformQueryConfig,
+} from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 
@@ -15,6 +19,17 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
+  },
+
+  {
+    method: ["GET"],
+    matcher: "/admin/shipping-options",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminListShippingOptionParams,
+        listTransformQueryConfig
+      ),
+    ],
   },
 
   {
@@ -39,6 +54,11 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       validateAndTransformBody(AdminUpdateShippingOption),
     ],
+  },
+
+  {
+    method: ["DELETE"],
+    matcher: "/admin/shipping-options/:id",
   },
 
   {

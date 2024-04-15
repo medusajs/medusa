@@ -1,9 +1,10 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useApiKey } from "../../../hooks/api/api-keys"
+import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
-import { apiKeyLoader } from "./loader"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
+import { apiKeyLoader } from "./loader"
 
 export const ApiKeyManagementDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -11,6 +12,7 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
+
   const { api_key, isLoading, isError, error } = useApiKey(id!, undefined, {
     initialData: initialData,
   })
@@ -19,6 +21,8 @@ export const ApiKeyManagementDetail = () => {
     return <div>Loading...</div>
   }
 
+  const isPublishable = api_key?.type === ApiKeyType.PUBLISHABLE
+
   if (isError) {
     throw error
   }
@@ -26,7 +30,7 @@ export const ApiKeyManagementDetail = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <ApiKeyGeneralSection apiKey={api_key} />
-      <ApiKeySalesChannelSection apiKey={api_key} />
+      {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
       <JsonViewSection data={api_key} />
       <Outlet />
     </div>

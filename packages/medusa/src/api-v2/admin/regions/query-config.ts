@@ -6,11 +6,7 @@ export const defaultAdminRegionFields = [
   "updated_at",
   "deleted_at",
   "metadata",
-  "countries.id",
-  "countries.iso_2",
-  "countries.iso_3",
-  "countries.num_code",
-  "countries.name",
+  "*countries",
 ]
 
 export const retrieveTransformQueryConfig = {

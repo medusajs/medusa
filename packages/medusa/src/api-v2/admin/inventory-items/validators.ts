@@ -127,11 +127,21 @@ export class AdminPostInventoryItemsItemLocationLevelsReq {
   location_id: string
 
   @IsNumber()
-  stocked_quantity: number
+  @IsOptional()
+  stocked_quantity?: number
 
   @IsOptional()
   @IsNumber()
   incoming_quantity?: number
+}
+
+export class AdminPostInventoryItemsItemLocationLevelsBatchReq {
+  @ValidateNested({ each: true })
+  @Type(() => AdminPostInventoryItemsItemLocationLevelsReq)
+  creates: AdminPostInventoryItemsItemLocationLevelsReq[]
+
+  @IsString({ each: true })
+  deletes: string[]
 }
 
 // eslint-disable-next-line
@@ -259,7 +269,13 @@ export class AdminPostInventoryItemsReq {
   metadata?: Record<string, unknown>
 }
 
-export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {
+// eslint-disable-next-line max-len
+export class AdminGetInventoryItemsItemLocationLevelsParams extends extendedFindParamsMixin(
+  {
+    limit: 50,
+    offset: 0,
+  }
+) {
   /**
    * Location IDs to filter location levels.
    */
