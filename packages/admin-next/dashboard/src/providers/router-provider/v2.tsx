@@ -199,7 +199,8 @@ export const v2Routes: RouteObject[] = [
                   },
                   {
                     path: ":ruleType/edit",
-                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                    lazy: () =>
+                      import("../../v2-routes/promotions/common/edit-rules"),
                   },
                 ],
               },

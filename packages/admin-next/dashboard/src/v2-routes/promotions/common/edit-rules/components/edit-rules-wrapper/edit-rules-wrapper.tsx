@@ -1,5 +1,5 @@
 import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
-import { useRouteModal } from "../../../../../components/route-modal"
+import { useRouteModal } from "../../../../../../components/route-modal"
 import {
   usePromotionAddRules,
   usePromotionRemoveRules,
@@ -7,7 +7,7 @@ import {
   usePromotionRuleOperators,
   usePromotionUpdateRules,
   useUpdatePromotion,
-} from "../../../../../hooks/api/promotions"
+} from "../../../../../../hooks/api/promotions"
 import { RuleTypeValues } from "../../edit-rules"
 import { EditRulesForm } from "../edit-rules-form"
 import { getDisguisedRules } from "../edit-rules-form/utils"

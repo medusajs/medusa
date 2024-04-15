@@ -22,7 +22,7 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
-import { RulesFormField } from "../../../edit-rules/components/edit-rules-form"
+import { RulesFormField } from "../../../common/edit-rules/components/edit-rules-form"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
 import { CreatePromotionContext } from "./context"
