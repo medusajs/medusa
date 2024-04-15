@@ -1,9 +1,20 @@
+import { PricingTypes } from "../bundles"
 import { PriceListStatus } from "./common"
 
 export interface CreatePriceListPriceWorkflowDTO {
   amount: number
   currency_code: string
   variant_id: string
+  max_quantity?: number
+  min_quantity?: number
+  rules?: Record<string, string>
+}
+
+export interface UpdatePriceListPriceWorkflowDTO {
+  id: string
+  variant_id: string
+  amount?: number
+  currency_code?: string
   max_quantity?: number
   min_quantity?: number
   rules?: Record<string, string>
@@ -31,15 +42,24 @@ export interface UpdatePriceListWorkflowInputDTO {
 
 export interface UpdatePriceListPricesWorkflowDTO {
   id: string
-  prices: {
-    id: string
-    variant_id: string
-    amount?: number
-    currency_code?: string
-    max_quantity?: number
-    min_quantity?: number
-    rules?: Record<string, string>
-  }[]
+  prices: UpdatePriceListPriceWorkflowDTO[]
+}
+
+export interface BatchPriceListPricesWorkflowDTO {
+  id: string
+  create: CreatePriceListPriceWorkflowDTO[]
+  update: UpdatePriceListPriceWorkflowDTO[]
+  delete: string[]
+}
+
+export interface BatchPriceListPricesWorkflowResult {
+  created: PricingTypes.PriceDTO[]
+  updated: PricingTypes.PriceDTO[]
+  deleted: {
+    ids: string[]
+    object: string
+    deleted: boolean
+  }
 }
 
 export interface CreatePriceListPricesWorkflowDTO {

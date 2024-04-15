@@ -1,13 +1,12 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
 import * as QueryConfig from "./query-config"
 import {
+  AdminBatchPriceListPrices,
   AdminGetPriceListsParams,
   AdminGetPriceListsPriceListParams,
-  AdminPostPriceListPriceBatchUpdate,
-  AdminPostPriceListsPriceListPricesBatchAddReq,
-  AdminPostPriceListsPriceListPricesBatchRemoveReq,
   AdminPostPriceListsPriceListReq,
   AdminPostPriceListsReq,
 } from "./validators"
@@ -50,19 +49,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/price-lists/:id/prices/batch/add",
-    middlewares: [transformBody(AdminPostPriceListsPriceListPricesBatchAddReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/price-lists/:id/prices/batch/remove",
-    middlewares: [
-      transformBody(AdminPostPriceListsPriceListPricesBatchRemoveReq),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/price-lists/:id/prices/batch/update",
-    middlewares: [transformBody(AdminPostPriceListPriceBatchUpdate)],
+    matcher: "/admin/price-lists/:id/prices/batch",
+    middlewares: [validateAndTransformBody(AdminBatchPriceListPrices)],
   },
 ]

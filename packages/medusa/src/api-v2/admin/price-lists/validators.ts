@@ -9,6 +9,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { z } from "zod"
 import { FindParams } from "../../../types/common"
 import { transformOptionalDate } from "../../../utils/validators/date-transform"
 
@@ -104,48 +105,27 @@ export class AdminPostPriceListsPriceListReq {
   rules?: Record<string, string[]>
 }
 
-export class AdminPostPriceListsPriceListPricesBatchAddReq {
-  @IsOptional()
-  @IsArray()
-  prices: AdminPriceListPricesCreateReq[]
-}
+export const AdminCreatePriceListPrice = z.object({
+  currency_code: z.string(),
+  amount: z.number(),
+  variant_id: z.string(),
+  min_quantity: z.number().optional(),
+  max_quantity: z.number().optional(),
+  rules: z.object({}).optional(),
+})
 
-export class AdminPostPriceListPriceBatchUpdate {
-  @IsOptional()
-  @IsArray()
-  prices: AdminPostPriceListPriceUpdate[]
-}
+export const AdminUpdatePriceListPrice = z.object({
+  id: z.string(),
+  currency_code: z.string().optional(),
+  amount: z.number().optional(),
+  variant_id: z.string(),
+  min_quantity: z.number().optional(),
+  max_quantity: z.number().optional(),
+  rules: z.object({}).optional(),
+})
 
-export class AdminPostPriceListsPriceListPricesBatchRemoveReq {
-  @IsArray()
-  @IsString({ each: true })
-  ids: string[]
-}
-
-export class AdminPostPriceListPriceUpdate {
-  @IsString()
-  id: string
-
-  @IsString()
-  variant_id: string
-
-  @IsOptional()
-  @IsString()
-  currency_code?: string
-
-  @IsOptional()
-  @IsInt()
-  amount?: number
-
-  @IsOptional()
-  @IsInt()
-  min_quantity?: number
-
-  @IsOptional()
-  @IsInt()
-  max_quantity?: number
-
-  @IsOptional()
-  @IsObject()
-  rules?: Record<string, string>
-}
+export const AdminBatchPriceListPrices = z.object({
+  create: z.array(AdminCreatePriceListPrice).optional(),
+  update: z.array(AdminUpdatePriceListPrice).optional(),
+  delete: z.array(z.string()).optional(),
+})

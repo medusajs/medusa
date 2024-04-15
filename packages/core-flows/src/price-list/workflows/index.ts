@@ -1,3 +1,4 @@
+export * from "./batch-price-list-prices"
 export * from "./create-price-list-prices"
 export * from "./create-price-lists"
 export * from "./delete-price-lists"
