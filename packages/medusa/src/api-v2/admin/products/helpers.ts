@@ -4,6 +4,7 @@ import {
   ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { promiseAll, remoteQueryObjectFromString } from "@medusajs/utils"
 
 const isPricing = (fieldName: string) =>
@@ -72,7 +73,7 @@ export const refetchProduct = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve("remoteQuery")
+  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {
@@ -90,7 +91,7 @@ export const refetchBatchProducts = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve("remoteQuery")
+  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let created = Promise.resolve<ProductDTO[]>([])
   let updated = Promise.resolve<ProductDTO[]>([])
 
@@ -113,6 +114,47 @@ export const refetchBatchProducts = async (
         filters: { id: batchResult.updated.map((p) => p.id) },
       },
       fields: remapKeysForProduct(fields ?? []),
+    })
+
+    updated = remoteQuery(updatedQuery)
+  }
+
+  const [createdRes, updatedRes] = await promiseAll([created, updated])
+  return {
+    created: createdRes,
+    updated: updatedRes,
+    deleted: batchResult.deleted,
+  }
+}
+
+export const refetchBatchVariants = async (
+  batchResult: BatchMethodResponse<ProductVariantDTO>,
+  scope: MedusaContainer,
+  fields: string[]
+) => {
+  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  let created = Promise.resolve<ProductVariantDTO[]>([])
+  let updated = Promise.resolve<ProductVariantDTO[]>([])
+
+  if (batchResult.created.length) {
+    const createdQuery = remoteQueryObjectFromString({
+      entryPoint: "variant",
+      variables: {
+        filters: { id: batchResult.created.map((v) => v.id) },
+      },
+      fields: remapKeysForVariant(fields ?? []),
+    })
+
+    created = remoteQuery(createdQuery)
+  }
+
+  if (batchResult.updated.length) {
+    const updatedQuery = remoteQueryObjectFromString({
+      entryPoint: "variant",
+      variables: {
+        filters: { id: batchResult.updated.map((v) => v.id) },
+      },
+      fields: remapKeysForVariant(fields ?? []),
     })
 
     updated = remoteQuery(updatedQuery)

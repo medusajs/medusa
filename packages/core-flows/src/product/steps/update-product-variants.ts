@@ -27,7 +27,7 @@ export const updateProductVariantsStep = createStep(
       if (data.product_variants.some((p) => !p.id)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Product variant id is required when doing a batch update"
+          "Product variant ID is required when doing a batch update of product variants"
         )
       }
 

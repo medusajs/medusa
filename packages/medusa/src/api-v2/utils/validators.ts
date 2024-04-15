@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const createBatchParams = (
+export const createBatchBody = (
   createValidator: z.ZodType,
   updateValidator: z.ZodType
 ) => {

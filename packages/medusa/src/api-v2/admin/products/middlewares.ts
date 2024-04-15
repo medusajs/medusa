@@ -3,7 +3,7 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
-import { createBatchParams } from "../../utils/validators"
+import { createBatchBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import { maybeApplyPriceListsFilter } from "./utils"
 import {
@@ -71,7 +71,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/op/batch",
     middlewares: [
       validateAndTransformBody(
-        createBatchParams(AdminCreateProduct, AdminBatchUpdateProduct)
+        createBatchBody(AdminCreateProduct, AdminBatchUpdateProduct)
       ),
       validateAndTransformQuery(
         AdminGetProductParams,
@@ -116,14 +116,14 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id/variants/op/batch",
     middlewares: [
       validateAndTransformBody(
-        createBatchParams(
+        createBatchBody(
           AdminCreateProductVariant,
           AdminBatchUpdateProductVariant
         )
       ),
       validateAndTransformQuery(
-        AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
+        AdminGetProductVariantParams,
+        QueryConfig.retrieveVariantConfig
       ),
     ],
   },

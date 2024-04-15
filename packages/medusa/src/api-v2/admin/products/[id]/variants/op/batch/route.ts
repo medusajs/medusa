@@ -8,7 +8,7 @@ import {
   AdminCreateProductType,
 } from "../../../../validators"
 import { BatchMethodRequest } from "@medusajs/types"
-import { refetchProduct, remapProductResponse } from "../../../../helpers"
+import { refetchBatchVariants, remapVariantResponse } from "../../../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
@@ -43,10 +43,15 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const product = await refetchProduct(
-    productId,
+  const batchResults = await refetchBatchVariants(
+    result,
     req.scope,
     req.remoteQueryConfig.fields
   )
-  res.status(200).json({ product: remapProductResponse(product) })
+
+  res.status(200).json({
+    created: batchResults.created.map(remapVariantResponse),
+    updated: batchResults.updated.map(remapVariantResponse),
+    deleted: batchResults.deleted,
+  })
 }
