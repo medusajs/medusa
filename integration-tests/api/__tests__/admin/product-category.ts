@@ -210,148 +210,153 @@ medusaIntegrationTestRunner({
         expect(response.data.offset).toEqual(0)
         expect(response.data.limit).toEqual(7)
 
-        expect(response.data.product_categories).toEqual(expect.arrayContaining([
-          expect.objectContaining({
-            id: productCategoryChild.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
+        expect(response.data.product_categories).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: productCategoryChild.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategory.id,
+                    handle: productCategory.handle,
+                    rank: 0,
+                  }),
+                }),
+                () => ({
+                  parent_category_id: productCategory.id,
+                })
+              ),
+              category_children: [
+                expect.objectContaining({
+                  id: productCategoryChild2.id,
+                  handle: productCategoryChild2.handle,
+                  rank: 0,
+                }),
+                expect.objectContaining({
+                  id: productCategoryChild1.id,
+                  handle: productCategoryChild1.handle,
+                  rank: 1,
+                }),
+                expect.objectContaining({
+                  id: productCategoryChild0.id,
+                  handle: productCategoryChild0.handle,
+                  rank: 2,
+                }),
+                expect.objectContaining({
+                  id: productCategoryChild3.id,
+                  handle: productCategoryChild3.handle,
+                  rank: 3,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              id: productCategoryParent.id,
+              ...breaking(
+                () => ({ parent_category: null }),
+                () => ({})
+              ),
+              category_children: [
+                expect.objectContaining({
                   id: productCategory.id,
                   handle: productCategory.handle,
                   rank: 0,
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategory.id,
-              })
-            ),
-            category_children: [
-              expect.objectContaining({
-                id: productCategoryChild2.id,
-                handle: productCategoryChild2.handle,
-                rank: 0,
-              }),
-              expect.objectContaining({
-                id: productCategoryChild1.id,
-                handle: productCategoryChild1.handle,
-                rank: 1,
-              }),
-              expect.objectContaining({
-                id: productCategoryChild0.id,
-                handle: productCategoryChild0.handle,
-                rank: 2,
-              }),
-              expect.objectContaining({
-                id: productCategoryChild3.id,
-                handle: productCategoryChild3.handle,
-                rank: 3,
-              }),
-            ],
-          }),
-          expect.objectContaining({
-            id: productCategoryParent.id,
-            ...breaking(() => ({ parent_category: null }), () => ({})),
-            category_children: [
-              expect.objectContaining({
-                id: productCategory.id,
-                handle: productCategory.handle,
-                rank: 0,
-              }),
-            ],
-          }),
-          expect.objectContaining({
-            id: productCategoryChild2.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
-                  id: productCategoryChild.id,
+              ],
+            }),
+            expect.objectContaining({
+              id: productCategoryChild2.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryChild.id,
+                  }),
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategoryChild.id,
-              })
-            ),
-            category_children: [],
-            rank: 0,
-            handle: productCategoryChild2.handle,
-          }),
-          expect.objectContaining({
-            id: productCategory.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
-                  id: productCategoryParent.id,
-                  rank: 0,
-                  handle: productCategoryParent.handle,
+                () => ({
+                  parent_category_id: productCategoryChild.id,
+                })
+              ),
+              category_children: [],
+              rank: 0,
+              handle: productCategoryChild2.handle,
+            }),
+            expect.objectContaining({
+              id: productCategory.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryParent.id,
+                    rank: 0,
+                    handle: productCategoryParent.handle,
+                  }),
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategoryParent.id,
-              })
-            ),
-            category_children: [
-              expect.objectContaining({
-                id: productCategoryChild.id,
-                handle: productCategoryChild.handle,
-                rank: 0,
-              }),
-            ],
-          }),
-          expect.objectContaining({
-            id: productCategoryChild1.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
+                () => ({
+                  parent_category_id: productCategoryParent.id,
+                })
+              ),
+              category_children: [
+                expect.objectContaining({
                   id: productCategoryChild.id,
                   handle: productCategoryChild.handle,
                   rank: 0,
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategoryChild.id,
-              })
-            ),
-            category_children: [],
-            handle: productCategoryChild1.handle,
-            rank: 1,
-          }),
-          expect.objectContaining({
-            id: productCategoryChild0.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
-                  id: productCategoryChild.id,
-                  handle: productCategoryChild.handle,
-                  rank: 0,
+              ],
+            }),
+            expect.objectContaining({
+              id: productCategoryChild1.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryChild.id,
+                    handle: productCategoryChild.handle,
+                    rank: 0,
+                  }),
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategoryChild.id,
-              })
-            ),
-            category_children: [],
-            handle: productCategoryChild0.handle,
-            rank: 2,
-          }),
-          expect.objectContaining({
-            id: productCategoryChild3.id,
-            ...breaking(
-              () => ({
-                parent_category: expect.objectContaining({
-                  id: productCategoryChild.id,
-                  handle: productCategoryChild.handle,
-                  rank: 0,
+                () => ({
+                  parent_category_id: productCategoryChild.id,
+                })
+              ),
+              category_children: [],
+              handle: productCategoryChild1.handle,
+              rank: 1,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild0.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryChild.id,
+                    handle: productCategoryChild.handle,
+                    rank: 0,
+                  }),
                 }),
-              }),
-              () => ({
-                parent_category_id: productCategoryChild.id,
-              })
-            ),
-            category_children: [],
-            handle: productCategoryChild3.handle,
-            rank: 3,
-          }),
-        ]))
+                () => ({
+                  parent_category_id: productCategoryChild.id,
+                })
+              ),
+              category_children: [],
+              handle: productCategoryChild0.handle,
+              rank: 2,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild3.id,
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryChild.id,
+                    handle: productCategoryChild.handle,
+                    rank: 0,
+                  }),
+                }),
+                () => ({
+                  parent_category_id: productCategoryChild.id,
+                })
+              ),
+              category_children: [],
+              handle: productCategoryChild3.handle,
+              rank: 3,
+            }),
+          ])
+        )
       })
 
       it("filters based on whitelisted attributes of the data model", async () => {
@@ -473,6 +478,7 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+    })
 
     describe("POST /admin/product-categories", () => {
       beforeEach(async () => {
