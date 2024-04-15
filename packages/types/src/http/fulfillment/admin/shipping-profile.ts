@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../../common"
+import { DeleteResponse, PaginatedResponse } from "../../../common"
 
 /**
  * @experimental
@@ -24,8 +24,5 @@ export interface AdminShippingProfilesResponse extends PaginatedResponse {
 /**
  * @experimental
  */
-export interface AdminShippingProfileDeleteResponse {
-  id: string
-  object: "shipping-profile"
-  deleted: boolean
-}
+export interface AdminShippingProfileDeleteResponse
+  extends DeleteResponse<"shipping_profile"> {}

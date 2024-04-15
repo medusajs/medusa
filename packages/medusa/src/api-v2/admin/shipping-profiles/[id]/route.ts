@@ -55,7 +55,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id,
-    object: "shipping-profile",
+    object: "shipping_profile",
     deleted: true,
   })
 }

@@ -2,6 +2,7 @@ import { AdminFulfillmentAddressResponse } from "./fulfillment-address"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminFulfillmentItemResponse } from "./fulfillment-item"
 import { AdminFulfillmentLabelResponse } from "./fulfillment-label"
+import { DeleteResponse } from "../../../common"
 
 /**
  * @experimental
@@ -29,8 +30,5 @@ export interface AdminFulfillmentResponse {
 /**
  * @experimental
  */
-export interface AdminFulfillmentSetsDeleteResponse {
-  id: string
-  object: "fulfillment_set"
-  deleted: boolean
-}
+export interface AdminFulfillmentSetsDeleteResponse
+  extends DeleteResponse<"fulfillment_set"> {}

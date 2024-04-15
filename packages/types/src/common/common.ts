@@ -250,7 +250,7 @@ export type PaginatedResponse<T = unknown> = {
 /**
  * The fields returned in the response of a DELETE request.
  */
-export type DeleteResponse = {
+export type DeleteResponse<T = string> = {
   /**
    * The ID of the item that was deleted.
    */
@@ -259,7 +259,7 @@ export type DeleteResponse = {
   /**
    * The type of the item that was deleted.
    */
-  object: string
+  object: T
 
   /**
    * Whether the item was deleted successfully.
