@@ -41,29 +41,79 @@ function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
   )
 }
 
-function message(title: string, props: ToastProps = {}) {
+function message(
+  /**
+   * The title of the toast.
+   */
+  title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("message", title, props)
 }
 
-function info(title: string, props: ToastProps = {}) {
+function info(
+  /**
+   * The title of the toast.
+   */ title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("info", title, props)
 }
 
-function error(title: string, props: ToastProps = {}) {
+function error(
+  /**
+   * The title of the toast.
+   */ title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("error", title, props)
 }
 
-function success(title: string, props: ToastProps = {}) {
+function success(
+  /**
+   * The title of the toast.
+   */ title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("success", title, props)
 }
 
-function warning(title: string, props: ToastProps = {}) {
+function warning(
+  /**
+   * The title of the toast.
+   */ title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("warning", title, props)
 }
 
 type LoadingToastProps = Omit<ToastProps, "dismissable" | "dismissLabel">
 
-function loading(title: string, props: LoadingToastProps = {}) {
+function loading
+/**
+ * The title of the toast.
+ */(
+  title: string,
+  /**
+   * The props of the toast.
+   */
+  props: ToastProps = {}
+) {
   return create("loading", title, { ...props, dismissable: false })
 }
 
@@ -85,7 +135,13 @@ function createUniqueID() {
 }
 
 async function promise<TData>(
+  /**
+   * The promise to be resolved.
+   */
   promise: Promise<TData> | (() => Promise<TData>),
+  /**
+   * The props of the toast.
+   */
   props: PromiseToastProps
 ) {
   let id: string | number | undefined = props.id || createUniqueID()

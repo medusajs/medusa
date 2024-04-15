@@ -66,6 +66,7 @@
     "cancel": "Cancel",
     "complete": "Complete",
     "back": "Back",
+    "close": "Close",
     "continue": "Continue",
     "confirm": "Confirm",
     "edit": "Edit",
@@ -282,6 +283,17 @@
       },
       "create": {
         "header": "Create Option"
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Product deleted",
+          "description": "{{title}} was successfully deleted."
+        },
+        "error": {
+          "header": "Failed to delete product"
+        }
       }
     }
   },

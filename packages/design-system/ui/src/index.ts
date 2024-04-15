@@ -44,6 +44,7 @@ export { useToggleState } from "./hooks/use-toggle-state"
 
 // Utils
 export { clx } from "./utils/clx"
+export { toast } from "./utils/toast"
 
 // Types
 export * from "./types"

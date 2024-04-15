@@ -1,6 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
-import { Button, Container, Heading, usePrompt, useToast } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -34,7 +35,7 @@ export const ProductListTable = () => {
     },
     {
       initialData,
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -83,7 +84,6 @@ export const ProductListTable = () => {
 const ProductActions = ({ product }: { product: Product }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { toast } = useToast()
   const { mutateAsync } = useDeleteProduct(product.id)
 
   const handleDelete = async () => {
@@ -102,17 +102,17 @@ const ProductActions = ({ product }: { product: Product }) => {
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast({
-          title: "Product deleted",
-          description: `Product ${product.title} was successfully deleted`,
-          variant: "success",
+        toast.success(t("products.toasts.delete.success.header"), {
+          description: t("products.toasts.delete.success.description", {
+            title: product.title,
+          }),
+          dismissLabel: t("actions.close"),
         })
       },
       onError: (e) => {
-        toast({
-          title: "Error",
+        toast.error(t("products.toasts.delete.error.header"), {
           description: e.message,
-          variant: "error",
+          dismissLabel: t("actions.close"),
         })
       },
     })
