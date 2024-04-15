@@ -1,11 +1,15 @@
 import { ProductTypes } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { updateProductsStep } from "../steps"
+import { updateProductsStep } from "../steps/update-products"
 
-type UpdateProductsStepInput = {
-  selector: ProductTypes.FilterableProductProps
-  update: ProductTypes.UpdateProductDTO
-}
+type UpdateProductsStepInput =
+  | {
+      selector: ProductTypes.FilterableProductProps
+      update: ProductTypes.UpdateProductDTO
+    }
+  | {
+      products: ProductTypes.UpsertProductDTO[]
+    }
 
 type WorkflowInput = UpdateProductsStepInput
 

@@ -1,9 +1,9 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchParams } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import { maybeApplyPriceListsFilter } from "./utils"
 import {
@@ -19,6 +19,8 @@ import {
   AdminUpdateProductVariant,
   AdminGetProductOptionsParams,
   AdminGetProductOptionParams,
+  AdminBatchUpdateProduct,
+  AdminBatchUpdateProductVariant,
 } from "./validators"
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
@@ -66,6 +68,19 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/products/op/batch",
+    middlewares: [
+      validateAndTransformBody(
+        createBatchParams(AdminCreateProduct, AdminBatchUpdateProduct)
+      ),
+      validateAndTransformQuery(
+        AdminGetProductParams,
+        QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/products/:id",
     middlewares: [
       validateAndTransformBody(AdminUpdateProduct),
@@ -93,6 +108,22 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetProductVariantsParams,
         QueryConfig.listVariantConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products/:id/variants/op/batch",
+    middlewares: [
+      validateAndTransformBody(
+        createBatchParams(
+          AdminCreateProductVariant,
+          AdminBatchUpdateProductVariant
+        )
+      ),
+      validateAndTransformQuery(
+        AdminGetProductParams,
+        QueryConfig.retrieveProductQueryConfig
       ),
     ],
   },
