@@ -90,6 +90,7 @@ export type ItemTaxCalculationLine = {
  *
  * For example:
  *
+ * ```ts
  * export default class MyTaxProvider implements ITaxProvider {
  *   // ...
  *   constructor(container, options) {
@@ -100,6 +101,7 @@ export type ItemTaxCalculationLine = {
  *     this.client = new Client(options)
  *   }
  * }
+ * ```
  *
  * ---
  */

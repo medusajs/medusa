@@ -1,4 +1,5 @@
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
+
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
@@ -748,6 +749,47 @@ export interface IInventoryServiceNext extends IModuleService {
     reservationItemId: string | string[],
     context?: Context
   ): Promise<void>
+
+  /**
+   * This method soft deletes reservations by their IDs.
+   *
+   * @param {string[]} inventoryLevelIds - The reservations' IDs.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted.
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await inventoryModuleService.softDeleteReservationItems([
+   *   "ilev_123",
+   * ])
+   */
+  softDeleteReservationItems<TReturnableLinkableKeys extends string = string>(
+    ReservationItemIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores soft deleted reservations by their IDs.
+   *
+   * @param {string[]} ReservationItemIds - The reservations' IDs.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the reservation. You can pass to its `returnLinkableKeys`
+   * property any of the reservation's relation attribute names, such as `{type relation name}`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored.
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await inventoryModuleService.restoreReservationItems([
+   *   "ilev_123",
+   * ])
+   */
+  restoreReservationItems<TReturnableLinkableKeys extends string = string>(
+    ReservationItemIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method deletes inventory items by their IDs.

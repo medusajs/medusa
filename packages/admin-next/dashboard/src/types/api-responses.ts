@@ -5,8 +5,11 @@
 import {
   CampaignDTO,
   CurrencyDTO,
+  CustomerGroupDTO,
+  InventoryNext,
   InviteDTO,
   PaymentProviderDTO,
+  PriceListDTO,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -20,6 +23,7 @@ import {
   StoreDTO,
   UserDTO,
 } from "@medusajs/types"
+
 import { ProductTagDTO } from "@medusajs/types/dist/product"
 import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
 
@@ -137,3 +141,45 @@ export type ProductCollectionListRes = {
   collections: ProductCollectionDTO[]
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
+
+// Inventory Items
+export type InventoryItemRes = {
+  inventory_item: InventoryNext.InventoryItemDTO & {
+    stocked_quantity: number
+    reserved_quantity: number
+    location_levels?: InventoryNext.InventoryLevelDTO[]
+  }
+}
+
+export type InventoryItemListRes = {
+  inventory_items: InventoryNext.InventoryItemDTO[]
+} & ListRes
+export type InventoryItemDeleteRes = DeleteRes
+
+export type InventoryItemLocationLevelsRes = {
+  inventory_levels: InventoryNext.InventoryLevelDTO[]
+} & ListRes
+
+export type InventoryItemLevelDeleteRes = DeleteRes
+
+// Reservations
+export type ReservationItemDeleteRes = DeleteRes
+
+export type ReservationItemListRes = {
+  reservations: InventoryNext.ReservationItemDTO[]
+} & ListRes
+
+export type ReservationItemRes = {
+  reservation: InventoryNext.ReservationItemDTO
+}
+// Price Lists
+export type PriceListRes = { price_list: PriceListDTO }
+export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes
+export type PriceListDeleteRes = DeleteRes
+
+// Customer Groups
+export type CustomerGroupRes = { customer_group: CustomerGroupDTO }
+export type CustomerGroupListRes = {
+  customer_groups: CustomerGroupDTO[]
+} & ListRes
+export type CustomerGroupDeleteRes = DeleteRes

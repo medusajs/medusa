@@ -1,15 +1,14 @@
-import { NextFunction } from "express"
-import { MedusaRequest, MedusaResponse } from "../../types/routing"
-import { zodValidator } from "./validate-body"
-import { z } from "zod"
-import { removeUndefinedProperties } from "../../utils"
-import { omit } from "lodash"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import { NextFunction } from "express"
+import { omit } from "lodash"
+import { z } from "zod"
+import { MedusaRequest, MedusaResponse } from "../../types/routing"
+import { removeUndefinedProperties } from "../../utils"
 import {
   prepareListQuery,
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
-import { FindConfig } from "@medusajs/types"
+import { zodValidator } from "./validate-body"
 /**
  * Normalize an input query, especially from array like query params to an array type
  * e.g: /admin/orders/?fields[]=id,status,cart_id becomes { fields: ["id", "status", "cart_id"] }

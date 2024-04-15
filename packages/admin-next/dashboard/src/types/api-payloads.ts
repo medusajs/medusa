@@ -7,15 +7,18 @@ import {
   CreateCampaignDTO,
   CreateCustomerDTO,
   CreateInviteDTO,
+  CreatePriceListDTO,
   CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateStockLocationInput,
+  InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
+  UpdatePriceListDTO,
   UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
@@ -64,6 +67,18 @@ export type UpdateStockLocationReq = UpdateStockLocationInput
 export type CreateProductCollectionReq = CreateProductCollectionDTO
 export type UpdateProductCollectionReq = UpdateProductCollectionDTO
 
+// Price Lists
+export type CreatePriceListReq = CreatePriceListDTO
+export type UpdatePriceListReq = UpdatePriceListDTO
+export type AddPriceListPricesReq = {
+  prices: {
+    currency_code: string
+    amount: number
+    variant_id: string
+  }[]
+}
+export type DeletePriceListPricesReq = { ids: string[] }
+
 // Promotion
 export type CreatePromotionReq = CreatePromotionDTO
 export type UpdatePromotionReq = UpdatePromotionDTO
@@ -74,3 +89,21 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 // Campaign
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
+
+// Inventory Items
+export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
+export type UpdateInventoryItemReq = Omit<
+  InventoryNext.UpdateInventoryItemInput,
+  "id"
+>
+
+// Inventory Item Levels
+export type InventoryItemLocationBatch = {
+  creates: { location_id: string; stocked_quantity?: number }[]
+  deletes: string[]
+}
+
+export type UpdateInventoryLevelReq = {
+  reserved_quantity?: number
+  stocked_quantity?: number
+}

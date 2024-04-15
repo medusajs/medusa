@@ -6,6 +6,7 @@ import {
   AdminGetInventoryItemsParams,
   AdminPostInventoryItemsInventoryItemParams,
   AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsBatchReq,
   AdminPostInventoryItemsItemLocationLevelsLevelParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
@@ -51,6 +52,13 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetInventoryItemsItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels/batch/combi",
+    middlewares: [
+      transformBody(AdminPostInventoryItemsItemLocationLevelsBatchReq),
     ],
   },
   {
