@@ -1,25 +1,26 @@
 import { DAL } from "@medusajs/types"
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
-  Filter,
   BeforeCreate,
+  Cascade,
+  Check,
   Collection,
   Entity,
+  Filter,
+  ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
-  OneToMany,
-  ManyToOne,
-  Check,
-  Cascade,
 } from "@mikro-orm/core"
-import TaxRate from "./tax-rate"
 import TaxProvider from "./tax-provider"
+import TaxRate from "./tax-rate"
 
 type OptionalTaxRegionProps = DAL.SoftDeletableEntityDateColumns
 
@@ -63,9 +64,14 @@ export default class TaxRegion {
   })
   provider_id: string | null = null
 
+  @ManyToOne(() => TaxProvider, { persist: false })
+  provider: TaxProvider
+
+  @Searchable()
   @Property({ columnType: "text" })
   country_code: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   province_code: string | null = null
 

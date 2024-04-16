@@ -66,6 +66,7 @@
     "cancel": "Cancel",
     "complete": "Complete",
     "back": "Back",
+    "close": "Close",
     "continue": "Continue",
     "confirm": "Confirm",
     "edit": "Edit",
@@ -282,6 +283,17 @@
       },
       "create": {
         "header": "Create Option"
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Product deleted",
+          "description": "{{title}} was successfully deleted."
+        },
+        "error": {
+          "header": "Failed to delete product"
+        }
       }
     }
   },
@@ -717,6 +729,49 @@
       "disabled": "Disabled"
     }
   },
+  "taxRates": {
+    "domain": "Tax Rates",
+    "fields": {
+      "isCombinable": "Is combinable?",
+      "appliesTo": "Tax Rate applies to",
+      "customer_groups": "Customer Group",
+      "product_collections": "Product Collection",
+      "product_tags": "Product Tag",
+      "product_types": "Product Type",
+      "products": "Product"
+    },
+    "edit": {
+      "title": "Edit Tax Rate",
+      "description": "Edits tax rate for a tax region"
+    },
+    "create": {
+      "title": "Create Tax Rate Override",
+      "description": "Creates tax rate overrides for a tax region"
+    }
+  },
+  "taxRegions": {
+    "domain": "Tax Regions",
+    "description": "Manage your region's tax structure",
+    "create": {
+      "title": "Create Tax Region",
+      "description": "Creates a tax region with default tax rate"
+    },
+    "create-child": {
+      "title": "Create Default Rate for Province",
+      "description": "Creates a tax region for a province with default tax rate"
+    },
+    "removeWarning": "You are about to remove {{tax_region_name}}. This action cannot be undone.",
+    "fields": {
+      "rate": {
+        "name": "Rate",
+        "hint": "Tax rate to apply for a region or province"
+      },
+      "is_combinable": {
+        "name": "Is combinable",
+        "hint": "If this tax rate can be combined with the default rate from province or parent"
+      }
+    }
+  },
   "promotions": {
     "domain": "Promotions",
     "fields": {
@@ -991,6 +1046,7 @@
   },
   "taxes": {
     "domain": "Tax Regions",
+    "domainDescription": "Manage your tax region",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },
@@ -1207,6 +1263,7 @@
     "amount": "Amount",
     "refundAmount": "Refund amount",
     "name": "Name",
+    "default": "Default",
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
@@ -1332,6 +1389,7 @@
     "quantity": "Quantity",
     "variant": "Variant",
     "id": "ID",
+    "parent": "Parent",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
