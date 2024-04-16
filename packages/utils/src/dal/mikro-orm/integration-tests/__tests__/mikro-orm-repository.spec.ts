@@ -1,3 +1,4 @@
+import { BigNumberRawValue } from "@medusajs/types"
 import {
   BeforeCreate,
   Collection,
@@ -13,11 +14,10 @@ import {
   Unique,
   wrap,
 } from "@mikro-orm/core"
-import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
+import BigNumber from "bignumber.js"
 import { dropDatabase } from "pg-god"
 import { MikroOrmBigNumberProperty } from "../../big-number-field"
-import BigNumber from "bignumber.js"
-import { BigNumberRawValue } from "@medusajs/types"
+import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""

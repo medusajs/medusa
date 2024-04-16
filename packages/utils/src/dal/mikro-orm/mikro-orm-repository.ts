@@ -14,7 +14,6 @@ import {
   LoadStrategy,
   ReferenceType,
   RequiredEntityData,
-  wrap,
 } from "@mikro-orm/core"
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 import {
@@ -25,9 +24,9 @@ import {
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
   arrayDifference,
   isString,
+  MedusaError,
   promiseAll,
 } from "../../common"
 import { buildQuery } from "../../modules-sdk"
@@ -35,9 +34,9 @@ import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
-import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
-import { mikroOrmSerializer } from "./mikro-orm-serializer"
 import { dbErrorMapper } from "./db-error-mapper"
+import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -712,33 +711,17 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       entityName: string,
       data: any
     ): Record<string, any> & { id: string } {
+      const loadedData: object = {}
       const created = manager.create(entityName, data, {
         managed: false,
         persist: false,
-      })
+      }) as any
 
-      // Since our BigNumber implementation isn't implementing a custom type, we have no good way of knowing if a field is a BigNumber,
-      // so we simply rely on naming conventions. Try to make improvements to this either by changing the bigNumber definition or this logic
-      const bigNumberFields = Object.entries(created)
-        .filter(([key, _]) => key.startsWith("raw_"))
-        .flatMap(([key, value]) => {
-          const nonRawFieldKey = key.replace("raw_", "")
-          const nonRawField = created[nonRawFieldKey]
-          if (nonRawField === undefined) {
-            return []
-          }
+      for (const property of created.__helper.__loadedProperties) {
+        loadedData[property] = created[property]
+      }
 
-          return [
-            [key, value],
-            [nonRawFieldKey, nonRawField],
-          ]
-        })
-        .reduce((acc, [key, value]) => {
-          acc[key] = value
-          return acc
-        }, {})
-
-      return { id: (created as any).id, ...bigNumberFields, ...data }
+      return { ...loadedData, id: created.id }
     }
 
     protected async upsertMany_(

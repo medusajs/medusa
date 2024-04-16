@@ -1,13 +1,15 @@
+import { BigNumberInput } from "@medusajs/types"
 import { Property } from "@mikro-orm/core"
 import { isPresent, trimZeros } from "../../common"
 import { BigNumber } from "../../totals/big-number"
-import { BigNumberInput } from "@medusajs/types"
 
 export function MikroOrmBigNumberProperty(
-  options: Parameters<typeof Property>[0] = {}
+  options: Parameters<typeof Property>[0] & {
+    rawColumnName?: string
+  } = {}
 ) {
   return function (target: any, columnName: string) {
-    const rawColumnName = `raw_${columnName}`
+    const rawColumnName = options.rawColumnName ?? `raw_${columnName}`
 
     Object.defineProperty(target, columnName, {
       get() {
@@ -48,6 +50,9 @@ export function MikroOrmBigNumberProperty(
 
           this[rawColumnName] = raw
         }
+
+        this.__helper.__loadedProperties.add(columnName)
+        this.__helper.__loadedProperties.add(rawColumnName)
 
         this.__helper.__touched = !this.__helper.hydrator.isRunning()
       },
