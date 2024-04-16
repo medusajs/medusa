@@ -4,12 +4,10 @@ import { BigNumber } from "../../totals/big-number"
 import { BigNumberInput } from "@medusajs/types"
 
 export function MikroOrmBigNumberProperty(
-  options: Parameters<typeof Property>[0] & {
-    rawColumnName?: string
-  } = {}
+  options: Parameters<typeof Property>[0] = {}
 ) {
   return function (target: any, columnName: string) {
-    const rawColumnName = options.rawColumnName ?? `raw_${columnName}`
+    const rawColumnName = `raw_${columnName}`
 
     Object.defineProperty(target, columnName, {
       get() {

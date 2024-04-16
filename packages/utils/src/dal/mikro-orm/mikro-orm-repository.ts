@@ -717,7 +717,28 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         persist: false,
       })
 
-      return { id: (created as any).id, ...data }
+      // Since our BigNumber implementation isn't implementing a custom type, we have no good way of knowing if a field is a BigNumber,
+      // so we simply rely on naming conventions. Try to make improvements to this either by changing the bigNumber definition or this logic
+      const bigNumberFields = Object.entries(created)
+        .filter(([key, _]) => key.startsWith("raw_"))
+        .flatMap(([key, value]) => {
+          const nonRawFieldKey = key.replace("raw_", "")
+          const nonRawField = created[nonRawFieldKey]
+          if (nonRawField === undefined) {
+            return []
+          }
+
+          return [
+            [key, value],
+            [nonRawFieldKey, nonRawField],
+          ]
+        })
+        .reduce((acc, [key, value]) => {
+          acc[key] = value
+          return acc
+        }, {})
+
+      return { id: (created as any).id, ...bigNumberFields, ...data }
     }
 
     protected async upsertMany_(
