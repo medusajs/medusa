@@ -10,7 +10,6 @@ export const templates = [
       application_method: {
         allocation: "each",
         target_type: "items",
-        value: 100,
         type: "fixed",
       },
     },
@@ -26,7 +25,6 @@ export const templates = [
       application_method: {
         allocation: "across",
         target_type: "order",
-        value: 100,
         type: "fixed",
       },
     },
@@ -42,7 +40,6 @@ export const templates = [
       application_method: {
         allocation: "each",
         target_type: "items",
-        value: 10,
         type: "percentage",
       },
     },
@@ -58,7 +55,6 @@ export const templates = [
       application_method: {
         allocation: "across",
         target_type: "items",
-        value: 10,
         type: "percentage",
       },
     },

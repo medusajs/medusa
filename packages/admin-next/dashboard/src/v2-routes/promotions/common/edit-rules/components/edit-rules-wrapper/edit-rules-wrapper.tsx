@@ -55,10 +55,8 @@ export const EditRulesWrapper = ({
     ruleType
   )
 
-  const { mutateAsync: updatePromotionRules } = usePromotionUpdateRules(
-    promotion.id,
-    ruleType
-  )
+  const { mutateAsync: updatePromotionRules, isPending } =
+    usePromotionUpdateRules(promotion.id, ruleType)
 
   const handleSubmit = (rulesToRemove?: any[]) => {
     return async function (data) {
@@ -132,6 +130,7 @@ export const EditRulesWrapper = ({
         attributes={attributes}
         operators={operators}
         handleSubmit={handleSubmit}
+        isSubmitting={isPending}
       />
     )
   }

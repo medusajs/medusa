@@ -642,6 +642,8 @@
       "value": "Value",
       "campaign": "Campaign",
       "allocation": "Allocation",
+      "addCondition": "Add condition",
+      "clearAll": "Clear all",
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -656,6 +658,9 @@
           "description": "The promotion will be applied to items that match these conditions"
         }
       }
+    },
+    "errors": {
+      "requiredField": "Required field"
     },
     "create": {},
     "edit": {
@@ -674,6 +679,9 @@
       "title": "Add Promotion To Campaign"
     },
     "form": {
+      "required": "Required",
+      "and": "AND",
+      "selectAttribute": "Select Attribute",
       "campaign": {
         "existing": {
           "title": "Existing Campaign",

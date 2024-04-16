@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { XMarkMini } from "@medusajs/icons"
 import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
 import { Badge, Button, Heading, Input, Select, Text } from "@medusajs/ui"
+import i18n from "i18next"
 import { Fragment, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -20,18 +21,25 @@ type EditPromotionFormProps = {
   attributes: any[]
   operators: any[]
   handleSubmit: any
+  isSubmitting: boolean
 }
 
 const EditRules = zod.object({
   rules: zod.array(
     zod.object({
       id: zod.string().optional(),
-      attribute: zod.string().min(1, { message: "Required field" }),
-      operator: zod.string().min(1, { message: "Required field" }),
+      attribute: zod
+        .string()
+        .min(1, { message: i18n.t("promotions.form.required") }),
+      operator: zod
+        .string()
+        .min(1, { message: i18n.t("promotions.form.required") }),
       values: zod.union([
-        zod.number().min(1, { message: "Required field" }),
-        zod.string().min(1, { message: "Required field" }),
-        zod.array(zod.string()).min(1, { message: "Required field" }),
+        zod.number().min(1, { message: i18n.t("promotions.form.required") }),
+        zod.string().min(1, { message: i18n.t("promotions.form.required") }),
+        zod
+          .array(zod.string())
+          .min(1, { message: i18n.t("promotions.form.required") }),
       ]),
       required: zod.boolean().optional(),
       field_type: zod.string().optional(),
@@ -153,7 +161,7 @@ export const RulesFormField = ({
         )
 
         return (
-          <Fragment key={index}>
+          <Fragment key={`${fieldRule.id}.${index}`}>
             <div className="flex flex-row gap-2 bg-ui-bg-subtle py-2 px-2 rounded-xl border border-ui-border-base">
               <div className="grow">
                 <Form.Field
@@ -175,7 +183,7 @@ export const RulesFormField = ({
                       <Form.Item className="mb-2">
                         {fieldRule.required && (
                           <p className="text text-ui-fg-muted txt-small">
-                            Required
+                            {t("promotions.form.required")}
                           </p>
                         )}
 
@@ -192,7 +200,11 @@ export const RulesFormField = ({
                               ref={attributeRef}
                               className="bg-ui-bg-base"
                             >
-                              <Select.Value placeholder="Select Attribute" />
+                              <Select.Value
+                                placeholder={t(
+                                  "promotions.form.selectAttribute"
+                                )}
+                              />
                             </Select.Trigger>
 
                             <Select.Content>
@@ -290,7 +302,7 @@ export const RulesFormField = ({
                 <div className="absolute top-0 bottom-0 left-[40px] z-[-1] border-ui-border-strong w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
 
                 <Badge size="2xsmall" className=" text-xs">
-                  AND
+                  {t("promotions.form.and")}
                 </Badge>
               </div>
             )}
@@ -312,7 +324,7 @@ export const RulesFormField = ({
             })
           }}
         >
-          Add condition
+          {t("promotions.fields.addCondition")}
         </Button>
 
         <Button
@@ -329,7 +341,7 @@ export const RulesFormField = ({
             removeRule(indicesToRemove)
           }}
         >
-          Clear all
+          {t("promotions.fields.clearAll")}
         </Button>
       </div>
     </div>
@@ -343,6 +355,7 @@ export const EditRulesForm = ({
   attributes,
   operators,
   handleSubmit,
+  isSubmitting,
 }: EditPromotionFormProps) => {
   const { t } = useTranslation()
   const requiredAttributes = attributes?.filter((ra) => ra.required) || []
@@ -394,12 +407,12 @@ export const EditRulesForm = ({
         <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteDrawer.Close asChild>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" disabled={isSubmitting}>
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
 
-            <Button size="small" type="submit">
+            <Button size="small" type="submit" isLoading={isSubmitting}>
               {t("actions.save")}
             </Button>
           </div>
