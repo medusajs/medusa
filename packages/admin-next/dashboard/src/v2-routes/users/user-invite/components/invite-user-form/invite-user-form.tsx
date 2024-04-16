@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Form } from "../../../../../components/common/form"
 import { RouteFocusModal } from "../../../../../components/route-modal"
@@ -139,21 +138,17 @@ export const InviteUserForm = () => {
               <div className="flex flex-col gap-y-4">
                 <Heading level="h2">{t("users.pendingInvites")}</Heading>
                 <Container className="overflow-hidden p-0">
-                  {!noRecords ? (
-                    <DataTable
-                      table={table}
-                      columns={columns}
-                      count={count}
-                      pageSize={PAGE_SIZE}
-                      pagination
-                      search
-                      isLoading={isLoading}
-                      queryObject={raw}
-                      orderBy={["name", "created_at", "updated_at"]}
-                    />
-                  ) : (
-                    <NoRecords className="h-[200px]" />
-                  )}
+                  <DataTable
+                    table={table}
+                    columns={columns}
+                    count={count}
+                    pageSize={PAGE_SIZE}
+                    pagination
+                    search
+                    isLoading={isLoading}
+                    queryObject={raw}
+                    orderBy={["name", "created_at", "updated_at"]}
+                  />
                 </Container>
               </div>
             </div>
