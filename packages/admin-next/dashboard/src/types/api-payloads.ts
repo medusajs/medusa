@@ -45,7 +45,7 @@ export type UpdateApiKeyReq = UpdateApiKeyDTO
 
 // Customers
 export type CreateCustomerReq = CreateCustomerDTO
-export type UpdateCustomerReq = UpdateCustomerDTO
+export type UpdateCustomerReq = Omit<UpdateCustomerDTO, "id">
 
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO

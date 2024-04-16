@@ -341,6 +341,7 @@
   },
   "customers": {
     "domain": "Customers",
+    "deleteWarning": "You are about to delete the customer {{email}}. This action cannot be undone.",
     "editCustomer": "Edit Customer",
     "createCustomer": "Create Customer",
     "createCustomerHint": "Create a new customer to manage their details.",
@@ -352,7 +353,14 @@
     "registered": "Registered",
     "firstSeen": "First seen",
     "viewOrder": "View order",
-    "groups": "Groups"
+    "groups": "Groups",
+    "edit": {
+      "header": "Edit Customer",
+      "emailDisabledTooltip": "The email address cannot be changed for registered customers."
+    },
+    "warnings": {
+      "delete": "You are about to delete the customer {{email}}. This action cannot be undone."
+    }
   },
   "customerGroups": {
     "domain": "Customer Groups",

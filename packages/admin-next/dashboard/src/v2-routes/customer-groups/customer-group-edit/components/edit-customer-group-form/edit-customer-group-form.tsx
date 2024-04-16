@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateCustomerGroup } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as z from "zod"
@@ -9,7 +9,6 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type EditCustomerGroupFormProps = {
@@ -33,7 +32,7 @@ export const EditCustomerGroupForm = ({
     resolver: zodResolver(EditCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useUpdateCustomerGroup(group.id)
+  const { mutateAsync, isPending } = useUpdateCustomerGroup(group.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
@@ -73,7 +72,7 @@ export const EditCustomerGroupForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

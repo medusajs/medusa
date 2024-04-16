@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreateCustomerGroup } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -27,7 +26,7 @@ export const CreateCustomerGroupForm = () => {
     resolver: zodResolver(CreateCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateCustomerGroup()
+  const { mutateAsync, isPending } = useCreateCustomerGroup()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -56,7 +55,7 @@ export const CreateCustomerGroupForm = () => {
               type="submit"
               variant="primary"
               size="small"
-              isLoading={isLoading}
+              isLoading={isPending}
             >
               {t("actions.create")}
             </Button>
