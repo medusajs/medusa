@@ -38,7 +38,7 @@ export const InventoryDeatil = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
-        <div className="w-full flex flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-2">
           <InventoryItemGeneralSection inventoryItem={inventory_item} />
           <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
           <InventoryItemReservationsSection inventoryItem={inventory_item} />
@@ -47,7 +47,7 @@ export const InventoryDeatil = () => {
           </div>
           <Outlet />
         </div>
-        <div className="w-full lg:max-w-[400px] max-w-[100%] mt-2 lg:mt-0 flex flex-col gap-y-2">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
           <InventoryItemAttributeSection inventoryItem={inventory_item} />
           <div className="lg:hidden">
             <JsonViewSection data={inventory_item} />

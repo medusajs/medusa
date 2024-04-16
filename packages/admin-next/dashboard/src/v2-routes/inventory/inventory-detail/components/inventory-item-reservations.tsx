@@ -21,7 +21,7 @@ export const InventoryItemReservationsSection = ({
           <Link to="locations">{t("actions.create")}</Link>
         </Button>
       </div>
-      {/* <ReservationItemTable inventoryItem={inventoryItem} /> */}
+      {/* <ReservationItemTable inventoryItem={inventoryItem} /> // TODO: Add in a follow up pr */}
     </Container>
   )
 }
