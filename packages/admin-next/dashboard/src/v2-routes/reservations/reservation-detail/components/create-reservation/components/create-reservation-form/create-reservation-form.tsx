@@ -5,14 +5,18 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../../../components/route-modal"
+import {
+  useCreateReservationItem,
+  useInventoryItems,
+} from "../../../../../../../hooks/api/inventory"
 
 import { Combobox } from "../../../../../../../components/common/combobox"
 import { Form } from "../../../../../../../components/common/form"
 import { InventoryItemRes } from "../../../../../../../types/api-responses"
 import { InventoryNext } from "@medusajs/types"
+import React from "react"
 import { useCreateCustomerGroup } from "../../../../../../../hooks/api/customer-groups"
 import { useForm } from "react-hook-form"
-import { useInventoryItems } from "../../../../../../../hooks/api/inventory"
 import { useStockLocations } from "../../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -46,6 +50,9 @@ const AttributeGridRow = ({
 export const CreateCustomerGroupForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const [inventorySearch, setInventorySearch] = React.useState<string | null>(
+    null
+  )
 
   const form = useForm<zod.infer<typeof CreateCustomerGroupSchema>>({
     defaultValues: {
@@ -57,7 +64,14 @@ export const CreateCustomerGroupForm = () => {
     resolver: zodResolver(CreateCustomerGroupSchema),
   })
 
-  const { inventory_items } = useInventoryItems()
+  const { inventory_items } = useInventoryItems(
+    {
+      q: inventorySearch,
+    },
+    {
+      enabled: !!inventorySearch,
+    }
+  )
 
   const inventoryItemId = form.watch("inventory_item_id")
   const selectedInventroyItem = inventory_items?.find(
@@ -83,19 +97,14 @@ export const CreateCustomerGroupForm = () => {
     }
   )
 
+  const { mutateAsync, isFetching } = useCreateReservationItem()
+
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log(data)
-    return
-    // await mutateAsync(
-    //   {
-    //     name: "data.name",
-    //   },
-    //   {
-    //     onSuccess: ({ customer_group }) => {
-    //       handleSuccess(`/customer-groups/${customer_group.id}`)
-    //     },
-    //   }
-    // )
+    await mutateAsync(data, {
+      onSuccess: ({ reservation }) => {
+        handleSuccess(`/reservations/${reservation.id}`)
+      },
+    })
   })
 
   return (
@@ -112,7 +121,7 @@ export const CreateCustomerGroupForm = () => {
               type="submit"
               variant="primary"
               size="small"
-              isLoading={false}
+              isLoading={isFetching}
             >
               {t("actions.create")}
             </Button>
@@ -134,6 +143,9 @@ export const CreateCustomerGroupForm = () => {
                       </Form.Label>
                       <Form.Control>
                         <Combobox
+                          onSearchValueChange={(value: string) =>
+                            setInventorySearch(value)
+                          }
                           value={value}
                           onChange={(v) => {
                             onChange(v)

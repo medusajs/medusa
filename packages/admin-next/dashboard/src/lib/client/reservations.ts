@@ -1,18 +1,13 @@
 import {
-  CreateRegionDTO,
-  InventoryNext,
-  UpdateRegionDTO,
-  UpdateReservationItemInput,
-} from "@medusajs/types"
-import {
   ReservationDeleteRes,
   ReservationListRes,
   ReservationRes,
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
+import { InventoryNext } from "@medusajs/types"
+
 async function retrieveReservation(id: string, query?: Record<string, any>) {
-  console.warn("getting reservation")
   return getRequest<ReservationRes>(`/admin/reservations/${id}`, query)
 }
 

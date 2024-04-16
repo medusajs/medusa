@@ -1,5 +1,12 @@
 import { AdminInventoryItemResponse, InventoryNext } from "@medusajs/types"
 import {
+  CreateReservationReq,
+  InventoryItemLocationBatch,
+  UpdateInventoryItemReq,
+  UpdateInventoryLevelReq,
+  UpdateReservationReq,
+} from "../../types/api-payloads"
+import {
   InventoryItemDeleteRes,
   InventoryItemListRes,
   InventoryItemLocationLevelsRes,
@@ -8,11 +15,6 @@ import {
   ReservationItemListRes,
   ReservationItemRes,
 } from "../../types/api-responses"
-import {
-  InventoryItemLocationBatch,
-  UpdateInventoryItemReq,
-  UpdateInventoryLevelReq,
-} from "../../types/api-payloads"
 import {
   QueryKey,
   UseMutationOptions,
@@ -256,7 +258,7 @@ export const useReservationItems = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.inventoryItems.listReservationItems(query),
+    queryFn: () => client.reservations.list(query),
     queryKey: reservationItemsQueryKeys.list(query),
     ...options,
   })
@@ -266,19 +268,31 @@ export const useReservationItems = (
 
 export const useUpdateReservationItem = (
   id: string,
-  options?: UseMutationOptions<
-    ReservationItemRes,
-    Error,
-    UpdateInventoryItemReq
-  >
+  options?: UseMutationOptions<ReservationItemRes, Error, UpdateReservationReq>
 ) => {
   return useMutation({
-    mutationFn: (payload: InventoryNext.UpdateInventoryItemInput) =>
-      client.inventoryItems.updateReservationItem(id, payload),
+    mutationFn: (payload: InventoryNext.UpdateReservationItemInput) =>
+      client.reservations.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: reservationItemsQueryKeys.detail(id),
       })
+      queryClient.invalidateQueries({
+        queryKey: reservationItemsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateReservationItem = (
+  options?: UseMutationOptions<ReservationItemRes, Error, CreateReservationReq>
+) => {
+  return useMutation({
+    mutationFn: (payload: CreateReservationReq) =>
+      client.reservations.create(payload),
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: reservationItemsQueryKeys.lists(),
       })
@@ -293,13 +307,13 @@ export const useDeleteReservationItem = (
   options?: UseMutationOptions<ReservationItemDeleteRes, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.inventoryItems.deleteReservationItem(id),
+    mutationFn: () => client.reservations.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: inventoryItemsQueryKeys.lists(),
+        queryKey: reservationItemsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: inventoryItemsQueryKeys.detail(id),
+        queryKey: reservationItemsQueryKeys.detail(id),
       })
       options?.onSuccess?.(data, variables, context)
     },

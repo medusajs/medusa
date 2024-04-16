@@ -84,25 +84,25 @@ async function updateInventoryLevel(
   )
 }
 
-async function listReservationItems(query?: Record<string, any>) {
-  return getRequest<ReservationItemListRes>(`/admin/reservations`, query)
-}
+// async function listReservationItems(query?: Record<string, any>) {
+//   return getRequest<ReservationItemListRes>(`/admin/reservations`, query)
+// }
 
-async function deleteReservationItem(reservationId: string) {
-  return deleteRequest<ReservationItemDeleteRes>(
-    `/admin/reservations/${reservationId}`
-  )
-}
+// async function deleteReservationItem(reservationId: string) {
+//   return deleteRequest<ReservationItemDeleteRes>(
+//     `/admin/reservations/${reservationId}`
+//   )
+// }
 
-async function updateReservationItem(
-  reservationId: string,
-  payload: UpdateInventoryItemReq
-) {
-  return postRequest<ReservationItemRes>(
-    `/admin/reservations/${reservationId}`,
-    payload
-  )
-}
+// async function updateReservationItem(
+//   reservationId: string,
+//   payload: UpdateInventoryItemReq
+// ) {
+//   return postRequest<ReservationItemRes>(
+//     `/admin/reservations/${reservationId}`,
+//     payload
+//   )
+// }
 
 async function batchPostLocationLevels(
   inventoryItemId: string,
@@ -123,8 +123,8 @@ export const inventoryItems = {
   listLocationLevels: listInventoryItemLevels,
   updateInventoryLevel,
   deleteInventoryItemLevel,
-  listReservationItems,
-  deleteReservationItem,
-  updateReservationItem,
+  // listReservationItems,
+  // deleteReservationItem,
+  // updateReservationItem,
   batchPostLocationLevels,
 }
