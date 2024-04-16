@@ -1,4 +1,3 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -6,11 +5,11 @@ import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminBatchPriceListPrices,
+  AdminCreatePriceList,
+  AdminGetPriceListParams,
   AdminGetPriceListPricesParams,
   AdminGetPriceListsParams,
-  AdminGetPriceListsPriceListParams,
-  AdminPostPriceListsPriceListReq,
-  AdminPostPriceListsReq,
+  AdminUpdatePriceList,
 } from "./validators"
 
 export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -23,7 +22,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/price-lists",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetPriceListsParams,
         QueryConfig.adminListTransformQueryConfig
       ),
@@ -33,8 +32,8 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/price-lists/:id",
     middlewares: [
-      transformQuery(
-        AdminGetPriceListsPriceListParams,
+      validateAndTransformQuery(
+        AdminGetPriceListParams,
         QueryConfig.adminRetrieveTransformQueryConfig
       ),
     ],
@@ -42,12 +41,24 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/price-lists",
-    middlewares: [transformBody(AdminPostPriceListsReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreatePriceList),
+      validateAndTransformQuery(
+        AdminGetPriceListPricesParams,
+        QueryConfig.retrivePriceListPriceQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/price-lists/:id",
-    middlewares: [transformBody(AdminPostPriceListsPriceListReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdatePriceList),
+      validateAndTransformQuery(
+        AdminGetPriceListPricesParams,
+        QueryConfig.retrivePriceListPriceQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],

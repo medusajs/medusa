@@ -27,7 +27,7 @@ export interface CreatePriceListWorkflowInputDTO {
   ends_at?: string | null
   status?: PriceListStatus
   rules?: Record<string, string[]>
-  prices: CreatePriceListPriceWorkflowDTO[]
+  prices?: CreatePriceListPriceWorkflowDTO[]
 }
 
 export interface UpdatePriceListWorkflowInputDTO {

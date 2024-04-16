@@ -11,7 +11,7 @@ import {
   adminPriceListRemoteQueryFields,
   defaultAdminPriceListFields,
 } from "../query-config"
-import { AdminPostPriceListsPriceListReq } from "../validators"
+import { AdminUpdatePriceListPriceType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -29,14 +29,14 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPriceListsPriceListReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdatePriceListPriceType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
 
   const { errors } = await workflow.run({
-    input: { price_lists_data: [{ id, ...req.validatedBody }] },
+    input: { price_lists_data: [{ ...req.validatedBody, id }] },
     throwOnError: false,
   })
 

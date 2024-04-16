@@ -8,7 +8,7 @@ import {
   adminPriceListRemoteQueryFields,
   defaultAdminPriceListFields,
 } from "./query-config"
-import { AdminPostPriceListsReq } from "./validators"
+import { AdminCreatePriceListType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -36,7 +36,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPriceListsReq>,
+  req: AuthenticatedMedusaRequest<AdminCreatePriceListType>,
   res: MedusaResponse
 ) => {
   const workflow = createPriceListsWorkflow(req.scope)
