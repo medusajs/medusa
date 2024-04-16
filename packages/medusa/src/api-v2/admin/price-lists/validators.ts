@@ -105,6 +105,9 @@ export class AdminPostPriceListsPriceListReq {
   rules?: Record<string, string[]>
 }
 
+export type AdminCreatePriceListPriceType = z.infer<
+  typeof AdminCreatePriceListPrice
+>
 export const AdminCreatePriceListPrice = z.object({
   currency_code: z.string(),
   amount: z.number(),
