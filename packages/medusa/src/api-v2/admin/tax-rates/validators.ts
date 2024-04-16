@@ -1,20 +1,14 @@
-import { Type } from "class-transformer"
+import { z } from "zod"
 import {
-  IsBoolean,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import z from "zod"
-import { createFindParams, createOperatorMap } from "../../utils/validators"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
-export const AdminGetTaxRateParams = createFindParams({
-  limit: 20,
-  offset: 0,
-})
+export type AdminGetTaxRateParamsType = z.infer<typeof AdminGetTaxRateParams>
+export const AdminGetTaxRateParams = createSelectParams()
 
+export type AdminGetTaxRatesParamsType = z.infer<typeof AdminGetTaxRatesParams>
 export const AdminGetTaxRatesParams = createFindParams({
   limit: 20,
   offset: 0,
@@ -33,75 +27,31 @@ export const AdminGetTaxRatesParams = createFindParams({
   })
 )
 
-class CreateTaxRateRule {
-  @IsString()
-  reference: string
+export type AdminCreateTaxRateRuleType = z.infer<typeof AdminCreateTaxRateRule>
+export const AdminCreateTaxRateRule = z.object({
+  reference: z.string(),
+  reference_id: z.string(),
+})
 
-  @IsString()
-  reference_id: string
-}
+export type AdminCreateTaxRateType = z.infer<typeof AdminCreateTaxRate>
+export const AdminCreateTaxRate = z.object({
+  rate: z.number().optional(),
+  code: z.string().optional(),
+  rules: z.array(AdminCreateTaxRateRule).optional(),
+  name: z.string(),
+  is_default: z.boolean().optional(),
+  is_combinable: z.boolean().optional(),
+  tax_region_id: z.string(),
+  metadata: z.record(z.unknown()).optional(),
+})
 
-export class AdminPostTaxRatesReq {
-  @IsOptional()
-  @IsNumber()
-  rate?: number | null
-
-  @IsOptional()
-  @IsString()
-  code?: string | null
-
-  @ValidateNested({ each: true })
-  @IsOptional()
-  @Type(() => CreateTaxRateRule)
-  rules?: CreateTaxRateRule[]
-
-  @IsString()
-  name: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_default?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_combinable?: boolean
-
-  @IsString()
-  tax_region_id: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostTaxRatesTaxRateReq {
-  @IsOptional()
-  @IsNumber()
-  rate?: number | null
-
-  @IsOptional()
-  @IsString()
-  code?: string | null
-
-  @IsString()
-  @IsOptional()
-  name?: string
-
-  @ValidateNested({ each: true })
-  @Type(() => CreateTaxRateRule)
-  rules: CreateTaxRateRule[]
-
-  @IsBoolean()
-  @IsOptional()
-  is_default?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_combinable?: boolean
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostTaxRatesTaxRateRulesReq extends CreateTaxRateRule {}
+export type AdminUpdateTaxRateType = z.infer<typeof AdminUpdateTaxRate>
+export const AdminUpdateTaxRate = z.object({
+  rate: z.number().optional(),
+  code: z.string().optional(),
+  rules: z.array(AdminCreateTaxRateRule).optional(),
+  name: z.string().optional(),
+  is_default: z.boolean().optional(),
+  is_combinable: z.boolean().optional(),
+  metadata: z.record(z.unknown()).optional(),
+})

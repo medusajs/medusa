@@ -5,9 +5,12 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
+export type AdminGetTaxRegionParamsType = z.infer<
+  typeof AdminGetTaxRegionParams
+>
 export const AdminGetTaxRegionParams = createSelectParams()
 
-export type AdminCreateTaxRegionsParams = z.infer<
+export type AdminGetTaxRegionsParamsType = z.infer<
   typeof AdminGetTaxRegionsParams
 >
 export const AdminGetTaxRegionsParams = createFindParams({

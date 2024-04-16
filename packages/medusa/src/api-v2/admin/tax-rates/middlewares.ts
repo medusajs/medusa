@@ -1,17 +1,17 @@
 import * as QueryConfig from "./query-config"
 
-import { transformBody } from "../../../api/middlewares"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
+  AdminCreateTaxRate,
+  AdminCreateTaxRateRule,
   AdminGetTaxRateParams,
   AdminGetTaxRatesParams,
-  AdminPostTaxRatesReq,
-  AdminPostTaxRatesTaxRateReq,
-  AdminPostTaxRatesTaxRateRulesReq,
+  AdminUpdateTaxRate,
 } from "./validators"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -23,9 +23,9 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/tax-rates",
     middlewares: [
-      transformBody(AdminPostTaxRatesReq),
+      validateAndTransformBody(AdminCreateTaxRate),
       validateAndTransformQuery(
-        AdminGetTaxRatesParams,
+        AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -34,9 +34,9 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/tax-rates/:id",
     middlewares: [
-      transformBody(AdminPostTaxRatesTaxRateReq),
+      validateAndTransformBody(AdminUpdateTaxRate),
       validateAndTransformQuery(
-        AdminGetTaxRatesParams,
+        AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -64,6 +64,22 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/tax-rates/:id/rules",
-    middlewares: [transformBody(AdminPostTaxRatesTaxRateRulesReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateTaxRateRule),
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "DELETE",
+    matcher: "/admin/tax-rates/:id/rules/:rule_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRateParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]
