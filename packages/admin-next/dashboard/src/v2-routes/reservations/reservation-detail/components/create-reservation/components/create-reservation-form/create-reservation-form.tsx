@@ -212,7 +212,7 @@ export const CreateCustomerGroupForm = () => {
                 title={t("inventory.available")}
                 value={
                   selectedLocationLevel
-                    ? selectedLocationLevel.stocked_quantity - quantity
+                    ? selectedLocationLevel.available_quantity - quantity
                     : "-"
                 }
               />
