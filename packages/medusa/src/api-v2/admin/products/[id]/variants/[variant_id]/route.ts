@@ -64,7 +64,6 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
   res.status(200).json({ product: remapProductResponse(product) })
-  Response
 }
 
 export const DELETE = async (
