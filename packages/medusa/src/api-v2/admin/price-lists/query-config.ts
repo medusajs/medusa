@@ -2,6 +2,20 @@ export enum PriceListRelations {
   PRICES = "prices",
 }
 
+export const adminPriceRemoteQueryFields = [
+  "id",
+  "currency_code",
+  "amount",
+  "min_quantity",
+  "max_quantity",
+  "created_at",
+  "deleted_at",
+  "updated_at",
+  "price_set.variant.id",
+  "price_rules.value",
+  "price_rules.rule_type.rule_attribute",
+]
+
 export const adminPriceListRemoteQueryFields = [
   "id",
   "type",
@@ -13,19 +27,9 @@ export const adminPriceListRemoteQueryFields = [
   "created_at",
   "updated_at",
   "deleted_at",
-  "prices.id",
-  "prices.currency_code",
-  "prices.amount",
-  "prices.min_quantity",
-  "prices.max_quantity",
-  "prices.created_at",
-  "prices.deleted_at",
-  "prices.updated_at",
-  "prices.price_set.variant.id",
-  "prices.price_rules.value",
-  "prices.price_rules.rule_type.rule_attribute",
   "price_list_rules.price_list_rule_values.value",
   "price_list_rules.rule_type.rule_attribute",
+  ...adminPriceRemoteQueryFields.map((field) => `prices.${field}`),
 ]
 
 export const defaultAdminPriceListFields = [

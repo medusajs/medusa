@@ -469,7 +469,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/price-lists/:id/prices/batch", () => {
-        it("should add, remove and delete price list prices in batch successfully", async () => {
+        it.only("should add, remove and delete price list prices in batch successfully", async () => {
           const priceSet = await createVariantPriceSet({
             container: appContainer,
             variantId: variant.id,

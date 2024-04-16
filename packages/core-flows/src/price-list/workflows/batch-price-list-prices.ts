@@ -8,13 +8,9 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import {
-  createPriceListPricesStep,
-  removePriceListPricesStep,
-  updatePriceListPricesStep,
-  validatePriceListsStep,
-  validateVariantPriceLinksStep,
-} from "../steps"
+import { createPriceListPricesWorkflowStep } from "../steps/create-price-list-prices-workflow"
+import { removePriceListPricesWorkflowStep } from "../steps/remove-price-list-prices-workflow"
+import { updatePriceListPricesWorkflowStep } from "../steps/update-price-list-prices-workflow"
 
 export const batchPriceListPricesWorkflowId = "batch-price-list-prices"
 export const batchPriceListPricesWorkflow = createWorkflow(
@@ -24,34 +20,18 @@ export const batchPriceListPricesWorkflow = createWorkflow(
       data: BatchPriceListPricesWorkflowDTO
     }>
   ): WorkflowData<BatchPriceListPricesWorkflowResult> => {
-    const [_, variantPriceCreateMap, variantPriceUpdateMap] = parallelize(
-      validatePriceListsStep([{ id: input.data.id }]),
-      validateVariantPriceLinksStep([{ prices: input.data.create }]),
-      validateVariantPriceLinksStep([{ prices: input.data.update }]).config({
-        name: "variant-price-link-map-update",
-      })
-    )
+    const createInput = transform({ input: input.data }, (data) => [
+      { id: data.input.id, prices: data.input.create },
+    ])
 
-    const createPriceListPricesInput = transform(
-      { data: input.data, map: variantPriceCreateMap },
-      ({ data, map }) => ({
-        data: [{ id: data.id, prices: data.create }],
-        variant_price_map: map,
-      })
-    )
-
-    const updatePriceListPricesInput = transform(
-      { data: input.data, map: variantPriceUpdateMap },
-      ({ data, map }) => ({
-        data: [{ id: data.id, prices: data.update }],
-        variant_price_map: map,
-      })
-    )
+    const updateInput = transform({ input: input.data }, (data) => [
+      { id: data.input.id, prices: data.input.update },
+    ])
 
     const [created, updated, deleted] = parallelize(
-      createPriceListPricesStep(createPriceListPricesInput),
-      updatePriceListPricesStep(updatePriceListPricesInput),
-      removePriceListPricesStep(input.data.delete)
+      createPriceListPricesWorkflowStep(createInput),
+      updatePriceListPricesWorkflowStep(updateInput),
+      removePriceListPricesWorkflowStep(input.data.delete)
     )
 
     return transform({ created, updated, deleted }, (data) => data)

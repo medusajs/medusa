@@ -55,11 +55,7 @@ export interface BatchPriceListPricesWorkflowDTO {
 export interface BatchPriceListPricesWorkflowResult {
   created: PricingTypes.PriceDTO[]
   updated: PricingTypes.PriceDTO[]
-  deleted: {
-    ids: string[]
-    object: string
-    deleted: boolean
-  }
+  deleted: string[]
 }
 
 export interface CreatePriceListPricesWorkflowDTO {
