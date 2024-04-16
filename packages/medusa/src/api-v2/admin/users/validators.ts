@@ -20,6 +20,7 @@ export const AdminGetUsersParams = createFindParams({
     email: z.string().optional(),
     first_name: z.string().optional(),
     last_name: z.string().optional(),
+    q: z.string().optional(),
   })
 )
 
