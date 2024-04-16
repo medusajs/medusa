@@ -4,8 +4,11 @@ import {
   ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { promiseAll, remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  promiseAll,
+  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
+} from "@medusajs/utils"
 
 const isPricing = (fieldName: string) =>
   fieldName.startsWith("variants.prices") ||
