@@ -1,12 +1,9 @@
-import {
-  useInventoryItem,
-  useReservationItem,
-} from "../../../../../hooks/api/inventory"
-
 import { EditReservationForm } from "./components/edit-reservation-form"
 import { Heading } from "@medusajs/ui"
 import { RouteDrawer } from "../../../../../components/route-modal"
+import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useParams } from "react-router-dom"
+import { useReservationItem } from "../../../../../hooks/api/reservations"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 

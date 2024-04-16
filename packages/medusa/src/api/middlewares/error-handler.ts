@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
-import { Logger } from "../../types/global"
 import { MedusaError } from "medusa-core-utils"
+import { Logger } from "../../types/global"
 import { formatException } from "../../utils"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
@@ -69,9 +69,9 @@ export default () => {
       case MedusaError.Types.INVALID_ARGUMENT:
         break
       default:
-        // errObj.code = "unknown_error"
-        // errObj.message = "An unknown error occurred."
-        // errObj.type = "unknown_error"
+        errObj.code = "unknown_error"
+        errObj.message = "An unknown error occurred."
+        errObj.type = "unknown_error"
         break
     }
 

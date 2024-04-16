@@ -2,7 +2,7 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ExtendedReservationItem } from "@medusajs/medusa"
-import { useDeleteReservationItem } from "../../../../../hooks/api/inventory"
+import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 import { usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 

@@ -2,10 +2,10 @@ import { LoaderFunctionArgs } from "react-router-dom"
 import { ReservationItemRes } from "../../../types/api-responses"
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
-import { reservationsQueryKeys } from "../../../hooks/api/reservations"
+import { reservationItemsQueryKeys } from "../../../hooks/api/reservations"
 
 const reservationDetailQuery = (id: string) => ({
-  queryKey: reservationsQueryKeys.detail(id),
+  queryKey: reservationItemsQueryKeys.detail(id),
   queryFn: async () => client.reservations.retrieve(id),
 })
 

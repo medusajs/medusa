@@ -3,7 +3,7 @@ import { Button, Container, Heading } from "@medusajs/ui"
 import { DataTable } from "../../../../../components/table/data-table"
 import { Link } from "react-router-dom"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useReservationItems } from "../../../../../hooks/api/inventory"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReservationTableColumns } from "./use-reservation-table-columns"
 import { useReservationTableFilters } from "./use-reservation-table-filters"
 import { useReservationTableQuery } from "./use-reservation-table-query"
@@ -55,8 +55,6 @@ export const ReservationListTable = () => {
         filters={filters}
         pagination
         navigateTo={(row) => `${row.id}`}
-        // orderBy={["created_at", "updated_at"]}
-        // queryObject={raw}
         search={false}
       />
     </Container>

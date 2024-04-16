@@ -1,18 +1,17 @@
-import * as zod from "zod"
-
-import { Button, RadioGroup, Select } from "@medusajs/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignDTO, PromotionDTO } from "@medusajs/types"
+import { Button, RadioGroup, Select } from "@medusajs/ui"
+import { useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
+import { CampaignDetails } from "./campaign-details"
+
+import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useForm, useWatch } from "react-hook-form"
-
-import { CampaignDetails } from "./campaign-details"
-import { Form } from "../../../../../components/common/form"
-import { useTranslation } from "react-i18next"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
-import { zodResolver } from "@hookform/resolvers/zod"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO

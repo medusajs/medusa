@@ -4,7 +4,7 @@ import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/co
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
-import { useReservationItem } from "../../../hooks/api/inventory"
+import { useReservationItem } from "../../../hooks/api/reservations"
 
 export const ReservationDetail = () => {
   const { id } = useParams()

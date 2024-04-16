@@ -190,7 +190,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it.only("should update a reservation item description", async () => {
+        it("should update a reservation item description", async () => {
           await breaking(null, async () => {
             const reservationResponse = await api.post(
               `/admin/reservations/${reservationId}`,

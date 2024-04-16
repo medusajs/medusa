@@ -1,27 +1,26 @@
 import * as zod from "zod"
 
-import { Button, Heading, Input, Select, Text, Textarea } from "@medusajs/ui"
+import { Button, Heading, Input, Text, Textarea } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../../../components/route-modal"
+} from "../../../../../../components/route-modal"
 import {
   useCreateReservationItem,
   useInventoryItems,
-} from "../../../../../../../hooks/api/inventory"
+} from "../../../../../../hooks/api/inventory"
 
-import { Combobox } from "../../../../../../../components/common/combobox"
-import { Form } from "../../../../../../../components/common/form"
-import { InventoryItemRes } from "../../../../../../../types/api-responses"
+import { Combobox } from "../../../../../../components/common/combobox"
+import { Form } from "../../../../../../components/common/form"
+import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { InventoryNext } from "@medusajs/types"
 import React from "react"
-import { useCreateCustomerGroup } from "../../../../../../../hooks/api/customer-groups"
 import { useForm } from "react-hook-form"
-import { useStockLocations } from "../../../../../../../hooks/api/stock-locations"
+import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-export const CreateCustomerGroupSchema = zod.object({
+export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
   location_id: zod.string().min(1),
   quantity: zod.number().min(1),
@@ -47,21 +46,21 @@ const AttributeGridRow = ({
   )
 }
 
-export const CreateCustomerGroupForm = () => {
+export const CreateReservationForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [inventorySearch, setInventorySearch] = React.useState<string | null>(
     null
   )
 
-  const form = useForm<zod.infer<typeof CreateCustomerGroupSchema>>({
+  const form = useForm<zod.infer<typeof CreateReservationSchema>>({
     defaultValues: {
       inventory_item_id: "",
       location_id: "",
       quantity: 0,
       description: "",
     },
-    resolver: zodResolver(CreateCustomerGroupSchema),
+    resolver: zodResolver(CreateReservationSchema),
   })
 
   const { inventory_items } = useInventoryItems(

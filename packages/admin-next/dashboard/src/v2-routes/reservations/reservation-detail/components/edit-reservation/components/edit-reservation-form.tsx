@@ -1,23 +1,17 @@
 import * as zod from "zod"
 
-import { Button, Input, Text, Textarea } from "@medusajs/ui"
+import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
 import { InventoryNext, StockLocationDTO } from "@medusajs/types"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../../components/route-modal"
-import {
-  useUpdateInventoryItem,
-  useUpdateReservationItem,
-} from "../../../../../../hooks/api/inventory"
 
-import { CountrySelect } from "../../../../../../components/common/country-select"
 import { Form } from "../../../../../../components/common/form"
 import { InventoryItemRes } from "../../../../../../types/api-responses"
-import { LocationSelect } from "./location-select"
 import { useForm } from "react-hook-form"
-import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
+import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -87,7 +81,7 @@ export const EditReservationForm = ({
   const locationId = form.watch("location_id")
 
   const level = item.location_levels!.find(
-    (level) => level.location_id === locationId
+    (level: InventoryNext.InventoryLevelDTO) => level.location_id === locationId
   )
 
   return (
@@ -100,12 +94,29 @@ export const EditReservationForm = ({
           <Form.Field
             control={form.control}
             name="location_id"
-            render={({ field }) => {
+            render={({ field: { onChange, value, ref, ...field } }) => {
               return (
                 <Form.Item>
                   <Form.Label>{t("inventory.reservation.location")}</Form.Label>
                   <Form.Control>
-                    <LocationSelect {...field} locations={locations} />
+                    <Select
+                      value={value}
+                      onValueChange={(v) => {
+                        onChange(v)
+                      }}
+                      {...field}
+                    >
+                      <Select.Trigger ref={ref}>
+                        <Select.Value />
+                      </Select.Trigger>
+                      <Select.Content>
+                        {(locations || []).map((r) => (
+                          <Select.Item key={r.id} value={r.id}>
+                            {r.name}
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select>
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
