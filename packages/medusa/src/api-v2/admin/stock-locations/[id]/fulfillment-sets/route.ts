@@ -1,18 +1,12 @@
 import { createLocationFulfillmentSetWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { z } from "zod"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { AdminCreateStockLocationFulfillmentSet } from "../../validators"
+import { AdminCreateStockLocationFulfillmentSetType } from "../../validators"
+import { refetchStockLocation } from "../../helpers"
 
 export const POST = async (
-  req: MedusaRequest<z.infer<typeof AdminCreateStockLocationFulfillmentSet>>,
+  req: MedusaRequest<AdminCreateStockLocationFulfillmentSetType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
   const { errors } = await createLocationFulfillmentSetWorkflow(req.scope).run({
     input: {
       location_id: req.params.id,
@@ -28,15 +22,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const [stock_location] = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "stock_locations",
-      variables: {
-        id: req.params.id,
-      },
-      fields: req.remoteQueryConfig.fields,
-    })
+  const stockLocation = await refetchStockLocation(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ stock_location })
+  res.status(200).json({ stock_location: stockLocation })
 }
