@@ -7,7 +7,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminCreateTaxRegionType } from "./validators"
+import {
+  AdminCreateTaxRegionType,
+  AdminGetTaxRegionsParamsType,
+} from "./validators"
+import { refetchTaxRegion } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateTaxRegionType>,
@@ -27,21 +31,16 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "tax_region",
-    variables: { id: result[0].id },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [taxRegion] = await remoteQuery(query)
-
+  const taxRegion = await refetchTaxRegion(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ tax_region: taxRegion })
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetTaxRegionsParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

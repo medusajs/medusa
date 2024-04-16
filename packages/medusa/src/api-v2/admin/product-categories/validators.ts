@@ -43,6 +43,14 @@ export const AdminProductCategoriesParams = createFindParams({
       (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
       z.boolean().optional()
     ),
+    is_internal: z.preprocess(
+      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
+      z.boolean().optional()
+    ),
+    is_active: z.preprocess(
+      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
+      z.boolean().optional()
+    ),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -50,3 +58,19 @@ export const AdminProductCategoriesParams = createFindParams({
     $or: z.lazy(() => AdminProductCategoriesParams.array()).optional(),
   })
 )
+
+export const AdminCreateProductCategory = z
+  .object({
+    name: z.string(),
+    description: z.string().optional(),
+    handle: z.string().optional(),
+    is_internal: z.boolean().optional(),
+    is_active: z.boolean().optional(),
+    parent_category_id: z.string().optional(),
+    metadata: z.record(z.unknown()).optional(),
+  })
+  .strict()
+
+export type AdminCreateProductCategoryType = z.infer<
+  typeof AdminCreateProductCategory
+>

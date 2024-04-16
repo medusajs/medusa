@@ -1,5 +1,16 @@
 import { z } from "zod"
 
+export const createBatchBody = (
+  createValidator: z.ZodType,
+  updateValidator: z.ZodType
+) => {
+  return z.object({
+    create: z.array(createValidator).optional(),
+    update: z.array(updateValidator).optional(),
+    delete: z.array(z.string()).optional(),
+  })
+}
+
 export const createSelectParams = () => {
   return z.object({
     fields: z.string().optional(),
