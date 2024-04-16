@@ -12,6 +12,9 @@ import {
 import { z } from "zod"
 import { FindParams } from "../../../types/common"
 import { transformOptionalDate } from "../../../utils/validators/date-transform"
+import { createSelectParams } from "../../utils/validators"
+
+export const AdminGetPriceListPricesParams = createSelectParams()
 
 export class AdminGetPriceListsParams extends FindParams {}
 export class AdminGetPriceListsPriceListParams extends FindParams {}
@@ -105,9 +108,6 @@ export class AdminPostPriceListsPriceListReq {
   rules?: Record<string, string[]>
 }
 
-export type AdminCreatePriceListPriceType = z.infer<
-  typeof AdminCreatePriceListPrice
->
 export const AdminCreatePriceListPrice = z.object({
   currency_code: z.string(),
   amount: z.number(),
@@ -116,6 +116,10 @@ export const AdminCreatePriceListPrice = z.object({
   max_quantity: z.number().optional(),
   rules: z.object({}).optional(),
 })
+
+export type AdminCreatePriceListPriceType = z.infer<
+  typeof AdminCreatePriceListPrice
+>
 
 export const AdminUpdatePriceListPrice = z.object({
   id: z.string(),
@@ -127,8 +131,16 @@ export const AdminUpdatePriceListPrice = z.object({
   rules: z.object({}).optional(),
 })
 
+export type AdminUpdatePriceListPriceType = z.infer<
+  typeof AdminUpdatePriceListPrice
+>
+
 export const AdminBatchPriceListPrices = z.object({
   create: z.array(AdminCreatePriceListPrice).optional(),
   update: z.array(AdminUpdatePriceListPrice).optional(),
   delete: z.array(z.string()).optional(),
 })
+
+export type AdminBatchPriceListPricesType = z.infer<
+  typeof AdminBatchPriceListPrices
+>

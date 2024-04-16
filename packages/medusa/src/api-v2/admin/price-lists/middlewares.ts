@@ -2,9 +2,11 @@ import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminBatchPriceListPrices,
+  AdminGetPriceListPricesParams,
   AdminGetPriceListsParams,
   AdminGetPriceListsPriceListParams,
   AdminPostPriceListsPriceListReq,
@@ -50,6 +52,12 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/price-lists/:id/prices/batch",
-    middlewares: [validateAndTransformBody(AdminBatchPriceListPrices)],
+    middlewares: [
+      validateAndTransformBody(AdminBatchPriceListPrices),
+      validateAndTransformQuery(
+        AdminGetPriceListPricesParams,
+        QueryConfig.listPriceListPriceQueryConfig
+      ),
+    ],
   },
 ]

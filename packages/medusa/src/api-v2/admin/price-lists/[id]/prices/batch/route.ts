@@ -1,16 +1,15 @@
 import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
 import { promiseAll } from "@medusajs/utils"
-import { z } from "zod"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { listPrices } from "../../../queries"
-import { adminPriceRemoteQueryFields } from "../../../query-config"
-import { AdminBatchPriceListPrices } from "../../../validators"
+import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
+import { AdminBatchPriceListPricesType } from "../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<z.infer<typeof AdminBatchPriceListPrices>>,
+  req: AuthenticatedMedusaRequest<AdminBatchPriceListPricesType>,
   res: MedusaResponse
 ) => {
   const {
@@ -41,12 +40,12 @@ export const POST = async (
     listPrices(
       result.created.map((c) => c.id),
       req.scope,
-      adminPriceRemoteQueryFields
+      adminPriceListPriceRemoteQueryFields
     ),
     listPrices(
       result.updated.map((c) => c.id),
       req.scope,
-      adminPriceRemoteQueryFields
+      adminPriceListPriceRemoteQueryFields
     ),
   ])
 

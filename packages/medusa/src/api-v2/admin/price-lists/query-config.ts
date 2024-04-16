@@ -2,7 +2,7 @@ export enum PriceListRelations {
   PRICES = "prices",
 }
 
-export const adminPriceRemoteQueryFields = [
+export const adminPriceListPriceRemoteQueryFields = [
   "id",
   "currency_code",
   "amount",
@@ -29,7 +29,7 @@ export const adminPriceListRemoteQueryFields = [
   "deleted_at",
   "price_list_rules.price_list_rule_values.value",
   "price_list_rules.rule_type.rule_attribute",
-  ...adminPriceRemoteQueryFields.map((field) => `prices.${field}`),
+  ...adminPriceListPriceRemoteQueryFields.map((field) => `prices.${field}`),
 ]
 
 export const defaultAdminPriceListFields = [
@@ -69,4 +69,42 @@ export const adminRetrieveTransformQueryConfig = {
   defaultRelations: defaultAdminPriceListRelations,
   allowedRelations: allowedAdminPriceListRelations,
   isList: false,
+}
+
+export const defaultAdminPriceListPriceFields = [
+  "id",
+  "product_id",
+  "title",
+  "sku",
+  "inventory_quantity",
+  "allow_backorder",
+  "manage_inventory",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+  "variant_rank",
+  "ean",
+  "upc",
+  "barcode",
+  "*prices",
+  "*options",
+]
+
+export const retrivePriceListPriceQueryConfig = {
+  defaults: adminPriceListPriceRemoteQueryFields,
+  isList: false,
+}
+
+export const listPriceListPriceQueryConfig = {
+  ...retrivePriceListPriceQueryConfig,
+  isList: true,
 }
