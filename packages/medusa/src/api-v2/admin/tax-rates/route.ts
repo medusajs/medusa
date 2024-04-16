@@ -1,17 +1,17 @@
 import { createTaxRatesWorkflow } from "@medusajs/core-flows"
 import {
-  remoteQueryObjectFromString,
   ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { refetchTaxRate } from "./helpers"
 import {
   AdminCreateTaxRateType,
   AdminGetTaxRatesParamsType,
 } from "./validators"
-import { refetchTaxRate } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateTaxRateType>,

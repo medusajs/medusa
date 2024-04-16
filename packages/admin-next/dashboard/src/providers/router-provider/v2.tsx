@@ -9,6 +9,8 @@ import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
+  AdminTaxRateResponse,
+  AdminTaxRegionResponse,
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
@@ -757,7 +759,56 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
-                children: [],
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-region-create"),
+                    children: [],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    return data.tax_region.country_code
+                  },
+                },
+                children: [
+                  {
+                    path: "create-default",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-province-create"),
+                    children: [],
+                  },
+                  {
+                    path: "create-override",
+                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    children: [],
+                  },
+                  {
+                    path: "tax-rates",
+                    children: [
+                      {
+                        path: ":taxRateId",
+                        children: [
+                          {
+                            path: "edit",
+                            lazy: () =>
+                              import("../../v2-routes/taxes/tax-rate-edit"),
+                            handle: {
+                              crumb: (data: AdminTaxRateResponse) => {
+                                return data.tax_rate.code
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
