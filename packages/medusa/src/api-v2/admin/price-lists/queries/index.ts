@@ -14,8 +14,8 @@ export function buildPriceListResponse(
   apiFields
 ): AdminPriceListRemoteQueryDTO[] {
   for (const priceList of priceLists) {
-    priceList.rules = buildPriceListRules(priceList.price_list_rules || [])
-    priceList.prices = buildPriceSetPricesForCore(priceList.prices || [])
+    priceList.rules = buildPriceListRules(priceList.price_list_rules)
+    priceList.prices = buildPriceSetPricesForCore(priceList.prices)
   }
 
   return priceLists.map((priceList) => cleanResponseData(priceList, apiFields))

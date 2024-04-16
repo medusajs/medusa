@@ -32,73 +32,6 @@ export const adminPriceListRemoteQueryFields = [
   ...adminPriceListPriceRemoteQueryFields.map((field) => `prices.${field}`),
 ]
 
-export const defaultAdminPriceListFields = [
-  "id",
-  "type",
-  "description",
-  "title",
-  "status",
-  "starts_at",
-  "ends_at",
-  "rules",
-  "created_at",
-  "updated_at",
-  "prices.amount",
-  "prices.id",
-  "prices.currency_code",
-  "prices.amount",
-  "prices.min_quantity",
-  "prices.max_quantity",
-  "prices.variant_id",
-  "prices.rules",
-]
-
-export const defaultAdminPriceListRelations = []
-export const allowedAdminPriceListRelations = [PriceListRelations.PRICES]
-
-export const adminListTransformQueryConfig = {
-  defaultLimit: 50,
-  defaultFields: defaultAdminPriceListFields,
-  defaultRelations: defaultAdminPriceListRelations,
-  allowedRelations: allowedAdminPriceListRelations,
-  isList: true,
-}
-
-export const adminRetrieveTransformQueryConfig = {
-  defaultFields: defaultAdminPriceListFields,
-  defaultRelations: defaultAdminPriceListRelations,
-  allowedRelations: allowedAdminPriceListRelations,
-  isList: false,
-}
-
-export const defaultAdminPriceListPriceFields = [
-  "id",
-  "product_id",
-  "title",
-  "sku",
-  "inventory_quantity",
-  "allow_backorder",
-  "manage_inventory",
-  "hs_code",
-  "origin_country",
-  "mid_code",
-  "material",
-  "weight",
-  "length",
-  "height",
-  "width",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-  "variant_rank",
-  "ean",
-  "upc",
-  "barcode",
-  "*prices",
-  "*options",
-]
-
 export const retrivePriceListPriceQueryConfig = {
   defaults: adminPriceListPriceRemoteQueryFields,
   isList: false,
@@ -106,5 +39,15 @@ export const retrivePriceListPriceQueryConfig = {
 
 export const listPriceListPriceQueryConfig = {
   ...retrivePriceListPriceQueryConfig,
+  isList: true,
+}
+
+export const retrivePriceListQueryConfig = {
+  defaults: adminPriceListRemoteQueryFields,
+  isList: false,
+}
+
+export const listPriceListQueryConfig = {
+  ...retrivePriceListQueryConfig,
   isList: true,
 }

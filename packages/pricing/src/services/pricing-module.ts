@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
+  CreatePriceRuleDTO,
   CreatePricesDTO,
   CreatePriceSetDTO,
   DAL,
@@ -23,7 +24,6 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   isPresent,
   isString,
   MedusaContext,
@@ -1240,7 +1240,7 @@ export default class PricingModuleService<
 
     const pricesToUpdate: Partial<TPrice>[] = []
     const priceRuleIdsToDelete: string[] = []
-    const priceRulesToCreate: PricingTypes.CreatePriceRuleDTO[] = []
+    const priceRulesToCreate: CreatePriceRuleDTO[] = []
 
     for (const { price_list_id: priceListId, prices } of data) {
       const priceList = priceListMap.get(priceListId)
@@ -1253,37 +1253,34 @@ export default class PricingModuleService<
       }
 
       for (const priceData of prices) {
-        const { rules, price_set_id, ...rest } = priceData
+        const { rules = {}, price_set_id, ...rest } = priceData
         const price = priceMap.get(rest.id)!
         const priceRules = price.price_rules!
 
-        if (!isDefined(rules)) {
-          continue
-        }
+        priceRulesToCreate.push(
+          ...Object.entries(rules).map(([ruleAttribute, ruleValue]) => ({
+            price_set_id,
+            rule_type_id: ruleTypeMap.get(ruleAttribute)!.id,
+            value: ruleValue,
+            price_id: price.id,
+          }))
+        )
 
         pricesToUpdate.push({
           ...rest,
           rules_count: Object.keys(rules).length,
-          price_rules: Object.entries(rules).map(
-            ([ruleAttribute, ruleValue]) => ({
-              price_set_id,
-              rule_type_id: ruleTypeMap.get(ruleAttribute)!.id,
-              value: ruleValue,
-              price_id: price.id,
-            })
-          ),
         } as unknown as TPrice)
 
         priceRuleIdsToDelete.push(...priceRules.map((pr) => pr.id))
       }
     }
 
-    await promiseAll([
-      this.priceRuleService_.delete(priceRuleIdsToDelete),
-      this.priceRuleService_.create(priceRulesToCreate),
-    ])
-
-    const updatedPrices = this.priceService_.update(pricesToUpdate)
+    const [_deletedPriceRule, _createdPriceRule, updatedPrices] =
+      await promiseAll([
+        this.priceRuleService_.delete(priceRuleIdsToDelete),
+        this.priceRuleService_.create(priceRulesToCreate),
+        this.priceService_.update(pricesToUpdate),
+      ])
 
     return updatedPrices
   }

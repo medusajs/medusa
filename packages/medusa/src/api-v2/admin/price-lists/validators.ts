@@ -19,7 +19,7 @@ export const AdminCreatePriceListPrice = z.object({
   variant_id: z.string(),
   min_quantity: z.number().optional(),
   max_quantity: z.number().optional(),
-  rules: z.object({}).optional(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminCreatePriceListPriceType = z.infer<
@@ -33,7 +33,7 @@ export const AdminUpdatePriceListPrice = z.object({
   variant_id: z.string(),
   min_quantity: z.number().optional(),
   max_quantity: z.number().optional(),
-  rules: z.object({}).optional(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminUpdatePriceListPriceType = z.infer<
@@ -57,7 +57,7 @@ export const AdminCreatePriceList = z.object({
   ends_at: z.string().optional(),
   status: z.nativeEnum(PriceListStatus).optional(),
   type: z.nativeEnum(PriceListType).optional(),
-  rules: z.object({}).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
   prices: z.array(AdminCreatePriceListPrice).optional(),
 })
 
@@ -70,7 +70,7 @@ export const AdminUpdatePriceList = z.object({
   ends_at: z.string().optional(),
   status: z.nativeEnum(PriceListStatus).optional(),
   type: z.nativeEnum(PriceListType).optional(),
-  rules: z.object({}).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
 })
 
 export type AdminUpdatePriceListType = z.infer<typeof AdminUpdatePriceList>
