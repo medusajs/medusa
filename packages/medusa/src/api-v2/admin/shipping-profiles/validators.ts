@@ -1,8 +1,15 @@
 import { z } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 
-export const AdminShippingProfileParams = createSelectParams()
-export const AdminShippingProfilesParams = createFindParams({
+export type AdminGetShippingProfileParamsType = z.infer<
+  typeof AdminGetShippingProfileParams
+>
+export const AdminGetShippingProfileParams = createSelectParams()
+
+export type AdminGetShippingProfilesParamsType = z.infer<
+  typeof AdminGetShippingProfilesParams
+>
+export const AdminGetShippingProfilesParams = createFindParams({
   limit: 20,
   offset: 0,
 }).merge(
@@ -12,6 +19,9 @@ export const AdminShippingProfilesParams = createFindParams({
   })
 )
 
+export type AdminCreateShippingProfileType = z.infer<
+  typeof AdminCreateShippingProfile
+>
 export const AdminCreateShippingProfile = z
   .object({
     name: z.string(),
@@ -19,7 +29,3 @@ export const AdminCreateShippingProfile = z
     metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
-
-export type AdminCreateShippingProfileType = z.infer<
-  typeof AdminCreateShippingProfile
->
