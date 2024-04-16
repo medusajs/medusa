@@ -292,6 +292,59 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "shipping",
+            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            handle: {
+              crumb: () => "Shipping",
+            },
+            children: [
+              {
+                path: "location/:location_id",
+                children: [
+                  {
+                    path: "fulfillment-set/:fset_id",
+                    children: [
+                      {
+                        path: "service-zones/create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/shipping/service-zone-create"
+                          ),
+                      },
+                      {
+                        path: "service-zone/:zone_id",
+                        children: [
+                          {
+                            path: "shipping-options/create",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/shipping-options-create"
+                              ),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "shipping-profiles",
+            lazy: () =>
+              import("../../v2-routes/shipping/shipping-profiles-list"),
+            handle: {
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/shipping/shipping-profile-create"),
+              },
+            ],
+          },
+          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",

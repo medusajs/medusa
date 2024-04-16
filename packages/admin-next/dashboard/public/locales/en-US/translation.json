@@ -66,6 +66,7 @@
     "cancel": "Cancel",
     "complete": "Complete",
     "back": "Back",
+    "close": "Close",
     "continue": "Continue",
     "confirm": "Confirm",
     "edit": "Edit",
@@ -282,6 +283,17 @@
       },
       "create": {
         "header": "Create Option"
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Product deleted",
+          "description": "{{title}} was successfully deleted."
+        },
+        "error": {
+          "header": "Failed to delete product"
+        }
       }
     }
   },
@@ -560,6 +572,90 @@
       "requiredItems": "At least one item is required.",
       "invalidEmail": "Email must be a valid email address."
     }
+  },
+  "shipping": {
+    "title": "Shipping & Delivery",
+    "domain": "Shipping & Delivery",
+    "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
+    "from": "Shipping from",
+    "add": "Add shipping",
+    "connectProvider": "Connect provider",
+    "addZone": "Add shipping zone",
+    "enablePickup": "Enable pickup",
+    "enableDelivery": "Enable delivery",
+    "noRecords" : {
+      "action": "Add Location",
+      "title": "No inventory locations",
+      "message": "Please create an invnetory location first."
+    },
+    "create": {
+      "title": "Add shipping for {{location}}",
+      "delivery": "Delivery",
+      "pickup": "Pickup",
+      "type": "Shipping type"
+    },
+    "fulfillmentSet": {
+      "placeholder": "Not covered by any shipping zones.",
+      "delete": "Delete shipping",
+      "create": {
+        "title": "Add service zone for {{fulfillmentSet}}"
+      },
+      "addZone": "Add service zone",
+      "pickup": {
+        "title": "Pickup in",
+        "enable": "Enable pickup"
+      },
+      "delivery": {
+        "title": "Shipping to",
+        "enable": "Enable delivery"
+      }
+    },
+    "serviceZone": {
+      "create": {
+        "title": "Add service zone for {{fulfillmentSet}}",
+        "subtitle": "Service zone",
+        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
+        "zoneName": "Zone name"
+      },
+      "editPrices": "Edit prices",
+      "editOption": "Edit option",
+      "optionsLength_one": "shipping option",
+      "optionsLength_other": "shipping options",
+      "shippingOptionsPlaceholder": "Not covered by any shipping options.",
+      "addShippingOptions": "Add shipping options",
+      "shippingOptions": "Shipping options",
+      "returnOptions": "Return options",
+      "areas": {
+        "title": "Areas affected by this rule",
+        "description": "Select the geographical areas where this shipping zone should apply.",
+        "manage": "Manage areas",
+        "error": "Please select at least one country for this service zone."
+      }
+    },
+    "shippingOptions": {
+      "create": {
+        "title": "Create shipping options for {{zone}}",
+        "subtitle": "General information",
+        "description": "To start selling, all you need is a name and a price",
+        "details": "Details",
+        "pricing": "Pricing",
+        "allocation": "Shipping amount",
+        "fixed": "Fixed",
+        "fixedDescription": "Shipping option's price is always the same amount.",
+        "enable": "Enable in store",
+        "enableDescription": "Enable or disable the shipping option visiblity in store",
+        "calculated": "Calculated",
+        "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
+        "profile": "Shipping profile"
+      }
+    }
+  },
+  "shippingProfile": {
+    "domain": "Shipping Profiles",
+    "title": "Create a shipping profile",
+    "detailsHint": "Specify the details of the shipping profile",
+    "deleteWaring": "You are about to delete the profile: {{name}}. This action cannot be undone.",
+    "typeHint": "Enter shipping profile type, for example: Express, Freight, etc."
   },
   "discounts": {
     "domain": "Discounts",
@@ -1279,6 +1375,7 @@
     "issuedDate": "Issued date",
     "expiryDate": "Expiry date",
     "price": "Price",
+    "priceTemplate": "Price {{regionOrCountry}}",
     "height": "Height",
     "width": "Width",
     "length": "Length",

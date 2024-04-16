@@ -6,6 +6,7 @@ import {
   CreateApiKeyDTO,
   CreateCampaignDTO,
   CreateCustomerDTO,
+  CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
   CreateProductCollectionDTO,
@@ -13,6 +14,9 @@ import {
   CreatePromotionRuleDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
+  CreateServiceZoneDTO,
+  CreateShippingOptionDTO,
+  CreateShippingProfileDTO,
   CreateStockLocationInput,
   InventoryNext,
   UpdateApiKeyDTO,
@@ -62,6 +66,14 @@ export type CreateInviteReq = CreateInviteDTO
 // Stock Locations
 export type CreateStockLocationReq = CreateStockLocationInput
 export type UpdateStockLocationReq = UpdateStockLocationInput
+export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
+export type CreateServiceZoneReq = CreateServiceZoneDTO
+
+// Shipping Options
+export type CreateShippingOptionReq = CreateShippingOptionDTO
+
+// Shipping Profile
+export type CreateShippingProfileReq = CreateShippingProfileDTO
 
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO
