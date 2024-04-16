@@ -78,6 +78,13 @@ export class AdminGetUsersParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsString()
   fields?: string
+
+  /**
+   * The term to search user by names and email.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
 }
 
 export class AdminCreateUserRequest {

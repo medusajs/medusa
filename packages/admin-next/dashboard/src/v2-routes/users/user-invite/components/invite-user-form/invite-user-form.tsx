@@ -35,6 +35,7 @@ const InviteUserSchema = zod.object({
 })
 
 const PAGE_SIZE = 10
+const PREFIX = "usr_invite"
 
 export const InviteUserForm = () => {
   const { t } = useTranslation()
@@ -47,6 +48,7 @@ export const InviteUserForm = () => {
   })
 
   const { raw, searchParams } = useUserInviteTableQuery({
+    prefix: PREFIX,
     pageSize: PAGE_SIZE,
   })
 
@@ -57,8 +59,6 @@ export const InviteUserForm = () => {
     isError,
     error,
   } = useInvites(searchParams)
-
-  const noRecords = !isLoading && count === 0
 
   const columns = useColumns()
 
@@ -143,11 +143,12 @@ export const InviteUserForm = () => {
                     columns={columns}
                     count={count}
                     pageSize={PAGE_SIZE}
+                    prefix={PREFIX}
                     pagination
                     search
                     isLoading={isLoading}
                     queryObject={raw}
-                    orderBy={["name", "created_at", "updated_at"]}
+                    orderBy={["email", "created_at", "updated_at"]}
                   />
                 </Container>
               </div>
