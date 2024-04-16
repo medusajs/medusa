@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCustomerResponse } from "@medusajs/types"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -51,8 +51,23 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
         company_name: data.company_name || null,
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ customer }) => {
+          toast.success(t("general.success"), {
+            description: t("customers.edit.successToast", {
+              email: customer.email,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
           handleSuccess()
+        },
+        onError: (error) => {
+          console.log(error)
+
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )

@@ -1,6 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminCustomerResponse } from "@medusajs/types"
-import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
+import {
+  Container,
+  Heading,
+  StatusBadge,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -25,13 +32,13 @@ export const CustomerGeneralSection = ({
 
   const statusColor = customer.has_account ? "green" : "orange"
   const statusText = customer.has_account
-    ? t("customers.registered")
-    : t("customers.guest")
+    ? t("customers.fields.registered")
+    : t("customers.fields.guest")
 
   const handleDelete = async () => {
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customers.warnings.delete", {
+      title: t("customers.delete.title"),
+      description: t("customers.delete.description", {
         email: customer.email,
       }),
       verificationInstruction: t("general.typeToConfirm"),
@@ -46,7 +53,20 @@ export const CustomerGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("customers.delete.successToast", {
+            email: customer.email,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+
         navigate("/customers", { replace: true })
+      },
+      onError: (error) => {
+        toast.error(t("general.error"), {
+          description: error.message,
+          dismissLabel: t("actions.close"),
+        })
       },
     })
   }

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCustomerGroupResponse } from "@medusajs/types"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as z from "zod"
@@ -36,7 +36,14 @@ export const EditCustomerGroupForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
-      onSuccess: () => {
+      onSuccess: ({ customer_group }) => {
+        toast.success(t("general.success"), {
+          description: t("customerGroups.edit.successToast", {
+            name: customer_group.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+
         handleSuccess()
       },
     })

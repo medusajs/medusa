@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import {
   OnChangeFn,
   RowSelectionState,
@@ -109,6 +109,13 @@ export const AddCustomersForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("customerGroups.customers.add.successToast", {
+              count: data.customer_ids.length,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
           handleSuccess(`/customer-groups/${customerGroupId}`)
         },
       }
@@ -215,7 +222,7 @@ const useColumns = () => {
           if (isPreSelected) {
             return (
               <Tooltip
-                content={t("customerGroups.customerAlreadyAdded")}
+                content={t("customerGroups.customers.alreadyAddedTooltip")}
                 side="right"
               >
                 {Component}

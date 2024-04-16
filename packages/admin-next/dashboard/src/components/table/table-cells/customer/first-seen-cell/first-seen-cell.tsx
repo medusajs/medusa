@@ -19,7 +19,7 @@ export const FirstSeenHeader = () => {
 
   return (
     <div className="flex h-full w-full items-center">
-      <span className="truncate">{t("customers.firstSeen")}</span>
+      <span className="truncate">{t("fields.createdAt")}</span>
     </div>
   )
 }

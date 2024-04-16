@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -47,7 +47,19 @@ export const CreateCustomerForm = () => {
       },
       {
         onSuccess: ({ customer }) => {
+          toast.success(t("general.success"), {
+            description: t("customers.create.successToast", {
+              email: customer.email,
+            }),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess(`/customers/${customer.id}`)
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -76,9 +88,9 @@ export const CreateCustomerForm = () => {
         <RouteFocusModal.Body className="flex flex-col items-center py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
-              <Heading>{t("customers.createCustomer")}</Heading>
+              <Heading>{t("customers.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
-                {t("customers.createCustomerHint")}
+                {t("customers.create.hint")}
               </Text>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -67,8 +67,10 @@ export const CustomerGroupCustomerSection = ({
     const keys = Object.keys(rowSelection)
 
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customerGroups.removeCustomersWarning", {
+      title: t("customerGroups.customers.remove.title", {
+        count: keys.length,
+      }),
+      description: t("customerGroups.customers.remove.description", {
         count: keys.length,
       }),
       confirmText: t("actions.continue"),
@@ -146,8 +148,10 @@ const CustomerActions = ({
 
   const handleRemove = async () => {
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customerGroups.removeCustomersWarning", {
+      title: t("customerGroups.customers.remove.title", {
+        count: 1,
+      }),
+      description: t("customerGroups.customers.remove.description", {
         count: 1,
       }),
       confirmText: t("actions.continue"),
