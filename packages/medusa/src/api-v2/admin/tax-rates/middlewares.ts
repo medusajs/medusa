@@ -1,5 +1,6 @@
 import * as QueryConfig from "./query-config"
 
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateTaxRate,
   AdminCreateTaxRateRule,
@@ -11,7 +12,6 @@ import {
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -43,21 +43,21 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: "GET",
-    matcher: "/admin/tax-rates",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetTaxRatesParams,
-        QueryConfig.listTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: "GET",
     matcher: "/admin/tax-rates/:id",
     middlewares: [
       validateAndTransformQuery(
         AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "GET",
+    matcher: "/admin/tax-rates",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRatesParams,
+        QueryConfig.listTransformQueryConfig
       ),
     ],
   },

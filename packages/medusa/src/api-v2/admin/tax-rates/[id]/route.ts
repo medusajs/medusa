@@ -1,21 +1,20 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-
-import {
-  remoteQueryObjectFromString,
-  ContainerRegistrationKeys,
-} from "@medusajs/utils"
-import {
   deleteTaxRatesWorkflow,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
 import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import { refetchTaxRate } from "../helpers"
+import {
   AdminGetTaxRateParamsType,
   AdminUpdateTaxRateType,
 } from "../validators"
-import { refetchTaxRate } from "../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateTaxRateType>,
