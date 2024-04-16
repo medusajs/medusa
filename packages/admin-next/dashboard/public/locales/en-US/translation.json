@@ -327,7 +327,11 @@
       "inStockAtLocation": "In stock at this location",
       "availableAtLocation": "Available at this location",
       "reservedAtLocation": "Reserved at this location",
-      "reservedAmount": "Reserve amount"
+      "reservedAmount": "Reserve amount",
+      "create": "Create reservation",
+      "itemToReserve": "Item to reserve",
+      "quantityPlaceholder": "How many do you want to reserve?",
+      "descriptionPlaceholde": "What type of reservation is this?"
     }
   },
   "giftCards": {

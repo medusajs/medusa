@@ -361,7 +361,7 @@ export const v2Routes: RouteObject[] = [
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-create"
+                        "../../v2-routes/reservations/reservation-detail/components/create-reservation"
                       ),
                   },
                 ],
@@ -405,6 +405,15 @@ export const v2Routes: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import("../../v2-routes/reservations/reservation-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/reservations/reservation-detail/components/create-reservation"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
