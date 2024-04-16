@@ -1,8 +1,12 @@
-import { ICustomerModuleService, IInventoryServiceNext } from "@medusajs/types"
-import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
+import {
+  DeleteEntityInput,
+  ModuleRegistrationName,
+  Modules,
+} from "@medusajs/modules-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
+import { IInventoryServiceNext } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const deleteInventoryLevelsFromItemAndLocationsStepId =
   "delete-inventory-levels-from-item-and-location-step"
@@ -35,9 +39,14 @@ export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
     }
 
     const deletedIds = items.map((i) => i.id)
-    await service.softDeleteInventoryLevels(deletedIds)
+    const deleted = await service.softDeleteInventoryLevels(deletedIds)
 
-    return new StepResponse(void 0, deletedIds)
+    return new StepResponse(
+      {
+        [Modules.INVENTORY]: deleted,
+      } as DeleteEntityInput,
+      deletedIds
+    )
   },
   async (prevLevelIds, { container }) => {
     if (!prevLevelIds?.length) {

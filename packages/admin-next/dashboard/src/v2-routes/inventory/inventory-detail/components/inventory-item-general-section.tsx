@@ -36,7 +36,7 @@ export const InventoryItemGeneralSection = ({
                 {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
-                  to: `/inventory/${inventoryItem.id}/edit`,
+                  to: "edit",
                 },
               ],
             },

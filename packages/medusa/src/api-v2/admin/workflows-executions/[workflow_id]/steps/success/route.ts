@@ -5,11 +5,11 @@ import {
 import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk"
 import { TransactionHandlerType, isDefined } from "@medusajs/utils"
 
-import { AdminPostWorkflowsAsyncResponseReq } from "../../../validators"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostWorkflowsAsyncResponseReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateWorkflowsAsyncResponseType>,
   res: MedusaResponse
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(

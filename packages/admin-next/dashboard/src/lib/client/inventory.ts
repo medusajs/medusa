@@ -8,14 +8,11 @@ import {
   UpdateInventoryItemReq,
   UpdateInventoryLevelReq,
 } from "../../types/api-payloads"
-import { deleteRequest, deleteRequest, getRequest, postRequest } from "./common"
 import {
   InventoryItemLevelDeleteRes,
   InventoryItemLocationLevelsRes,
-  ReservationItemDeleteRes,
-  ReservationItemListRes,
-  ReservationItemRes,
 } from "../../types/api-responses"
+import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveInventoryItem(id: string, query?: Record<string, any>) {
   return getRequest<AdminInventoryItemResponse>(
@@ -84,31 +81,11 @@ async function updateInventoryLevel(
   )
 }
 
-// async function listReservationItems(query?: Record<string, any>) {
-//   return getRequest<ReservationItemListRes>(`/admin/reservations`, query)
-// }
-
-// async function deleteReservationItem(reservationId: string) {
-//   return deleteRequest<ReservationItemDeleteRes>(
-//     `/admin/reservations/${reservationId}`
-//   )
-// }
-
-// async function updateReservationItem(
-//   reservationId: string,
-//   payload: UpdateInventoryItemReq
-// ) {
-//   return postRequest<ReservationItemRes>(
-//     `/admin/reservations/${reservationId}`,
-//     payload
-//   )
-// }
-
 async function batchPostLocationLevels(
   inventoryItemId: string,
   payload: InventoryItemLocationBatch
 ) {
-  return postRequest<InventoryItemLocationLevelsRes>(
+  return postRequest<AdminInventoryItemResponse>(
     `/admin/inventory-items/${inventoryItemId}/location-levels/batch/combi`,
     payload
   )
@@ -123,8 +100,5 @@ export const inventoryItems = {
   listLocationLevels: listInventoryItemLevels,
   updateInventoryLevel,
   deleteInventoryItemLevel,
-  // listReservationItems,
-  // deleteReservationItem,
-  // updateReservationItem,
   batchPostLocationLevels,
 }

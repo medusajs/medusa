@@ -2,6 +2,8 @@ import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
+  AdminTaxRateResponse,
+  AdminTaxRegionResponse,
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
@@ -11,43 +13,14 @@ import {
   AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
+import { Outlet, RouteObject } from "react-router-dom"
 
 import { AdminCustomersRes } from "@medusajs/client-types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { InventoryItemRes } from "../../types/api-responses"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { PriceListRes } from "../../types/api-responses"
-import { SearchProvider } from "../search-provider"
+import { MainLayout } from "../../components/layout/main-layout"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { SidebarProvider } from "../sidebar-provider"
-import { Spinner } from "@medusajs/icons"
-import { useMe } from "../../hooks/api/users"
-
-export const ProtectedRoute = () => {
-  const { user, isLoading } = useMe()
-  const location = useLocation()
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner className="text-ui-fg-interactive animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
-  return (
-    <SidebarProvider>
-      <SearchProvider>
-        <Outlet />
-      </SearchProvider>
-    </SidebarProvider>
-  )
-}
 
 /**
  * Experimental V2 routes.
@@ -126,6 +99,11 @@ export const v2Routes: RouteObject[] = [
                     path: "media",
                     lazy: () =>
                       import("../../v2-routes/products/product-media"),
+                  },
+                  {
+                    path: "prices",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-prices"),
                   },
                   {
                     path: "options/create",
@@ -429,13 +407,6 @@ export const v2Routes: RouteObject[] = [
                   },
                 },
                 children: [
-                  // {
-                  //   path: "edit",
-                  //   lazy: () =>
-                  //     import(
-                  //       "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
-                  //     ),
-                  // },
                   {
                     path: "edit",
                     lazy: () =>
@@ -521,9 +492,6 @@ export const v2Routes: RouteObject[] = [
       {
         path: "/settings",
         element: <SettingsLayout />,
-        handle: {
-          crumb: () => "Settings",
-        },
         children: [
           {
             index: true,
@@ -832,7 +800,56 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
-                children: [],
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-region-create"),
+                    children: [],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    return data.tax_region.country_code
+                  },
+                },
+                children: [
+                  {
+                    path: "create-default",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-province-create"),
+                    children: [],
+                  },
+                  {
+                    path: "create-override",
+                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    children: [],
+                  },
+                  {
+                    path: "tax-rates",
+                    children: [
+                      {
+                        path: ":taxRateId",
+                        children: [
+                          {
+                            path: "edit",
+                            lazy: () =>
+                              import("../../v2-routes/taxes/tax-rate-edit"),
+                            handle: {
+                              crumb: (data: AdminTaxRateResponse) => {
+                                return data.tax_rate.code
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

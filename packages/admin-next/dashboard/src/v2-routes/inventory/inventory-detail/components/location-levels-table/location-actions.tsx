@@ -11,7 +11,6 @@ export const LocationActions = ({
 }: {
   level: InventoryNext.InventoryLevelDTO
 }) => {
-  console.warn(level)
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteInventoryItemLevel(

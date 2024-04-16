@@ -58,6 +58,7 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
@@ -157,6 +158,7 @@
     "organization": "Organize",
     "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
+    "editPrices": "Edit prices",
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
@@ -646,6 +648,49 @@
       "disabled": "Disabled"
     }
   },
+  "taxRates": {
+    "domain": "Tax Rates",
+    "fields": {
+      "isCombinable": "Is combinable?",
+      "appliesTo": "Tax Rate applies to",
+      "customer_groups": "Customer Group",
+      "product_collections": "Product Collection",
+      "product_tags": "Product Tag",
+      "product_types": "Product Type",
+      "products": "Product"
+    },
+    "edit": {
+      "title": "Edit Tax Rate",
+      "description": "Edits tax rate for a tax region"
+    },
+    "create": {
+      "title": "Create Tax Rate Override",
+      "description": "Creates tax rate overrides for a tax region"
+    }
+  },
+  "taxRegions": {
+    "domain": "Tax Regions",
+    "description": "Manage your region's tax structure",
+    "create": {
+      "title": "Create Tax Region",
+      "description": "Creates a tax region with default tax rate"
+    },
+    "create-child": {
+      "title": "Create Default Rate for Province",
+      "description": "Creates a tax region for a province with default tax rate"
+    },
+    "removeWarning": "You are about to remove {{tax_region_name}}. This action cannot be undone.",
+    "fields": {
+      "rate": {
+        "name": "Rate",
+        "hint": "Tax rate to apply for a region or province"
+      },
+      "is_combinable": {
+        "name": "Is combinable",
+        "hint": "If this tax rate can be combined with the default rate from province or parent"
+      }
+    }
+  },
   "promotions": {
     "domain": "Promotions",
     "fields": {
@@ -817,11 +862,16 @@
   "profile": {
     "domain": "Profile",
     "manageYourProfileDetails": "Manage your profile details",
-    "editProfile": "Edit profile",
-    "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
-    "language": "Language",
-    "usageInsights": "Usage insights"
+    "fields": {
+      "languageLabel": "Language",
+      "usageInsightsLabel": "Usage insights"
+    },
+    "edit": {
+      "header": "Edit Profile",
+      "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
+      "languagePlaceholder": "Select language",
+      "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    }
   },
   "users": {
     "domain": "Users",
@@ -915,6 +965,7 @@
   },
   "taxes": {
     "domain": "Tax Regions",
+    "domainDescription": "Manage your tax region",
     "countries": {
       "taxCountriesHint": "Tax settings apply to the listed countries."
     },
@@ -1131,6 +1182,7 @@
     "amount": "Amount",
     "refundAmount": "Refund amount",
     "name": "Name",
+    "default": "Default",
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
@@ -1255,6 +1307,7 @@
     "quantity": "Quantity",
     "variant": "Variant",
     "id": "ID",
+    "parent": "Parent",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
     "shippingProfile": "Shipping Profile",
