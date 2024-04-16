@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { RegionDTO } from "@medusajs/types"
-import { Badge, Container, Heading, Text, usePrompt } from "@medusajs/ui"
+import { Badge, Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -76,7 +76,18 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
       return
     }
 
-    await mutateAsync(undefined)
+    try {
+      await mutateAsync(undefined)
+      toast.success(t("general.success"), {
+        description: t("regions.toast.delete"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: t("regions.toast.deleteError"),
+        dismissLabel: t("actions.close"),
+      })
+    }
     navigate("/settings/regions", { replace: true })
   }
 

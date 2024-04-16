@@ -12,7 +12,12 @@ export const RegionDetail = () => {
   >
 
   const { id } = useParams()
-  const { region, isLoading, isError, error } = useRegion(
+  const {
+    region,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useRegion(
     id!,
     { fields: "*payment_providers,*countries" },
     {

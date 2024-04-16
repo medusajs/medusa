@@ -1,5 +1,5 @@
 import { PlusMini, Trash } from "@medusajs/icons"
-import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import {
   ColumnDef,
@@ -14,7 +14,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
+import { useUpdateRegion } from "../../../../../hooks/api/regions"
 
 type RegionCountrySectionProps = {
   region: RegionDTO
@@ -82,9 +82,21 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
       .filter((c) => !ids.includes(c.iso_2))
       .map((c) => c.iso_2)
 
-    await mutateAsync({
-      countries: payload,
-    })
+    try {
+      await mutateAsync({
+        countries: payload,
+      })
+
+      toast.success(t("general.success"), {
+        description: t("regions.toast.countries"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: t("regions.toast.countriesError"),
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
