@@ -142,6 +142,10 @@ export type ProductCollectionListRes = {
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
 
+// Taxes
+export type TaxRegionDeleteRes = DeleteRes
+export type TaxRateDeleteRes = DeleteRes
+
 // Inventory Items
 export type InventoryItemRes = {
   inventory_item: InventoryNext.InventoryItemDTO & {
