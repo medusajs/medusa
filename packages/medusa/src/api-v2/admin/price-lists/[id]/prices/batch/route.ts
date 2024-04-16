@@ -4,11 +4,6 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { getPriceList } from "../../../queries"
-import {
-  adminPriceListRemoteQueryFields,
-  defaultAdminPriceListFields,
-} from "../../../query-config"
 import { AdminBatchPriceListPrices } from "../../../validators"
 
 export const POST = async (
@@ -38,13 +33,6 @@ export const POST = async (
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
-
-  const priceList = await getPriceList({
-    id,
-    container: req.scope,
-    remoteQueryFields: adminPriceListRemoteQueryFields,
-    apiFields: defaultAdminPriceListFields,
-  })
 
   res.status(200).json(result)
 }
