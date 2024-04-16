@@ -33,6 +33,11 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/fulfillment-sets/:id",
+    middlewares: [],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/fulfillment-sets/:id/service-zones/:zone_id",
     middlewares: [

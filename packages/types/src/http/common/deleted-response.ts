@@ -1,7 +1,7 @@
 /**
  * The fields returned in the response of a DELETE request.
  */
-export type DeleteResponse = {
+export type DeleteResponse<T = string> = {
   /**
    * The ID of the item that was deleted.
    */
