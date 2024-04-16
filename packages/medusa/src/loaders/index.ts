@@ -7,7 +7,8 @@ import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   isString,
-  MedusaV2Flag, promiseAll,
+  MedusaV2Flag,
+  promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"

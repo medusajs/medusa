@@ -15,6 +15,7 @@ import {
 import Redis from "ioredis"
 import { ulid } from "ulid"
 import type { RedisDistributedTransactionStorage } from "../utils"
+import { Logger } from "@medusajs/types"
 
 export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
@@ -75,6 +76,9 @@ export class WorkflowOrchestratorService {
   protected redisPublisher: Redis
   protected redisSubscriber: Redis
   private subscribers: Subscribers = new Map()
+  private activeStepsCount: number = 0
+  private isShuttingDown: boolean = false
+  private logger: Logger
 
   protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
 
@@ -83,15 +87,18 @@ export class WorkflowOrchestratorService {
     redisDistributedTransactionStorage,
     redisPublisher,
     redisSubscriber,
+    logger,
   }: {
     dataLoaderOnly: boolean
     redisDistributedTransactionStorage: RedisDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
     redisPublisher: Redis
     redisSubscriber: Redis
+    logger: Logger
   }) {
     this.redisPublisher = redisPublisher
     this.redisSubscriber = redisSubscriber
+    this.logger = logger
 
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
 
@@ -110,7 +117,16 @@ export class WorkflowOrchestratorService {
   }
 
   async onApplicationShutdown() {
+    this.logger.info("Workflow orchestrator gradeful shutdown.")
+    // set flag to shuting down
+    this.isShuttingDown = true
+    while (this.activeStepsCount > 0) {
+      this.logger.info(`Active steps: ${this.activeStepsCount}`)
+      // sleep for 1 second
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
     await this.redisDistributedTransactionStorage_.onApplicationShutdown()
+    this.logger.info("Workflow orchestrator finished!")
   }
 
   @InjectSharedContext()
@@ -128,6 +144,11 @@ export class WorkflowOrchestratorService {
       events: eventHandlers,
       container,
     } = options ?? {}
+
+    if (this.isShuttingDown) {
+      // don't accpet any more events
+      return
+    }
 
     const workflowId = isString(workflowIdOrWorkflow)
       ? workflowIdOrWorkflow
@@ -523,6 +544,7 @@ export class WorkflowOrchestratorService {
 
       onStepBegin: async ({ step, transaction }) => {
         customEventHandlers?.onStepBegin?.({ step, transaction })
+        this.activeStepsCount++
 
         await notify({ eventType: "onStepBegin", step })
       },
@@ -533,6 +555,7 @@ export class WorkflowOrchestratorService {
           transaction
         )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        this.activeStepsCount--
 
         await notify({ eventType: "onStepSuccess", step, response })
       },
@@ -543,6 +566,7 @@ export class WorkflowOrchestratorService {
           .filter((err) => err.action === stepName)
 
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
+        this.activeStepsCount--
 
         await notify({ eventType: "onStepFailure", step, errors })
       },
