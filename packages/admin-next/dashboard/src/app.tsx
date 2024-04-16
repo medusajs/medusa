@@ -1,24 +1,18 @@
 import { Toaster } from "@medusajs/ui"
-import { MedusaProvider } from "medusa-react"
+import { QueryClientProvider } from "@tanstack/react-query"
 
+import { queryClient } from "./lib/medusa"
 import { RouterProvider } from "./providers/router-provider"
 import { ThemeProvider } from "./providers/theme-provider"
 
-import { MEDUSA_BACKEND_URL, queryClient } from "./lib/medusa"
-
 function App() {
   return (
-    <MedusaProvider
-      baseUrl={MEDUSA_BACKEND_URL}
-      queryClientProviderProps={{
-        client: queryClient,
-      }}
-    >
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <RouterProvider />
         <Toaster />
       </ThemeProvider>
-    </MedusaProvider>
+    </QueryClientProvider>
   )
 }
 

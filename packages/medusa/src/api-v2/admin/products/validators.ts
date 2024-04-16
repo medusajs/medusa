@@ -187,6 +187,13 @@ export const AdminUpdateProductVariant = AdminCreateProductVariant.extend({
   manage_inventory: z.boolean().optional(),
 }).strict()
 
+export type AdminBatchUpdateProductVariantType = z.infer<
+  typeof AdminBatchUpdateProductVariant
+>
+export const AdminBatchUpdateProductVariant = AdminUpdateProductVariant.extend({
+  id: z.string(),
+})
+
 export type AdminCreateProductType = z.infer<typeof AdminCreateProduct>
 export const AdminCreateProduct = z
   .object({
@@ -227,6 +234,13 @@ export const AdminUpdateProduct = AdminCreateProduct.omit({ is_giftcard: true })
     status: statusEnum.optional(),
   })
   .strict()
+
+export type AdminBatchUpdateProductType = z.infer<
+  typeof AdminBatchUpdateProduct
+>
+export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
+  id: z.string(),
+})
 
 // TODO: Handle in create and update product once ready
 // @IsOptional()

@@ -22,9 +22,10 @@ export const createShippingOptionsWorkflow = createWorkflow(
   ): WorkflowData<FulfillmentWorkflow.CreateShippingOptionsWorkflowOutput> => {
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
+        const prices = option.prices
         return {
           shipping_option_index: index,
-          prices: option.prices,
+          prices,
         }
       })
 

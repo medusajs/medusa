@@ -4,7 +4,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { Modules } from "@medusajs/modules-sdk"
-import { deleteProductsStep, getProductsStep } from "../steps"
+import { deleteProductsStep } from "../steps/delete-products"
+import { getProductsStep } from "../steps/get-products"
 import { removeRemoteLinkStep } from "../../common"
 
 type WorkflowInput = { ids: string[] }

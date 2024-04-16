@@ -1,4 +1,4 @@
-import { Plus } from "@medusajs/icons"
+import { PencilSquare, Plus } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -66,6 +66,11 @@ export const ProductVariantSection = ({
                   label: t("actions.create"),
                   to: `variants/create`,
                   icon: <Plus />,
+                },
+                {
+                  label: t("products.editPrices"),
+                  to: `prices`,
+                  icon: <PencilSquare />,
                 },
               ],
             },

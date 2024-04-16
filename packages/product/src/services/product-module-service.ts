@@ -915,11 +915,21 @@ export default class ProductModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createCategory(
     data: ProductTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCategoryDTO> {
+    const result = await this.createCategory_(data, sharedContext)
+
+    return await this.baseRepository_.serialize(result)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createCategory_(
+    data: ProductTypes.CreateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductCategory> {
     const productCategory = await this.productCategoryService_.create(
       data,
       sharedContext
@@ -930,9 +940,7 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return await this.baseRepository_.serialize(productCategory, {
-      populate: true,
-    })
+    return productCategory
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1115,8 +1123,10 @@ export default class ProductModuleService<
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = await Promise.all(
-      data.map((d) => this.normalizeCreateProductInput(d, sharedContext))
+    const normalizedInput = await promiseAll(
+      data.map(
+        async (d) => await this.normalizeCreateProductInput(d, sharedContext)
+      )
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1171,8 +1181,10 @@ export default class ProductModuleService<
     data: UpdateProductInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = await Promise.all(
-      data.map((d) => this.normalizeUpdateProductInput(d, sharedContext))
+    const normalizedInput = await promiseAll(
+      data.map(
+        async (d) => await this.normalizeUpdateProductInput(d, sharedContext)
+      )
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1258,7 +1270,8 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.CreateProductDTO> {
     const productData = (await this.normalizeUpdateProductInput(
-      product as UpdateProductInput
+      product as UpdateProductInput,
+      sharedContext
     )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {

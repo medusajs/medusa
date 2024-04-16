@@ -70,6 +70,23 @@ export const AdminCreateShippingOptionPriceWithRegion = z
   })
   .strict()
 
+export const AdminUpdateShippingOptionPriceWithCurrency =z
+  .object({
+    id: z.string().optional(),
+    currency_code: z.string().optional(),
+    amount: z.number().optional(),
+  })
+  .strict()
+
+export const AdminUpdateShippingOptionPriceWithRegion =
+  z
+    .object({
+      id: z.string().optional(),
+      region_id: z.string().optional(),
+      amount: z.number().optional(),
+    })
+    .strict()
+
 export const AdminCreateShippingOption = z
   .object({
     name: z.string(),
@@ -98,6 +115,11 @@ export const AdminUpdateShippingOption = z
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
     provider_id: z.string().optional(),
     type: AdminCreateShippingOptionTypeObject.optional(),
+    prices: AdminUpdateShippingOptionPriceWithCurrency.or(
+      AdminUpdateShippingOptionPriceWithRegion
+    )
+      .array()
+      .optional(),
   })
   .strict()
 

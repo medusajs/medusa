@@ -1,3 +1,10 @@
+import { AdminCustomersRes } from "@medusajs/client-types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
@@ -5,49 +12,13 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminPromotionRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
-import { Navigate, Outlet, RouteObject, useLocation } from "react-router-dom"
+import { Outlet, RouteObject } from "react-router-dom"
 
-import { AdminCustomersRes } from "@medusajs/client-types"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { ErrorBoundary } from "../../components/error/error-boundary"
-import { InventoryItemRes } from "../../types/api-responses"
-import { MainLayout } from "../../components/layout-v2/main-layout"
-import { PriceListRes } from "../../types/api-responses"
-import { SearchProvider } from "../search-provider"
+import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { SidebarProvider } from "../sidebar-provider"
-import { Spinner } from "@medusajs/icons"
-import { useMe } from "../../hooks/api/users"
-
-export const ProtectedRoute = () => {
-  const { user, isLoading } = useMe()
-  const location = useLocation()
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner className="text-ui-fg-interactive animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
-  return (
-    <SidebarProvider>
-      <SearchProvider>
-        <Outlet />
-      </SearchProvider>
-    </SidebarProvider>
-  )
-}
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 /**
  * Experimental V2 routes.
@@ -126,6 +97,11 @@ export const v2Routes: RouteObject[] = [
                     path: "media",
                     lazy: () =>
                       import("../../v2-routes/products/product-media"),
+                  },
+                  {
+                    path: "prices",
+                    lazy: () =>
+                      import("../../v2-routes/products/product-prices"),
                   },
                   {
                     path: "options/create",
@@ -473,9 +449,6 @@ export const v2Routes: RouteObject[] = [
       {
         path: "/settings",
         element: <SettingsLayout />,
-        handle: {
-          crumb: () => "Settings",
-        },
         children: [
           {
             index: true,
