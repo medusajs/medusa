@@ -196,7 +196,7 @@ export const DateFilter = ({
               <div>
                 <div className="px-2 py-1">
                   <Text size="xsmall" leading="compact" weight="plus">
-                    Starting
+                    {t("filters.date.from")}
                   </Text>
                 </div>
                 <div className="px-2 py-1">
@@ -211,7 +211,7 @@ export const DateFilter = ({
               <div>
                 <div className="px-2 py-1">
                   <Text size="xsmall" leading="compact" weight="plus">
-                    Ending
+                    {t("filters.date.to")}
                   </Text>
                 </div>
                 <div className="px-2 py-1">
