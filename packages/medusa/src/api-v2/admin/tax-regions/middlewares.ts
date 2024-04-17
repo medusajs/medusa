@@ -1,6 +1,10 @@
 import * as QueryConfig from "./query-config"
 
-import { AdminCreateTaxRegion, AdminGetTaxRegionsParams } from "./validators"
+import {
+  AdminCreateTaxRegion,
+  AdminGetTaxRegionParams,
+  AdminGetTaxRegionsParams,
+} from "./validators"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
@@ -31,6 +35,16 @@ export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
         QueryConfig.listTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: "GET",
+    matcher: "/admin/tax-regions/:id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetTaxRegionParams,
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },

@@ -4,7 +4,10 @@ import {
 } from "../../../../../types/routing"
 
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { refetchProduct, remapProductResponse } from "../../helpers"
 import { AdminCreateProductOptionType } from "../../validators"
 
@@ -12,7 +15,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const productId = req.params.id
 
   const queryObject = remoteQueryObjectFromString({

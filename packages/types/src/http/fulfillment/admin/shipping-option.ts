@@ -48,4 +48,5 @@ export interface AdminShippingOptionListResponse extends PaginatedResponse {
 /**
  * @experimental
  */
-export interface AdminShippingOptionDeleteResponse extends DeleteResponse {}
+export interface AdminShippingOptionDeleteResponse
+  extends DeleteResponse<"shipping_option"> {}

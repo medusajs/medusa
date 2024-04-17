@@ -3,31 +3,25 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-
-import { AdminPostReservationsReservationReq } from "../validators"
+  AdminGetReservationParamsType,
+  AdminUpdateReservationType,
+} from "../validators"
 import { MedusaError } from "@medusajs/utils"
 import { deleteReservationsWorkflow } from "@medusajs/core-flows"
 import { updateReservationsWorkflow } from "@medusajs/core-flows"
+import { refetchReservation } from "../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetReservationParamsType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = { id }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "reservation",
-    variables,
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [reservation] = await remoteQuery(queryObject)
+  const reservation = await refetchReservation(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   if (!reservation) {
     throw new MedusaError(
@@ -40,7 +34,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostReservationsReservationReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdateReservationType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
@@ -55,18 +49,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "reservation",
-    variables: {
-      filters: { id: req.params.id },
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [reservation] = await remoteQuery(queryObject)
-
+  const reservation = await refetchReservation(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ reservation })
 }
 

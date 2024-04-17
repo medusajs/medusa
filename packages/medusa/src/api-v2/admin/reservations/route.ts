@@ -7,11 +7,15 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-import { AdminPostReservationsReq } from "./validators"
 import { createReservationsWorkflow } from "@medusajs/core-flows"
+import {
+  AdminCreateReservationType,
+  AdminGetReservationsParamsType,
+} from "./validators"
+import { refetchReservation } from "./helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetReservationsParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -36,14 +40,10 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostReservationsReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateReservationType>,
   res: MedusaResponse
 ) => {
-  const input = [
-    {
-      ...req.validatedBody,
-    },
-  ]
+  const input = [req.validatedBody]
 
   const { result, errors } = await createReservationsWorkflow(req.scope).run({
     input: { reservations: input },
@@ -54,17 +54,10 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "reservation",
-    variables: {
-      filters: { id: result[0].id },
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [reservation] = await remoteQuery(queryObject)
-
+  const reservation = await refetchReservation(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ reservation })
 }
