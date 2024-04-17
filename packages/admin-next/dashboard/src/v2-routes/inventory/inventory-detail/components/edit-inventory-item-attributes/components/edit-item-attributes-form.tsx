@@ -1,6 +1,6 @@
 import * as zod from "zod"
 
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import {
   RouteDrawer,
   useRouteModal,
@@ -52,13 +52,22 @@ export const EditInventoryItemAttributesForm = ({
     resolver: zodResolver(EditInventoryItemAttributesSchema),
   })
 
-  const { mutateAsync } = useUpdateInventoryItem(item.id)
+  const { mutateAsync, isPending: isLoading } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(values, {
+    await mutateAsync(values, {
       onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("inventory.toast.update"),
+          dismissLabel: t("actions.close"),
+        })
         handleSuccess()
       },
+      onError: (error) =>
+        toast.success(t("general.error"), {
+          description: error.message,
+          dismissLabel: t("actions.close"),
+        }),
     })
   })
 
@@ -241,7 +250,7 @@ export const EditInventoryItemAttributesForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={false}>
+            <Button type="submit" size="small" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>

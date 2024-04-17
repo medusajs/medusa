@@ -5,19 +5,26 @@ import { InventoryItemGeneralSection } from "./components/inventory-item-general
 import { InventoryItemLocationLevelsSection } from "./components/inventory-item-location-levels"
 import { InventoryItemReservationsSection } from "./components/inventory-item-reservations"
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { inventoryItemLoader } from "./loader"
 import { useInventoryItem } from "../../../hooks/api/inventory"
+import { inventoryItemLoader } from "./loader"
 
-export const InventoryDeatil = () => {
+export const InventoryDetail = () => {
   const { id } = useParams()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof inventoryItemLoader>
   >
 
-  const { inventory_item, isLoading, isError, error } = useInventoryItem(
+  const {
+    inventory_item,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInventoryItem(
     id!,
-    {},
+    {
+      fields: "*variants",
+    },
     {
       initialData,
     }
@@ -38,7 +45,7 @@ export const InventoryDeatil = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
-        <div className="w-full flex flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-2">
           <InventoryItemGeneralSection inventoryItem={inventory_item} />
           <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
           <InventoryItemReservationsSection inventoryItem={inventory_item} />
@@ -47,7 +54,7 @@ export const InventoryDeatil = () => {
           </div>
           <Outlet />
         </div>
-        <div className="w-full lg:max-w-[400px] max-w-[100%] mt-2 lg:mt-0 flex flex-col gap-y-2">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
           <InventoryItemAttributeSection inventoryItem={inventory_item} />
           <div className="lg:hidden">
             <JsonViewSection data={inventory_item} />

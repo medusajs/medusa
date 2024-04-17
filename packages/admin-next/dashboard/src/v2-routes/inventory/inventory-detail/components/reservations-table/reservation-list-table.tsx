@@ -16,11 +16,16 @@ export const ReservationItemTable = ({
     pageSize: PAGE_SIZE,
   })
 
-  const { reservations, count, isLoading, isError, error } =
-    useReservationItems({
-      ...searchParams,
-      inventory_item_id: [inventoryItem.id],
-    })
+  const {
+    reservations,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useReservationItems({
+    ...searchParams,
+    inventory_item_id: [inventoryItem.id],
+  })
 
   const columns = useInventoryTableColumns({ sku: inventoryItem.sku! })
 

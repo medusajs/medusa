@@ -275,7 +275,12 @@
         "manageInventoryLabel": "Manage inventory",
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
-        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero.",
+        "toast": {
+          "levelsBatch": "Inventory levels updated.",
+          "update": "Inventory item updated successfully",
+          "updateLevel": "Inventory level updated successfully"
+        }
       }
     },
     "options": {
@@ -1227,7 +1232,10 @@
     "successAction": "Sign in to start using Medusa",
     "invalidTokenTitle": "Your invite token is invalid",
     "invalidTokenHint": "Try requesting a new invite link.",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "toast": {
+      "accepted": "Invite successfully accepted"
+    }
   },
   "resetPassword": {
     "title": "Reset password",
