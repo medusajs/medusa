@@ -8,8 +8,8 @@ import {
 } from "./query-config"
 import {
   AdminCreateShippingProfile,
-  AdminShippingProfileParams,
-  AdminShippingProfilesParams,
+  AdminGetShippingProfileParams,
+  AdminGetShippingProfilesParams,
 } from "./validators"
 
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
@@ -21,11 +21,11 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/shipping-profiles",
     middlewares: [
+      validateAndTransformBody(AdminCreateShippingProfile),
       validateAndTransformQuery(
-        AdminShippingProfilesParams,
+        AdminGetShippingProfilesParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingProfile),
     ],
   },
   {
@@ -33,7 +33,7 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/shipping-profiles",
     middlewares: [
       validateAndTransformQuery(
-        AdminShippingProfilesParams,
+        AdminGetShippingProfilesParams,
         listTransformQueryConfig
       ),
     ],
@@ -43,7 +43,7 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/shipping-profiles/:id",
     middlewares: [
       validateAndTransformQuery(
-        AdminShippingProfileParams,
+        AdminGetShippingProfileParams,
         retrieveTransformQueryConfig
       ),
     ],

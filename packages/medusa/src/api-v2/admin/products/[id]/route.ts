@@ -7,7 +7,10 @@ import {
   updateProductsWorkflow,
 } from "@medusajs/core-flows"
 
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   refetchProduct,
   remapKeysForProduct,
@@ -20,7 +23,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const variables = { id: req.params.id }
 
