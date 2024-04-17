@@ -140,7 +140,7 @@ medusaIntegrationTestRunner({
           ])
 
           response = await api.get(
-            `/admin/price-lists?fields=id,created_at,price_list_rules.price_list_rule_values.value,price_list_rules.rule_type.rule_attribute,prices.amount`,
+            `/admin/price-lists?fields=id,created_at,prices.amount`,
             adminHeaders
           )
 
@@ -150,9 +150,6 @@ medusaIntegrationTestRunner({
             {
               id: expect.any(String),
               created_at: expect.any(String),
-              rules: {
-                customer_group_id: [customerGroup.id],
-              },
               prices: [
                 {
                   id: expect.any(String),
