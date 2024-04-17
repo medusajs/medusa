@@ -1,151 +1,77 @@
 import { PriceListStatus, PriceListType } from "@medusajs/types"
-import { Transform, Type } from "class-transformer"
-import {
-  IsArray,
-  IsEnum,
-  IsInt,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { FindParams } from "../../../types/common"
-import { transformOptionalDate } from "../../../utils/validators/date-transform"
+import { z } from "zod"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
-export class AdminGetPriceListsParams extends FindParams {}
-export class AdminGetPriceListsPriceListParams extends FindParams {}
+export const AdminGetPriceListPricesParams = createSelectParams()
+export const AdminGetPriceListsParams = createFindParams({
+  offset: 0,
+  limit: 50,
+})
 
-export class AdminPostPriceListsReq {
-  @IsString()
-  title: string
+export const AdminGetPriceListParams = createFindParams({
+  offset: 0,
+  limit: 50,
+})
 
-  @IsString()
-  description: string
+export const AdminCreatePriceListPrice = z.object({
+  currency_code: z.string(),
+  amount: z.number(),
+  variant_id: z.string(),
+  min_quantity: z.number().optional(),
+  max_quantity: z.number().optional(),
+  rules: z.record(z.string(), z.string()).optional(),
+})
 
-  @IsOptional()
-  @Transform(transformOptionalDate)
-  starts_at?: string
+export type AdminCreatePriceListPriceType = z.infer<
+  typeof AdminCreatePriceListPrice
+>
 
-  @IsOptional()
-  @Transform(transformOptionalDate)
-  ends_at?: string
+export const AdminUpdatePriceListPrice = z.object({
+  id: z.string(),
+  currency_code: z.string().optional(),
+  amount: z.number().optional(),
+  variant_id: z.string(),
+  min_quantity: z.number().optional(),
+  max_quantity: z.number().optional(),
+  rules: z.record(z.string(), z.string()).optional(),
+})
 
-  @IsOptional()
-  @IsEnum(PriceListStatus)
-  status?: PriceListStatus
+export type AdminUpdatePriceListPriceType = z.infer<
+  typeof AdminUpdatePriceListPrice
+>
 
-  @IsEnum(PriceListType)
-  type: PriceListType
+export const AdminBatchPriceListPrices = z.object({
+  create: z.array(AdminCreatePriceListPrice).optional(),
+  update: z.array(AdminUpdatePriceListPrice).optional(),
+  delete: z.array(z.string()).optional(),
+  product_id: z.array(z.string()).optional(),
+})
 
-  @IsArray()
-  @Type(() => AdminPriceListPricesCreateReq)
-  @ValidateNested({ each: true })
-  prices: AdminPriceListPricesCreateReq[]
+export type AdminBatchPriceListPricesType = z.infer<
+  typeof AdminBatchPriceListPrices
+>
 
-  @IsOptional()
-  @IsObject()
-  rules?: Record<string, string[]>
-}
+export const AdminCreatePriceList = z.object({
+  title: z.string(),
+  description: z.string(),
+  starts_at: z.string().optional(),
+  ends_at: z.string().optional(),
+  status: z.nativeEnum(PriceListStatus).optional(),
+  type: z.nativeEnum(PriceListType).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
+  prices: z.array(AdminCreatePriceListPrice).optional(),
+})
 
-export class AdminPriceListPricesCreateReq {
-  @IsString()
-  currency_code: string
+export type AdminCreatePriceListType = z.infer<typeof AdminCreatePriceList>
 
-  @IsInt()
-  amount: number
+export const AdminUpdatePriceList = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  starts_at: z.string().optional(),
+  ends_at: z.string().optional(),
+  status: z.nativeEnum(PriceListStatus).optional(),
+  type: z.nativeEnum(PriceListType).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
+})
 
-  @IsString()
-  variant_id: string
-
-  @IsOptional()
-  @IsInt()
-  min_quantity?: number
-
-  @IsOptional()
-  @IsInt()
-  max_quantity?: number
-
-  @IsOptional()
-  @IsObject()
-  rules?: Record<string, string>
-}
-
-export class AdminPostPriceListsPriceListReq {
-  @IsString()
-  @IsOptional()
-  title?: string
-
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsOptional()
-  @Transform(transformOptionalDate)
-  starts_at?: string
-
-  @IsOptional()
-  @Transform(transformOptionalDate)
-  ends_at?: string
-
-  @IsOptional()
-  @IsEnum(PriceListStatus)
-  status?: PriceListStatus
-
-  @IsOptional()
-  @IsEnum(PriceListType)
-  type?: PriceListType
-
-  @IsOptional()
-  @IsArray()
-  prices: AdminPriceListPricesCreateReq[]
-
-  @IsOptional()
-  @IsObject()
-  rules?: Record<string, string[]>
-}
-
-export class AdminPostPriceListsPriceListPricesBatchAddReq {
-  @IsOptional()
-  @IsArray()
-  prices: AdminPriceListPricesCreateReq[]
-}
-
-export class AdminPostPriceListPriceBatchUpdate {
-  @IsOptional()
-  @IsArray()
-  prices: AdminPostPriceListPriceUpdate[]
-}
-
-export class AdminPostPriceListsPriceListPricesBatchRemoveReq {
-  @IsArray()
-  @IsString({ each: true })
-  ids: string[]
-}
-
-export class AdminPostPriceListPriceUpdate {
-  @IsString()
-  id: string
-
-  @IsString()
-  variant_id: string
-
-  @IsOptional()
-  @IsString()
-  currency_code?: string
-
-  @IsOptional()
-  @IsInt()
-  amount?: number
-
-  @IsOptional()
-  @IsInt()
-  min_quantity?: number
-
-  @IsOptional()
-  @IsInt()
-  max_quantity?: number
-
-  @IsOptional()
-  @IsObject()
-  rules?: Record<string, string>
-}
+export type AdminUpdatePriceListType = z.infer<typeof AdminUpdatePriceList>
