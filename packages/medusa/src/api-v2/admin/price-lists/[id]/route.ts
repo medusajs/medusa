@@ -6,37 +6,31 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { getPriceList } from "../queries"
-import {
-  adminPriceListRemoteQueryFields,
-  defaultAdminPriceListFields,
-} from "../query-config"
-import { AdminPostPriceListsPriceListReq } from "../validators"
+import { fetchPriceList } from "../helpers"
+import { AdminUpdatePriceListType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const id = req.params.id
-  const priceList = await getPriceList({
-    id,
-    container: req.scope,
-    remoteQueryFields: adminPriceListRemoteQueryFields,
-    apiFields: req.retrieveConfig.select!,
-  })
+  const price_list = await fetchPriceList(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  res.status(200).json({ price_list: priceList })
+  res.status(200).json({ price_list })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPriceListsPriceListReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdatePriceListType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
 
   const { errors } = await workflow.run({
-    input: { price_lists_data: [{ id, ...req.validatedBody }] },
+    input: { price_lists_data: [{ ...req.validatedBody, id }] },
     throwOnError: false,
   })
 
@@ -44,14 +38,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const priceList = await getPriceList({
+  const price_list = await fetchPriceList(
     id,
-    container: req.scope,
-    remoteQueryFields: adminPriceListRemoteQueryFields,
-    apiFields: defaultAdminPriceListFields,
-  })
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  res.status(200).json({ price_list: priceList })
+  res.status(200).json({ price_list })
 }
 
 export const DELETE = async (

@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreatePriceListRuleDTO,
+  CreatePriceRuleDTO,
   CreatePricesDTO,
   CreatePriceSetDTO,
   DAL,
@@ -23,7 +24,7 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  isDefined, isPresent,
+  isPresent,
   isString,
   MedusaContext,
   MedusaError,
@@ -44,12 +45,12 @@ import {
   RuleType,
 } from "@models"
 
-import {PriceListService, RuleTypeService} from "@services"
-import {validatePriceListDates} from "@utils"
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
-import {PriceSetIdPrefix} from "../models/price-set"
-import {PriceListIdPrefix} from "../models/price-list"
-import {UpdatePriceSetInput} from "src/types/services"
+import { PriceListService, RuleTypeService } from "@services"
+import { validatePriceListDates } from "@utils"
+import { UpdatePriceSetInput } from "src/types/services"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { PriceListIdPrefix } from "../models/price-list"
+import { PriceSetIdPrefix } from "../models/price-set"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -373,7 +374,7 @@ export default class PricingModuleService<
           ...price,
           price_set_id: priceSet.id,
           price_rules: hasRulesInput ? rules : undefined,
-          rules_count: hasRulesInput ? rules.length : undefined
+          rules_count: hasRulesInput ? rules.length : undefined,
         }
       })
 
@@ -598,8 +599,10 @@ export default class PricingModuleService<
   async updatePriceListPrices(
     data: PricingTypes.UpdatePriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO[]> {
-    return await this.updatePriceListPrices_(data, sharedContext)
+  ): Promise<PricingTypes.PriceDTO[]> {
+    const prices = await this.updatePriceListPrices_(data, sharedContext)
+
+    return await this.baseRepository_.serialize<PricingTypes.PriceDTO[]>(prices)
   }
 
   @InjectManager("baseRepository_")
@@ -614,8 +617,10 @@ export default class PricingModuleService<
   async addPriceListPrices(
     data: PricingTypes.AddPriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO[]> {
-    return await this.addPriceListPrices_(data, sharedContext)
+  ): Promise<PricingTypes.PriceDTO[]> {
+    const prices = await this.addPriceListPrices_(data, sharedContext)
+
+    return await this.baseRepository_.serialize<PricingTypes.PriceDTO[]>(prices)
   }
 
   @InjectManager("baseRepository_")
@@ -1141,7 +1146,7 @@ export default class PricingModuleService<
   protected async updatePriceListPrices_(
     data: PricingTypes.UpdatePriceListPricesDTO[],
     sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO[]> {
+  ): Promise<TPrice[]> {
     const ruleTypeAttributes: string[] = []
     const priceListIds: string[] = []
     const priceIds: string[] = []
@@ -1233,6 +1238,10 @@ export default class PricingModuleService<
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
+    const pricesToUpdate: Partial<TPrice>[] = []
+    const priceRuleIdsToDelete: string[] = []
+    const priceRulesToCreate: CreatePriceRuleDTO[] = []
+
     for (const { price_list_id: priceListId, prices } of data) {
       const priceList = priceListMap.get(priceListId)
 
@@ -1243,43 +1252,37 @@ export default class PricingModuleService<
         )
       }
 
-      const priceRuleIdsToDelete: string[] = []
-      const priceRulesToCreate: PricingTypes.CreatePriceRuleDTO[] = []
-      const pricesToUpdate: Partial<TPrice>[] = []
-
       for (const priceData of prices) {
-        const { rules, price_set_id, ...rest } = priceData
+        const { rules = {}, price_set_id, ...rest } = priceData
         const price = priceMap.get(rest.id)!
         const priceRules = price.price_rules!
 
-        if (!isDefined(rules)) {
-          continue
-        }
+        priceRulesToCreate.push(
+          ...Object.entries(rules).map(([ruleAttribute, ruleValue]) => ({
+            price_set_id,
+            rule_type_id: ruleTypeMap.get(ruleAttribute)!.id,
+            value: ruleValue,
+            price_id: price.id,
+          }))
+        )
 
         pricesToUpdate.push({
           ...rest,
           rules_count: Object.keys(rules).length,
-          price_rules: Object.entries(rules).map(
-            ([ruleAttribute, ruleValue]) => ({
-              price_set_id,
-              rule_type_id: ruleTypeMap.get(ruleAttribute)!.id,
-              value: ruleValue,
-              price_id: price.id,
-            })
-          ),
         } as unknown as TPrice)
 
         priceRuleIdsToDelete.push(...priceRules.map((pr) => pr.id))
       }
+    }
 
+    const [_deletedPriceRule, _createdPriceRule, updatedPrices] =
       await promiseAll([
         this.priceRuleService_.delete(priceRuleIdsToDelete),
         this.priceRuleService_.create(priceRulesToCreate),
         this.priceService_.update(pricesToUpdate),
       ])
-    }
 
-    return priceLists
+    return updatedPrices
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1294,7 +1297,7 @@ export default class PricingModuleService<
   protected async addPriceListPrices_(
     data: PricingTypes.AddPriceListPricesDTO[],
     sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO[]> {
+  ): Promise<TPrice[]> {
     const ruleTypeAttributes: string[] = []
     const priceListIds: string[] = []
     const priceSetIds: string[] = []
@@ -1411,9 +1414,7 @@ export default class PricingModuleService<
       pricesToCreate.push(...priceListPricesToCreate)
     }
 
-    await this.priceService_.create(pricesToCreate, sharedContext)
-
-    return priceLists
+    return await this.priceService_.create(pricesToCreate, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")

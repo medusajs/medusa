@@ -39,5 +39,11 @@ export const joinerConfig: ModuleJoinerConfig = {
         methodSuffix: "PriceLists",
       },
     },
+    {
+      name: ["price", "prices"],
+      args: {
+        methodSuffix: "Prices",
+      },
+    },
   ],
 }
