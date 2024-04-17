@@ -47,6 +47,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
       const query = normalizeQuery(req)
+
       const validated = await zodValidator(zodSchema, query, config)
       const cnf = queryConfig.isList
         ? prepareListQuery(validated, queryConfig)
