@@ -70,6 +70,13 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsString()
   fields?: string
+
+  /**
+   * The term to search invites emails.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
 }
 
 export class AdminCreateInviteRequest {

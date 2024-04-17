@@ -3,7 +3,7 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
   AdminGetShippingOptionParams,
-  AdminListShippingOptionParams,
+  AdminGetShippingOptionsParams,
   AdminShippingOptionRulesBatchAdd,
   AdminShippingOptionRulesBatchRemove,
   AdminUpdateShippingOption,
@@ -20,68 +20,62 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
   },
-
   {
     method: ["GET"],
     matcher: "/admin/shipping-options",
     middlewares: [
       validateAndTransformQuery(
-        AdminListShippingOptionParams,
+        AdminGetShippingOptionsParams,
         listTransformQueryConfig
       ),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options",
     middlewares: [
+      validateAndTransformBody(AdminCreateShippingOption),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingOption),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id",
     middlewares: [
+      validateAndTransformBody(AdminUpdateShippingOption),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminUpdateShippingOption),
     ],
   },
-
   {
     method: ["DELETE"],
     matcher: "/admin/shipping-options/:id",
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch/add",
     middlewares: [
+      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id/rules/batch/remove",
     middlewares: [
+      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
     ],
   },
 ]
