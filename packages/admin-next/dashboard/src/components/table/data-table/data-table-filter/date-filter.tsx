@@ -1,12 +1,12 @@
 import { EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
 import { DatePicker, Text, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
-import { format } from "date-fns"
 import isEqual from "lodash/isEqual"
 import { MouseEvent, useMemo, useState } from "react"
 
 import { t } from "i18next"
 import { useTranslation } from "react-i18next"
+import { useDate } from "../../../../hooks/use-date"
 import { useSelectedParams } from "../hooks"
 import { useDataTableFilterContext } from "./context"
 import { IFilter } from "./types"
@@ -39,6 +39,8 @@ export const DateFilter = ({
 }: DateFilterProps) => {
   const [open, setOpen] = useState(openOnMount)
   const [showCustom, setShowCustom] = useState(false)
+
+  const { getFullDate } = useDate()
 
   const { key, label } = filter
 
@@ -84,7 +86,7 @@ export const DateFilter = ({
   }
 
   const formatCustomDate = (date: Date | undefined) => {
-    return date ? format(date, "dd MMM, yyyy") : undefined
+    return date ? getFullDate({ date: date }) : undefined
   }
 
   const getCustomDisplayValue = () => {
@@ -199,7 +201,7 @@ export const DateFilter = ({
                 </div>
                 <div className="px-2 py-1">
                   <DatePicker
-                    // placeholder="MM/DD/YYYY"
+                    // placeholder="MM/DD/YYYY" TODO: Fix DatePicker component not working with placeholder
                     toDate={customEndValue}
                     value={customStartValue}
                     onChange={(d) => handleCustomDateChange(d, "start")}
