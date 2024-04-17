@@ -43,3 +43,37 @@ export const transformPriceList = (priceList) => {
 
   return priceList
 }
+
+export const fetchPriceListPriceIdsForProduct = async (
+  priceListId: string,
+  productIds: string[],
+  scope: MedusaContainer
+): Promise<string[]> => {
+  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const priceSetIds: string[] = []
+  const variants = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "variants",
+      variables: { filters: { product_id: productIds } },
+      fields: ["price_set.id"],
+    })
+  )
+
+  for (const variant of variants) {
+    if (variant.price_set?.id) {
+      priceSetIds.push(variant.price_set.id)
+    }
+  }
+
+  const productPrices = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "prices",
+      variables: {
+        filters: { price_set_id: priceSetIds, price_list_id: priceListId },
+      },
+      fields: ["id"],
+    })
+  )
+
+  return productPrices.map((price) => price.id)
+}

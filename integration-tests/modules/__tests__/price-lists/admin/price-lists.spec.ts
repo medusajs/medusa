@@ -24,7 +24,6 @@ medusaIntegrationTestRunner({
     describe("Admin: Price Lists API", () => {
       let appContainer
       let product
-      let product2
       let variant
       let variant2
       let region
@@ -56,11 +55,15 @@ medusaIntegrationTestRunner({
               {
                 title: "test product variant",
               },
+              {
+                title: "test product variant 2",
+              },
             ],
           },
         ])
 
         variant = product.variants[0]
+        variant2 = product.variants[1]
 
         await pricingModule.createRuleTypes([
           { name: "Customer Group ID", rule_attribute: "customer_group_id" },
@@ -566,6 +569,68 @@ medusaIntegrationTestRunner({
             ],
             deleted: {
               ids: ["price-to-remove"],
+              object: "price",
+              deleted: true,
+            },
+          })
+        })
+
+        it("should remove all price list prices of a product", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const priceSet2 = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant2.id,
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const [createdPriceList] = await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              prices: [
+                {
+                  id: "price-to-delete-1",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+                {
+                  id: "price-to-delete-2",
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet2.id,
+                  rules: { region_id: region.id },
+                },
+              ],
+            },
+          ])
+
+          const [priceList] = await pricingModule.listPriceLists(
+            { id: [createdPriceList.id] },
+            { relations: ["prices"] }
+          )
+
+          const data = { product_id: [product.id] }
+          const response = await api.post(
+            `admin/price-lists/${priceList.id}/prices/batch`,
+            data,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            created: [],
+            updated: [],
+            deleted: {
+              ids: ["price-to-delete-1", "price-to-delete-2"],
               object: "price",
               deleted: true,
             },

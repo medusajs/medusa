@@ -4,6 +4,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
+import { fetchPriceListPriceIdsForProduct } from "../../../helpers"
 import { listPrices } from "../../../queries"
 import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
 import { AdminBatchPriceListPricesType } from "../../../validators"
@@ -12,13 +13,21 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminBatchPriceListPricesType>,
   res: MedusaResponse
 ) => {
+  const id = req.params.id
   const {
     create = [],
     update = [],
     delete: deletePriceIds = [],
+    product_id: productIds = [],
   } = req.validatedBody
 
-  const id = req.params.id
+  const productPriceIds = await fetchPriceListPriceIdsForProduct(
+    id,
+    productIds,
+    req.scope
+  )
+
+  const priceIdsToDelete = [...deletePriceIds, ...productPriceIds]
   const workflow = batchPriceListPricesWorkflow(req.scope)
   const { result, errors } = await workflow.run({
     input: {
@@ -26,7 +35,7 @@ export const POST = async (
         id,
         create,
         update,
-        delete: deletePriceIds,
+        delete: priceIdsToDelete,
       },
     },
     throwOnError: false,
@@ -53,7 +62,7 @@ export const POST = async (
     created,
     updated,
     deleted: {
-      ids: deletePriceIds,
+      ids: priceIdsToDelete,
       object: "price",
       deleted: true,
     },
