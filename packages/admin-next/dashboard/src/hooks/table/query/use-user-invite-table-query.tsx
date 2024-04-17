@@ -1,14 +1,14 @@
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useQueryParams } from "../../use-query-params"
 
-type UseCustomerGroupTableQueryProps = {
+type UseUserInviteTableQueryProps = {
   prefix?: string
   pageSize?: number
 }
 
-export const useCustomerGroupTableQuery = ({
+export const useUserInviteTableQuery = ({
   prefix,
   pageSize = 20,
-}: UseCustomerGroupTableQueryProps) => {
+}: UseUserInviteTableQueryProps) => {
   const queryObject = useQueryParams(
     ["offset", "q", "order", "created_at", "updated_at"],
     prefix

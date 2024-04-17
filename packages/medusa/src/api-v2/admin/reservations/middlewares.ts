@@ -1,15 +1,15 @@
 import * as QueryConfig from "./query-config"
 
-import {
-  AdminGetReservationsParams,
-  AdminGetReservationsReservationParams,
-  AdminPostReservationsReq,
-  AdminPostReservationsReservationReq,
-} from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateReservation,
+  AdminGetReservationParams,
+  AdminGetReservationsParams,
+  AdminUpdateReservation,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -21,7 +21,7 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/reservations",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetReservationsParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -31,8 +31,8 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/reservations/:id",
     middlewares: [
-      transformQuery(
-        AdminGetReservationsReservationParams,
+      validateAndTransformQuery(
+        AdminGetReservationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -41,22 +41,22 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/reservations",
     middlewares: [
-      transformQuery(
-        AdminGetReservationsReservationParams,
+      validateAndTransformBody(AdminCreateReservation),
+      validateAndTransformQuery(
+        AdminGetReservationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostReservationsReq),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/reservations/:id",
     middlewares: [
-      transformQuery(
-        AdminGetReservationsReservationParams,
+      validateAndTransformBody(AdminUpdateReservation),
+      validateAndTransformQuery(
+        AdminGetReservationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostReservationsReservationReq),
     ],
   },
 ]
