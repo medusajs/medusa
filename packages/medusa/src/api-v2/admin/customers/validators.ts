@@ -44,14 +44,20 @@ export const AdminCustomersParams = createFindParams({
 )
 
 export const AdminCreateCustomer = z.object({
+  email: z.string().email().optional(),
   company_name: z.string().optional(),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
-  email: z.string().optional(),
   phone: z.string().optional(),
 })
 
-export const AdminUpdateCustomer = AdminCreateCustomer
+export const AdminUpdateCustomer = z.object({
+  email: z.string().email().nullable().optional(),
+  company_name: z.string().nullable().optional(),
+  first_name: z.string().nullable().optional(),
+  last_name: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+})
 
 export const AdminCreateCustomerAddress = z.object({
   address_name: z.string().optional(),
