@@ -1,7 +1,7 @@
 import { Trash } from "@medusajs/icons"
-import { usePrompt } from "@medusajs/ui"
+import { AdminShippingProfileResponse } from "@medusajs/types"
+import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ShippingProfileDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteShippingProfile } from "../../../../../hooks/api/shipping-profiles"
@@ -9,17 +9,17 @@ import { useDeleteShippingProfile } from "../../../../../hooks/api/shipping-prof
 export const ShippingOptionsRowActions = ({
   profile,
 }: {
-  profile: ShippingProfileDTO
+  profile: AdminShippingProfileResponse["shipping_profile"]
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  // TODO: MISSING ENDPOINT
+
   const { mutateAsync } = useDeleteShippingProfile(profile.id)
 
   const handleDelete = async () => {
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("shippingProfile.deleteWaring", {
+      title: t("shippingProfile.delete.title"),
+      description: t("shippingProfile.delete.description", {
         name: profile.name,
       }),
       verificationText: profile.name,
@@ -32,7 +32,22 @@ export const ShippingOptionsRowActions = ({
       return
     }
 
-    await mutateAsync()
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("shippingProfile.delete.successToast", {
+            name: profile.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onError: (error) => {
+        toast.error(t("general.error"), {
+          description: error.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (

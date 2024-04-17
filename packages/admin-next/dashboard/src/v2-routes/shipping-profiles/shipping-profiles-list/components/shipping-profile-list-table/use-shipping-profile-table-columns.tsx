@@ -1,13 +1,14 @@
+import { AdminShippingProfileResponse } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { ShippingProfileDTO } from "@medusajs/types"
 
 import { ShippingOptionsRowActions } from "./shipping-options-row-actions"
 
-const columnHelper = createColumnHelper<ShippingProfileDTO>()
+const columnHelper =
+  createColumnHelper<AdminShippingProfileResponse["shipping_profile"]>()
 
-export const useShippingProfilesTableColumns = () => {
+export const useShippingProfileTableColumns = () => {
   const { t } = useTranslation()
 
   return useMemo(

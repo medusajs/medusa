@@ -7,11 +7,11 @@ import {
 } from "@tanstack/react-query"
 import { CreateShippingProfileReq } from "../../types/api-payloads"
 import {
-  ShippingProfileDeleteRes,
   ShippingProfileListRes,
   ShippingProfileRes,
 } from "../../types/api-responses"
 
+import { DeleteResponse } from "@medusajs/types"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -41,6 +41,25 @@ export const useCreateShippingProfile = (
   })
 }
 
+export const useShippingProfile = (
+  id: string,
+  query?: Record<string, any>,
+  options?: UseQueryOptions<
+    ShippingProfileRes,
+    Error,
+    ShippingProfileRes,
+    QueryKey
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.shippingProfiles.retrieve(id, query),
+    queryKey: shippingProfileQueryKeys.detail(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useShippingProfiles = (
   query?: Record<string, any>,
   options?: Omit<
@@ -64,11 +83,11 @@ export const useShippingProfiles = (
 
 export const useDeleteShippingProfile = (
   profileId: string,
-  options?: UseMutationOptions<ShippingProfileDeleteRes, Error, void>
+  options?: UseMutationOptions<DeleteResponse, Error, void>
 ) => {
   return useMutation({
     mutationFn: () => client.shippingProfiles.delete(profileId),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: shippingProfileQueryKeys.lists(),
       })
