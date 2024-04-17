@@ -9,6 +9,8 @@ import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
+  AdminTaxRateResponse,
+  AdminTaxRegionResponse,
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
@@ -286,6 +288,59 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/pricing/pricing-products-prices"),
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "shipping",
+            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            handle: {
+              crumb: () => "Shipping",
+            },
+            children: [
+              {
+                path: "location/:location_id",
+                children: [
+                  {
+                    path: "fulfillment-set/:fset_id",
+                    children: [
+                      {
+                        path: "service-zones/create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/shipping/service-zone-create"
+                          ),
+                      },
+                      {
+                        path: "service-zone/:zone_id",
+                        children: [
+                          {
+                            path: "shipping-options/create",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/shipping-options-create"
+                              ),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "shipping-profiles",
+            lazy: () =>
+              import("../../v2-routes/shipping/shipping-profiles-list"),
+            handle: {
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/shipping/shipping-profile-create"),
               },
             ],
           },
@@ -757,7 +812,56 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
-                children: [],
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-region-create"),
+                    children: [],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    return data.tax_region.country_code
+                  },
+                },
+                children: [
+                  {
+                    path: "create-default",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-province-create"),
+                    children: [],
+                  },
+                  {
+                    path: "create-override",
+                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    children: [],
+                  },
+                  {
+                    path: "tax-rates",
+                    children: [
+                      {
+                        path: ":taxRateId",
+                        children: [
+                          {
+                            path: "edit",
+                            lazy: () =>
+                              import("../../v2-routes/taxes/tax-rate-edit"),
+                            handle: {
+                              crumb: (data: AdminTaxRateResponse) => {
+                                return data.tax_rate.code
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
