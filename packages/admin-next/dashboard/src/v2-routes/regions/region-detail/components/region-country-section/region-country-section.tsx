@@ -170,9 +170,21 @@ const CountryActions = ({
       return
     }
 
-    await mutateAsync({
-      countries: payload,
-    })
+    try {
+      await mutateAsync({
+        countries: payload,
+      })
+
+      toast.success(t("general.success"), {
+        description: t("regions.toast.countries"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: t("regions.toast.countriesError"),
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
