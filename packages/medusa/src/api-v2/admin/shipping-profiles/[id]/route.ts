@@ -6,27 +6,21 @@ import {
 } from "@medusajs/types"
 import { deleteShippingProfileWorkflow } from "@medusajs/core-flows"
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { AdminGetShippingProfileParamsType } from "../validators"
+import { refetchShippingProfile } from "../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetShippingProfileParamsType>,
   res: MedusaResponse<AdminShippingProfileResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "shipping_profiles",
-    variables: { id: req.params.id },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [shippingProfile] = await remoteQuery(query)
+  const shippingProfile = await refetchShippingProfile(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ shipping_profile: shippingProfile })
 }

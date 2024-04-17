@@ -6,34 +6,23 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-
-import { UpdateRegionDTO } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { refetchRegion } from "../helpers"
+import { AdminGetRegionParamsType, AdminUpdateRegionType } from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetRegionParamsType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id: req.params.id }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "region",
-    variables,
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [region] = await remoteQuery(queryObject)
-
+  const region = await refetchRegion(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ region })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateRegionDTO>,
+  req: AuthenticatedMedusaRequest<AdminUpdateRegionType>,
   res: MedusaResponse
 ) => {
   const { result, errors } = await updateRegionsWorkflow(req.scope).run({
@@ -48,19 +37,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const region = await refetchRegion(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "region",
-    variables: {
-      filters: { id: req.params.id },
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const regions = await remoteQuery(queryObject)
-
-  res.status(200).json({ region: regions[0] })
+  res.status(200).json({ region })
 }
 
 export const DELETE = async (

@@ -8,7 +8,12 @@ export const UserDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof userLoader>>
 
   const { id } = useParams()
-  const { user, isLoading, isError, error } = useUser(id!, undefined, {
+  const {
+    user,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useUser(id!, undefined, {
     initialData,
   })
 
