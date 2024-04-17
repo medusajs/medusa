@@ -62,8 +62,6 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
           handleSuccess()
         },
         onError: (error) => {
-          console.log(error)
-
           toast.error(t("general.error"), {
             description: error.message,
             dismissLabel: t("actions.close"),
