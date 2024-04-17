@@ -1,27 +1,22 @@
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
-import { Customer } from "@medusajs/medusa"
 import { PencilSquare, Trash } from "@medusajs/icons"
 import {
-  adminCustomerGroupKeys,
-  useAdminCustomPost,
-  useAdminCustomerGroupCustomers,
-} from "medusa-react"
+  AdminCustomerGroupResponse,
+  AdminCustomerResponse,
+} from "@medusajs/types"
+import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { Link } from "react-router-dom"
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { useRemoveCustomersFromGroup } from "../../../../../hooks/api/customer-groups"
+import { useCustomers } from "../../../../../hooks/api/customers"
 import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useMemo, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { AdminCustomerGroupResponse, AdminCustomerResponse } from "@medusajs/types"
-import { useCustomers } from "../../../../../hooks/api/customers"
-import {
-  useRemoveCustomersFromGroup,
-  useUpdateCustomerGroup,
-} from "../../../../../hooks/api/customer-groups"
 
 type CustomerGroupCustomerSectionProps = {
   group: AdminCustomerGroupResponse["customer_group"]
@@ -72,8 +67,10 @@ export const CustomerGroupCustomerSection = ({
     const keys = Object.keys(rowSelection)
 
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customerGroups.removeCustomersWarning", {
+      title: t("customerGroups.customers.remove.title", {
+        count: keys.length,
+      }),
+      description: t("customerGroups.customers.remove.description", {
         count: keys.length,
       }),
       confirmText: t("actions.continue"),
@@ -151,8 +148,10 @@ const CustomerActions = ({
 
   const handleRemove = async () => {
     const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("customerGroups.removeCustomersWarning", {
+      title: t("customerGroups.customers.remove.title", {
+        count: 1,
+      }),
+      description: t("customerGroups.customers.remove.description", {
         count: 1,
       }),
       confirmText: t("actions.continue"),

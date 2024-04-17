@@ -1,44 +1,27 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Customer } from "@medusajs/medusa"
-import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import {
   OnChangeFn,
-  PaginationState,
   RowSelectionState,
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminCustomerKeys,
-  useAdminAddCustomersToCustomerGroup,
-  useAdminCustomers,
-} from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import {
-  NoRecords,
-  NoResults,
-} from "../../../../../components/common/empty-table-content"
-import { Query } from "../../../../../components/filtering/query"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { AdminCustomerResponse } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { queryClient } from "../../../../../lib/medusa"
-import { useCustomers } from "../../../../../hooks/api/customers"
+import { DataTable } from "../../../../../components/table/data-table"
 import { useAddCustomersToGroup } from "../../../../../hooks/api/customer-groups"
-import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useCustomers } from "../../../../../hooks/api/customers"
+import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
-import { DataTable } from "../../../../../components/table/data-table"
-import { AdminCustomerResponse } from "@medusajs/types"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type AddCustomersFormProps = {
   customerGroupId: string
@@ -64,19 +47,6 @@ export const AddCustomersForm = ({
   })
 
   const { setValue } = form
-
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
@@ -130,8 +100,7 @@ export const AddCustomersForm = ({
     },
   })
 
-  const { mutateAsync, isLoading: isMutating } =
-    useAddCustomersToGroup(customerGroupId)
+  const { mutateAsync, isPending } = useAddCustomersToGroup(customerGroupId)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -140,6 +109,13 @@ export const AddCustomersForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("customerGroups.customers.add.successToast", {
+              count: data.customer_ids.length,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
           handleSuccess(`/customer-groups/${customerGroupId}`)
         },
       }
@@ -172,13 +148,13 @@ export const AddCustomersForm = ({
               type="submit"
               variant="primary"
               size="small"
-              isLoading={isMutating}
+              isLoading={isPending}
             >
-              {t("general.add")}
+              {t("actions.save")}
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+        <RouteFocusModal.Body className="size-full overflow-hidden">
           <DataTable
             table={table}
             columns={columns}
@@ -194,6 +170,7 @@ export const AddCustomersForm = ({
               "updated_at",
             ]}
             isLoading={isLoading}
+            layout="fill"
             search
             queryObject={raw}
           />
@@ -207,6 +184,7 @@ const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
 
 const useColumns = () => {
   const { t } = useTranslation()
+  const base = useCustomerTableColumns()
 
   const columns = useMemo(
     () => [
@@ -244,7 +222,7 @@ const useColumns = () => {
           if (isPreSelected) {
             return (
               <Tooltip
-                content={t("customerGroups.customerAlreadyAdded")}
+                content={t("customerGroups.customers.alreadyAddedTooltip")}
                 side="right"
               >
                 {Component}
@@ -255,23 +233,9 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("email", {
-        header: t("fields.email"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.display({
-        id: "name",
-        header: t("fields.name"),
-        cell: ({ row }) => {
-          const name = [row.original.first_name, row.original.last_name]
-            .filter(Boolean)
-            .join(" ")
-
-          return name || "-"
-        },
-      }),
+      ...base,
     ],
-    [t]
+    [t, base]
   )
 
   return columns
