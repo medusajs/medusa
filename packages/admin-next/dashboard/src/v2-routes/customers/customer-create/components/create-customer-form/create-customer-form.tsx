@@ -39,7 +39,7 @@ export const CreateCustomerForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        email: data.email,
+        email: data.email || undefined,
         first_name: data.first_name || undefined,
         last_name: data.last_name || undefined,
         company_name: data.company_name || undefined,
@@ -100,7 +100,7 @@ export const CreateCustomerForm = () => {
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.firstName")}</Form.Label>
+                      <Form.Label optional>{t("fields.firstName")}</Form.Label>
                       <Form.Control>
                         <Input autoComplete="off" {...field} />
                       </Form.Control>
@@ -115,7 +115,7 @@ export const CreateCustomerForm = () => {
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.lastName")}</Form.Label>
+                      <Form.Label optional>{t("fields.lastName")}</Form.Label>
                       <Form.Control>
                         <Input autoComplete="off" {...field} />
                       </Form.Control>
