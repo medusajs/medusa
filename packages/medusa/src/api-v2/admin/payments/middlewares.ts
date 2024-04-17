@@ -1,5 +1,6 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as queryConfig from "./query-config"
@@ -41,9 +42,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/payments/:id",
     middlewares: [
-      validateAndTransformQuery(
-        AdminGetPaymentParams,
-        queryConfig.retrieveTransformQueryConfig
+      unlessPath(
+        new RegExp("/admin/payments/payment-providers"),
+        validateAndTransformQuery(
+          AdminGetPaymentParams,
+          queryConfig.retrieveTransformQueryConfig
+        )
       ),
     ],
   },

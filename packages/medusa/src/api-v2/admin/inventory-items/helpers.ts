@@ -23,7 +23,6 @@ export const refetchInventoryItem = async (
   // TODO: Why does the response type change if you pass skip and take, vs not passing it?
   // Also, why does the data change (in this case, not doing skip and take will not return the lazy fields of stockedQuantity and reserved_quantity)
   const { rows } = await remoteQuery(queryObject)
-  console.log(rows)
 
   return rows[0]
 }

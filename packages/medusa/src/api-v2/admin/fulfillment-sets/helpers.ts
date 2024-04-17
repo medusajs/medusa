@@ -11,7 +11,7 @@ export const refetchFulfillmentSet = async (
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "fulfillment-set",
+    entryPoint: "fulfillment_set",
     variables: {
       filters: { id: fulfillmentSetId },
     },
