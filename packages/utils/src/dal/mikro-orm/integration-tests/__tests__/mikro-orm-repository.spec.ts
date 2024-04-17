@@ -15,6 +15,9 @@ import {
 } from "@mikro-orm/core"
 import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
 import { dropDatabase } from "pg-god"
+import { MikroOrmBigNumberProperty } from "../../big-number-field"
+import BigNumber from "bignumber.js"
+import { BigNumberRawValue } from "@medusajs/types"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
@@ -41,6 +44,12 @@ class Entity1 {
 
   @Property()
   title: string
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  amount: BigNumber | number | null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_amount: BigNumberRawValue | null
 
   @Property({ nullable: true })
   deleted_at: Date | null
@@ -165,16 +174,18 @@ describe("mikroOrmRepository", () => {
 
   describe("upsert with replace", () => {
     it("should successfully create a flat entity", async () => {
-      const entity1 = { id: "1", title: "en1" }
+      const entity1 = { id: "1", title: "en1", amount: 100 }
 
       const resp = await manager1().upsertWithReplace([entity1])
       const listedEntities = await manager1().find()
 
       expect(listedEntities).toHaveLength(1)
-      expect(listedEntities[0]).toEqual(
+      expect(wrap(listedEntities[0]).toPOJO()).toEqual(
         expect.objectContaining({
           id: "1",
           title: "en1",
+          amount: 100,
+          raw_amount: { value: "100", precision: 20 },
         })
       )
     })
@@ -188,7 +199,7 @@ describe("mikroOrmRepository", () => {
       const listedEntities = await manager1().find()
 
       expect(listedEntities).toHaveLength(1)
-      expect(listedEntities[0]).toEqual(
+      expect(wrap(listedEntities[0]).toPOJO()).toEqual(
         expect.objectContaining({
           id: "1",
           title: "newen1",
